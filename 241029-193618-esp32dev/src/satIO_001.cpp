@@ -4456,12 +4456,12 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_w,
           vms.matrix_indi_h,
           TFT_DARKGREY);}
-          // main button
-          hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
-          vms.matrix_btn_w,
-          vms.matrix_btn_h,
-          TFT_DARKGREY);
+        // main button
+        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
+        vms.matrix_btn_w,
+        vms.matrix_btn_h,
+        TFT_DARKGREY);
         if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) { // enable/disable button and indicator
           hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
