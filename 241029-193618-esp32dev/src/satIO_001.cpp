@@ -4261,23 +4261,23 @@ void TouchScreenInput( void * pvParameters ) {
         if (menuData.page == 0) {
           int page0_x[10][2] = {
             {0, 35},
-            {35, 65},
-            {65, 90},
-            {90, 120},
-            {120, 145},
-            {145, 175},
-            {175, 200},
-            {200, 230},
-            {230, 260},
+            {35, 60},
+            {70, 90},
+            {95, 115},
+            {125, 145},
+            {150, 170},
+            {180, 200},
+            {210, 230},
+            {235, 260},
             {260, 290}
           };
           // page 0: matrix main btn (row 0)
           if (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1) {
             for (int i; i<10; i++) {
               if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
-                menuData.page=1;
                 menuData.relay_function_select=i;
                 menuData.backpage=0;
+                menuData.page=1;
                 break;}
             }
           }
@@ -4285,9 +4285,9 @@ void TouchScreenInput( void * pvParameters ) {
           else if (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1) {
             for (int i; i<10; i++) {
               if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
-                menuData.page=1;
                 menuData.relay_function_select=i+10;
                 menuData.backpage=0;
+                menuData.page=1;
                 break;}
             }
           }
@@ -4300,7 +4300,7 @@ void TouchScreenInput( void * pvParameters ) {
             }
           }
           // page 0: matrix enable disable (row 1)
-          else if (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1) {
+          else if (p.y >= matrix_switch_ena_r2h0 && p.y <= matrix_switch_ena_r2h1) {
             for (int i; i<10; i++) {
               if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
                 relayData.relays_enable[0][i+10] ^= true;
@@ -4308,6 +4308,53 @@ void TouchScreenInput( void * pvParameters ) {
             }
           }
         }
+
+          // // page 0: enter setup a matrix switch: row 1
+          // if      ((p.x >= 0   && p.x <= 35)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=0;}
+          // else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=1;}
+          // else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=2;}
+          // else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=3;}
+          // else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=4;}
+          // else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=5;}
+          // else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=6;}
+          // else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=7;}
+          // else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=8;}
+          // else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=9;}
+          // // page 0: enter setup a matrix switch: row 2
+          // else if ((p.x >= 0   && p.x <= 35)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=10;}
+          // else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=11;}
+          // else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=12;}
+          // else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=13;}
+          // else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=14;}
+          // else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=15;}
+          // else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=16;}
+          // else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=17;}
+          // else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=18;}
+          // else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=19;}
+
+          // page 0: enable/disable a matrix switch: row 1
+        //   else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][0] ^= true;}
+        //   else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][1] ^= true;}
+        //   else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][2] ^= true;}
+        //   else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][3] ^= true;}
+        //   else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][4] ^= true;}
+        //   else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][5] ^= true;}
+        //   else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][6] ^= true;}
+        //   else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][7] ^= true;}
+        //   else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][8] ^= true;}
+        //   else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][9] ^= true;}
+        //   // page 0: enable/disable a matrix switch: row 2
+        //   else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][10] ^= true;}
+        //   else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][11] ^= true;}
+        //   else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][12] ^= true;}
+        //   else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][13] ^= true;}
+        //   else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][14] ^= true;}
+        //   else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][15] ^= true;}
+        //   else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][16] ^= true;}
+        //   else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][17] ^= true;}
+        //   else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][18] ^= true;}
+        //   else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][19] ^= true;}
+        // }
 
         else if (menuData.page == 1) {
           int page1_y[10][2] = {
