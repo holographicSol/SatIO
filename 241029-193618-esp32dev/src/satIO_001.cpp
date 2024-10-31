@@ -166,7 +166,7 @@ struct menuStruct {
   int numpad_x = 0;
   int menu_numpad_max_y0 = 6;
   int menu_numpad_max_x0 = 3;
-  char input[256];
+  char input[2024];
   int numpad_key = NULL;
   bool select = false;
   int page = 0;
@@ -4235,6 +4235,9 @@ void TouchScreenInput( void * pvParameters ) {
       if (p.zRaw > 400) {
         Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
 
+        // note that the 320x240 CYD it will not always be ideal to interface with this system using touchscreen, and that a button panel should also be implemented
+        // for where finer control is required.
+
         // titlebar
         if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 30)) {menuData.page=0;}
 
@@ -4260,18 +4263,6 @@ void TouchScreenInput( void * pvParameters ) {
           else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=7;}
           else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=8;}
           else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=9;}
-          // page 0: enable/disable a matrix switch: row 1
-          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][0] ^= true;}
-          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][1] ^= true;}
-          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][2] ^= true;}
-          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][3] ^= true;}
-          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][4] ^= true;}
-          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][5] ^= true;}
-          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][6] ^= true;}
-          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][7] ^= true;}
-          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][8] ^= true;}
-          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][9] ^= true;}
-
           // page 0: enter setup a matrix switch: row 2
           else if ((p.x >= 0   && p.x <= 35)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=10;}
           else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=11;}
@@ -4283,6 +4274,18 @@ void TouchScreenInput( void * pvParameters ) {
           else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=17;}
           else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=18;}
           else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=19;}
+
+          // page 0: enable/disable a matrix switch: row 1
+          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][0] ^= true;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][1] ^= true;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][2] ^= true;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][3] ^= true;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][4] ^= true;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][5] ^= true;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][6] ^= true;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][7] ^= true;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][8] ^= true;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][9] ^= true;}
           // page 0: enable/disable a matrix switch: row 2
           else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][10] ^= true;}
           else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][11] ^= true;}
@@ -4298,53 +4301,52 @@ void TouchScreenInput( void * pvParameters ) {
 
         else if (menuData.page == 1) {
           // page 1: Function Select
-          if      ((p.x >= 0 && p.x <= 135) && (p.y >= 55  && p.y <= 65))  {menuData.page=100; menuData.relay_function_select=0;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 65  && p.y <= 85))  {menuData.page=100; menuData.relay_function_select=1;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 85  && p.y <= 100)) {menuData.page=100; menuData.relay_function_select=2;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=100; menuData.relay_function_select=3;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 120 && p.y <= 135)) {menuData.page=100; menuData.relay_function_select=4;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 135 && p.y <= 155)) {menuData.page=100; menuData.relay_function_select=5;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 155 && p.y <= 170)) {menuData.page=100; menuData.relay_function_select=6;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 170 && p.y <= 190)) {menuData.page=100; menuData.relay_function_select=7;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 190 && p.y <= 210)) {menuData.page=100; menuData.relay_function_select=8;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 210 && p.y <= 225)) {menuData.page=100; menuData.relay_function_select=9;}
+          if      ((p.x >= 0 && p.x <= 135) && (p.y >= 50  && p.y <= 55))  {menuData.page=100; menuData.relay_function_select=0;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 55  && p.y <= 60))  {menuData.page=100; menuData.relay_function_select=1;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 60  && p.y <= 70))  {menuData.page=100; menuData.relay_function_select=2;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 70  && p.y <= 75))  {menuData.page=100; menuData.relay_function_select=3;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 75  && p.y <= 85))  {menuData.page=100; menuData.relay_function_select=4;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 85  && p.y <= 95))  {menuData.page=100; menuData.relay_function_select=5;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 95  && p.y <= 105)) {menuData.page=100; menuData.relay_function_select=6;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 105 && p.y <= 115)) {menuData.page=100; menuData.relay_function_select=7;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 115 && p.y <= 125)) {menuData.page=100; menuData.relay_function_select=8;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 125 && p.y <= 135)) {menuData.page=100; menuData.relay_function_select=9;}
 
           // page 1: Set X Using Numpad
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 55  && p.y <= 65))  {menuData.page=300; menuData.relay_function_select=0; menuData.numpad_key=0; memset(menuData.input, 0, sizeof(menuData.input));
-          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]); menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 170 && p.y <= 190)) {menuData.page=300; menuData.relay_function_select=7; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 190 && p.y <= 210)) {menuData.page=300; menuData.relay_function_select=8; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 210 && p.y <= 225)) {menuData.page=300; menuData.relay_function_select=9; menuData.numpad_key=0; menuData.backpage=1;}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
 
           // page 1: Set Y Using Numpad
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 55  && p.y <= 65))  {menuData.page=300; menuData.relay_function_select=0; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 170 && p.y <= 190)) {menuData.page=300; menuData.relay_function_select=7; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 190 && p.y <= 210)) {menuData.page=300; menuData.relay_function_select=8; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 210 && p.y <= 225)) {menuData.page=300; menuData.relay_function_select=9; menuData.numpad_key=1; menuData.backpage=1;}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
 
-          // page 1: Set Z Using Numpad
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 55  && p.y <= 65))  {menuData.page=300; menuData.relay_function_select=0; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 170 && p.y <= 190)) {menuData.page=300; menuData.relay_function_select=7; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 190 && p.y <= 210)) {menuData.page=300; menuData.relay_function_select=8; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 210 && p.y <= 225)) {menuData.page=300; menuData.relay_function_select=9; menuData.numpad_key=2; menuData.backpage=1;}
+          // page 1: Set Y Using Numpad
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
         }
 
         else if (menuData.page == 300) {
@@ -4463,8 +4465,8 @@ void drawHomeBar() {
 
   hud.setCursor(0,0); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
   for (int i=0; i<47; i++) {hud.print(" ");}
-  hud.drawRect(0, 0, 30, 30, TFT_DARKGREY);
-  hud.setCursor(4,10);
+  hud.drawRect(0, 0, 30, 15, TFT_DARKGREY);
+  hud.setCursor(4,3);
   hud.print("Home");
 }
 
@@ -4694,19 +4696,20 @@ void updateDisplay(void * pvParameters) {
 
       // table headers
       hud.setCursor(110, 4); hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(": "); hud.print("Functions");
-      hud.setCursor(150, 35); hud.print("X");
-      hud.setCursor(206, 35); hud.print("Y");
-      hud.setCursor(262, 35); hud.print("Z");
+      hud.setCursor(0,   30); hud.print("Function");
+      hud.setCursor(150, 30); hud.print("X");
+      hud.setCursor(206, 30); hud.print("Y");
+      hud.setCursor(262, 30); hud.print("Z");
 
       // table values relays_data[16][10][3]
       for (int i=0; i<10; i++) {
-        hud.setCursor(0, 50+i*20);
-        hud.print(i); hud.print(" "); hud.print(relayData.relays[0][i]);
-        hud.setCursor(150, 50+i*20);
+        hud.setCursor(0, 40+i*10);
+        hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
+        hud.setCursor(150, 40+i*10);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
-        hud.setCursor(206, 50+i*20);
+        hud.setCursor(206, 40+i*10);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
-        hud.setCursor(262, 50+i*20);
+        hud.setCursor(262, 40+i*10);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
       }
     }
