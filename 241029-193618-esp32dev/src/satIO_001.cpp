@@ -3414,7 +3414,7 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
 //     }
 //   if (myAstroObj.getAltIdentifiedObjectTable()) {
 //     switch(myAstroObj.getAltIdentifiedObjectTable()) {
-// 	  casematrix_active_notification_h:
+// 	  casematrix_indi_h:
 //     siderealObjectData.object_table_i = 4;  break;
 // 	  case(5):
 //     siderealObjectData.object_table_i = 5;  break;
@@ -4428,34 +4428,32 @@ void updateDisplay(void * pvParameters) {
     if (menuData.page == 0) {
       drawHomeBar();
       
+      // create virtual matrix switch
       int matrix_btn_w = 30;
       int matrix_btn_h = 30;
       int matrix_btn_sp_x = 2;
       int matrix_btn_sp_h = 2;
       int matrix_btn_x = 0;
       int matrix_btn_y = 40;
-      int matrix_button_panel_y = 40;
-      int matrix_active_notification_h = 4;
+      int matrix_indi_h = 4;
       int matrix_enable_h = 20;
       int matrix_btn_iter_x = 0;
       int matrix_btn_w_loop = 0;
-
-      // create virtual matrix switch
       for (int matrix_btn_iter_x=0; matrix_btn_iter_x<10; matrix_btn_iter_x++) {
         // skip multiplying matrix_btn_w initially
         if (matrix_btn_iter_x > 0) {matrix_btn_w_loop=matrix_btn_w;}
         // active/inactive indicator
         if (relayData.relays_bool[0][matrix_btn_iter_x] == true) {
-          hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_active_notification_h, TFT_GREEN);
+          hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_indi_h, TFT_GREEN);
         }
-        else {hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_active_notification_h, TFT_DARKGREY);}
+        else {hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_indi_h, TFT_DARKGREY);}
         // main button
-        hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
+        hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
         // enabled/disabled button
         if (relayData.relays_enable[0][matrix_btn_iter_x] == true) {
-          hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_GREEN);
+          hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_GREEN);
         }
-        else {hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_DARKGREY);}
+        else {hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_DARKGREY);}
       }
 
       // upper hud reflects simple on/off states as well as time and precision.
