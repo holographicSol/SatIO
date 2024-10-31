@@ -16,9 +16,10 @@ functions and currently each relays activation/deactivaion can occur based on up
 resulting true or false. 
 
 
-    Wiring For ESP32-2432S028 development board (CYD):
-    
-    WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+Wiring For ESP32-2432S028 development board (CYD):
+
+WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+
   
                                               SENTENCE $SATIO
                                                                             
@@ -28,7 +29,7 @@ resulting true or false.
                      |               |               |                 |                              
                        DatetimeStamp                  Converted Latitude                                 
   
-  
+
 Ultimately this system is being built as a unit to turn on/off multiplexed relays/GPIO,
 where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
 making a foundation for other creative projects that may make use of such satellite and or inertial data.
