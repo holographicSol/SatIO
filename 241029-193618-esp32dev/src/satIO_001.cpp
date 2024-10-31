@@ -4205,7 +4205,7 @@ void CountElements() {
 void TouchScreenInput( void * pvParameters ) {
   int t0 = millis();
   while (1) {
-    if (millis() >= t0+10) {
+    if (millis() >= t0+100) {
       t0 = millis();
       TouchPoint p = ts.getTouch();  // takes between 1-3 milliseconds
       if (p.zRaw > 400) {
