@@ -110,10 +110,10 @@ struct systemStruct {
   bool gpatt_enabled = true;
   bool matrix_enabled = false;
   bool autoresume_enabled = false;
-  bool output_satio_enabled = true;
-  bool output_gngga_enabled = true;
-  bool output_gnrmc_enabled = true;
-  bool output_gpatt_enabled = true;
+  bool output_satio_enabled = false;
+  bool output_gngga_enabled = false;
+  bool output_gnrmc_enabled = false;
+  bool output_gpatt_enabled = false;
 
   bool sidereal_track_sun = true;
   bool sidereal_track_moon = true;
@@ -1140,7 +1140,7 @@ bool val_scalable(char * data) {
 
 struct RelayStruct {
 
-  int MAobject_RELAYS = 16;
+  int MAobject_RELAYS = 20;
   int MAobject_RELAY_ELEMENTS = 10;
 
   int relays_enabled_i = 0;
@@ -1148,28 +1148,28 @@ struct RelayStruct {
   int relays_active_i = 0;
   int relays_inactive_i = 0;
 
-  bool relays_bool[1][16] = {
+  bool relays_bool[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
 
-  int relays_enable[1][16] = {
+  int relays_enable[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
 
-  unsigned long relays_timing[1][16] = {
+  unsigned long relays_timing[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
   
-  char relays[16][10][100] = {
+  char relays[20][10][100] = {
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
@@ -1202,6 +1202,14 @@ struct RelayStruct {
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 16
      },
+    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 13
+     },
+    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 14
+     },
+    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 15
+     },
+    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 16
+     },
     };
 
   /*
@@ -1214,7 +1222,7 @@ struct RelayStruct {
           X     Y     Z    
   {  {   0.0,  0.0,  0.0   } }
   */
-  double relays_data[16][10][3] = {
+  double relays_data[20][10][3] = {
     {
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
@@ -1261,6 +1269,22 @@ struct RelayStruct {
     },
     {
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 12
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
+    },
+    {
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 13
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
+    },
+    {
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 14
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
+    },
+    {
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 15
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
+    },
+    {
+      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 16
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
     },
     {
@@ -2326,7 +2350,7 @@ void extrapulatedSatData() {
   satData.checksum_i = getCheckSum(satData.satio_sentence);
   itoa(satData.checksum_i, satData.checksum_str, 10);
   strcat(satData.satio_sentence, satData.checksum_str);
-  if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+  // if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
   }
 
 
@@ -4048,7 +4072,7 @@ void readGPS() {
       
       if ((systemData.gngga_enabled == true) && (serial1Data.gngga_bool==false)){
         if (strncmp(serial1Data.BUFFER, "$GNGGA", 6) == 0) {
-          if (systemData.output_gngga_enabled == true) {Serial.println(serial1Data.BUFFER);}
+          // if (systemData.output_gngga_enabled == true) {Serial.println(serial1Data.BUFFER);}
           memset(gnggaData.sentence, 0, sizeof(gnrmcData.sentence));
           strcpy(gnggaData.sentence, serial1Data.BUFFER);
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
@@ -4062,7 +4086,7 @@ void readGPS() {
 
       else if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
         if (strncmp(serial1Data.BUFFER, "$GNRMC", 6) == 0) {
-          if (systemData.output_gnrmc_enabled == true) {Serial.println(serial1Data.BUFFER);}
+          // if (systemData.output_gnrmc_enabled == true) {Serial.println(serial1Data.BUFFER);}
           memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
           strcpy(gnrmcData.sentence, serial1Data.BUFFER);
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
@@ -4076,7 +4100,7 @@ void readGPS() {
 
       else if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
         if (strncmp(serial1Data.BUFFER, "$GPATT", 6) == 0) {
-            if (systemData.output_gpatt_enabled == true) {Serial.println(serial1Data.BUFFER);}
+            // if (systemData.output_gpatt_enabled == true) {Serial.println(serial1Data.BUFFER);}
             memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
             strcpy(gpattData.sentence, serial1Data.BUFFER);
             gpattData.valid_checksum = validateChecksum(gpattData.sentence);
@@ -4214,30 +4238,62 @@ void TouchScreenInput( void * pvParameters ) {
         // titlebar
         if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 30)) {menuData.page=0;}
 
-        if (menuData.page == 0) {
-          // page 0: enter setup a matrix switch 
-          if      ((p.x >= 0   && p.x <= 35)  && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=0;}
-          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=1;}
-          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=2;}
-          else if ((p.x >= 90  && p.x <= 120) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=3;}
-          else if ((p.x >= 120 && p.x <= 145) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=4;}
-          else if ((p.x >= 145 && p.x <= 175) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=5;}
-          else if ((p.x >= 175 && p.x <= 200) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=6;}
-          else if ((p.x >= 200 && p.x <= 230) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=7;}
-          else if ((p.x >= 230 && p.x <= 260) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=8;}
-          else if ((p.x >= 260 && p.x <= 290) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=9;}
+        int matrix_switch_cfg_r1h0 = 50;
+        int matrix_switch_cfg_r1h1 = 70;
+        int matrix_switch_ena_r1h0 = 75;
+        int matrix_switch_ena_r1h1 = 85;
 
-          // page 0: enable/disable a matrix switch
-          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][0] ^= true;}
-          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][1] ^= true;}
-          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][2] ^= true;}
-          else if ((p.x >= 90  && p.x <= 120) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][3] ^= true;}
-          else if ((p.x >= 120 && p.x <= 145) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][4] ^= true;}
-          else if ((p.x >= 145 && p.x <= 175) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][5] ^= true;}
-          else if ((p.x >= 175 && p.x <= 200) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][6] ^= true;}
-          else if ((p.x >= 200 && p.x <= 230) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][7] ^= true;}
-          else if ((p.x >= 230 && p.x <= 260) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][8] ^= true;}
-          else if ((p.x >= 260 && p.x <= 290) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][9] ^= true;}
+        int matrix_switch_cfg_r2h0 = 100;
+        int matrix_switch_cfg_r2h1 = 120;
+        int matrix_switch_ena_r2h0 = 125;
+        int matrix_switch_ena_r2h1 = 135;
+
+        if (menuData.page == 0) {
+          // page 0: enter setup a matrix switch: row 1
+          if      ((p.x >= 0   && p.x <= 35)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=0;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=1;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=2;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=3;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=4;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=5;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=6;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=7;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=8;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1)) {menuData.page=1; menuData.relay_select=9;}
+          // page 0: enable/disable a matrix switch: row 1
+          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][0] ^= true;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][1] ^= true;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][2] ^= true;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][3] ^= true;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][4] ^= true;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][5] ^= true;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][6] ^= true;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][7] ^= true;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][8] ^= true;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1)) {relayData.relays_enable[0][9] ^= true;}
+
+          // page 0: enter setup a matrix switch: row 2
+          else if ((p.x >= 0   && p.x <= 35)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=10;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=11;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=12;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=13;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=14;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=15;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=16;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=17;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=18;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=1; menuData.relay_select=19;}
+          // page 0: enable/disable a matrix switch: row 2
+          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][10] ^= true;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][11] ^= true;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][12] ^= true;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][13] ^= true;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][14] ^= true;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][15] ^= true;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][16] ^= true;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][17] ^= true;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][18] ^= true;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= matrix_switch_ena_r2h0&& p.y <= matrix_switch_ena_r2h1)) {relayData.relays_enable[0][19] ^= true;}
         }
 
         else if (menuData.page == 1) {
@@ -4245,7 +4301,7 @@ void TouchScreenInput( void * pvParameters ) {
           if      ((p.x >= 0 && p.x <= 135) && (p.y >= 55  && p.y <= 65))  {menuData.page=100; menuData.relay_function_select=0;}
           else if ((p.x >= 0 && p.x <= 135) && (p.y >= 65  && p.y <= 85))  {menuData.page=100; menuData.relay_function_select=1;}
           else if ((p.x >= 0 && p.x <= 135) && (p.y >= 85  && p.y <= 100)) {menuData.page=100; menuData.relay_function_select=2;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 100 && p.y <= 120)) {menuData.page=100; menuData.relay_function_select=3;}
+          else if ((p.x >= 0 && p.x <= 135) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=100; menuData.relay_function_select=3;}
           else if ((p.x >= 0 && p.x <= 135) && (p.y >= 120 && p.y <= 135)) {menuData.page=100; menuData.relay_function_select=4;}
           else if ((p.x >= 0 && p.x <= 135) && (p.y >= 135 && p.y <= 155)) {menuData.page=100; menuData.relay_function_select=5;}
           else if ((p.x >= 0 && p.x <= 135) && (p.y >= 155 && p.y <= 170)) {menuData.page=100; menuData.relay_function_select=6;}
@@ -4258,7 +4314,7 @@ void TouchScreenInput( void * pvParameters ) {
           sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]); menuData.backpage=1;}
           else if ((p.x >= 135 && p.x <= 185) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=0; menuData.backpage=1;}
           else if ((p.x >= 135 && p.x <= 185) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=0; menuData.backpage=1;}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 100 && p.y <= 120)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=0; menuData.backpage=1;}
+          else if ((p.x >= 135 && p.x <= 185) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=0; menuData.backpage=1;}
           else if ((p.x >= 135 && p.x <= 185) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=0; menuData.backpage=1;}
           else if ((p.x >= 135 && p.x <= 185) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=0; menuData.backpage=1;}
           else if ((p.x >= 135 && p.x <= 185) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=0; menuData.backpage=1;}
@@ -4270,7 +4326,7 @@ void TouchScreenInput( void * pvParameters ) {
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 55  && p.y <= 65))  {menuData.page=300; menuData.relay_function_select=0; menuData.numpad_key=1; menuData.backpage=1;}
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=1; menuData.backpage=1;}
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=1; menuData.backpage=1;}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 100 && p.y <= 120)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=1; menuData.backpage=1;}
+          else if ((p.x >= 185 && p.x <= 230) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=1; menuData.backpage=1;}
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=1; menuData.backpage=1;}
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=1; menuData.backpage=1;}
           else if ((p.x >= 185 && p.x <= 230) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=1; menuData.backpage=1;}
@@ -4282,7 +4338,7 @@ void TouchScreenInput( void * pvParameters ) {
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 55  && p.y <= 65))  {menuData.page=300; menuData.relay_function_select=0; menuData.numpad_key=2; menuData.backpage=1;}
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 65  && p.y <= 80))  {menuData.page=300; menuData.relay_function_select=1; menuData.numpad_key=2; menuData.backpage=1;}
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 80  && p.y <= 100)) {menuData.page=300; menuData.relay_function_select=2; menuData.numpad_key=2; menuData.backpage=1;}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 100 && p.y <= 120)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=2; menuData.backpage=1;}
+          else if ((p.x >= 230 && p.x <= 285) && (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1)) {menuData.page=300; menuData.relay_function_select=3; menuData.numpad_key=2; menuData.backpage=1;}
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 120 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=4; menuData.numpad_key=2; menuData.backpage=1;}
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 135 && p.y <= 155)) {menuData.page=300; menuData.relay_function_select=5; menuData.numpad_key=2; menuData.backpage=1;}
           else if ((p.x >= 230 && p.x <= 285) && (p.y >= 155 && p.y <= 170)) {menuData.page=300; menuData.relay_function_select=6; menuData.numpad_key=2; menuData.backpage=1;}
@@ -4362,7 +4418,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
 
           // list item 5
-          else if ((p.x >= 0 && p.x <= 290) && (p.y >= 125 && p.y <= 140)) {
+          else if ((p.x >= 0 && p.x <= 290) && (p.y >= matrix_switch_ena_r2h0&& p.y <= 140)) {
             memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
             strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[menuData.function_index+5]);
             menuData.page=1;
@@ -4414,13 +4470,13 @@ void drawHomeBar() {
 
 struct VirtualMatrixSwitchStruct {
   int matrix_btn_w = 30;
-  int matrix_btn_h = 30;
+  int matrix_btn_h = 25;
   int matrix_btn_sp_x = 2;
   int matrix_btn_sp_h = 2;
   int matrix_btn_x = 0;
-  int matrix_btn_y = 40;
-  int matrix_indi_h = 4;
-  int matrix_enable_h = 20;
+  int matrix_btn_y = 35;
+  int matrix_indi_h = 5;
+  int matrix_enable_h = 15;
   int matrix_btn_iter_x = 0;
   int matrix_btn_w_loop = 0;
 };
@@ -4440,9 +4496,11 @@ void updateDisplay(void * pvParameters) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
 
     if (menuData.page == 0) {
-      drawHomeBar();
+      // drawHomeBar();
       
-      // create virtual matrix switch
+      // create virtual matrix switch: row 1
+      vms.matrix_btn_w_loop = 0;
+      vms.matrix_btn_y = 35;
       for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
         if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;} // skip multiplying matrix_btn_w initially
         if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) { // active/inactive indicator
@@ -4463,6 +4521,42 @@ void updateDisplay(void * pvParameters) {
         vms.matrix_btn_h,
         TFT_DARKGREY);
         if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) { // enable/disable button and indicator
+          hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+          vms.matrix_btn_w,
+          vms.matrix_enable_h,
+          TFT_GREEN);}
+        else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+          vms.matrix_btn_w,
+          vms.matrix_enable_h,
+          TFT_DARKGREY);}
+        }
+      
+      // create virtual matrix switch: row 2
+      vms.matrix_btn_w_loop = 0;
+      vms.matrix_btn_y = 90;
+      vms.matrix_btn_iter_x = 0;
+      for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
+        if (vms.matrix_btn_iter_x > 10) {vms.matrix_btn_w_loop=vms.matrix_btn_w;} // skip multiplying matrix_btn_w initially
+        if (relayData.relays_bool[0][vms.matrix_btn_iter_x+10] == true) { // active/inactive indicator
+          hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+          vms.matrix_btn_y,
+          vms.matrix_btn_w,
+          vms.matrix_indi_h,
+          TFT_GREEN);}
+        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+          vms.matrix_btn_y,
+          vms.matrix_btn_w,
+          vms.matrix_indi_h,
+          TFT_DARKGREY);}
+        // configuration button
+        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
+        vms.matrix_btn_w,
+        vms.matrix_btn_h,
+        TFT_DARKGREY);
+        if (relayData.relays_enable[0][vms.matrix_btn_iter_x+10] == true) { // enable/disable button and indicator
           hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
@@ -4544,52 +4638,52 @@ void updateDisplay(void * pvParameters) {
       // lower hud reflects positional and rotational information as well as ground speed and mileage. 
 
       // lower hud col 1
-      hud.setCursor(0,110); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,110);
+      hud.setCursor(0,145);
       hud.print("PIT "); hud.print(gpattData.pitch);
 
-      hud.setCursor(0,120); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,120);
+      hud.setCursor(0,155);
       hud.print("ROL "); hud.print(gpattData.roll);
 
-      hud.setCursor(0,130); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,130);
+      hud.setCursor(0,165);
       hud.print("YAW "); hud.print(gpattData.yaw);
 
       // lower hud col 2
-      hud.setCursor(130,110); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,110);
+      hud.setCursor(130,145);
       hud.print("ALT "); hud.print(gnggaData.altitude);
 
-      hud.setCursor(130,120); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,120);
+      hud.setCursor(130,155);
       hud.print("GS  "); hud.print(gnrmcData.ground_speed);
 
-      hud.setCursor(130,130); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,130);
+      hud.setCursor(130,165);
       hud.print("MIL "); hud.print(gpattData.mileage);
 
       // lower hud col 3
-      hud.setCursor(243,110); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,110);
+      hud.setCursor(243,145);
       hud.print("GH "); hud.print(gnrmcData.ground_heading);
 
-      hud.setCursor(243,120); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,120);
+      hud.setCursor(243,155);
       hud.print(""); hud.print(gnggaData.latitude_hemisphere);
       hud.print("  "); hud.print(satData.location_latitude_gngga_str);
 
-      hud.setCursor(243,130); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
       for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,130);
+      hud.setCursor(243,165);
       hud.print(""); hud.print(gnggaData.longitude_hemisphere);
       hud.print("  "); hud.print(satData.location_longitude_gngga_str);
     }
