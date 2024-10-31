@@ -3414,7 +3414,7 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
 //     }
 //   if (myAstroObj.getAltIdentifiedObjectTable()) {
 //     switch(myAstroObj.getAltIdentifiedObjectTable()) {
-// 	  case(4):
+// 	  casematrix_active_notification_h:
 //     siderealObjectData.object_table_i = 4;  break;
 // 	  case(5):
 //     siderealObjectData.object_table_i = 5;  break;
@@ -4427,141 +4427,36 @@ void updateDisplay(void * pvParameters) {
 
     if (menuData.page == 0) {
       drawHomeBar();
+      
       int matrix_btn_w = 30;
       int matrix_btn_h = 30;
-      int matrix_btn_x = 2;
+      int matrix_btn_sp_x = 2;
+      int matrix_btn_sp_h = 2;
+      int matrix_btn_x = 0;
       int matrix_btn_y = 40;
       int matrix_button_panel_y = 40;
+      int matrix_active_notification_h = 4;
+      int matrix_enable_h = 20;
+      int matrix_btn_iter_x = 0;
+      int matrix_btn_w_loop = 0;
 
-      // active/inactive indicator
-      if (relayData.relays_bool[0][0] == true) {
-        hud.fillRect(matrix_btn_x*1+matrix_btn_w*0, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
+      // create virtual matrix switch
+      for (int matrix_btn_iter_x=0; matrix_btn_iter_x<10; matrix_btn_iter_x++) {
+        // skip multiplying matrix_btn_w initially
+        if (matrix_btn_iter_x > 0) {matrix_btn_w_loop=matrix_btn_w;}
+        // active/inactive indicator
+        if (relayData.relays_bool[0][matrix_btn_iter_x] == true) {
+          hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_active_notification_h, TFT_GREEN);
+        }
+        else {hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_active_notification_h, TFT_DARKGREY);}
+        // main button
+        hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
+        // enabled/disabled button
+        if (relayData.relays_enable[0][matrix_btn_iter_x] == true) {
+          hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_GREEN);
+        }
+        else {hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_active_notification_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_DARKGREY);}
       }
-      else {hud.fillRect(matrix_btn_x*1+matrix_btn_w*0, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*1+matrix_btn_w*0, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][0] == true) {
-        hud.drawRect(matrix_btn_x*1+matrix_btn_w*0, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*1+matrix_btn_w*0, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][1] == true) {
-        hud.fillRect(matrix_btn_x*2+matrix_btn_w*1, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*2+matrix_btn_w*1, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*2+matrix_btn_w*1, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][1] == true) {
-        hud.drawRect(matrix_btn_x*2+matrix_btn_w*1, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*2+matrix_btn_w*1, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][2] == true) {
-        hud.fillRect(matrix_btn_x*3+matrix_btn_w*2, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*3+matrix_btn_w*2, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*3+matrix_btn_w*2, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][2] == true) {
-        hud.drawRect(matrix_btn_x*3+matrix_btn_w*2, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*3+matrix_btn_w*2, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][3] == true) {
-        hud.fillRect(matrix_btn_x*4+matrix_btn_w*3, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*4+matrix_btn_w*3, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*4+matrix_btn_w*3, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][3] == true) {
-        hud.drawRect(matrix_btn_x*4+matrix_btn_w*3, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*4+matrix_btn_w*3, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][4] == true) {
-        hud.fillRect(matrix_btn_x*5+matrix_btn_w*4, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*5+matrix_btn_w*4, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*5+matrix_btn_w*4, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][4] == true) {
-        hud.drawRect(matrix_btn_x*5+matrix_btn_w*4, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*5+matrix_btn_w*4, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][5] == true) {
-        hud.fillRect(matrix_btn_x*6+matrix_btn_w*5, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*6+matrix_btn_w*5, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*6+matrix_btn_w*5, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][5] == true) {
-        hud.drawRect(matrix_btn_x*6+matrix_btn_w*5, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*6+matrix_btn_w*5, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][6] == true) {
-        hud.fillRect(matrix_btn_x*7+matrix_btn_w*6, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*7+matrix_btn_w*6, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*7+matrix_btn_w*6, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][6] == true) {
-        hud.drawRect(matrix_btn_x*7+matrix_btn_w*6, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*7+matrix_btn_w*6, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][7] == true) {
-        hud.fillRect(matrix_btn_x*8+matrix_btn_w*7, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*8+matrix_btn_w*7, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*8+matrix_btn_w*7, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][7] == true) {
-        hud.drawRect(matrix_btn_x*8+matrix_btn_w*7, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*8+matrix_btn_w*7, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][8] == true) {
-        hud.fillRect(matrix_btn_x*9+matrix_btn_w*8, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*9+matrix_btn_w*8, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*9+matrix_btn_w*8, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][8] == true) {
-        hud.drawRect(matrix_btn_x*9+matrix_btn_w*8, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*9+matrix_btn_w*8, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
-
-      // active/inactive indicator
-      if (relayData.relays_bool[0][9] == true) {
-        hud.fillRect(matrix_btn_x*10+matrix_btn_w*9, matrix_button_panel_y, matrix_btn_w, (4), TFT_GREEN);
-      }
-      else {hud.fillRect(matrix_btn_x*10+matrix_btn_w*9, matrix_button_panel_y, matrix_btn_w, (4), TFT_DARKGREY);}
-      // main button
-      hud.drawRect(matrix_btn_x*10+matrix_btn_w*9, matrix_button_panel_y+6, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
-      // enabled/disabled button
-      if (relayData.relays_enable[0][9] == true) {
-        hud.drawRect(matrix_btn_x*10+matrix_btn_w*9, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_GREEN);
-      }
-      else {hud.drawRect(matrix_btn_x*10+matrix_btn_w*9, matrix_button_panel_y+6+matrix_btn_h+2, matrix_btn_w, 20, TFT_DARKGREY);}
 
       // upper hud reflects simple on/off states as well as time and precision.
 
