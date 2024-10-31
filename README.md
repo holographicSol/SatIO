@@ -6,6 +6,7 @@ Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Di
 
     A general purpose programmable satellite and inertial switch.
     Continuing project development here with PlatformIO.
+    (Early development and migration to PlatformIO) 
 
 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
