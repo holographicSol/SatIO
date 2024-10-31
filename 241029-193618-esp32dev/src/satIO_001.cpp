@@ -4456,7 +4456,7 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_w,
           vms.matrix_indi_h,
           TFT_DARKGREY);}
-        // main button
+        // configuration button
         hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
         vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
         vms.matrix_btn_w,
