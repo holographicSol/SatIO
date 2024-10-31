@@ -50,8 +50,8 @@
 #include <SPI.h>
 #include <XPT2046_Bitbang.h>
 #include <TFT_eSPI.h>
-// #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
-// #include <SiderealObjects.h>
+#include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
+#include <SiderealObjects.h>
 #include "FS.h"
 #include "SD.h"
 
@@ -78,8 +78,15 @@ bool isTouched = false;
 TFT_eSprite hud = TFT_eSprite(&tft);
 
 TaskHandle_t TSTask;
-
 TaskHandle_t UpdateDisplayTask;
+
+#define TFTOBJ_COL0 TFT_DARKGREY
+
+#define TFTTXT_COLF_0 TFT_DARKGREY
+#define TFTTXT_COLB_0 TFT_BLACK
+
+#define TFTTXT_COLF_1 TFT_BLACK
+#define TFTTXT_COLB_1 TFT_DARKGREY
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -4300,60 +4307,71 @@ void TouchScreenInput( void * pvParameters ) {
         }
 
         else if (menuData.page == 1) {
+          int page1_y[10][2] = {
+            {50, 60},
+            {70, 80},
+            {90, 100},
+            {105, 115},
+            {125, 135},
+            {145, 155},
+            {160, 170},
+            {180, 190},
+            {195, 205},
+            {210, 220}
+          };
           // page 1: Function Select
-          if      ((p.x >= 0 && p.x <= 135) && (p.y >= 50  && p.y <= 55))  {menuData.page=100; menuData.relay_function_select=0;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 55  && p.y <= 60))  {menuData.page=100; menuData.relay_function_select=1;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 60  && p.y <= 70))  {menuData.page=100; menuData.relay_function_select=2;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 70  && p.y <= 75))  {menuData.page=100; menuData.relay_function_select=3;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 75  && p.y <= 85))  {menuData.page=100; menuData.relay_function_select=4;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 85  && p.y <= 95))  {menuData.page=100; menuData.relay_function_select=5;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 95  && p.y <= 105)) {menuData.page=100; menuData.relay_function_select=6;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 105 && p.y <= 115)) {menuData.page=100; menuData.relay_function_select=7;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 115 && p.y <= 125)) {menuData.page=100; menuData.relay_function_select=8;}
-          else if ((p.x >= 0 && p.x <= 135) && (p.y >= 125 && p.y <= 135)) {menuData.page=100; menuData.relay_function_select=9;}
-
-          // page 1: Set X Using Numpad
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-          else if ((p.x >= 135 && p.x <= 185) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=0; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][0]);}
-
-          // page 1: Set Y Using Numpad
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-          else if ((p.x >= 185 && p.x <= 230) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=1; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][1]);}
-
-          // page 1: Set Y Using Numpad
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 50  && p.y <= 55))  {menuData.page=300; menuData.relay_function_select=0;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 55  && p.y <= 60))  {menuData.page=300; menuData.relay_function_select=1;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 60  && p.y <= 70))  {menuData.page=300; menuData.relay_function_select=2;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 70  && p.y <= 75))  {menuData.page=300; menuData.relay_function_select=3;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 75  && p.y <= 85))  {menuData.page=300; menuData.relay_function_select=4;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 85  && p.y <= 95))  {menuData.page=300; menuData.relay_function_select=5;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 95  && p.y <= 105)) {menuData.page=300; menuData.relay_function_select=6;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 105 && p.y <= 115)) {menuData.page=300; menuData.relay_function_select=7;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 115 && p.y <= 125)) {menuData.page=300; menuData.relay_function_select=8;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
-          else if ((p.x >= 230 && p.x <= 285) && (p.y >= 125 && p.y <= 135)) {menuData.page=300; menuData.relay_function_select=9;  menuData.numpad_key=2; menuData.backpage=1; memset(menuData.input, 0, sizeof(menuData.input)); sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][0][2]);}
+          if (p.x >= 0 && p.x <= 135) {
+            for (int i; i<10; i++) {
+              if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
+                menuData.page=100;
+                menuData.relay_function_select=i;
+                menuData.backpage=1;
+                break;}
+            }
+          }
+          // page 1: select x
+          else if (p.x >= 135 && p.x <= 185) {
+            for (int i; i<10; i++) {
+              if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
+                menuData.page=300;
+                menuData.relay_function_select=i;
+                menuData.numpad_key=0;
+                memset(menuData.input, 0, sizeof(menuData.input));
+                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][0]);
+                break;}
+            }
+          }
+          // page 1: select y
+          else if (p.x >= 185 && p.x <= 230) {
+            for (int i; i<10; i++) {
+              if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
+                menuData.page=300;
+                menuData.relay_function_select=i;
+                menuData.numpad_key=1;
+                memset(menuData.input, 0, sizeof(menuData.input));
+                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][1]);
+                break;}
+            }
+          }
+          // page 1: select z
+          else if (p.x >= 230 && p.x <= 285) {
+            for (int i; i<10; i++) {
+              if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
+                menuData.page=300;
+                menuData.relay_function_select=i;
+                menuData.numpad_key=2;
+                memset(menuData.input, 0, sizeof(menuData.input));
+                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][2]);
+                break;}
+            }
+          }
         }
 
         else if (menuData.page == 300) {
           // page 300: Numpad
           if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
           else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
-          else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");}  // 1
+          else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
           else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
           else if ((p.x >= 120 && p.x <= 180) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
           else if ((p.x >= 120 && p.x <= 180) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
@@ -4462,11 +4480,7 @@ void TouchScreenInput( void * pvParameters ) {
 void drawHomeBar() {
 
   // saves reiteration under certain conditions
-
-  hud.setCursor(0,0); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
-  for (int i=0; i<47; i++) {hud.print(" ");}
-  hud.drawRect(0, 0, 30, 15, TFT_DARKGREY);
-  hud.setCursor(4,3);
+  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
   hud.print("Home");
 }
 
@@ -4497,6 +4511,8 @@ void updateDisplay(void * pvParameters) {
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
 
+    // menuData.page=1;  // force a specific page to be displayed (dev)
+
     if (menuData.page == 0) {
       // drawHomeBar();
       
@@ -4515,13 +4531,13 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y,
           vms.matrix_btn_w,
           vms.matrix_indi_h,
-          TFT_DARKGREY);}
+          TFTOBJ_COL0);}
         // configuration button
         hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
         vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
         vms.matrix_btn_w,
         vms.matrix_btn_h,
-        TFT_DARKGREY);
+        TFTOBJ_COL0);
         if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) { // enable/disable button and indicator
           hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
@@ -4532,7 +4548,7 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
           vms.matrix_enable_h,
-          TFT_DARKGREY);}
+          TFTOBJ_COL0);}
         }
       
       // create virtual matrix switch: row 2
@@ -4551,13 +4567,13 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y,
           vms.matrix_btn_w,
           vms.matrix_indi_h,
-          TFT_DARKGREY);}
+          TFTOBJ_COL0);}
         // configuration button
         hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
         vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
         vms.matrix_btn_w,
         vms.matrix_btn_h,
-        TFT_DARKGREY);
+        TFTOBJ_COL0);
         if (relayData.relays_enable[0][vms.matrix_btn_iter_x+10] == true) { // enable/disable button and indicator
           hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
@@ -4568,71 +4584,71 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
           vms.matrix_enable_h,
-          TFT_DARKGREY);}
+          TFTOBJ_COL0);}
         }
 
       // upper hud reflects simple on/off states as well as time and precision.
 
       // upper hud col 1 (connection and time)
-      hud.setCursor(50,2); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(50,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<15; i++) {hud.print(" ");}
       hud.setCursor(50,2);
       hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
 
-      hud.setCursor(50,12); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(50,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<15; i++) {hud.print(" ");}
       hud.setCursor(50,12);
       hud.print("T  "); hud.print(satData.sat_time_stamp_string);
 
-      hud.setCursor(50,22); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(50,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<15; i++) {hud.print(" ");}
       hud.setCursor(50,22);
       hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
 
       // upper hud col 2 (precision)
-      hud.setCursor(175,2); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(175,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(175,2);
       hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
 
-      hud.setCursor(175,12); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(175,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(175,12);
       hud.print("PS "); hud.print(gnggaData.positioning_status);
 
-      hud.setCursor(175,22); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(175,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(175,22);
       hud.print("PS "); hud.print(gnrmcData.positioning_status);
 
       // upper hud col 3 (inertial navigation system)
-      hud.setCursor(230,2); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(230,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(230,2);
       hud.print("INS "); hud.print(gpattData.ins);
 
-      hud.setCursor(230,12); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(230,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(230,12);
       hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
 
-      hud.setCursor(230,22); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(230,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(230,22);
       hud.print("RSF "); hud.print(gpattData.run_state_flag);
 
       // upper hud col 4 (inertial navigation system)
-      hud.setCursor(280,2); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(280,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(280,2);
       hud.print("GST "); hud.print(gpattData.gst_data);
 
-      hud.setCursor(280,12); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(280,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(280,12);
       hud.print("SF  "); hud.print(gpattData.static_flag);
 
-      hud.setCursor(280,22); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(280,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<6; i++) {hud.print(" ");}
       hud.setCursor(280,22);
       hud.print("LF  "); hud.print(gpattData.line_flag);
@@ -4640,50 +4656,50 @@ void updateDisplay(void * pvParameters) {
       // lower hud reflects positional and rotational information as well as ground speed and mileage. 
 
       // lower hud col 1
-      hud.setCursor(0,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<7; i++) {hud.print(" ");}
       hud.setCursor(0,145);
       hud.print("PIT "); hud.print(gpattData.pitch);
 
-      hud.setCursor(0,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<7; i++) {hud.print(" ");}
       hud.setCursor(0,155);
       hud.print("ROL "); hud.print(gpattData.roll);
 
-      hud.setCursor(0,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(0,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<7; i++) {hud.print(" ");}
       hud.setCursor(0,165);
       hud.print("YAW "); hud.print(gpattData.yaw);
 
       // lower hud col 2
-      hud.setCursor(130,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(130,145);
       hud.print("ALT "); hud.print(gnggaData.altitude);
 
-      hud.setCursor(130,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(130,155);
       hud.print("GS  "); hud.print(gnrmcData.ground_speed);
 
-      hud.setCursor(130,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(130,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(130,165);
       hud.print("MIL "); hud.print(gpattData.mileage);
 
       // lower hud col 3
-      hud.setCursor(243,145); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(243,145);
       hud.print("GH "); hud.print(gnrmcData.ground_heading);
 
-      hud.setCursor(243,155); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(243,155);
       hud.print(""); hud.print(gnggaData.latitude_hemisphere);
       hud.print("  "); hud.print(satData.location_latitude_gngga_str);
 
-      hud.setCursor(243,165); hud.setTextColor(TFT_DARKGREY, TFT_BLACK);
+      hud.setCursor(243,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       for (int i=0; i<12; i++) {hud.print(" ");}
       hud.setCursor(243,165);
       hud.print(""); hud.print(gnggaData.longitude_hemisphere);
@@ -4694,30 +4710,36 @@ void updateDisplay(void * pvParameters) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
       drawHomeBar();
 
-      // table headers
-      hud.setCursor(110, 4); hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(": "); hud.print("Functions");
-      hud.setCursor(0,   30); hud.print("Function");
-      hud.setCursor(150, 30); hud.print("X");
-      hud.setCursor(206, 30); hud.print("Y");
-      hud.setCursor(262, 30); hud.print("Z");
+      // page header
+      hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.print("Matrix "); hud.print(menuData.relay_select);
 
-      // table values relays_data[16][10][3]
+      // table headers
+      hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.setCursor(4,   28); hud.print("Function");
+      hud.setCursor(150, 28); hud.print("X");
+      hud.setCursor(206, 28); hud.print("Y");
+      hud.setCursor(262, 28); hud.print("Z");
+
+      // table value
       for (int i=0; i<10; i++) {
-        hud.setCursor(0, 40+i*10);
+        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
-        hud.setCursor(150, 40+i*10);
+        hud.setCursor(150, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
-        hud.setCursor(206, 40+i*10);
+        hud.setCursor(206, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
-        hud.setCursor(262, 40+i*10);
+        hud.setCursor(262, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
       }
     }
     // page 100: select function n for a given switch
     else if (menuData.page == 100) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-      hud.drawRect(0, 20, 320, 10, TFT_DARKGREY);
-      hud.drawRect(0, 230, 320, 10, TFT_DARKGREY);
+      hud.drawRect(0, 20, 320, 10, TFTOBJ_COL0);
+      hud.drawRect(0, 230, 320, 10, TFTOBJ_COL0);
       for (int i=0; i<10; i++) {
         hud.setCursor(0, 35+i*20);
         hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]); // add concise technical key, eg. x:description/unused y:description/unused z:description/unused.
@@ -4726,7 +4748,7 @@ void updateDisplay(void * pvParameters) {
     // page 300: numpad
     else if (menuData.page == 300) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-      hud.setCursor(150-strlen(menuData.input), 30);
+      hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.print(menuData.input);
       hud.setCursor(0, 60);
       hud.print("               7          8          9");
