@@ -4294,7 +4294,7 @@ void TouchScreenInput( void * pvParameters ) {
           // page 0: matrix enable disable (row 0)
           else if (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1) {
             for (int i; i<10; i++) {
-              if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
+              if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i] ^= true;
                 Serial.println(i);
                 // delay(2000);
@@ -4304,7 +4304,7 @@ void TouchScreenInput( void * pvParameters ) {
           // page 0: matrix enable disable (row 1)
           else if (p.y >= matrix_switch_ena_r2h0 && p.y <= matrix_switch_ena_r2h1) {
             for (int i; i<10; i++) {
-              if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
+              if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i+10] ^= true;
                 Serial.println(i+10);
                 // delay(2000);
