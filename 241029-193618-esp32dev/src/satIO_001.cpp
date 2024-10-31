@@ -4431,7 +4431,7 @@ void updateDisplay(void * pvParameters) {
   // populate strite according to page then display
 
   while (1) {
-    delay(100);
+    delay(1);
 
     // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
     hud.setColorDepth(8);
