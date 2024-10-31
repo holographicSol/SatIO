@@ -4412,6 +4412,20 @@ void drawHomeBar() {
   hud.print("Home");
 }
 
+struct VirtualMatrixSwitchStruct {
+  int matrix_btn_w = 30;
+  int matrix_btn_h = 30;
+  int matrix_btn_sp_x = 2;
+  int matrix_btn_sp_h = 2;
+  int matrix_btn_x = 0;
+  int matrix_btn_y = 40;
+  int matrix_indi_h = 4;
+  int matrix_enable_h = 20;
+  int matrix_btn_iter_x = 0;
+  int matrix_btn_w_loop = 0;
+};
+VirtualMatrixSwitchStruct vms;
+
 void updateDisplay(void * pvParameters) {
 
   // populate strite according to page then display
@@ -4429,31 +4443,21 @@ void updateDisplay(void * pvParameters) {
       drawHomeBar();
       
       // create virtual matrix switch
-      int matrix_btn_w = 30;
-      int matrix_btn_h = 30;
-      int matrix_btn_sp_x = 2;
-      int matrix_btn_sp_h = 2;
-      int matrix_btn_x = 0;
-      int matrix_btn_y = 40;
-      int matrix_indi_h = 4;
-      int matrix_enable_h = 20;
-      int matrix_btn_iter_x = 0;
-      int matrix_btn_w_loop = 0;
-      for (int matrix_btn_iter_x=0; matrix_btn_iter_x<10; matrix_btn_iter_x++) {
+      for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
         // skip multiplying matrix_btn_w initially
-        if (matrix_btn_iter_x > 0) {matrix_btn_w_loop=matrix_btn_w;}
+        if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;}
         // active/inactive indicator
-        if (relayData.relays_bool[0][matrix_btn_iter_x] == true) {
-          hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_indi_h, TFT_GREEN);
+        if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) {
+          hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w), vms.matrix_btn_y, vms.matrix_btn_w, vms.matrix_indi_h, TFT_GREEN);
         }
-        else {hud.fillRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y, matrix_btn_w, matrix_indi_h, TFT_DARKGREY);}
+        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w), vms.matrix_btn_y, vms.matrix_btn_w, vms.matrix_indi_h, TFT_DARKGREY);}
         // main button
-        hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h, matrix_btn_w, matrix_btn_h, TFT_DARKGREY);
+        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w), vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h, vms.matrix_btn_w, vms.matrix_btn_h, TFT_DARKGREY);
         // enabled/disabled button
-        if (relayData.relays_enable[0][matrix_btn_iter_x] == true) {
-          hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_GREEN);
+        if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) {
+          hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w), vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h, vms.matrix_btn_w, vms.matrix_enable_h, TFT_GREEN);
         }
-        else {hud.drawRect((matrix_btn_iter_x*matrix_btn_sp_x)+(matrix_btn_x)+(matrix_btn_iter_x*matrix_btn_w), matrix_btn_y+matrix_indi_h+matrix_btn_sp_h*2+matrix_btn_h, matrix_btn_w, matrix_enable_h, TFT_DARKGREY);}
+        else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w), vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h, vms.matrix_btn_w, vms.matrix_enable_h, TFT_DARKGREY);}
       }
 
       // upper hud reflects simple on/off states as well as time and precision.
