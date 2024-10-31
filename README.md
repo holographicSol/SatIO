@@ -4,7 +4,8 @@ Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Di
 
     SATIO - Written by Benjamin Jack Cullen.
 
-    A general purpose programmable satellite and inertial switch. 
+    A general purpose programmable satellite and inertial switch.
+    Continuing project development here with PlatformIO.
 
 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
