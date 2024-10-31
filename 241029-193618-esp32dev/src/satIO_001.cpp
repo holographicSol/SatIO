@@ -4228,16 +4228,16 @@ void TouchScreenInput( void * pvParameters ) {
           else if ((p.x >= 260 && p.x <= 290) && (p.y >= 55 && p.y <= 80)) {menuData.page=1; menuData.relay_select=9;}
 
           // page 0: enable/disable a matrix switch
-          // else if ((p.x >= 0 && p.x <= 35) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=0;}
-          // else if ((p.x >= 35 && p.x <= 65) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=1;}
-          // else if ((p.x >= 65 && p.x <= 90) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=2;}
-          // else if ((p.x >= 90 && p.x <= 120) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=3;}
-          // else if ((p.x >= 120 && p.x <= 145) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=4;}
-          // else if ((p.x >= 145 && p.x <= 175) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=5;}
-          // else if ((p.x >= 175 && p.x <= 200) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=6;}
-          // else if ((p.x >= 200 && p.x <= 230) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=7;}
-          // else if ((p.x >= 230 && p.x <= 260) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=8;}
-          // else if ((p.x >= 260 && p.x <= 290) && (p.y >= 145 && p.y <= 170)) {menuData.page=1; menuData.relay_select=9;}
+          else if ((p.x >= 0  && p.x <=  35)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][0] ^= true;}
+          else if ((p.x >= 35  && p.x <= 65)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][1] ^= true;}
+          else if ((p.x >= 65  && p.x <= 90)  && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][2] ^= true;}
+          else if ((p.x >= 90  && p.x <= 120) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][3] ^= true;}
+          else if ((p.x >= 120 && p.x <= 145) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][4] ^= true;}
+          else if ((p.x >= 145 && p.x <= 175) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][5] ^= true;}
+          else if ((p.x >= 175 && p.x <= 200) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][6] ^= true;}
+          else if ((p.x >= 200 && p.x <= 230) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][7] ^= true;}
+          else if ((p.x >= 230 && p.x <= 260) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][8] ^= true;}
+          else if ((p.x >= 260 && p.x <= 290) && (p.y >= 80 && p.y <= 100)) {relayData.relays_enable[0][9] ^= true;}
         }
 
         else if (menuData.page == 1) {
