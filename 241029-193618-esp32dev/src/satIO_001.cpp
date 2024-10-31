@@ -4274,7 +4274,7 @@ void TouchScreenInput( void * pvParameters ) {
           // page 0: matrix main btn (row 0)
           if (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1) {
             for (int i; i<10; i++) {
-              if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
+              if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_function_select=i;
                 menuData.backpage=0;
                 menuData.page=1;
@@ -4284,7 +4284,7 @@ void TouchScreenInput( void * pvParameters ) {
           // page 0: matrix main btn (row 1)
           else if (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1) {
             for (int i; i<10; i++) {
-              if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
+              if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_function_select=i+10;
                 menuData.backpage=0;
                 menuData.page=1;
@@ -4296,6 +4296,8 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i; i<10; i++) {
               if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
                 relayData.relays_enable[0][i] ^= true;
+                Serial.println(i);
+                // delay(2000);
                 break;}
             }
           }
@@ -4304,6 +4306,8 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i; i<10; i++) {
               if (p.y >= page0_x[i][0] && p.y <= page0_x[i][1]) {
                 relayData.relays_enable[0][i+10] ^= true;
+                Serial.println(i+10);
+                // delay(2000);
                 break;}
             }
           }
@@ -4569,6 +4573,7 @@ void updateDisplay(void * pvParameters) {
       // create virtual matrix switch: row 1
       vms.matrix_btn_w_loop = 0;
       vms.matrix_btn_y = 35;
+      vms.matrix_btn_iter_x = 0;
       for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
         if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;} // skip multiplying matrix_btn_w initially
         if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) { // active/inactive indicator
@@ -4593,7 +4598,9 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
           vms.matrix_enable_h,
-          TFT_GREEN);}
+          TFT_GREEN);
+          Serial.print("matrix_btn_iter_x "); Serial.println(vms.matrix_btn_iter_x);
+          }
         else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
@@ -4629,7 +4636,9 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
           vms.matrix_enable_h,
-          TFT_GREEN);}
+          TFT_GREEN);
+          Serial.print("matrix_btn_iter_x+10 "); Serial.println(vms.matrix_btn_iter_x+10);
+          }
         else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
           vms.matrix_btn_w,
