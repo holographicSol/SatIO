@@ -121,6 +121,7 @@ struct systemStruct {
   bool output_gngga_enabled = false;
   bool output_gnrmc_enabled = false;
   bool output_gpatt_enabled = false;
+  bool output_matrix_results = true;
 
   bool sidereal_track_sun = true;
   bool sidereal_track_moon = true;
@@ -1154,6 +1155,8 @@ struct RelayStruct {
   int relays_disabled_i = 0;
   int relays_active_i = 0;
   int relays_inactive_i = 0;
+
+  char matrix_results_sentence[56];
 
   bool relays_bool[1][20] = {
     {
@@ -3964,6 +3967,17 @@ void matrixSwitch() {
     }
     // handle Ri's that are disbaled
     else {relayData.relays_bool[0][Ri] = 0;}
+
+    // Output relays bool matrix as a sentence that can easily be parsed by connected devices. 
+    if (systemData.output_matrix_results == true) {
+      memset(relayData.matrix_results_sentence, 0, sizeof(relayData.matrix_results_sentence));
+      strcpy(relayData.matrix_results_sentence, "$MATRIXSWITCH,");
+      for (int i=0; i < relayData.MAobject_RELAYS; i++) {
+        if      (relayData.relays_bool[0][i] == 0) {strcat(relayData.matrix_results_sentence, "0,");}
+        else if (relayData.relays_bool[0][i] == 1) {strcat(relayData.matrix_results_sentence, "1,");}
+      }
+      Serial.println(relayData.matrix_results_sentence);
+      }
   }
 }
 
@@ -4317,6 +4331,20 @@ bool isTouchTitleBar(TouchPoint p) {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY PAGE 0
+
+// enable all --> page 0
+// disable all --> page 0
+// all on
+// all off
+// save matrix --> file page
+// load matrix --> file page
+// enable matrix
+// disable matrix
+// enable/disable each gps sentence parsing
+// delete matrix --> file page
+// add LoadMatrixFileNumber to available matrix functions so that matrix files can be automatically loaded into memory by the matrix switch.
+// refactor some variable names in relaysData:     relays_data > matrixswitch_xyz.     function_names > matrixswitch_availfunctionnames.     relays > matrixswitch_functionnames
+// output matrix calculation results (0/1) to serial as a tagged sentence to provide other systems with the calculated data (true/false), example with 20 switches: $MATRIXBOOL,0,0,0,0...etc.
 
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
