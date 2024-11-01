@@ -4233,209 +4233,246 @@ void CountElements() {
 //                                                         atoi(satData.second));}
 // }
 
-int page0_x[10][2] = {
-  {0, 35},
-  {35, 60},
-  {70, 90},
-  {95, 115},
-  {125, 145},
-  {150, 170},
-  {180, 200},
-  {210, 230},
-  {235, 260},
-  {260, 290}
+struct TouchScreenStruct {
+  int page0_x[10][2] = {
+    {0, 35},
+    {35, 60},
+    {70, 90},
+    {95, 115},
+    {125, 145},
+    {150, 170},
+    {180, 200},
+    {210, 230},
+    {235, 260},
+    {260, 290}
+  };
+  int page1_y[10][2] = {
+    {50, 60},
+    {70, 80},
+    {90, 100},
+    {105, 115},
+    {125, 135},
+    {145, 155},
+    {160, 170},
+    {180, 190},
+    {195, 205},
+    {210, 220}
+  };
+  int matrix_switch_cfg_r1h0 = 50;
+  int matrix_switch_cfg_r1h1 = 70;
+  int matrix_switch_ena_r1h0 = 75;
+  int matrix_switch_ena_r1h1 = 85;
+  int matrix_switch_cfg_r2h0 = 100;
+  int matrix_switch_cfg_r2h1 = 120;
+  int matrix_switch_ena_r2h0 = 125;
+  int matrix_switch_ena_r2h1 = 135;
+  int ts_t0 = millis();
+  int ts_ti = 200;
 };
+TouchScreenStruct tss;
 
-int page1_y[10][2] = {
-  {50, 60},
-  {70, 80},
-  {90, 100},
-  {105, 115},
-  {125, 135},
-  {145, 155},
-  {160, 170},
-  {180, 190},
-  {195, 205},
-  {210, 220}
-};
-int matrix_switch_cfg_r1h0 = 50;
-int matrix_switch_cfg_r1h1 = 70;
-int matrix_switch_ena_r1h0 = 75;
-int matrix_switch_ena_r1h1 = 85;
+bool isTouchTitleBar(TouchPoint p) {
+  if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
+  else {return false;}
+}
 
-int matrix_switch_cfg_r2h0 = 100;
-int matrix_switch_cfg_r2h1 = 120;
-int matrix_switch_ena_r2h0 = 125;
-int matrix_switch_ena_r2h1 = 135;
-int t0 = millis();
+bool isTouchPage0(TouchPoint p) {
+  if (menuData.page == 0) {
+    // page 0: matrix main btn (row 0)
+    if (p.y >= tss.matrix_switch_cfg_r1h0 && p.y <= tss.matrix_switch_cfg_r1h1) {
+      for (int i=0; i<10; i++) {
+        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+          menuData.relay_select=i;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.backpage=0;
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    // page 0: matrix main btn (row 1)
+    else if (p.y >= tss.matrix_switch_cfg_r2h0 && p.y <= tss.matrix_switch_cfg_r2h1) {
+      for (int i=0; i<10; i++) {
+        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+          menuData.relay_select=i+10;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.backpage=0;
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    // page 0: matrix enable disable (row 0)
+    else if (p.y >= tss.matrix_switch_ena_r1h0 && p.y <= tss.matrix_switch_ena_r1h1) {
+      for (int i=0; i<10; i++) {
+        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+          relayData.relays_enable[0][i] ^= true;
+          Serial.print("[matrix switch toggle] matrix "); Serial.println(i);
+          break;
+        }
+      }
+    }
+    // page 0: matrix enable disable (row 1)
+    else if (p.y >= tss.matrix_switch_ena_r2h0 && p.y <= tss.matrix_switch_ena_r2h1) {
+      for (int i=0; i<10; i++) {
+        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+          relayData.relays_enable[0][i+10] ^= true;
+          Serial.print("[matrix switch toggle] matrix "); Serial.println(i+10);
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isTouchPage1(TouchPoint p) {
+  // page 1
+  if (menuData.page == 1) {
+    // page 1: Function Select
+    if (p.x >= 0 && p.x <= 135) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          menuData.page=100;
+          menuData.relay_function_select=i;
+          menuData.backpage=1;
+          break;
+        }
+      }
+    }
+    // page 1: select x
+    else if (p.x >= 135 && p.x <= 185) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          menuData.page=300;
+          menuData.backpage=1;
+          menuData.relay_function_select=i;
+          menuData.numpad_key=0;
+          memset(menuData.input, 0, sizeof(menuData.input));
+          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][0]);
+          break;
+        }
+      }
+    }
+    // page 1: select y
+    else if (p.x >= 185 && p.x <= 230) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          menuData.page=300;
+          menuData.backpage=1;
+          menuData.relay_function_select=i;
+          menuData.numpad_key=1;
+          memset(menuData.input, 0, sizeof(menuData.input));
+          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][1]);
+          break;
+        }
+      }
+    }
+    // page 1: select z
+    else if (p.x >= 230 && p.x <= 285) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          menuData.page=300;
+          menuData.backpage=1;
+          menuData.relay_function_select=i;
+          menuData.numpad_key=2;
+          memset(menuData.input, 0, sizeof(menuData.input));
+          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][2]);
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isTouchNumpad(TouchPoint p) {
+  // page 300: numpad
+  if (menuData.page == 300) {
+    if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
+    else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
+    else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
+    else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
+    else if ((p.x >= 120 && p.x <= 180) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
+    else if ((p.x >= 120 && p.x <= 180) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
+    else if ((p.x >= 120 && p.x <= 180) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "2");} // 2
+    else if ((p.x >= 120 && p.x <= 180) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, ".");} // .
+    else if ((p.x >= 180 && p.x <= 240) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "9");} // 9
+    else if ((p.x >= 180 && p.x <= 240) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "6");} // 6
+    else if ((p.x >= 180 && p.x <= 240) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "3");} // 3
+    else if ((p.x >= 180 && p.x <= 240) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, "-");} // -
+    // enter
+    else if ((p.x >= 0 && p.x <= 60) && (p.y >= 160 && p.y <= 195)) {
+      if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
+      if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
+      if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
+      menuData.page=1;
+    }
+    // delete
+    else if ((p.x >= 240 && p.x <= 285) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
+    // clear
+    else if ((p.x >= 240 && p.x <= 285) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
+    // back
+    else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
+    return true;
+  }
+  else {return false;}
+}
+
+bool isTouchSelectMatrixFunction(TouchPoint p) {
+  // page 100: select function
+  if (menuData.page == 100) {
+    // back
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
+    // previous list items
+    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+      menuData.function_index--;
+      if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
+    }
+    // next list items
+    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+      menuData.function_index++;
+      if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
+    }
+    // select list item
+    if (p.x >= 0 && p.x <= 320) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
+          strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isTouch(TouchPoint p) {
+}
 
 void TouchScreenInput( void * pvParameters ) {
-
   // keep looping because this function runs as its own task
   while (1) {
     delay(1);
-
     // get touch data and only delay if current time in threshold range of previous touch time
     TouchPoint p = ts.getTouch();
     if (p.zRaw > 400) {
-        if (millis() >= t0+200) {
-            t0 = millis();
-            Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
-
-            // titlebar
-            if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 30)) {menuData.page=0;}
-
-            // page 0
-            if (menuData.page == 0) {
-            // page 0: matrix main btn (row 0)
-            if (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1) {
-            for (int i=0; i<10; i++) {
-                if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                menuData.relay_select=i;
-                Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-                menuData.backpage=0;
-                menuData.page=1;
-                break;}
-            }
-            }
-            // page 0: matrix main btn (row 1)
-            else if (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1) {
-            for (int i=0; i<10; i++) {
-                if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                menuData.relay_select=i+10;
-                Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-                menuData.backpage=0;
-                menuData.page=1;
-                break;}
-            }
-            }
-            // page 0: matrix enable disable (row 0)
-            else if (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1) {
-            for (int i=0; i<10; i++) {
-                if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                relayData.relays_enable[0][i] ^= true;
-                Serial.print("[matrix switch toggle] matrix "); Serial.println(i);
-                break;}
-            }
-            }
-            // page 0: matrix enable disable (row 1)
-            else if (p.y >= matrix_switch_ena_r2h0 && p.y <= matrix_switch_ena_r2h1) {
-            for (int i=0; i<10; i++) {
-                if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                relayData.relays_enable[0][i+10] ^= true;
-                Serial.print("[matrix switch toggle] matrix "); Serial.println(i+10);
-                break;}
-            }
-            }
-            }
-
-            // page 1
-            else if (menuData.page == 1) {
-            // page 1: Function Select
-            if (p.x >= 0 && p.x <= 135) {
-            for (int i=0; i<10; i++) {
-                if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
-                menuData.page=100;
-                menuData.relay_function_select=i;
-                menuData.backpage=1;
-                break;}
-            }
-            }
-            // page 1: select x
-            else if (p.x >= 135 && p.x <= 185) {
-            for (int i=0; i<10; i++) {
-                if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
-                menuData.page=300;
-                menuData.backpage=1;
-                menuData.relay_function_select=i;
-                menuData.numpad_key=0;
-                memset(menuData.input, 0, sizeof(menuData.input));
-                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][0]);
-                break;}
-            }
-            }
-            // page 1: select y
-            else if (p.x >= 185 && p.x <= 230) {
-            for (int i=0; i<10; i++) {
-                if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
-                menuData.page=300;
-                menuData.backpage=1;
-                menuData.relay_function_select=i;
-                menuData.numpad_key=1;
-                memset(menuData.input, 0, sizeof(menuData.input));
-                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][1]);
-                break;}
-            }
-            }
-            // page 1: select z
-            else if (p.x >= 230 && p.x <= 285) {
-            for (int i=0; i<10; i++) {
-                if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
-                menuData.page=300;
-                menuData.backpage=1;
-                menuData.relay_function_select=i;
-                menuData.numpad_key=2;
-                memset(menuData.input, 0, sizeof(menuData.input));
-                sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][2]);
-                break;}
-            }
-            }
-            }
-
-            // page 300: numpad
-            else if (menuData.page == 300) {
-                if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
-                else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
-                else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
-                else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
-                else if ((p.x >= 120 && p.x <= 180) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
-                else if ((p.x >= 120 && p.x <= 180) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
-                else if ((p.x >= 120 && p.x <= 180) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "2");} // 2
-                else if ((p.x >= 120 && p.x <= 180) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, ".");} // .
-                else if ((p.x >= 180 && p.x <= 240) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "9");} // 9
-                else if ((p.x >= 180 && p.x <= 240) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "6");} // 6
-                else if ((p.x >= 180 && p.x <= 240) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "3");} // 3
-                else if ((p.x >= 180 && p.x <= 240) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, "-");} // -
-                // enter
-                else if ((p.x >= 0 && p.x <= 60) && (p.y >= 160 && p.y <= 195)) {
-                if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
-                if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
-                if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
-                menuData.page=1;
-                }
-                // delete
-                else if ((p.x >= 240 && p.x <= 285) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
-                // clear
-                else if ((p.x >= 240 && p.x <= 285) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
-                // back
-                else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
-            }
-
-            // page 100: select function
-            else if (menuData.page == 100) {
-                // back
-                if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
-                // previous list items
-                if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
-                menuData.function_index--;
-                if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}}
-                // next list items
-                else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
-                menuData.function_index++;
-                if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}}
-
-                // select list item
-                if (p.x >= 0 && p.x <= 320) {
-                  for (int i=0; i<10; i++) {
-                    if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
-                      memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
-                      strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
-                      menuData.page=1;
-                      break;}
-                  }
-                }
-            }
-        }
+      if (millis() >= tss.ts_t0+tss.ts_ti) {
+        tss.ts_t0 = millis();
+        Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
+        // check touchscreen efficiently
+        bool checktouch = false;
+        if (checktouch == false) {checktouch = isTouchTitleBar(p);}
+        if (checktouch == false) {checktouch = isTouchPage0(p);}
+        if (checktouch == false) {checktouch = isTouchPage1(p);}
+        if (checktouch == false) {checktouch = isTouchNumpad(p);}
+        if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
+      }
     }
   }
 }
