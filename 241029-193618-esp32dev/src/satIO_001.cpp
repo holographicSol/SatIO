@@ -121,7 +121,7 @@ struct systemStruct {
   bool output_gngga_enabled = false;
   bool output_gnrmc_enabled = false;
   bool output_gpatt_enabled = false;
-  bool output_matrix_results = false;
+  bool output_matrix_enabled = false;
 
   bool sidereal_track_sun = true;
   bool sidereal_track_moon = true;
@@ -3971,7 +3971,7 @@ void matrixSwitch() {
     else {relayData.relays_bool[0][Ri] = 0;}
 
     // Output relays bool matrix as a sentence that can easily be parsed by connected devices. 
-    if (systemData.output_matrix_results == true) {
+    if (systemData.output_matrix_enabled == true) {
       memset(relayData.matrix_results_sentence, 0, sizeof(relayData.matrix_results_sentence));
       strcpy(relayData.matrix_results_sentence, "$MATRIXSWITCH,");
       for (int i=0; i < relayData.MAobject_RELAYS; i++) {
@@ -5070,6 +5070,11 @@ bool DisplaySettingsSerial() {
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     hud.print(sData.settingsserialvalues[i]);
     }
     return true;
@@ -5084,6 +5089,11 @@ bool isDisplaySettingsSerial(TouchPoint p) {
       for (int i=0; i<sData.max_settingsserialvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
+          if      (i==0) {systemData.output_satio_enabled ^= true;}
+          else if (i==1) {systemData.output_gngga_enabled ^= true;}
+          else if (i==2) {systemData.output_gnrmc_enabled ^= true;}
+          else if (i==3) {systemData.output_gpatt_enabled ^= true;}
+          else if (i==4) {systemData.output_matrix_enabled ^= true;}
           break;
         }
       }
