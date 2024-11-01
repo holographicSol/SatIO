@@ -1157,6 +1157,8 @@ struct RelayStruct {
   int relays_inactive_i = 0;
 
   char matrix_results_sentence[56];
+  char checksum_str[56];
+  int checksum_i;
 
   bool relays_bool[1][20] = {
     {
@@ -3976,6 +3978,10 @@ void matrixSwitch() {
         if      (relayData.relays_bool[0][i] == 0) {strcat(relayData.matrix_results_sentence, "0,");}
         else if (relayData.relays_bool[0][i] == 1) {strcat(relayData.matrix_results_sentence, "1,");}
       }
+      strcat(relayData.matrix_results_sentence, "*");
+      relayData.checksum_i = getCheckSum(relayData.matrix_results_sentence);
+      itoa(relayData.checksum_i, relayData.checksum_str, 10);
+      strcat(relayData.matrix_results_sentence, relayData.checksum_str);
       Serial.println(relayData.matrix_results_sentence);
       }
   }
