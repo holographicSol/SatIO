@@ -4420,7 +4420,6 @@ bool isTouchNumpad(TouchPoint p) {
 }
 
 bool isTouchSelectMatrixFunction(TouchPoint p) {
-  // page 100: select function
   if (menuData.page == 100) {
     // back
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
