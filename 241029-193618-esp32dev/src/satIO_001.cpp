@@ -4328,7 +4328,7 @@ void TouchScreenInput( void * pvParameters ) {
 
           // page 1: Function Select
           if (p.x >= 0 && p.x <= 135) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=100;
                 menuData.relay_function_select=i;
@@ -4338,7 +4338,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
           // page 1: select x
           else if (p.x >= 135 && p.x <= 185) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
                 menuData.relay_function_select=i;
@@ -4350,7 +4350,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
           // page 1: select y
           else if (p.x >= 185 && p.x <= 230) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
                 menuData.relay_function_select=i;
@@ -4362,7 +4362,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
           // page 1: select z
           else if (p.x >= 230 && p.x <= 285) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
                 menuData.relay_function_select=i;
