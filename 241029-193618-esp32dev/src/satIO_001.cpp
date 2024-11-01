@@ -5036,6 +5036,11 @@ bool DisplaySettingsGPS() {
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==4) {if (systemData.matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     hud.print(sData.settingsgpsvalues[i]);
     }
     return true;
@@ -5050,6 +5055,11 @@ bool isDisplaySettingsGPS(TouchPoint p) {
       for (int i=0; i<sData.max_settingsgpsvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
+          if      (i==0) {systemData.satio_enabled ^= true;}
+          else if (i==1) {systemData.gngga_enabled ^= true;}
+          else if (i==2) {systemData.gnrmc_enabled ^= true;}
+          else if (i==3) {systemData.gpatt_enabled ^= true;}
+          else if (i==4) {systemData.matrix_enabled ^= true;}
           break;
         }
       }
