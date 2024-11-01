@@ -4587,6 +4587,9 @@ bool DisplayPage1() {
         // page header
         hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print("Matrix "); hud.print(menuData.relay_select);
+        // clear all functions on current matrix switch
+        hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print("CLEAR");
         // table headers
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
         hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
@@ -4617,6 +4620,13 @@ bool DisplayPage1() {
 bool isTouchPage1(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 1) {
+    // clear all. populates all functions for current matrix switch with $NONE
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {
+      for (int i=0; i<relayData.MAobject_RELAY_ELEMENTS; i++) {
+        memset(relayData.relays[menuData.relay_select][i], 0, sizeof(relayData.relays[menuData.relay_select][i]));
+        strcpy(relayData.relays[menuData.relay_select][i], relayData.function_names[0]);
+        }
+    }
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
       for (int i=0; i<10; i++) {
