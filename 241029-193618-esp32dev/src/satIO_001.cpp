@@ -4289,7 +4289,7 @@ void TouchScreenInput( void * pvParameters ) {
           if (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                menuData.relay_function_select=i;
+                menuData.relay_select=i;
                 menuData.backpage=0;
                 menuData.page=1;
                 break;}
@@ -4299,7 +4299,7 @@ void TouchScreenInput( void * pvParameters ) {
           else if (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
-                menuData.relay_function_select=i+10;
+                menuData.relay_select=i+10;
                 menuData.backpage=0;
                 menuData.page=1;
                 break;}
