@@ -4233,6 +4233,27 @@ void CountElements() {
 //                                                         atoi(satData.second));}
 // }
 
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY STRUCT
+
+struct VirtualMatrixSwitchStruct {
+  int matrix_btn_w = 30;
+  int matrix_btn_h = 25;
+  int matrix_btn_sp_x = 2;
+  int matrix_btn_sp_h = 2;
+  int matrix_btn_x = 0;
+  int matrix_btn_y = 35;
+  int matrix_indi_h = 5;
+  int matrix_enable_h = 15;
+  int matrix_btn_iter_x = 0;
+  int matrix_btn_w_loop = 0;
+};
+VirtualMatrixSwitchStruct vms;
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 TOUCH STRUCT
+
 struct TouchScreenStruct {
   int page0_x[10][2] = {
     {0, 35},
@@ -4271,19 +4292,8 @@ struct TouchScreenStruct {
 };
 TouchScreenStruct tss;
 
-struct VirtualMatrixSwitchStruct {
-  int matrix_btn_w = 30;
-  int matrix_btn_h = 25;
-  int matrix_btn_sp_x = 2;
-  int matrix_btn_sp_h = 2;
-  int matrix_btn_x = 0;
-  int matrix_btn_y = 35;
-  int matrix_indi_h = 5;
-  int matrix_enable_h = 15;
-  int matrix_btn_iter_x = 0;
-  int matrix_btn_w_loop = 0;
-};
-VirtualMatrixSwitchStruct vms;
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             DISPLAY TITLEBAR
 
 void drawHomeBar() {
   // saves reiteration under certain conditions
@@ -4296,10 +4306,16 @@ void drawBack() {
   hud.print("Back");
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               TOUCH TITLEBAR
+
 bool isTouchTitleBar(TouchPoint p) {
   if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
   else {return false;}
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY PAGE 0
 
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -4503,6 +4519,9 @@ bool DisplayPage0() {
     else {return false;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 TOUCH PAGE 0
+
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
@@ -4555,6 +4574,9 @@ bool isTouchPage0(TouchPoint p) {
   else {return false;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY PAGE 1
+
 bool DisplayPage1() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 1) {
@@ -4587,6 +4609,9 @@ bool DisplayPage1() {
     }
     else {return false;}
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 TOUCH PAGE 1
 
 bool isTouchPage1(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -4649,6 +4674,35 @@ bool isTouchPage1(TouchPoint p) {
   else {return false;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                      DISPLAY MATRIX FUNCTION
+
+bool DisplaySelectMatrixFunction() {
+    // check page here rather than in calling function so that we can see where we are when we're here
+    if (menuData.page == 100) {
+        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        drawHomeBar();
+        drawBack();
+        // page header
+        hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
+        // scroll buttons
+        hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
+        hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+        // values
+        for (int i=0; i<10; i++) {
+        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
+        }
+        return true;
+    }
+    else {return false;}
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        TOUCH MATRIX FUNCTION
+
 bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
@@ -4680,28 +4734,8 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   else {return false;}
 }
 
-bool DisplaySelectMatrixFunction() {
-    // check page here rather than in calling function so that we can see where we are when we're here
-    if (menuData.page == 100) {
-        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-        drawHomeBar();
-        drawBack();
-        // page header
-        hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
-        // scroll buttons
-        hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-        hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-        // values
-        for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
-        }
-        return true;
-    }
-    else {return false;}
-}
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY NUMPAD
 
 bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
@@ -4724,6 +4758,9 @@ bool DisplayNumpad() {
     }
     else {return false;}
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 TOUCH NUMPAD
 
 bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -4758,6 +4795,9 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               UPDATE DISPLAY
+
 void UpdateDisplay(void * pvParameters) {
   // populate strite according to page then display
   while (1) {
@@ -4779,6 +4819,9 @@ void UpdateDisplay(void * pvParameters) {
     hud.deleteSprite();
   }
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            TOUCHSCREEN INPUT
 
 void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
