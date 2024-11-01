@@ -4323,6 +4323,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
         }
 
+        // page 1
         else if (menuData.page == 1) {
 
           // page 1: Function Select
