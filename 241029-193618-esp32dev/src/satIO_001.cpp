@@ -4619,7 +4619,8 @@ bool DisplayPage1() {
 
 bool isTouchPage1(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
-  // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc)! 
+  // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc),
+  // this is good practice for when the switches have GPIO/relays.
   if (menuData.page == 1) {
     // clear all. populates all functions for current matrix switch with $NONE.
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {
