@@ -5040,7 +5040,6 @@ bool DisplaySettingsGPS() {
     else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     hud.print(sData.settingsgpsvalues[i]);
     }
     return true;
@@ -5059,7 +5058,6 @@ bool isDisplaySettingsGPS(TouchPoint p) {
           else if (i==1) {systemData.gngga_enabled ^= true;}
           else if (i==2) {systemData.gnrmc_enabled ^= true;}
           else if (i==3) {systemData.gpatt_enabled ^= true;}
-          else if (i==4) {systemData.matrix_enabled ^= true;}
           break;
         }
       }
