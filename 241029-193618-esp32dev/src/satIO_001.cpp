@@ -4866,7 +4866,11 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     SETTINGS
+
 struct SettingsDataStruct {
+
   int max_settings0values = 7;
   char settings0values[7][56] = {
     "System",  // p4
@@ -4877,6 +4881,38 @@ struct SettingsDataStruct {
     "Time",    // p9
     "Display", // p10
   };
+
+  int max_settingsystemvalues = 0;
+  char settingsystemvalues[0][56] = {};
+
+  int max_settingsmatrixvalues = 0;
+  char settingsmatrixvalues[0][56] = {};
+
+  int max_settingsgpsvalues = 4;
+  char settingsgpsvalues[4][56] = {
+    "ENABLE SATIO",  // enables/disables satio processing of gps data
+    "ENABLE GNGGA",  // enables/disables parsing of gngga sentence
+    "ENABLE GNRMC",  // enables/disables parsing of gnrmc sentence
+    "ENABLE GPATT",  // enables/disables parsing of gpatt sentence
+  };
+
+  int max_settingsserialvalues = 5;
+  char settingsserialvalues[5][56] = {
+    "ENABLE SATIO",  // enables/disables serial output of satio sentence
+    "ENABLE GNGGA",  // enables/disables serial output of gngga sentence
+    "ENABLE GNRMC",  // enables/disables serial output of gnrmc sentence
+    "ENABLE GPATT",  // enables/disables serial output of gpatt sentence
+    "ENABLE MATRIX", // enables/disables serial output of gpatt sentence
+  };
+
+  int max_settingsfilevalues = 0;
+  char settingsfilevalues[0][56] = {};
+
+  int max_settingstimevalues = 0;
+  char settingstimevalues[0][56] = {};
+
+  int max_settingsdisplayvalues = 0;
+  char settingsdisplayvalues[0][56] = {};
 };
 SettingsDataStruct sData;
 
@@ -4928,6 +4964,12 @@ bool DisplaySettingsSystem() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("System Settings");
+    // values
+    for (int i=0; i<sData.max_settingsystemvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsystemvalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -4935,6 +4977,15 @@ bool DisplaySettingsSystem() {
 
 bool isDisplaySettingsSystem(TouchPoint p) {
   if (menuData.page == 4) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsystemvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] system item "); Serial.println(sData.settingsystemvalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -4947,6 +4998,12 @@ bool DisplaySettingsMatrix() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Matrix Settings");
+    // values
+    for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsmatrixvalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -4954,6 +5011,15 @@ bool DisplaySettingsMatrix() {
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -4966,6 +5032,12 @@ bool DisplaySettingsGPS() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("GPS Settings");
+    // values
+    for (int i=0; i<sData.max_settingsgpsvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsgpsvalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -4973,6 +5045,15 @@ bool DisplaySettingsGPS() {
 
 bool isDisplaySettingsGPS(TouchPoint p) {
   if (menuData.page == 6) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsgpsvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -4985,6 +5066,12 @@ bool DisplaySettingsSerial() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Serial Settings");
+    // values
+    for (int i=0; i<sData.max_settingsserialvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsserialvalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -4992,6 +5079,15 @@ bool DisplaySettingsSerial() {
 
 bool isDisplaySettingsSerial(TouchPoint p) {
   if (menuData.page == 7) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsserialvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -5004,6 +5100,12 @@ bool DisplaySettingsFile() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("File Settings");
+    // values
+    for (int i=0; i<sData.max_settingsfilevalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsfilevalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -5011,6 +5113,15 @@ bool DisplaySettingsFile() {
 
 bool isDisplaySettingsFile(TouchPoint p) {
   if (menuData.page == 8) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsfilevalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -5023,6 +5134,12 @@ bool DisplaySettingsTime() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Time Settings");
+    // values
+    for (int i=0; i<sData.max_settingstimevalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingstimevalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -5030,6 +5147,15 @@ bool DisplaySettingsTime() {
 
 bool isDisplaySettingsTime(TouchPoint p) {
   if (menuData.page == 9) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingstimevalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
@@ -5042,6 +5168,12 @@ bool DisplaySettingsDisplay() {
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Display Settings");
+    // values
+    for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settingsdisplayvalues[i]);
+    }
     return true;
   }
   else {return false;}
@@ -5049,6 +5181,15 @@ bool DisplaySettingsDisplay() {
 
 bool isDisplaySettingsDisplay(TouchPoint p) {
   if (menuData.page == 10) {
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 140) {
+      for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
+          break;
+        }
+      }
+    }
     return true;
   }
   else {return false;}
