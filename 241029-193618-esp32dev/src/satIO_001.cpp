@@ -4233,10 +4233,45 @@ void CountElements() {
 //                                                         atoi(satData.second));}
 // }
 
+int page0_x[10][2] = {
+  {0, 35},
+  {35, 60},
+  {70, 90},
+  {95, 115},
+  {125, 145},
+  {150, 170},
+  {180, 200},
+  {210, 230},
+  {235, 260},
+  {260, 290}
+};
+
+int page1_y[10][2] = {
+  {50, 60},
+  {70, 80},
+  {90, 100},
+  {105, 115},
+  {125, 135},
+  {145, 155},
+  {160, 170},
+  {180, 190},
+  {195, 205},
+  {210, 220}
+};
+int matrix_switch_cfg_r1h0 = 50;
+int matrix_switch_cfg_r1h1 = 70;
+int matrix_switch_ena_r1h0 = 75;
+int matrix_switch_ena_r1h1 = 85;
+
+int matrix_switch_cfg_r2h0 = 100;
+int matrix_switch_cfg_r2h1 = 120;
+int matrix_switch_ena_r2h0 = 125;
+int matrix_switch_ena_r2h1 = 135;
+
 void TouchScreenInput( void * pvParameters ) {
   int t0 = millis();
   while (1) {
-    if (millis() >= t0+100) {
+    if (millis() >= t0+200) {
       t0 = millis();
       TouchPoint p = ts.getTouch();  // takes between 1-3 milliseconds
       if (p.zRaw > 400) {
@@ -4248,32 +4283,11 @@ void TouchScreenInput( void * pvParameters ) {
         // titlebar
         if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 30)) {menuData.page=0;}
 
-        int matrix_switch_cfg_r1h0 = 50;
-        int matrix_switch_cfg_r1h1 = 70;
-        int matrix_switch_ena_r1h0 = 75;
-        int matrix_switch_ena_r1h1 = 85;
-
-        int matrix_switch_cfg_r2h0 = 100;
-        int matrix_switch_cfg_r2h1 = 120;
-        int matrix_switch_ena_r2h0 = 125;
-        int matrix_switch_ena_r2h1 = 135;
-
+        // page 0
         if (menuData.page == 0) {
-          int page0_x[10][2] = {
-            {0, 35},
-            {35, 60},
-            {70, 90},
-            {95, 115},
-            {125, 145},
-            {150, 170},
-            {180, 200},
-            {210, 230},
-            {235, 260},
-            {260, 290}
-          };
           // page 0: matrix main btn (row 0)
           if (p.y >= matrix_switch_cfg_r1h0 && p.y <= matrix_switch_cfg_r1h1) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_function_select=i;
                 menuData.backpage=0;
@@ -4283,7 +4297,7 @@ void TouchScreenInput( void * pvParameters ) {
           }
           // page 0: matrix main btn (row 1)
           else if (p.y >= matrix_switch_cfg_r2h0 && p.y <= matrix_switch_cfg_r2h1) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_function_select=i+10;
                 menuData.backpage=0;
@@ -4293,39 +4307,24 @@ void TouchScreenInput( void * pvParameters ) {
           }
           // page 0: matrix enable disable (row 0)
           else if (p.y >= matrix_switch_ena_r1h0 && p.y <= matrix_switch_ena_r1h1) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i] ^= true;
-                Serial.println(i);
-                // delay(2000);
                 break;}
             }
           }
           // page 0: matrix enable disable (row 1)
           else if (p.y >= matrix_switch_ena_r2h0 && p.y <= matrix_switch_ena_r2h1) {
-            for (int i; i<10; i++) {
+            for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i+10] ^= true;
-                Serial.println(i+10);
-                // delay(2000);
                 break;}
             }
           }
         }
 
         else if (menuData.page == 1) {
-          int page1_y[10][2] = {
-            {50, 60},
-            {70, 80},
-            {90, 100},
-            {105, 115},
-            {125, 135},
-            {145, 155},
-            {160, 170},
-            {180, 190},
-            {195, 205},
-            {210, 220}
-          };
+
           // page 1: Function Select
           if (p.x >= 0 && p.x <= 135) {
             for (int i; i<10; i++) {
@@ -4589,7 +4588,6 @@ void updateDisplay(void * pvParameters) {
           vms.matrix_btn_w,
           vms.matrix_enable_h,
           TFT_GREEN);
-          Serial.print("matrix_btn_iter_x+10 "); Serial.println(vms.matrix_btn_iter_x+10);
           }
         else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
           vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
