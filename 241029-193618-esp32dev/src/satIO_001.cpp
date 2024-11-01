@@ -4328,7 +4328,6 @@ bool isTouchPage0(TouchPoint p) {
 }
 
 bool isTouchPage1(TouchPoint p) {
-  // page 1
   if (menuData.page == 1) {
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
@@ -4389,7 +4388,6 @@ bool isTouchPage1(TouchPoint p) {
 }
 
 bool isTouchNumpad(TouchPoint p) {
-  // page 300: numpad
   if (menuData.page == 300) {
     if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
     else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
