@@ -4678,23 +4678,31 @@ bool isTouchPage1(TouchPoint p) {
 //                                                                                                      DISPLAY MATRIX FUNCTION
 
 bool DisplaySelectMatrixFunction() {
+
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
+
         hud.fillRect(0, 0, 320, 240, TFT_BLACK);
         drawHomeBar();
         drawBack();
+
         // page header
         hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
+
         // scroll buttons
         hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
         hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+        hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
+        hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+        
         // values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
         }
+
         return true;
     }
     else {return false;}
