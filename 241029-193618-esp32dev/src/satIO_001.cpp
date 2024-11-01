@@ -4739,7 +4739,7 @@ void updateDisplay(void * pvParameters) {
       hud.setCursor(0, 180);
       hud.print("ENTER          0          .          -          DEL");
       hud.setCursor(0, 220);
-      hud.print("                                              CLEAR");
+      hud.print("                                                 CL");
     }
 
     // display the sprite and free memory
