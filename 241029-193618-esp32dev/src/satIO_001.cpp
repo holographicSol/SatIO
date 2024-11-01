@@ -4346,6 +4346,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
                 if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
+                menuData.backpage=1;
                 menuData.relay_function_select=i;
                 menuData.numpad_key=0;
                 memset(menuData.input, 0, sizeof(menuData.input));
@@ -4358,6 +4359,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
                 if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
+                menuData.backpage=1;
                 menuData.relay_function_select=i;
                 menuData.numpad_key=1;
                 memset(menuData.input, 0, sizeof(menuData.input));
@@ -4370,6 +4372,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
                 if (p.y >= page1_y[i][0] && p.y <= page1_y[i][1]) {
                 menuData.page=300;
+                menuData.backpage=1;
                 menuData.relay_function_select=i;
                 menuData.numpad_key=2;
                 memset(menuData.input, 0, sizeof(menuData.input));
