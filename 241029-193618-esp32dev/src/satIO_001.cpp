@@ -4627,6 +4627,9 @@ bool isTouchPage1(TouchPoint p) {
       for (int i=0; i<relayData.MAobject_RELAY_ELEMENTS; i++) {
         memset(relayData.relays[menuData.relay_select][i], 0, sizeof(relayData.relays[menuData.relay_select][i]));
         strcpy(relayData.relays[menuData.relay_select][i], relayData.function_names[0]);
+        relayData.relays_data[menuData.relay_select][i][0] = 0.00;
+        relayData.relays_data[menuData.relay_select][i][1] = 0.00;
+        relayData.relays_data[menuData.relay_select][i][2] = 0.00;
         }
     }
     // page 1: Function Select
