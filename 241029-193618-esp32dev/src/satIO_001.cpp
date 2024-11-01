@@ -4271,9 +4271,236 @@ struct TouchScreenStruct {
 };
 TouchScreenStruct tss;
 
+struct VirtualMatrixSwitchStruct {
+  int matrix_btn_w = 30;
+  int matrix_btn_h = 25;
+  int matrix_btn_sp_x = 2;
+  int matrix_btn_sp_h = 2;
+  int matrix_btn_x = 0;
+  int matrix_btn_y = 35;
+  int matrix_indi_h = 5;
+  int matrix_enable_h = 15;
+  int matrix_btn_iter_x = 0;
+  int matrix_btn_w_loop = 0;
+};
+VirtualMatrixSwitchStruct vms;
+
+void drawHomeBar() {
+  // saves reiteration under certain conditions
+  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.print("Home");
+}
+
+void drawBack() {
+  hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.print("Back");
+}
+
 bool isTouchTitleBar(TouchPoint p) {
   if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
   else {return false;}
+}
+
+bool DisplayPage0() {
+  // check page here rather than in calling function so that we can see where we are when we're here
+  if (menuData.page == 0) {
+    // create virtual matrix switch: row 1
+    vms.matrix_btn_w_loop = 0;
+    vms.matrix_btn_y = 35;
+    vms.matrix_btn_iter_x = 0;
+    for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
+        // skip multiplying matrix_btn_w initially
+        if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;}
+        // active/inactive indicator
+        if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) {
+            hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+            vms.matrix_btn_y,
+            vms.matrix_btn_w,
+            vms.matrix_indi_h,
+            TFT_GREEN);}
+        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+            vms.matrix_btn_y,
+            vms.matrix_btn_w,
+            vms.matrix_indi_h,
+            TFTOBJ_COL0);}
+    // configuration button
+    hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+    vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
+    vms.matrix_btn_w,
+    vms.matrix_btn_h,
+    TFTOBJ_COL0);
+    // enable/disable button and indicator
+    if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) {
+        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+        vms.matrix_btn_w,
+        vms.matrix_enable_h,
+        TFT_GREEN);
+        }
+    else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+        vms.matrix_btn_w,
+        vms.matrix_enable_h,
+        TFTOBJ_COL0);}
+    }
+    // create virtual matrix switch: row 2
+    vms.matrix_btn_w_loop = 0;
+    vms.matrix_btn_y = 90;
+    vms.matrix_btn_iter_x = 0;
+    for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
+        // skip multiplying matrix_btn_w initially
+        if (vms.matrix_btn_iter_x > 10) {vms.matrix_btn_w_loop=vms.matrix_btn_w;}
+        // active/inactive indicator
+        if (relayData.relays_bool[0][vms.matrix_btn_iter_x+10] == true) {
+            hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+            vms.matrix_btn_y,
+            vms.matrix_btn_w,
+            vms.matrix_indi_h,
+            TFT_GREEN);}
+        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+            vms.matrix_btn_y,
+            vms.matrix_btn_w,
+            vms.matrix_indi_h,
+            TFTOBJ_COL0);}
+    // configuration button
+    hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+    vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
+    vms.matrix_btn_w,
+    vms.matrix_btn_h,
+    TFTOBJ_COL0);
+    // enable/disable button and indicator
+    if (relayData.relays_enable[0][vms.matrix_btn_iter_x+10] == true) {
+        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+        vms.matrix_btn_w,
+        vms.matrix_enable_h,
+        TFT_GREEN);
+        }
+    else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
+        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
+        vms.matrix_btn_w,
+        vms.matrix_enable_h,
+        TFTOBJ_COL0);}
+    }
+    // upper hud reflects simple on/off states as well as time and precision.
+    // upper hud col 1 (connection and time)
+    hud.setCursor(50,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<15; i++) {hud.print(" ");}
+    hud.setCursor(50,2);
+    hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
+
+    hud.setCursor(50,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<15; i++) {hud.print(" ");}
+    hud.setCursor(50,12);
+    hud.print("T  "); hud.print(satData.sat_time_stamp_string);
+
+    hud.setCursor(50,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<15; i++) {hud.print(" ");}
+    hud.setCursor(50,22);
+    hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
+
+    // upper hud col 2 (precision)
+    hud.setCursor(175,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(175,2);
+    hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
+
+    hud.setCursor(175,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(175,12);
+    hud.print("PS "); hud.print(gnggaData.positioning_status);
+
+    hud.setCursor(175,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(175,22);
+    hud.print("PS "); hud.print(gnrmcData.positioning_status);
+
+    // upper hud col 3 (inertial navigation system)
+    hud.setCursor(230,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(230,2);
+    hud.print("INS "); hud.print(gpattData.ins);
+
+    hud.setCursor(230,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(230,12);
+    hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
+
+    hud.setCursor(230,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(230,22);
+    hud.print("RSF "); hud.print(gpattData.run_state_flag);
+
+    // upper hud col 4 (inertial navigation system)
+    hud.setCursor(280,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(280,2);
+    hud.print("GST "); hud.print(gpattData.gst_data);
+
+    hud.setCursor(280,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(280,12);
+    hud.print("SF  "); hud.print(gpattData.static_flag);
+
+    hud.setCursor(280,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<6; i++) {hud.print(" ");}
+    hud.setCursor(280,22);
+    hud.print("LF  "); hud.print(gpattData.line_flag);
+
+    // lower hud reflects positional and rotational information as well as ground speed and mileage. 
+    // lower hud col 1
+    hud.setCursor(0,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<7; i++) {hud.print(" ");}
+    hud.setCursor(0,145);
+    hud.print("PIT "); hud.print(gpattData.pitch);
+
+    hud.setCursor(0,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<7; i++) {hud.print(" ");}
+    hud.setCursor(0,155);
+    hud.print("ROL "); hud.print(gpattData.roll);
+
+    hud.setCursor(0,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<7; i++) {hud.print(" ");}
+    hud.setCursor(0,165);
+    hud.print("YAW "); hud.print(gpattData.yaw);
+
+    // lower hud col 2
+    hud.setCursor(130,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(130,145);
+    hud.print("ALT "); hud.print(gnggaData.altitude);
+
+    hud.setCursor(130,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(130,155);
+    hud.print("GS  "); hud.print(gnrmcData.ground_speed);
+
+    hud.setCursor(130,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(130,165);
+    hud.print("MIL "); hud.print(gpattData.mileage);
+
+    // lower hud col 3
+    hud.setCursor(243,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(243,145);
+    hud.print("GH "); hud.print(gnrmcData.ground_heading);
+
+    hud.setCursor(243,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(243,155);
+    hud.print(""); hud.print(gnggaData.latitude_hemisphere);
+    hud.print("  "); hud.print(satData.location_latitude_gngga_str);
+
+    hud.setCursor(243,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    for (int i=0; i<12; i++) {hud.print(" ");}
+    hud.setCursor(243,165);
+    hud.print(""); hud.print(gnggaData.longitude_hemisphere);
+    hud.print("  "); hud.print(satData.location_longitude_gngga_str);
+
+    return true;
+    }
+    else {return false;}
 }
 
 bool isTouchPage0(TouchPoint p) {
@@ -4326,6 +4553,39 @@ bool isTouchPage0(TouchPoint p) {
     return true;
   }
   else {return false;}
+}
+
+bool DisplayPage1() {
+    // check page here rather than in calling function so that we can see where we are when we're here
+    if (menuData.page == 1) {
+        // display selected matrix switch setup configuration
+        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        drawHomeBar();
+        // page header
+        hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print("Matrix "); hud.print(menuData.relay_select);
+        // table headers
+        hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
+        hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+        hud.setCursor(4,   28); hud.print("Function");
+        hud.setCursor(150, 28); hud.print("X");
+        hud.setCursor(206, 28); hud.print("Y");
+        hud.setCursor(262, 28); hud.print("Z");
+        // table values
+        for (int i=0; i<10; i++) {
+        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
+        hud.setCursor(150, 47+i*20);
+        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
+        hud.setCursor(206, 47+i*20);
+        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
+        hud.setCursor(262, 47+i*20);
+        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
+        }
+        return true;
+    }
+    else {return false;}
 }
 
 bool isTouchPage1(TouchPoint p) {
@@ -4389,6 +4649,82 @@ bool isTouchPage1(TouchPoint p) {
   else {return false;}
 }
 
+bool isTouchSelectMatrixFunction(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
+  if (menuData.page == 100) {
+    // back
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
+    // previous list items
+    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+      menuData.function_index--;
+      if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
+    }
+    // next list items
+    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+      menuData.function_index++;
+      if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
+    }
+    // select list item
+    if (p.x >= 0 && p.x <= 320) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
+          strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySelectMatrixFunction() {
+    // check page here rather than in calling function so that we can see where we are when we're here
+    if (menuData.page == 100) {
+        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        drawHomeBar();
+        drawBack();
+        // page header
+        hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
+        // scroll buttons
+        hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
+        hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+        // values
+        for (int i=0; i<10; i++) {
+        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
+        }
+        return true;
+    }
+    else {return false;}
+}
+
+bool DisplayNumpad() {
+    // check page here rather than in calling function so that we can see where we are when we're here
+    if (menuData.page == 300) {
+        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        drawBack();
+        hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(menuData.input);
+        hud.setCursor(0, 60);
+        hud.print("               7          8          9");
+        hud.setCursor(0, 100);
+        hud.print("               4          5          6");
+        hud.setCursor(0, 140);
+        hud.print("               1          2          3");
+        hud.setCursor(0, 180);
+        hud.print("ENTER          0          .          -          DEL");
+        hud.setCursor(0, 220);
+        hud.print("                                                 CL");
+        return true;
+    }
+    else {return false;}
+}
+
 bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
@@ -4422,38 +4758,26 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
-bool isTouchSelectMatrixFunction(TouchPoint p) {
-  // check page here rather than in calling function so that we can see where we are when we're here
-  if (menuData.page == 100) {
-    // back
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
-    // previous list items
-    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
-      menuData.function_index--;
-      if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
-    }
-    // next list items
-    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
-      menuData.function_index++;
-      if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
-    }
-    // select list item
-    if (p.x >= 0 && p.x <= 320) {
-      for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
-          strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
-          menuData.page=1;
-          break;
-        }
-      }
-    }
-    return true;
+void UpdateDisplay(void * pvParameters) {
+  // populate strite according to page then display
+  while (1) {
+    delay(1);
+    // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
+    hud.setColorDepth(8);
+    hud.createSprite(320, 240);
+    hud.fillSprite(TFT_TRANSPARENT);
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    // menuData.page=1;  // force a specific page to be displayed (dev)
+    // determine which sprite to build
+    bool checktouch = false;
+    if (checktouch == false) {checktouch = DisplayPage0();}
+    if (checktouch == false) {checktouch = DisplayPage1();}
+    if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
+    if (checktouch == false) {checktouch = DisplayNumpad();}
+    // display the sprite and free memory
+    hud.pushSprite(0, 0, TFT_TRANSPARENT);
+    hud.deleteSprite();
   }
-  else {return false;}
-}
-
-bool isTouch(TouchPoint p) {
 }
 
 void TouchScreenInput( void * pvParameters ) {
@@ -4475,317 +4799,6 @@ void TouchScreenInput( void * pvParameters ) {
         if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
       }
     }
-  }
-}
-
-void drawHomeBar() {
-
-  // saves reiteration under certain conditions
-  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-  hud.print("Home");
-}
-
-void drawBack() {
-  hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-  hud.print("Back");
-}
-
-struct VirtualMatrixSwitchStruct {
-  int matrix_btn_w = 30;
-  int matrix_btn_h = 25;
-  int matrix_btn_sp_x = 2;
-  int matrix_btn_sp_h = 2;
-  int matrix_btn_x = 0;
-  int matrix_btn_y = 35;
-  int matrix_indi_h = 5;
-  int matrix_enable_h = 15;
-  int matrix_btn_iter_x = 0;
-  int matrix_btn_w_loop = 0;
-};
-VirtualMatrixSwitchStruct vms;
-
-void updateDisplay(void * pvParameters) {
-
-  // populate strite according to page then display
-
-  while (1) {
-    delay(1);
-
-    // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
-    hud.setColorDepth(8);
-    hud.createSprite(320, 240);
-    hud.fillSprite(TFT_TRANSPARENT);
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-
-    // menuData.page=1;  // force a specific page to be displayed (dev)
-
-    if (menuData.page == 0) {
-      // drawHomeBar();
-      
-      // create virtual matrix switch: row 1
-      vms.matrix_btn_w_loop = 0;
-      vms.matrix_btn_y = 35;
-      vms.matrix_btn_iter_x = 0;
-      for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
-        if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;} // skip multiplying matrix_btn_w initially
-        if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) { // active/inactive indicator
-          hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y,
-          vms.matrix_btn_w,
-          vms.matrix_indi_h,
-          TFT_GREEN);}
-        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y,
-          vms.matrix_btn_w,
-          vms.matrix_indi_h,
-          TFTOBJ_COL0);}
-        // configuration button
-        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
-        vms.matrix_btn_w,
-        vms.matrix_btn_h,
-        TFTOBJ_COL0);
-        if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) { // enable/disable button and indicator
-          hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-          vms.matrix_btn_w,
-          vms.matrix_enable_h,
-          TFT_GREEN);
-          }
-        else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-          vms.matrix_btn_w,
-          vms.matrix_enable_h,
-          TFTOBJ_COL0);}
-        }
-      
-      // create virtual matrix switch: row 2
-      vms.matrix_btn_w_loop = 0;
-      vms.matrix_btn_y = 90;
-      vms.matrix_btn_iter_x = 0;
-      for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
-        if (vms.matrix_btn_iter_x > 10) {vms.matrix_btn_w_loop=vms.matrix_btn_w;} // skip multiplying matrix_btn_w initially
-        if (relayData.relays_bool[0][vms.matrix_btn_iter_x+10] == true) { // active/inactive indicator
-          hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y,
-          vms.matrix_btn_w,
-          vms.matrix_indi_h,
-          TFT_GREEN);}
-        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y,
-          vms.matrix_btn_w,
-          vms.matrix_indi_h,
-          TFTOBJ_COL0);}
-        // configuration button
-        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
-        vms.matrix_btn_w,
-        vms.matrix_btn_h,
-        TFTOBJ_COL0);
-        if (relayData.relays_enable[0][vms.matrix_btn_iter_x+10] == true) { // enable/disable button and indicator
-          hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-          vms.matrix_btn_w,
-          vms.matrix_enable_h,
-          TFT_GREEN);
-          }
-        else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-          vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-          vms.matrix_btn_w,
-          vms.matrix_enable_h,
-          TFTOBJ_COL0);}
-        }
-
-      // upper hud reflects simple on/off states as well as time and precision.
-
-      // upper hud col 1 (connection and time)
-      hud.setCursor(50,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<15; i++) {hud.print(" ");}
-      hud.setCursor(50,2);
-      hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
-
-      hud.setCursor(50,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<15; i++) {hud.print(" ");}
-      hud.setCursor(50,12);
-      hud.print("T  "); hud.print(satData.sat_time_stamp_string);
-
-      hud.setCursor(50,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<15; i++) {hud.print(" ");}
-      hud.setCursor(50,22);
-      hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
-
-      // upper hud col 2 (precision)
-      hud.setCursor(175,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(175,2);
-      hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
-
-      hud.setCursor(175,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(175,12);
-      hud.print("PS "); hud.print(gnggaData.positioning_status);
-
-      hud.setCursor(175,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(175,22);
-      hud.print("PS "); hud.print(gnrmcData.positioning_status);
-
-      // upper hud col 3 (inertial navigation system)
-      hud.setCursor(230,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(230,2);
-      hud.print("INS "); hud.print(gpattData.ins);
-
-      hud.setCursor(230,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(230,12);
-      hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
-
-      hud.setCursor(230,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(230,22);
-      hud.print("RSF "); hud.print(gpattData.run_state_flag);
-
-      // upper hud col 4 (inertial navigation system)
-      hud.setCursor(280,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(280,2);
-      hud.print("GST "); hud.print(gpattData.gst_data);
-
-      hud.setCursor(280,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(280,12);
-      hud.print("SF  "); hud.print(gpattData.static_flag);
-
-      hud.setCursor(280,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<6; i++) {hud.print(" ");}
-      hud.setCursor(280,22);
-      hud.print("LF  "); hud.print(gpattData.line_flag);
-
-      // lower hud reflects positional and rotational information as well as ground speed and mileage. 
-
-      // lower hud col 1
-      hud.setCursor(0,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,145);
-      hud.print("PIT "); hud.print(gpattData.pitch);
-
-      hud.setCursor(0,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,155);
-      hud.print("ROL "); hud.print(gpattData.roll);
-
-      hud.setCursor(0,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<7; i++) {hud.print(" ");}
-      hud.setCursor(0,165);
-      hud.print("YAW "); hud.print(gpattData.yaw);
-
-      // lower hud col 2
-      hud.setCursor(130,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,145);
-      hud.print("ALT "); hud.print(gnggaData.altitude);
-
-      hud.setCursor(130,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,155);
-      hud.print("GS  "); hud.print(gnrmcData.ground_speed);
-
-      hud.setCursor(130,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(130,165);
-      hud.print("MIL "); hud.print(gpattData.mileage);
-
-      // lower hud col 3
-      hud.setCursor(243,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,145);
-      hud.print("GH "); hud.print(gnrmcData.ground_heading);
-
-      hud.setCursor(243,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,155);
-      hud.print(""); hud.print(gnggaData.latitude_hemisphere);
-      hud.print("  "); hud.print(satData.location_latitude_gngga_str);
-
-      hud.setCursor(243,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      for (int i=0; i<12; i++) {hud.print(" ");}
-      hud.setCursor(243,165);
-      hud.print(""); hud.print(gnggaData.longitude_hemisphere);
-      hud.print("  "); hud.print(satData.location_longitude_gngga_str);
-    }
-    else if (menuData.page == 1) {
-      // display selected matrix switch setup configuration
-      hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-      drawHomeBar();
-
-      // page header
-      hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.print("Matrix "); hud.print(menuData.relay_select);
-
-      // table headers
-      hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.setCursor(4,   28); hud.print("Function");
-      hud.setCursor(150, 28); hud.print("X");
-      hud.setCursor(206, 28); hud.print("Y");
-      hud.setCursor(262, 28); hud.print("Z");
-
-      // table value
-      for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
-        hud.setCursor(150, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
-        hud.setCursor(206, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
-        hud.setCursor(262, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
-      }
-    }
-    // page 100: select function n for a given switch
-    else if (menuData.page == 100) {
-      hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-      drawHomeBar();
-      drawBack();
-
-      // page header
-      hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
-
-      // scroll buttons
-      hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-      hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-
-      // values
-      for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]); // add concise technical key, eg. x:description/unused y:description/unused z:description/unused.
-      }
-    }
-    // page 300: numpad
-    else if (menuData.page == 300) {
-      hud.fillRect(0, 0, 320, 240, TFT_BLACK);
-      drawBack();
-      hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.print(menuData.input);
-      hud.setCursor(0, 60);
-      hud.print("               7          8          9");
-      hud.setCursor(0, 100);
-      hud.print("               4          5          6");
-      hud.setCursor(0, 140);
-      hud.print("               1          2          3");
-      hud.setCursor(0, 180);
-      hud.print("ENTER          0          .          -          DEL");
-      hud.setCursor(0, 220);
-      hud.print("                                                 CL");
-    }
-
-    // display the sprite and free memory
-    hud.pushSprite(0, 0, TFT_TRANSPARENT);
-    hud.deleteSprite();
   }
 }
 
@@ -4834,7 +4847,7 @@ void setup() {
   
   // Create display task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
-      updateDisplay,       /* Function to implement the task */
+      UpdateDisplay,       /* Function to implement the task */
       "UpdateDisplayTask", /* Name of the task */
       10000,               /* Stack size in words */
       NULL,                /* Task input parameter */
@@ -4875,7 +4888,7 @@ void loop() {
   // trackPlanets();
   MatrixSwitchTask();
   CountElements();
-  // updateDisplay();
+  // UpdateDisplay();
 
   // store time taken to complete
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;
