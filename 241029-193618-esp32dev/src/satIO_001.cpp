@@ -121,7 +121,7 @@ struct systemStruct {
   bool output_gngga_enabled = false;
   bool output_gnrmc_enabled = false;
   bool output_gpatt_enabled = false;
-  bool output_matrix_results = true;
+  bool output_matrix_results = false;
 
   bool sidereal_track_sun = true;
   bool sidereal_track_moon = true;
@@ -4310,6 +4310,14 @@ struct TouchScreenStruct {
   int matrix_switch_ena_r2h1 = 135;
   int ts_t0 = millis();
   int ts_ti = 200;
+
+  int max_homebtn_pages = 11;
+  int homebtn_pages[11] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100};
+  bool homebutton_bool = false;
+
+  int max_settingsbtn_pages = 1;
+  int settingsbtn_pages[1] = {0};
+  bool settingsbtn_bool = false;
 };
 TouchScreenStruct tss;
 
@@ -4331,28 +4339,33 @@ void drawBack() {
 //                                                                                                               TOUCH TITLEBAR
 
 bool isTouchTitleBar(TouchPoint p) {
-  if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
-  else {return false;}
+
+  // choose where home button will be registered
+  for (int i=0; i<tss.max_homebtn_pages; i++) {if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
+  Serial.println(tss.homebutton_bool);
+  if (tss.homebutton_bool==true) {
+    if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
+  }
+
+  // choose where settings button will be registered
+  tss.settingsbtn_bool=false;
+  for (int i=0; i<tss.max_settingsbtn_pages; i++) {if (menuData.page==tss.settingsbtn_pages[i]) {tss.settingsbtn_bool=true; break;} else {tss.settingsbtn_bool=false;}}
+  Serial.println(tss.settingsbtn_bool);
+  if (tss.settingsbtn_bool==true) {
+    if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=3; return true;}
+  }
+  return false;
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY PAGE 0
 
-// enable all --> page 0
-// disable all --> page 0
-// all on
-// all off
-// save matrix --> file page
-// load matrix --> file page
-// enable matrix
-// disable matrix
-// enable/disable each gps sentence parsing
-// delete matrix --> file page
-// add LoadMatrixFileNumber to available matrix functions so that matrix files can be automatically loaded into memory by the matrix switch.
-// refactor some variable names in relaysData:     relays_data > matrixswitch_xyz.     function_names > matrixswitch_availfunctionnames.     relays > matrixswitch_functionnames
-// output matrix calculation results (0/1) to serial as a tagged sentence to provide other systems with the calculated data (true/false), example with 20 switches: $MATRIXBOOL,0,0,0,0...etc.
+// todo: add LoadMatrixFileNumber to available matrix functions so that matrix files can be automatically loaded into memory by the matrix switch.
 
 bool DisplayPage0() {
+  // settings
+  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.print("Config");
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
     // create virtual matrix switch: row 1
@@ -4853,6 +4866,194 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
+struct SettingsDataStruct {
+  int max_settings0values = 7;
+  char settings0values[7][56] = {
+    "System",  // p4
+    "Matrix",  // p5
+    "GPS",     // p6
+    "Serial",  // p7
+    "File",    // p8
+    "Time",    // p9
+    "Display", // p10
+  };
+};
+SettingsDataStruct sData;
+
+bool DisplaySettings0() {
+  // check page here rather than in calling function so that we can see where we are when we're here
+  if (menuData.page == 3) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+
+    // page header
+    hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Settings");
+
+    // values
+    for (int i=0; i<sData.max_settings0values; i++) {
+    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sData.settings0values[i]);
+    }
+
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettings0(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
+  if (menuData.page == 3) {
+
+    // select list item column 0
+    if (p.x >= 0 && p.x <= 295) {
+      for (int i=0; i<sData.max_settings0values; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          menuData.page=i+4; // settings page 0 is on page 3 so make subsequent settings pages 4+
+          break;
+        }
+      }
+    }
+
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsSystem() {
+  if (menuData.page == 4) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("System Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsSystem(TouchPoint p) {
+  if (menuData.page == 4) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsMatrix() {
+  if (menuData.page == 5) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Matrix Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsMatrix(TouchPoint p) {
+  if (menuData.page == 5) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsGPS() {
+  if (menuData.page == 6) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("GPS Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsGPS(TouchPoint p) {
+  if (menuData.page == 6) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsSerial() {
+  if (menuData.page == 7) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Serial Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsSerial(TouchPoint p) {
+  if (menuData.page == 7) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsFile() {
+  if (menuData.page == 8) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("File Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsFile(TouchPoint p) {
+  if (menuData.page == 8) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsTime() {
+  if (menuData.page == 9) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Time Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsTime(TouchPoint p) {
+  if (menuData.page == 9) {
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsDisplay() {
+  if (menuData.page == 10) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Display Settings");
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsDisplay(TouchPoint p) {
+  if (menuData.page == 10) {
+    return true;
+  }
+  else {return false;}
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               UPDATE DISPLAY
 
@@ -4865,13 +5066,24 @@ void UpdateDisplay(void * pvParameters) {
     hud.createSprite(320, 240);
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+
     // menuData.page=1;  // force a specific page to be displayed (dev)
+
     // determine which sprite to build
     bool checktouch = false;
     if (checktouch == false) {checktouch = DisplayPage0();}
     if (checktouch == false) {checktouch = DisplayPage1();}
     if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
     if (checktouch == false) {checktouch = DisplayNumpad();}
+    if (checktouch == false) {checktouch = DisplaySettings0();}
+    if (checktouch == false) {checktouch = DisplaySettingsSystem();}
+    if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
+    if (checktouch == false) {checktouch = DisplaySettingsGPS();}
+    if (checktouch == false) {checktouch = DisplaySettingsSerial();}
+    if (checktouch == false) {checktouch = DisplaySettingsFile();}
+    if (checktouch == false) {checktouch = DisplaySettingsTime();}
+    if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
+
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
     hud.deleteSprite();
@@ -4898,6 +5110,14 @@ void TouchScreenInput( void * pvParameters ) {
         if (checktouch == false) {checktouch = isTouchPage1(p);}
         if (checktouch == false) {checktouch = isTouchNumpad(p);}
         if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
+        if (checktouch == false) {checktouch = isDisplaySettings0(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsSystem(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsMatrix(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsGPS(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsSerial(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsFile(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsTime(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsDisplay(p);}
       }
     }
   }
