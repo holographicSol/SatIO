@@ -4277,6 +4277,7 @@ bool isTouchTitleBar(TouchPoint p) {
 }
 
 bool isTouchPage0(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
     // page 0: matrix main btn (row 0)
     if (p.y >= tss.matrix_switch_cfg_r1h0 && p.y <= tss.matrix_switch_cfg_r1h1) {
@@ -4328,6 +4329,7 @@ bool isTouchPage0(TouchPoint p) {
 }
 
 bool isTouchPage1(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 1) {
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
@@ -4388,6 +4390,7 @@ bool isTouchPage1(TouchPoint p) {
 }
 
 bool isTouchNumpad(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
     if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
     else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
@@ -4420,6 +4423,7 @@ bool isTouchNumpad(TouchPoint p) {
 }
 
 bool isTouchSelectMatrixFunction(TouchPoint p) {
+  // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
     // back
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
