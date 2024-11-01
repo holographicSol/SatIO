@@ -4411,11 +4411,11 @@ void TouchScreenInput( void * pvParameters ) {
             // page 100: select function
             else if (menuData.page == 100) {
                 // previous list items
-                if ((p.x >= 0 && p.x <= 290) && (p.y >= 30 && p.y <= 40)) {
+                if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
                 menuData.function_index--;
                 if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}}
                 // next list items
-                else if ((p.x >= 0 && p.x <= 290) && (p.y >= 215 && p.y <= 225)) {
+                else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
                 menuData.function_index++;
                 if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}}
 
