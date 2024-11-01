@@ -4411,7 +4411,7 @@ void TouchScreenInput( void * pvParameters ) {
             // page 100: select function
             else if (menuData.page == 100) {
                 // back
-                if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 20)) {menuData.page=1;}
+                if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
                 // previous list items
                 if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
                 menuData.function_index--;
