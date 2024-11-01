@@ -4405,7 +4405,7 @@ void TouchScreenInput( void * pvParameters ) {
                 // clear
                 else if ((p.x >= 240 && p.x <= 285) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
                 // back
-                else if ((p.x >= 0 && p.x <= 60) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
+                else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
             }
 
             // page 100: select function
@@ -4727,6 +4727,7 @@ void updateDisplay(void * pvParameters) {
     // page 300: numpad
     else if (menuData.page == 300) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+      drawBack();
       hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.print(menuData.input);
       hud.setCursor(0, 60);
@@ -4738,7 +4739,7 @@ void updateDisplay(void * pvParameters) {
       hud.setCursor(0, 180);
       hud.print("ENTER          0          .          -          DEL");
       hud.setCursor(0, 220);
-      hud.print("BACK                                          CLEAR");
+      hud.print("                                              CLEAR");
     }
 
     // display the sprite and free memory
