@@ -4290,6 +4290,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_select=i;
+                Serial.print("[switch setup] matrix "); Serial.println(menuData.relay_select);
                 menuData.backpage=0;
                 menuData.page=1;
                 break;}
@@ -4300,6 +4301,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 menuData.relay_select=i+10;
+                Serial.print("[switch setup] matrix "); Serial.println(menuData.relay_select);
                 menuData.backpage=0;
                 menuData.page=1;
                 break;}
@@ -4310,6 +4312,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i] ^= true;
+                Serial.print("[switch toggle] matrix "); Serial.println(i);
                 break;}
             }
           }
@@ -4318,6 +4321,7 @@ void TouchScreenInput( void * pvParameters ) {
             for (int i=0; i<10; i++) {
               if (p.x >= page0_x[i][0] && p.x <= page0_x[i][1]) {
                 relayData.relays_enable[0][i+10] ^= true;
+                Serial.print("[switch toggle] matrix "); Serial.println(i+10);
                 break;}
             }
           }
