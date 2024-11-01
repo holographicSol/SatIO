@@ -4882,11 +4882,15 @@ struct SettingsDataStruct {
     "Display", // p10
   };
 
-  int max_settingsystemvalues = 0;
-  char settingsystemvalues[0][56] = {};
+  int max_settingsystemvalues = 1;
+  char settingsystemvalues[1][56] = {
+    "AUTO RESUME", // autoresume_enabled
+  };
 
-  int max_settingsmatrixvalues = 0;
-  char settingsmatrixvalues[0][56] = {};
+  int max_settingsmatrixvalues = 1;
+  char settingsmatrixvalues[1][56] = {
+    "ENABLE MATRIX"
+  };
 
   int max_settingsgpsvalues = 4;
   char settingsgpsvalues[4][56] = {
@@ -4903,16 +4907,31 @@ struct SettingsDataStruct {
     "ENABLE GNRMC",  // enables/disables serial output of gnrmc sentence
     "ENABLE GPATT",  // enables/disables serial output of gpatt sentence
     "ENABLE MATRIX", // enables/disables serial output of gpatt sentence
+    // coordinate_conversion_mode (GNGGA/GNRMC)
   };
 
-  int max_settingsfilevalues = 0;
-  char settingsfilevalues[0][56] = {};
+  int max_settingsfilevalues = 5;
+  char settingsfilevalues[5][56] = {
+    "SYSTEM FILE",
+    "NEW MATRIX FILE",
+    "SAVE MATRIX FILE",
+    "LOAD MATRIX FILE",
+    "DELETE MATRIX FILE",
+  };
 
-  int max_settingstimevalues = 0;
-  char settingstimevalues[0][56] = {};
+  int max_settingstimevalues = 2;
+  char settingstimevalues[2][56] = {
+    "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
+    "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
+  };
 
-  int max_settingsdisplayvalues = 0;
-  char settingsdisplayvalues[0][56] = {};
+  int max_settingsdisplayvalues = 4;
+  char settingsdisplayvalues[4][56] = {
+    "BRIGHTNESS", //
+    "AUTO DIM",   //
+    "AUTO OFF",   // 
+    "FLIP",       // display_flip_vertically
+  };
 };
 SettingsDataStruct sData;
 
