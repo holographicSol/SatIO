@@ -4701,6 +4701,10 @@ void updateDisplay(void * pvParameters) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
       drawHomeBar();
 
+      // page header
+      hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
+
       // scroll buttons
       hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
       hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
