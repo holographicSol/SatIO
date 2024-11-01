@@ -1496,18 +1496,18 @@ struct RelayStruct {
     "GyroZDataUnder",
     "GyroZDataEqual",
     "GyroZDataRange",
-    "gngga_valid_checksum",
-    "gnrmc_valid_checksum",
-    "gpatt_valid_checksum",
-    "gngga_invalid_checksum",
-    "gnrmc_invalid_checksum",
-    "gpatt_invalid_checksum",
-    "gngga_valid_check_data",
-    "gnrmc_valid_check_data",
-    "gpatt_valid_check_data",
-    "gngga_invalid_check_data",
-    "gnrmc_invalid_check_data",
-    "gpatt_invalid_check_data",
+    "GNGGAValidChecksum",
+    "GNRMCValidChecksum",
+    "GPATTValidChecksum",
+    "GNGGAInvalidChecksum",
+    "GNRMCInvalidChecksum",
+    "GPATTInvalidChecksum",
+    "GNGGAValidCheckData",
+    "GNRMCValidCheckData",
+    "GPATTValidCheckData",
+    "GNGGAInvalidCheckData",
+    "GNRMCInvalidCheckData",
+    "GPATTInvalidCheckData",
     "SunAzimuth",
     "SunAltitide",
     "DayTime",
@@ -1767,18 +1767,18 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                VALIDITY DATA
 
-  char gngga_valid_checksum[56] = "gngga_valid_checksum";
-  char gnrmc_valid_checksum[56] = "gnrmc_valid_checksum";
-  char gpatt_valid_checksum[56] = "gpatt_valid_checksum";
-  char gngga_invalid_checksum[56] = "gngga_invalid_checksum";
-  char gnrmc_invalid_checksum[56] = "gnrmc_invalid_checksum";
-  char gpatt_invalid_checksum[56] = "gpatt_invalid_checksum";
-  char gngga_valid_check_data[56] = "gngga_valid_check_data";
-  char gnrmc_valid_check_data[56] = "gnrmc_valid_check_data";
-  char gpatt_valid_check_data[56] = "gpatt_valid_check_data";
-  char gngga_invalid_check_data[56] = "gngga_invalid_check_data";
-  char gnrmc_invalid_check_data[56] = "gnrmc_invalid_check_data";
-  char gpatt_invalid_check_data[56] = "gpatt_invalid_check_data";
+  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";
+  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";
+  char GPATTValidChecksum[56] = "GPATTValidChecksum";
+  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";
+  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";
+  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";
+  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";
+  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";
+  char GPATTValidCheckData[56] = "GPATTValidCheckData";
+  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData";
+  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData";
+  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData";
 };
 RelayStruct relayData;
 
@@ -3922,18 +3922,18 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                     VALIDITY
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gngga_valid_checksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gngga_invalid_checksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gnrmc_valid_checksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gnrmc_invalid_checksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gpatt_valid_checksum) == 0) {tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gpatt_invalid_checksum) == 0) {tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gngga_valid_check_data) == 0) {tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gngga_invalid_check_data) == 0) {tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gnrmc_valid_check_data) == 0) {tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gnrmc_invalid_check_data) == 0) {tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gpatt_valid_check_data) == 0) {tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.gpatt_invalid_check_data) == 0) {tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
       
       // safety layer: disengage if all entries are $NONE
@@ -4590,19 +4590,19 @@ bool DisplayPage1() {
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
         hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
         hud.setCursor(4,   28); hud.print("Function");
-        hud.setCursor(150, 28); hud.print("X");
-        hud.setCursor(206, 28); hud.print("Y");
-        hud.setCursor(262, 28); hud.print("Z");
+        hud.setCursor(164, 28); hud.print("X");
+        hud.setCursor(220, 28); hud.print("Y");
+        hud.setCursor(278, 28); hud.print("Z");
         // table values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
-        hud.setCursor(150, 47+i*20);
+        hud.setCursor(164, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
-        hud.setCursor(206, 47+i*20);
+        hud.setCursor(220, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
-        hud.setCursor(262, 47+i*20);
+        hud.setCursor(278, 47+i*20);
         hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
         }
         return true;
@@ -4628,7 +4628,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select x
-    else if (p.x >= 135 && p.x <= 185) {
+    else if (p.x >= 155 && p.x <= 195) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
@@ -4642,7 +4642,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select y
-    else if (p.x >= 185 && p.x <= 230) {
+    else if (p.x >= 205 && p.x <= 245) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
@@ -4656,7 +4656,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select z
-    else if (p.x >= 230 && p.x <= 285) {
+    else if (p.x >= 255 && p.x <= 285) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
