@@ -2363,7 +2363,7 @@ void extrapulatedSatData() {
   satData.checksum_i = getCheckSum(satData.satio_sentence);
   itoa(satData.checksum_i, satData.checksum_str, 10);
   strcat(satData.satio_sentence, satData.checksum_str);
-  // if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+  if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
   }
 
 
@@ -4100,7 +4100,7 @@ void readGPS() {
       
       if ((systemData.gngga_enabled == true) && (serial1Data.gngga_bool==false)){
         if (strncmp(serial1Data.BUFFER, "$GNGGA", 6) == 0) {
-          // if (systemData.output_gngga_enabled == true) {Serial.println(serial1Data.BUFFER);}
+          if (systemData.output_gngga_enabled == true) {Serial.println(serial1Data.BUFFER);}
           memset(gnggaData.sentence, 0, sizeof(gnrmcData.sentence));
           strcpy(gnggaData.sentence, serial1Data.BUFFER);
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
@@ -4114,7 +4114,7 @@ void readGPS() {
 
       else if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
         if (strncmp(serial1Data.BUFFER, "$GNRMC", 6) == 0) {
-          // if (systemData.output_gnrmc_enabled == true) {Serial.println(serial1Data.BUFFER);}
+          if (systemData.output_gnrmc_enabled == true) {Serial.println(serial1Data.BUFFER);}
           memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
           strcpy(gnrmcData.sentence, serial1Data.BUFFER);
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
@@ -4128,7 +4128,7 @@ void readGPS() {
 
       else if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
         if (strncmp(serial1Data.BUFFER, "$GPATT", 6) == 0) {
-            // if (systemData.output_gpatt_enabled == true) {Serial.println(serial1Data.BUFFER);}
+            if (systemData.output_gpatt_enabled == true) {Serial.println(serial1Data.BUFFER);}
             memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
             strcpy(gpattData.sentence, serial1Data.BUFFER);
             gpattData.valid_checksum = validateChecksum(gpattData.sentence);
@@ -4342,7 +4342,7 @@ bool isTouchTitleBar(TouchPoint p) {
 
   // choose where home button will be registered
   for (int i=0; i<tss.max_homebtn_pages; i++) {if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
-  Serial.println(tss.homebutton_bool);
+  // Serial.println(tss.homebutton_bool);
   if (tss.homebutton_bool==true) {
     if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
   }
@@ -4350,7 +4350,7 @@ bool isTouchTitleBar(TouchPoint p) {
   // choose where settings button will be registered
   tss.settingsbtn_bool=false;
   for (int i=0; i<tss.max_settingsbtn_pages; i++) {if (menuData.page==tss.settingsbtn_pages[i]) {tss.settingsbtn_bool=true; break;} else {tss.settingsbtn_bool=false;}}
-  Serial.println(tss.settingsbtn_bool);
+  // Serial.println(tss.settingsbtn_bool);
   if (tss.settingsbtn_bool==true) {
     if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=3; return true;}
   }
