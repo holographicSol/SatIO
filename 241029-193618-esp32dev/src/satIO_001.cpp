@@ -4410,6 +4410,8 @@ void TouchScreenInput( void * pvParameters ) {
 
             // page 100: select function
             else if (menuData.page == 100) {
+                // back
+                if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 20)) {menuData.page=1;}
                 // previous list items
                 if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
                 menuData.function_index--;
@@ -4440,6 +4442,11 @@ void drawHomeBar() {
   // saves reiteration under certain conditions
   hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
   hud.print("Home");
+}
+
+void drawBack() {
+  hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.print("Back");
 }
 
 struct VirtualMatrixSwitchStruct {
@@ -4700,6 +4707,7 @@ void updateDisplay(void * pvParameters) {
     else if (menuData.page == 100) {
       hud.fillRect(0, 0, 320, 240, TFT_BLACK);
       drawHomeBar();
+      drawBack();
 
       // page header
       hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
