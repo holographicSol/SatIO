@@ -183,6 +183,7 @@ struct menuStruct {
   int relay_select = 0;
   int relay_function_select = 0;
   int function_index = 0;
+  int matrix_filenames_index = 0;
   bool menu_lock = false;
   int isr_i = 0;
 };
@@ -226,9 +227,13 @@ Serial1Struct serial1Data;
 //                                                                                                                 DATA: SDCARD
 
 struct SDCardStruct {
+  int max_matrix_filenames = 20;
+  char matrix_filenames[20][56] = {
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    };
   char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";
   int matrix_filename_i = 0;
-  char matrix_filename[56] = "/MATRIX_0.SAVE";
+  char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
   char matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
   char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};
   File root;
@@ -2794,7 +2799,7 @@ void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(SD, sdcardData.s
 void sdcard_calculate_filename_create(fs::FS &fs, char * dir, char * name, char * ext) {
   char tempname[1024];
   char temppath[1024];
-  char temp_i[4];
+  char temp_i[16];
   for (int i = 0; i < 100; i++) {
     memset(temppath, 0, 1024); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
     memset(tempname, 0, 1024); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
@@ -2802,9 +2807,29 @@ void sdcard_calculate_filename_create(fs::FS &fs, char * dir, char * name, char 
     if (!fs.exists(temppath)) {
       Serial.println("[sdcard] calculated new filename: " + String(temppath));
       memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      memset(sdcardData.matrix_filename, 0, 56); strcpy(sdcardData.matrix_filename, tempname);
       break;}
     else {Serial.println("[sdcard] skipping filename: " + String(temppath));}
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                    SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
+
+void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
+  char tempname[56];
+  char temppath[56];
+  char temp_i[4];
+  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
+  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {
+    memset(temppath, 0, 56); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
+    memset(tempname, 0, 56); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
+    // Serial.println("[sdcard] calculating: " + String(temppath)); // debug
+    if (fs.exists(temppath)) {
+      Serial.println("[sdcard] calculated filename found: " + String(temppath));
+      memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
+      Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
+      }
+    // else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));} // debug
   }
 }
 
@@ -2825,7 +2850,6 @@ void sdcard_calculate_filename_next(fs::FS &fs, char * dir, char * name, char * 
       Serial.println("[sdcard] calculated filename found: " + String(temppath));
       Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));
       memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      memset(sdcardData.matrix_filename, 0, 56); strcpy(sdcardData.matrix_filename, tempname);
       break;}
     else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));}
     sdcardData.matrix_filename_i++;
@@ -2849,7 +2873,6 @@ void sdcard_calculate_filename_previous(fs::FS &fs, char * dir, char * name, cha
       Serial.println("[sdcard] calculated filename found: " + String(temppath));
       Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));
       memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      memset(sdcardData.matrix_filename, 0, 56); strcpy(sdcardData.matrix_filename, tempname);
       break;}
     else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));}
     sdcardData.matrix_filename_i--;
@@ -3033,17 +3056,25 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
 //                                                                                                   SDCARD: DELETE MATRIX FILE
 
 void sdcard_delete_matrix(fs::FS &fs, char * file) {
+  // at least for now, do not allow deletion of MATRIX_0.SAVE.
   if (fs.exists(file)) {
-    Serial.println("[sdcard] attempting to delete file: " + String(sdcardData.matrix_filepath));
+    Serial.println("[sdcard] attempting to delete file: " + String(file));
+    // try remove
     fs.remove(file);
-    sdcard_calculate_filename_previous(SD, "MATRIX/", "MATRIX", ".SAVE");
-    sdcard_load_matrix(SD, sdcardData.matrix_filepath);
     if (!fs.exists(file)) {
-      Serial.println("[sdcard] successfully deleted file: " + String(sdcardData.matrix_filepath));
+      Serial.println("[sdcard] successfully deleted file: " + String(file));
+      Serial.println("attempting to remove filename from filenames.");
+      // recreate matrix filenames
+      sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE");
+      // zero the matrix
+      zero_matrix();
+      // delete matrix filepath.
+      memset(sdcardData.matrix_filepath, 0, 56);
+      delay(5000);
     }
-    else {Serial.println("[sdcard] failed to deleted file: " + String(sdcardData.matrix_filepath));}
+    else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
   }
-  else {Serial.println("[sdcard] file does not exist: " + String(sdcardData.matrix_filepath));}
+  else {Serial.println("[sdcard] file does not exist: " + String(file));}
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -4311,12 +4342,12 @@ struct TouchScreenStruct {
   int ts_t0 = millis();
   int ts_ti = 200;
 
-  int max_homebtn_pages = 11;
-  int homebtn_pages[11] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100};
+  int max_homebtn_pages = 13;
+  int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
   bool homebutton_bool = false;
 
-  int max_settingsbtn_pages = 1;
-  int settingsbtn_pages[1] = {0};
+  int max_settingsbtn_pages = 3;
+  int settingsbtn_pages[3] = {0, 400, 401};
   bool settingsbtn_bool = false;
 };
 TouchScreenStruct tss;
@@ -4910,9 +4941,10 @@ struct SettingsDataStruct {
     // coordinate_conversion_mode (GNGGA/GNRMC)
   };
 
-  int max_settingsfilevalues = 5;
-  char settingsfilevalues[5][56] = {
+  int max_settingsfilevalues = 6;
+  char settingsfilevalues[6][56] = {
     "SYSTEM FILE",
+    "MATRIX FILE",
     "NEW MATRIX FILE",
     "SAVE MATRIX FILE",
     "LOAD MATRIX FILE",
@@ -5142,7 +5174,20 @@ bool DisplaySettingsFile() {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print(sData.settingsfilevalues[i]);
+    // display system configuration filepath
+    if (i==0) {
+      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+      hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.print(sdcardData.sysconf);
     }
+    // display current matrix filepath
+    else if (i==1) {
+      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+      hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.print(sdcardData.matrix_filepath);
+    }
+    }
+    
     return true;
   }
   else {return false;}
@@ -5155,6 +5200,123 @@ bool isDisplaySettingsFile(TouchPoint p) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
+          // values
+          if      (i==2) {sdcard_calculate_filename_create(SD, "/MATRIX/", "MATRIX", ".SAVE"); zero_matrix();}
+          else if (i==3) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
+          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsLoadMatrix() {
+  if (menuData.page == 400) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    drawBack();
+
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Load Matrix File");
+
+    // scroll buttons
+    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
+    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
+    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    
+    // values
+    for (int i=0; i<10; i++) {
+    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]); hud.print(" "); hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsLoadMatrix(TouchPoint p) {
+  if (menuData.page == 400) {
+    // back
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
+    // previous list items
+    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index--;
+      if (menuData.matrix_filenames_index-10<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+    }
+    // next list items
+    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index++;
+      if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+    }
+    // select list item
+    if (p.x >= 0 && p.x <= 320) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          sdcard_load_matrix(SD, sdcardData.matrix_filenames[i]);
+          menuData.page=8;
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsDeleteMatrix() {
+  if (menuData.page == 401) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    drawBack();
+
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Delete Matrix File");
+
+    // scroll buttons
+    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
+    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
+    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    
+    // values
+    for (int i=0; i<10; i++) {
+    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]); hud.print(" "); hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
+  if (menuData.page == 401) {
+    // back
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
+    // previous list items
+    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index--;
+      if (menuData.matrix_filenames_index-10<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+    }
+    // next list items
+    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index++;
+      if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+    }
+    // select list item
+    if (p.x >= 0 && p.x <= 320) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          sdcard_delete_matrix(SD, sdcardData.matrix_filenames[i]);
+          menuData.page=8;
           break;
         }
       }
@@ -5245,7 +5407,7 @@ void UpdateDisplay(void * pvParameters) {
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
 
-    // menuData.page=1;  // force a specific page to be displayed (dev)
+    // menuData.page=8;  // force a specific page to be displayed (dev)
 
     // determine which sprite to build
     bool checktouch = false;
@@ -5261,6 +5423,8 @@ void UpdateDisplay(void * pvParameters) {
     if (checktouch == false) {checktouch = DisplaySettingsFile();}
     if (checktouch == false) {checktouch = DisplaySettingsTime();}
     if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
+    if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
+    if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
 
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
@@ -5296,6 +5460,8 @@ void TouchScreenInput( void * pvParameters ) {
         if (checktouch == false) {checktouch = isDisplaySettingsFile(p);}
         if (checktouch == false) {checktouch = isDisplaySettingsTime(p);}
         if (checktouch == false) {checktouch = isDisplaySettingsDisplay(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsLoadMatrix(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsDeleteMatrix(p);}
       }
     }
   }
@@ -5369,8 +5535,17 @@ void setup() {
 
   init_sdcard();
   sdcard_mkdirs();
-  if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
+  // load system configuration file
   if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+  // load matrix file specified by configuration file
+  if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
+    Serial.println("[sdcard] specified matrix file not found!");
+    // create default matrix file
+    if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+      Serial.println("[sdcard] default matrix file not found!");
+      if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+    }
+  }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
