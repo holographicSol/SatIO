@@ -4971,7 +4971,6 @@ bool DisplaySettings0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
     }
-
     return true;
   }
   else {return false;}
@@ -4986,6 +4985,7 @@ bool isDisplaySettings0(TouchPoint p) {
       for (int i=0; i<sData.max_settings0values; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=i+4; // settings page 0 is on page 3 so make subsequent settings pages 4+
+          Serial.println("[settings] " + String(sData.settings0values[i]) + " -> page " +String(i+4));
           break;
         }
       }
@@ -5432,7 +5432,6 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 }
 
 bool DisplaySettingsTime() {
-  menuData.page = 9;
   if (menuData.page == 9) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
