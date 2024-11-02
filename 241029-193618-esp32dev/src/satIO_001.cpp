@@ -5234,23 +5234,30 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+      Serial.println(menuData.matrix_filenames_index);
     }
+
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+      Serial.println(menuData.matrix_filenames_index);
     }
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
-            strcpy(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "/MATRIX/MATRIX_");
-            char tmp_i[16];
-            itoa(i, tmp_i, 10);
-            strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
-            strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
-            }
+          Serial.println(menuData.matrix_filenames_index+i);
+          
+          // create filename
+          memset(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 0, sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]));
+          strcpy(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "/MATRIX/MATRIX_");
+          char tmp_i[16];
+          itoa(menuData.matrix_filenames_index+i, tmp_i, 10);
+          strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
+          strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
+
+          // save
           sdcard_save_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
           break;
