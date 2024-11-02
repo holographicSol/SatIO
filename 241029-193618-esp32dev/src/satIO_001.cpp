@@ -235,6 +235,7 @@ struct SDCardStruct {
   int matrix_filename_i = 0;
   char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
   char matrix_filepath[56] = "";
+  char tempmatrixfilepath[56];
   char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};
   File root;
   unsigned long nbytes;
@@ -2955,10 +2956,9 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
       }
     }
-    char currentmatrixfilepath[56];
-    strcpy(currentmatrixfilepath, file);
+    strcpy(sdcardData.tempmatrixfilepath, file);
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-    strcpy(sdcardData.matrix_filepath, currentmatrixfilepath);
+    strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
     Serial.println("[sdcard] loaded file successfully:   " + String(file));
     Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
     sdcardData.current_file.close();
