@@ -54,6 +54,7 @@
 #include <SiderealObjects.h>
 #include "FS.h"
 #include "SD.h"
+#include <iostream>
 
 const int8_t ctsPin = -1;
 const int8_t rtsPin = -1;
@@ -4383,6 +4384,7 @@ bool isTouchTitleBar(TouchPoint p) {
 //                                                                                                               DISPLAY PAGE 0
 
 // todo: add LoadMatrixFileNumber to available matrix functions so that matrix files can be automatically loaded into memory by the matrix switch.
+// todo on page 0. thought ahead required as always to try and make the most of each page, especially page 0: | enable all / disable all | all on / all off |
 
 bool DisplayPage0() {
   // settings
@@ -4999,7 +5001,7 @@ bool DisplaySettingsSystem() {
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor(150, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print(sData.settingsystemvalues[i]);
     }
     return true;
@@ -5221,9 +5223,17 @@ bool DisplaySettingsSaveMatrix() {
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
-    else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
+
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString("EMPTY SLOT 0", 160, 52+i*20);
+      }
+    else {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      }
     }
     return true;
   }
@@ -5286,8 +5296,16 @@ bool DisplaySettingsLoadMatrix() {
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
-    else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+1), 160, 52+i*20);
+      }
+    else {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      }
     }
     return true;
   }
@@ -5342,8 +5360,16 @@ bool DisplaySettingsDeleteMatrix() {
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
-    else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+1), 160, 52+i*20);
+      }
+    else {
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      }
     }
     return true;
   }
