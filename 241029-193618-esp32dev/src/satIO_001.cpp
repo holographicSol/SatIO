@@ -78,6 +78,17 @@ bool isTouched = false;
 
 TFT_eSprite hud = TFT_eSprite(&tft);
 
+#define LCD_BACK_LIGHT_PIN 21
+
+// use first channel of 16 channels (started from zero)
+#define LEDC_CHANNEL_0     0
+
+// use 12 bit precission for LEDC timer
+#define LEDC_TIMER_12_BIT  12
+
+// use 5000 Hz as a LEDC base frequency
+#define LEDC_BASE_FREQ     5000
+
 TaskHandle_t TSTask;
 TaskHandle_t UpdateDisplayTask;
 
@@ -135,17 +146,25 @@ struct systemStruct {
   bool sidereal_track_neptune = true;
   
   bool display_low_light = false;
-  bool display_flip_vertically = true;
   bool display_auto_dim = true; // (OLED burn-in protection)
   int           display_auto_dim_p0 = 3000;
   unsigned long display_auto_dim_t0;
   unsigned long display_auto_dim_t1;
   bool          display_dim = false;
   bool display_auto_off = false; // (OLED burn-in protection)
-  int           display_auto_off_p0 = 20000;
+  int           display_auto_off_p0 = 5000;
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
   bool          display_on = true;
+  uint32_t brightness0 = 255;
+  uint32_t brightness1 = 255;
+  int index_display_autodim_times = 0;
+  int max_display_autodim_times = 6;
+  int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
+  int index_display_autooff_times = 1;
+  int max_display_autooff_times = 6;
+  int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
+
   char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"};
   char translate_plus_minus[2][56]  = {"+", "-"};
 };
@@ -295,6 +314,18 @@ struct validationStruct {
   bool bool_data_1 = false;
 };
 validationStruct validData;
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               ANALOGUE WRITE
+// Arduino like analogWrite
+// value has to be between 0 and valueMax
+void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
+  // calculate duty, 4095 from 2 ^ 12 - 1
+  uint32_t duty = (4095 / valueMax) * min(value, valueMax);
+
+  // write duty to LEDC
+  ledcWrite(channel, duty);
+}
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         VALIDATION: CHECKSUM
@@ -2524,16 +2555,6 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println("");
 
     memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_FLIP_VERTICALLY,");
-    itoa(systemData.display_flip_vertically, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "OUTPUT_SATIO_SENTENCE,");
     itoa(systemData.output_satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2717,15 +2738,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           if (is_all_digits(sdcardData.token) == true) {
             Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.display_low_light = false;} else {systemData.display_low_light = true;}
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_FLIP_VERTICALLY", strlen("DISPLAY_FLIP_VERTICALLY")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
-            if (atoi(sdcardData.token) == 0) {systemData.display_flip_vertically = false;} else {systemData.display_flip_vertically = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
@@ -4942,12 +4954,11 @@ struct SettingsDataStruct {
     "YEAR PREFIX", // example: prefix 20 for year 2024
   };
 
-  int max_settingsdisplayvalues = 4;
-  char settingsdisplayvalues[4][56] = {
+  int max_settingsdisplayvalues = 3;
+  char settingsdisplayvalues[3][56] = {
     "BRIGHTNESS", //
     "AUTO DIM",   //
     "AUTO OFF",   // 
-    "FLIP",       // display_flip_vertically
   };
 };
 SettingsDataStruct sData;
@@ -4980,7 +4991,7 @@ bool isDisplaySettings0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
 
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 295) {
       for (int i=0; i<sData.max_settings0values; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5022,7 +5033,7 @@ bool DisplaySettingsSystem() {
 
 bool isDisplaySettingsSystem(TouchPoint p) {
   if (menuData.page == 4) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsystemvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5061,7 +5072,7 @@ bool DisplaySettingsMatrix() {
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5103,7 +5114,7 @@ bool DisplaySettingsGPS() {
 
 bool isDisplaySettingsGPS(TouchPoint p) {
   if (menuData.page == 6) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsgpsvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5150,7 +5161,7 @@ bool DisplaySettingsSerial() {
 
 bool isDisplaySettingsSerial(TouchPoint p) {
   if (menuData.page == 7) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsserialvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5208,7 +5219,7 @@ bool DisplaySettingsFile() {
 
 bool isDisplaySettingsFile(TouchPoint p) {
   if (menuData.page == 8) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5509,7 +5520,7 @@ bool DisplaySettingsTime() {
 
 bool isDisplaySettingsTime(TouchPoint p) {
   if (menuData.page == 9) {
-    // select list item column 0
+    // select list column item
     if (p.x >= 160 && p.x <= 185) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5523,7 +5534,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
           }
         }
       }
-    // select list item column 1
+    // select list column item
     if (p.x >= 265 && p.x <= 290) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
@@ -5557,7 +5568,64 @@ bool DisplaySettingsDisplay() {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
+    // brightness0
+    if (i==0) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(systemData.brightness0)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
+    if (i==1) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(systemData.display_auto_dim_p0)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
+    if (i==2) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(systemData.display_auto_off_p0)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
     }
     return true;
   }
@@ -5566,15 +5634,61 @@ bool DisplaySettingsDisplay() {
 
 bool isDisplaySettingsDisplay(TouchPoint p) {
   if (menuData.page == 10) {
-    // select list item column 0
-    if (p.x >= 0 && p.x <= 140) {
-      for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
+
+    // left column
+    if (p.x >= 0 && p.x <= 150) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
-          break;
+          Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
+          if      (i==1) {systemData.display_auto_dim ^= true;}
+          else if (i==2) {systemData.display_auto_off ^= true;}
         }
       }
     }
+
+    // previous value
+    if (p.x >= 160 && p.x <= 185) {
+      for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
+          // display brightness0
+          if      (i==0) {if (systemData.brightness0>5) {
+            systemData.brightness0=systemData.brightness0-5;
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0);
+            }}
+          // display auto dim
+          else if (i==1) {if (systemData.index_display_autodim_times>0) {
+            systemData.index_display_autodim_times--;
+            systemData.display_auto_dim_p0=systemData.display_autodim_times[0][systemData.index_display_autodim_times];
+          }}
+          // display auto off
+          else if (i==2) {if (systemData.index_display_autooff_times>0) { 
+            systemData.index_display_autooff_times--;
+            systemData.display_auto_off_p0=systemData.display_autooff_times[0][systemData.index_display_autooff_times];
+          }}
+          }
+        }
+      }
+    // next value
+    if (p.x >= 265 && p.x <= 290) {
+      for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
+          // display brightness0
+          if      (i==0) {if (systemData.brightness0<255) {systemData.brightness0=systemData.brightness0+5; ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0);}}
+          // display auto dim
+          else if (i==1) {if (systemData.index_display_autodim_times<systemData.max_display_autodim_times-1) {
+            systemData.index_display_autodim_times++;
+            systemData.display_auto_dim_p0=systemData.display_autodim_times[0][systemData.index_display_autodim_times];
+          }}
+          // display auto off
+          else if (i==2) {if (systemData.index_display_autooff_times<systemData.max_display_autooff_times-1) {
+            systemData.index_display_autooff_times++;
+            systemData.display_auto_off_p0=systemData.display_autooff_times[0][systemData.index_display_autooff_times];
+          }}
+          }
+        }
+      }
     return true;
   }
   else {return false;}
@@ -5682,11 +5796,20 @@ void setup() {
   ts.begin();
   // Start the tft display and set it to black
   tft.init();
+  // Setting up the LEDC and configuring the Back light pin
+  // NOTE: this needs to be done after tft.init()
+  #if ESP_IDF_VERSION_MAJOR == 5
+    ledcAttach(LCD_BACK_LIGHT_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+  #else
+    ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+    ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
+  #endif
+  // set display rotation as landscape
   tft.setRotation(1); //This is the display in landscape
-
   // Clear the screen before writing to it
   tft.fillScreen(TFT_BLACK);
   tft.setFreeFont(FONT5X7_H);
+  ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
