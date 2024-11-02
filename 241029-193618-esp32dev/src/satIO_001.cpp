@@ -234,7 +234,7 @@ struct SDCardStruct {
   char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";
   int matrix_filename_i = 0;
   char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
-  char matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
+  char matrix_filepath[56] = "";
   char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};
   File root;
   unsigned long nbytes;
@@ -2420,6 +2420,15 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   if (sdcardData.current_file) {
 
     memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
+    strcpy(sdcardData.file_data, sdcardData.default_matrix_filepath);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "AUTO_RESUME,");
     itoa(systemData.autoresume_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2610,6 +2619,16 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+
+      // check matrix filepath
+      if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+        sdcardData.token = strtok(NULL, ",");
+        Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+        memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+        strcpy(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath);
+      }
       // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
@@ -2830,52 +2849,6 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
       Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
       }
     // else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));} // debug
-  }
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                              SDCARD: CALCULATE NEXT HIGHER EXISTING FILENAME
-
-void sdcard_calculate_filename_next(fs::FS &fs, char * dir, char * name, char * ext) {
-  char tempname[1024];
-  char temppath[1024];
-  char temp_i[4];
-  sdcardData.matrix_filename_i++;
-  if (sdcardData.matrix_filename_i >= 100) {sdcardData.matrix_filename_i=0;}
-  for (int i = sdcardData.matrix_filename_i; i < 100; i++) {
-    memset(temppath, 0, 1024); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
-    memset(tempname, 0, 1024); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
-    Serial.println("[sdcard] calculating: " + String(temppath));
-    if (fs.exists(temppath)) {
-      Serial.println("[sdcard] calculated filename found: " + String(temppath));
-      Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));
-      memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      break;}
-    else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));}
-    sdcardData.matrix_filename_i++;
-  }
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                               SDCARD: CALCULATE NEXT LOWER EXISTING FILENAME
-
-void sdcard_calculate_filename_previous(fs::FS &fs, char * dir, char * name, char * ext) {
-  char tempname[1024];
-  char temppath[1024];
-  char temp_i[4];
-  sdcardData.matrix_filename_i--;
-  if (sdcardData.matrix_filename_i <= -1) {sdcardData.matrix_filename_i=99;}
-  for (int i = sdcardData.matrix_filename_i--; i >= 0; i--) {
-    memset(temppath, 0, 1024); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
-    memset(tempname, 0, 1024); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
-    Serial.println("[sdcard] calculating: " + String(temppath));
-    if (fs.exists(temppath)) {
-      Serial.println("[sdcard] calculated filename found: " + String(temppath));
-      Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));
-      memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      break;}
-    else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));}
-    sdcardData.matrix_filename_i--;
   }
 }
 
@@ -5544,6 +5517,7 @@ void setup() {
     if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
       Serial.println("[sdcard] default matrix file not found!");
       if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+      else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
     }
   }
 }
