@@ -2955,11 +2955,16 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
       }
     }
+    char currentmatrixfilepath[56];
+    strcpy(currentmatrixfilepath, file);
+    memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    strcpy(sdcardData.matrix_filepath, currentmatrixfilepath);
+    Serial.println("[sdcard] loaded file successfully:   " + String(file));
+    Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
     sdcardData.current_file.close();
-    Serial.println("[sdcard] loaded file successfully: " + String(file));
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file)); return false;}
+  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file)); return false; memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
