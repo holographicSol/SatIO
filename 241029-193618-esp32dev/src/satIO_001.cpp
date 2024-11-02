@@ -3027,6 +3027,7 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
     }
     sdcardData.current_file.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
+    strcpy(sdcardData.matrix_filepath, file);
     return true;
   }
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file)); return false;}
