@@ -4326,6 +4326,10 @@ struct TouchScreenStruct {
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
   bool homebutton_bool = false;
 
+  int max_backbtn_pages = 11;
+  int backbtn_pages[11] = {4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
+  bool backbtn_pages_bool = false;
+
   int max_settingsbtn_pages = 3;
   int settingsbtn_pages[3] = {0, 400, 401};
   bool settingsbtn_bool = false;
@@ -4356,6 +4360,13 @@ bool isTouchTitleBar(TouchPoint p) {
   // Serial.println(tss.homebutton_bool);
   if (tss.homebutton_bool==true) {
     if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
+  }
+
+  // choose where back button will be registered
+  for (int i=0; i<tss.max_backbtn_pages; i++) {if (menuData.page==tss.backbtn_pages[i]) {tss.backbtn_pages_bool=true; break;} else {tss.backbtn_pages_bool=false;}}
+  // Serial.println(tss.backbtn_pages_bool);
+  if (tss.backbtn_pages_bool==true) {
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=menuData.backpage;}
   }
 
   // choose where settings button will be registered
@@ -4590,7 +4601,6 @@ bool isTouchPage0(TouchPoint p) {
         if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
           menuData.relay_select=i;
           Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-          menuData.backpage=0;
           menuData.page=1;
           break;
         }
@@ -4602,7 +4612,6 @@ bool isTouchPage0(TouchPoint p) {
         if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
           menuData.relay_select=i+10;
           Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-          menuData.backpage=0;
           menuData.page=1;
           break;
         }
@@ -4696,7 +4705,6 @@ bool isTouchPage1(TouchPoint p) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=100;
           menuData.relay_function_select=i;
-          menuData.backpage=1;
           break;
         }
       }
@@ -4706,7 +4714,6 @@ bool isTouchPage1(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
-          menuData.backpage=1;
           menuData.relay_function_select=i;
           menuData.numpad_key=0;
           memset(menuData.input, 0, sizeof(menuData.input));
@@ -4720,7 +4727,6 @@ bool isTouchPage1(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
-          menuData.backpage=1;
           menuData.relay_function_select=i;
           menuData.numpad_key=1;
           memset(menuData.input, 0, sizeof(menuData.input));
@@ -4734,7 +4740,6 @@ bool isTouchPage1(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           menuData.page=300;
-          menuData.backpage=1;
           menuData.relay_function_select=i;
           menuData.numpad_key=2;
           memset(menuData.input, 0, sizeof(menuData.input));
@@ -4752,31 +4757,26 @@ bool isTouchPage1(TouchPoint p) {
 //                                                                                                      DISPLAY MATRIX FUNCTION
 
 bool DisplaySelectMatrixFunction() {
-
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
-
         hud.fillRect(0, 0, 320, 240, TFT_BLACK);
         drawHomeBar();
         drawBack();
-
+        menuData.backpage=1;
         // page header
         hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
-
         // scroll buttons
         hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
         hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
         hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
         hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
-        
         // values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
         }
-
         return true;
     }
     else {return false;}
@@ -4788,8 +4788,6 @@ bool DisplaySelectMatrixFunction() {
 bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
-    // back
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=1;}
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.function_index--;
@@ -4870,7 +4868,7 @@ bool isTouchNumpad(TouchPoint p) {
     else if ((p.x >= 240 && p.x <= 285) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
     // clear
     else if ((p.x >= 240 && p.x <= 285) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
-    // back
+    // back (special back case)
     else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
     return true;
   }
@@ -4993,6 +4991,8 @@ bool DisplaySettingsSystem() {
   if (menuData.page == 4) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("System Settings");
@@ -5027,6 +5027,8 @@ bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Matrix Settings");
@@ -5061,6 +5063,8 @@ bool DisplaySettingsGPS() {
   if (menuData.page == 6) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("GPS Settings");
@@ -5103,6 +5107,8 @@ bool DisplaySettingsSerial() {
   if (menuData.page == 7) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Serial Settings");
@@ -5147,6 +5153,8 @@ bool DisplaySettingsFile() {
   if (menuData.page == 8) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("File Settings");
@@ -5201,17 +5209,15 @@ bool DisplaySettingsSaveMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Save Matrix File");
-
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
     hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
     hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
-    
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5226,15 +5232,12 @@ bool DisplaySettingsSaveMatrix() {
 
 bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   if (menuData.page == 400) {
-    // back
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
-
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
@@ -5246,7 +5249,6 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
-          
           // create filename
           memset(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 0, sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]));
           strcpy(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "/MATRIX/MATRIX_");
@@ -5254,7 +5256,6 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
           itoa(menuData.matrix_filenames_index+i, tmp_i, 10);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
-
           // save
           sdcard_save_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
@@ -5272,17 +5273,15 @@ bool DisplaySettingsLoadMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Load Matrix File");
-
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
     hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
     hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
-    
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5297,8 +5296,6 @@ bool DisplaySettingsLoadMatrix() {
 
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   if (menuData.page == 401) {
-    // back
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
@@ -5332,17 +5329,15 @@ bool DisplaySettingsDeleteMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Delete Matrix File");
-
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
     hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
     hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
-    
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5357,8 +5352,6 @@ bool DisplaySettingsDeleteMatrix() {
 
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   if (menuData.page == 402) {
-    // back
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
@@ -5391,6 +5384,8 @@ bool DisplaySettingsTime() {
   if (menuData.page == 9) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Time Settings");
@@ -5425,6 +5420,8 @@ bool DisplaySettingsDisplay() {
   if (menuData.page == 10) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
+    drawBack();
+    menuData.backpage=3;
     // page header
     hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Display Settings");
