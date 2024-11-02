@@ -2421,7 +2421,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
-    strcpy(sdcardData.file_data, sdcardData.default_matrix_filepath);
+    strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
     sdcardData.current_file.println("");
