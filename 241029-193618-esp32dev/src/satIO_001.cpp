@@ -5315,7 +5315,10 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          sdcard_load_matrix(SD, sdcardData.matrix_filenames[i]);
+          Serial.println(menuData.matrix_filenames_index+i);
+          Serial.println(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+          
+          sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
           break;
         }
