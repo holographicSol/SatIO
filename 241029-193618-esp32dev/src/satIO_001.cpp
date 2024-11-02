@@ -2153,6 +2153,7 @@ struct SatDatatruct {
   int utc_offset = 0;       // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
   bool utc_offset_flag = 0; // 0: add hours to time, 1: deduct hours from time
   char year_prefix[56] = "20"; // inline with trying to keep everything simple, this value is intended to require one ammendment every 100 years.
+  int year_prefix_int = 20;
   char year_full[56];
   char month[56];
   char day[56];
@@ -5510,15 +5511,34 @@ bool DisplaySettingsTime() {
 bool isDisplaySettingsTime(TouchPoint p) {
   if (menuData.page == 9) {
     // select list item column 0
-    if (p.x >= 0 && p.x <= 140) {
+    if (p.x >= 160 && p.x <= 185) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
-          break;
+          if      (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
+          if (i==1) {satData.utc_offset_flag ^= true;}
+          if (i==2) {
+            satData.year_prefix_int--; if (satData.year_prefix_int<0) {satData.year_prefix_int=999999999;} // 999billion
+            itoa(satData.year_prefix_int, satData.year_prefix, 10);
+            }
+          }
         }
       }
-    }
-    return true;
+    // select list item column 1
+    if (p.x >= 265 && p.x <= 290) {
+      for (int i=0; i<sData.max_settingstimevalues; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
+          if      (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
+          if (i==1) {satData.utc_offset_flag ^= true;}
+          if (i==2) {
+            satData.year_prefix_int++; if (satData.year_prefix_int>999999999) {satData.year_prefix_int=0;} // 999billion
+            itoa(satData.year_prefix_int, satData.year_prefix, 10);
+            }
+          }
+        }
+      }
+      return true;
   }
   else {return false;}
 }
