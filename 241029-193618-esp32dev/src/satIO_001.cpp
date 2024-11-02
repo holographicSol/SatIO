@@ -4955,14 +4955,17 @@ bool DisplaySettings0() {
     drawHomeBar();
 
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Settings")+String(""), 160, 9);
 
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settings0values[i]);
+
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
     }
 
     return true;
@@ -4996,13 +4999,17 @@ bool DisplaySettingsSystem() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("System Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("System Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("System Settings")+String(""), 160, 4);
+
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(150, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settingsystemvalues[i]);
+
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
   }
@@ -5032,13 +5039,16 @@ bool DisplaySettingsMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Matrix Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Matrix Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Matrix Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settingsmatrixvalues[i]);
+
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String(sData.settingsmatrixvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
   }
@@ -5068,17 +5078,19 @@ bool DisplaySettingsGPS() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("GPS Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("GPS Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("GPS Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    hud.print(sData.settingsgpsvalues[i]);
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.drawString(String(sData.settingsgpsvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
   }
@@ -5112,18 +5124,20 @@ bool DisplaySettingsSerial() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Serial Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Serial Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Serial Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    hud.print(sData.settingsserialvalues[i]);
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.drawString(String(sData.settingsserialvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
   }
@@ -5158,24 +5172,28 @@ bool DisplaySettingsFile() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("File Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("File Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("File Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settingsfilevalues[i]);
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
-      hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.print(sdcardData.sysconf);
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(sdcardData.sysconf)+String(""), 240, 51+i*20);
     }
     // display current matrix filepath
     else if (i==2) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
-      hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.print(sdcardData.matrix_filepath);
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i*20);
     }
     }
     
@@ -5213,8 +5231,9 @@ bool DisplaySettingsSaveMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Save Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Save Matrix File");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Save Matrix File")+String(""), 160, 9);
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
@@ -5285,8 +5304,9 @@ bool DisplaySettingsLoadMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Load Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Load Matrix File");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Load Matrix File")+String(""), 160, 9);
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
@@ -5349,8 +5369,9 @@ bool DisplaySettingsDeleteMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Delete Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Delete Matrix File");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Delete Matrix File")+String(""), 160, 9);
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
     hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
@@ -5413,13 +5434,15 @@ bool DisplaySettingsTime() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(5*(strlen("Time Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Time Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Time Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settingstimevalues[i]);
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     }
     return true;
   }
@@ -5449,13 +5472,15 @@ bool DisplaySettingsDisplay() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor((320/2)-(7*(strlen("Display Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print("Display Settings");
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(String("Display Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sData.settingsdisplayvalues[i]);
+    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
     }
     return true;
   }
