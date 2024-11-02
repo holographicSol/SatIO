@@ -5183,10 +5183,10 @@ bool isDisplaySettingsFile(TouchPoint p) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
           if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-          else if (i==4) {sdcard_calculate_filename_create(SD, "/MATRIX/", "MATRIX", ".SAVE"); zero_matrix();}
-          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
-          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
-          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
+          else if (i==4) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));} // zero the matrix and clear current matrix file path
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;} // create list of matrix filespaths and go to save page
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;} // create list of matrix filespaths and go to load page
+          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;} // create list of matrix filespaths and go to delete page
           break;
         }
       }
