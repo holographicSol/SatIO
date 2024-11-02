@@ -156,7 +156,8 @@ struct systemStruct {
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
   bool          display_on = true;
-  uint32_t brightness0 = 255;
+  uint32_t display_brightness = 255;
+  uint32_t display_autodim_brightness = 15;
   int index_display_autodim_times = 1;
   int max_display_autodim_times = 6;
   int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
@@ -4954,10 +4955,11 @@ struct SettingsDataStruct {
     "YEAR PREFIX", // example: prefix 20 for year 2024
   };
 
-  int max_settingsdisplayvalues = 3;
-  char settingsdisplayvalues[3][56] = {
+  int max_settingsdisplayvalues = 4;
+  char settingsdisplayvalues[4][56] = {
     "BRIGHTNESS", //
     "AUTO DIM",   //
+    "AUTO DIM LEVEL",
     "AUTO OFF",   // 
   };
 };
@@ -5568,10 +5570,13 @@ bool DisplaySettingsDisplay() {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // auto dim enabled
     if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // auto off enabled
+    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // draw value
     hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
-    // brightness0
+    // brightness level
     if (i==0) {
       // scroll buttons
       hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
@@ -5584,12 +5589,13 @@ bool DisplaySettingsDisplay() {
       // value
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.brightness0)+String(""), 245, 52+i*20);
+      hud.drawString(String(systemData.display_brightness)+String(""), 245, 52+i*20);
       // plus
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
+    // auto dim timeout
     if (i==1) {
       // scroll buttons
       hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
@@ -5608,7 +5614,27 @@ bool DisplaySettingsDisplay() {
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
-    if (i==2) {
+    // auto dim brightness
+    if (i==1) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(systemData.display_autodim_brightness)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
+    // auto off timeout
+    if (i==3) {
       // scroll buttons
       hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
@@ -5640,8 +5666,10 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
+          // auto dime enabled
           if      (i==1) {systemData.display_auto_dim ^= true;}
-          else if (i==2) {systemData.display_auto_off ^= true;}
+          // auto off enabled
+          else if (i==3) {systemData.display_auto_off ^= true;}
         }
       }
     }
@@ -5651,18 +5679,22 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
-          // display brightness0
-          if      (i==0) {if (systemData.brightness0>5) {
-            systemData.brightness0=systemData.brightness0-5;
-            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0);
+          // brightness reduce
+          if      (i==0) {if (systemData.display_brightness>5) {
+            systemData.display_brightness=systemData.display_brightness-5;
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
             }}
-          // display auto dim
+          // auto dim enabled
           else if (i==1) {if (systemData.index_display_autodim_times>0) {
             systemData.index_display_autodim_times--;
             systemData.display_auto_dim_p0=systemData.display_autodim_times[0][systemData.index_display_autodim_times];
           }}
-          // display auto off
-          else if (i==2) {if (systemData.index_display_autooff_times>0) { 
+          // auto dim brightness reduce
+          if      (i==2) {if (systemData.display_autodim_brightness>5) {
+            systemData.display_autodim_brightness=systemData.display_autodim_brightness-5;
+            }}
+          // auto off enabled
+          else if (i==3) {if (systemData.index_display_autooff_times>0) { 
             systemData.index_display_autooff_times--;
             systemData.display_auto_off_p0=systemData.display_autooff_times[0][systemData.index_display_autooff_times];
           }}
@@ -5674,15 +5706,22 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
-          // display brightness0
-          if      (i==0) {if (systemData.brightness0<255) {systemData.brightness0=systemData.brightness0+5; ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0);}}
-          // display auto dim
+          // brightness level increase
+          if      (i==0) {if (systemData.display_brightness<255) {
+            systemData.display_brightness=systemData.display_brightness+5;
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
+            }}
+          // auto dim enabled
           else if (i==1) {if (systemData.index_display_autodim_times<systemData.max_display_autodim_times-1) {
             systemData.index_display_autodim_times++;
             systemData.display_auto_dim_p0=systemData.display_autodim_times[0][systemData.index_display_autodim_times];
           }}
-          // display auto off
-          else if (i==2) {if (systemData.index_display_autooff_times<systemData.max_display_autooff_times-1) {
+          // auto dim brightness increase
+          if      (i==0) {if (systemData.display_autodim_brightness<255) {
+            systemData.display_autodim_brightness=systemData.display_autodim_brightness+5;
+            }}
+          // auto off enabled
+          else if (i==3) {if (systemData.index_display_autooff_times<systemData.max_display_autooff_times-1) {
             systemData.index_display_autooff_times++;
             systemData.display_auto_off_p0=systemData.display_autooff_times[0][systemData.index_display_autooff_times];
           }}
@@ -5746,7 +5785,7 @@ void TouchScreenInput( void * pvParameters ) {
       if (systemData.display_dim_bool==false) {
         if (millis() >= tss.ts_t1+systemData.display_auto_dim_p0) {
           tss.ts_t1=millis();
-          ledcAnalogWrite(LEDC_CHANNEL_0, 5);
+          ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_autodim_brightness);
           systemData.display_dim_bool=true;}
       }
     }
@@ -5763,7 +5802,7 @@ void TouchScreenInput( void * pvParameters ) {
 
         // autodim: increase brightness
         if (systemData.display_auto_dim==true) {
-          if (systemData.display_dim_bool==true) {ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0); systemData.display_dim_bool=false;}
+          if (systemData.display_dim_bool==true) {ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness); systemData.display_dim_bool=false;}
         }
 
         // check touchscreen efficiently
