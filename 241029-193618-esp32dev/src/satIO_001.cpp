@@ -2423,7 +2423,8 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     // note that this should always be default file.
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
-    strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);
+    if (!sdcardData.matrix_filepath) {strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);}
+    else {strcat(sdcardData.file_data, sdcardData.matrix_filepath);}
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
     sdcardData.current_file.println("");
@@ -2629,7 +2630,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
         sdcardData.token = strtok(NULL, ",");
         Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
         memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-        strcpy(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath);
+        strcpy(sdcardData.matrix_filepath, sdcardData.token);
       }
       // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
