@@ -146,8 +146,8 @@ struct systemStruct {
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
   bool          display_on = true;
-  char translate_enable_bool[1][2][56] = { {"DISABLED", "ENABLED"} };
-  char translate_plus_minus[1][2][56]  = { {"ADD", "DEDUCT"} };
+  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"};
+  char translate_plus_minus[2][56]  = {"+", "-"};
 };
 systemStruct systemData;
 
@@ -4934,10 +4934,11 @@ struct SettingsDataStruct {
     "DELETE MATRIX FILE",
   };
 
-  int max_settingstimevalues = 2;
-  char settingstimevalues[2][56] = {
+  int max_settingstimevalues = 3;
+  char settingstimevalues[3][56] = {
     "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
     "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
+    "YEAR PREFIX", // example: prefix 20 for year 2024
   };
 
   int max_settingsdisplayvalues = 4;
@@ -5430,6 +5431,7 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 }
 
 bool DisplaySettingsTime() {
+  menuData.page = 9;
   if (menuData.page == 9) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
@@ -5445,6 +5447,60 @@ bool DisplaySettingsTime() {
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
+    if (i==0) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(satData.utc_offset)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
+    if (i==1) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(systemData.translate_plus_minus[satData.utc_offset_flag])+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
+    if (i==2) {
+      // scroll buttons
+      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
+      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
+      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
+      // minus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("-")+String(""), 185, 52+i*20);
+      // value
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawString(String(satData.year_prefix)+String(""), 245, 52+i*20);
+      // plus
+      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+      hud.drawString(String("+")+String(""), 305, 52+i*20);
+    }
     }
     return true;
   }
