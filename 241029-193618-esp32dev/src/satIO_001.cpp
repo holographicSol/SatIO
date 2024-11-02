@@ -4914,9 +4914,11 @@ struct SettingsDataStruct {
     // coordinate_conversion_mode (GNGGA/GNRMC)
   };
 
-  int max_settingsfilevalues = 6;
-  char settingsfilevalues[6][56] = {
+  int max_settingsfilevalues = 8;
+  char settingsfilevalues[8][56] = {
     "SYSTEM FILE",
+    "SAVE SYSTEM FILE",
+    "",
     "MATRIX FILE",
     "NEW MATRIX FILE",
     "SAVE MATRIX FILE",
@@ -5154,7 +5156,7 @@ bool DisplaySettingsFile() {
       hud.print(sdcardData.sysconf);
     }
     // display current matrix filepath
-    else if (i==1) {
+    else if (i==3) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
       hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.print(sdcardData.matrix_filepath);
@@ -5174,10 +5176,11 @@ bool isDisplaySettingsFile(TouchPoint p) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
-          if      (i==2) {sdcard_calculate_filename_create(SD, "/MATRIX/", "MATRIX", ".SAVE"); zero_matrix();}
-          else if (i==3) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
-          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
-          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+          else if (i==4) {sdcard_calculate_filename_create(SD, "/MATRIX/", "MATRIX", ".SAVE"); zero_matrix();}
+          else if (i==5) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
           break;
         }
       }
