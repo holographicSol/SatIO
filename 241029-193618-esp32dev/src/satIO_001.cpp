@@ -147,21 +147,20 @@ struct systemStruct {
   
   bool display_low_light = false;
   bool display_auto_dim = true; // (OLED burn-in protection)
-  int           display_auto_dim_p0 = 3000;
+  int           display_auto_dim_p0 = 5000;
   unsigned long display_auto_dim_t0;
   unsigned long display_auto_dim_t1;
-  bool          display_dim = false;
+  bool          display_dim_bool = false;
   bool display_auto_off = false; // (OLED burn-in protection)
-  int           display_auto_off_p0 = 5000;
+  int           display_auto_off_p0 = 10000;
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
   bool          display_on = true;
   uint32_t brightness0 = 255;
-  uint32_t brightness1 = 255;
-  int index_display_autodim_times = 0;
+  int index_display_autodim_times = 1;
   int max_display_autodim_times = 6;
   int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
-  int index_display_autooff_times = 1;
+  int index_display_autooff_times = 2;
   int max_display_autooff_times = 6;
   int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
 
@@ -4335,6 +4334,7 @@ struct TouchScreenStruct {
   int matrix_switch_ena_r2h1 = 135;
   int ts_t0 = millis();
   int ts_ti = 200;
+  int ts_t1 = millis();
 
   int max_homebtn_pages = 13;
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
@@ -5740,12 +5740,32 @@ void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
   while (1) {
     delay(1);
+
+    // autodim: decrease brightness
+    if (systemData.display_auto_dim==true) {
+      if (systemData.display_dim_bool==false) {
+        if (millis() >= tss.ts_t1+systemData.display_auto_dim_p0) {
+          tss.ts_t1=millis();
+          ledcAnalogWrite(LEDC_CHANNEL_0, 5);
+          systemData.display_dim_bool=true;}
+      }
+    }
+
     // get touch data and only delay if current time in threshold range of previous touch time
     TouchPoint p = ts.getTouch();
     if (p.zRaw > 400) {
       if (millis() >= tss.ts_t0+tss.ts_ti) {
+
+        // record touch millisecond time
         tss.ts_t0 = millis();
+        tss.ts_t1=millis();
         Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
+
+        // autodim: increase brightness
+        if (systemData.display_auto_dim==true) {
+          if (systemData.display_dim_bool==true) {ledcAnalogWrite(LEDC_CHANNEL_0, systemData.brightness0); systemData.display_dim_bool=false;}
+        }
+
         // check touchscreen efficiently
         bool checktouch = false;
         if (checktouch == false) {checktouch = isTouchTitleBar(p);}
