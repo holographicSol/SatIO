@@ -5615,7 +5615,7 @@ bool DisplaySettingsDisplay() {
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
     // auto dim brightness
-    if (i==1) {
+    if (i==2) {
       // scroll buttons
       hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
