@@ -3050,7 +3050,6 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
       zero_matrix();
       // delete matrix filepath.
       memset(sdcardData.matrix_filepath, 0, 56);
-      delay(1000);
     }
     else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
   }
