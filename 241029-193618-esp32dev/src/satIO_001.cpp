@@ -5217,7 +5217,7 @@ bool DisplaySettingsLoadMatrix() {
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(i);}
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
     else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
     }
     return true;
