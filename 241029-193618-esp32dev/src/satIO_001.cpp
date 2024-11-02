@@ -4652,7 +4652,7 @@ bool DisplayPage1() {
         hud.fillRect(0, 0, 320, 240, TFT_BLACK);
         drawHomeBar();
         // page header
-        hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setCursor((320/2)-(5*(strlen("Matrix")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print("Matrix "); hud.print(menuData.relay_select);
         // clear all functions on current matrix switch
         hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -4764,7 +4764,7 @@ bool DisplaySelectMatrixFunction() {
         drawBack();
         menuData.backpage=1;
         // page header
-        hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setCursor((320/2)-(5*(strlen("Matrix 0 Function  0")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print("Matrix "); hud.print(menuData.relay_select); hud.print(" Function "); hud.print(menuData.relay_function_select);
         // scroll buttons
         hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
@@ -4953,7 +4953,7 @@ bool DisplaySettings0() {
     drawHomeBar();
 
     // page header
-    hud.setCursor(150, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Settings");
 
     // values
@@ -4994,7 +4994,7 @@ bool DisplaySettingsSystem() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("System Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("System Settings");
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
@@ -5030,7 +5030,7 @@ bool DisplaySettingsMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Matrix Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Matrix Settings");
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
@@ -5066,7 +5066,7 @@ bool DisplaySettingsGPS() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("GPS Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("GPS Settings");
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
@@ -5110,7 +5110,7 @@ bool DisplaySettingsSerial() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Serial Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Serial Settings");
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
@@ -5156,7 +5156,7 @@ bool DisplaySettingsFile() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("File Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("File Settings");
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
@@ -5211,7 +5211,7 @@ bool DisplaySettingsSaveMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Save Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Save Matrix File");
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
@@ -5275,7 +5275,7 @@ bool DisplaySettingsLoadMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Load Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Load Matrix File");
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
@@ -5331,7 +5331,7 @@ bool DisplaySettingsDeleteMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Delete Matrix File")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Delete Matrix File");
     // scroll buttons
     hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
@@ -5387,7 +5387,7 @@ bool DisplaySettingsTime() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(5*(strlen("Time Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Time Settings");
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
@@ -5423,7 +5423,7 @@ bool DisplaySettingsDisplay() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor((320/2)-(7*(strlen("Display Settings")/2)), 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.print("Display Settings");
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
