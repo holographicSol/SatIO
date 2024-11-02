@@ -5231,7 +5231,7 @@ bool DisplaySettingsSaveMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-    menuData.backpage=3;
+    menuData.backpage=8;
     // page header
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5304,7 +5304,7 @@ bool DisplaySettingsLoadMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-    menuData.backpage=3;
+    menuData.backpage=8;
     // page header
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5369,7 +5369,7 @@ bool DisplaySettingsDeleteMatrix() {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
-    menuData.backpage=3;
+    menuData.backpage=8;
     // page header
     hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
