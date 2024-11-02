@@ -2420,6 +2420,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
 
+    // note that this should always be default file.
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
     strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);
