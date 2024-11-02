@@ -4921,11 +4921,10 @@ struct SettingsDataStruct {
     // coordinate_conversion_mode (GNGGA/GNRMC)
   };
 
-  int max_settingsfilevalues = 8;
-  char settingsfilevalues[8][56] = {
+  int max_settingsfilevalues = 7;
+  char settingsfilevalues[7][56] = {
     "SYSTEM FILE",
     "SAVE SYSTEM FILE",
-    "",
     "MATRIX FILE",
     "NEW MATRIX FILE",
     "SAVE MATRIX FILE",
@@ -5163,7 +5162,7 @@ bool DisplaySettingsFile() {
       hud.print(sdcardData.sysconf);
     }
     // display current matrix filepath
-    else if (i==3) {
+    else if (i==2) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
       hud.setCursor(154, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.print(sdcardData.matrix_filepath);
@@ -5184,10 +5183,10 @@ bool isDisplaySettingsFile(TouchPoint p) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
           if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-          else if (i==4) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));} // zero the matrix and clear current matrix file path
-          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;} // create list of matrix filespaths and go to save page
-          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;} // create list of matrix filespaths and go to load page
-          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;} // create list of matrix filespaths and go to delete page
+          else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));} // zero the matrix and clear current matrix file path
+          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;} // create list of matrix filespaths and go to save page
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;} // create list of matrix filespaths and go to load page
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;} // create list of matrix filespaths and go to delete page
           break;
         }
       }
