@@ -5185,9 +5185,74 @@ bool isDisplaySettingsFile(TouchPoint p) {
           // values
           if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
           else if (i==4) {sdcard_calculate_filename_create(SD, "/MATRIX/", "MATRIX", ".SAVE"); zero_matrix();}
-          else if (i==5) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
-          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
-          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          // else if (i==5) {sdcard_save_matrix(SD, sdcardData.matrix_filepath);}
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          else if (i==7) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplaySettingsSaveMatrix() {
+  if (menuData.page == 400) {
+    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    drawHomeBar();
+    drawBack();
+
+    // page header
+    hud.setCursor(100, 4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.print("Save Matrix File");
+
+    // scroll buttons
+    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
+    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
+    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
+    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    
+    // values
+    for (int i=0; i<10; i++) {
+    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
+    else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isDisplaySettingsSaveMatrix(TouchPoint p) {
+  if (menuData.page == 400) {
+    // back
+    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
+    // previous list items
+    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index--;
+      if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+    }
+    // next list items
+    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+      menuData.matrix_filenames_index++;
+      if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+    }
+    // select list item
+    if (p.x >= 0 && p.x <= 320) {
+      for (int i=0; i<10; i++) {
+        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+            strcpy(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "/MATRIX/MATRIX_");
+            char tmp_i[16];
+            itoa(i, tmp_i, 10);
+            strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
+            strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
+            }
+          sdcard_save_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+          menuData.page=8;
           break;
         }
       }
@@ -5198,7 +5263,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
 }
 
 bool DisplaySettingsLoadMatrix() {
-  if (menuData.page == 400) {
+  if (menuData.page == 401) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
@@ -5226,7 +5291,7 @@ bool DisplaySettingsLoadMatrix() {
 }
 
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
-  if (menuData.page == 400) {
+  if (menuData.page == 401) {
     // back
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
     // previous list items
@@ -5255,7 +5320,7 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
 }
 
 bool DisplaySettingsDeleteMatrix() {
-  if (menuData.page == 401) {
+  if (menuData.page == 402) {
     hud.fillRect(0, 0, 320, 240, TFT_BLACK);
     drawHomeBar();
     drawBack();
@@ -5283,7 +5348,7 @@ bool DisplaySettingsDeleteMatrix() {
 }
 
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
-  if (menuData.page == 401) {
+  if (menuData.page == 402) {
     // back
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=8;}
     // previous list items
@@ -5410,6 +5475,7 @@ void UpdateDisplay(void * pvParameters) {
     if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
     if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
+    if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
 
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
@@ -5447,6 +5513,7 @@ void TouchScreenInput( void * pvParameters ) {
         if (checktouch == false) {checktouch = isDisplaySettingsDisplay(p);}
         if (checktouch == false) {checktouch = isDisplaySettingsLoadMatrix(p);}
         if (checktouch == false) {checktouch = isDisplaySettingsDeleteMatrix(p);}
+        if (checktouch == false) {checktouch = isDisplaySettingsSaveMatrix(p);}
       }
     }
   }
