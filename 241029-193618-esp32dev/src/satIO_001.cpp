@@ -5717,7 +5717,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
             systemData.display_auto_dim_p0=systemData.display_autodim_times[0][systemData.index_display_autodim_times];
           }}
           // auto dim brightness increase
-          if      (i==0) {if (systemData.display_autodim_brightness<255) {
+          if      (i==2) {if (systemData.display_autodim_brightness<255) {
             systemData.display_autodim_brightness=systemData.display_autodim_brightness+5;
             }}
           // auto off enabled
