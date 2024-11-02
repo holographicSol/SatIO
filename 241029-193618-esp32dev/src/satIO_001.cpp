@@ -5234,20 +5234,20 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
-      Serial.println(menuData.matrix_filenames_index);
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
 
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
-      Serial.println(menuData.matrix_filenames_index);
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          Serial.println(menuData.matrix_filenames_index+i);
+          Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           
           // create filename
           memset(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 0, sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]));
@@ -5305,19 +5305,19 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          Serial.println(menuData.matrix_filenames_index+i);
-          Serial.println(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
-
+          Serial.println("[loading matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
           break;
@@ -5365,16 +5365,19 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
+      Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+          Serial.println("[deleting matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           sdcard_delete_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
           break;
