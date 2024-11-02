@@ -5232,7 +5232,7 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
-      if (menuData.matrix_filenames_index-10<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+      if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
     }
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
@@ -5274,7 +5274,8 @@ bool DisplaySettingsDeleteMatrix() {
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {hud.print("EMPTY SLOT "); hud.print(menuData.matrix_filenames_index+i);}
+    else {hud.print(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);}
     }
     return true;
   }
@@ -5288,7 +5289,7 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
     // previous list items
     if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
-      if (menuData.matrix_filenames_index-10<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
+      if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
     }
     // next list items
     else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
