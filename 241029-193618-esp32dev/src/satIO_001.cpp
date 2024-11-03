@@ -5282,14 +5282,17 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
           // enable all (enables all switches to turn on)
           if (i==0) {
             Serial.print("[matrix switch enable all]");
+            matrix_enable_all();
           }
           // disable all (disables all switches turning on and off. switches will remain on/ off according to their current state.)
           if (i==1) {
             Serial.print("[matrix switch disable all]");
+            matrix_disable_all();
           }
           // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
           if (i==2) {
             Serial.print("[matrix switch all off]");
+            relays_deactivate_all();
           }
           break;
         }
