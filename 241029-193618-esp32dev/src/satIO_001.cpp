@@ -157,7 +157,7 @@ struct systemStruct {
   unsigned long display_auto_off_t1;
   bool          display_on = true;
   uint32_t display_brightness = 255;
-  uint32_t display_autodim_brightness = 15;
+  uint32_t display_autodim_brightness = 50;
   int index_display_autodim_times = 1;
   int max_display_autodim_times = 6;
   int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
