@@ -5784,20 +5784,22 @@ void TouchScreenInput( void * pvParameters ) {
     // autodim: decrease brightness
     if (systemData.display_auto_dim==true) {
       if (systemData.display_dim_bool==false) {
-        if (millis() >= tss.ts_t1+systemData.display_auto_dim_p0) {
-          tss.ts_t1=millis();
-          ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_autodim_brightness);
-          systemData.display_dim_bool=true;}
+        if (systemData.display_off_bool==false) {
+          if (millis() >= tss.ts_t1+systemData.display_auto_dim_p0) {
+            tss.ts_t1=millis();
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_autodim_brightness);
+            systemData.display_dim_bool=true;}
+        }
       }
     }
 
     // autooff: turn off backlight
     if (systemData.display_auto_off==true) {
-      // if (systemData.display_off_bool==false) {
-      //   if (millis() >= tss.ts_t2+systemData.display_auto_off_p0) {
-      //     tss.ts_t2=millis();
-      //     ledcAnalogWrite(LEDC_CHANNEL_0, 0);
-      //     systemData.display_off_bool=true;}
+      if (systemData.display_off_bool==false) {
+        if (millis() >= tss.ts_t2+systemData.display_auto_off_p0) {
+          tss.ts_t2=millis();
+          ledcAnalogWrite(LEDC_CHANNEL_0, 0);
+          systemData.display_off_bool=true;}
       }
     }
 
@@ -5824,10 +5826,10 @@ void TouchScreenInput( void * pvParameters ) {
         }
         // auto off: turn on
         if (systemData.display_auto_off==true) {
-          // if (systemData.display_off_bool==true) {
-          //   ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
-          //   systemData.display_off_bool=false;
-          //   display_handled_wakeup=true;
+          if (systemData.display_off_bool==true) {
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
+            systemData.display_off_bool=false;
+            display_handled_wakeup=true;
             }
           }
         
