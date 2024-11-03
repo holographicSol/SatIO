@@ -3762,7 +3762,7 @@ void matrixSwitch() {
   */
 
   // iterate over each relay matrix
-  for (int Ri = 0; Ri < relayData.MAobject_RELAYS-1; Ri++) {
+  for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {
     // Serial.println("[Ri] " + String(Ri) + " [E] " + String(relayData.relays_enable[0][Ri]));
     if (relayData.relays_enable[0][Ri] == 1) {
 
@@ -4378,7 +4378,8 @@ struct TouchScreenStruct {
     {235, 260},
     {260, 290}
   };
-  int page1_y[10][2] = {
+
+  int general_page_y[10][2] = {
     {50, 60},
     {70, 80},
     {90, 100},
@@ -4390,6 +4391,22 @@ struct TouchScreenStruct {
     {195, 205},
     {210, 220}
   };
+
+  // enable/disable
+  int matrix_page_x_column_0[2] = {10, 35};
+  // setup
+  int matrix_page_x_column_1[2] = {40, 65};
+  // off
+  int matrix_page_x_column_2[2] = {75, 95};
+  // main controls
+  int matrix_page_x_column_3[2] = {115, 180};
+  // enable/disable
+  int matrix_page_x_column_4[2] = {195, 215};
+  // setup
+  int matrix_page_x_column_5[2] = {225, 250};
+  // off
+  int matrix_page_x_column_6[2] = {260, 275};
+
   int matrix_switch_cfg_r1h0 = 50;
   int matrix_switch_cfg_r1h1 = 70;
   int matrix_switch_ena_r1h0 = 75;
@@ -4785,7 +4802,7 @@ bool isTouchPage1(TouchPoint p) {
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=100;
           menuData.relay_function_select=i;
           break;
@@ -4795,7 +4812,7 @@ bool isTouchPage1(TouchPoint p) {
     // page 1: select x
     else if (p.x >= 155 && p.x <= 195) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=0;
@@ -4808,7 +4825,7 @@ bool isTouchPage1(TouchPoint p) {
     // page 1: select y
     else if (p.x >= 205 && p.x <= 245) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=1;
@@ -4821,7 +4838,7 @@ bool isTouchPage1(TouchPoint p) {
     // page 1: select z
     else if (p.x >= 255 && p.x <= 285) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=2;
@@ -4885,7 +4902,7 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
           strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
           menuData.page=1;
@@ -4985,8 +5002,8 @@ struct SettingsDataStruct {
   //   "ENABLE MATRIX"
   // };
 
-  int max_settingsmatrixvalues_c0 = 10;
-  char settingsmatrixvalues_c0[10][56] = {
+  int max_settingsmatrixvalues_c0 = 20;
+  char settingsmatrixvalues_c0[20][56] = {
     "S0",
     "S1",
     "S2",
@@ -4996,21 +5013,17 @@ struct SettingsDataStruct {
     "S6",
     "S7",
     "S8",
-    "S9"
-  };
-
-  int max_settingsmatrixvalues_c1 = 10;
-  char settingsmatrixvalues_c1[10][56] = {
+    "S9",
     "S10",
     "S11",
     "S12",
     "S13",
     "S14",
     "S15",
-    "S15",
+    "S16",
     "S16",
     "S17",
-    "S18",
+    "S19",
   };
 
   int max_settingsgpsvalues = 4;
@@ -5090,7 +5103,7 @@ bool isDisplaySettings0(TouchPoint p) {
     // select list column item
     if (p.x >= 0 && p.x <= 295) {
       for (int i=0; i<sData.max_settings0values; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=i+4; // settings page 0 is on page 3 so make subsequent settings pages 4+
           Serial.println("[settings] " + String(sData.settings0values[i]) + " -> page " +String(i+4));
           break;
@@ -5132,7 +5145,7 @@ bool isDisplaySettingsSystem(TouchPoint p) {
     // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsystemvalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] system item "); Serial.println(sData.settingsystemvalues[i]);
           break;
         }
@@ -5156,7 +5169,6 @@ bool DisplaySettingsMatrix() {
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
 
-    // 10-35      40-65     75-95
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5176,9 +5188,8 @@ bool DisplaySettingsMatrix() {
     // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
     hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
     if (relayData.relays_bool[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_GREEN);}
-    else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);}
-
-    // 115-180
+    else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);
+    }
     // enable all (enables all switches to turn on)
     if (i==0) {
       hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
@@ -5200,14 +5211,12 @@ bool DisplaySettingsMatrix() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("OFF")+String(""), 160, 51+i*20);
     }
-
-    // 195-215      225-250     260-275
     // switch enable column 0 (10-19) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (relayData.relays_enable[0][i+10] == true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingsmatrixvalues_c1[i])+String(""), 225, 51+i*20);
+    hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 225, 51+i*20);
     // // switch setup column 1 (10-19) (access individual switch setup)
     hud.drawRect(240, 43+i*20, 40, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5229,16 +5238,99 @@ bool DisplaySettingsMatrix() {
 }
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
+  // tss.matrix_page_x_column_0
   if (menuData.page == 5) {
-    // select list column item
-    if (p.x >= 0 && p.x <= 140) {
+
+    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    if (p.x >= tss.matrix_page_x_column_0[0] && p.x <= tss.matrix_page_x_column_0[1]) {
       for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i;
           Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          relayData.relays_enable[0][i] ^= true;
           break;
         }
       }
     }
+    // switch setup column 1 (0-9) (access individual switch setup)
+    if (p.x >= tss.matrix_page_x_column_1[0] && p.x <= tss.matrix_page_x_column_1[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    // switch off column 2 (0-9) (turns off an individual switch)
+    if (p.x >= tss.matrix_page_x_column_2[0] && p.x <= tss.matrix_page_x_column_2[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i;
+          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
+          relayData.relays_bool[0][i] = false;
+          break;
+        }
+      }
+    }
+    // central functions
+    if (p.x >= tss.matrix_page_x_column_3[0] && p.x <= tss.matrix_page_x_column_3[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+
+          // enable all (enables all switches to turn on)
+          if (i==0) {
+            Serial.print("[matrix switch enable all]");
+          }
+          // disable all (disables all switches turning on and off. switches will remain on/ off according to their current state.)
+          if (i==1) {
+            Serial.print("[matrix switch disable all]");
+          }
+          // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
+          if (i==2) {
+            Serial.print("[matrix switch all off]");
+          }
+          break;
+        }
+      }
+    }
+    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    if (p.x >= tss.matrix_page_x_column_4[0] && p.x <= tss.matrix_page_x_column_4[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i+10;
+          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          relayData.relays_enable[0][i+10] ^= true;
+          break;
+        }
+      }
+    }
+    // switch setup column 1 (0-9) (access individual switch setup)
+    if (p.x >= tss.matrix_page_x_column_5[0] && p.x <= tss.matrix_page_x_column_5[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i+10;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.page=1;
+          break;
+        }
+      }
+    }
+    // switch off column 2 (0-9) (turns off an individual switch)
+    if (p.x >= tss.matrix_page_x_column_6[0] && p.x <= tss.matrix_page_x_column_6[1]) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.relay_select=i+10;
+          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
+          relayData.relays_bool[0][i+10] = false;
+          break;
+        }
+      }
+    }
+
+
+
     return true;
   }
   else {return false;}
@@ -5275,7 +5367,7 @@ bool isDisplaySettingsGPS(TouchPoint p) {
     // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsgpsvalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
           if      (i==0) {systemData.satio_enabled ^= true;}
           else if (i==1) {systemData.gngga_enabled ^= true;}
@@ -5322,7 +5414,7 @@ bool isDisplaySettingsSerial(TouchPoint p) {
     // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsserialvalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
           if      (i==0) {systemData.output_satio_enabled ^= true;}
           else if (i==1) {systemData.output_gngga_enabled ^= true;}
@@ -5380,7 +5472,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
     // select list column item
     if (p.x >= 0 && p.x <= 140) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
           if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
@@ -5449,7 +5541,7 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           // create filename
           memset(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 0, sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]));
@@ -5522,7 +5614,7 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[loading matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
@@ -5587,7 +5679,7 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
     // select list item
     if (p.x >= 0 && p.x <= 320) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[deleting matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           sdcard_delete_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
@@ -5681,7 +5773,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
     // select list column item
     if (p.x >= 160 && p.x <= 185) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if      (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
@@ -5695,7 +5787,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
     // select list column item
     if (p.x >= 265 && p.x <= 290) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if      (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
@@ -5820,7 +5912,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     // left column
     if (p.x >= 0 && p.x <= 150) {
       for (int i=0; i<10; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
           // auto dime enabled
           if      (i==1) {systemData.display_auto_dim ^= true;}
@@ -5833,7 +5925,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     // previous value
     if (p.x >= 160 && p.x <= 185) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
           // brightness reduce
           if      (i==0) {if (systemData.display_brightness>5) {
@@ -5860,7 +5952,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     // next value
     if (p.x >= 265 && p.x <= 290) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
-        if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
           // brightness level increase
           if      (i==0) {if (systemData.display_brightness<255) {
@@ -5902,7 +5994,7 @@ void UpdateDisplay(void * pvParameters) {
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
 
-    menuData.page=5;  // force a specific page to be displayed (dev)
+    // menuData.page=5;  // force a specific page to be displayed (dev)
 
     // determine which sprite to build
     bool checktouch = false;
