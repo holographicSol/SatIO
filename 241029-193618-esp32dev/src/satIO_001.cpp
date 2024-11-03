@@ -4734,7 +4734,7 @@ bool DisplayPage1() {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         drawHomeBar();
         // page header
-        hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+        hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String("Matrix ")+String(menuData.relay_select), 160, 9);
         // clear all functions on current matrix switch
@@ -4847,7 +4847,7 @@ bool DisplaySelectMatrixFunction() {
         drawBack();
         menuData.backpage=1;
         // page header
-        hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+        hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select), 160, 9);
         // scroll buttons
@@ -4980,9 +4980,37 @@ struct SettingsDataStruct {
     "RUN ON STARTUP", // run_on_startup
   };
 
-  int max_settingsmatrixvalues = 1;
-  char settingsmatrixvalues[1][56] = {
-    "ENABLE MATRIX"
+  // int max_settingsmatrixvalues_c0 = 1;
+  // char settingsmatrixvalues_c0[1][56] = {
+  //   "ENABLE MATRIX"
+  // };
+
+  int max_settingsmatrixvalues_c0 = 10;
+  char settingsmatrixvalues_c0[10][56] = {
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9"
+  };
+
+  int max_settingsmatrixvalues_c1 = 10;
+  char settingsmatrixvalues_c1[10][56] = {
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
   };
 
   int max_settingsgpsvalues = 4;
@@ -5038,7 +5066,7 @@ bool DisplaySettings0() {
     drawHomeBar();
 
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Settings")+String(""), 160, 9);
 
@@ -5046,7 +5074,7 @@ bool DisplaySettings0() {
     for (int i=0; i<sData.max_settings0values; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
 
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
     }
@@ -5082,7 +5110,7 @@ bool DisplaySettingsSystem() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("System Settings")+String(""), 160, 4);
 
@@ -5090,7 +5118,7 @@ bool DisplaySettingsSystem() {
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
 
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
     }
@@ -5122,16 +5150,78 @@ bool DisplaySettingsMatrix() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Matrix Settings")+String(""), 160, 9);
     // values
-    for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
 
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    // 10-35      40-65     75-95
+    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String(sData.settingsmatrixvalues[i])+String(""), 75, 51+i*20);
+    if (relayData.relays_enable[0][i] == true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15, 51+i*20);
+    // switch setup column 1 (0-9) (access individual switch setup)
+    hud.drawRect(30, 43+i*20, 40, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("SETUP")+String(""), 50, 51+i*20);
+    // switch off column 2 (0-9) (turns off an individual switch)
+    hud.drawRect(70, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("OFF")+String(""), 85, 51+i*20);
+    // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
+    hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
+    if (relayData.relays_bool[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_GREEN);}
+    else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);}
+
+    // 115-180
+    // enable all (enables all switches to turn on)
+    if (i==0) {
+      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String("ENABLE")+String(""), 160, 51+i*20);
+    }
+    // disable all (disables all switches turning on and off. switches will remain on/ off according to their current state.)
+    if (i==1) {
+      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String("DISABLE")+String(""), 160, 51+i*20);
+    }
+    // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
+    if (i==2) {
+      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String("OFF")+String(""), 160, 51+i*20);
+    }
+
+    // 195-215      225-250     260-275
+    // switch enable column 0 (10-19) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if (relayData.relays_enable[0][i+10] == true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(sData.settingsmatrixvalues_c1[i])+String(""), 225, 51+i*20);
+    // // switch setup column 1 (10-19) (access individual switch setup)
+    hud.drawRect(240, 43+i*20, 40, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("SETUP")+String(""), 260, 51+i*20);
+    // switch turn off column 2 (10-19) (turns off an individual switch)
+    hud.drawRect(280, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("OFF")+String(""), 295, 51+i*20);
+    // switch indicator column 3 (10-19) (indicates if individual switch is either on or off)
+    hud.drawRect(310, 43+i*20, 10, 16, TFTOBJ_COL0);
+    if (relayData.relays_bool[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_GREEN);}
+    else {hud.fillRect(314, 46+i*20, 2, 10, TFT_RED);}
     }
     return true;
   }
@@ -5142,9 +5232,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
     // select list column item
     if (p.x >= 0 && p.x <= 140) {
-      for (int i=0; i<sData.max_settingsmatrixvalues; i++) {
+      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
         if (p.y >= tss.page1_y[i][0] && p.y <= tss.page1_y[i][1]) {
-          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues[i]);
+          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           break;
         }
       }
@@ -5161,7 +5251,7 @@ bool DisplaySettingsGPS() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("GPS Settings")+String(""), 160, 9);
     // values
@@ -5172,7 +5262,7 @@ bool DisplaySettingsGPS() {
     else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsgpsvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
@@ -5207,7 +5297,7 @@ bool DisplaySettingsSerial() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Serial Settings")+String(""), 160, 9);
     // values
@@ -5219,7 +5309,7 @@ bool DisplaySettingsSerial() {
     else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsserialvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
@@ -5255,26 +5345,26 @@ bool DisplaySettingsFile() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("File Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(sdcardData.sysconf)+String(""), 240, 51+i*20);
     }
     // display current matrix filepath
     else if (i==2) {
       hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i*20);
     }
@@ -5314,7 +5404,7 @@ bool DisplaySettingsSaveMatrix() {
     drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Save Matrix File")+String(""), 160, 9);
     // scroll buttons
@@ -5327,12 +5417,12 @@ bool DisplaySettingsSaveMatrix() {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
 
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
@@ -5387,7 +5477,7 @@ bool DisplaySettingsLoadMatrix() {
     drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Load Matrix File")+String(""), 160, 9);
     // scroll buttons
@@ -5400,12 +5490,12 @@ bool DisplaySettingsLoadMatrix() {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
@@ -5452,7 +5542,7 @@ bool DisplaySettingsDeleteMatrix() {
     drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Delete Matrix File")+String(""), 160, 9);
     // scroll buttons
@@ -5465,12 +5555,12 @@ bool DisplaySettingsDeleteMatrix() {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
@@ -5517,13 +5607,13 @@ bool DisplaySettingsTime() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Time Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     if (i==0) {
@@ -5532,15 +5622,15 @@ bool DisplaySettingsTime() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(satData.utc_offset)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5550,15 +5640,15 @@ bool DisplaySettingsTime() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(systemData.translate_plus_minus[satData.utc_offset_flag])+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5568,15 +5658,15 @@ bool DisplaySettingsTime() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(satData.year_prefix)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5628,13 +5718,13 @@ bool DisplaySettingsDisplay() {
     drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Display Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+    hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // auto dim enabled
     if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
@@ -5649,15 +5739,15 @@ bool DisplaySettingsDisplay() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(systemData.display_brightness)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5668,15 +5758,15 @@ bool DisplaySettingsDisplay() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(systemData.display_auto_dim_p0)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5687,15 +5777,15 @@ bool DisplaySettingsDisplay() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(systemData.display_autodim_brightness)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5706,15 +5796,15 @@ bool DisplaySettingsDisplay() {
       hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
       hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
       // minus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("-")+String(""), 185, 52+i*20);
       // value
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.drawString(String(systemData.display_auto_off_p0)+String(""), 245, 52+i*20);
       // plus
-      hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
+      hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
       hud.drawString(String("+")+String(""), 305, 52+i*20);
     }
@@ -5812,7 +5902,7 @@ void UpdateDisplay(void * pvParameters) {
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
 
-    // menuData.page=8;  // force a specific page to be displayed (dev)
+    menuData.page=5;  // force a specific page to be displayed (dev)
 
     // determine which sprite to build
     bool checktouch = false;
