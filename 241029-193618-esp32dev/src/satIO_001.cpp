@@ -2754,16 +2754,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           }
         }
 
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
-            if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
-          }
-        }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_BRIGHTNESS", strlen("DISPLAY_AUTO_DIM_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -2784,6 +2774,16 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           }
         }
 
+        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
+          }
+        }
+
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF_TIMEOUT", strlen("DISPLAY_AUTO_OFF_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -2800,7 +2800,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
             Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
-            if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false; Serial.println("FALSE");} else {systemData.display_auto_off = true; Serial.println("TRUE");}
+            if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
             Serial.println("RESULT: " + String(systemData.display_auto_off ));
           }
         }
