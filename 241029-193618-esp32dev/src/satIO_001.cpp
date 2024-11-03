@@ -5329,7 +5329,7 @@ bool DisplaySettingsSaveMatrix() {
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString("EMPTY SLOT 0", 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
@@ -5402,7 +5402,7 @@ bool DisplaySettingsLoadMatrix() {
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+1), 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
@@ -5467,7 +5467,7 @@ bool DisplaySettingsDeleteMatrix() {
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+1), 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
