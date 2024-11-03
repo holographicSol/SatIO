@@ -4694,30 +4694,30 @@ bool DisplayPage0() {
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
-    // page 0: matrix main btn (row 0)
-    if (p.y >= tss.matrix_switch_cfg_r1h0 && p.y <= tss.matrix_switch_cfg_r1h1) {
-      for (int i=0; i<10; i++) {
-        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-          menuData.relay_select=i;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-          menuData.page=1;
-          break;
-        }
-      }
-    }
+    // // page 0: matrix main btn (row 0)
+    // if (p.y >= tss.matrix_switch_cfg_r1h0 && p.y <= tss.matrix_switch_cfg_r1h1) {
+    //   for (int i=0; i<10; i++) {
+    //     if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+    //       menuData.relay_select=i;
+    //       Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+    //       menuData.page=1;
+    //       break;
+    //     }
+    //   }
+    // }
     // page 0: matrix main btn (row 1)
-    else if (p.y >= tss.matrix_switch_cfg_r2h0 && p.y <= tss.matrix_switch_cfg_r2h1) {
-      for (int i=0; i<10; i++) {
-        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-          menuData.relay_select=i+10;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-          menuData.page=1;
-          break;
-        }
-      }
-    }
+    // else if (p.y >= tss.matrix_switch_cfg_r2h0 && p.y <= tss.matrix_switch_cfg_r2h1) {
+    //   for (int i=0; i<10; i++) {
+    //     if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
+    //       menuData.relay_select=i+10;
+    //       Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+    //       menuData.page=1;
+    //       break;
+    //     }
+    //   }
+    // }
     // page 0: matrix enable disable (row 0)
-    else if (p.y >= tss.matrix_switch_ena_r1h0 && p.y <= tss.matrix_switch_ena_r1h1) {
+    if (p.y >= tss.matrix_switch_ena_r1h0 && p.y <= tss.matrix_switch_ena_r1h1) {
       for (int i=0; i<10; i++) {
         if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
           relayData.relays_enable[0][i] ^= true;
