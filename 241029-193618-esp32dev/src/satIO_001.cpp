@@ -92,13 +92,13 @@ TFT_eSprite hud = TFT_eSprite(&tft);
 TaskHandle_t TSTask;
 TaskHandle_t UpdateDisplayTask;
 
-#define TFTOBJ_COL0 TFT_DARKGREY
-
-#define TFTTXT_COLF_0 TFT_DARKGREY
-#define TFTTXT_COLB_0 TFT_BLACK
-
-#define TFTTXT_COLF_1 TFT_BLACK
-#define TFTTXT_COLB_1 TFT_DARKGREY
+// default scheme (dark neutral)
+uint16_t TFTOBJ_COL0 = TFT_DARKGREY;    // objects color
+uint16_t TFTTXT_COLF_0 = TFT_DARKGREY;  // text color on background
+uint16_t TFTTXT_COLB_0 = TFT_BLACK;     // text background color on background
+uint16_t TFTTXT_COLF_1 = TFT_BLACK;     // text color on object color
+uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;  // text background color on object color
+uint16_t BG_COL_0 = TFT_BLACK;          // background
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -128,7 +128,7 @@ struct systemStruct {
   bool gnrmc_enabled = true;
   bool gpatt_enabled = true;
   bool matrix_enabled = false;
-  bool autoresume_enabled = false;
+  bool run_on_startup = false;
   bool output_satio_enabled = false;
   bool output_gngga_enabled = false;
   bool output_gnrmc_enabled = false;
@@ -2465,7 +2465,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "AUTO_RESUME,");
-    itoa(systemData.autoresume_enabled, sdcardData.tmp, 10);
+    itoa(systemData.run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -2692,11 +2692,11 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
         sdcardData.token = strtok(NULL, ",");
         if (is_all_digits(sdcardData.token) == true) {
           Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
-          if (atoi(sdcardData.token) == 0) {systemData.autoresume_enabled = false;} else {systemData.autoresume_enabled = true;}
+          if (atoi(sdcardData.token) == 0) {systemData.run_on_startup = false;} else {systemData.run_on_startup = true;}
         }
       }
       // continue to enable/disable only if auto resume is true
-      if (systemData.autoresume_enabled == true) {
+      if (systemData.run_on_startup == true) {
       
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
@@ -4731,7 +4731,7 @@ bool DisplayPage1() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 1) {
         // display selected matrix switch setup configuration
-        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        hud.fillRect(0, 0, 320, 240, BG_COL_0);
         drawHomeBar();
         // page header
         hud.setTextDatum(MC_DATUM); // Set the datum to the middle center of the text
@@ -4842,7 +4842,7 @@ bool isTouchPage1(TouchPoint p) {
 bool DisplaySelectMatrixFunction() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
-        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        hud.fillRect(0, 0, 320, 240, BG_COL_0);
         drawHomeBar();
         drawBack();
         menuData.backpage=1;
@@ -4904,7 +4904,7 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
 bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 300) {
-        hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+        hud.fillRect(0, 0, 320, 240, BG_COL_0);
         drawBack();
         hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(menuData.input);
@@ -4977,7 +4977,7 @@ struct SettingsDataStruct {
 
   int max_settingsystemvalues = 1;
   char settingsystemvalues[1][56] = {
-    "AUTO RESUME", // autoresume_enabled
+    "RUN ON STARTUP", // run_on_startup
   };
 
   int max_settingsmatrixvalues = 1;
@@ -5034,7 +5034,7 @@ SettingsDataStruct sData;
 bool DisplaySettings0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
 
     // page header
@@ -5077,7 +5077,7 @@ bool isDisplaySettings0(TouchPoint p) {
 
 bool DisplaySettingsSystem() {
   if (menuData.page == 4) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5117,7 +5117,7 @@ bool isDisplaySettingsSystem(TouchPoint p) {
 
 bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5156,7 +5156,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
 
 bool DisplaySettingsGPS() {
   if (menuData.page == 6) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5202,7 +5202,7 @@ bool isDisplaySettingsGPS(TouchPoint p) {
 
 bool DisplaySettingsSerial() {
   if (menuData.page == 7) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5250,7 +5250,7 @@ bool isDisplaySettingsSerial(TouchPoint p) {
 
 bool DisplaySettingsFile() {
   if (menuData.page == 8) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5309,7 +5309,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
 
 bool DisplaySettingsSaveMatrix() {
   if (menuData.page == 400) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=8;
@@ -5382,7 +5382,7 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
 
 bool DisplaySettingsLoadMatrix() {
   if (menuData.page == 401) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=8;
@@ -5447,7 +5447,7 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
 
 bool DisplaySettingsDeleteMatrix() {
   if (menuData.page == 402) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=8;
@@ -5512,7 +5512,7 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 
 bool DisplaySettingsTime() {
   if (menuData.page == 9) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5623,7 +5623,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
 
 bool DisplaySettingsDisplay() {
   if (menuData.page == 10) {
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
     drawHomeBar();
     drawBack();
     menuData.backpage=3;
@@ -5810,7 +5810,7 @@ void UpdateDisplay(void * pvParameters) {
     hud.setColorDepth(8);
     hud.createSprite(320, 240);
     hud.fillSprite(TFT_TRANSPARENT);
-    hud.fillRect(0, 0, 320, 240, TFT_BLACK);
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
 
     // menuData.page=8;  // force a specific page to be displayed (dev)
 
@@ -5963,7 +5963,7 @@ void setup() {
   // set display rotation as landscape
   tft.setRotation(1); //This is the display in landscape
   // Clear the screen before writing to it
-  tft.fillScreen(TFT_BLACK);
+  tft.fillScreen(BG_COL_0);
   tft.setFreeFont(FONT5X7_H);
   ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
