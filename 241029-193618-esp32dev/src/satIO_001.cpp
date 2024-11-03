@@ -4424,8 +4424,8 @@ struct TouchScreenStruct {
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
   bool homebutton_bool = false;
 
-  int max_backbtn_pages = 11;
-  int backbtn_pages[11] = {4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
+  int max_backbtn_pages = 12;
+  int backbtn_pages[12] = {1, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
   bool backbtn_pages_bool = false;
 
   int max_settingsbtn_pages = 3;
@@ -4750,13 +4750,15 @@ bool DisplayPage1() {
         // display selected matrix switch setup configuration
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         drawHomeBar();
+        drawBack();
+        menuData.backpage=5;
         // page header
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String("Matrix ")+String(menuData.relay_select), 160, 9);
         // clear all functions on current matrix switch
+        // todo 
         hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print("CLEAR");
         // table headers
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
         hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
@@ -4789,16 +4791,16 @@ bool isTouchPage1(TouchPoint p) {
   // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc),
   // this is good practice for when the switches have GPIO/relays. disabling can be done automatically but will limit potential scenarios, this way we can choose.
   if (menuData.page == 1) {
-    // clear all. populates all functions for current matrix switch with $NONE.
-    if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {
-      for (int i=0; i<relayData.MAobject_RELAY_ELEMENTS; i++) {
-        memset(relayData.relays[menuData.relay_select][i], 0, sizeof(relayData.relays[menuData.relay_select][i]));
-        strcpy(relayData.relays[menuData.relay_select][i], relayData.function_names[0]);
-        relayData.relays_data[menuData.relay_select][i][0] = 0.00;
-        relayData.relays_data[menuData.relay_select][i][1] = 0.00;
-        relayData.relays_data[menuData.relay_select][i][2] = 0.00;
-        }
-    }
+    // // clear all. populates all functions for current matrix switch with $NONE.
+    // if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {
+    //   for (int i=0; i<relayData.MAobject_RELAY_ELEMENTS; i++) {
+    //     memset(relayData.relays[menuData.relay_select][i], 0, sizeof(relayData.relays[menuData.relay_select][i]));
+    //     strcpy(relayData.relays[menuData.relay_select][i], relayData.function_names[0]);
+    //     relayData.relays_data[menuData.relay_select][i][0] = 0.00;
+    //     relayData.relays_data[menuData.relay_select][i][1] = 0.00;
+    //     relayData.relays_data[menuData.relay_select][i][2] = 0.00;
+    //     }
+    // }
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
       for (int i=0; i<10; i++) {
