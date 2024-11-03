@@ -155,7 +155,7 @@ struct systemStruct {
   int           display_auto_off_p0 = 10000;
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
-  bool          display_on = true;
+  bool          display_off_bool = false;
   uint32_t display_brightness = 255;
   uint32_t display_autodim_brightness = 50;
   int index_display_autodim_times = 1;
@@ -4333,9 +4333,10 @@ struct TouchScreenStruct {
   int matrix_switch_cfg_r2h1 = 120;
   int matrix_switch_ena_r2h0 = 125;
   int matrix_switch_ena_r2h1 = 135;
-  int ts_t0 = millis();
+  int ts_t0 = millis(); // touchscreen: time since last touch  (touch rate limiting)
   int ts_ti = 200;
-  int ts_t1 = millis();
+  int ts_t1 = millis(); // touchscreen: time since last touch (autodim)
+  int ts_t2 = millis(); // touchscreen: time since last touch (autooff)
 
   int max_homebtn_pages = 13;
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
@@ -5790,6 +5791,16 @@ void TouchScreenInput( void * pvParameters ) {
       }
     }
 
+    // autooff: turn off backlight
+    if (systemData.display_auto_off==true) {
+      if (systemData.display_off_bool==false) {
+        if (millis() >= tss.ts_t2+systemData.display_auto_off_p0) {
+          tss.ts_t2=millis();
+          ledcAnalogWrite(LEDC_CHANNEL_0, 0);
+          systemData.display_off_bool=true;}
+      }
+    }
+
     // get touch data and only delay if current time in threshold range of previous touch time
     TouchPoint p = ts.getTouch();
     if (p.zRaw > 400) {
@@ -5798,31 +5809,50 @@ void TouchScreenInput( void * pvParameters ) {
         // record touch millisecond time
         tss.ts_t0 = millis();
         tss.ts_t1=millis();
+        tss.ts_t2=millis();
         Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
+
+        bool display_handled_wakeup = false;
 
         // autodim: increase brightness
         if (systemData.display_auto_dim==true) {
-          if (systemData.display_dim_bool==true) {ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness); systemData.display_dim_bool=false;}
+          if (systemData.display_dim_bool==true) {
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
+            systemData.display_dim_bool=false;
+            display_handled_wakeup=true;
+            }
         }
-
-        // check touchscreen efficiently
-        bool checktouch = false;
-        if (checktouch == false) {checktouch = isTouchTitleBar(p);}
-        if (checktouch == false) {checktouch = isTouchPage0(p);}
-        if (checktouch == false) {checktouch = isTouchPage1(p);}
-        if (checktouch == false) {checktouch = isTouchNumpad(p);}
-        if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
-        if (checktouch == false) {checktouch = isDisplaySettings0(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsSystem(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsMatrix(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsGPS(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsSerial(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsFile(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsTime(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsDisplay(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsLoadMatrix(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsDeleteMatrix(p);}
-        if (checktouch == false) {checktouch = isDisplaySettingsSaveMatrix(p);}
+        // auto off: turn on
+        if (systemData.display_auto_off==true) {
+          if (systemData.display_off_bool==true) {
+            ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
+            systemData.display_off_bool=false;
+            display_handled_wakeup=true;
+            }
+          }
+        
+        // blind touch protection
+        if (display_handled_wakeup==false) {
+          // handle touch normally
+          bool checktouch = false;
+          if (checktouch == false) {checktouch = isTouchTitleBar(p);}
+          if (checktouch == false) {checktouch = isTouchPage0(p);}
+          if (checktouch == false) {checktouch = isTouchPage1(p);}
+          if (checktouch == false) {checktouch = isTouchNumpad(p);}
+          if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
+          if (checktouch == false) {checktouch = isDisplaySettings0(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsSystem(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsMatrix(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsGPS(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsSerial(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsFile(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsTime(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsDisplay(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsLoadMatrix(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsDeleteMatrix(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsSaveMatrix(p);}
+        }
+        else {Serial.println("[touchscreen] skiping input");}
       }
     }
   }
