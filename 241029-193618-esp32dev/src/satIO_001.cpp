@@ -5824,7 +5824,7 @@ void TouchScreenInput( void * pvParameters ) {
             display_handled_wakeup=true;
             }
         }
-        // auto off: turn on
+        // auto off: turn on backlight
         if (systemData.display_auto_off==true) {
           if (systemData.display_off_bool==true) {
             ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
