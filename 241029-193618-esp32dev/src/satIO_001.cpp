@@ -4957,10 +4957,10 @@ struct SettingsDataStruct {
 
   int max_settingsdisplayvalues = 4;
   char settingsdisplayvalues[4][56] = {
-    "BRIGHTNESS", //
-    "AUTO DIM TIMEOUT",   //
-    "AUTO DIM LEVEL",
-    "AUTO OFF TIMEOUT",   // 
+    "BRIGHTNESS",
+    "AUTO DIM TIMEOUT",
+    "AUTO DIM BRIGHTNESS",
+    "AUTO OFF TIMEOUT",
   };
 };
 SettingsDataStruct sData;
