@@ -146,12 +146,12 @@ struct systemStruct {
   bool sidereal_track_neptune = true;
   
   bool display_low_light = false;
-  bool display_auto_dim = true; // (OLED burn-in protection)
+  bool display_auto_dim = true;
   int           display_auto_dim_p0 = 5000;
   unsigned long display_auto_dim_t0;
   unsigned long display_auto_dim_t1;
   bool          display_dim_bool = false;
-  bool display_auto_off = false; // (OLED burn-in protection)
+  bool display_auto_off = false;
   int           display_auto_off_p0 = 10000;
   unsigned long display_auto_off_t0;
   unsigned long display_auto_off_t1;
