@@ -5781,7 +5781,7 @@ void TouchScreenInput( void * pvParameters ) {
   while (1) {
     delay(1);
 
-    // autodim: decrease brightness
+    // autodim: set brightness to auto dim brightness
     if (systemData.display_auto_dim==true) {
       if (systemData.display_dim_bool==false) {
         if (systemData.display_off_bool==false) {
@@ -5816,7 +5816,7 @@ void TouchScreenInput( void * pvParameters ) {
 
         bool display_handled_wakeup = false;
 
-        // autodim: increase brightness
+        // autodim: restore normal brightness
         if (systemData.display_auto_dim==true) {
           if (systemData.display_dim_bool==true) {
             ledcAnalogWrite(LEDC_CHANNEL_0, systemData.display_brightness);
