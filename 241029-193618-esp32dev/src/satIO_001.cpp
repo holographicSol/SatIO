@@ -4344,30 +4344,12 @@ void CountElements() {
 //                                                         atoi(satData.second));}
 // }
 
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DISPLAY STRUCT
-
-struct VirtualMatrixSwitchStruct {
-  int matrix_btn_w = 30;
-  int matrix_btn_h = 25;
-  int matrix_btn_sp_x = 2;
-  int matrix_btn_sp_h = 2;
-  int matrix_btn_x = 0;
-  int matrix_btn_y = 35;
-  int matrix_indi_h = 5;
-  int matrix_enable_h = 15;
-  int matrix_btn_iter_x = 0;
-  int matrix_btn_w_loop = 0;
-};
-VirtualMatrixSwitchStruct vms;
-
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 TOUCH STRUCT
 
 struct TouchScreenStruct {
 
-    int main_page_title_x[5][2] = {
+    int titlebarbtn_x[5][2] = {
     {0, 60},
     {70, 120},
     {125, 170},
@@ -4451,10 +4433,6 @@ struct TouchScreenStruct {
   int max_backbtn_pages = 12;
   int backbtn_pages[12] = {1, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
   bool backbtn_pages_bool = false;
-
-  int max_settingsbtn_pages = 3;
-  int settingsbtn_pages[3] = {0, 400, 401};
-  bool settingsbtn_bool = false;
 };
 TouchScreenStruct tss;
 
@@ -4463,8 +4441,8 @@ TouchScreenStruct tss;
 
 struct SettingsDataStruct {
 
-  int max_main_values = 5;
-  char main_values[5][56] = {
+  int max_titlebarbtn_values = 5;
+  char titlebarbtn_values[5][56] = {
     "Settings",
     "Matrix",
     "",
@@ -4591,13 +4569,6 @@ bool isTouchTitleBar(TouchPoint p) {
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=menuData.backpage;}
   }
 
-  // choose where settings button will be registered
-  tss.settingsbtn_bool=false;
-  for (int i=0; i<tss.max_settingsbtn_pages; i++) {if (menuData.page==tss.settingsbtn_pages[i]) {tss.settingsbtn_bool=true; break;} else {tss.settingsbtn_bool=false;}}
-  // Serial.println(tss.settingsbtn_bool);
-  if (tss.settingsbtn_bool==true) {
-    if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=3; return true;}
-  }
   return false;
 }
 
@@ -4610,11 +4581,11 @@ bool DisplayPage0() {
   if (menuData.page == 0) {
 
     // title bar (10 columns)
-    for (int i=0; i<sData.max_main_values; i++) {
+    for (int i=0; i<sData.max_titlebarbtn_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.main_values[i])+String(""), 31+(i*62)+2*i, 8);
+      hud.drawString(String(sData.titlebarbtn_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
 
     // virtual matrix switch
@@ -4708,6 +4679,18 @@ bool DisplayPage0() {
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
+
+    // title bar
+    if (p.y >= tss.main_page_y[0][0] && p.y <= tss.main_page_y[0][1]) {
+      for (int i=0; i<sData.max_titlebarbtn_values; i++) {
+        if (p.x >= tss.titlebarbtn_x[i][0] && p.x <= tss.titlebarbtn_x[i][1]) {
+          Serial.print("[titlebar] item "); Serial.println(sData.titlebarbtn_values[i]);
+          if (i==0) {menuData.page=3;}
+          else if (i==1) {menuData.page=5;}
+          break;
+        }
+      }
+    }
     return true;
 }
 else {return false;}
