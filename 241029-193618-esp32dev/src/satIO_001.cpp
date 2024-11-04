@@ -99,6 +99,7 @@ uint16_t TFTTXT_COLB_0 = TFT_BLACK;     // text background color on background
 uint16_t TFTTXT_COLF_1 = TFT_BLACK;     // text color on object color
 uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;  // text background color on object color
 uint16_t BG_COL_0 = TFT_BLACK;          // background
+uint16_t TFT_ENABLED = TFT_GREEN;   // sets enabled color of text/objects
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -5376,7 +5377,7 @@ bool DisplaySettingsMatrix() {
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (relayData.relays_enable[0][i] == true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (relayData.relays_enable[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15, 51+i*20);
     // switch setup column 1 (0-9) (access individual switch setup)
@@ -5391,7 +5392,7 @@ bool DisplaySettingsMatrix() {
     hud.drawString(String("OFF")+String(""), 85, 51+i*20);
     // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
     hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (relayData.relays_bool[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_GREEN);}
+    if (relayData.relays_bool[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);
     }
     // enable all (enables all switches to turn on)
@@ -5418,7 +5419,7 @@ bool DisplaySettingsMatrix() {
     // switch enable column 0 (10-19) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (relayData.relays_enable[0][i+10] == true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (relayData.relays_enable[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 225, 51+i*20);
     // // switch setup column 1 (10-19) (access individual switch setup)
@@ -5433,7 +5434,7 @@ bool DisplaySettingsMatrix() {
     hud.drawString(String("OFF")+String(""), 295, 51+i*20);
     // switch indicator column 3 (10-19) (indicates if individual switch is either on or off)
     hud.drawRect(310, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (relayData.relays_bool[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_GREEN);}
+    if (relayData.relays_bool[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(314, 46+i*20, 2, 10, TFT_RED);}
     }
     return true;
@@ -5548,10 +5549,10 @@ bool DisplaySettingsGPS() {
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsgpsvalues[i])+String(""), 75, 51+i*20);
     }
@@ -5590,11 +5591,11 @@ bool DisplaySettingsSerial() {
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsserialvalues[i])+String(""), 75, 51+i*20);
     }
@@ -5933,9 +5934,9 @@ bool DisplaySettingsDisplay() {
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // auto dim enabled
-    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     // auto off enabled
-    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     // draw value
     hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
     // brightness level
@@ -6043,15 +6044,15 @@ bool SiderealPlanetsSettings() {
     for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingssiderealplanetsvalues[i])+String(""), 75, 51+i*20);
     }
