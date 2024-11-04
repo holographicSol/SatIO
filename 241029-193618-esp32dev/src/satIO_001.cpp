@@ -4676,6 +4676,11 @@ struct TouchScreenStruct {
     {265, 290}, // next/increase
   };
 
+  // page 12: system menu
+  int sp_menu_x[1][2] = {
+    {0, 140}, // column 0 
+  };
+
   // page 300: numpad isTouchNumpad
   int numpad_x[5][2] = {
     {15, 60},  // enter
@@ -4724,8 +4729,8 @@ struct SettingsDataStruct {
     "BACK",
   };
 
-  int max_settings0values = 7;
-  char settings0values[7][56] = {
+  int max_settings0values = 8;
+  char settings0values[8][56] = {
     "System",  // p4
     "Matrix",  // p5
     "GPS",     // p6
@@ -4733,6 +4738,7 @@ struct SettingsDataStruct {
     "File",    // p8
     "Time",    // p9
     "Display", // p10
+    "Planet Tracking", // p12
   };
 
   int max_settingsystemvalues = 1;
@@ -4806,6 +4812,19 @@ struct SettingsDataStruct {
     "AUTO DIM TIMEOUT",
     "AUTO DIM BRIGHTNESS",
     "AUTO OFF TIMEOUT",
+  };
+
+  int max_settingssiderealplanetsvalues = 9;
+  char settingssiderealplanetsvalues[9][56] = {
+    "TRACK SUN",
+    "TRACK MOON",
+    "TRACK MERCURY",
+    "TRACK VENUS",
+    "TRACK MARS",
+    "TRACK JUPITER",
+    "TRACK SATURN",
+    "TRACK URANUS",
+    "TRACK NEPTUNE",
   };
 };
 SettingsDataStruct sData;
@@ -6014,6 +6033,58 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
   else {return false;}
 }
 
+bool SiderealPlanetsSettings() {
+  if (menuData.page == 11) {
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    menuData.backpage=3;
+    // page header max_settingssiderealplanetsvalues
+    DisplayGeneralTitleBar(String("Planet Tracking Settings"));
+    // values
+    for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(sData.settingssiderealplanetsvalues[i])+String(""), 75, 51+i*20);
+    }
+    return true;
+  }
+  else {return false;}
+}
+
+bool isSiderealPlanetsSettings(TouchPoint p) {
+  if (menuData.page == 11) {
+    // select list column item
+    if (p.x >= tss.sp_menu_x[0][0] && p.x <= tss.sp_menu_x[0][1]) {
+      for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
+        if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          Serial.print("[settings] sidereal planets item "); Serial.println(sData.settingssiderealplanetsvalues[i]);
+          if      (i==0) {systemData.sidereal_track_sun ^= true;}
+          else if (i==1) {systemData.sidereal_track_moon ^= true;}
+          else if (i==2) {systemData.sidereal_track_mercury ^= true;}
+          else if (i==3) {systemData.sidereal_track_venus ^= true;}
+          else if (i==4) {systemData.sidereal_track_mars ^= true;}
+          else if (i==5) {systemData.sidereal_track_jupiter ^= true;}
+          else if (i==6) {systemData.sidereal_track_saturn ^= true;}
+          else if (i==7) {systemData.sidereal_track_uranus ^= true;}
+          else if (i==8) {systemData.sidereal_track_neptune ^= true;}
+          break;
+        }
+      }
+    }
+    return true;
+  }
+  else {return false;}
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               UPDATE DISPLAY
 
@@ -6044,6 +6115,7 @@ void UpdateDisplay(void * pvParameters) {
     if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
+    if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
     hud.deleteSprite();
@@ -6123,6 +6195,7 @@ void TouchScreenInput( void * pvParameters ) {
           if (checktouch == false) {checktouch = isDisplaySettingsLoadMatrix(p);}
           if (checktouch == false) {checktouch = isDisplaySettingsDeleteMatrix(p);}
           if (checktouch == false) {checktouch = isDisplaySettingsSaveMatrix(p);}
+          if (checktouch == false) {checktouch = isSiderealPlanetsSettings(p);}
         }
         else {Serial.println("[touchscreen] skiping input");}
       }
