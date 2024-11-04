@@ -5092,23 +5092,6 @@ bool DisplaySettingsMatrix() {
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
 
-  /*
-  // enable/disable
-  int matrix_page_x_column_0[2] = {10, 35};
-  // setup
-  int matrix_page_x_column_1[2] = {40, 65};
-  // off
-  int matrix_page_x_column_2[2] = {75, 95};
-  // main controls
-  int matrix_page_x_column_3[2] = {115, 180};
-  // enable/disable
-  int matrix_page_x_column_4[2] = {195, 215};
-  // setup
-  int matrix_page_x_column_5[2] = {225, 250};
-  // off
-  int matrix_page_x_column_6[2] = {260, 275};
-  */
-
   if (menuData.page == 5) {
 
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
