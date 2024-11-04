@@ -4481,12 +4481,14 @@ struct TouchScreenStruct {
     {0, 320},   // item to delete
   };
 
+  // page 9: time menu
   int time_menu_x[3][2] = {
     {0, 150},   // left column
     {160, 185}, // previous/decrease
     {265, 290}, // next/increase
   };
 
+  // page 10: display menu
   int display_menu_x[3][2] = {
     {0, 150},   // left column
     {160, 185}, // previous/decrease
