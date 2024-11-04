@@ -4872,6 +4872,24 @@ void DisplayVerticalScroll() {
   hud.drawString(String("DOWN")+String(""), 250, 32);
 }
 
+void DisplayPlusMinus(int x, int y, String v0, String v1) {
+  // minus
+  hud.fillRect(x, y, 30, 16, TFTOBJ_COL0);
+  hud.setTextDatum(MC_DATUM);
+  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.drawString(String("-")+String(""), x+15, y+9);
+  // value
+  hud.drawRect(x+30, y, 90, 16, TFTOBJ_COL0);
+  hud.setTextDatum(MC_DATUM);
+  hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.drawString(String(v0)+String(v1), 245, y+9);
+  // plus
+  hud.fillRect(x+120, y, 30, 16, TFTOBJ_COL0);
+  hud.setTextDatum(MC_DATUM);
+  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.drawString(String("+")+String(""), x+120+15, y+9);
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                      DISPLAY MATRIX FUNCTION
 
@@ -5623,58 +5641,13 @@ bool DisplaySettingsTime() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     if (i==0) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(satData.utc_offset)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));
     }
     if (i==1) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.translate_plus_minus[satData.utc_offset_flag])+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));
     }
     if (i==2) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(satData.year_prefix)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(satData.year_prefix), String(""));
     }
     }
     return true;
