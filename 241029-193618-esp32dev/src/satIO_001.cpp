@@ -4620,18 +4620,7 @@ struct SettingsDataStruct {
 SettingsDataStruct sData;
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             DISPLAY TITLEBAR
-
-// void drawHomeBar() {
-//   // saves reiteration under certain conditions
-//   hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-//   hud.print("Home");
-// }
-
-// void drawBack() {
-//   hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-//   hud.print("Back");
-// }
+//                                                                                                     DISPLAY GENERAL TITLEBAR
 
 void DisplayGeneralTitleBar(String v0) {
   // main title bar
@@ -4663,21 +4652,18 @@ void DisplayGeneralTitleBar(String v0) {
 //                                                                                                               TOUCH TITLEBAR
 
 bool isTouchTitleBar(TouchPoint p) {
-
   // choose where home button will be registered
   for (int i=0; i<tss.max_homebtn_pages; i++) {if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
   // Serial.println(tss.homebutton_bool);
   if (tss.homebutton_bool==true) {
     if ((p.x >= 0 && p.x <= 40) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
   }
-
   // choose where back button will be registered
   for (int i=0; i<tss.max_backbtn_pages; i++) {if (menuData.page==tss.backbtn_pages[i]) {tss.backbtn_pages_bool=true; break;} else {tss.backbtn_pages_bool=false;}}
   // Serial.println(tss.backbtn_pages_bool);
   if (tss.backbtn_pages_bool==true) {
     if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {menuData.page=menuData.backpage;}
   }
-
   return false;
 }
 
@@ -4685,10 +4671,8 @@ bool isTouchTitleBar(TouchPoint p) {
 //                                                                                                               DISPLAY PAGE 0
 
 bool DisplayPage0() {
-
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
-
     // main title bar
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
@@ -4696,10 +4680,8 @@ bool DisplayPage0() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
-
     // virtual matrix switch
     for (int i=0; i<10; i++) {
-
       // virtual matrix switch enabled/disbaled rect row 0
       if (relayData.relays_enable[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_DARKGREEN);}
       else {hud.drawRect((i*30)+2*i, 30, 30, 16, TFTOBJ_COL0);}
@@ -4708,7 +4690,6 @@ bool DisplayPage0() {
       if (relayData.relays_bool[0][i]==true) {hud.setTextColor(TFT_DARKGREEN, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 38);
-
       // virtual matrix switch enabled/disbaled rect row 1
       if (relayData.relays_enable[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_DARKGREEN);}
       else {hud.drawRect((i*30)+2*i, 50, 30, 16, TFTOBJ_COL0);}
@@ -4718,7 +4699,6 @@ bool DisplayPage0() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 58);
       }
-    
     // gps data column 0
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setCursor(0,80);
@@ -4729,7 +4709,6 @@ bool DisplayPage0() {
     hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
     hud.setCursor(0,110);
     hud.print("INS "); hud.print(gpattData.ins);
-
     // gps data column 1
     hud.setCursor(125,80);
     hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
@@ -4739,7 +4718,6 @@ bool DisplayPage0() {
     hud.print("PS "); hud.print(gnrmcData.positioning_status);
     hud.setCursor(125,110);
     hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
-
     // upper hud col 2 (inertial navigation system)
     hud.setCursor(230,80);
     hud.print("GST "); hud.print(gpattData.gst_data);
@@ -4749,7 +4727,6 @@ bool DisplayPage0() {
     hud.print("LF  "); hud.print(gpattData.line_flag);
     hud.setCursor(230,110);
     hud.print("RSF "); hud.print(gpattData.run_state_flag);
-
     // lower hud col 0
     hud.setCursor(0,120);
     hud.print("PIT "); hud.print(gpattData.pitch);
@@ -4757,7 +4734,6 @@ bool DisplayPage0() {
     hud.print("ROL "); hud.print(gpattData.roll);
     hud.setCursor(0,140);
     hud.print("YAW "); hud.print(gpattData.yaw);
-
     // lower hud col 1
     hud.setCursor(125,120);
     hud.print("ALT "); hud.print(gnggaData.altitude);
@@ -4765,7 +4741,6 @@ bool DisplayPage0() {
     hud.print("GS  "); hud.print(gnrmcData.ground_speed);
     hud.setCursor(125,140);
     hud.print("MIL "); hud.print(gpattData.mileage);
-
     // lower hud col 2
     hud.setCursor(230,120);
     hud.print("GH "); hud.print(gnrmcData.ground_heading);
@@ -4775,8 +4750,6 @@ bool DisplayPage0() {
     hud.setCursor(230,140);
     hud.print(""); hud.print(gnggaData.longitude_hemisphere);
     hud.print("  "); hud.print(satData.location_longitude_gngga_str);
-
-
     return true;
   }
   else {return false;}
@@ -4943,7 +4916,6 @@ bool DisplaySelectMatrixFunction() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        
         menuData.backpage=1;
         // page header
         DisplayGeneralTitleBar(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select));
@@ -5023,7 +4995,6 @@ bool DisplayNumpad() {
 //                                                                                                                 TOUCH NUMPAD
 
 bool isTouchNumpad(TouchPoint p) {
-
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
     if      ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
@@ -5056,18 +5027,15 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
-bool DisplaySettings0() {
+bool DisplaySettingsMenu() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-  
     // page header
     DisplayGeneralTitleBar(String("Settings"));
-
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
-
+    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
@@ -5077,10 +5045,9 @@ bool DisplaySettings0() {
   else {return false;}
 }
 
-bool isDisplaySettings0(TouchPoint p) {
+bool isDisplaySettingsMenu(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
-
     // select list column item
     if (p.x >= tss.settings_menu_x[0][0] && p.x <= tss.settings_menu_x[0][1]) {
       for (int i=0; i<sData.max_settings0values; i++) {
@@ -5103,11 +5070,9 @@ bool DisplaySettingsSystem() {
     menuData.backpage=3;
     // page header
     DisplayGeneralTitleBar(String("System Settings"));
-
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
@@ -5136,8 +5101,6 @@ bool isDisplaySettingsSystem(TouchPoint p) {
 bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    
-    
     menuData.backpage=3;
     // page header
     DisplayGeneralTitleBar(String("Matrix Settings"));
@@ -5212,9 +5175,7 @@ bool DisplaySettingsMatrix() {
 }
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
-
   if (menuData.page == 5) {
-
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     if (p.x >= tss.matrix_page[0][0] && p.x <= tss.matrix_page[0][1]) {
       for (int i=0; i<10; i++) {
@@ -5305,9 +5266,6 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
         }
       }
     }
-
-
-
     return true;
   }
   else {return false;}
@@ -5321,7 +5279,7 @@ bool DisplaySettingsGPS() {
     DisplayGeneralTitleBar(String("GPS Settings"));
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
@@ -5363,7 +5321,7 @@ bool DisplaySettingsSerial() {
     DisplayGeneralTitleBar(String("Serial Settings"));
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
+    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
@@ -5426,7 +5384,6 @@ bool DisplaySettingsFile() {
       hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i*20);
     }
     }
-    
     return true;
   }
   else {return false;}
@@ -5738,7 +5695,6 @@ bool DisplaySettingsDisplay() {
 
 bool isDisplaySettingsDisplay(TouchPoint p) {
   if (menuData.page == 10) {
-
     // left column
     if (p.x >= tss.display_menu_x[0][0] && p.x <= tss.display_menu_x[0][1]) {
       for (int i=0; i<10; i++) {
@@ -5751,7 +5707,6 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
         }
       }
     }
-
     // previous value
     if (p.x >= tss.display_menu_x[1][0] && p.x <= tss.display_menu_x[1][1]) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
@@ -5823,16 +5778,14 @@ void UpdateDisplay(void * pvParameters) {
     hud.createSprite(320, 240);
     hud.fillSprite(TFT_TRANSPARENT);
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-
     // menuData.page=5;  // force a specific page to be displayed (dev)
-
     // determine which sprite to build
     bool checktouch = false;
     if (checktouch == false) {checktouch = DisplayPage0();}
     if (checktouch == false) {checktouch = DisplayPage1();}
     if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
     if (checktouch == false) {checktouch = DisplayNumpad();}
-    if (checktouch == false) {checktouch = DisplaySettings0();}
+    if (checktouch == false) {checktouch = DisplaySettingsMenu();}
     if (checktouch == false) {checktouch = DisplaySettingsSystem();}
     if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsGPS();}
@@ -5843,7 +5796,6 @@ void UpdateDisplay(void * pvParameters) {
     if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
     if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
-
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
     hud.deleteSprite();
@@ -5857,7 +5809,6 @@ void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
   while (1) {
     delay(1);
-
     // autodim: decrease brightness
     if (systemData.display_auto_dim==true) {
       if (systemData.display_dim_bool==false) {
@@ -5869,7 +5820,6 @@ void TouchScreenInput( void * pvParameters ) {
         }
       }
     }
-
     // autooff: turn off backlight
     if (systemData.display_auto_off==true) {
       if (systemData.display_off_bool==false) {
@@ -5879,20 +5829,16 @@ void TouchScreenInput( void * pvParameters ) {
           systemData.display_off_bool=true;}
       }
     }
-
     // get touch data and only delay if current time in threshold range of previous touch time
     TouchPoint p = ts.getTouch();
     if (p.zRaw > tss.zraw) {
       if (millis() >= tss.ts_t0+tss.ts_ti) {
-
         // record touch millisecond time
         tss.ts_t0 = millis();
         tss.ts_t1=millis();
         tss.ts_t2=millis();
         Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
-
         bool display_handled_wakeup = false;
-
         // autodim: increase brightness
         if (systemData.display_auto_dim==true) {
           if (systemData.display_dim_bool==true) {
@@ -5909,7 +5855,6 @@ void TouchScreenInput( void * pvParameters ) {
             display_handled_wakeup=true;
             }
           }
-        
         // blind touch protection
         if (display_handled_wakeup==false) {
           // handle touch normally
@@ -5919,7 +5864,7 @@ void TouchScreenInput( void * pvParameters ) {
           if (checktouch == false) {checktouch = isTouchPage1(p);}
           if (checktouch == false) {checktouch = isTouchNumpad(p);}
           if (checktouch == false) {checktouch = isTouchSelectMatrixFunction(p);}
-          if (checktouch == false) {checktouch = isDisplaySettings0(p);}
+          if (checktouch == false) {checktouch = isDisplaySettingsMenu(p);}
           if (checktouch == false) {checktouch = isDisplaySettingsSystem(p);}
           if (checktouch == false) {checktouch = isDisplaySettingsMatrix(p);}
           if (checktouch == false) {checktouch = isDisplaySettingsGPS(p);}
