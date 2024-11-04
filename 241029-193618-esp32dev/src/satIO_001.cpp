@@ -4860,6 +4860,18 @@ bool isTouchPage1(TouchPoint p) {
   else {return false;}
 }
 
+void DisplayVerticalScroll() {
+  // scroll buttons
+  hud.fillRect(0, 23, 150, 16, TFTOBJ_COL0);
+  hud.setTextDatum(MC_DATUM);
+  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.drawString(String("UP")+String(""), 75, 32);
+  hud.fillRect(170, 23, 150, 16, TFTOBJ_COL0);
+  hud.setTextDatum(MC_DATUM);
+  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.drawString(String("DOWN")+String(""), 250, 32);
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                      DISPLAY MATRIX FUNCTION
 
@@ -4875,10 +4887,7 @@ bool DisplaySelectMatrixFunction() {
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select), 160, 9);
         // scroll buttons
-        hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-        hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-        hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
-        hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+        DisplayVerticalScroll();
         // values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5384,7 +5393,7 @@ bool DisplaySettingsFile() {
 bool isDisplaySettingsFile(TouchPoint p) {
   if (menuData.page == 8) {
     // select list column item
-    if (p.x >= tss.file_menu_x[0][0] && p.x <= tss.file_menu_x[0][0]) {
+    if (p.x >= tss.file_menu_x[0][0] && p.x <= tss.file_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
@@ -5414,10 +5423,7 @@ bool DisplaySettingsSaveMatrix() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Save Matrix File")+String(""), 160, 9);
     // scroll buttons
-    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
-    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5487,10 +5493,7 @@ bool DisplaySettingsLoadMatrix() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Load Matrix File")+String(""), 160, 9);
     // scroll buttons
-    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
-    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -5552,10 +5555,7 @@ bool DisplaySettingsDeleteMatrix() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(String("Delete Matrix File")+String(""), 160, 9);
     // scroll buttons
-    hud.fillRect(0, 22, 150, 16, TFTOBJ_COL0);
-    hud.fillRect(170, 22, 150, 16, TFTOBJ_COL0);
-    hud.setCursor(75, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("UP");
-    hud.setCursor(240, 27); hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1); hud.print("DOWN");
+    DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
