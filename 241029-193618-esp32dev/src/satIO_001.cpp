@@ -4400,12 +4400,29 @@ struct TouchScreenStruct {
     {210, 220}, // 11
   };
 
-  // page 1: setup a switch
+  // page 1: setup a matrix switch
   int page_1_items_x[4][2] = {
     {0, 135},   // function[
     {155, 195}, // x
     {205, 245}, // y
     {255, 285}, // y
+  };
+
+  // page 100: setup a matrix switch function
+  int select_matrix_function_x[3][2] = {
+    {0, 140},   // scroll up
+    {160, 290}, // scroll down
+    {0, 320},   // items
+  };
+
+  // page 3: settings menu
+  int settings_menu_x[1][2] = {
+    {0, 320}, // column
+  };
+
+  // page 4: system menu
+  int system_menu_x[1][2] = {
+    {0, 320}, // column
   };
 
   // page 5: matrix
@@ -4417,32 +4434,6 @@ struct TouchScreenStruct {
     {195, 215}, // matrix switch enable/disable
     {225, 250}, // matrix switch setup
     {260, 275}, // matrix switch off
-  };
-
-  // page 100: select a function
-  int select_matrix_function_x[3][2] = {
-    {0, 140},   // scroll up
-    {160, 290}, // scroll down
-    {0, 320},   // items
-  };
-
-  // page 300: numpad isTouchNumpad
-  int numpad_x[5][2] = {
-    {60, 120},  // 7,4,1,0
-    {120, 180}, // 8,5,2,.
-    {180, 240}, // 9,6,3,-
-    {0, 60},    // enter
-    {240,285},  // delete, clear
-  };
-
-  // page 3: settings menu
-  int settings_menu_x[1][2] = {
-    {0, 320}, // column
-  };
-
-  // page 4: system menu
-  int system_menu_x[1][2] = {
-    {0, 320}, // column
   };
 
   // page 6: system menu
@@ -4493,6 +4484,15 @@ struct TouchScreenStruct {
     {0, 150},   // left column
     {160, 185}, // previous/decrease
     {265, 290}, // next/increase
+  };
+
+  // page 300: numpad isTouchNumpad
+  int numpad_x[5][2] = {
+    {60, 120},  // 7,4,1,0
+    {120, 180}, // 8,5,2,.
+    {180, 240}, // 9,6,3,-
+    {0, 60},    // enter
+    {240,285},  // delete, clear
   };
 
   int max_homebtn_pages = 13;
