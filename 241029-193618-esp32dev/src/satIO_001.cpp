@@ -4448,6 +4448,11 @@ struct TouchScreenStruct {
     {0, 320}, // column
   };
 
+  // page 4: settings menu
+  int system_menu_x[1][2] = {
+    {0, 320}, // column
+  };
+
   int gps_menu_x[1][2] = {
     {0, 140}, // column 0 
   };
@@ -4460,22 +4465,22 @@ struct TouchScreenStruct {
     {0, 140}, // column 0
   };
 
-  int load_matrix_menu_x[3][2] = {
-    {0, 140}, // scroll up
+  int save_matrix_menu_x[3][2] = {
+    {0, 140},   // scroll up
     {160, 290}, // scroll down
-    {0, 320},
+    {0, 320},   // item to save
   };
 
-  int save_matrix_menu_x[3][2] = {
-    {0, 140}, // scroll up
+  int load_matrix_menu_x[3][2] = {
+    {0, 140},    // scroll up
     {160, 290}, // scroll down
-    {0, 320},
+    {0, 320},   // item to load
   };
 
   int delete_matrix_menu_x[3][2] = {
-    {0, 140}, // scroll up
+    {0, 140},   // scroll up
     {160, 290}, // scroll down
-    {0, 320},
+    {0, 320},   // item to delete
   };
 
   int time_menu_x[3][2] = {
@@ -5016,7 +5021,7 @@ bool isDisplaySettings0(TouchPoint p) {
   if (menuData.page == 3) {
 
     // select list column item
-    if (p.x >= 0 && p.x <= 295) {
+    if (p.x >= tss.settings_menu_x[0][0] && p.x <= tss.settings_menu_x[0][1]) {
       for (int i=0; i<sData.max_settings0values; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=i+4; // settings page 0 is on page 3 so make subsequent settings pages 4+
@@ -5058,7 +5063,7 @@ bool DisplaySettingsSystem() {
 bool isDisplaySettingsSystem(TouchPoint p) {
   if (menuData.page == 4) {
     // select list column item
-    if (p.x >= 0 && p.x <= 140) {
+    if (p.x >= tss.system_menu_x[0][0] && p.x <= tss.system_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsystemvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] system item "); Serial.println(sData.settingsystemvalues[i]);
@@ -5282,7 +5287,7 @@ bool DisplaySettingsGPS() {
 bool isDisplaySettingsGPS(TouchPoint p) {
   if (menuData.page == 6) {
     // select list column item
-    if (p.x >= 0 && p.x <= 140) {
+    if (p.x >= tss.gps_menu_x[0][0] && p.x <= tss.gps_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsgpsvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
@@ -5329,7 +5334,7 @@ bool DisplaySettingsSerial() {
 bool isDisplaySettingsSerial(TouchPoint p) {
   if (menuData.page == 7) {
     // select list column item
-    if (p.x >= 0 && p.x <= 140) {
+    if (p.x >= tss.serial_menu_x[0][0] && p.x <= tss.serial_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsserialvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
@@ -5387,7 +5392,7 @@ bool DisplaySettingsFile() {
 bool isDisplaySettingsFile(TouchPoint p) {
   if (menuData.page == 8) {
     // select list column item
-    if (p.x >= 0 && p.x <= 140) {
+    if (p.x >= tss.file_menu_x[0][0] && p.x <= tss.file_menu_x[0][0]) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
@@ -5444,19 +5449,19 @@ bool DisplaySettingsSaveMatrix() {
 bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   if (menuData.page == 400) {
     // previous list items
-    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.save_matrix_menu_x[0][0] && p.x <= tss.save_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.save_matrix_menu_x[1][0] && p.x <= tss.save_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
-    if (p.x >= 0 && p.x <= 320) {
+    if (p.x >= tss.save_matrix_menu_x[2][0] && p.x <= tss.save_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
@@ -5517,19 +5522,19 @@ bool DisplaySettingsLoadMatrix() {
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   if (menuData.page == 401) {
     // previous list items
-    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.load_matrix_menu_x[0][0] && p.x <= tss.load_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.load_matrix_menu_x[1][0] && p.x <= tss.load_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
-    if (p.x >= 0 && p.x <= 320) {
+    if (p.x >= tss.load_matrix_menu_x[2][0] && p.x <= tss.load_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[loading matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
@@ -5582,19 +5587,19 @@ bool DisplaySettingsDeleteMatrix() {
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   if (menuData.page == 402) {
     // previous list items
-    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.delete_matrix_menu_x[0][0] && p.x <= tss.delete_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.delete_matrix_menu_x[1][0] && p.x <= tss.delete_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // select list item
-    if (p.x >= 0 && p.x <= 320) {
+    if (p.x >= tss.delete_matrix_menu_x[2][0] && p.x <= tss.delete_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[deleting matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
