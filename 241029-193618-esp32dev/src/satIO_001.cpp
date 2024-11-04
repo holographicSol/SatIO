@@ -4347,13 +4347,20 @@ struct TouchScreenStruct {
   int ts_t1 = millis(); // touchscreen: time since last touch (autodim)
   int ts_t2 = millis(); // touchscreen: time since last touch (autooff)
 
-  // title bar x
-  int titlebar_items_x[5][2] = {
+  // main title bar x
+  int main_titlebar_x[5][2] = {
     {0, 60},    // go to settings
     {70, 120},  // go to matrix
     {125, 170}, // 
     {180, 225}, //
     {235, 280}, //
+  };
+
+  // general title bar x
+  int general_titlebar_x[3][2] = {
+    {0, 60},    // go home (page 0)
+    {70, 230},  // page title (go nowhere)
+    {235, 280}, // go back (go to backpage)
   };
 
   // virtual matrix switch x
@@ -4510,13 +4517,20 @@ TouchScreenStruct tss;
 
 struct SettingsDataStruct {
 
-  int max_titlebarbtn_values = 5;
-  char titlebarbtn_values[5][56] = {
+  int max_main_titlebar_values = 5;
+  char main_titlebar_values[5][56] = {
     "Settings",
     "Matrix",
     "",
     "",
     "",
+  };
+
+  int max_general_titlebar_values = 3;
+  char general_titlebar_values[3][56] = {
+    "HOME",
+    "",
+    "BACK",
   };
 
   int max_settings0values = 7;
@@ -4608,15 +4622,41 @@ SettingsDataStruct sData;
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY TITLEBAR
 
-void drawHomeBar() {
-  // saves reiteration under certain conditions
-  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-  hud.print("Home");
-}
+// void drawHomeBar() {
+//   // saves reiteration under certain conditions
+//   hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+//   hud.print("Home");
+// }
 
-void drawBack() {
-  hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-  hud.print("Back");
+// void drawBack() {
+//   hud.setCursor(290,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+//   hud.print("Back");
+// }
+
+void DisplayGeneralTitleBar(String v0) {
+  // main title bar
+  for (int i=0; i<sData.max_general_titlebar_values; i++) {
+    if (i==0) {
+      // home
+      hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
+    }
+    if (i==1) {
+      // title
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(v0)+String(""), 160, 9);
+    }
+    if (i==2) {
+    // back
+      hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
+    }
+  }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -4649,12 +4689,12 @@ bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
 
-    // title bar (10 columns)
-    for (int i=0; i<sData.max_titlebarbtn_values; i++) {
+    // main title bar
+    for (int i=0; i<sData.max_main_titlebar_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.titlebarbtn_values[i])+String(""), 31+(i*62)+2*i, 8);
+      hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
 
     // virtual matrix switch
@@ -4751,9 +4791,9 @@ bool isTouchPage0(TouchPoint p) {
 
     // title bar
     if (p.y >= tss.main_page_y[0][0] && p.y <= tss.main_page_y[0][1]) {
-      for (int i=0; i<sData.max_titlebarbtn_values; i++) {
-        if (p.x >= tss.titlebar_items_x[i][0] && p.x <= tss.titlebar_items_x[i][1]) {
-          Serial.print("[titlebar] item "); Serial.println(sData.titlebarbtn_values[i]);
+      for (int i=0; i<sData.max_main_titlebar_values; i++) {
+        if (p.x >= tss.main_titlebar_x[i][0] && p.x <= tss.main_titlebar_x[i][1]) {
+          Serial.print("[titlebar] item "); Serial.println(sData.main_titlebar_values[i]);
           if (i==0) {menuData.page=3;}
           else if (i==1) {menuData.page=5;}
           break;
@@ -4773,15 +4813,9 @@ bool DisplayPage1() {
     if (menuData.page == 1) {
         // display selected matrix switch setup configuration
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        drawHomeBar();
-        drawBack();
         menuData.backpage=5;
         // page header
-        hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.drawString(String("Matrix ")+String(menuData.relay_select), 160, 9);
-        // clear all functions on current matrix switch
-        // todo 
+        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.relay_select));
         hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         // table headers
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
@@ -4829,6 +4863,7 @@ bool isTouchPage1(TouchPoint p) {
     if (p.x >= tss.page_1_items_x[1][0] && p.x <= tss.page_1_items_x[1][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.backpage=1;
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=0;
@@ -4842,6 +4877,7 @@ bool isTouchPage1(TouchPoint p) {
     if (p.x >= tss.page_1_items_x[2][0] && p.x <= tss.page_1_items_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.backpage=1;
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=1;
@@ -4855,6 +4891,7 @@ bool isTouchPage1(TouchPoint p) {
     if (p.x >= tss.page_1_items_x[3][0] && p.x <= tss.page_1_items_x[3][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
+          menuData.backpage=1;
           menuData.page=300;
           menuData.relay_function_select=i;
           menuData.numpad_key=2;
@@ -4906,13 +4943,10 @@ bool DisplaySelectMatrixFunction() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        drawHomeBar();
-        drawBack();
+        
         menuData.backpage=1;
         // page header
-        hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.drawString(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select), 160, 9);
+        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select));
         // scroll buttons
         DisplayVerticalScroll();
         // values
@@ -4965,7 +4999,9 @@ bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 300) {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        drawBack();
+        if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"));}
+        else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"));}
+        else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"));}
         hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.print(menuData.input);
         hud.setCursor(0, 60);
@@ -5024,12 +5060,9 @@ bool DisplaySettings0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-
+  
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Settings"));
 
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
@@ -5067,13 +5100,9 @@ bool isDisplaySettings0(TouchPoint p) {
 bool DisplaySettingsSystem() {
   if (menuData.page == 4) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("System Settings")+String(""), 160, 4);
+    DisplayGeneralTitleBar(String("System Settings"));
 
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
@@ -5107,13 +5136,11 @@ bool isDisplaySettingsSystem(TouchPoint p) {
 bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
+    
+    
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Matrix Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Matrix Settings"));
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
@@ -5289,13 +5316,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
 bool DisplaySettingsGPS() {
   if (menuData.page == 6) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("GPS Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("GPS Settings"));
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
@@ -5335,13 +5358,9 @@ bool isDisplaySettingsGPS(TouchPoint p) {
 bool DisplaySettingsSerial() {
   if (menuData.page == 7) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Serial Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Serial Settings"));
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0); // 320px/4columns=80 - 4spacing=76
@@ -5383,13 +5402,9 @@ bool isDisplaySettingsSerial(TouchPoint p) {
 bool DisplaySettingsFile() {
   if (menuData.page == 8) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("File Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("File Settings"));
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5442,19 +5457,14 @@ bool isDisplaySettingsFile(TouchPoint p) {
 bool DisplaySettingsSaveMatrix() {
   if (menuData.page == 400) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Save Matrix File")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Save Matrix File"));
     // scroll buttons
     DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5512,13 +5522,9 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
 bool DisplaySettingsLoadMatrix() {
   if (menuData.page == 401) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Load Matrix File")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Load Matrix File"));
     // scroll buttons
     DisplayVerticalScroll();
     // values
@@ -5574,13 +5580,9 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
 bool DisplaySettingsDeleteMatrix() {
   if (menuData.page == 402) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=8;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Delete Matrix File")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Delete Matrix File"));
     // scroll buttons
     DisplayVerticalScroll();
     // values
@@ -5636,13 +5638,9 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 bool DisplaySettingsTime() {
   if (menuData.page == 9) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Time Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Time Settings"));
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5702,13 +5700,9 @@ bool isDisplaySettingsTime(TouchPoint p) {
 bool DisplaySettingsDisplay() {
   if (menuData.page == 10) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    drawHomeBar();
-    drawBack();
     menuData.backpage=3;
     // page header
-    hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String("Display Settings")+String(""), 160, 9);
+    DisplayGeneralTitleBar(String("Display Settings"));
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
