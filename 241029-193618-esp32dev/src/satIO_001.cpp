@@ -103,8 +103,8 @@ uint16_t BG_COL_0 = TFT_BLACK;          // background
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
 
-// SiderealPlanets myAstro;    // for calculating azimuth and altitude
-// SiderealObjects myAstroObj; // for getting right ascension and declination of objects from star table
+SiderealPlanets myAstro;    // for calculating azimuth and altitude
+SiderealObjects myAstroObj; // for getting right ascension and declination of objects from star table
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       SDCARD
@@ -3358,131 +3358,131 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
 
 // build astronomical, ephemeris and other advanced caculations here
 
-// struct SiderealPlantetsStruct {
-//   long sun_ra;
-//   long sun_dec;
-//   long sun_az;
-//   long sun_alt;
-//   long sun_r;
-//   long sun_s;
-//   long moon_ra;
-//   long moon_dec;
-//   long moon_az;
-//   long moon_alt;
-//   long moon_r;
-//   long moon_s;
-//   long moon_p;
-//   long mercury_ra;
-//   long mercury_dec;
-//   long mercury_az;
-//   long mercury_alt;
-//   long mercury_r;
-//   long mercury_s;
-//   long mercury_helio_ecliptic_lat;
-//   long mercury_helio_ecliptic_long;
-//   long mercury_radius_vector;
-//   long mercury_distance;
-//   long mercury_ecliptic_lat;
-//   long mercury_ecliptic_long;
-//   long venus_ra;
-//   long venus_dec;
-//   long venus_az;
-//   long venus_alt;
-//   long venus_r;
-//   long venus_s;
-//   long venus_helio_ecliptic_lat;
-//   long venus_helio_ecliptic_long;
-//   long venus_radius_vector;
-//   long venus_distance;
-//   long venus_ecliptic_lat;
-//   long venus_ecliptic_long;
-//   long mars_ra;
-//   long mars_dec;
-//   long mars_az;
-//   long mars_alt;
-//   long mars_r;
-//   long mars_s;
-//   long mars_helio_ecliptic_lat;
-//   long mars_helio_ecliptic_long;
-//   long mars_radius_vector;
-//   long mars_distance;
-//   long mars_ecliptic_lat;
-//   long mars_ecliptic_long;
-//   long jupiter_ra;
-//   long jupiter_dec;
-//   long jupiter_az;
-//   long jupiter_alt;
-//   long jupiter_r;
-//   long jupiter_s;
-//   long jupiter_helio_ecliptic_lat;
-//   long jupiter_helio_ecliptic_long;
-//   long jupiter_radius_vector;
-//   long jupiter_distance;
-//   long jupiter_ecliptic_lat;
-//   long jupiter_ecliptic_long;
-//   long saturn_ra;
-//   long saturn_dec;
-//   long saturn_az;
-//   long saturn_alt;
-//   long saturn_r;
-//   long saturn_s;
-//   long saturn_helio_ecliptic_lat;
-//   long saturn_helio_ecliptic_long;
-//   long saturn_radius_vector;
-//   long saturn_distance;
-//   long saturn_ecliptic_lat;
-//   long saturn_ecliptic_long;
-//   long uranus_ra;
-//   long uranus_dec;
-//   long uranus_az;
-//   long uranus_alt;
-//   long uranus_r;
-//   long uranus_s;
-//   long uranus_helio_ecliptic_lat;
-//   long uranus_helio_ecliptic_long;
-//   long uranus_radius_vector;
-//   long uranus_distance;
-//   long uranus_ecliptic_lat;
-//   long uranus_ecliptic_long;
-//   long neptune_ra;
-//   long neptune_dec;
-//   long neptune_az;
-//   long neptune_alt;
-//   long neptune_r;
-//   long neptune_s;
-//   long neptune_helio_ecliptic_lat;
-//   long neptune_helio_ecliptic_long;
-//   long neptune_radius_vector;
-//   long neptune_distance;
-//   long neptune_ecliptic_lat;
-//   long neptune_ecliptic_long;
-// };
-// SiderealPlantetsStruct siderealPlanetData;
+struct SiderealPlantetsStruct {
+  long sun_ra;
+  long sun_dec;
+  long sun_az;
+  long sun_alt;
+  long sun_r;
+  long sun_s;
+  // long moon_ra;
+  // long moon_dec;
+  // long moon_az;
+  // long moon_alt;
+  // long moon_r;
+  // long moon_s;
+  // long moon_p;
+  // long mercury_ra;
+  // long mercury_dec;
+  // long mercury_az;
+  // long mercury_alt;
+  // long mercury_r;
+  // long mercury_s;
+  // long mercury_helio_ecliptic_lat;
+  // long mercury_helio_ecliptic_long;
+  // long mercury_radius_vector;
+  // long mercury_distance;
+  // long mercury_ecliptic_lat;
+  // long mercury_ecliptic_long;
+  // long venus_ra;
+  // long venus_dec;
+  // long venus_az;
+  // long venus_alt;
+  // long venus_r;
+  // long venus_s;
+  // long venus_helio_ecliptic_lat;
+  // long venus_helio_ecliptic_long;
+  // long venus_radius_vector;
+  // long venus_distance;
+  // long venus_ecliptic_lat;
+  // long venus_ecliptic_long;
+  // long mars_ra;
+  // long mars_dec;
+  // long mars_az;
+  // long mars_alt;
+  // long mars_r;
+  // long mars_s;
+  // long mars_helio_ecliptic_lat;
+  // long mars_helio_ecliptic_long;
+  // long mars_radius_vector;
+  // long mars_distance;
+  // long mars_ecliptic_lat;
+  // long mars_ecliptic_long;
+  // long jupiter_ra;
+  // long jupiter_dec;
+  // long jupiter_az;
+  // long jupiter_alt;
+  // long jupiter_r;
+  // long jupiter_s;
+  // long jupiter_helio_ecliptic_lat;
+  // long jupiter_helio_ecliptic_long;
+  // long jupiter_radius_vector;
+  // long jupiter_distance;
+  // long jupiter_ecliptic_lat;
+  // long jupiter_ecliptic_long;
+  // long saturn_ra;
+  // long saturn_dec;
+  // long saturn_az;
+  // long saturn_alt;
+  // long saturn_r;
+  // long saturn_s;
+  // long saturn_helio_ecliptic_lat;
+  // long saturn_helio_ecliptic_long;
+  // long saturn_radius_vector;
+  // long saturn_distance;
+  // long saturn_ecliptic_lat;
+  // long saturn_ecliptic_long;
+  // long uranus_ra;
+  // long uranus_dec;
+  // long uranus_az;
+  // long uranus_alt;
+  // long uranus_r;
+  // long uranus_s;
+  // long uranus_helio_ecliptic_lat;
+  // long uranus_helio_ecliptic_long;
+  // long uranus_radius_vector;
+  // long uranus_distance;
+  // long uranus_ecliptic_lat;
+  // long uranus_ecliptic_long;
+  // long neptune_ra;
+  // long neptune_dec;
+  // long neptune_az;
+  // long neptune_alt;
+  // long neptune_r;
+  // long neptune_s;
+  // long neptune_helio_ecliptic_lat;
+  // long neptune_helio_ecliptic_long;
+  // long neptune_radius_vector;
+  // long neptune_distance;
+  // long neptune_ecliptic_lat;
+  // long neptune_ecliptic_long;
+};
+SiderealPlantetsStruct siderealPlanetData;
 
-// struct SiderealObjectStruct {
-//   char object_name[56];
-//   char object_table_name[56];
-//   int  object_number;
-//   int  object_table_i;
-//   long object_ra;
-//   long object_dec;
-//   long object_az;
-//   long object_alt;
-//   long object_mag;
-//   long object_r;
-//   long object_s;
-//   double objects_data[609][7];
-//   char object_table[7][20] =
-//   {
-//     "Star Table",          // 0
-//     "NGC Table",           // 1
-//     "IC Table",            // 2
-//     "Other Objects Table", // 3
-//     "Messier Table",       // 4
-//     "Caldwell Table",      // 5
-//     "Herschel 400 Table",  // 6
-//   };
-// };
+struct SiderealObjectStruct {
+  char object_name[56];
+  char object_table_name[56];
+  int  object_number;
+  int  object_table_i;
+  long object_ra;
+  long object_dec;
+  long object_az;
+  long object_alt;
+  long object_mag;
+  long object_r;
+  long object_s;
+  double objects_data[609][7];
+  char object_table[7][20] =
+  {
+    "Star Table",          // 0
+    "NGC Table",           // 1
+    "IC Table",            // 2
+    "Other Objects Table", // 3
+    "Messier Table",       // 4
+    "Caldwell Table",      // 5
+    "Herschel 400 Table",  // 6
+  };
+};
 // SiderealObjectStruct siderealObjectData;
 
 // void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second,
@@ -3548,22 +3548,22 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
 //   }
 // }
 
-// void trackSun(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-//   myAstro.setLatLong(latitude, longitude);
-//   myAstro.rejectDST();
-//   myAstro.setGMTdate(year, month, day);
-//   myAstro.setLocalTime(hour, minute, second);
-//   myAstro.setGMTtime(hour, minute, second);
-//   myAstro.doSun();
-//   siderealPlanetData.sun_ra  = myAstro.getRAdec();
-//   siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
-//   myAstro.doRAdec2AltAz();
-//   siderealPlanetData.sun_az  = myAstro.getAzimuth();
-//   siderealPlanetData.sun_alt = myAstro.getAltitude();
-//   myAstro.doSunRiseSetTimes();
-//   siderealPlanetData.sun_r  = myAstro.getSunriseTime();
-//   siderealPlanetData.sun_s  = myAstro.getSunsetTime();
-// }
+void trackSun(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
+  myAstro.setLatLong(latitude, longitude);
+  myAstro.rejectDST();
+  myAstro.setGMTdate(year, month, day);
+  myAstro.setLocalTime(hour, minute, second);
+  myAstro.setGMTtime(hour, minute, second);
+  myAstro.doSun();
+  siderealPlanetData.sun_ra  = myAstro.getRAdec();
+  siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
+  myAstro.doRAdec2AltAz();
+  siderealPlanetData.sun_az  = myAstro.getAzimuth();
+  siderealPlanetData.sun_alt = myAstro.getAltitude();
+  myAstro.doSunRiseSetTimes();
+  siderealPlanetData.sun_r  = myAstro.getSunriseTime();
+  siderealPlanetData.sun_s  = myAstro.getSunsetTime();
+}
 
 // void trackMoon(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
 //   myAstro.setLatLong(latitude, longitude);
@@ -3745,6 +3745,84 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
 // }
 
 // ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                 TASK: PLANETARY CALCULATIONS
+
+void trackPlanets() {
+  if (systemData.sidereal_track_sun == true) {trackSun(satData.location_latitude_gngga,
+                                                        satData.location_longitude_gngga,
+                                                        atoi(satData.year_full),
+                                                        atoi(satData.month),
+                                                        atoi(satData.day),
+                                                        atoi(satData.hour),
+                                                        atoi(satData.minute),
+                                                        atoi(satData.second));}
+  // if (systemData.sidereal_track_moon == true) {trackMoon(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_mercury == true) {trackMercury(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_venus == true) {trackVenus(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_mars == true) {trackMars(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_jupiter == true) {trackJupiter(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_saturn == true) {trackSaturn(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_uranus == true) {trackUranus(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+  // if (systemData.sidereal_track_neptune == true) {trackNeptune(satData.location_latitude_gngga,
+  //                                                       satData.location_longitude_gngga,
+  //                                                       atoi(satData.year_full),
+  //                                                       atoi(satData.month),
+  //                                                       atoi(satData.day),
+  //                                                       atoi(satData.hour),
+  //                                                       atoi(satData.minute),
+  //                                                       atoi(satData.second));}
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MATRIX: SWITCH
 
 void matrixSwitch() {
@@ -3913,18 +3991,18 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                           SIDEREAL TIME: SUN
 
-        // // sun azimuth:
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        // // sun altitude:
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        // // daytime: current time in range of sunrise and sunset
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
-        // // nighttime: current time not in range of sunrise and sunset
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.NightTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
-        // // sunrise time less than current time: true after sunrise until midnight
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, atof(satData.hours_minutes));}
-        // // sunset time less than current time: true after sunset until midnight                                                                  
-        // else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, atof(satData.hours_minutes));}
+        // sun azimuth:
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        // sun altitude:
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        // daytime: current time in range of sunrise and sunset
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        // nighttime: current time not in range of sunrise and sunset
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.NightTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        // sunrise time less than current time: true after sunrise until midnight
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, atof(satData.hours_minutes));}
+        // sunset time less than current time: true after sunset until midnight                                                                  
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, atof(satData.hours_minutes));}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MOON
@@ -4257,84 +4335,6 @@ void CountElements() {
   countRelaysEnabled();
   countRelaysActive();
 }
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                 TASK: PLANETARY CALCULATIONS
-
-// void trackPlanets() {
-//   if (systemData.sidereal_track_sun == true) {trackSun(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_moon == true) {trackMoon(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_mercury == true) {trackMercury(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_venus == true) {trackVenus(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_mars == true) {trackMars(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_jupiter == true) {trackJupiter(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_saturn == true) {trackSaturn(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_uranus == true) {trackUranus(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-//   if (systemData.sidereal_track_neptune == true) {trackNeptune(satData.location_latitude_gngga,
-//                                                         satData.location_longitude_gngga,
-//                                                         atoi(satData.year_full),
-//                                                         atoi(satData.month),
-//                                                         atoi(satData.day),
-//                                                         atoi(satData.hour),
-//                                                         atoi(satData.minute),
-//                                                         atoi(satData.second));}
-// }
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 TOUCH STRUCT
@@ -4693,7 +4693,7 @@ bool isTouchTitleBar(TouchPoint p) {
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
-    // main title bar
+    // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -6062,10 +6062,9 @@ void loop() {
   // readSerialCommands();
   readGPS();
   getSATIOData();
-  // trackPlanets();
+  trackPlanets();
   MatrixSwitchTask();
   CountElements();
-  // UpdateDisplay();
 
   // store time taken to complete
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;
