@@ -4496,11 +4496,19 @@ struct TouchScreenStruct {
 
   // page 300: numpad isTouchNumpad
   int numpad_x[5][2] = {
-    {60, 120},  // 7,4,1,0
-    {120, 180}, // 8,5,2,.
-    {180, 240}, // 9,6,3,-
-    {0, 60},    // enter
-    {240,285},  // delete, clear
+    {15, 60},  // enter
+    {70, 120},  // 7,4,1,0
+    {130, 185}, // 8,5,2,. 
+    {195, 235}, // 9,6,3,-
+    {245, 290}, // delete, clear
+  };
+
+  // numpad page y
+  int numpad_page_y[4][2] = {
+    {70, 100},  // 0
+    {105, 135}, // 1
+    {140, 170}, // 2
+    {175, 215}, // 3
   };
 
   int max_homebtn_pages = 13;
@@ -4975,18 +4983,51 @@ bool DisplayNumpad() {
         if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"));}
         else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"));}
         else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"));}
-        hud.setCursor(150-strlen(menuData.input), 30); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.input);
-        hud.setCursor(0, 60);
-        hud.print("               7          8          9");
-        hud.setCursor(0, 100);
-        hud.print("               4          5          6");
-        hud.setCursor(0, 140);
-        hud.print("               1          2          3");
-        hud.setCursor(0, 180);
-        hud.print("ENTER          0          .          -          DEL");
-        hud.setCursor(0, 220);
-        hud.print("                                                 CL");
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.drawString(String(menuData.input)+String(""), 160, 40+9);
+        // col 0
+        for (int i=0; i<4; i++) {
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        if (i==3) {
+          hud.drawString(String("ENTER")+String(""), 32, 81+i*40);
+        }
+        // col 1
+        for (int i=0; i<4; i++) {
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        if (i==0) {hud.drawString(String("7")+String(""), 96, 81+i*40);}
+        if (i==1) {hud.drawString(String("4")+String(""), 96, 81+i*40);}
+        if (i==2) {hud.drawString(String("1")+String(""), 96, 81+i*40);}
+        if (i==3) {hud.drawString(String("0")+String(""), 96, 81+i*40);}
+        }
+        // col 2
+        for (int i=0; i<4; i++) {
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        if (i==0) {hud.drawString(String("8")+String(""), 170, 81+i*40);}
+        if (i==1) {hud.drawString(String("5")+String(""), 170, 81+i*40);}
+        if (i==2) {hud.drawString(String("2")+String(""), 170, 81+i*40);}
+        if (i==3) {hud.drawString(String(".")+String(""), 170, 81+i*40);}
+        }
+        // col 3
+        for (int i=0; i<4; i++) {
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        if (i==0) {hud.drawString(String("9")+String(""), 234, 81+i*40);}
+        if (i==1) {hud.drawString(String("6")+String(""), 234, 81+i*40);}
+        if (i==2) {hud.drawString(String("3")+String(""), 234, 81+i*40);}
+        if (i==3) {hud.drawString(String("-")+String(""), 234, 81+i*40);}
+        }
+        // col 4
+        for (int i=0; i<4; i++) {
+        hud.setTextDatum(MC_DATUM);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        if (i==0) {hud.drawString(String("DELETE")+String(""), 298, 81+i*40);}
+        if (i==3) {hud.drawString(String("CLEAR")+String(""), 298, 81+i*40);}
+        }
+        }
         return true;
     }
     else {return false;}
@@ -4998,31 +5039,51 @@ bool DisplayNumpad() {
 bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
-    if      ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
-    else if ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
-    else if ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
-    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
-    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
-    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
-    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "2");} // 2
-    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, ".");} // .
-    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "9");} // 9
-    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "6");} // 6
-    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "3");} // 3
-    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, "-");} // -
-    // enter
-    else if ((p.x >= tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) && (p.y >= 160 && p.y <= 195)) {
-      if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
-      if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
-      if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
-      menuData.page=1;
+    
+    if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
+      if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
+        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
+        else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
+        else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
+        menuData.page=1;
+      }
     }
-    // delete
-    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
-    // clear
-    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
-    // back (special back case)
-    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
+    if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
+      for (int i; i<4; i++) {
+        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
+        else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "4");}
+        else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "1");}
+        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "0");}
+        break;
+        }
+    }
+    if (p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) {
+      for (int i; i<4; i++) {
+        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "8");}
+        else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "5");}
+        else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "2");}
+        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, ".");}
+        break;
+        }
+    }
+    if (p.x >=  tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) {
+      for (int i; i<4; i++) {
+        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "9");}
+        else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "6");}
+        else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "3");}
+        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "-");}
+        break;
+        }
+    }
+    if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
+      for (int i; i<4; i++) {
+        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
+        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {memset(menuData.input, 0, sizeof(menuData.input));}
+        break;
+        }
+    }
+    // back (special back case clears input)
+    else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
     return true;
   }
   else {return false;}
