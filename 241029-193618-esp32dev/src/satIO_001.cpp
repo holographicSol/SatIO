@@ -5713,79 +5713,19 @@ bool DisplaySettingsDisplay() {
     hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
     // brightness level
     if (i==0) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.display_brightness)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(systemData.display_brightness), String(""));
     }
     // auto dim timeout
     if (i==1) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.display_auto_dim_p0)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(systemData.display_auto_dim_p0), String(""));
     }
     // auto dim brightness
     if (i==2) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.display_autodim_brightness)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(systemData.display_autodim_brightness), String(""));
     }
     // auto off timeout
     if (i==3) {
-      // scroll buttons
-      hud.fillRect(170, 43+i*20, 30, 16, TFTOBJ_COL0); // minus
-      hud.drawRect(200, 43+i*20, 90, 16, TFTOBJ_COL0); // value
-      hud.fillRect(290, 43+i*20, 30, 16, TFTOBJ_COL0); // plus
-      // minus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("-")+String(""), 185, 52+i*20);
-      // value
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(systemData.display_auto_off_p0)+String(""), 245, 52+i*20);
-      // plus
-      hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
-      hud.drawString(String("+")+String(""), 305, 52+i*20);
+      DisplayPlusMinus(170, 43+i*20, String(systemData.display_auto_off_p0), String(""));
     }
     }
     return true;
