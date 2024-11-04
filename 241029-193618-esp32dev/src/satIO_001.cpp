@@ -4369,6 +4369,12 @@ struct TouchScreenStruct {
     {0, 25},    // row 0
   };
 
+  // general vertical scroll
+  int general_vertical_scroll_y[1][2] = {
+    {35, 45},    // row 0
+  };
+
+
   // virtual matrix switch x
   int virtual_matrix_switch_items_x[10][2] = {
     {0, 35},    // virtual switch 0 & 10
@@ -4953,12 +4959,12 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
     // previous list items
-    if ((p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.function_index--;
       if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
     }
     // next list items
-    else if ((p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.function_index++;
       if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
     }
@@ -5512,13 +5518,13 @@ bool DisplaySettingsSaveMatrix() {
 bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   if (menuData.page == 400) {
     // previous list items
-    if ((p.x >= tss.save_matrix_menu_x[0][0] && p.x <= tss.save_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.save_matrix_menu_x[0][0] && p.x <= tss.save_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= tss.save_matrix_menu_x[1][0] && p.x <= tss.save_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.save_matrix_menu_x[1][0] && p.x <= tss.save_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
@@ -5578,13 +5584,13 @@ bool DisplaySettingsLoadMatrix() {
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   if (menuData.page == 401) {
     // previous list items
-    if ((p.x >= tss.load_matrix_menu_x[0][0] && p.x <= tss.load_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.load_matrix_menu_x[0][0] && p.x <= tss.load_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= tss.load_matrix_menu_x[1][0] && p.x <= tss.load_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.load_matrix_menu_x[1][0] && p.x <= tss.load_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
@@ -5636,13 +5642,13 @@ bool DisplaySettingsDeleteMatrix() {
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   if (menuData.page == 402) {
     // previous list items
-    if ((p.x >= tss.delete_matrix_menu_x[0][0] && p.x <= tss.delete_matrix_menu_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.delete_matrix_menu_x[0][0] && p.x <= tss.delete_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= tss.delete_matrix_menu_x[1][0] && p.x <= tss.delete_matrix_menu_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.delete_matrix_menu_x[1][0] && p.x <= tss.delete_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
