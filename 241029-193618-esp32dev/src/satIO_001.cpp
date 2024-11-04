@@ -4434,7 +4434,7 @@ struct TouchScreenStruct {
     {0, 320},   // items
   };
 
-  // page 300: numpad
+  // page 300: numpad isTouchNumpad
   int numpad_x[5][2] = {
     {60, 120},  // 7,4,1,0
     {120, 180}, // 8,5,2,.
@@ -4960,33 +4960,34 @@ bool DisplayNumpad() {
 //                                                                                                                 TOUCH NUMPAD
 
 bool isTouchNumpad(TouchPoint p) {
+
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
-    if      ((p.x >=  60 && p.x <= 120) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
-    else if ((p.x >=  60 && p.x <= 120) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
-    else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
-    else if ((p.x >=  60 && p.x <= 120) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
-    else if ((p.x >= 120 && p.x <= 180) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
-    else if ((p.x >= 120 && p.x <= 180) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
-    else if ((p.x >= 120 && p.x <= 180) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "2");} // 2
-    else if ((p.x >= 120 && p.x <= 180) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, ".");} // .
-    else if ((p.x >= 180 && p.x <= 240) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "9");} // 9
-    else if ((p.x >= 180 && p.x <= 240) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "6");} // 6
-    else if ((p.x >= 180 && p.x <= 240) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "3");} // 3
-    else if ((p.x >= 180 && p.x <= 240) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, "-");} // -
+    if      ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "7");} // 7
+    else if ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "4");} // 4
+    else if ((p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "1");} // 1
+    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "0");} // 0
+    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "8");} // 8
+    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "5");} // 5
+    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "2");} // 2
+    else if ((p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, ".");} // .
+    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >=  55 && p.y <=  85)) {strcat(menuData.input, "9");} // 9
+    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >=  85 && p.y <= 120)) {strcat(menuData.input, "6");} // 6
+    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >= 120 && p.y <= 160)) {strcat(menuData.input, "3");} // 3
+    else if ((p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) && (p.y >= 160 && p.y <= 195)) {strcat(menuData.input, "-");} // -
     // enter
-    else if ((p.x >= 0 && p.x <= 60) && (p.y >= 160 && p.y <= 195)) {
+    else if ((p.x >= tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) && (p.y >= 160 && p.y <= 195)) {
       if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
       if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
       if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
       menuData.page=1;
     }
     // delete
-    else if ((p.x >= 240 && p.x <= 285) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
+    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 160 && p.y <= 195)) {menuData.input[strlen(menuData.input)-1] = '\0';}
     // clear
-    else if ((p.x >= 240 && p.x <= 285) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
+    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 195 && p.y <= 225)) {memset(menuData.input, 0, sizeof(menuData.input));}
     // back (special back case)
-    else if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
+    else if ((p.x >= tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
     return true;
   }
   else {return false;}
