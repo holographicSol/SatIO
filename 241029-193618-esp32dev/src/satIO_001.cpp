@@ -4698,12 +4698,12 @@ struct TouchScreenStruct {
     {175, 215}, // 3
   };
 
-  int max_homebtn_pages = 13;
-  int homebtn_pages[13] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
+  int max_homebtn_pages = 14;
+  int homebtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};
   bool homebutton_bool = false;
 
-  int max_backbtn_pages = 13;
-  int backbtn_pages[13] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401, 402};
+  int max_backbtn_pages = 14;
+  int backbtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};
   bool backbtn_pages_bool = false;
 };
 TouchScreenStruct tss;
