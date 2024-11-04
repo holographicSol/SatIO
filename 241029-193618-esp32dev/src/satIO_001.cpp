@@ -5116,7 +5116,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
-          Serial.print("[settings] matrix item foo "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           relayData.relays_enable[0][i] ^= true;
           break;
         }
@@ -5173,7 +5173,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
-          Serial.print("[settings] matrix item bar "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           relayData.relays_enable[0][i+10] ^= true;
           break;
         }
