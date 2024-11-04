@@ -4339,6 +4339,7 @@ void CountElements() {
 //                                                                                                                 TOUCH STRUCT
 
 struct TouchScreenStruct {
+  /* contains values for touchscreen data */
   
   int ts_t0 = millis(); // touchscreen: time since last touch  (touch rate limiting)
   int ts_ti = 200;      // touchscreen: touch acknowledgement time interval between
@@ -4439,35 +4440,41 @@ struct TouchScreenStruct {
     {0, 320}, // column
   };
 
-  // page 4: settings menu
+  // page 4: system menu
   int system_menu_x[1][2] = {
     {0, 320}, // column
   };
 
+  // page 6: system menu
   int gps_menu_x[1][2] = {
     {0, 140}, // column 0 
   };
 
+  // page 7: serial menu
   int serial_menu_x[1][2] = {
     {0, 140}, // column 0
   };
 
+  // page 8: file menu
   int file_menu_x[1][2] = {
     {0, 140}, // column 0
   };
 
+  // page 400: save matrix menu
   int save_matrix_menu_x[3][2] = {
     {0, 140},   // scroll up
     {160, 290}, // scroll down
     {0, 320},   // item to save
   };
 
+  // page 401: load matrix menu
   int load_matrix_menu_x[3][2] = {
     {0, 140},    // scroll up
     {160, 290}, // scroll down
     {0, 320},   // item to load
   };
 
+  // page 402: delete matrix menu
   int delete_matrix_menu_x[3][2] = {
     {0, 140},   // scroll up
     {160, 290}, // scroll down
