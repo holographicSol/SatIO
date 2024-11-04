@@ -4366,7 +4366,7 @@ VirtualMatrixSwitchStruct vms;
 //                                                                                                                 TOUCH STRUCT
 
 struct TouchScreenStruct {
-  int page0_x[10][2] = {
+  int main_page_x[10][2] = {
     {0, 35},
     {35, 60},
     {70, 90},
@@ -4377,6 +4377,21 @@ struct TouchScreenStruct {
     {210, 230},
     {235, 260},
     {260, 290}
+  };
+
+  int main_page_y[12][2] = {
+    {15, 25},
+    {30, 40},
+    {50, 60},
+    {70, 80},
+    {90, 100},
+    {105, 115},
+    {125, 135},
+    {145, 155},
+    {160, 170},
+    {180, 190},
+    {195, 205},
+    {210, 220}
   };
 
   int general_page_y[10][2] = {
@@ -4407,14 +4422,14 @@ struct TouchScreenStruct {
   // off
   int matrix_page_x_column_6[2] = {260, 275};
 
-  int matrix_switch_cfg_r1h0 = 50;
-  int matrix_switch_cfg_r1h1 = 70;
-  int matrix_switch_ena_r1h0 = 75;
-  int matrix_switch_ena_r1h1 = 85;
-  int matrix_switch_cfg_r2h0 = 100;
-  int matrix_switch_cfg_r2h1 = 120;
-  int matrix_switch_ena_r2h0 = 125;
-  int matrix_switch_ena_r2h1 = 135;
+  // int matrix_switch_cfg_r1h0 = 50;
+  // int matrix_switch_cfg_r1h1 = 70;
+  // int matrix_switch_ena_r1h0 = 75;
+  // int matrix_switch_ena_r1h1 = 85;
+  // int matrix_switch_cfg_r2h0 = 100;
+  // int matrix_switch_cfg_r2h1 = 120;
+  // int matrix_switch_ena_r2h0 = 125;
+  // int matrix_switch_ena_r2h1 = 135;
   int ts_t0 = millis(); // touchscreen: time since last touch  (touch rate limiting)
   int ts_ti = 200;
   int ts_t1 = millis(); // touchscreen: time since last touch (autodim)
@@ -4433,6 +4448,101 @@ struct TouchScreenStruct {
   bool settingsbtn_bool = false;
 };
 TouchScreenStruct tss;
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     SETTINGS
+
+struct SettingsDataStruct {
+
+  int max_main_values = 12;
+  char main_values_column_0[10][56] = {
+  };
+
+  int max_settings0values = 7;
+  char settings0values[7][56] = {
+    "System",  // p4
+    "Matrix",  // p5
+    "GPS",     // p6
+    "Serial",  // p7
+    "File",    // p8
+    "Time",    // p9
+    "Display", // p10
+  };
+
+  int max_settingsystemvalues = 1;
+  char settingsystemvalues[1][56] = {
+    "RUN ON STARTUP", // run_on_startup
+  };
+
+  int max_settingsmatrixvalues_c0 = 20;
+  char settingsmatrixvalues_c0[20][56] = {
+    "S0",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S16",
+    "S17",
+    "S19",
+  };
+
+  int max_settingsgpsvalues = 4;
+  char settingsgpsvalues[4][56] = {
+    "ENABLE SATIO",  // enables/disables satio processing of gps data
+    "ENABLE GNGGA",  // enables/disables parsing of gngga sentence
+    "ENABLE GNRMC",  // enables/disables parsing of gnrmc sentence
+    "ENABLE GPATT",  // enables/disables parsing of gpatt sentence
+  };
+
+  int max_settingsserialvalues = 5;
+  char settingsserialvalues[5][56] = {
+    "ENABLE SATIO",  // enables/disables serial output of satio sentence
+    "ENABLE GNGGA",  // enables/disables serial output of gngga sentence
+    "ENABLE GNRMC",  // enables/disables serial output of gnrmc sentence
+    "ENABLE GPATT",  // enables/disables serial output of gpatt sentence
+    "ENABLE MATRIX", // enables/disables serial output of gpatt sentence
+    // coordinate_conversion_mode (GNGGA/GNRMC)
+  };
+
+  int max_settingsfilevalues = 7;
+  char settingsfilevalues[7][56] = {
+    "SYSTEM FILE",
+    "SAVE SYSTEM FILE",
+    "MATRIX FILE",
+    "NEW MATRIX FILE",
+    "SAVE MATRIX FILE",
+    "LOAD MATRIX FILE",
+    "DELETE MATRIX FILE",
+  };
+
+  int max_settingstimevalues = 3;
+  char settingstimevalues[3][56] = {
+    "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
+    "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
+    "YEAR PREFIX", // example: prefix 20 for year 2024
+  };
+
+  int max_settingsdisplayvalues = 4;
+  char settingsdisplayvalues[4][56] = {
+    "BRIGHTNESS",
+    "AUTO DIM TIMEOUT",
+    "AUTO DIM BRIGHTNESS",
+    "AUTO OFF TIMEOUT",
+  };
+};
+SettingsDataStruct sData;
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY TITLEBAR
@@ -4480,212 +4590,101 @@ bool isTouchTitleBar(TouchPoint p) {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY PAGE 0
 
-// todo: add LoadMatrixFileNumber to available matrix functions so that matrix files can be automatically loaded into memory by the matrix switch.
-// todo on page 0. thought ahead required as always to try and make the most of each page, especially page 0: | enable all / disable all | all on / all off |
-
 bool DisplayPage0() {
-  // settings
-  hud.setCursor(4,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-  hud.print("Config");
+
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
-    // create virtual matrix switch: row 1
-    vms.matrix_btn_w_loop = 0;
-    vms.matrix_btn_y = 35;
-    vms.matrix_btn_iter_x = 0;
-    for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
-        // skip multiplying matrix_btn_w initially
-        if (vms.matrix_btn_iter_x > 0) {vms.matrix_btn_w_loop=vms.matrix_btn_w;}
-        // active/inactive indicator
-        if (relayData.relays_bool[0][vms.matrix_btn_iter_x] == true) {
-            hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-            vms.matrix_btn_y,
-            vms.matrix_btn_w,
-            vms.matrix_indi_h,
-            TFT_GREEN);}
-        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-            vms.matrix_btn_y,
-            vms.matrix_btn_w,
-            vms.matrix_indi_h,
-            TFTOBJ_COL0);}
-    // configuration button
-    hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-    vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
-    vms.matrix_btn_w,
-    vms.matrix_btn_h,
-    TFTOBJ_COL0);
-    // enable/disable button and indicator
-    if (relayData.relays_enable[0][vms.matrix_btn_iter_x] == true) {
-        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-        vms.matrix_btn_w,
-        vms.matrix_enable_h,
-        TFT_GREEN);
-        }
-    else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-        vms.matrix_btn_w,
-        vms.matrix_enable_h,
-        TFTOBJ_COL0);}
-    }
-    // create virtual matrix switch: row 2
-    vms.matrix_btn_w_loop = 0;
-    vms.matrix_btn_y = 90;
-    vms.matrix_btn_iter_x = 0;
-    for (vms.matrix_btn_iter_x=0; vms.matrix_btn_iter_x<10; vms.matrix_btn_iter_x++) {
-        // skip multiplying matrix_btn_w initially
-        if (vms.matrix_btn_iter_x > 10) {vms.matrix_btn_w_loop=vms.matrix_btn_w;}
-        // active/inactive indicator
-        if (relayData.relays_bool[0][vms.matrix_btn_iter_x+10] == true) {
-            hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-            vms.matrix_btn_y,
-            vms.matrix_btn_w,
-            vms.matrix_indi_h,
-            TFT_GREEN);}
-        else {hud.fillRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-            vms.matrix_btn_y,
-            vms.matrix_btn_w,
-            vms.matrix_indi_h,
-            TFTOBJ_COL0);}
-    // configuration button
-    hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-    vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h,
-    vms.matrix_btn_w,
-    vms.matrix_btn_h,
-    TFTOBJ_COL0);
-    // enable/disable button and indicator
-    if (relayData.relays_enable[0][vms.matrix_btn_iter_x+10] == true) {
-        hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-        vms.matrix_btn_w,
-        vms.matrix_enable_h,
-        TFT_GREEN);
-        }
-    else {hud.drawRect((vms.matrix_btn_iter_x*vms.matrix_btn_sp_x)+(vms.matrix_btn_x)+(vms.matrix_btn_iter_x*vms.matrix_btn_w),
-        vms.matrix_btn_y+vms.matrix_indi_h+vms.matrix_btn_sp_h*2+vms.matrix_btn_h,
-        vms.matrix_btn_w,
-        vms.matrix_enable_h,
-        TFTOBJ_COL0);}
-    }
-    // upper hud reflects simple on/off states as well as time and precision.
-    // upper hud col 1 (connection and time)
-    hud.setCursor(50,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<15; i++) {hud.print(" ");}
-    hud.setCursor(50,2);
+
+    // title bar (10 columns)
+    for (int i=0; i<5; i++) {
+      hud.drawRect((i*60)+2*i, 0, 60, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      if (i==0) {hud.setTextDatum(MC_DATUM); hud.drawString(String("MENU")+String(""), 30+(i*60)+2*i, 8);}
+      }
+
+    // virtual matrix switch
+    for (int i=0; i<10; i++) {
+
+      // virtual matrix switch enabled/disbaled rect row 0
+      if (relayData.relays_enable[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_DARKGREEN);}
+      else {hud.drawRect((i*30)+2*i, 30, 30, 16, TFTOBJ_COL0);}
+      // virtual matrix switch on/off text row 0
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      if (relayData.relays_bool[0][i]==true) {hud.setTextColor(TFT_DARKGREEN, TFTTXT_COLB_0);}
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 38);
+
+      // virtual matrix switch enabled/disbaled rect row 1
+      if (relayData.relays_enable[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_DARKGREEN);}
+      else {hud.drawRect((i*30)+2*i, 50, 30, 16, TFTOBJ_COL0);}
+      // virtual matrix switch on/off text row 0
+      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      if (relayData.relays_bool[0][i+10]==true) {hud.setTextColor(TFT_DARKGREEN, TFTTXT_COLB_0);}
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 58);
+      }
+    
+    // gps data column 0
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setCursor(0,80);
     hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
-
-    hud.setCursor(50,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<15; i++) {hud.print(" ");}
-    hud.setCursor(50,12);
+    hud.setCursor(0,90);
     hud.print("T  "); hud.print(satData.sat_time_stamp_string);
-
-    hud.setCursor(50,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<15; i++) {hud.print(" ");}
-    hud.setCursor(50,22);
+    hud.setCursor(0,100);
     hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
-
-    // upper hud col 2 (precision)
-    hud.setCursor(175,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(175,2);
-    hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
-
-    hud.setCursor(175,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(175,12);
-    hud.print("PS "); hud.print(gnggaData.positioning_status);
-
-    hud.setCursor(175,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(175,22);
-    hud.print("PS "); hud.print(gnrmcData.positioning_status);
-
-    // upper hud col 3 (inertial navigation system)
-    hud.setCursor(230,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(230,2);
+    hud.setCursor(0,110);
     hud.print("INS "); hud.print(gpattData.ins);
 
-    hud.setCursor(230,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(230,12);
+    // gps data column 1
+    hud.setCursor(125,80);
+    hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
+    hud.setCursor(125,90);
+    hud.print("PS "); hud.print(gnggaData.positioning_status);
+    hud.setCursor(125,100);
+    hud.print("PS "); hud.print(gnrmcData.positioning_status);
+    hud.setCursor(125,110);
     hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
 
-    hud.setCursor(230,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(230,22);
+    // upper hud col 2 (inertial navigation system)
+    hud.setCursor(230,80);
+    hud.print("GST "); hud.print(gpattData.gst_data);
+    hud.setCursor(230,90);
+    hud.print("SF  "); hud.print(gpattData.static_flag);
+    hud.setCursor(230,100);
+    hud.print("LF  "); hud.print(gpattData.line_flag);
+    hud.setCursor(230,110);
     hud.print("RSF "); hud.print(gpattData.run_state_flag);
 
-    // upper hud col 4 (inertial navigation system)
-    hud.setCursor(280,2); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(280,2);
-    hud.print("GST "); hud.print(gpattData.gst_data);
-
-    hud.setCursor(280,12); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(280,12);
-    hud.print("SF  "); hud.print(gpattData.static_flag);
-
-    hud.setCursor(280,22); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<6; i++) {hud.print(" ");}
-    hud.setCursor(280,22);
-    hud.print("LF  "); hud.print(gpattData.line_flag);
-
-    // lower hud reflects positional and rotational information as well as ground speed and mileage. 
-    // lower hud col 1
-    hud.setCursor(0,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<7; i++) {hud.print(" ");}
-    hud.setCursor(0,145);
+    // lower hud col 0
+    hud.setCursor(0,120);
     hud.print("PIT "); hud.print(gpattData.pitch);
-
-    hud.setCursor(0,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<7; i++) {hud.print(" ");}
-    hud.setCursor(0,155);
+    hud.setCursor(0,130);
     hud.print("ROL "); hud.print(gpattData.roll);
-
-    hud.setCursor(0,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<7; i++) {hud.print(" ");}
-    hud.setCursor(0,165);
+    hud.setCursor(0,140);
     hud.print("YAW "); hud.print(gpattData.yaw);
 
-    // lower hud col 2
-    hud.setCursor(130,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(130,145);
+    // lower hud col 1
+    hud.setCursor(125,120);
     hud.print("ALT "); hud.print(gnggaData.altitude);
-
-    hud.setCursor(130,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(130,155);
+    hud.setCursor(125,130);
     hud.print("GS  "); hud.print(gnrmcData.ground_speed);
-
-    hud.setCursor(130,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(130,165);
+    hud.setCursor(125,140);
     hud.print("MIL "); hud.print(gpattData.mileage);
 
-    // lower hud col 3
-    hud.setCursor(243,145); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(243,145);
+    // lower hud col 2
+    hud.setCursor(230,120);
     hud.print("GH "); hud.print(gnrmcData.ground_heading);
-
-    hud.setCursor(243,155); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(243,155);
+    hud.setCursor(230,130);
     hud.print(""); hud.print(gnggaData.latitude_hemisphere);
     hud.print("  "); hud.print(satData.location_latitude_gngga_str);
-
-    hud.setCursor(243,165); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    for (int i=0; i<12; i++) {hud.print(" ");}
-    hud.setCursor(243,165);
+    hud.setCursor(230,140);
     hud.print(""); hud.print(gnggaData.longitude_hemisphere);
     hud.print("  "); hud.print(satData.location_longitude_gngga_str);
 
+
     return true;
-    }
-    else {return false;}
+  }
+  else {return false;}
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -4694,51 +4693,9 @@ bool DisplayPage0() {
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
-    // // page 0: matrix main btn (row 0)
-    // if (p.y >= tss.matrix_switch_cfg_r1h0 && p.y <= tss.matrix_switch_cfg_r1h1) {
-    //   for (int i=0; i<10; i++) {
-    //     if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-    //       menuData.relay_select=i;
-    //       Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-    //       menuData.page=1;
-    //       break;
-    //     }
-    //   }
-    // }
-    // page 0: matrix main btn (row 1)
-    // else if (p.y >= tss.matrix_switch_cfg_r2h0 && p.y <= tss.matrix_switch_cfg_r2h1) {
-    //   for (int i=0; i<10; i++) {
-    //     if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-    //       menuData.relay_select=i+10;
-    //       Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
-    //       menuData.page=1;
-    //       break;
-    //     }
-    //   }
-    // }
-    // page 0: matrix enable disable (row 0)
-    if (p.y >= tss.matrix_switch_ena_r1h0 && p.y <= tss.matrix_switch_ena_r1h1) {
-      for (int i=0; i<10; i++) {
-        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-          relayData.relays_enable[0][i] ^= true;
-          Serial.print("[matrix switch toggle] matrix "); Serial.println(i);
-          break;
-        }
-      }
-    }
-    // page 0: matrix enable disable (row 1)
-    else if (p.y >= tss.matrix_switch_ena_r2h0 && p.y <= tss.matrix_switch_ena_r2h1) {
-      for (int i=0; i<10; i++) {
-        if (p.x >= tss.page0_x[i][0] && p.x <= tss.page0_x[i][1]) {
-          relayData.relays_enable[0][i+10] ^= true;
-          Serial.print("[matrix switch toggle] matrix "); Serial.println(i+10);
-          break;
-        }
-      }
-    }
     return true;
-  }
-  else {return false;}
+}
+else {return false;}
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -4791,16 +4748,6 @@ bool isTouchPage1(TouchPoint p) {
   // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc),
   // this is good practice for when the switches have GPIO/relays. disabling can be done automatically but will limit potential scenarios, this way we can choose.
   if (menuData.page == 1) {
-    // // clear all. populates all functions for current matrix switch with $NONE.
-    // if ((p.x >= 260 && p.x <= 290) && (p.y >= 0 && p.y <= 25)) {
-    //   for (int i=0; i<relayData.MAobject_RELAY_ELEMENTS; i++) {
-    //     memset(relayData.relays[menuData.relay_select][i], 0, sizeof(relayData.relays[menuData.relay_select][i]));
-    //     strcpy(relayData.relays[menuData.relay_select][i], relayData.function_names[0]);
-    //     relayData.relays_data[menuData.relay_select][i][0] = 0.00;
-    //     relayData.relays_data[menuData.relay_select][i][1] = 0.00;
-    //     relayData.relays_data[menuData.relay_select][i][2] = 0.00;
-    //     }
-    // }
     // page 1: Function Select
     if (p.x >= 0 && p.x <= 135) {
       for (int i=0; i<10; i++) {
@@ -4977,102 +4924,6 @@ bool isTouchNumpad(TouchPoint p) {
   }
   else {return false;}
 }
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     SETTINGS
-
-struct SettingsDataStruct {
-
-  int max_settings0values = 7;
-  char settings0values[7][56] = {
-    "System",  // p4
-    "Matrix",  // p5
-    "GPS",     // p6
-    "Serial",  // p7
-    "File",    // p8
-    "Time",    // p9
-    "Display", // p10
-  };
-
-  int max_settingsystemvalues = 1;
-  char settingsystemvalues[1][56] = {
-    "RUN ON STARTUP", // run_on_startup
-  };
-
-  // int max_settingsmatrixvalues_c0 = 1;
-  // char settingsmatrixvalues_c0[1][56] = {
-  //   "ENABLE MATRIX"
-  // };
-
-  int max_settingsmatrixvalues_c0 = 20;
-  char settingsmatrixvalues_c0[20][56] = {
-    "S0",
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6",
-    "S7",
-    "S8",
-    "S9",
-    "S10",
-    "S11",
-    "S12",
-    "S13",
-    "S14",
-    "S15",
-    "S16",
-    "S16",
-    "S17",
-    "S19",
-  };
-
-  int max_settingsgpsvalues = 4;
-  char settingsgpsvalues[4][56] = {
-    "ENABLE SATIO",  // enables/disables satio processing of gps data
-    "ENABLE GNGGA",  // enables/disables parsing of gngga sentence
-    "ENABLE GNRMC",  // enables/disables parsing of gnrmc sentence
-    "ENABLE GPATT",  // enables/disables parsing of gpatt sentence
-  };
-
-  int max_settingsserialvalues = 5;
-  char settingsserialvalues[5][56] = {
-    "ENABLE SATIO",  // enables/disables serial output of satio sentence
-    "ENABLE GNGGA",  // enables/disables serial output of gngga sentence
-    "ENABLE GNRMC",  // enables/disables serial output of gnrmc sentence
-    "ENABLE GPATT",  // enables/disables serial output of gpatt sentence
-    "ENABLE MATRIX", // enables/disables serial output of gpatt sentence
-    // coordinate_conversion_mode (GNGGA/GNRMC)
-  };
-
-  int max_settingsfilevalues = 7;
-  char settingsfilevalues[7][56] = {
-    "SYSTEM FILE",
-    "SAVE SYSTEM FILE",
-    "MATRIX FILE",
-    "NEW MATRIX FILE",
-    "SAVE MATRIX FILE",
-    "LOAD MATRIX FILE",
-    "DELETE MATRIX FILE",
-  };
-
-  int max_settingstimevalues = 3;
-  char settingstimevalues[3][56] = {
-    "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
-    "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
-    "YEAR PREFIX", // example: prefix 20 for year 2024
-  };
-
-  int max_settingsdisplayvalues = 4;
-  char settingsdisplayvalues[4][56] = {
-    "BRIGHTNESS",
-    "AUTO DIM TIMEOUT",
-    "AUTO DIM BRIGHTNESS",
-    "AUTO OFF TIMEOUT",
-  };
-};
-SettingsDataStruct sData;
 
 bool DisplaySettings0() {
   // check page here rather than in calling function so that we can see where we are when we're here
