@@ -4364,6 +4364,11 @@ struct TouchScreenStruct {
     {235, 280}, // go back (go to backpage)
   };
 
+  // general title bar y
+  int general_titlebar_y[1][2] = {
+    {0, 25},    // row 0
+  };
+
   // virtual matrix switch x
   int virtual_matrix_switch_items_x[10][2] = {
     {0, 35},    // virtual switch 0 & 10
@@ -4665,13 +4670,13 @@ bool isTouchTitleBar(TouchPoint p) {
   for (int i=0; i<tss.max_homebtn_pages; i++) {if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
   // Serial.println(tss.homebutton_bool);
   if (tss.homebutton_bool==true) {
-    if ((p.x >= tss.general_titlebar_x[0][0] && p.x <= tss.general_titlebar_x[0][1]) && (p.y >= 0 && p.y <= 25)) {menuData.page=0; return true;}
+    if ((p.x >= tss.general_titlebar_x[0][0] && p.x <= tss.general_titlebar_x[0][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {menuData.page=0; return true;}
   }
   // choose where back button will be registered
   for (int i=0; i<tss.max_backbtn_pages; i++) {if (menuData.page==tss.backbtn_pages[i]) {tss.backbtn_pages_bool=true; break;} else {tss.backbtn_pages_bool=false;}}
   // Serial.println(tss.backbtn_pages_bool);
   if (tss.backbtn_pages_bool==true) {
-    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= 0 && p.y <= 25)) {menuData.page=menuData.backpage;}
+    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {menuData.page=menuData.backpage;}
   }
   return false;
 }
@@ -5040,11 +5045,14 @@ bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
      // back (special back case clears input)
-    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= 0 && p.y <= 25)) {memset(menuData.input, 0, sizeof(menuData.input)); menuData.page = menuData.backpage;}
-
+    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {
+      memset(menuData.input, 0, sizeof(menuData.input));
+      menuData.page = menuData.backpage;
+      }
+    // enter
     if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
       if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
-        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);} // x
+        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
         else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
         else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
         menuData.page=1;
