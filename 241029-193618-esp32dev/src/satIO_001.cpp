@@ -2645,6 +2645,96 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_SUN,");
+    itoa(systemData.sidereal_track_sun, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_MOON,");
+    itoa(systemData.sidereal_track_moon, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_MERCURY,");
+    itoa(systemData.sidereal_track_mercury, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_VENUS,");
+    itoa(systemData.sidereal_track_venus, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_MARS,");
+    itoa(systemData.sidereal_track_mars, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+    
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_JUPITER,");
+    itoa(systemData.sidereal_track_jupiter, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_SATURN,");
+    itoa(systemData.sidereal_track_saturn, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_URANUS,");
+    itoa(systemData.sidereal_track_uranus, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, 256);
+    strcat(sdcardData.file_data, "TRACK_NEPTUNE,");
+    itoa(systemData.sidereal_track_neptune, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");    
+
     sdcardData.current_file.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
   }
@@ -2859,6 +2949,87 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             memset(satData.year_prefix, 0, 256);
             strcat(satData.year_prefix, sdcardData.token);
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_sun = false;} else {systemData.sidereal_track_sun = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_moon = false;} else {systemData.sidereal_track_moon = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mercury = false;} else {systemData.sidereal_track_mercury = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_venus = false;} else {systemData.sidereal_track_venus = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mars = false;} else {systemData.sidereal_track_mars = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_jupiter = false;} else {systemData.sidereal_track_jupiter = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_saturn = false;} else {systemData.sidereal_track_saturn = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_uranus = false;} else {systemData.sidereal_track_uranus = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_neptune = false;} else {systemData.sidereal_track_neptune = true;}
           }
         }
       }
