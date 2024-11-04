@@ -4454,8 +4454,13 @@ TouchScreenStruct tss;
 
 struct SettingsDataStruct {
 
-  int max_main_values = 12;
-  char main_values_column_0[10][56] = {
+  int max_main_values = 5;
+  char main_values[5][56] = {
+    "Settings",
+    "Matrix",
+    "",
+    "",
+    "",
   };
 
   int max_settings0values = 7;
@@ -4596,10 +4601,11 @@ bool DisplayPage0() {
   if (menuData.page == 0) {
 
     // title bar (10 columns)
-    for (int i=0; i<5; i++) {
+    for (int i=0; i<sData.max_main_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (i==0) {hud.setTextDatum(MC_DATUM); hud.drawString(String("MENU")+String(""), 31+(i*62)+2*i, 8);}
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.main_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
 
     // virtual matrix switch
@@ -5021,7 +5027,6 @@ bool DisplaySettingsMatrix() {
     hud.drawString(String("Matrix Settings")+String(""), 160, 9);
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
-
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
