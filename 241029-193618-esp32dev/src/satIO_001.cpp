@@ -5033,6 +5033,7 @@ bool DisplaySettingsMenu() {
   if (menuData.page == 3) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     // page header
+    menuData.backpage=0;
     DisplayGeneralTitleBar(String("Settings"));
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
