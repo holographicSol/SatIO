@@ -4348,9 +4348,10 @@ void CountElements() {
 //                                                                                                                 TOUCH STRUCT
 
 struct TouchScreenStruct {
-
+  
   int ts_t0 = millis(); // touchscreen: time since last touch  (touch rate limiting)
   int ts_ti = 200;      // touchscreen: touch acknowledgement time interval between
+  int zraw  = 400;      // touchscreen: pressure
   int ts_t1 = millis(); // touchscreen: time since last touch (autodim)
   int ts_t2 = millis(); // touchscreen: time since last touch (autooff)
 
@@ -4376,22 +4377,6 @@ struct TouchScreenStruct {
     {235, 260}, // virtual switch 8 & 18
     {260, 290}, // virtual switch 9 & 19
   };
-
-  // main page y
-  int main_page_y[12][2] = {
-    {15, 25},   // 0
-    {30, 40},   // 1
-    {50, 60},   // 2
-    {70, 80},   // 3
-    {90, 100},  // 4
-    {105, 115}, // 5
-    {125, 135}, // 6
-    {145, 155}, // 7
-    {160, 170}, // 8
-    {180, 190}, // 9
-    {195, 205}, // 10
-    {210, 220}, // 11
-  };
   
   // general page y
   int general_page_y[10][2] = {
@@ -4407,6 +4392,30 @@ struct TouchScreenStruct {
     {210, 220}, // 9
   };
 
+  // page 0: main page y
+  int main_page_y[12][2] = {
+    {15, 25},   // 0
+    {30, 40},   // 1
+    {50, 60},   // 2
+    {70, 80},   // 3
+    {90, 100},  // 4
+    {105, 115}, // 5
+    {125, 135}, // 6
+    {145, 155}, // 7
+    {160, 170}, // 8
+    {180, 190}, // 9
+    {195, 205}, // 10
+    {210, 220}, // 11
+  };
+
+  // page 1: setup a switch
+  int page_1_items_x[4][2] = {
+    {0, 135},   // function[
+    {155, 195}, // x
+    {205, 245}, // y
+    {255, 285}, // y
+  };
+
   // page 5: matrix
   int matrix_page[7][2] = {
     {10, 35},   // matrix switch enable/disable
@@ -4418,30 +4427,68 @@ struct TouchScreenStruct {
     {260, 275}, // matrix switch off
   };
 
-  // page 1: setup a switch
-  int page_1_items_x[4][2] = {
-    {0, 135},   // function[
-    {155, 195}, // x
-    {205, 245}, // y
-    {255, 285}, // y
-  };
-
   // page 100: select a function
-  int page_100_items_x[3][2] = {
+  int select_matrix_function_x[3][2] = {
     {0, 140},   // scroll up
     {160, 290}, // scroll down
     {0, 320},   // items
   };
 
-  // int page_1_items_x[3][2] = {
-  //   {0, 140},
-  //   {160, 290},
-  //   {0, 320},
-  // };
+  // page 300: numpad
+  int numpad_x[5][2] = {
+    {60, 120},  // 7,4,1,0
+    {120, 180}, // 8,5,2,.
+    {180, 240}, // 9,6,3,-
+    {0, 60},    // enter
+    {240,285},  // delete, clear
+  };
 
-  // if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
-  // else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
-  //   if (p.x >= 0 && p.x <= 320) {
+  // page 3: settings menu
+  int settings_menu_x[1][2] = {
+    {0, 320}, // column
+  };
+
+  int gps_menu_x[1][2] = {
+    {0, 140}, // column 0 
+  };
+
+  int serial_menu_x[1][2] = {
+    {0, 140}, // column 0
+  };
+
+  int file_menu_x[1][2] = {
+    {0, 140}, // column 0
+  };
+
+  int load_matrix_menu_x[3][2] = {
+    {0, 140}, // scroll up
+    {160, 290}, // scroll down
+    {0, 320},
+  };
+
+  int save_matrix_menu_x[3][2] = {
+    {0, 140}, // scroll up
+    {160, 290}, // scroll down
+    {0, 320},
+  };
+
+  int delete_matrix_menu_x[3][2] = {
+    {0, 140}, // scroll up
+    {160, 290}, // scroll down
+    {0, 320},
+  };
+
+  int time_menu_x[3][2] = {
+    {0, 150},   // left column
+    {160, 185}, // previous/decrease
+    {265, 290}, // next/increase
+  };
+
+  int display_menu_x[3][2] = {
+    {0, 150},   // left column
+    {160, 185}, // previous/decrease
+    {265, 290}, // next/increase
+  };
 
   int max_homebtn_pages = 13;
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
@@ -4854,17 +4901,17 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
     // previous list items
-    if ((p.x >= tss.page_100_items_x[0][0] && p.x <= tss.page_100_items_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.function_index--;
       if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
     }
     // next list items
-    else if ((p.x >= tss.page_100_items_x[1][0] && p.x <= tss.page_100_items_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.function_index++;
       if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
     }
     // select list item
-    if (p.x >= tss.page_100_items_x[2][0] && p.x <= tss.page_100_items_x[2][1]) {
+    if (p.x >= tss.select_matrix_function_x[2][0] && p.x <= tss.select_matrix_function_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
@@ -5922,7 +5969,7 @@ void TouchScreenInput( void * pvParameters ) {
 
     // get touch data and only delay if current time in threshold range of previous touch time
     TouchPoint p = ts.getTouch();
-    if (p.zRaw > 400) {
+    if (p.zRaw > tss.zraw) {
       if (millis() >= tss.ts_t0+tss.ts_ti) {
 
         // record touch millisecond time
