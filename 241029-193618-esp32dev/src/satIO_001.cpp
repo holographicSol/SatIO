@@ -4349,82 +4349,99 @@ void CountElements() {
 
 struct TouchScreenStruct {
 
-    int titlebarbtn_x[5][2] = {
-    {0, 60},
-    {70, 120},
-    {125, 170},
-    {180, 225},
-    {235, 280},
-  };
-
-  int main_page_x[10][2] = {
-    {0, 35},
-    {35, 60},
-    {70, 90},
-    {95, 115},
-    {125, 145},
-    {150, 170},
-    {180, 200},
-    {210, 230},
-    {235, 260},
-    {260, 290}
-  };
-
-  int main_page_y[12][2] = {
-    {15, 25},
-    {30, 40},
-    {50, 60},
-    {70, 80},
-    {90, 100},
-    {105, 115},
-    {125, 135},
-    {145, 155},
-    {160, 170},
-    {180, 190},
-    {195, 205},
-    {210, 220}
-  };
-
-  int general_page_y[10][2] = {
-    {50, 60},
-    {70, 80},
-    {90, 100},
-    {105, 115},
-    {125, 135},
-    {145, 155},
-    {160, 170},
-    {180, 190},
-    {195, 205},
-    {210, 220}
-  };
-
-  // enable/disable
-  int matrix_page_x_column_0[2] = {10, 35};
-  // setup
-  int matrix_page_x_column_1[2] = {40, 65};
-  // off
-  int matrix_page_x_column_2[2] = {75, 95};
-  // main controls
-  int matrix_page_x_column_3[2] = {115, 180};
-  // enable/disable
-  int matrix_page_x_column_4[2] = {195, 215};
-  // setup
-  int matrix_page_x_column_5[2] = {225, 250};
-  // off
-  int matrix_page_x_column_6[2] = {260, 275};
-
-  // int matrix_switch_cfg_r1h0 = 50;
-  // int matrix_switch_cfg_r1h1 = 70;
-  // int matrix_switch_ena_r1h0 = 75;
-  // int matrix_switch_ena_r1h1 = 85;
-  // int matrix_switch_cfg_r2h0 = 100;
-  // int matrix_switch_cfg_r2h1 = 120;
-  // int matrix_switch_ena_r2h0 = 125;
-  // int matrix_switch_ena_r2h1 = 135;
   int ts_t0 = millis(); // touchscreen: time since last touch  (touch rate limiting)
-  int ts_ti = 200;
+  int ts_ti = 200;      // touchscreen: touch acknowledgement time interval between
   int ts_t1 = millis(); // touchscreen: time since last touch (autodim)
   int ts_t2 = millis(); // touchscreen: time since last touch (autooff)
+
+  // title bar x
+  int titlebar_items_x[5][2] = {
+    {0, 60},    // go to settings
+    {70, 120},  // go to matrix
+    {125, 170}, // 
+    {180, 225}, //
+    {235, 280}, //
+  };
+
+  // virtual matrix switch x
+  int virtual_matrix_switch_items_x[10][2] = {
+    {0, 35},    // virtual switch 0 & 10
+    {35, 60},   // virtual switch 1 & 11
+    {70, 90},   // virtual switch 2 & 12
+    {95, 115},  // virtual switch 3 & 13
+    {125, 145}, // virtual switch 4 & 14
+    {150, 170}, // virtual switch 5 & 15
+    {180, 200}, // virtual switch 6 & 16
+    {210, 230}, // virtual switch 7 & 17
+    {235, 260}, // virtual switch 8 & 18
+    {260, 290}, // virtual switch 9 & 19
+  };
+
+  // main page y
+  int main_page_y[12][2] = {
+    {15, 25},   // 0
+    {30, 40},   // 1
+    {50, 60},   // 2
+    {70, 80},   // 3
+    {90, 100},  // 4
+    {105, 115}, // 5
+    {125, 135}, // 6
+    {145, 155}, // 7
+    {160, 170}, // 8
+    {180, 190}, // 9
+    {195, 205}, // 10
+    {210, 220}, // 11
+  };
+  
+  // general page y
+  int general_page_y[10][2] = {
+    {50, 60},   // 0
+    {70, 80},   // 1
+    {90, 100},  // 2
+    {105, 115}, // 3
+    {125, 135}, // 4
+    {145, 155}, // 5
+    {160, 170}, // 6
+    {180, 190}, // 7
+    {195, 205}, // 8
+    {210, 220}, // 9
+  };
+
+  // page 5: matrix
+  int matrix_page[7][2] = {
+    {10, 35},   // matrix switch enable/disable
+    {40, 65},   // matrix switch setup
+    {75, 95},   // matrix switch off
+    {115, 180}, // matrix switch central controls
+    {195, 215}, // matrix switch enable/disable
+    {225, 250}, // matrix switch setup
+    {260, 275}, // matrix switch off
+  };
+
+  // page 1: setup a switch
+  int page_1_items_x[4][2] = {
+    {0, 135},   // function[
+    {155, 195}, // x
+    {205, 245}, // y
+    {255, 285}, // y
+  };
+
+  // page 100: select a function
+  int page_100_items_x[3][2] = {
+    {0, 140},   // scroll up
+    {160, 290}, // scroll down
+    {0, 320},   // items
+  };
+
+  // int page_1_items_x[3][2] = {
+  //   {0, 140},
+  //   {160, 290},
+  //   {0, 320},
+  // };
+
+  // if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+  // else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+  //   if (p.x >= 0 && p.x <= 320) {
 
   int max_homebtn_pages = 13;
   int homebtn_pages[13] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 400, 401};
@@ -4683,7 +4700,7 @@ bool isTouchPage0(TouchPoint p) {
     // title bar
     if (p.y >= tss.main_page_y[0][0] && p.y <= tss.main_page_y[0][1]) {
       for (int i=0; i<sData.max_titlebarbtn_values; i++) {
-        if (p.x >= tss.titlebarbtn_x[i][0] && p.x <= tss.titlebarbtn_x[i][1]) {
+        if (p.x >= tss.titlebar_items_x[i][0] && p.x <= tss.titlebar_items_x[i][1]) {
           Serial.print("[titlebar] item "); Serial.println(sData.titlebarbtn_values[i]);
           if (i==0) {menuData.page=3;}
           else if (i==1) {menuData.page=5;}
@@ -4747,7 +4764,7 @@ bool isTouchPage1(TouchPoint p) {
   // this is good practice for when the switches have GPIO/relays. disabling can be done automatically but will limit potential scenarios, this way we can choose.
   if (menuData.page == 1) {
     // page 1: Function Select
-    if (p.x >= 0 && p.x <= 135) {
+    if (p.x >= tss.page_1_items_x[0][0] && p.x <= tss.page_1_items_x[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=100;
@@ -4757,7 +4774,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select x
-    else if (p.x >= 155 && p.x <= 195) {
+    if (p.x >= tss.page_1_items_x[1][0] && p.x <= tss.page_1_items_x[1][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
@@ -4770,7 +4787,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select y
-    else if (p.x >= 205 && p.x <= 245) {
+    if (p.x >= tss.page_1_items_x[2][0] && p.x <= tss.page_1_items_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
@@ -4783,7 +4800,7 @@ bool isTouchPage1(TouchPoint p) {
       }
     }
     // page 1: select z
-    else if (p.x >= 255 && p.x <= 285) {
+    if (p.x >= tss.page_1_items_x[3][0] && p.x <= tss.page_1_items_x[3][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=300;
@@ -4837,17 +4854,17 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
     // previous list items
-    if ((p.x >= 0 && p.x <= 140) && (p.y >= 35 && p.y <= 45)) {
+    if ((p.x >= tss.page_100_items_x[0][0] && p.x <= tss.page_100_items_x[0][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.function_index--;
       if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
     }
     // next list items
-    else if ((p.x >= 160 && p.x <= 290) && (p.y >= 35 && p.y <= 45)) {
+    else if ((p.x >= tss.page_100_items_x[1][0] && p.x <= tss.page_100_items_x[1][1]) && (p.y >= 35 && p.y <= 45)) {
       menuData.function_index++;
       if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
     }
     // select list item
-    if (p.x >= 0 && p.x <= 320) {
+    if (p.x >= tss.page_100_items_x[2][0] && p.x <= tss.page_100_items_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
@@ -5092,7 +5109,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
 
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
-    if (p.x >= tss.matrix_page_x_column_0[0] && p.x <= tss.matrix_page_x_column_0[1]) {
+    if (p.x >= tss.matrix_page[0][0] && p.x <= tss.matrix_page[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
@@ -5103,7 +5120,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch setup column 1 (0-9) (access individual switch setup)
-    else if (p.x >= tss.matrix_page_x_column_1[0] && p.x <= tss.matrix_page_x_column_1[1]) {
+    else if (p.x >= tss.matrix_page[1][0] && p.x <= tss.matrix_page[1][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
@@ -5114,7 +5131,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch off column 2 (0-9) (turns off an individual switch)
-    else if (p.x >= tss.matrix_page_x_column_2[0] && p.x <= tss.matrix_page_x_column_2[1]) {
+    else if (p.x >= tss.matrix_page[2][0] && p.x <= tss.matrix_page[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
@@ -5125,7 +5142,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // central functions
-    else if (p.x >= tss.matrix_page_x_column_3[0] && p.x <= tss.matrix_page_x_column_3[1]) {
+    else if (p.x >= tss.matrix_page[3][0] && p.x <= tss.matrix_page[3][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
 
@@ -5149,7 +5166,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
-    else if (p.x >= tss.matrix_page_x_column_4[0] && p.x <= tss.matrix_page_x_column_4[1]) {
+    else if (p.x >= tss.matrix_page[4][0] && p.x <= tss.matrix_page[4][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
@@ -5160,7 +5177,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch setup column 1 (0-9) (access individual switch setup)
-    else if (p.x >= tss.matrix_page_x_column_5[0] && p.x <= tss.matrix_page_x_column_5[1]) {
+    else if (p.x >= tss.matrix_page[5][0] && p.x <= tss.matrix_page[5][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
@@ -5171,7 +5188,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch off column 2 (0-9) (turns off an individual switch)
-    else if (p.x >= tss.matrix_page_x_column_6[0] && p.x <= tss.matrix_page_x_column_6[1]) {
+    else if (p.x >= tss.matrix_page[6][0] && p.x <= tss.matrix_page[6][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
