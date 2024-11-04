@@ -187,24 +187,15 @@ sysDebugStruct sysDebugData;
 struct menuStruct {
   int y = 0;
   int x = 1;
-  int menu_max_y0 = 6;
-  int menu_max_x0 = 3;
-  int numpad_y = 0;
-  int numpad_x = 0;
-  int menu_numpad_max_y0 = 6;
-  int menu_numpad_max_x0 = 3;
   char input[2024];
   int numpad_key = NULL;
-  bool select = false;
   int page = 0;
   int backpage = 0;
-  int page_max = 8;
   int relay_select = 0;
   int relay_function_select = 0;
   int function_index = 0;
   int matrix_filenames_index = 0;
   bool menu_lock = false;
-  int isr_i = 0;
 };
 menuStruct menuData;
 
