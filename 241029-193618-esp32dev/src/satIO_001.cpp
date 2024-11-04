@@ -4366,6 +4366,15 @@ VirtualMatrixSwitchStruct vms;
 //                                                                                                                 TOUCH STRUCT
 
 struct TouchScreenStruct {
+
+    int main_page_title_x[5][2] = {
+    {0, 60},
+    {70, 120},
+    {125, 170},
+    {180, 225},
+    {235, 280},
+  };
+
   int main_page_x[10][2] = {
     {0, 35},
     {35, 60},
