@@ -4597,9 +4597,9 @@ bool DisplayPage0() {
 
     // title bar (10 columns)
     for (int i=0; i<5; i++) {
-      hud.drawRect((i*60)+2*i, 0, 60, 16, TFTOBJ_COL0);
+      hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (i==0) {hud.setTextDatum(MC_DATUM); hud.drawString(String("MENU")+String(""), 30+(i*60)+2*i, 8);}
+      if (i==0) {hud.setTextDatum(MC_DATUM); hud.drawString(String("MENU")+String(""), 31+(i*62)+2*i, 8);}
       }
 
     // virtual matrix switch
