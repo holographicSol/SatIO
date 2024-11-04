@@ -5091,23 +5091,40 @@ bool DisplaySettingsMatrix() {
 }
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
-  // tss.matrix_page_x_column_0
+
+  /*
+  // enable/disable
+  int matrix_page_x_column_0[2] = {10, 35};
+  // setup
+  int matrix_page_x_column_1[2] = {40, 65};
+  // off
+  int matrix_page_x_column_2[2] = {75, 95};
+  // main controls
+  int matrix_page_x_column_3[2] = {115, 180};
+  // enable/disable
+  int matrix_page_x_column_4[2] = {195, 215};
+  // setup
+  int matrix_page_x_column_5[2] = {225, 250};
+  // off
+  int matrix_page_x_column_6[2] = {260, 275};
+  */
+
   if (menuData.page == 5) {
 
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     if (p.x >= tss.matrix_page_x_column_0[0] && p.x <= tss.matrix_page_x_column_0[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
-          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          Serial.print("[settings] matrix item foo "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           relayData.relays_enable[0][i] ^= true;
           break;
         }
       }
     }
     // switch setup column 1 (0-9) (access individual switch setup)
-    if (p.x >= tss.matrix_page_x_column_1[0] && p.x <= tss.matrix_page_x_column_1[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_1[0] && p.x <= tss.matrix_page_x_column_1[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
           Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
@@ -5117,8 +5134,8 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch off column 2 (0-9) (turns off an individual switch)
-    if (p.x >= tss.matrix_page_x_column_2[0] && p.x <= tss.matrix_page_x_column_2[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_2[0] && p.x <= tss.matrix_page_x_column_2[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i;
           Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
@@ -5128,8 +5145,8 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // central functions
-    if (p.x >= tss.matrix_page_x_column_3[0] && p.x <= tss.matrix_page_x_column_3[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_3[0] && p.x <= tss.matrix_page_x_column_3[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
 
           // enable all (enables all switches to turn on)
@@ -5152,19 +5169,19 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
-    if (p.x >= tss.matrix_page_x_column_4[0] && p.x <= tss.matrix_page_x_column_4[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_4[0] && p.x <= tss.matrix_page_x_column_4[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
-          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          Serial.print("[settings] matrix item bar "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           relayData.relays_enable[0][i+10] ^= true;
           break;
         }
       }
     }
     // switch setup column 1 (0-9) (access individual switch setup)
-    if (p.x >= tss.matrix_page_x_column_5[0] && p.x <= tss.matrix_page_x_column_5[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_5[0] && p.x <= tss.matrix_page_x_column_5[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
           Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
@@ -5174,8 +5191,8 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       }
     }
     // switch off column 2 (0-9) (turns off an individual switch)
-    if (p.x >= tss.matrix_page_x_column_6[0] && p.x <= tss.matrix_page_x_column_6[1]) {
-      for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    else if (p.x >= tss.matrix_page_x_column_6[0] && p.x <= tss.matrix_page_x_column_6[1]) {
+      for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.relay_select=i+10;
           Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
