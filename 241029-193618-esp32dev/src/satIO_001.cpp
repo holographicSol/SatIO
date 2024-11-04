@@ -5692,8 +5692,8 @@ bool DisplaySettingsTime() {
 
 bool isDisplaySettingsTime(TouchPoint p) {
   if (menuData.page == 9) {
-    // select list column item
-    if (p.x >= 160 && p.x <= 185) {
+    // select list column item 
+    if (p.x >= tss.time_menu_x[1][0] && p.x <= tss.time_menu_x[1][1]) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
@@ -5707,7 +5707,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
         }
       }
     // select list column item
-    if (p.x >= 265 && p.x <= 290) {
+    if (p.x >= tss.time_menu_x[2][0] && p.x <= tss.time_menu_x[2][1]) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
@@ -5832,7 +5832,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
   if (menuData.page == 10) {
 
     // left column
-    if (p.x >= 0 && p.x <= 150) {
+    if (p.x >= tss.display_menu_x[0][0] && p.x <= tss.display_menu_x[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
@@ -5845,7 +5845,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     }
 
     // previous value
-    if (p.x >= 160 && p.x <= 185) {
+    if (p.x >= tss.display_menu_x[1][0] && p.x <= tss.display_menu_x[1][1]) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
@@ -5872,7 +5872,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
         }
       }
     // next value
-    if (p.x >= 265 && p.x <= 290) {
+    if (p.x >= tss.display_menu_x[2][0] && p.x <= tss.display_menu_x[2][1]) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
