@@ -1348,14 +1348,15 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 246;
+  int FUNCTION_NAMES_MAX = 247;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[246][56] = 
+  char function_names[247][56] = 
   {
     "$NONE",
     "$ENABLED",
-    "$SWITCHLINK",
+    "$SWITCHLINKTRUE",
+    "SWITCHLINKFALSE",
     "SecondsTimer",
     "DegreesLatGNGGAOver",
     "DegreesLatGNGGAUnder",
