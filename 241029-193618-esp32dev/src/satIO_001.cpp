@@ -3755,8 +3755,8 @@ void trackMoon(double latitude, double longitude, int year, int month, int day, 
   siderealPlanetData.moon_az  = myAstro.getAzimuth();
   siderealPlanetData.moon_alt = myAstro.getAltitude();
   myAstro.doMoonRiseSetTimes();
-  siderealPlanetData.moon_r  = myAstro.doMoonRiseSetTimes();
-  siderealPlanetData.moon_s  = myAstro.getSunsetTime();
+  siderealPlanetData.moon_r  = myAstro.getMoonriseTime();
+  siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
   siderealPlanetData.moon_p  = myAstro.getMoonPhase();
 }
 
