@@ -4998,6 +4998,8 @@ bool DisplayPage0() {
     // roll                  |           |
     // pitch                 | ----o---- | -> roll/pitch/yaw
     // yaw                   |___________|
+
+    // create a page for debug/error table
     
     return true;
   }
