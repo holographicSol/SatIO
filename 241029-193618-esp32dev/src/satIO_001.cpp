@@ -4983,6 +4983,7 @@ bool DisplayPage0() {
     hud.setCursor(260,140);
     hud.print("SF  "); hud.print(gpattData.static_flag);
 
+    // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
     hud.setCursor(0,160);
     hud.print("SR "); hud.print(siderealPlanetData.sun_r);
     hud.setCursor(0,170);
