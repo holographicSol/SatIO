@@ -1348,15 +1348,16 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 259;
+  int FUNCTION_NAMES_MAX = 260;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[259][56] = 
+  char function_names[260][56] = 
   {
     "$NONE",
     "$ENABLED",
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
+
     "SecondsTimer",
     "DaySunday",
     "DayMonday",
@@ -1365,26 +1366,31 @@ struct RelayStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
+
     "DateDayX",
     "DateMonthX",
     "DateYearX",
+
     "DegreesLatGNGGAOver",
     "DegreesLatGNGGAUnder",
     "DegreesLatGNGGAEqual",
-    "DegreesLatGNGGARange",
-    "DegreesGNGGARange",
     "DegreesLonGNGGAOver",
     "DegreesLonGNGGAUnder",
     "DegreesLonGNGGAEqual",
     "DegreesLonGNGGARange",
+    "DegreesLatGNGGARange",
+    "DegreesGNGGARange",
+
     "DegreesLatGNRMCOver",
     "DegreesLatGNRMCUnder",
     "DegreesLatGNRMCEqual",
-    "DegreesLatGNRMCRange",
     "DegreesLonGNRMCOver",
     "DegreesLonGNRMCUnder",
     "DegreesLonGNRMCEqual",
+    "DegreesLatGNRMCRange",
+    "DegreesLonGNRMCRange",
     "DegreesGNRMCRange",
+    
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
@@ -1635,22 +1641,25 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
+  // GNGGA
   char DegreesLatGNGGAOver[56]             = "DegreesLatGNGGAOver";
   char DegreesLatGNGGAUnder[56]            = "DegreesLatGNGGAUnder";
   char DegreesLatGNGGAEqual[56]            = "DegreesLatGNGGAEqual";
-  char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange"; // specify x (lat) z (meters range) in matrix.
-  char DegreesGNGGARange[56]               = "DegreesGNGGARange";    // specify x (lat) y (lon) z (meters range) in matrix.
   char DegreesLonGNGGAOver[56]             = "DegreesLonGNGGAOver";
   char DegreesLonGNGGAUnder[56]            = "DegreesLonGNGGAUnder";
   char DegreesLonGNGGAEqual[56]            = "DegreesLonGNGGAEqual";
+  char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange"; // specify x (lat) z (meters range) in matrix.
   char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange"; // specify x (lon) z (meters range) in matrix.
+  char DegreesGNGGARange[56]               = "DegreesGNGGARange";    // specify x (lat) y (lon) z (meters range) in matrix.
+  // GNRMC
   char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";
   char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder";
   char DegreesLatGNRMCEqual[56]            = "DegreesLatGNRMCEqual";
-  char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange"; // specify x (lat) z (meters range) in matrix.
   char DegreesLonGNRMCOver[56]             = "DegreesLonGNRMCOver";
   char DegreesLonGNRMCUnder[56]            = "DegreesLonGNRMCUnder";
   char DegreesLonGNRMCEqual[56]            = "DegreesLonGNRMCEqual";
+  char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange"; // specify x (lat) z (meters range) in matrix.
+  char DegreesLonGNRMCRange[56]            = "DegreesLonGNRMCRange";
   char DegreesGNRMCRange[56]               = "DegreesGNRMCRange";
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -4101,23 +4110,35 @@ void matrixSwitch() {
         //                                                                                                                       SATIO
 
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
+        // over
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        // under
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        // equal
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        // range
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        // ranges
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesGNGGARange) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0], satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][1], relayData.relays_data[Ri][Fi][2]);}
+        
         // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
+        // over
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        // under
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        // equal
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        // range
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        // ranges
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesGNRMCRange) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0], satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][1], relayData.relays_data[Ri][Fi][2]);}
         
         // ----------------------------------------------------------------------------------------------------------------------------
