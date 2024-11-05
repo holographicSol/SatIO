@@ -5255,7 +5255,7 @@ bool isTouchNumpad(TouchPoint p) {
         menuData.page=1;
       }
     }
-    if ((strlen(menuData.input) <= 15) && (atoi(menuData.input) <= 179769313486232))
+    if ((strlen(menuData.input) < 15) && (atoi(menuData.input) <= 179769313486232)) {
       if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
         for (int i; i<4; i++) {
           if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
@@ -5283,6 +5283,7 @@ bool isTouchNumpad(TouchPoint p) {
           break;
           }
       }
+    }
     if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
       for (int i; i<4; i++) {
         if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
