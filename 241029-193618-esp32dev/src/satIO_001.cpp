@@ -1664,10 +1664,10 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNGGA DATA
 
-  char UTCTimeGNGGAOver[56]       = "UTCTimeGNGGAOver";   
-  char UTCTimeGNGGAUnder[56]      = "UTCTimeGNGGAUnder";  
-  char UTCTimeGNGGAEqual[56]      = "UTCTimeGNGGAEqual";
-  char UTCTimeGNGGARange[56]      = "UTCTimeGNGGARange";
+  char UTCTimeGNGGAOver[56]       = "UTCTimeGNGGAOver";   // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAUnder[56]      = "UTCTimeGNGGAUnder";  // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAEqual[56]      = "UTCTimeGNGGAEqual";  // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGARange[56]      = "UTCTimeGNGGARange";  // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
   char LatGNGGAOver[56]           = "LatGNGGAOver";  // specify x (absolute lat) in matrix.
   char LonGNGGAOver[56]           = "LonGNGGAOver";  // specify x (absolute lon) in matrix.
@@ -1679,22 +1679,25 @@ struct RelayStruct {
   char LonGNGGARange[56]          = "LonGNGGARange"; // specify x (absolute lon) z (meters range) in matrix.
   
   char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA"; // specify x in matrix. 0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
-  char SatelliteCountOver[56]     = "SatelliteCountOver";     // specify x in matrix.
-  char SatelliteCountUnder[56]    = "SatelliteCountUnder";    // specify x in matrix.
-  char SatelliteCountEqual[56]    = "SatelliteCountEqual";    // specify x in matrix.
-  char SatelliteCountRange[56]    = "SatelliteCountRange";    // specify x in matrix.
+  char SatelliteCountOver[56]     = "SatelliteCountOver";     // specify x (satellite number 0+) in matrix.
+  char SatelliteCountUnder[56]    = "SatelliteCountUnder";    // specify x (satellite number 0+) in matrix.
+  char SatelliteCountEqual[56]    = "SatelliteCountEqual";    // specify x (satellite number 0+) in matrix.
+  char SatelliteCountRange[56]    = "SatelliteCountRange";    // specify x (satellite number 0+) in matrix.
+
   char HemisphereGNGGANorth[56]   = "HemisphereGNGGANorth";   // takes no further arguments.
   char HemisphereGNGGAEast[56]    = "HemisphereGNGGAEast";    // takes no further arguments.
   char HemisphereGNGGASouth[56]   = "HemisphereGNGGASouth";   // takes no further arguments.
   char HemisphereGNGGAWest[56]    = "HemisphereGNGGAWest";    // takes no further arguments.
-  char GPSPrecisionOver[56]       = "GPSPrecisionOver";       //
-  char GPSPrecisionUnder[56]      = "GPSPrecisionUnder";      //
-  char GPSPrecisionEqual[56]      = "GPSPrecisionEqual";      //
-  char GPSPrecisionRange[56]      = "GPSPrecisionRange";      //
-  char AltitudeGNGGAOver[56]      = "AltitudeGNGGAOver";      //
-  char AltitudeGNGGAUnder[56]     = "AltitudeGNGGAUnder";     //
-  char AltitudeGNGGAEqual[56]     = "AltitudeGNGGAEqual";     //
-  char AltitudeGNGGARange[56]     = "AltitudeGNGGARange";     //
+
+  char GPSPrecisionOver[56]       = "GPSPrecisionOver";       // specify x (meters) in matrix.
+  char GPSPrecisionUnder[56]      = "GPSPrecisionUnder";      // specify x (meters) in matrix.
+  char GPSPrecisionEqual[56]      = "GPSPrecisionEqual";      // specify x (meters) in matrix.
+  char GPSPrecisionRange[56]      = "GPSPrecisionRange";      // specify x (meters) y (meters) in matrix.
+
+  char AltitudeGNGGAOver[56]      = "AltitudeGNGGAOver";      // specify x (meters) in matrix.
+  char AltitudeGNGGAUnder[56]     = "AltitudeGNGGAUnder";     // specify x (meters) in matrix.
+  char AltitudeGNGGAEqual[56]     = "AltitudeGNGGAEqual";     // specify x (meters) in matrix.
+  char AltitudeGNGGARange[56]     = "AltitudeGNGGARange";     // specify x (meters) y (meters) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNRMC DATA
