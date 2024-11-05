@@ -4943,7 +4943,7 @@ bool DisplayPage0() {
     hud.setCursor(0,100);
     hud.print("GS "); hud.print(gnrmcData.ground_speed);
     hud.setCursor(0,110);
-    hud.print("AL "); hud.print(gnggaData.altitude);
+    hud.print("AL "); hud.print(gnggaData.altitude); hud.print(" "); hud.print(gnggaData.altitude_units);
     hud.setCursor(0,120);
     hud.print("P  "); hud.print(gpattData.pitch);
     hud.setCursor(0,130);
