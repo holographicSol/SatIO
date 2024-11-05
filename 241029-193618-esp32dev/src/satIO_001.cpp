@@ -4684,11 +4684,11 @@ struct TouchScreenStruct {
 
   // page 300: numpad isTouchNumpad
   int numpad_x[5][2] = {
-    {15, 60},  // enter
-    {70, 120},  // 7,4,1,0
-    {130, 185}, // 8,5,2,. 
-    {195, 235}, // 9,6,3,-
-    {245, 290}, // delete, clear
+    {15, 70},  // enter
+    {70, 125},  // 7,4,1,0
+    {125, 185}, // 8,5,2,. 
+    {185, 235}, // 9,6,3,-
+    {235, 290}, // delete, clear
   };
 
   // numpad page y
@@ -5208,26 +5208,26 @@ bool DisplayNumpad() {
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("8")+String(""), 170, 81+i*40);}
-        if (i==1) {hud.drawString(String("5")+String(""), 170, 81+i*40);}
-        if (i==2) {hud.drawString(String("2")+String(""), 170, 81+i*40);}
-        if (i==3) {hud.drawString(String(".")+String(""), 170, 81+i*40);}
+        if (i==0) {hud.drawString(String("8")+String(""), 160, 81+i*40);}
+        if (i==1) {hud.drawString(String("5")+String(""), 160, 81+i*40);}
+        if (i==2) {hud.drawString(String("2")+String(""), 160, 81+i*40);}
+        if (i==3) {hud.drawString(String(".")+String(""), 160, 81+i*40);}
         }
         // col 3
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("9")+String(""), 234, 81+i*40);}
-        if (i==1) {hud.drawString(String("6")+String(""), 234, 81+i*40);}
-        if (i==2) {hud.drawString(String("3")+String(""), 234, 81+i*40);}
-        if (i==3) {hud.drawString(String("-")+String(""), 234, 81+i*40);}
+        if (i==0) {hud.drawString(String("9")+String(""), 228, 81+i*40);}
+        if (i==1) {hud.drawString(String("6")+String(""), 228, 81+i*40);}
+        if (i==2) {hud.drawString(String("3")+String(""), 228, 81+i*40);}
+        if (i==3) {hud.drawString(String("-")+String(""), 228, 81+i*40);}
         }
         // col 4
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("DELETE")+String(""), 298, 81+i*40);}
-        if (i==3) {hud.drawString(String("CLEAR")+String(""), 298, 81+i*40);}
+        if (i==0) {hud.drawString(String("DELETE")+String(""), 292, 81+i*40);}
+        if (i==3) {hud.drawString(String("CLEAR")+String(""), 292, 81+i*40);}
         }
         }
         return true;
@@ -5247,50 +5247,50 @@ bool isTouchNumpad(TouchPoint p) {
       menuData.page = menuData.backpage;
       }
     // enter
-    if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
-      if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
-        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
-        else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
-        else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
-        menuData.page=1;
-      }
-    }
-    if (atol(menuData.input) < 179769313486232) {
-      if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
-        for (int i; i<4; i++) {
-          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
-          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "4");}
-          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "1");}
-          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "0");}
-          break;
-          }
-      }
-      if (p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) {
-        for (int i; i<4; i++) {
-          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "8");}
-          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "5");}
-          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "2");}
-          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, ".");}
-          break;
-          }
-      }
-      if (p.x >=  tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) {
-        for (int i; i<4; i++) {
-          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "9");}
-          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "6");}
-          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "3");}
-          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "-");}
-          break;
-          }
-      }
-    }
-    if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
-      for (int i; i<4; i++) {
-        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
-        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {memset(menuData.input, 0, sizeof(menuData.input));}
-        break;
-        }
-    }
+    // if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
+    //   if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
+    //     if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
+    //     else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
+    //     else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
+    //     menuData.page=1;
+    //   }
+    // }
+    // if (atol(menuData.input) < 179769313486232) {
+    //   if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
+    //     for (int i; i<4; i++) {
+    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
+    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "4");}
+    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "1");}
+    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "0");}
+    //       break;
+    //       }
+    //   }
+    //   if (p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) {
+    //     for (int i; i<4; i++) {
+    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "8");}
+    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "5");}
+    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "2");}
+    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, ".");}
+    //       break;
+    //       }
+    //   }
+    //   if (p.x >=  tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) {
+    //     for (int i; i<4; i++) {
+    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "9");}
+    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "6");}
+    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "3");}
+    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "-");}
+    //       break;
+    //       }
+    //   }
+    // }
+    // if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
+    //   for (int i; i<4; i++) {
+    //     if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
+    //     else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {memset(menuData.input, 0, sizeof(menuData.input));}
+    //     break;
+    //     }
+    // }
     return true;
   }
   else {return false;}
