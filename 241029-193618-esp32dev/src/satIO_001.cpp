@@ -1621,10 +1621,10 @@ struct RelayStruct {
     "NeptuneSet"
   };
 
-  char default_relay_function[56]          = "$NONE";             // false if first or all functions $NONE. true if preceeding functions are populated.
-  char default_enable_relay_function[56]   = "$ENABLED";          // always true.
-  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
-  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
+  char default_relay_function[56]         = "$NONE";             // false if first or all functions $NONE. true if preceeding functions are populated.
+  char default_enable_relay_function[56]  = "$ENABLED";          // always true.
+  char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
+  char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
    char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
    char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
@@ -1641,7 +1641,6 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
-  // GNGGA
   char DegreesLatGNGGAOver[56]             = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
   char DegreesLatGNGGAUnder[56]            = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
   char DegreesLatGNGGAEqual[56]            = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
@@ -1651,7 +1650,7 @@ struct RelayStruct {
   char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
   char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
   char DegreesGNGGARange[56]               = "DegreesGNGGARange";     // specify x (degrees lat) y (lon) z (meters range) in matrix.
-  // GNRMC
+
   char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
   char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
   char DegreesLatGNRMCEqual[56]            = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
@@ -1680,6 +1679,7 @@ struct RelayStruct {
   char LonGNGGARange[56]          = "LonGNGGARange";          // specify x (absolute lon) z (meters range) in matrix.
   
   char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA"; // specify x in matrix. 0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
+  
   char SatelliteCountOver[56]     = "SatelliteCountOver";     // specify x (satellite number 0+) in matrix.
   char SatelliteCountUnder[56]    = "SatelliteCountUnder";    // specify x (satellite number 0+) in matrix.
   char SatelliteCountEqual[56]    = "SatelliteCountEqual";    // specify x (satellite number 0+) in matrix.
