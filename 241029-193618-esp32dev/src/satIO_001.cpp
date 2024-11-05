@@ -3636,30 +3636,30 @@ struct SiderealPlantetsStruct {
 };
 SiderealPlantetsStruct siderealPlanetData;
 
-struct SiderealObjectStruct {
-  char object_name[56];
-  char object_table_name[56];
-  int  object_number;
-  int  object_table_i;
-  long object_ra;
-  long object_dec;
-  long object_az;
-  long object_alt;
-  long object_mag;
-  long object_r;
-  long object_s;
-  double objects_data[609][7];
-  char object_table[7][20] =
-  {
-    "Star Table",          // 0
-    "NGC Table",           // 1
-    "IC Table",            // 2
-    "Other Objects Table", // 3
-    "Messier Table",       // 4
-    "Caldwell Table",      // 5
-    "Herschel 400 Table",  // 6
-  };
-};
+// struct SiderealObjectStruct {
+//   char object_name[56];
+//   char object_table_name[56];
+//   int  object_number;
+//   int  object_table_i;
+//   long object_ra;
+//   long object_dec;
+//   long object_az;
+//   long object_alt;
+//   long object_mag;
+//   long object_r;
+//   long object_s;
+//   double objects_data[609][7];
+//   char object_table[7][20] =
+//   {
+//     "Star Table",          // 0
+//     "NGC Table",           // 1
+//     "IC Table",            // 2
+//     "Other Objects Table", // 3
+//     "Messier Table",       // 4
+//     "Caldwell Table",      // 5
+//     "Herschel 400 Table",  // 6
+//   };
+// };
 // SiderealObjectStruct siderealObjectData;
 
 // void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second,
