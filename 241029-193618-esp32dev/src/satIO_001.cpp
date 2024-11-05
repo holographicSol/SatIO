@@ -1620,7 +1620,7 @@ struct RelayStruct {
     "NeptuneSet"
   };
 
-  char default_relay_function[56]          = "$NONE";            // false if all functions $NONE. true if preceeding functions are true.
+  char default_relay_function[56]          = "$NONE";            // false if all functions $NONE. true if preceeding functions are populated.
   char default_enable_relay_function[56]   = "$ENABLED";         // always true.
   char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";  // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
   char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE"; // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
