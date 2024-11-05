@@ -5006,8 +5006,7 @@ bool DisplayPage0() {
 
     // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
     hud.setCursor(0,160);
-    myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int);
-    hud.print("D  "); hud.print(myAstro.human_day_of_the_week_name);
+    hud.print("D  "); hud.print(myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int));
     hud.setCursor(0,170);
     hud.print("SR "); hud.print(siderealPlanetData.sun_r);
     hud.setCursor(0,180);
