@@ -3474,7 +3474,7 @@ bool check_under_false(double n0, double n1) {
 }
 
 bool check_equal_true(double n0, double n1) {
-  // Serial.println("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
+  Serial.println("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 == n1) {return true;}
   else {return false;}
 }
@@ -4035,8 +4035,8 @@ void matrixSwitch() {
         else if (strcmp(relayData.relays[Ri][Fi], relayData.default_enable_relay_function) == 0) {tmp_matrix[Fi] = 1;}
 
         // Special Switch Link Function: Compares X in matrix to a switch state, allowing extra 9+ functions (or simply true/false) to be chained to another switches true/false state.
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
