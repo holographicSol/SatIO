@@ -1348,23 +1348,23 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 256;
+  int FUNCTION_NAMES_MAX = 249;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[256][56] = 
+  char function_names[249][56] = 
   {
     "$NONE",
     "$ENABLED",
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
     "SecondsTimer",
-    "DaySunday",
-    "DayMonday",
-    "DayTuesday",
-    "DayWednesday",
-    "DayThursday",
-    "DayFriday",
-    "DaySaturday",
+    // "DaySunday",
+    // "DayMonday",
+    // "DayTuesday",
+    // "DayWednesday",
+    // "DayThursday",
+    // "DayFriday",
+    // "DaySaturday",
     "DegreesLatGNGGAOver",
     "DegreesLatGNGGAUnder",
     "DegreesLatGNGGAEqual",
@@ -1617,13 +1617,13 @@ struct RelayStruct {
   char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";
   char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE";
 
-   char DaySunday[56]    = "DaySunday";
-   char DayMonday[56]    = "DaySunday";
-   char DayTuesday[56]   = "DayMonday";
-   char DayWednesday[56] = "DayTuesday";
-   char DayThursday[56]  = "DayWednesday";
-   char DayFriday[56]    = "DayThursday";
-   char DaySaturday[56]  = "DayFriday";
+  //  char DaySunday[56]    = "DaySunday";
+  //  char DayMonday[56]    = "DayMonday";
+  //  char DayTuesday[56]   = "DayTuesday";
+  //  char DayWednesday[56] = "DayWednesday";
+  //  char DayThursday[56]  = "DayThursday";
+  //  char DayFriday[56]    = "DayFriday";
+  //  char DaySaturday[56]  = "DaySaturday";
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
@@ -4079,13 +4079,13 @@ void matrixSwitch() {
         //                                                                                                                    TIME DATA
 
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SecondsTimer) == 0) {tmp_matrix[Fi] = SecondsTimer(relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1], Ri);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayWednesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayThursday) == 0) {if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayWednesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayThursday) == 0) {if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
+        // else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                       SATIO
