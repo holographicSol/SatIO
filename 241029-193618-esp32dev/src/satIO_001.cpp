@@ -4987,6 +4987,16 @@ bool DisplayPage0() {
     hud.print("SR "); hud.print(siderealPlanetData.sun_r);
     hud.setCursor(0,170);
     hud.print("SS "); hud.print(siderealPlanetData.sun_s);
+
+    // small planetarium
+    // map 24(hours) to 360 (degrees)
+
+    // small telemetry graph
+    // altitude
+    // heading
+    // roll
+    // pitch
+    // yaw
     
     return true;
   }
