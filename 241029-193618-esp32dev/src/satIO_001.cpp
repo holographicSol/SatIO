@@ -4968,19 +4968,19 @@ bool DisplayPage0() {
     hud.setCursor(150,140);
     hud.print("MIL "); hud.print(gpattData.mileage);
     // gps data column 2
-    hud.setCursor(240,80);
+    hud.setCursor(250,80);
     hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
-    hud.setCursor(240,90);
+    hud.setCursor(250,90);
     hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
-    hud.setCursor(240,100);
+    hud.setCursor(250,100);
     hud.print("PS "); hud.print(gnggaData.positioning_status);
-    hud.setCursor(240,110);
+    hud.setCursor(250,110);
     hud.print("PS "); hud.print(gnrmcData.positioning_status);
-    hud.setCursor(240,120);
+    hud.setCursor(250,120);
     hud.print("GST "); hud.print(gpattData.gst_data);
-    hud.setCursor(240,130);
+    hud.setCursor(250,130);
     hud.print("INS "); hud.print(gpattData.ins);
-    hud.setCursor(240,140);
+    hud.setCursor(250,140);
     hud.print("SF  "); hud.print(gpattData.static_flag);
     
     return true;
