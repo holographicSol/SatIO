@@ -140,7 +140,6 @@ class SiderealPlanets {
 	void printDegMinSecs(double n);
 	boolean doXRiseSetTimes(void);
 	String HumanDayOfTheWeek(int year, int month, int day);
-	char week_day_names[7][56];
 	
   // library-accessible "private" interface
   private:
