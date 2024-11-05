@@ -4983,8 +4983,10 @@ bool DisplayPage0() {
     hud.setCursor(260,140);
     hud.print("SF  "); hud.print(gpattData.static_flag);
 
-    // hud.setCursor(0,100);
-    // hud.print("GS "); hud.print(satData.);
+    hud.setCursor(0,150);
+    hud.print("SR "); hud.print(siderealPlanetData.sun_r);
+    hud.setCursor(0,160);
+    hud.print("SS "); hud.print(siderealPlanetData.sun_s);
     
     return true;
   }
