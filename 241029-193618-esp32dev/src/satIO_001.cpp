@@ -4095,9 +4095,9 @@ void matrixSwitch() {
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
         
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateDayX) == 0) {if (satData.day_int==(int)relayData.relays_data[Ri][Fi][0]) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateMonthX) == 0) {if (satData.month_int==(int)relayData.relays_data[Ri][Fi][0]) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateYearX) == 0) {if (satData.year_full_int==(int)relayData.relays_data[Ri][Fi][0]) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateDayX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateMonthX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_full_int, (int)relayData.relays_data[Ri][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                       SATIO
