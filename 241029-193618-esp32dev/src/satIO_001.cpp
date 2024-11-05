@@ -1620,19 +1620,18 @@ struct RelayStruct {
     "NeptuneSet"
   };
 
-  // default and specifiable value to indicate a relay should not be activated/deactivated if all functions in relays expression are $NONE
-  char default_relay_function[56]          = "$NONE";
-  char default_enable_relay_function[56]   = "$ENABLED";
-  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";
-  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE";
+  char default_relay_function[56]          = "$NONE";            // false if all functions $NONE. true if preceeding functions are true.
+  char default_enable_relay_function[56]   = "$ENABLED";         // always true.
+  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";  // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
+  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE"; // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
-   char DaySunday[56]    = "DaySunday";
-   char DayMonday[56]    = "DayMonday";
-   char DayTuesday[56]   = "DayTuesday";
-   char DayWednesday[56] = "DayWednesday";
-   char DayThursday[56]  = "DayThursday";
-   char DayFriday[56]    = "DayFriday";
-   char DaySaturday[56]  = "DaySaturday";
+   char DaySunday[56]    = "DaySunday";    // true for day. takes not further arguments. 
+   char DayMonday[56]    = "DayMonday";    // true for day. takes not further arguments. 
+   char DayTuesday[56]   = "DayTuesday";   // true for day. takes not further arguments. 
+   char DayWednesday[56] = "DayWednesday"; // true for day. takes not further arguments. 
+   char DayThursday[56]  = "DayThursday";  // true for day. takes not further arguments. 
+   char DayFriday[56]    = "DayFriday";    // true for day. takes not further arguments. 
+   char DaySaturday[56]  = "DaySaturday";  // true for day. takes not further arguments. 
 
    char DateDayX[56]     = "DateDayX";   // specify x in matrix. example: 1 for 1st of the month
    char DateMonthX[56]   = "DateMonthX"; // specify x in matrix. example: 1 for 1st month of the year
