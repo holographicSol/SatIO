@@ -4930,7 +4930,7 @@ bool DisplayPage0() {
     // date
     hud.print(satData.sat_time_stamp_string[0]); hud.print(satData.sat_time_stamp_string[1]); hud.print(".");
     hud.print(satData.sat_time_stamp_string[2]); hud.print(satData.sat_time_stamp_string[3]); hud.print(".");
-    hud.print(satData.sat_time_stamp_string[4]); hud.print(satData.sat_time_stamp_string[5]); hud.print(".");
+    hud.print(satData.sat_time_stamp_string[4]); hud.print(satData.sat_time_stamp_string[5]); hud.print(" ");
     // // time
     hud.print(satData.sat_time_stamp_string[6]); hud.print(satData.sat_time_stamp_string[7]); hud.print(":");
     hud.print(satData.sat_time_stamp_string[8]); hud.print(satData.sat_time_stamp_string[9]); hud.print(":");
@@ -4942,7 +4942,7 @@ bool DisplayPage0() {
     // date
     hud.print(satData.last_sat_time_stamp_str[0]); hud.print(satData.last_sat_time_stamp_str[1]); hud.print(".");
     hud.print(satData.last_sat_time_stamp_str[2]); hud.print(satData.last_sat_time_stamp_str[3]); hud.print(".");
-    hud.print(satData.last_sat_time_stamp_str[4]); hud.print(satData.last_sat_time_stamp_str[5]); hud.print(".");
+    hud.print(satData.last_sat_time_stamp_str[4]); hud.print(satData.last_sat_time_stamp_str[5]); hud.print(" ");
     // // time
     hud.print(satData.last_sat_time_stamp_str[6]); hud.print(satData.last_sat_time_stamp_str[7]); hud.print(":");
     hud.print(satData.last_sat_time_stamp_str[8]); hud.print(satData.last_sat_time_stamp_str[9]); hud.print(":");
