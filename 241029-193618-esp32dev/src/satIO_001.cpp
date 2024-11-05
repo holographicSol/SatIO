@@ -5000,6 +5000,8 @@ bool DisplayPage0() {
     // yaw                   |___________|
 
     // create a page for debug/error table
+
+    // location pinning
     
     return true;
   }
