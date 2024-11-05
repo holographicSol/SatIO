@@ -6322,7 +6322,7 @@ void setup() {
       NULL,             /* Task input parameter */
       1,                /* Priority of the task */
       &TSTask,          /* Task handle. */
-      0);               /* Core where the task should run */
+      1);               /* Core where the task should run */
   
   // Create display task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
