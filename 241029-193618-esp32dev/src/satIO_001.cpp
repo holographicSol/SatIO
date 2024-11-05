@@ -2197,6 +2197,7 @@ struct SatDatatruct {
   char millisecond[56];
   int millisecond_int;
   char hours_minutes[56];
+  char day_of_the_week[56];
 };
 SatDatatruct satData;
 
@@ -2281,11 +2282,6 @@ void calculateLocation(){
 //                                                                                                               SATIO SENTENCE
 
 void extrapulatedSatData() {
-    //   int tmp_day = atoi(satData.day);
-    // int tmp_month = atoi(satData.month);
-    // int tmp_year = atoi(satData.year_full);
-    // if (strcmp(satData.day[0], "0")==1) {tmp_day = atoi(satData.day[1]);}
-    // if (strcmp(satData.month[0], "0")==1) {tmp_day = atoi(satData.month[1]);}
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SATIO SENTENCE: BEGIN
@@ -2336,6 +2332,9 @@ void extrapulatedSatData() {
   memset(satData.millisecond, 0, 56);
   strncat(satData.millisecond, &temp_sat_time_stamp_string[13], 1);
   strncat(satData.millisecond, &temp_sat_time_stamp_string[14], 1);
+
+  memset(satData.day_of_the_week, 0, sizeof(satData.day_of_the_week));
+  strcpy(satData.day_of_the_week, myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int).c_str());
 
   // store hour ready for timezone conversion
   int temp_hour = atoi(satData.hour);
@@ -5006,7 +5005,7 @@ bool DisplayPage0() {
 
     // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
     hud.setCursor(0,160);
-    hud.print("D  "); hud.print(myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int));
+    hud.print("D  "); hud.print(satData.day_of_the_week);
     hud.setCursor(0,170);
     hud.print("SR "); hud.print(siderealPlanetData.sun_r);
     hud.setCursor(0,180);
