@@ -1365,9 +1365,9 @@ struct RelayStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
-    "DayX",
-    "MonthX",
-    "YearX",
+    "DateDayX",
+    "DateMonthX",
+    "DateYearX",
     "DegreesLatGNGGAOver",
     "DegreesLatGNGGAUnder",
     "DegreesLatGNGGAEqual",
@@ -1628,9 +1628,9 @@ struct RelayStruct {
    char DayFriday[56]    = "DayFriday";
    char DaySaturday[56]  = "DaySaturday";
 
-   char DateDayX[56]     = "DayX";   // specify x in matrix
-   char DateMonthX[56]   = "MonthX"; // specify x in matrix
-   char DateYearX[56]    = "YearX";  // specify x in matrix
+   char DateDayX[56]     = "DateDayX";   // specify x in matrix
+   char DateMonthX[56]   = "DateMonthX"; // specify x in matrix
+   char DateYearX[56]    = "DateYearX";  // specify x in matrix
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
@@ -4086,7 +4086,7 @@ void matrixSwitch() {
         //                                                                                                                    TIME DATA
 
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SecondsTimer) == 0) {tmp_matrix[Fi] = SecondsTimer(relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1], Ri);}
-        
+
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
