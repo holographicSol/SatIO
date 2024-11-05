@@ -191,7 +191,7 @@ char week_day_names[7][56] = {
   "Saturday"
   };
 String SiderealPlanets::HumanDayOfTheWeek(int year, int month, int day) {
-  return {week_day_names[(int)day_of_week(year, month, day)]};
+  return week_day_names[(int)day_of_week(year, month, day)];
 }
 
 double SiderealPlanets::modifiedJulianDate1900(void) {
