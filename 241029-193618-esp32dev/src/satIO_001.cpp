@@ -2183,12 +2183,19 @@ struct SatDatatruct {
   char year_prefix[56] = "20"; // inline with trying to keep everything simple, this value is intended to require one ammendment every 100 years.
   int year_prefix_int = 20;
   char year_full[56];
+  int year_full_int;
   char month[56];
+  int month_int;
   char day[56];
+  int day_int;
   char hour[56];
+  int hour_int;
   char minute[56];
+  int minute_int;
   char second[56];
+  int second_int;
   char millisecond[56];
+  int millisecond_int;
   char hours_minutes[56];
 };
 SatDatatruct satData;
@@ -2274,6 +2281,11 @@ void calculateLocation(){
 //                                                                                                               SATIO SENTENCE
 
 void extrapulatedSatData() {
+    //   int tmp_day = atoi(satData.day);
+    // int tmp_month = atoi(satData.month);
+    // int tmp_year = atoi(satData.year_full);
+    // if (strcmp(satData.day[0], "0")==1) {tmp_day = atoi(satData.day[1]);}
+    // if (strcmp(satData.month[0], "0")==1) {tmp_day = atoi(satData.month[1]);}
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SATIO SENTENCE: BEGIN
@@ -2353,6 +2365,15 @@ void extrapulatedSatData() {
   strcat(satData.sat_time_stamp_string, satData.second);
   strcat(satData.sat_time_stamp_string, ".");
   strcat(satData.sat_time_stamp_string, satData.millisecond);
+
+  // store char times as int times
+  satData.day_int = atoi(satData.day);
+  satData.month_int = atoi(satData.month);
+  satData.year_full_int = atoi(satData.year_full);
+  satData.hour_int = atoi(satData.hour);
+  satData.minute_int = atoi(satData.minute);
+  satData.second_int = atoi(satData.second);
+  satData.millisecond_int = atoi(satData.millisecond);
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                       SATIO SENTENCE: LAST KNOWN DOWNLINK
@@ -4985,8 +5006,11 @@ bool DisplayPage0() {
 
     // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
     hud.setCursor(0,160);
-    hud.print("SR "); hud.print(siderealPlanetData.sun_r);
+    myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int);
+    hud.print("D  "); hud.print(myAstro.human_day_of_the_week_name);
     hud.setCursor(0,170);
+    hud.print("SR "); hud.print(siderealPlanetData.sun_r);
+    hud.setCursor(0,180);
     hud.print("SS "); hud.print(siderealPlanetData.sun_s);
 
     // small planetarium
