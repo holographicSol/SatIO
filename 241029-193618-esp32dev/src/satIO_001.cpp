@@ -4952,36 +4952,37 @@ bool DisplayPage0() {
     hud.print("Y  "); hud.print(gpattData.yaw);
     // gps data column 1
     hud.setCursor(150,80);
-    hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
+    hud.print(""); hud.print(gnggaData.latitude_hemisphere);
+    hud.print("  "); hud.print(satData.location_latitude_gngga_str);
     hud.setCursor(150,90);
-    hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
+    hud.print(""); hud.print(gnggaData.longitude_hemisphere);
+    hud.print("  "); hud.print(satData.location_longitude_gngga_str);
     hud.setCursor(150,100);
-    hud.print("PS "); hud.print(gnggaData.positioning_status);
+    hud.print("GH "); hud.print(gnrmcData.ground_heading);
     hud.setCursor(150,110);
-    hud.print("PS "); hud.print(gnrmcData.positioning_status);
+    hud.print("LF  "); hud.print(gpattData.line_flag);
     hud.setCursor(150,120);
-    hud.print("INS "); hud.print(gpattData.ins);
+    hud.print("RSF "); hud.print(gpattData.run_state_flag);
     hud.setCursor(150,130);
     hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
     hud.setCursor(150,140);
     hud.print("MIL "); hud.print(gpattData.mileage);
     // gps data column 2
     hud.setCursor(240,80);
-    hud.print("GST "); hud.print(gpattData.gst_data);
+    hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
     hud.setCursor(240,90);
-    hud.print("SF  "); hud.print(gpattData.static_flag);
+    hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
     hud.setCursor(240,100);
-    hud.print("LF  "); hud.print(gpattData.line_flag);
+    hud.print("PS "); hud.print(gnggaData.positioning_status);
     hud.setCursor(240,110);
-    hud.print("RSF "); hud.print(gpattData.run_state_flag);
+    hud.print("PS "); hud.print(gnrmcData.positioning_status);
     hud.setCursor(240,120);
-    hud.print("GH "); hud.print(gnrmcData.ground_heading);
+    hud.print("GST "); hud.print(gpattData.gst_data);
     hud.setCursor(240,130);
-    hud.print(""); hud.print(gnggaData.latitude_hemisphere);
-    hud.print("  "); hud.print(satData.location_latitude_gngga_str);
+    hud.print("INS "); hud.print(gpattData.ins);
     hud.setCursor(240,140);
-    hud.print(""); hud.print(gnggaData.longitude_hemisphere);
-    hud.print("  "); hud.print(satData.location_longitude_gngga_str);
+    hud.print("SF  "); hud.print(gpattData.static_flag);
+    
     return true;
   }
   else {return false;}
