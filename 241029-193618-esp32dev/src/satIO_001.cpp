@@ -1604,7 +1604,8 @@ struct RelayStruct {
   // default and specifiable value to indicate a relay should not be activated/deactivated if all functions in relays expression are $NONE
   char default_relay_function[56]          = "$NONE";
   char default_enable_relay_function[56]   = "$ENABLED";
-  char SwitchLink[56]                      = "$SWITCHLINK";
+  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";
+  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE";
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
@@ -4032,8 +4033,9 @@ void matrixSwitch() {
         // put true in temporary matrix if switch is enabled regardless of data. allows final bool true with no further requirements, even if all set $ENABLED, unlike if all set $NONE
         else if (strcmp(relayData.relays[Ri][Fi], relayData.default_enable_relay_function) == 0) {tmp_matrix[Fi] = 1;}
 
-        // Special Switch Link Function: Compares X in matrix to a switch state, allowing extra 9+ functions (or simply true/false) to be chained to another switches true/false state.  
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLink) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
+        // Special Switch Link Function: Compares X in matrix to a switch state, allowing extra 9+ functions (or simply true/false) to be chained to another switches true/false state.
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
+         else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
