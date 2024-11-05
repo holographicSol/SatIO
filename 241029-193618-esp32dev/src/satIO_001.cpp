@@ -4846,7 +4846,7 @@ void DisplayGeneralTitleBar(String v0) {
     }
     if (i==1) {
       // title
-      hud.drawRect(64, 0, 252, 16, TFTOBJ_COL0);
+      hud.drawRect(64, 0, 192, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 160, 9);
