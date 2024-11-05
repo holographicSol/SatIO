@@ -4992,11 +4992,11 @@ bool DisplayPage0() {
     // map 24(hours) to 360 (degrees)
 
     // small telemetry graph
-    // altitude
-    // heading
-    // roll
-    // pitch
-    // yaw
+    // altitude                 N/S/E/W
+    // heading               |           | -> alt
+    // roll                  |           |
+    // pitch                 | --------- | -> roll/pitch/yaw
+    // yaw                   |___________|
     
     return true;
   }
