@@ -4995,7 +4995,7 @@ bool DisplayPage0() {
     // altitude                 N/S/E/W
     // heading               |           | -> alt
     // roll                  |           |
-    // pitch                 | --------- | -> roll/pitch/yaw
+    // pitch                 | ----o---- | -> roll/pitch/yaw
     // yaw                   |___________|
     
     return true;
