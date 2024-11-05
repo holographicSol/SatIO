@@ -4925,28 +4925,49 @@ bool DisplayPage0() {
     hud.setCursor(0,80);
     hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
     hud.setCursor(0,90);
-    hud.print("T  "); hud.print(satData.sat_time_stamp_string);
+    // current time
+    hud.print("T  ");
+    // date
+    hud.print(satData.sat_time_stamp_string[0]); hud.print(satData.sat_time_stamp_string[1]); hud.print(".");
+    hud.print(satData.sat_time_stamp_string[2]); hud.print(satData.sat_time_stamp_string[3]); hud.print(".");
+    hud.print(satData.sat_time_stamp_string[4]); hud.print(satData.sat_time_stamp_string[5]); hud.print(".");
+    // // time
+    hud.print(satData.sat_time_stamp_string[6]); hud.print(satData.sat_time_stamp_string[7]); hud.print(":");
+    hud.print(satData.sat_time_stamp_string[8]); hud.print(satData.sat_time_stamp_string[9]); hud.print(":");
+    hud.print(satData.sat_time_stamp_string[10]); hud.print(satData.sat_time_stamp_string[11]); hud.print("");
+    hud.print(satData.sat_time_stamp_string[12]); hud.print(satData.sat_time_stamp_string[13]); hud.print(""); hud.print(satData.sat_time_stamp_string[14]); hud.print(""); // ms
+    // last satellite time (displays last time satellite count was over zero)
     hud.setCursor(0,100);
-    hud.print("LT "); hud.print(satData.last_sat_time_stamp_str);
+    hud.print("LT ");
+    // date
+    hud.print(satData.last_sat_time_stamp_str[0]); hud.print(satData.last_sat_time_stamp_str[1]); hud.print(".");
+    hud.print(satData.last_sat_time_stamp_str[2]); hud.print(satData.last_sat_time_stamp_str[3]); hud.print(".");
+    hud.print(satData.last_sat_time_stamp_str[4]); hud.print(satData.last_sat_time_stamp_str[5]); hud.print(".");
+    // // time
+    hud.print(satData.last_sat_time_stamp_str[6]); hud.print(satData.last_sat_time_stamp_str[7]); hud.print(":");
+    hud.print(satData.last_sat_time_stamp_str[8]); hud.print(satData.last_sat_time_stamp_str[9]); hud.print(":");
+    hud.print(satData.last_sat_time_stamp_str[10]); hud.print(satData.last_sat_time_stamp_str[11]); hud.print("");
+    hud.print(satData.last_sat_time_stamp_str[12]); hud.print(satData.last_sat_time_stamp_str[13]); hud.print(""); hud.print(satData.last_sat_time_stamp_str[14]); hud.print(""); // ms
+    // INS
     hud.setCursor(0,110);
     hud.print("INS "); hud.print(gpattData.ins);
     // gps data column 1
-    hud.setCursor(125,80);
+    hud.setCursor(155,80);
     hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
-    hud.setCursor(125,90);
+    hud.setCursor(155,90);
     hud.print("PS "); hud.print(gnggaData.positioning_status);
-    hud.setCursor(125,100);
+    hud.setCursor(155,100);
     hud.print("PS "); hud.print(gnrmcData.positioning_status);
-    hud.setCursor(125,110);
+    hud.setCursor(155,110);
     hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
     // upper hud col 2 (inertial navigation system)
-    hud.setCursor(230,80);
+    hud.setCursor(240,80);
     hud.print("GST "); hud.print(gpattData.gst_data);
-    hud.setCursor(230,90);
+    hud.setCursor(240,90);
     hud.print("SF  "); hud.print(gpattData.static_flag);
-    hud.setCursor(230,100);
+    hud.setCursor(240,100);
     hud.print("LF  "); hud.print(gpattData.line_flag);
-    hud.setCursor(230,110);
+    hud.setCursor(240,110);
     hud.print("RSF "); hud.print(gpattData.run_state_flag);
     // lower hud col 0
     hud.setCursor(0,120);
@@ -4956,19 +4977,19 @@ bool DisplayPage0() {
     hud.setCursor(0,140);
     hud.print("YAW "); hud.print(gpattData.yaw);
     // lower hud col 1
-    hud.setCursor(125,120);
+    hud.setCursor(155,120);
     hud.print("ALT "); hud.print(gnggaData.altitude);
-    hud.setCursor(125,130);
+    hud.setCursor(155,130);
     hud.print("GS  "); hud.print(gnrmcData.ground_speed);
-    hud.setCursor(125,140);
+    hud.setCursor(155,140);
     hud.print("MIL "); hud.print(gpattData.mileage);
     // lower hud col 2
-    hud.setCursor(230,120);
+    hud.setCursor(240,120);
     hud.print("GH "); hud.print(gnrmcData.ground_heading);
-    hud.setCursor(230,130);
+    hud.setCursor(240,130);
     hud.print(""); hud.print(gnggaData.latitude_hemisphere);
     hud.print("  "); hud.print(satData.location_latitude_gngga_str);
-    hud.setCursor(230,140);
+    hud.setCursor(240,140);
     hud.print(""); hud.print(gnggaData.longitude_hemisphere);
     hud.print("  "); hud.print(satData.location_longitude_gngga_str);
     return true;
