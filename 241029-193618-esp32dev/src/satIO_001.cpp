@@ -4953,12 +4953,12 @@ bool DisplayPage0() {
     // gps data column 1
     hud.setCursor(150,80);
     hud.print(""); hud.print(gnggaData.latitude_hemisphere);
-    hud.print("  "); hud.print(satData.location_latitude_gngga_str);
+    hud.print("    "); hud.print(satData.location_latitude_gngga_str);
     hud.setCursor(150,90);
     hud.print(""); hud.print(gnggaData.longitude_hemisphere);
-    hud.print("  "); hud.print(satData.location_longitude_gngga_str);
+    hud.print("    "); hud.print(satData.location_longitude_gngga_str);
     hud.setCursor(150,100);
-    hud.print("GH "); hud.print(gnrmcData.ground_heading);
+    hud.print("GH  "); hud.print(gnrmcData.ground_heading);
     hud.setCursor(150,110);
     hud.print("LF  "); hud.print(gpattData.line_flag);
     hud.setCursor(150,120);
