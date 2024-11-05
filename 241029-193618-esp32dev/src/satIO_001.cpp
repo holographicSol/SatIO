@@ -5341,7 +5341,7 @@ bool DisplaySettingsSystem() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("System Settings"));
+    DisplayGeneralTitleBar(String("System"));
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5375,7 +5375,7 @@ bool DisplaySettingsMatrix() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Matrix Settings"));
+    DisplayGeneralTitleBar(String("Matrix"));
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
@@ -5548,7 +5548,7 @@ bool DisplaySettingsGPS() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("GPS Settings"));
+    DisplayGeneralTitleBar(String("GPS"));
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5590,7 +5590,7 @@ bool DisplaySettingsSerial() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Serial Settings"));
+    DisplayGeneralTitleBar(String("Serial"));
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5634,7 +5634,7 @@ bool DisplaySettingsFile() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("File Settings"));
+    DisplayGeneralTitleBar(String("File"));
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5869,7 +5869,7 @@ bool DisplaySettingsTime() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Time Settings"));
+    DisplayGeneralTitleBar(String("Time"));
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -5931,7 +5931,7 @@ bool DisplaySettingsDisplay() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Display Settings"));
+    DisplayGeneralTitleBar(String("Display"));
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -6043,7 +6043,7 @@ bool SiderealPlanetsSettings() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header max_settingssiderealplanetsvalues
-    DisplayGeneralTitleBar(String("Planet Tracking Settings"));
+    DisplayGeneralTitleBar(String("Planet Tracking"));
     // values
     for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
