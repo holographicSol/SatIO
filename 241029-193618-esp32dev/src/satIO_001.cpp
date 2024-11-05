@@ -4036,7 +4036,7 @@ void matrixSwitch() {
 
         // Special Switch Link Function: Compares X in matrix to a switch state, allowing extra 9+ functions (or simply true/false) to be chained to another switches true/false state.
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
-         else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][Ri], relayData.relays_data[Ri][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
@@ -5257,50 +5257,50 @@ bool isTouchNumpad(TouchPoint p) {
       menuData.page = menuData.backpage;
       }
     // enter
-    // if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
-    //   if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
-    //     if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
-    //     else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
-    //     else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
-    //     menuData.page=1;
-    //   }
-    // }
-    // if (atol(menuData.input) < 179769313486232) {
-    //   if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
-    //     for (int i; i<4; i++) {
-    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
-    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "4");}
-    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "1");}
-    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "0");}
-    //       break;
-    //       }
-    //   }
-    //   if (p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) {
-    //     for (int i; i<4; i++) {
-    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "8");}
-    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "5");}
-    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "2");}
-    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, ".");}
-    //       break;
-    //       }
-    //   }
-    //   if (p.x >=  tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) {
-    //     for (int i; i<4; i++) {
-    //       if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "9");}
-    //       else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "6");}
-    //       else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "3");}
-    //       else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "-");}
-    //       break;
-    //       }
-    //   }
-    // }
-    // if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
-    //   for (int i; i<4; i++) {
-    //     if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
-    //     else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {memset(menuData.input, 0, sizeof(menuData.input));}
-    //     break;
-    //     }
-    // }
+    if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
+      if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
+        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
+        else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
+        else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
+        menuData.page=1;
+      }
+    }
+    if (atol(menuData.input) < 179769313486232) {
+      if (p.x >=  tss.numpad_x[1][0] && p.x <= tss.numpad_x[1][1]) {
+        for (int i; i<4; i++) {
+          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "7");}
+          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "4");}
+          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "1");}
+          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "0");}
+          break;
+          }
+      }
+      if (p.x >=  tss.numpad_x[2][0] && p.x <= tss.numpad_x[2][1]) {
+        for (int i; i<4; i++) {
+          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "8");}
+          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "5");}
+          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "2");}
+          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, ".");}
+          break;
+          }
+      }
+      if (p.x >=  tss.numpad_x[3][0] && p.x <= tss.numpad_x[3][1]) {
+        for (int i; i<4; i++) {
+          if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {strcat(menuData.input, "9");}
+          else if (p.y > tss.numpad_page_y[1][0] &&  p.y < tss.numpad_page_y[1][1]) {strcat(menuData.input, "6");}
+          else if (p.y > tss.numpad_page_y[2][0] &&  p.y < tss.numpad_page_y[2][1]) {strcat(menuData.input, "3");}
+          else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {strcat(menuData.input, "-");}
+          break;
+          }
+      }
+    }
+    if (p.x >=  tss.numpad_x[4][0] && p.x <= tss.numpad_x[4][1]) {
+      for (int i; i<4; i++) {
+        if (p.y > tss.numpad_page_y[0][0] &&  p.y < tss.numpad_page_y[0][1]) {menuData.input[strlen(menuData.input)-1] = '\0';}
+        else if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {memset(menuData.input, 0, sizeof(menuData.input));}
+        break;
+        }
+    }
     return true;
   }
   else {return false;}
