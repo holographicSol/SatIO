@@ -4036,7 +4036,7 @@ void matrixSwitch() {
 
         // Special Switch Link Function: Compares X in matrix to a switch state, allowing extra 9+ functions (or simply true/false) to be chained to another switches true/false state.
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 0);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
