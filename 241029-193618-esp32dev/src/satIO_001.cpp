@@ -1348,10 +1348,10 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 260;
+  int FUNCTION_NAMES_MAX = 261;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[260][56] = 
+  char function_names[261][56] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1429,6 +1429,7 @@ struct RelayStruct {
     "ModeGNRMCA",
     "ModeGNRMCD",
     "ModeGNRMCN",
+    "ModeGNRMCE",
     "LatGNRMCOver",
     "LatGNRMCUnder",
     "LatGNRMCEqual",
@@ -1620,63 +1621,63 @@ struct RelayStruct {
     "NeptuneSet"
   };
 
-  char default_relay_function[56]          = "$NONE";            // false if first or all functions $NONE. true if preceeding functions are populated.
-  char default_enable_relay_function[56]   = "$ENABLED";         // always true.
-  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";  // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
-  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE"; // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
+  char default_relay_function[56]          = "$NONE";             // false if first or all functions $NONE. true if preceeding functions are populated.
+  char default_enable_relay_function[56]   = "$ENABLED";          // always true.
+  char SwitchLinkTrue[56]                  = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
+  char SwitchLinkFalse[56]                 = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
-   char DaySunday[56]    = "DaySunday";    // true for day. takes not further arguments.
-   char DayMonday[56]    = "DayMonday";    // true for day. takes not further arguments.
-   char DayTuesday[56]   = "DayTuesday";   // true for day. takes not further arguments.
-   char DayWednesday[56] = "DayWednesday"; // true for day. takes not further arguments.
-   char DayThursday[56]  = "DayThursday";  // true for day. takes not further arguments.
-   char DayFriday[56]    = "DayFriday";    // true for day. takes not further arguments. 
-   char DaySaturday[56]  = "DaySaturday";  // true for day. takes not further arguments.
+   char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
+   char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
+   char DayTuesday[56]   = "DayTuesday";    // true for day. takes not further arguments.
+   char DayWednesday[56] = "DayWednesday";  // true for day. takes not further arguments.
+   char DayThursday[56]  = "DayThursday";   // true for day. takes not further arguments.
+   char DayFriday[56]    = "DayFriday";     // true for day. takes not further arguments. 
+   char DaySaturday[56]  = "DaySaturday";   // true for day. takes not further arguments.
 
-   char DateDayX[56]     = "DateDayX";   // specify x in matrix. example: 1 for 1st of the month
-   char DateMonthX[56]   = "DateMonthX"; // specify x in matrix. example: 1 for 1st month of the year
-   char DateYearX[56]    = "DateYearX";  // specify x in matrix. example: 2030 for year 2030.
+   char DateDayX[56]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
+   char DateMonthX[56]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
+   char DateYearX[56]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
   // GNGGA
-  char DegreesLatGNGGAOver[56]             = "DegreesLatGNGGAOver";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAUnder[56]            = "DegreesLatGNGGAUnder"; // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAEqual[56]            = "DegreesLatGNGGAEqual"; // specify x (degrees lat) in matrix.
-  char DegreesLonGNGGAOver[56]             = "DegreesLonGNGGAOver";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAUnder[56]            = "DegreesLonGNGGAUnder"; // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAEqual[56]            = "DegreesLonGNGGAEqual"; // specify x (degrees lon) in matrix.
-  char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange"; // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange"; // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNGGARange[56]               = "DegreesGNGGARange";    // specify x (degrees lat) y (lon) z (meters range) in matrix.
+  char DegreesLatGNGGAOver[56]             = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAUnder[56]            = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAEqual[56]            = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNGGAOver[56]             = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAUnder[56]            = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAEqual[56]            = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNGGARange[56]               = "DegreesGNGGARange";     // specify x (degrees lat) y (lon) z (meters range) in matrix.
   // GNRMC
-  char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder"; // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCEqual[56]            = "DegreesLatGNRMCEqual"; // specify x (degrees lat) in matrix.
-  char DegreesLonGNRMCOver[56]             = "DegreesLonGNRMCOver";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCUnder[56]            = "DegreesLonGNRMCUnder"; // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCEqual[56]            = "DegreesLonGNRMCEqual"; // specify x (degrees lon) in matrix.
-  char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange"; // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNRMCRange[56]            = "DegreesLonGNRMCRange"; // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNRMCRange[56]               = "DegreesGNRMCRange";    // specify x (degrees lat) y (lon) z (meters range) in matrix.
+  char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCEqual[56]            = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNRMCOver[56]             = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCUnder[56]            = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCEqual[56]            = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNRMCRange[56]            = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNRMCRange[56]               = "DegreesGNRMCRange";     // specify x (degrees lat) y (lon) z (meters range) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNGGA DATA
 
-  char UTCTimeGNGGAOver[56]       = "UTCTimeGNGGAOver";   // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAUnder[56]      = "UTCTimeGNGGAUnder";  // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAEqual[56]      = "UTCTimeGNGGAEqual";  // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGARange[56]      = "UTCTimeGNGGARange";  // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  char UTCTimeGNGGAOver[56]       = "UTCTimeGNGGAOver";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAUnder[56]      = "UTCTimeGNGGAUnder";      // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAEqual[56]      = "UTCTimeGNGGAEqual";      // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGARange[56]      = "UTCTimeGNGGARange";      // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
-  char LatGNGGAOver[56]           = "LatGNGGAOver";  // specify x (absolute lat) in matrix.
-  char LonGNGGAOver[56]           = "LonGNGGAOver";  // specify x (absolute lon) in matrix.
-  char LatGNGGAUnder[56]          = "LatGNGGAUnder"; // specify x (absolute lat) in matrix.
-  char LonGNGGAUnder[56]          = "LonGNGGAUnder"; // specify x (absolute lon) in matrix.
-  char LatGNGGAEqual[56]          = "LatGNGGAEqual"; // specify x (absolute lat) in matrix.
-  char LonGNGGAEqual[56]          = "LonGNGGAEqual"; // specify x (absolute lon) in matrix.
-  char LatGNGGARange[56]          = "LatGNGGARange"; // specify x (absolute lat) z (meters range) in matrix.
-  char LonGNGGARange[56]          = "LonGNGGARange"; // specify x (absolute lon) z (meters range) in matrix.
+  char LatGNGGAOver[56]           = "LatGNGGAOver";           // specify x (absolute lat) in matrix.
+  char LonGNGGAOver[56]           = "LonGNGGAOver";           // specify x (absolute lon) in matrix.
+  char LatGNGGAUnder[56]          = "LatGNGGAUnder";          // specify x (absolute lat) in matrix.
+  char LonGNGGAUnder[56]          = "LonGNGGAUnder";          // specify x (absolute lon) in matrix.
+  char LatGNGGAEqual[56]          = "LatGNGGAEqual";          // specify x (absolute lat) in matrix.
+  char LonGNGGAEqual[56]          = "LonGNGGAEqual";          // specify x (absolute lon) in matrix.
+  char LatGNGGARange[56]          = "LatGNGGARange";          // specify x (absolute lat) z (meters range) in matrix.
+  char LonGNGGARange[56]          = "LonGNGGARange";          // specify x (absolute lon) z (meters range) in matrix.
   
   char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA"; // specify x in matrix. 0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
   char SatelliteCountOver[56]     = "SatelliteCountOver";     // specify x (satellite number 0+) in matrix.
@@ -1702,39 +1703,47 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNRMC DATA
 
-  char UTCTimeGNRMCOver[56]         = "UTCTimeGNRMCOver";
-  char UTCTimeGNRMCUnder[56]        = "UTCTimeGNRMCUnder";
-  char UTCTimeGNRMCEqual[56]        = "UTCTimeGNRMCEqual";
-  char UTCTimeGNRMCRange[56]        = "UTCTimeGNRMCRange";
-  char PositioningStatusGNRMCA[56]  = "PositioningStatusGNRMCA";
-  char PositioningStatusGNRMCV[56]  = "PositioningStatusGNRMCV";
-  char ModeGNRMCA[56]               = "ModeGNRMCA";
-  char ModeGNRMCD[56]               = "ModeGNRMCD";
-  char ModeGNRMCN[56]               = "ModeGNRMCN";
-  char LatGNRMCOver[56]             = "LatGNRMCOver";
-  char LatGNRMCUnder[56]            = "LatGNRMCUnder";
-  char LatGNRMCEqual[56]            = "LatGNRMCEqual";
-  char LatGNRMCRange[56]            = "LatGNRMCRange";
-  char LonGNRMCOver[56]             = "LonGNRMCOver";
-  char LonGNRMCUnder[56]            = "LonGNRMCUnder";
-  char LonGNRMCEqual[56]            = "LonGNRMCEqual";
-  char LonGNRMCRange[56]            = "LonGNRMCRange";
-  char HemisphereGNRMCNorth[56]     = "HemisphereGNRMCNorth";
-  char HemisphereGNRMCEast[56]      = "HemisphereGNRMCEast";
-  char HemisphereGNRMCSouth[56]     = "HemisphereGNRMCSouth";
-  char HemisphereGNRMCWest[56]      = "HemisphereGNRMCWest";
-  char GroundSpeedGNRMCOver[56]     = "GroundSpeedGNRMCOver";
-  char GroundSpeedGNRMCUnder[56]    = "GroundSpeedGNRMCUnder";
-  char GroundSpeedGNRMCEqual[56]    = "GroundSpeedGNRMCEqual";
-  char GroundSpeedGNRMCRange[56]    = "GroundSpeedGNRMCRange";
-  char HeadingGNRMCOver[56]         = "HeadingGNRMCOver";
-  char HeadingGNRMCUnder[56]        = "HeadingGNRMCUnder";
-  char HeadingGNRMCEqual[56]        = "HeadingGNRMCEqual";
-  char HeadingGNRMCRange[56]        = "HeadingGNRMCRange";
-  char UTCDateGNRMCOver[56]         = "UTCDateGNRMCOver";
-  char UTCDateGNRMCUnder[56]        = "UTCDateGNRMCUnder";
-  char UTCDateGNRMCEqual[56]        = "UTCDateGNRMCEqual";
-  char UTCDateGNRMCRange[56]        = "UTCDateGNRMCRange";
+  char UTCTimeGNRMCOver[56]         = "UTCTimeGNRMCOver";         // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCUnder[56]        = "UTCTimeGNRMCUnder";        // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCEqual[56]        = "UTCTimeGNRMCEqual";        // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCRange[56]        = "UTCTimeGNRMCRange";        // specify x (hhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  
+  char PositioningStatusGNRMCA[56]  = "PositioningStatusGNRMCA";  // A = valid positioning. takes no further arguments.
+  char PositioningStatusGNRMCV[56]  = "PositioningStatusGNRMCV";  // V = invalid positioning. takes no further arguments.
+  
+  char ModeGNRMCA[56]               = "ModeGNRMCA";               // A = autonomous positioning. takes no further arguments.
+  char ModeGNRMCD[56]               = "ModeGNRMCD";               // D = differential. takes no further arguments.
+  char ModeGNRMCE[56]               = "ModeGNRMCE";               // E = estimation. takes no further arguments.
+  char ModeGNRMCN[56]               = "ModeGNRMCN";               // N = invalid data. takes no further arguments.
+  
+  char LatGNRMCOver[56]             = "LatGNRMCOver";             // specify x (absolute lat) in matrix.
+  char LonGNRMCOver[56]             = "LonGNRMCOver";             // specify x (absolute lon) in matrix.
+  char LatGNRMCUnder[56]            = "LatGNRMCUnder";            // specify x (absolute lat) in matrix.
+  char LonGNRMCUnder[56]            = "LonGNRMCUnder";            // specify x (absolute lon) in matrix.
+  char LatGNRMCEqual[56]            = "LatGNRMCEqual";            // specify x (absolute lat) in matrix.
+  char LonGNRMCEqual[56]            = "LonGNRMCEqual";            // specify x (absolute lon) in matrix.
+  char LatGNRMCRange[56]            = "LatGNRMCRange";            // specify x (absolute lat) z (meters range) in matrix.
+  char LonGNRMCRange[56]            = "LonGNRMCRange";            // specify x (absolute lon) z (meters range) in matrix.
+
+  char HemisphereGNRMCNorth[56]     = "HemisphereGNRMCNorth";     // takes no further arguments.
+  char HemisphereGNRMCEast[56]      = "HemisphereGNRMCEast";      // takes no further arguments.
+  char HemisphereGNRMCSouth[56]     = "HemisphereGNRMCSouth";     // takes no further arguments.
+  char HemisphereGNRMCWest[56]      = "HemisphereGNRMCWest";      // takes no further arguments.
+
+  char GroundSpeedGNRMCOver[56]     = "GroundSpeedGNRMCOver";     // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCUnder[56]    = "GroundSpeedGNRMCUnder";    // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCEqual[56]    = "GroundSpeedGNRMCEqual";    // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCRange[56]    = "GroundSpeedGNRMCRange";    // specify x (kilometers/h) y (kilometers/h) in matrix.
+
+  char HeadingGNRMCOver[56]         = "HeadingGNRMCOver";         // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCUnder[56]        = "HeadingGNRMCUnder";        // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCEqual[56]        = "HeadingGNRMCEqual";        // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCRange[56]        = "HeadingGNRMCRange";        // specify x (degrees: 0-360) y (degrees: 0-360) in matrix.
+
+  char UTCDateGNRMCOver[56]         = "UTCDateGNRMCOver";         // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCUnder[56]        = "UTCDateGNRMCUnder";        // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCEqual[56]        = "UTCDateGNRMCEqual";        // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCRange[56]        = "UTCDateGNRMCRange";        // specify x (ddmmyy) y (ddmmyy) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GPATT DATA
