@@ -3474,7 +3474,7 @@ bool check_under_false(double n0, double n1) {
 }
 
 bool check_equal_true(double n0, double n1) {
-  Serial.println("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
+  // Serial.println("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 == n1) {return true;}
   else {return false;}
 }
