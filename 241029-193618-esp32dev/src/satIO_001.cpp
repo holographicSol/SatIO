@@ -93,13 +93,14 @@ TaskHandle_t TSTask;
 TaskHandle_t UpdateDisplayTask;
 
 // default scheme (dark neutral)
-uint16_t TFTOBJ_COL0 = TFT_DARKGREY;    // objects color
-uint16_t TFTTXT_COLF_0 = TFT_DARKGREY;  // text color on background
-uint16_t TFTTXT_COLB_0 = TFT_BLACK;     // text background color on background
-uint16_t TFTTXT_COLF_1 = TFT_BLACK;     // text color on object color
-uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;  // text background color on object color
-uint16_t BG_COL_0 = TFT_BLACK;          // background
-uint16_t TFT_ENABLED = TFT_GREEN;   // sets enabled color of text/objects
+uint16_t TFTOBJ_COL0 = TFT_DARKGREY; // objects color
+uint16_t TFTTXT_COLF_0 = TFT_DARKGREY; // text color on background
+uint16_t TFTTXT_COLF_TITLE_0 = TFT_DARKGREY; // emhpasize color 0
+uint16_t TFTTXT_COLB_0 = TFT_BLACK; // text background color on background
+uint16_t TFTTXT_COLF_1 = TFT_BLACK; // text color on object color
+uint16_t TFTTXT_COLB_1 = TFT_DARKGREY; // text background color on object color
+uint16_t BG_COL_0 = TFT_BLACK; // background
+uint16_t TFT_ENABLED = TFT_GREEN; // sets enabled color of text/objects
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -4839,20 +4840,21 @@ void DisplayGeneralTitleBar(String v0) {
     if (i==0) {
       // home
       hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
     }
     if (i==1) {
       // title
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawRect(60, 0, 260, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 160, 9);
     }
     if (i==2) {
     // back
       hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
     }
@@ -4887,7 +4889,7 @@ bool DisplayPage0() {
     // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
       hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
