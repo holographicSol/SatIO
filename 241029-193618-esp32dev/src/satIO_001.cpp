@@ -1348,10 +1348,10 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 249;
+  int FUNCTION_NAMES_MAX = 256;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[249][56] = 
+  char function_names[256][56] = 
   {
     "$NONE",
     "$ENABLED",
