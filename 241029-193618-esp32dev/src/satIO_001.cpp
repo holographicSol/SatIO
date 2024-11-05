@@ -4775,8 +4775,8 @@ struct SettingsDataStruct {
     "S14",
     "S15",
     "S16",
-    "S16",
     "S17",
+    "S18",
     "S19",
   };
 
