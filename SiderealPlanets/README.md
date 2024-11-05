@@ -1,3 +1,8 @@
+Sidereal Planets is not my work (not Benjamin Jack Cullen's work) but it is modified slightly so i needed to upload the modified version I am using for SatIO!
+
+
+
+
 # SiderealPlanets
 
 
