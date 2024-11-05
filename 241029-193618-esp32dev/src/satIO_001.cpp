@@ -4923,44 +4923,49 @@ bool DisplayPage0() {
     // gps data column 0
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setCursor(0,80);
-    hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
-    hud.setCursor(0,90);
-    // current time
     hud.print("T  ");
-    // date
     hud.print(satData.sat_time_stamp_string[0]); hud.print(satData.sat_time_stamp_string[1]); hud.print(".");
     hud.print(satData.sat_time_stamp_string[2]); hud.print(satData.sat_time_stamp_string[3]); hud.print(".");
     hud.print(satData.sat_time_stamp_string[4]); hud.print(satData.sat_time_stamp_string[5]); hud.print(" ");
-    // // time
     hud.print(satData.sat_time_stamp_string[6]); hud.print(satData.sat_time_stamp_string[7]); hud.print(":");
     hud.print(satData.sat_time_stamp_string[8]); hud.print(satData.sat_time_stamp_string[9]); hud.print(":");
     hud.print(satData.sat_time_stamp_string[10]); hud.print(satData.sat_time_stamp_string[11]); hud.print("");
     hud.print(satData.sat_time_stamp_string[12]); hud.print(satData.sat_time_stamp_string[13]); hud.print(""); hud.print(satData.sat_time_stamp_string[14]); hud.print(""); // ms
-    // last satellite time (displays last time satellite count was over zero)
-    hud.setCursor(0,100);
+    hud.setCursor(0,90);
     hud.print("LT ");
-    // date
     hud.print(satData.last_sat_time_stamp_str[0]); hud.print(satData.last_sat_time_stamp_str[1]); hud.print(".");
     hud.print(satData.last_sat_time_stamp_str[2]); hud.print(satData.last_sat_time_stamp_str[3]); hud.print(".");
     hud.print(satData.last_sat_time_stamp_str[4]); hud.print(satData.last_sat_time_stamp_str[5]); hud.print(" ");
-    // // time
     hud.print(satData.last_sat_time_stamp_str[6]); hud.print(satData.last_sat_time_stamp_str[7]); hud.print(":");
     hud.print(satData.last_sat_time_stamp_str[8]); hud.print(satData.last_sat_time_stamp_str[9]); hud.print(":");
     hud.print(satData.last_sat_time_stamp_str[10]); hud.print(satData.last_sat_time_stamp_str[11]); hud.print("");
     hud.print(satData.last_sat_time_stamp_str[12]); hud.print(satData.last_sat_time_stamp_str[13]); hud.print(""); hud.print(satData.last_sat_time_stamp_str[14]); hud.print(""); // ms
-    // INS
+    hud.setCursor(0,100);
+    hud.print("GS "); hud.print(gnrmcData.ground_speed);
     hud.setCursor(0,110);
-    hud.print("INS "); hud.print(gpattData.ins);
+    hud.print("AL "); hud.print(gnggaData.altitude);
+    hud.setCursor(0,120);
+    hud.print("P  "); hud.print(gpattData.pitch);
+    hud.setCursor(0,130);
+    hud.print("R  "); hud.print(gpattData.roll);
+    hud.setCursor(0,140);
+    hud.print("Y  "); hud.print(gpattData.yaw);
     // gps data column 1
-    hud.setCursor(155,80);
+    hud.setCursor(150,80);
+    hud.print("S  "); hud.print(gnggaData.satellite_count_gngga);
+    hud.setCursor(150,90);
     hud.print("PF "); hud.print(gnggaData.hdop_precision_factor);
-    hud.setCursor(155,90);
+    hud.setCursor(150,100);
     hud.print("PS "); hud.print(gnggaData.positioning_status);
-    hud.setCursor(155,100);
+    hud.setCursor(150,110);
     hud.print("PS "); hud.print(gnrmcData.positioning_status);
-    hud.setCursor(155,110);
+    hud.setCursor(150,120);
+    hud.print("INS "); hud.print(gpattData.ins);
+    hud.setCursor(150,130);
     hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
-    // upper hud col 2 (inertial navigation system)
+    hud.setCursor(150,140);
+    hud.print("MIL "); hud.print(gpattData.mileage);
+    // gps data column 2
     hud.setCursor(240,80);
     hud.print("GST "); hud.print(gpattData.gst_data);
     hud.setCursor(240,90);
@@ -4969,21 +4974,6 @@ bool DisplayPage0() {
     hud.print("LF  "); hud.print(gpattData.line_flag);
     hud.setCursor(240,110);
     hud.print("RSF "); hud.print(gpattData.run_state_flag);
-    // lower hud col 0
-    hud.setCursor(0,120);
-    hud.print("PIT "); hud.print(gpattData.pitch);
-    hud.setCursor(0,130);
-    hud.print("ROL "); hud.print(gpattData.roll);
-    hud.setCursor(0,140);
-    hud.print("YAW "); hud.print(gpattData.yaw);
-    // lower hud col 1
-    hud.setCursor(155,120);
-    hud.print("ALT "); hud.print(gnggaData.altitude);
-    hud.setCursor(155,130);
-    hud.print("GS  "); hud.print(gnrmcData.ground_speed);
-    hud.setCursor(155,140);
-    hud.print("MIL "); hud.print(gpattData.mileage);
-    // lower hud col 2
     hud.setCursor(240,120);
     hud.print("GH "); hud.print(gnrmcData.ground_heading);
     hud.setCursor(240,130);
