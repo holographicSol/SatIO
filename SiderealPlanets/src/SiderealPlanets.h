@@ -139,6 +139,8 @@ class SiderealPlanets {
 	double getMoonsetTime(void);
 	void printDegMinSecs(double n);
 	boolean doXRiseSetTimes(void);
+	void HumanDayOfTheWeek(int year, int month, int day);
+	char human_day_of_the_week_name[56];
 	
   // library-accessible "private" interface
   private:

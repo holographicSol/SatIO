@@ -181,6 +181,27 @@ char SiderealPlanets::day_of_week(int year, int month, int day)
   return (year + year/4 - year/100 + year/400 + t[month-1] + day) % 7;
 }
 
+char week_day_names[7][56] = {
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+  };
+char human_day_of_the_week_name[56];
+void SiderealPlanets::HumanDayOfTheWeek(int year, int month, int day) {
+  Serial.print("test: "); Serial.println(week_day_names[0]);
+  static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4  };
+  year -= month < 3;
+  int idx_name = (year + year/4 - year/100 + year/400 + t[month-1] + day) % 7;
+  Serial.print("day_of_week: "); Serial.println(idx_name);
+  Serial.print("human day_of_week: "); Serial.println(week_day_names[(int)idx_name]);
+  memset(human_day_of_the_week_name, 0, 56);
+  strcpy(human_day_of_the_week_name, week_day_names[(int)idx_name]);
+}
+
 double SiderealPlanets::modifiedJulianDate1900(void) {
   // Based on Year 1900
   if (MJDdone) return mjd1900;
