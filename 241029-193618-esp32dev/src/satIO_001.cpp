@@ -1347,7 +1347,7 @@ struct MatrixStruct {
 
   int max_matrix_function_names = 191;
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[191][56] = 
+  char matrix_function_names[191][56] = 
   {
     "$NONE",
     "$ENABLED",
@@ -5237,7 +5237,7 @@ bool DisplaySelectMatrixFunction() {
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i); hud.print(" "); hud.print(matrixData.function_names[menuData.function_index+i]);
+        hud.print(menuData.function_index+i); hud.print(" "); hud.print(matrixData.matrix_function_names[menuData.function_index+i]);
         }
         return true;
     }
@@ -5265,7 +5265,7 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           memset(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], 0, sizeof(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select]));
-          strcpy(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], matrixData.function_names[i+menuData.function_index]);
+          strcpy(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], matrixData.matrix_function_names[i+menuData.function_index]);
           menuData.page=1;
           break;
         }
