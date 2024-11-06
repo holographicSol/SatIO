@@ -234,35 +234,36 @@ Serial1Struct serial1Data;
 //                                                                                                                 DATA: SDCARD
 
 struct SDCardStruct {
-  int max_matrix_filenames = 20;
-  char matrix_filenames[20][56] = {
-    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-    };
-  char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";
-  int matrix_filename_i = 0;
-  char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";
-  char matrix_filepath[56] = "";
-  char tempmatrixfilepath[56];
-  char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};
-  File root;
-  unsigned long nbytes;
-  unsigned long iter_token;
-  char BUFFER[2048];
-  String SBUFFER;
-  char * token = strtok(BUFFER, ",");
-  char data_0[56];
-  char data_1[56];
-  char data_2[56];
-  char data_3[56];
-  char data_4[56];
-  char data_5[56];
-  char data_6[56];
-  char file_data[256];
-  char delim[2] = ",";
-  char tmp[256];
-  char tag_0[56] = "r";
-  char tag_1[56] = "e";
-  File current_file;
+  int max_matrix_filenames = 20;                               // max matrix file names available 
+  char matrix_filenames[20][56] = {  
+    "", "", "", "", "",
+    "", "", "", "", "",
+    "", "", "", "", "",
+    "", "", "", "", "",
+    };                                                         // matrix filenames created, stored and found by system
+  char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";                  // filepath
+  char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";  // filepath
+  char matrix_filepath[56] = "";                               // current matrix filepath
+  char tempmatrixfilepath[56];                                 // used for laoding filepaths
+  char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};            // root dirs
+  unsigned long nbytes;                                        // number of bytes read
+  unsigned long iter_token;                                    // count token iterations
+  char BUFFER[2048];                                           // buffer
+  String SBUFFER;                                              // String buffer
+  char * token = strtok(BUFFER, ",");                          // token pointer 
+  char data_0[56];                                             // value placeholder
+  char data_1[56];                                             // value placeholder
+  char data_2[56];                                             // value placeholder
+  char data_3[56];                                             // value placeholder
+  char data_4[56];                                             // value placeholder
+  char data_5[56];                                             // value placeholder
+  char data_6[56];                                             // value placeholder
+  char file_data[256];                                         // buffer
+  char delim[2] = ",";                                         // delimiter char
+  char tmp[256];                                               // buffer
+  char tag_0[56] = "r";                                        // file line tag
+  char tag_1[56] = "e";                                        // file line tag
+  File current_file;                                           // file currently handled
 };
 SDCardStruct sdcardData;
 
@@ -3126,7 +3127,6 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
       memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
       Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
       }
-    // else {Serial.println("[sdcard] skipping filename: " + String(temppath)); Serial.println("[sdcard] matrix_filename_i: " + String(sdcardData.matrix_filename_i));} // debug
   }
 }
 
