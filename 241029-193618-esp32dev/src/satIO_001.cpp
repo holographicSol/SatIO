@@ -1797,14 +1797,14 @@ struct RelayStruct {
   //                                                                                                             SIDEREAL PLANETS
 
   char SunAzimuthRange[56]  = "SunAzimuthRange";           // specify x (0-360) y (0-360) in matrix.
-  char SunAltitudeRange[56] = "SunAltitudeRange";          // specify x (0-90) y (0-360) in matrix.
+  char SunAltitudeRange[56] = "SunAltitudeRange";          // specify x (0-90) y (0-90) in matrix.
   char DayTime[56]   = "DayTime";                          // takes no further arguments.
   char NightTime[56] = "NightTime";                        // takes no further arguments.
   char Sunrise[56]   = "Sunrise";                          // takes no further arguments.
   char Sunset[56]    = "Sunset";                           // takes no further arguments.
 
   char MoonAzimuthRange[56]  = "MoonAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MoonAltitudeRange[56] = "MoonAltitudeRange";        // specify x (0-90) y (0-360) in matrix.
+  char MoonAltitudeRange[56] = "MoonAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
   char MoonUp[56]    = "MoonUp";                           // takes no further arguments.
   char MoonDown[56]  = "MoonDown";                         // takes no further arguments.
   char Moonrise[56]  = "Moonrise";                         // takes no further arguments.
@@ -1812,49 +1812,49 @@ struct RelayStruct {
   char MoonPhase[56] = "MoonPhase";                        // takes no further arguments.
 
   char MercuryAzimuthRange[56]  = "MercuryAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char MercuryAltitudeRange[56] = "MercuryAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char MercuryAltitudeRange[56] = "MercuryAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
   char MercuryUp[56]    = "MercuryUp";                     // takes no further arguments.
   char MercuryDown[56]  = "MercuryDown";                   // takes no further arguments.
   char MercuryRise[56]  = "MercuryRise";                   // takes no further arguments.
   char MercurySet[56]   = "MercurySet";                    // takes no further arguments.
 
   char VenusAzimuthRange[56]  = "VenusAzimuthRange";       // specify x (0-360) y (0-360) in matrix.
-  char VenusAltitudeRange[56] = "VenusAltitudeRange";      // specify x (0-90) y (0-360) in matrix.
+  char VenusAltitudeRange[56] = "VenusAltitudeRange";      // specify x (0-90) y (0-90) in matrix.
   char VenusUp[56]    = "VenusUp";                         // takes no further arguments.
   char VenusDown[56]  = "VenusDown";                       // takes no further arguments.
   char VenusRise[56]  = "VenusRise";                       // takes no further arguments.
   char VenusSet[56]   = "VenusSet";                        // takes no further arguments.
 
   char MarsAzimuthRange[56]  = "MarsAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MarsAltitudeRange[56] = "MarsAltitudeRange";        // specify x (0-90) y (0-360) in matrix.
+  char MarsAltitudeRange[56] = "MarsAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
   char MarsUp[56]    = "MarsUp";                           // takes no further arguments.
   char MarsDown[56]  = "MarsDown";                         // takes no further arguments.
   char MarsRise[56]  = "MarsRise";                         // takes no further arguments.       
   char MarsSet[56]   = "MarsSet";                          // takes no further arguments.
 
   char JupiterAzimuthRange[56]  = "JupiterAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char JupiterAltitudeRange[56] = "JupiterAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char JupiterAltitudeRange[56] = "JupiterAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
   char JupiterUp[56]    = "JupiterUp";                     // takes no further arguments.
   char JupiterDown[56]  = "JupiterDown";                   // takes no further arguments.
   char JupiterRise[56]  = "JupiterRise";                   // takes no further arguments.
   char JupiterSet[56]   = "JupiterSet";                    // takes no further arguments.
 
   char SaturnAzimuthRange[56]  = "SaturnAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char SaturnAltitudeRange[56] = "SaturnAltitudeRange";    // specify x (0-90) y (0-360) in matrix.
+  char SaturnAltitudeRange[56] = "SaturnAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
   char SaturnUp[56]    = "SaturnUp";                       // takes no further arguments.
   char SaturnDown[56]  = "SaturnDown";                     // takes no further arguments.
   char SaturnRise[56]  = "SaturnRise";                     // takes no further arguments.
   char SaturnSet[56]   = "SaturnSet";                      // takes no further arguments.
 
   char UranusAzimuthRange[56]  = "UranusAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char UranusAltitudeRange[56] = "UranusAltitudeRange";    // specify x (0-90) y (0-360) in matrix.
+  char UranusAltitudeRange[56] = "UranusAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
   char UranusUp[56]    = "UranusUp";                       // takes no further arguments.
   char UranusDown[56]  = "UranusDown";                     // takes no further arguments.
   char UranusRise[56]  = "UranusRise";                     // takes no further arguments.
   char UranusSet[56]   = "UranusSet";                      // takes no further arguments.
 
   char NeptuneAzimuthRange[56]  = "NeptuneAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char NeptuneAltitudeRange[56] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char NeptuneAltitudeRange[56] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
   char NeptuneUp[56]    = "NeptuneUp";                     // takes no further arguments.
   char NeptuneDown[56]  = "NeptuneDown";                   // takes no further arguments.
   char NeptuneRise[56]  = "NeptuneRise";                   // takes no further arguments.
