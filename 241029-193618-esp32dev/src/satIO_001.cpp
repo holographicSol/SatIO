@@ -317,6 +317,7 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
 //                                                                                                         VALIDATION: CHECKSUM
 
 int getCheckSum(char * string) {
+  /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
   if (sysDebugData.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
   int i;
   int XOR;
@@ -331,10 +332,10 @@ int getCheckSum(char * string) {
 }
 
 uint8_t h2d(char hex) {if(hex > 0x39) hex -= 7; return(hex & 0xf);}
-
 uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
 bool validateChecksum(char * buffer) {
+  /* validate a sentence appended with a checksum */
   if (sysDebugData.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
   char gotSum[2];
   gotSum[0] = buffer[strlen(buffer) - 3];
