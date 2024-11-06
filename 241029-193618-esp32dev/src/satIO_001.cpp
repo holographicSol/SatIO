@@ -1345,8 +1345,9 @@ struct MatrixStruct {
     },
   };
 
+  // number of available function names that can be used to program a matrix switch
   int max_matrix_function_names = 191;
-  // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
+  // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
   char matrix_function_names[191][56] = 
   {
     "$NONE",
