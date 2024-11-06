@@ -1,6 +1,6 @@
 /*
 
-                                           SATIO - Written by Benjamin Jack Cullen.
+                                           SatIO - Written by Benjamin Jack Cullen.
 
                                   A general purpose programmable satellite and inertial switch. 
 
