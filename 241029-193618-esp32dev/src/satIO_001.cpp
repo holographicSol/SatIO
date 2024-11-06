@@ -1864,18 +1864,19 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                VALIDITY DATA
 
-  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";
-  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";
-  char GPATTValidChecksum[56] = "GPATTValidChecksum";
-  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";
-  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";
-  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";
-  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";
-  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";
-  char GPATTValidCheckData[56] = "GPATTValidCheckData";
-  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData";
-  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData";
-  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData";
+  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";        // returns true or false. takes no further arguments.
+  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";        // returns true or false. takes no further arguments.
+  char GPATTValidChecksum[56] = "GPATTValidChecksum";        // returns true or false. takes no further arguments.
+  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";    // returns true or false. takes no further arguments.
+  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";    // returns true or false. takes no further arguments.
+  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";    // returns true or false. takes no further arguments.
+
+  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";      // returns true or false. takes no further arguments.
+  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";      // returns true or false. takes no further arguments.
+  char GPATTValidCheckData[56] = "GPATTValidCheckData";      // returns true or false. takes no further arguments.
+  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData";  // returns true or false. takes no further arguments.
+  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData";  // returns true or false. takes no further arguments.
+  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData";  // returns true or false. takes no further arguments.
 };
 RelayStruct relayData;
 
