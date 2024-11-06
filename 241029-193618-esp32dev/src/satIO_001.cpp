@@ -4443,22 +4443,22 @@ void readSerialCommands() {
       sdcard_read_to_serial(SD, sdcardData.matrix_filepath);
     }
 
-    // // ------------------------------------------------------------------------------------------------------------------------
-    // //                                                                                            SDCARD: SAVE MATRIX TO SDCARD
+    // ------------------------------------------------------------------------------------------------------------------------
+    //                                                                                            SDCARD: SAVE MATRIX TO SDCARD
 
     else if (strcmp(serial0Data.BUFFER, "$SDCARD_SAVE_MATRIX") == 0) {
       sdcard_save_matrix(SD, sdcardData.matrix_filepath);
     }
 
-    // // ------------------------------------------------------------------------------------------------------------------------
-    // //                                                                                          SDCARD: LOAD MATRIX FROM SDCARD
+    // ------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SDCARD: LOAD MATRIX FROM SDCARD
 
     else if (strcmp(serial0Data.BUFFER, "$SDCARD_LOAD_MATRIX") == 0) {
       sdcard_load_matrix(SD, sdcardData.matrix_filepath);
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                              SATIO: CONVERT COORDINATES
+    //                                                                                               SATIO: CONVERT COORDINATES
 
     else if (strcmp(serial0Data.BUFFER, "$SATIO_CONVERT_COORDINATES_ON") == 0) {
       satio_convert_coordinates_on();
@@ -4476,7 +4476,7 @@ void readSerialCommands() {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   READ RXD 1
+//                                                                                                                READ GPS DATA
 
 void readGPS() {
   while(1) {
