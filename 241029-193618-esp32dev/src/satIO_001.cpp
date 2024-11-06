@@ -6,8 +6,11 @@
 
                 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
-                Possible combinations example: 100 checks ^ 10 functions = 100,000,000,000,000,000,000 combinations.
-                                                                           100 Quintillion.
+                  Possible combinations example: 
+
+                  10=digit characters   15=lenght of double   10=functions    20=switches   190=available functions
+                                                  (((10^15 * 3) * 10) * 20) ^ 190
+
             Currently there are over 200 different checks that can be performed using just several small primitive functions and
              currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
                                       
