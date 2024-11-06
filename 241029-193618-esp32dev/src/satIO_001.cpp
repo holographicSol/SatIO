@@ -124,49 +124,49 @@ SPIClass sdspi = SPIClass(VSPI);
 //                                                                                                                 DATA: SYSTEM
 
 struct systemStruct {
-  bool satio_enabled = true;
-  bool gngga_enabled = true;
-  bool gnrmc_enabled = true;
-  bool gpatt_enabled = true;
-  bool matrix_enabled = false;
-  bool run_on_startup = false;
-  bool output_satio_enabled = false;
-  bool output_gngga_enabled = false;
-  bool output_gnrmc_enabled = false;
-  bool output_gpatt_enabled = false;
-  bool output_matrix_enabled = false;
+  bool satio_enabled = true;  // enables/disables new data being extrapulated from existing GPS data (coordinate degrees, etc)
+  bool gngga_enabled = true;  // enables/disables parsing of serial GPS data
+  bool gnrmc_enabled = true;  // enables/disables parsing of serial GPS data
+  bool gpatt_enabled = true;  // enables/disables parsing of serial GPS data
+  bool matrix_enabled = false;  // enables/disables matrix switch
+  bool run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file (default: false)
+  bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
+  bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
+  bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
+  bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
+  bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
 
-  bool sidereal_track_sun = true;
-  bool sidereal_track_moon = true;
-  bool sidereal_track_mercury = true;
-  bool sidereal_track_venus = true;
-  bool sidereal_track_mars = true;
-  bool sidereal_track_jupiter = true;
-  bool sidereal_track_saturn = true;
-  bool sidereal_track_uranus = true;
-  bool sidereal_track_neptune = true;
+  bool sidereal_track_sun = true;      // enables/disables celestial body tracking
+  bool sidereal_track_moon = true;     // enables/disables celestial body tracking
+  bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
+  bool sidereal_track_venus = true;    // enables/disables celestial body tracking
+  bool sidereal_track_mars = true;     // enables/disables celestial body tracking
+  bool sidereal_track_jupiter = true;  // enables/disables celestial body tracking
+  bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
+  bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
+  bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
   
-  bool display_auto_dim = true;
-  int           display_auto_dim_p0 = 5000;
-  unsigned long display_auto_dim_t0;
-  unsigned long display_auto_dim_t1;
-  bool          display_dim_bool = false;
-  bool display_auto_off = false;
-  int           display_auto_off_p0 = 10000;
-  unsigned long display_auto_off_t0;
-  unsigned long display_auto_off_t1;
-  bool          display_off_bool = false;
-  uint32_t display_brightness = 255;
-  uint32_t display_autodim_brightness = 50;
-  int index_display_autodim_times = 1;
-  int max_display_autodim_times = 6;
-  int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
-  int index_display_autooff_times = 2;
-  int max_display_autooff_times = 6;
-  int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};
+  bool display_auto_dim = true;               // enables/disables screen brightness to be automatically reduced
+  int           display_auto_dim_p0 = 5000;   // time after last interaction screen brightness should be reduced
+  unsigned long display_auto_dim_t0;          // value set and used by the system)
+  unsigned long display_auto_dim_t1;          // value set and used by the system
+  bool          display_dim_bool = false;     // value set and used by the system
+  bool display_auto_off = false;              // enables/disables screen backlight turning off automatically
+  int           display_auto_off_p0 = 10000;  // time after last interaction creen backlight should be turned off
+  unsigned long display_auto_off_t0;          // value set and used by the system
+  unsigned long display_auto_off_t1;          // value set and used by the system
+  bool          display_off_bool = false;     // value set and used by the system
+  uint32_t display_brightness = 255;          // value of current screen brightness (0-255)
+  uint32_t display_autodim_brightness = 50;   // value of automatically reduced screen brightness (0-255)
+  int index_display_autodim_times = 1;        // index of currently used time 
+  int max_display_autodim_times = 6;          // max available times 
+  int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};  // available times
+  int index_display_autooff_times = 2;                                          // index of currently used time 
+  int max_display_autooff_times = 6;                                            // max available times 
+  int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};  // available times
 
-  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"};
-  char translate_plus_minus[2][56]  = {"+", "-"};
+  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"};                  // bool used as index selects bool translation
+  char translate_plus_minus[2][56]  = {"+", "-"};                               // bool used as index selects bool translation
 };
 systemStruct systemData;
 
