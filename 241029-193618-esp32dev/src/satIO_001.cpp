@@ -384,8 +384,8 @@ bool is_all_digits(char * data) {
 }
 
 bool is_all_digits_plus_char(char * data, char * find_char) {
+  /* designed to check all chars are digits except one period and is more general purpose than just accepting a period */
   if (sysDebugData.validation == true) {Serial.println("[connected] is_all_digits_plus_char: " + String(data));}
-  // designed to check all chars are digits except one period and is more general purpose than just accepting a period
   validData.valid_b = true;
   validData.find_char = strchr(data, * find_char);
   validData.index = (int)(validData.find_char - data);
@@ -394,10 +394,11 @@ bool is_all_digits_plus_char(char * data, char * find_char) {
 }
 
 bool is_positive_negative_num(char * data) {
+  /* designed to check all chars are digits except one period and the signed bit. allows positive/negative floats, doubles and ints
+     allows one period anywhere.
+     allows one minus (-) sign at index zero.
+  */
   if (sysDebugData.validation == true) {Serial.println("[connected] is_positive_negative_num: " + String(data));}
-  // designed to check all chars are digits except one period and the signed bit. allows positive/negative floats, doubles and ints
-  // allow one period anywhere.
-  // allow one minus (-) sign at index zero.
   validData.valid_b = true;
   validData.find_char = strchr(data, '.');
   validData.index = (int)(validData.find_char - data);
