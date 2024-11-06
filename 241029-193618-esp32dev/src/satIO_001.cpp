@@ -1625,6 +1625,8 @@ struct RelayStruct {
   char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
   char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
+   char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
+   
    char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
    char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
    char DayTuesday[56]   = "DayTuesday";    // true for day. takes not further arguments.
@@ -1790,11 +1792,6 @@ struct RelayStruct {
   char PitchGPATTUnder[56]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix. satellite accuracy
   char PitchGPATTEqual[56]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix. satellite accuracy
   char PitchGPATTRange[56]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix. satellite accuracy
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                            
-
-  char SecondsTimer[56] = "SecondsTimer";
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SIDEREAL PLANETS
