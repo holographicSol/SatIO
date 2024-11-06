@@ -9,7 +9,7 @@
                 Possible combinations example: 100 checks ^ 10 functions = 100,000,000,000,000,000,000 combinations.
                                                                            100 Quintillion.
             Currently there are over 200 different checks that can be performed using just several small primitive functions and
-             currently each relays activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+             currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
                                       
                                         Wiring For ESP32-2432S028 development board (CYD)
                   
@@ -24,18 +24,15 @@
                                DatetimeStamp                  Converted Latitude                                 
 
 
-                        Ultimately this system is being built as a unit to turn on/off multiplexed relays,
+           Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
                      where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
                making a foundation for other creative projects that may make use of such satellite and or inertial data.
-               The idea is that each relay is controlled by a compound of logic (limited by memory), and the logic itself
+               The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
                is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
-               projects requiring such data. more advanced calculations are intended, such as emphemeris, astronomical etc. now
-               that the foundational data has been handled. Then finally when fitted with relays, this system can be a self
-               contained unit, behaving as a switch for other devices. Robots and flying machines and everything in between.
+                                              projects requiring use of GPS data. 
+                                       Robots and flying machines and everything in between.
 
-               The relays are currently simulated while the system is being built and the simulation is designed to be easily
-               relaceable by the actual relays themselves once the logic has been completed to a satisfactory degree and currently
-               all logic required to activate and deactivate relays is in place.
+                         The IO is currently simulated as a virtual switch, while the system is being built.
 
                Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
@@ -193,8 +190,8 @@ struct menuStruct {
   int numpad_key = NULL;
   int page = 0;
   int backpage = 0;
-  int relay_select = 0;
-  int relay_function_select = 0;
+  int matrix_select = 0;
+  int matrix_function_select = 0;
   int function_index = 0;
   int matrix_filenames_index = 0;
   bool menu_lock = false;
@@ -1174,45 +1171,45 @@ bool val_scalable(char * data) {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: RELAYS
+//                                                                                                                 DATA: matrix
 
-struct RelayStruct {
+struct MatrixStruct {
 
-  int MAobject_RELAYS = 20;
-  int MAobject_RELAY_ELEMENTS = 10;
+  int max_matrices = 20;
+  int max_matrix_functions = 10;
 
-  int relays_enabled_i = 0;
-  int relays_disabled_i = 0;
-  int relays_active_i = 0;
-  int relays_inactive_i = 0;
+  int matrix_enabled_i = 0;
+  int matrix_disabled_i = 0;
+  int matrix_active_i = 0;
+  int matrix_inactive_i = 0;
 
   char temp[2048];
   char matrix_results_sentence[2048];
   char checksum_str[56];
   int checksum_i;
 
-  bool relays_bool[1][20] = {
+  bool matrix_switch_state[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
 
-  int relays_enable[1][20] = {
+  int matrix_switch_enabled[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
 
-  unsigned long relays_timing[1][20] = {
+  unsigned long matrix_timers[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
   
-  char relays[20][10][100] = {
+  char matrix_function[20][10][100] = {
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
@@ -1256,7 +1253,7 @@ struct RelayStruct {
     };
 
   /*
-  Matrix containing sets of values per relay.
+  Matrix containing sets of values per matrix.
   X: use with/without  Y,Z.
   Y: necessary if comparing to X.
   Z: necessary if checking X,Y in range of Z.  
@@ -1265,7 +1262,7 @@ struct RelayStruct {
           X     Y     Z    
   {  {   0.0,  0.0,  0.0   } }
   */
-  double relays_data[20][10][3] = {
+  double matrix_function_xyz[20][10][3] = {
     {
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
@@ -1348,7 +1345,7 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 191;
+  int max_matrix_function_names = 191;
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
   char function_names[191][56] = 
   {
@@ -1574,8 +1571,8 @@ struct RelayStruct {
     "NeptuneSet"
   };
 
-  char default_relay_function[56]         = "$NONE";             // false if first or all functions $NONE. true if preceeding functions are populated.
-  char default_enable_relay_function[56]  = "$ENABLED";          // always true.
+  char default_matrix_function[56]         = "$NONE";             // false if first or all functions $NONE. true if preceeding functions are populated.
+  char default_enable_matrix_function[56]  = "$ENABLED";          // always true.
   char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
   char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
@@ -1606,7 +1603,7 @@ struct RelayStruct {
   char DegreesLonGNGGAEqual[56]            = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
   char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
   char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNGGARanges[56]               = "DegreesGNGGARanges";     // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesGNGGARanges[56]               = "DegreesGNGGARanges";   // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
   char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
   char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
@@ -1616,7 +1613,7 @@ struct RelayStruct {
   char DegreesLonGNRMCEqual[56]            = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
   char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
   char DegreesLonGNRMCRange[56]            = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNRMCRanges[56]               = "DegreesGNRMCRanges";     // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesGNRMCRanges[56]               = "DegreesGNRMCRanges";   // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNGGA DATA
@@ -1834,7 +1831,7 @@ struct RelayStruct {
   char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData";  // returns true or false. takes no further arguments.
   char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData";  // returns true or false. takes no further arguments.
 };
-RelayStruct relayData;
+MatrixStruct matrixData;
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  DATA: GNGGA
@@ -3141,15 +3138,15 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
 
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
-  // iterate over each relay matrix
-  for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {
-    relayData.relays_enable[0][Ri] = 0;
-    for (int Fi = 0; Fi < relayData.MAobject_RELAY_ELEMENTS; Fi++) {
-      memset(relayData.relays[Ri][Fi], 0, 56);
-      strcpy(relayData.relays[Ri][Fi], "$NONE");
-      relayData.relays_data[Ri][Fi][0] = 0.0;
-      relayData.relays_data[Ri][Fi][1] = 0.0;
-      relayData.relays_data[Ri][Fi][2] = 0.0;
+  // iterate over each matrix matrix
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+    matrixData.matrix_switch_enabled[0][Mi] = 0;
+    for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+      memset(matrixData.matrix_function[Mi][Fi], 0, 56);
+      strcpy(matrixData.matrix_function[Mi][Fi], "$NONE");
+      matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
     }
   }
 }
@@ -3179,14 +3176,14 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         validData.bool_data_1 = false;
         // split line on delimiter
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        // relay index
+        // matrix index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
         if (is_all_digits(sdcardData.data_0) == true) {validData.bool_data_0 = true;
-        Serial.println("[Ri] [PASS] " +String(sdcardData.data_0));
+        Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
         }
-        else {Serial.println("[Ri] [INVALID] " +String(sdcardData.data_0));}
-        // relay function index
+        else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
+        // matrix function index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
         if (is_all_digits(sdcardData.data_1) == true) {validData.bool_data_1 = true;
@@ -3195,34 +3192,34 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
         // continue if we have valid index numbers
         if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
-          // relay function name
+          // matrix function name
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_2, sdcardData.token);
-          memset(relayData.relays[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, 56);
-          strcpy(relayData.relays[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
-          Serial.println("[Fn] [MATRIX] " +String(relayData.relays[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
-          // relay function data: x
+          memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, 56);
+          strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
+          Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
+          // matrix function data: x
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3) == true) {
-            relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
-            Serial.println("[X]  [MATRIX] " +String(relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
+            Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
           else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
-          // relay function data: y
+          // matrix function data: y
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4) == true) {
-            relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
-            Serial.println("[Y]  [MATRIX] " +String(relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
+            Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
           else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
-          // relay function data: z
+          // matrix function data: z
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5) == true) {
-            relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
-            Serial.println("[Z]  [MATRIX] " +String(relayData.relays_data[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
+            Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
           else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
         }
@@ -3233,8 +3230,8 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
-          relayData.relays_enable[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
-          Serial.println("[E]  [MATRIX] " +String(relayData.relays_enable[0][atoi(sdcardData.data_0)]));
+          matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
+          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
           }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
       }
@@ -3258,32 +3255,32 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
-    for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {
-      for (int Fi = 0; Fi < relayData.MAobject_RELAY_ELEMENTS; Fi++) {
+    for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
         memset(sdcardData.file_data, 0 , 256);
-        // tag: relay (r)
+        // tag: matrix (r)
         strcat(sdcardData.file_data, sdcardData.tag_0); strcat(sdcardData.file_data, sdcardData.delim);
-        // relay index
+        // matrix index
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%d", Ri);
+        sprintf(sdcardData.tmp, "%d", Mi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-        // relay function index
+        // matrix function index
         memset(sdcardData.tmp, 0 , 256);
         sprintf(sdcardData.tmp, "%d", Fi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function name
-        strcat(sdcardData.file_data, relayData.relays[Ri][Fi]); strcat(sdcardData.file_data, sdcardData.delim);
+        strcat(sdcardData.file_data, matrixData.matrix_function[Mi][Fi]); strcat(sdcardData.file_data, sdcardData.delim);
         // function value x
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", relayData.relays_data[Ri][Fi][0]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][0]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value y
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", relayData.relays_data[Ri][Fi][1]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][1]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value z
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", relayData.relays_data[Ri][Fi][2]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
         Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -3292,13 +3289,13 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       memset(sdcardData.file_data, 0 , 256);
       // tag: enable (e)
       strcat(sdcardData.file_data, sdcardData.tag_1); strcat(sdcardData.file_data, sdcardData.delim);
-      // relay index
+      // matrix index
       memset(sdcardData.tmp, 0 , 256);
-      sprintf(sdcardData.tmp, "%d", Ri);
+      sprintf(sdcardData.tmp, "%d", Mi);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-      // relay enabled 0/1
+      // matrix enabled 0/1
       memset(sdcardData.tmp, 0 , 256);
-      itoa(relayData.relays_enable[0][Ri], sdcardData.tmp, 10);
+      itoa(matrixData.matrix_switch_enabled[0][Mi], sdcardData.tmp, 10);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
       Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -3376,16 +3373,16 @@ void matriobject_set_entry() {
     Serial.println("[serial0Data.data_5] "         + String(serial0Data.data_5));
   }
   char *ptr;
-  strcpy(relayData.relays[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)], serial0Data.data_2);      // set function
-  relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]=strtod(serial0Data.data_3, &ptr); // set function value x
-  relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]=strtod(serial0Data.data_4, &ptr); // set function value y
-  relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]=strtod(serial0Data.data_5, &ptr); // set function value z
-  Serial.println("[Ri] " +String(serial0Data.data_0));
+  strcpy(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)], serial0Data.data_2);      // set function
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]=strtod(serial0Data.data_3, &ptr); // set function value x
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]=strtod(serial0Data.data_4, &ptr); // set function value y
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]=strtod(serial0Data.data_5, &ptr); // set function value z
+  Serial.println("[Mi] " +String(serial0Data.data_0));
   Serial.println("[Fi] " +String(serial0Data.data_1));
-  Serial.println("[Fn] " +String(relayData.relays[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)]));
-  Serial.println("[X] " +String(relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]));
-  Serial.println("[Y] " +String(relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]));
-  Serial.println("[Z] " +String(relayData.relays_data[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]));
+  Serial.println("[Fn] " +String(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)]));
+  Serial.println("[X] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]));
+  Serial.println("[Y] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]));
+  Serial.println("[Z] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]));
 }
 
 
@@ -3407,39 +3404,40 @@ void matriobject_set_enabled(bool b) {
   if (sysDebugData.serial_0_sentence == true) {
     Serial.println("[serial0Data.data_0] "         + String(serial0Data.data_0));
   }
-  relayData.relays_enable[0][atoi(serial0Data.data_0)] = b; // set enable/disable
-  Serial.println("[R] " + String(serial0Data.data_0) + " [E] " + String(relayData.relays_enable[0][atoi(serial0Data.data_0)]));
+  matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)] = b; // set enable/disable
+  Serial.println("[R] " + String(serial0Data.data_0) + " [E] " + String(matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)]));
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                          MATRIX: DISABLE ALL
 
 /*
-disable all matrix entries. does not directly turn relays off. this allows for overriding the matrix switch without deactivating
-anything that may be / should remain activated. automatically deactivating a relay when a relay is made disabled should be
-explicitly configured and is not yet a feature. this is explicitly disable matrix switch automatically activating/deactivating relays.
+disable all matrix entries. does not turn matrices off. this allows for overriding a matrix switch without deactivating.
+automatically deactivating a matrix when a matrix is made disabled should be carefully added as a feature and is differnt from
+automatically/manually enabling/disabling. 
+this is explicitly disable matrix switch from automatically activating/deactivating.
 */
-void matrix_disable_all() {for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {relayData.relays_enable[0][Ri]=0;}}
+void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=0;}}
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           MATRIX: ENABLE ALL
 
 
-// enable all matrix entries. does not directly turn relays on, instead enables matrix switch automatically activating/deactivating relays.
-void matrix_enable_all() {for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {relayData.relays_enable[0][Ri]=1;}}
+// enable all matrix entries. does not directly turn matrix switches on, instead enables matrix switch to automatically activate/deactivate.
+void matrix_enable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=1;}}
 
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       MATRIX: ALL RELAYS OFF
+//                                                                                                       MATRIX: ALL MATRIX OFF
 
-// turn all relays off. recommended to first disable matrix.
-void relays_deactivate_all() {for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {relayData.relays_bool[0][Ri]=0;}}
+// turn all matrix switches off. recommended to first disable matrix switches from being automatically activated/deactivated.
+void matrix_deactivate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=0;}}
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        MATRIX: ALL RELAYS ON
+//                                                                                                        MATRIX: ALL MATRIX ON
 
-// turn all relays on. recommended to first disable matrix.
-void relays_activate_all() {for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {relayData.relays_bool[0][Ri]=1;}}
+// turn all matrix switches on. recommended to first disable matrix switches from being automatically activated/deactivated.
+void matrix_activate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=1;}}
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   SATIO: CONVERT COORDINATES
@@ -3452,8 +3450,8 @@ void satio_convert_coordinates_off() {satData.convert_coordinates = false;}
 //                                                                                                 MATRIX FUNCTIONS: PRIMITIVES
 
 /*
-matrix switch requires all checks to return true for a relay to be active, therefore checks can be inverted as required, to return
-true when otherwise a check would return false.
+matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to return
+true when otherwise a check would return false, which allows more flexibility.
 */
 
 // calculate if n0 in (+- range/2) of n1
@@ -3552,14 +3550,14 @@ bool check_bool_false(bool _bool) {
   if (_bool == false) {return true;} else {return false;}
 }
 
-bool SecondsTimer(unsigned long n0, unsigned long n1, int Ri) {
+bool SecondsTimer(unsigned long n0, unsigned long n1, int Mi) {
   // (requires maintenace now that the main loop time is measured in micros and now that this system is multitasking)
   // max seconds 18446744073709551616 (584942417355.07202148 years)
   // n0: interval
   // n1: on time
   // backend interface example for on 1sec/off 1sec: $MATRIobject_sET_ENTRY,0,0,SecondsTimer,1,1,0
-  if ((timeData.seconds - relayData.relays_timing[0][Ri]) > n0) {relayData.relays_timing[0][Ri] = timeData.seconds; return true;}
-  else if ((timeData.seconds - relayData.relays_timing[0][Ri]) < n1) {return true;}
+  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
   else {return false;}
 }
 
@@ -4041,313 +4039,313 @@ void matrixSwitch() {
   compound condition checks, each resulting in zero/one at the final_bool. allowing for sextillions of combinations with the current data
   */
 
-  // iterate over each relay matrix
-  for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) {
-    // Serial.println("[Ri] " + String(Ri) + " [E] " + String(relayData.relays_enable[0][Ri]));
-    if (relayData.relays_enable[0][Ri] == 1) {
+  // iterate through matrices
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+    // Serial.println("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
+    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
 
       // temporary switch must be zero each time
-      bool tmp_matrix[relayData.MAobject_RELAY_ELEMENTS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      bool tmp_matrix[matrixData.max_matrix_functions] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       int count_none_function = 0;
 
-      // iterate over each function name in the current relay matrix
-      for (int Fi = 0; Fi < relayData.MAobject_RELAY_ELEMENTS; Fi++) {
+      // iterate over each function name in the current matrix
+      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
 
         // uncomment to debug
-        // Serial.println("[Ri] " + String(Ri));
+        // Serial.println("[Mi] " + String(Mi));
         // Serial.println("[Fi] " + String(Fi));
-        // Serial.println("[relayData.relays[Ri][Fi]] " + String(relayData.relays[Ri][Fi]));
+        // Serial.println("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
-        // for perfromance reasons logic may prefer adding functions from position zero else if position zero not populated then break to next inner matrix
-        if ((strcmp(relayData.relays[Ri][Fi], relayData.default_relay_function) == 0) && (Fi == 0)) {break;}
+        // perfromance and logic prefers adding functions from position zero else if position zero $NONE then break.
+        if ((strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) && (Fi == 0)) {break;}
 
-        // put true in temporary matrix for functions set to none. there is one check to catch you if you do soft enable with no functions set.
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.default_relay_function) == 0) {tmp_matrix[Fi] = 1; count_none_function++;}
+        // put true in temporary matrix for functions after position zero that are set to $NONE. allows for 1-10 functions to be set.
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) {tmp_matrix[Fi] = 1; count_none_function++;}
 
-        // put true in temporary matrix if switch is enabled regardless of data. allows final bool true with no further requirements, even if all set $ENABLED, unlike if all set $NONE
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.default_enable_relay_function) == 0) {tmp_matrix[Fi] = 1;}
+        // put true in temporary matrix if switch is $ENABLED (different from enabling disabling) regardless of data. if used, function name $ENABLED will always return true.
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_enable_matrix_function) == 0) {tmp_matrix[Fi] = 1;}
 
         // Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits: gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(relayData.relays_bool[0][(int)relayData.relays_data[Ri][Fi][0]], 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SecondsTimer) == 0) {tmp_matrix[Fi] = SecondsTimer(relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1], Ri);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayWednesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayThursday) == 0) {if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateDayX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateMonthX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_full_int, (int)relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SecondsTimer) == 0) {tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1], Mi);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayWednesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayThursday) == 0) {if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_full_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                       SATIO
 
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
         // over
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // under
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // equal
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // range
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
         // ranges
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesGNGGARanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga, relayData.relays_data[Ri][Fi][0], satData.location_longitude_gngga, relayData.relays_data[Ri][Fi][1], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNGGARanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][1], matrixData.matrix_function_xyz[Mi][Fi][2]);}
         
         // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
         // over
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // under
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // equal
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
         // range
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesLonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
         // ranges
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DegreesGNRMCRanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc, relayData.relays_data[Ri][Fi][0], satData.location_longitude_gnrmc, relayData.relays_data[Ri][Fi][1], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNRMCRanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][1], matrixData.matrix_function_xyz[Mi][Fi][2]);}
         
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GNGGA
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PositioningStatusGNGGA) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.positioning_status), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SatelliteCountOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SatelliteCountUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SatelliteCountEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SatelliteCountRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNGGANorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNGGAEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNGGASouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNGGAWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPSPrecisionOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPSPrecisionUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPSPrecisionEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPSPrecisionRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.AltitudeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.AltitudeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.AltitudeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.AltitudeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNGGA) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.positioning_status), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGANorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGASouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GNRMC
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCTimeGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNRMCNorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNRMCEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNRMCSouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HemisphereGNRMCWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GroundSpeedGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GroundSpeedGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GroundSpeedGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GroundSpeedGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HeadingGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HeadingGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HeadingGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.HeadingGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCDateGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCDateGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCDateGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UTCDateGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PositioningStatusGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PositioningStatusGNRMCV) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCD) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCE) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCN) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCNorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCSouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCV) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCD) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCE) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCN) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GPATT
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.YawGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.YawGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.YawGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.YawGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GSTDataGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GSTDataGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GSTDataGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GSTDataGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MileageGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MileageGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MileageGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MileageGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0]);}  
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.LineFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.INSGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.RunStateFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.StaticFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag), relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}  
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LineFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.INSGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RunStateFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.StaticFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                           SIDEREAL TIME: SUN
 
         // sun azimuth:
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
         // sun altitude:
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
         // daytime: current time in range of sunrise and sunset
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
         // nighttime: current time not in range of sunrise and sunset
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NightTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NightTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
         // sunrise time less than current time: true after sunrise until midnight
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, atof(satData.hours_minutes));}
         // sunset time less than current time: true after sunset until midnight                                                                  
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.Sunset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, atof(satData.hours_minutes));}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MOON
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.Moonrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.Moonset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonPhase) == 0) {tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p, relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonPhase) == 0) {tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p, matrixData.matrix_function_xyz[Mi][Fi][0]);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: MERCURY
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercurySet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercurySet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                         SIDEREAL TIME: VENUS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MARS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: JUPITER
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: SATURN
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: URANUS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: NEPTUNE
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s, atof(satData.hours_minutes));}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                     VALIDITY
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNGGAInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GNRMCInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.GPATTInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
       
-      // safety layer: disengage if all entries are $NONE
-      if (count_none_function <= relayData.MAobject_RELAY_ELEMENTS-1) {
+      // safety layer: disengage if all entries are $NONE. a second layer on top of initial check for $NONE set at position zero, function 0.
+      if (count_none_function <= matrixData.max_matrix_functions-1) {
 
-        // default final bool default is true: if a single false is found then final bool should be set to false and remain false
+        // default final bool default is true: if a single false is found then final bool should be set to false and remain false. prevent/allow the matrix switch to activate.
         bool final_bool = true;
 
         // debug (same as line below but with output)
-        // for (int FC = 0; FC < relayData.MAobject_RELAY_ELEMENTS-1; FC++) {Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
+        // for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
 
-        for (int FC = 0; FC < relayData.MAobject_RELAY_ELEMENTS-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
+        for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
 
         /*
         WARNING: why do you think you can trust the data you are receiving?
@@ -4355,30 +4353,30 @@ void matrixSwitch() {
         */
 
         // debug (same as line below but with output)
-        // if (final_bool == false) {Serial.println("[RELAY " + String(Ri) + "] inactive"); relayData.relays_bool[0][Ri] = 0;}
-        // else if (final_bool == true) {Serial.println("[RELAY " + String(Ri) + "] active"); relayData.relays_bool[0][Ri] = 1;}
+        // if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
+        // else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
 
-        if (final_bool == false) {relayData.relays_bool[0][Ri] = 0;}
-        else if (final_bool == true) {relayData.relays_bool[0][Ri] = 1;}
+        if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
+        else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
       }
-      else {Serial.println("[RELAY " + String(Ri) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
+      else {Serial.println("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
     }
-    // handle Ri's that are disbaled
-    else {relayData.relays_bool[0][Ri] = 0;}
+    // handle Mi's that are disbaled
+    else {matrixData.matrix_switch_state[0][Mi] = 0;}
 
     // Serial Output: switch states
     if (systemData.output_matrix_enabled == true) {
-      memset(relayData.matrix_results_sentence, 0, sizeof(relayData.matrix_results_sentence));
-      strcpy(relayData.matrix_results_sentence, "$MATRIXSWITCH,");
-      for (int i=0; i < relayData.MAobject_RELAYS; i++) {
-        if      (relayData.relays_bool[0][i] == 0) {strcat(relayData.matrix_results_sentence, "0,");}
-        else if (relayData.relays_bool[0][i] == 1) {strcat(relayData.matrix_results_sentence, "1,");}
+      memset(matrixData.matrix_results_sentence, 0, sizeof(matrixData.matrix_results_sentence));
+      strcpy(matrixData.matrix_results_sentence, "$MATRIXSWITCH,");
+      for (int i=0; i < matrixData.max_matrices; i++) {
+        if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
+        else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
       }
-      strcat(relayData.matrix_results_sentence, "*");
-      relayData.checksum_i = getCheckSum(relayData.matrix_results_sentence);
-      itoa(relayData.checksum_i, relayData.checksum_str, 10);
-      strcat(relayData.matrix_results_sentence, relayData.checksum_str);
-      Serial.println(relayData.matrix_results_sentence);
+      strcat(matrixData.matrix_results_sentence, "*");
+      matrixData.checksum_i = getCheckSum(matrixData.matrix_results_sentence);
+      itoa(matrixData.checksum_i, matrixData.checksum_str, 10);
+      strcat(matrixData.matrix_results_sentence, matrixData.checksum_str);
+      Serial.println(matrixData.matrix_results_sentence);
       // todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
       //       the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0. requires settings page 'IO'.
       //       this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD where SatIO requires
@@ -4431,17 +4429,17 @@ void readSerialCommands() {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               MATRIX: TURN ALL RELAYS ON
+    //                                                                                               MATRIX: TURN ALL matrix ON
 
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_RELAYS_ALL_ON") == 0) {
-      relays_activate_all();
+    else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_ON") == 0) {
+      matrix_activate_all();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                              MATRIX: TURN ALL RELAYS OFF
+    //                                                                                              MATRIX: TURN ALL matrix OFF
 
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_RELAYS_ALL_OFF") == 0) {
-      relays_deactivate_all();
+    else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_OFF") == 0) {
+      matrix_deactivate_all();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -4559,21 +4557,21 @@ void getSATIOData() {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       TASK: ELEMENTS COUNTER
 
-void countRelaysEnabled(){
-  relayData.relays_enabled_i = 0;
-  relayData.relays_disabled_i = 0;
-  for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) { if (relayData.relays_enable[0][Ri] == 1) {relayData.relays_enabled_i++;} else {relayData.relays_disabled_i++;} }
+void countmatrixEnabled(){
+  matrixData.matrix_enabled_i = 0;
+  matrixData.matrix_disabled_i = 0;
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) { if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;} }
 }
 
-void countRelaysActive(){
-  relayData.relays_active_i = 0;
-  relayData.relays_inactive_i = 0;
-  for (int Ri = 0; Ri < relayData.MAobject_RELAYS; Ri++) { if (relayData.relays_bool[0][Ri] == 1) {relayData.relays_active_i++;} else {relayData.relays_inactive_i++;} }
+void countmatrixActive(){
+  matrixData.matrix_active_i = 0;
+  matrixData.matrix_inactive_i = 0;
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) { if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;} }
 }
 
 void CountElements() {
-  countRelaysEnabled();
-  countRelaysActive();
+  countmatrixEnabled();
+  countmatrixActive();
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -4963,19 +4961,19 @@ bool DisplayPage0() {
     // virtual matrix switch
     for (int i=0; i<10; i++) {
       // virtual matrix switch enabled/disbaled rect row 0
-      if (relayData.relays_enable[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_ENABLED);}
+      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_ENABLED);}
       else {hud.drawRect((i*30)+2*i, 30, 30, 16, TFTOBJ_COL0);}
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (relayData.relays_bool[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 38);
       // virtual matrix switch enabled/disbaled rect row 1
-      if (relayData.relays_enable[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_ENABLED);}
+      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_ENABLED);}
       else {hud.drawRect((i*30)+2*i, 50, 30, 16, TFTOBJ_COL0);}
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (relayData.relays_bool[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 58);
       }
@@ -5102,7 +5100,7 @@ bool DisplayPage1() {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         menuData.backpage=5;
         // page header
-        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.relay_select));
+        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.matrix_select));
         hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         // table headers
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
@@ -5115,13 +5113,13 @@ bool DisplayPage1() {
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(i); hud.print(" "); hud.print(relayData.relays[menuData.relay_select][i]);
+        hud.print(i); hud.print(" "); hud.print(matrixData.matrix_function[menuData.matrix_select][i]);
         hud.setCursor(164, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][0]);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][0]);
         hud.setCursor(220, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][1]);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][1]);
         hud.setCursor(278, 47+i*20);
-        hud.print(""); hud.print(relayData.relays_data[menuData.relay_select][i][2]);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][2]);
         }
         return true;
     }
@@ -5134,14 +5132,14 @@ bool DisplayPage1() {
 bool isTouchPage1(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc),
-  // this is good practice for when the switches have GPIO/relays. disabling can be done automatically but will limit potential scenarios, this way we can choose.
+  // this is good practice for when the switches have GPIO/matrix. disabling can be done automatically but will limit potential scenarios, this way we can choose.
   if (menuData.page == 1) {
     // page 1: Function Select
     if (p.x >= tss.page_1_items_x[0][0] && p.x <= tss.page_1_items_x[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.page=100;
-          menuData.relay_function_select=i;
+          menuData.matrix_function_select=i;
           break;
         }
       }
@@ -5152,10 +5150,10 @@ bool isTouchPage1(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.backpage=1;
           menuData.page=300;
-          menuData.relay_function_select=i;
+          menuData.matrix_function_select=i;
           menuData.numpad_key=0;
           memset(menuData.input, 0, sizeof(menuData.input));
-          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][0]);
+          sprintf(menuData.input, "%f", matrixData.matrix_function_xyz[menuData.matrix_select][i][0]);
           break;
         }
       }
@@ -5166,10 +5164,10 @@ bool isTouchPage1(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.backpage=1;
           menuData.page=300;
-          menuData.relay_function_select=i;
+          menuData.matrix_function_select=i;
           menuData.numpad_key=1;
           memset(menuData.input, 0, sizeof(menuData.input));
-          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][1]);
+          sprintf(menuData.input, "%f", matrixData.matrix_function_xyz[menuData.matrix_select][i][1]);
           break;
         }
       }
@@ -5180,10 +5178,10 @@ bool isTouchPage1(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.backpage=1;
           menuData.page=300;
-          menuData.relay_function_select=i;
+          menuData.matrix_function_select=i;
           menuData.numpad_key=2;
           memset(menuData.input, 0, sizeof(menuData.input));
-          sprintf(menuData.input, "%f", relayData.relays_data[menuData.relay_select][i][2]);
+          sprintf(menuData.input, "%f", matrixData.matrix_function_xyz[menuData.matrix_select][i][2]);
           break;
         }
       }
@@ -5232,14 +5230,14 @@ bool DisplaySelectMatrixFunction() {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         menuData.backpage=1;
         // page header
-        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.relay_select)+String(" Function ")+String(menuData.relay_function_select));
+        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select));
         // scroll buttons
         DisplayVerticalScroll();
         // values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
         hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i); hud.print(" "); hud.print(relayData.function_names[menuData.function_index+i]);
+        hud.print(menuData.function_index+i); hud.print(" "); hud.print(matrixData.function_names[menuData.function_index+i]);
         }
         return true;
     }
@@ -5255,19 +5253,19 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
     // previous list items
     if ((p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.function_index--;
-      if (menuData.function_index-10<0) {menuData.function_index=relayData.FUNCTION_NAMES_MAX-10;}
+      if (menuData.function_index-10<0) {menuData.function_index=matrixData.max_matrix_function_names-10;}
     }
     // next list items
     else if ((p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
       menuData.function_index++;
-      if (menuData.function_index+10>relayData.FUNCTION_NAMES_MAX) {menuData.function_index=0;}
+      if (menuData.function_index+10>matrixData.max_matrix_function_names) {menuData.function_index=0;}
     }
     // select list item
     if (p.x >= tss.select_matrix_function_x[2][0] && p.x <= tss.select_matrix_function_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          memset(relayData.relays[menuData.relay_select][menuData.relay_function_select], 0, sizeof(relayData.relays[menuData.relay_select][menuData.relay_function_select]));
-          strcpy(relayData.relays[menuData.relay_select][menuData.relay_function_select], relayData.function_names[i+menuData.function_index]);
+          memset(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], 0, sizeof(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select]));
+          strcpy(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], matrixData.function_names[i+menuData.function_index]);
           menuData.page=1;
           break;
         }
@@ -5352,9 +5350,9 @@ bool isTouchNumpad(TouchPoint p) {
     // enter
     if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
       if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
-        if (menuData.numpad_key == 0) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][0] = strtod(menuData.input, &ptr);}      // x
-        else if (menuData.numpad_key == 1) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][1] = strtod(menuData.input, &ptr);} // y
-        else if (menuData.numpad_key == 2) {char *ptr; relayData.relays_data[menuData.relay_select][menuData.relay_function_select][2] = strtod(menuData.input, &ptr);} // z
+        if (menuData.numpad_key == 0) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][0] = strtod(menuData.input, &ptr);}      // x
+        else if (menuData.numpad_key == 1) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][1] = strtod(menuData.input, &ptr);} // y
+        else if (menuData.numpad_key == 2) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][2] = strtod(menuData.input, &ptr);} // z
         menuData.page=1;
       }
     }
@@ -5482,7 +5480,7 @@ bool DisplaySettingsMatrix() {
     // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (relayData.relays_enable[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    if (matrixData.matrix_switch_enabled[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15, 51+i*20);
     // switch setup column 1 (0-9) (access individual switch setup)
@@ -5497,7 +5495,7 @@ bool DisplaySettingsMatrix() {
     hud.drawString(String("OFF")+String(""), 85, 51+i*20);
     // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
     hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (relayData.relays_bool[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_ENABLED);}
+    if (matrixData.matrix_switch_state[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);
     }
     // enable all (enables all switches to turn on)
@@ -5524,7 +5522,7 @@ bool DisplaySettingsMatrix() {
     // switch enable column 0 (10-19) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
     hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (relayData.relays_enable[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    if (matrixData.matrix_switch_enabled[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 225, 51+i*20);
     // // switch setup column 1 (10-19) (access individual switch setup)
@@ -5539,7 +5537,7 @@ bool DisplaySettingsMatrix() {
     hud.drawString(String("OFF")+String(""), 295, 51+i*20);
     // switch indicator column 3 (10-19) (indicates if individual switch is either on or off)
     hud.drawRect(310, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (relayData.relays_bool[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_ENABLED);}
+    if (matrixData.matrix_switch_state[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(314, 46+i*20, 2, 10, TFT_RED);}
     }
     return true;
@@ -5553,9 +5551,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     if (p.x >= tss.matrix_page[0][0] && p.x <= tss.matrix_page[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i;
+          menuData.matrix_select=i;
           Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
-          relayData.relays_enable[0][i] ^= true;
+          matrixData.matrix_switch_enabled[0][i] ^= true;
           break;
         }
       }
@@ -5564,8 +5562,8 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     else if (p.x >= tss.matrix_page[1][0] && p.x <= tss.matrix_page[1][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.matrix_select=i;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
           menuData.page=1;
           break;
         }
@@ -5575,9 +5573,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     else if (p.x >= tss.matrix_page[2][0] && p.x <= tss.matrix_page[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i;
-          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
-          relayData.relays_bool[0][i] = false;
+          menuData.matrix_select=i;
+          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
+          matrixData.matrix_switch_state[0][i] = false;
           break;
         }
       }
@@ -5600,7 +5598,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
           // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
           if (i==2) {
             Serial.print("[matrix switch all off]");
-            relays_deactivate_all();
+            matrix_deactivate_all();
           }
           break;
         }
@@ -5610,9 +5608,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     else if (p.x >= tss.matrix_page[4][0] && p.x <= tss.matrix_page[4][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i+10;
+          menuData.matrix_select=i+10;
           Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
-          relayData.relays_enable[0][i+10] ^= true;
+          matrixData.matrix_switch_enabled[0][i+10] ^= true;
           break;
         }
       }
@@ -5621,8 +5619,8 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     else if (p.x >= tss.matrix_page[5][0] && p.x <= tss.matrix_page[5][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i+10;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.relay_select);
+          menuData.matrix_select=i+10;
+          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
           menuData.page=1;
           break;
         }
@@ -5632,9 +5630,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
     else if (p.x >= tss.matrix_page[6][0] && p.x <= tss.matrix_page[6][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          menuData.relay_select=i+10;
-          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.relay_select);
-          relayData.relays_bool[0][i+10] = false;
+          menuData.matrix_select=i+10;
+          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
+          matrixData.matrix_switch_state[0][i+10] = false;
           break;
         }
       }
