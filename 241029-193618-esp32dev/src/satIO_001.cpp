@@ -219,14 +219,14 @@ Serial0Struct serial0Data;
 //                                                                                                               DATA: SERIAL 1
 
 struct Serial1Struct {
-  unsigned long nbytes;
-  unsigned long iter_token;
-  char BUFFER[2000];
-  char * token = strtok(BUFFER, ",");
-  int collected = 0;
-  bool gngga_bool = false;
-  bool gnrmc_bool = false;
-  bool gpatt_bool = false;
+  unsigned long nbytes;                // number of bytes read by serial
+  unsigned long iter_token;            // count token iterations
+  char BUFFER[2000];                   // serial buffer
+  char * token = strtok(BUFFER, ",");  // token pointer 
+  int collected = 0;                   // counts how many unique sentences have been collected.
+  bool gngga_bool = false;             // has sentence been collected
+  bool gnrmc_bool = false;             // has sentence been collected
+  bool gpatt_bool = false;             // has sentence been collected
 };
 Serial1Struct serial1Data;
 
