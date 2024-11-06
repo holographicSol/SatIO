@@ -101,8 +101,8 @@ uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/obje
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        TASKS
 
-TaskHandle_t TSTask;
-TaskHandle_t UpdateDisplayTask;
+TaskHandle_t TSTask;             // touchscreen task
+TaskHandle_t UpdateDisplayTask;  // write sprite task
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -118,7 +118,7 @@ SPIClass sdspi = SPIClass(VSPI);
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          ETX
 
-#define ETX             0x03 // end of text character
+#define ETX 0x03  // end of text character useful for parsing serial data
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DATA: SYSTEM
