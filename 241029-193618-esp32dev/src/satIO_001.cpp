@@ -178,7 +178,7 @@ struct sysDebugStruct {
   bool gnrmc_sentence = false;    // enables/disables itemized sentence value output after processing
   bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
   bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
-  bool validation = false;        // enables/disables data validation such as checksum, lenght and type checking
+  bool validation = false;        // enables/disables data validation such as checksum, length and type checking
 };
 sysDebugStruct sysDebugData;
 
