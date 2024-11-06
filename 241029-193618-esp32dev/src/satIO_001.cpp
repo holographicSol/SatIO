@@ -8,7 +8,7 @@
 
                   Possible combinations example: 
 
-                  10=digit characters   15=lenght of double   10=functions    20=switches   190=available functions
+          10=digit characters   15=lenght of double   3=doubles per function   10=functions    20=switches   190=available functions
                                                   (((10^15 * 3) * 10) * 20) ^ 190
 
             Currently there are over 200 different checks that can be performed using just several small primitive functions and
