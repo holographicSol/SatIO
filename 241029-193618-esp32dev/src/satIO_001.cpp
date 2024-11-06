@@ -1579,6 +1579,8 @@ struct RelayStruct {
   char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
   char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
 
+  // todo MatrixLink: link a matrix to switches final bool being true/false, linked matrix file should be loaded into memorys. (may be slow to load so will need testing).
+  
    char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
    
    char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
@@ -6371,7 +6373,7 @@ void setup() {
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                    SETUP: SIDEREAL PLANETS
 
-  // myAstro.begin();
+  myAstro.begin();
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              SETUP: SDCARD
