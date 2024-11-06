@@ -56,12 +56,15 @@
 #include "SD.h"
 #include <iostream>
 
-const int8_t ctsPin = -1;
-const int8_t rtsPin = -1;
-const byte gpsrxpin = 22;
-const byte gpstxpin = 27;
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                         PINS
+const int8_t ctsPin = -1;  // remap hardware serial TXD
+const int8_t rtsPin = -1;  // remap hardware serial RXD
+const byte gpstxpin = 27;  // GPS serial TXD
+const byte gpsrxpin = 22;  // GPS serial RXD
 
-// ----------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  TOUCHSCREEN
 #define XPT2046_IRQ 36
 #define XPT2046_MOSI 32
 #define XPT2046_MISO 39
@@ -70,37 +73,36 @@ const byte gpstxpin = 27;
 
 XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      DISPLAY
+
 TFT_eSPI tft = TFT_eSPI();
 
 TFT_eSPI_Button key[6];
 
-bool isTouched = false;
-
 TFT_eSprite hud = TFT_eSprite(&tft);
 
-#define LCD_BACK_LIGHT_PIN 21
 
-// use first channel of 16 channels (started from zero)
-#define LEDC_CHANNEL_0     0
+#define LCD_BACK_LIGHT_PIN 21    // backlight pin
+#define LEDC_CHANNEL_0     0     // backlight: use first channel of 16 channels (started from zero)
+#define LEDC_TIMER_12_BIT  12    // backlight: use 12 bit precission for LEDC timer
+#define LEDC_BASE_FREQ     5000  // backlight: use 5000 Hz as a LEDC base frequency
 
-// use 12 bit precission for LEDC timer
-#define LEDC_TIMER_12_BIT  12
+// default color theme
+uint16_t TFTOBJ_COL0 = TFT_DARKGREY;          // objects color
+uint16_t TFTTXT_COLF_0 = TFT_DARKGREY;        // text color on background
+uint16_t TFTTXT_COLF_TITLE_0 = TFT_DARKGREY;  // emhpasize color 0
+uint16_t TFTTXT_COLB_0 = TFT_BLACK;           // text background color on background
+uint16_t TFTTXT_COLF_1 = TFT_BLACK;           // text color on object color
+uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object color
+uint16_t BG_COL_0 = TFT_BLACK;                // background
+uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
 
-// use 5000 Hz as a LEDC base frequency
-#define LEDC_BASE_FREQ     5000
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        TASKS
 
 TaskHandle_t TSTask;
 TaskHandle_t UpdateDisplayTask;
-
-// default scheme (dark neutral)
-uint16_t TFTOBJ_COL0 = TFT_DARKGREY; // objects color
-uint16_t TFTTXT_COLF_0 = TFT_DARKGREY; // text color on background
-uint16_t TFTTXT_COLF_TITLE_0 = TFT_DARKGREY; // emhpasize color 0
-uint16_t TFTTXT_COLB_0 = TFT_BLACK; // text background color on background
-uint16_t TFTTXT_COLF_1 = TFT_BLACK; // text color on object color
-uint16_t TFTTXT_COLB_1 = TFT_DARKGREY; // text background color on object color
-uint16_t BG_COL_0 = TFT_BLACK; // background
-uint16_t TFT_ENABLED = TFT_GREEN; // sets enabled color of text/objects
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SIDEREAL PLANETS
@@ -115,11 +117,8 @@ SPIClass sdspi = SPIClass(VSPI);
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          ETX
+
 #define ETX             0x03 // end of text character
-#define NL              0x0a
-unsigned long T0_TXD_2 = 0; // hard throttle current time
-unsigned long T1_TXD_2 = 0; // hard throttle previous time
-unsigned long TT_TXD_2 = 500; // hard throttle interval
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DATA: SYSTEM
