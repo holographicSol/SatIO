@@ -4377,7 +4377,7 @@ void matrixSwitch() {
       itoa(relayData.checksum_i, relayData.checksum_str, 10);
       strcat(relayData.matrix_results_sentence, relayData.checksum_str);
       Serial.println(relayData.matrix_results_sentence);
-      // todo: output matrix_results_sentence to softserial for a second microcontroller to read using running SerialLink. (for full IO).
+      // todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
       //       the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0. requires settings page 'IO'.
       //       this is an easy, efficient and potentially high performing solution to limited IO on the CYD where SatIO requires more IO than is
       //       physically available on the CYD.
