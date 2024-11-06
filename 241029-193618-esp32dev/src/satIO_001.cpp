@@ -1563,56 +1563,56 @@ struct RelayStruct {
     "GNGGAInvalidCheckData",
     "GNRMCInvalidCheckData",
     "GPATTInvalidCheckData",
-    "SunAzimuth",
+    "SunAzimuthRange",
     "SunAltitide",
     "DayTime",
     "NightTime",
     "Sunrise",
     "Sunset",
-    "MoonAzimuth",
+    "MoonAzimuthRange",
     "MoonAltitide",
     "MoonUp",
     "MoonDown",
     "Moonrise",
     "Moonset",
     "MoonPhase",
-    "MercuryAzimuth",
+    "MercuryAzimuthRange",
     "MercuryAltitide",
     "MercuryUp",
     "MercuryDown",
     "MercuryRise",
     "MercurySet",
-    "VenusAzimuth",
+    "VenusAzimuthRange",
     "VenusAltitide",
     "VenusUp",
     "VenusDown",
     "VenusRise",
     "VenusSet",
-    "MarsAzimuth",
+    "MarsAzimuthRange",
     "MarsAltitide",
     "MarsUp",
     "MarsDown",
     "MarsRise",
     "MarsSet",
-    "JupiterAzimuth",
+    "JupiterAzimuthRange",
     "JupiterAltitide",
     "JupiterUp",
     "JupiterDown",
     "JupiterRise",
     "JupiterSet",
-    "SaturnAzimuth",
+    "SaturnAzimuthRange",
     "SaturnAltitide",
     "SaturnUp",
     "SaturnDown",
     "SaturnRise",
     "SaturnSet",
-    "UranusAzimuth",
+    "UranusAzimuthRange",
     "UranusAltitide",
     "UranusUp",
     "UranusDown",
     "UranusRise",
     "UranusSet",
-    "NeptuneAzimuth",
+    "NeptuneAzimuthRange",
     "NeptuneAltitide",
     "NeptuneUp",
     "NeptuneDown",
@@ -1773,92 +1773,92 @@ struct RelayStruct {
   char MileageGPATTEqual[56]      = "MileageGPATTEqual";    // specify x (mileage) in matrix.
   char MileageGPATTRange[56]      = "MileageGPATTRange";    // specify x (mileage) y (mileage) in matrix.
 
-  char GSTDataGPATTOver[56]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix. satellite accuracy
-  char GSTDataGPATTUnder[56]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix. satellite accuracy
-  char GSTDataGPATTEqual[56]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix. satellite accuracy
-  char GSTDataGPATTRange[56]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix. satellite accuracy
+  char GSTDataGPATTOver[56]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix.
+  char GSTDataGPATTUnder[56]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix.
+  char GSTDataGPATTEqual[56]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix.
+  char GSTDataGPATTRange[56]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix.
 
-  char YawGPATTOver[56]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix. satellite accuracy
-  char YawGPATTUnder[56]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix. satellite accuracy
-  char YawGPATTEqual[56]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix. satellite accuracy
-  char YawGPATTRange[56]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix. satellite accuracy
+  char YawGPATTOver[56]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix.
+  char YawGPATTUnder[56]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix.
+  char YawGPATTEqual[56]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix.
+  char YawGPATTRange[56]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix.
 
-  char RollGPATTOver[56]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix. satellite accuracy
-  char RollGPATTUnder[56]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix. satellite accuracy
-  char RollGPATTEqual[56]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix. satellite accuracy
-  char RollGPATTRange[56]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix. satellite accuracy
+  char RollGPATTOver[56]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTUnder[56]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTEqual[56]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTRange[56]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix.
 
-  char PitchGPATTOver[56]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix. satellite accuracy
-  char PitchGPATTUnder[56]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix. satellite accuracy
-  char PitchGPATTEqual[56]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix. satellite accuracy
-  char PitchGPATTRange[56]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix. satellite accuracy
+  char PitchGPATTOver[56]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTUnder[56]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTEqual[56]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTRange[56]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SIDEREAL PLANETS
 
-  char SunAzimuth[56]  = "SunAzimuth";
-  char SunAltitude[56] = "SunAltitude";
-  char DayTime[56]   = "DayTime";
-  char NightTime[56] = "NightTime";
-  char Sunrise[56]   = "Sunrise";
-  char Sunset[56]    = "Sunset";
+  char SunAzimuthRange[56]  = "SunAzimuthRange";           // specify x (0-360) y (0-360) in matrix.
+  char SunAltitudeRange[56] = "SunAltitudeRange";          // specify x (0-90) y (0-360) in matrix.
+  char DayTime[56]   = "DayTime";                          // takes no further arguments.
+  char NightTime[56] = "NightTime";                        // takes no further arguments.
+  char Sunrise[56]   = "Sunrise";                          // takes no further arguments.
+  char Sunset[56]    = "Sunset";                           // takes no further arguments.
 
-  char MoonAzimuth[56]  = "MoonAzimuth";
-  char MoonAltitude[56] = "MoonAltitude";
-  char MoonUp[56]    = "MoonUp";
-  char MoonDown[56]  = "MoonDown";
-  char Moonrise[56]  = "Moonrise";
-  char Moonset[56]   = "Moonset";
-  char MoonPhase[56] = "MoonPhase";
+  char MoonAzimuthRange[56]  = "MoonAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
+  char MoonAltitudeRange[56] = "MoonAltitudeRange";        // specify x (0-90) y (0-360) in matrix.
+  char MoonUp[56]    = "MoonUp";                           // takes no further arguments.
+  char MoonDown[56]  = "MoonDown";                         // takes no further arguments.
+  char Moonrise[56]  = "Moonrise";                         // takes no further arguments.
+  char Moonset[56]   = "Moonset";                          // takes no further arguments.
+  char MoonPhase[56] = "MoonPhase";                        // takes no further arguments.
 
-  char MercuryAzimuth[56]  = "MercuryAzimuth";
-  char MercuryAltitude[56] = "MercuryAltitude";
-  char MercuryUp[56]    = "MercuryUp";
-  char MercuryDown[56]  = "MercuryDown";
-  char MercuryRise[56]  = "MercuryRise";
-  char MercurySet[56]   = "MercurySet";
+  char MercuryAzimuthRange[56]  = "MercuryAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char MercuryAltitudeRange[56] = "MercuryAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char MercuryUp[56]    = "MercuryUp";                     // takes no further arguments.
+  char MercuryDown[56]  = "MercuryDown";                   // takes no further arguments.
+  char MercuryRise[56]  = "MercuryRise";                   // takes no further arguments.
+  char MercurySet[56]   = "MercurySet";                    // takes no further arguments.
 
-  char VenusAzimuth[56]  = "VenusAzimuth";
-  char VenusAltitude[56] = "VenusAltitude";
-  char VenusUp[56]    = "VenusUp";
-  char VenusDown[56]  = "VenusDown";
-  char VenusRise[56]  = "VenusRise";
-  char VenusSet[56]   = "VenusSet";
+  char VenusAzimuthRange[56]  = "VenusAzimuthRange";       // specify x (0-360) y (0-360) in matrix.
+  char VenusAltitudeRange[56] = "VenusAltitudeRange";      // specify x (0-90) y (0-360) in matrix.
+  char VenusUp[56]    = "VenusUp";                         // takes no further arguments.
+  char VenusDown[56]  = "VenusDown";                       // takes no further arguments.
+  char VenusRise[56]  = "VenusRise";                       // takes no further arguments.
+  char VenusSet[56]   = "VenusSet";                        // takes no further arguments.
 
-  char MarsAzimuth[56]  = "MarsAzimuth";
-  char MarsAltitude[56] = "MarsAltitude";
-  char MarsUp[56]    = "MarsUp";
-  char MarsDown[56]  = "MarsDown";
-  char MarsRise[56]  = "MarsRise";
-  char MarsSet[56]   = "MarsSet";
+  char MarsAzimuthRange[56]  = "MarsAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
+  char MarsAltitudeRange[56] = "MarsAltitudeRange";        // specify x (0-90) y (0-360) in matrix.
+  char MarsUp[56]    = "MarsUp";                           // takes no further arguments.
+  char MarsDown[56]  = "MarsDown";                         // takes no further arguments.
+  char MarsRise[56]  = "MarsRise";                         // takes no further arguments.       
+  char MarsSet[56]   = "MarsSet";                          // takes no further arguments.
 
-  char JupiterAzimuth[56]  = "JupiterAzimuth";
-  char JupiterAltitude[56] = "JupiterAltitude";
-  char JupiterUp[56]    = "JupiterUp";
-  char JupiterDown[56]  = "JupiterDown";
-  char JupiterRise[56]  = "JupiterRise";
-  char JupiterSet[56]   = "JupiterSet";
+  char JupiterAzimuthRange[56]  = "JupiterAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char JupiterAltitudeRange[56] = "JupiterAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char JupiterUp[56]    = "JupiterUp";                     // takes no further arguments.
+  char JupiterDown[56]  = "JupiterDown";                   // takes no further arguments.
+  char JupiterRise[56]  = "JupiterRise";                   // takes no further arguments.
+  char JupiterSet[56]   = "JupiterSet";                    // takes no further arguments.
 
-  char SaturnAzimuth[56]  = "SaturnAzimuth";
-  char SaturnAltitude[56] = "SaturnAltitude";
-  char SaturnUp[56]    = "SaturnUp";
-  char SaturnDown[56]  = "SaturnDown";
-  char SaturnRise[56]  = "SaturnRise";
-  char SaturnSet[56]   = "SaturnSet";
+  char SaturnAzimuthRange[56]  = "SaturnAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
+  char SaturnAltitudeRange[56] = "SaturnAltitudeRange";    // specify x (0-90) y (0-360) in matrix.
+  char SaturnUp[56]    = "SaturnUp";                       // takes no further arguments.
+  char SaturnDown[56]  = "SaturnDown";                     // takes no further arguments.
+  char SaturnRise[56]  = "SaturnRise";                     // takes no further arguments.
+  char SaturnSet[56]   = "SaturnSet";                      // takes no further arguments.
 
-  char UranusAzimuth[56]  = "UranusAzimuth";
-  char UranusAltitude[56] = "UranusAltitude";
-  char UranusUp[56]    = "UranusUp";
-  char UranusDown[56]  = "UranusDown";
-  char UranusRise[56]  = "UranusRise";
-  char UranusSet[56]   = "UranusSet";
+  char UranusAzimuthRange[56]  = "UranusAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
+  char UranusAltitudeRange[56] = "UranusAltitudeRange";    // specify x (0-90) y (0-360) in matrix.
+  char UranusUp[56]    = "UranusUp";                       // takes no further arguments.
+  char UranusDown[56]  = "UranusDown";                     // takes no further arguments.
+  char UranusRise[56]  = "UranusRise";                     // takes no further arguments.
+  char UranusSet[56]   = "UranusSet";                      // takes no further arguments.
 
-  char NeptuneAzimuth[56]  = "NeptuneAzimuth";
-  char NeptuneAltitude[56] = "NeptuneAltitude";
-  char NeptuneUp[56]    = "NeptuneUp";
-  char NeptuneDown[56]  = "NeptuneDown";
-  char NeptuneRise[56]  = "NeptuneRise";
-  char NeptuneSet[56]   = "NeptuneSet";
+  char NeptuneAzimuthRange[56]  = "NeptuneAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char NeptuneAltitudeRange[56] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-360) in matrix.
+  char NeptuneUp[56]    = "NeptuneUp";                     // takes no further arguments.
+  char NeptuneDown[56]  = "NeptuneDown";                   // takes no further arguments.
+  char NeptuneRise[56]  = "NeptuneRise";                   // takes no further arguments.
+  char NeptuneSet[56]   = "NeptuneSet";                    // takes no further arguments.
   
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -4269,9 +4269,9 @@ void matrixSwitch() {
         //                                                                                                           SIDEREAL TIME: SUN
 
         // sun azimuth:
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         // sun altitude:
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SunAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         // daytime: current time in range of sunrise and sunset
         else if (strcmp(relayData.relays[Ri][Fi], relayData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
         // nighttime: current time not in range of sunrise and sunset
@@ -4284,8 +4284,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MOON
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.Moonrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.Moonset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MoonUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
@@ -4295,8 +4295,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: MERCURY
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MercurySet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MercuryUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
@@ -4305,8 +4305,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                         SIDEREAL TIME: VENUS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.VenusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
@@ -4315,8 +4315,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MARS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.MarsUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
@@ -4325,8 +4325,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: JUPITER
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.JupiterUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
@@ -4335,8 +4335,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: SATURN
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SaturnUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
@@ -4345,8 +4345,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: URANUS
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.UranusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
@@ -4355,8 +4355,8 @@ void matrixSwitch() {
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: NEPTUNE
 
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAzimuth) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAltitude) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt, relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][2]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s, atof(satData.hours_minutes));}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.NeptuneUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
