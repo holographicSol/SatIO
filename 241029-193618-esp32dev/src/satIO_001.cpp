@@ -201,18 +201,17 @@ menuStruct menuData;
 //                                                                                                               DATA: SERIAL 0
 
 struct Serial0Struct {
-  unsigned long nbytes;
-  unsigned long iter_token;
-  char BUFFER[1024];
-  char * token = strtok(BUFFER, ",");
-  char data_0[56];
-  char data_1[56];
-  char data_2[56];
-  char data_3[56];
-  char data_4[56];
-  char data_5[56];
-  char data_6[56];
-  int check_data_R;
+  unsigned long nbytes;                // number of bytes read by serial
+  unsigned long iter_token;            // count token iterations
+  char BUFFER[1024];                   // serial buffer
+  char * token = strtok(BUFFER, ",");  // token pointer 
+  char data_0[56];                     // value placeholder
+  char data_1[56];                     // value placeholder
+  char data_2[56];                     // value placeholder
+  char data_3[56];                     // value placeholder
+  char data_4[56];                     // value placeholder
+  char data_5[56];                     // value placeholder
+  char data_6[56];                     // value placeholder
 };
 Serial0Struct serial0Data;
 
@@ -258,7 +257,6 @@ struct SDCardStruct {
   char data_4[56];
   char data_5[56];
   char data_6[56];
-  int check_data_R;
   char file_data[256];
   char delim[2] = ",";
   char tmp[256];
@@ -3343,7 +3341,6 @@ example test command: $MATRIX_SET_ENTRY,0,0,SatelliteCountOver,1,0,0
 
 void matrix_object_set_entry() {
   Serial.println("[matrix_object_set_entry] connected");
-  serial0Data.check_data_R = 0;
   memset(serial0Data.data_0, 0, 56);
   memset(serial0Data.data_1, 0, 56);
   memset(serial0Data.data_2, 0, 56);
@@ -3390,7 +3387,6 @@ void matrix_object_set_entry() {
 
 void matriobject_set_enabled(bool b) {
   Serial.println("[matriobject_set_enabled] connected");
-  serial0Data.check_data_R = 0;
   memset(serial0Data.data_0, 0, 56);
   serial0Data.iter_token = 0;
   serial0Data.token = strtok(serial0Data.BUFFER, ",");
