@@ -186,17 +186,14 @@ sysDebugStruct sysDebugData;
 //                                                                                                                   DATA: MENU
 
 struct menuStruct {
-  int y = 0;
-  int x = 1;
-  char input[2024];
-  int numpad_key = NULL;
-  int page = 0;
-  int backpage = 0;
-  int matrix_select = 0;
-  int matrix_function_select = 0;
-  int function_index = 0;
-  int matrix_filenames_index = 0;
-  bool menu_lock = false;
+  char input[2024];                // char array input by user
+  int numpad_key = NULL;           // allows numpad to differentiate between values
+  int page = 0;                    // currently displayed page
+  int backpage = 0;                // page we would like to return to after current page
+  int matrix_select = 0;           // index matrix switch
+  int matrix_function_select = 0;  // index available functions for matrix switch
+  int function_index = 0;          // index function for matrix switch
+  int matrix_filenames_index = 0;  // index available matrix files
 };
 menuStruct menuData;
 
@@ -4392,7 +4389,7 @@ void matrixSwitch() {
 
 void readSerialCommands() {
     
-  if ((Serial.available() > 0) && (menuData.menu_lock == false)){
+  if (Serial.available() > 0) {
     
     memset(serial0Data.BUFFER, 0, 1024);
     serial0Data.nbytes = (Serial.readBytesUntil('\n', serial0Data.BUFFER, sizeof(serial0Data.BUFFER)));
