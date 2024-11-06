@@ -174,11 +174,11 @@ systemStruct systemData;
 //                                                                                                                  DATA: DEBUG
 
 struct sysDebugStruct {
-  bool gngga_sentence = false;
-  bool gnrmc_sentence = false;
-  bool gpatt_sentence = false;
-  bool serial_0_sentence = true;
-  bool validation = false;
+  bool gngga_sentence = false;    // enables/disables itemized sentence value output after processing
+  bool gnrmc_sentence = false;    // enables/disables itemized sentence value output after processing
+  bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
+  bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
+  bool validation = false;        // enables/disables data validation such as checksum, lenght and type checking
 };
 sysDebugStruct sysDebugData;
 
@@ -3344,8 +3344,8 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
 example test command: $MATRIX_SET_ENTRY,0,0,SatelliteCountOver,1,0,0
 */
 
-void matriobject_set_entry() {
-  Serial.println("[matriobject_set_entry] connected");
+void matrix_object_set_entry() {
+  Serial.println("[matrix_object_set_entry] connected");
   serial0Data.check_data_R = 0;
   memset(serial0Data.data_0, 0, 56);
   memset(serial0Data.data_1, 0, 56);
@@ -4402,7 +4402,7 @@ void readSerialCommands() {
     //                                                                                                        MATRIX: SET ENTRY
 
     if (strncmp(serial0Data.BUFFER, "$MATRIX_SET_ENTRY", 17) == 0) {
-      matriobject_set_entry();
+      matrix_object_set_entry();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
