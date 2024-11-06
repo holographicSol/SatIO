@@ -4379,8 +4379,8 @@ void matrixSwitch() {
       Serial.println(relayData.matrix_results_sentence);
       // todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
       //       the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0. requires settings page 'IO'.
-      //       this is an easy, efficient and potentially high performing solution to limited IO on the CYD where SatIO requires more IO than is
-      //       physically available on the CYD.
+      //       this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD where SatIO requires
+      //       more IO than is physically available on the CYD.
       }
   }
 }
