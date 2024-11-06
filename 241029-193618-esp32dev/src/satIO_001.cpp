@@ -14,17 +14,17 @@
             Currently there are over 200 different checks that can be performed using just several small primitive functions and
              currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
                                       
-                                        Wiring For ESP32-2432S028 development board (CYD)
+                                            Wiring For ESP32-2432S028 development board (CYD)
                   
-                  WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+                      WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
 
-                                                      SENTENCE $SATIO
+                                                           SENTENCE $SATIO
                                                                                     
-                      START Tag                Last Sat Time                    Converted Longitude        
-                         |                   |               |                   |               |                  
-                      $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
-                             |               |               |                 |                              
-                               DatetimeStamp                  Converted Latitude                                 
+                            START Tag                Last Sat Time                    Converted Longitude        
+                              |                   |               |                   |               |                  
+                            $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
+                                  |               |               |                 |                              
+                                    DatetimeStamp                  Converted Latitude                                 
 
 
            Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
@@ -32,8 +32,8 @@
                making a foundation for other creative projects that may make use of such satellite and or inertial data.
                The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
                is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
-                                              projects requiring use of GPS data. 
-                                          Robots and flying machines and automation.
+                                                projects requiring use of GPS data. 
+                                            Robots and flying machines and automation.
 
                          The IO is currently simulated as a virtual switch, while the system is being built.
 
