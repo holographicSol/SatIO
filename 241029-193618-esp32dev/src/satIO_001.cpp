@@ -6401,6 +6401,7 @@ void loop() {
   // store current time to measure this loop time
   timeData.mainLoopTimeStart = micros();
 
+  // for now serial commands are disabled for SatIO on CYD.
   // readSerialCommands();
   readGPS();
   getSATIOData();
