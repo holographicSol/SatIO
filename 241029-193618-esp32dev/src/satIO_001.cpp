@@ -293,12 +293,12 @@ void time_counter() {
 //                                                                                                             DATA: VALIDATION
 
 struct validationStruct {
-  int  valid_i = 0;
-  bool valid_b = true;
-  char *find_char;
-  int  index;
-  bool bool_data_0 = false;
-  bool bool_data_1 = false;
+  int  valid_i = 0;           // validation counter
+  bool valid_b = true;        // validation bool
+  char *find_char;            // validation pointer
+  int  index;                 // a placeholder for char index
+  bool bool_data_0 = false;   // load matrix values validation bool
+  bool bool_data_1 = false;   // load matrix values validation bool
 };
 validationStruct validData;
 
