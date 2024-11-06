@@ -4377,6 +4377,8 @@ void matrixSwitch() {
       itoa(relayData.checksum_i, relayData.checksum_str, 10);
       strcat(relayData.matrix_results_sentence, relayData.checksum_str);
       Serial.println(relayData.matrix_results_sentence);
+      // todo: output matrix_results_sentence to softserial for a cecond microcontroller to read running SerialLink. (for full IO).
+      //       the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0. 
       }
   }
 }
