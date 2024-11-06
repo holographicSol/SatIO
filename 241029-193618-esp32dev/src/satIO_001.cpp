@@ -1171,23 +1171,24 @@ bool val_scalable(char * data) {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: matrix
+//                                                                                                                 DATA: MATRIX
 
 struct MatrixStruct {
 
-  int max_matrices = 20;
-  int max_matrix_functions = 10;
+  int max_matrices = 20;          // number of matrix switches 
+  int max_matrix_functions = 10;  // number of functions available to a matrix switch
 
-  int matrix_enabled_i = 0;
-  int matrix_disabled_i = 0;
-  int matrix_active_i = 0;
-  int matrix_inactive_i = 0;
+  int matrix_enabled_i = 0;       // count how many matrx switches are enabled
+  int matrix_disabled_i = 0;      // count how many matrx switches are disabled
+  int matrix_active_i = 0;        // count how many matrx switches are active
+  int matrix_inactive_i = 0;      // count how many matrx switches are inactive
 
-  char temp[2048];
-  char matrix_results_sentence[2048];
-  char checksum_str[56];
-  int checksum_i;
+  char temp[2048];                     // a general place to store temporary chars relative to MatrixStruct
+  char matrix_results_sentence[2048];  // an NMEA inspired sentence reflecting matrix switch states  
+  char checksum_str[56];               // placeholder for char checksum relative to MatrixStruct
+  int checksum_i;                      // placeholder for int checksum relative to MatrixStruct
 
+  // reflects matrix switch active/inactive states each loop of matrix switch function
   bool matrix_switch_state[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1195,6 +1196,7 @@ struct MatrixStruct {
     }
   };
 
+  // reflects matrix switch enabled/disabled
   int matrix_switch_enabled[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1202,13 +1204,15 @@ struct MatrixStruct {
     }
   };
 
+  // a placeholder for timings when timer functions are selected for a matrix switch
   unsigned long matrix_timers[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
-  
+
+  // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
   char matrix_function[20][10][100] = {
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
@@ -1253,11 +1257,7 @@ struct MatrixStruct {
     };
 
   /*
-  Matrix containing sets of values per matrix.
-  X: use with/without  Y,Z.
-  Y: necessary if comparing to X.
-  Z: necessary if checking X,Y in range of Z.  
-
+  a matrix max_matrices by max_matrix_functions storing function values for each matrix switch
           0     1     2     
           X     Y     Z    
   {  {   0.0,  0.0,  0.0   } }
