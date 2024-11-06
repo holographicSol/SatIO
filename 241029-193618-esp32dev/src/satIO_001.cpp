@@ -165,8 +165,8 @@ struct systemStruct {
   int max_display_autooff_times = 6;                                            // max available times 
   int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};  // available times
 
-  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"};                  // bool used as index selects bool translation
-  char translate_plus_minus[2][56]  = {"+", "-"};                               // bool used as index selects bool translation
+  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
+  char translate_plus_minus[2][56]  = {"+", "-"};              // bool used as index selects bool translation
 };
 systemStruct systemData;
 
