@@ -1348,10 +1348,10 @@ struct RelayStruct {
     },
   };
 
-  int FUNCTION_NAMES_MAX = 261;
+  int FUNCTION_NAMES_MAX = 260;
   // convert function name chars to full human names, now there is a bigger screen, and create brief descriptions.
   // try to keep longest strlen <=23 so that it can always be displayed in full without needing to readjust any displayed/touch column widths.
-  char function_names[261][56] = 
+  char function_names[260][56] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1454,7 +1454,6 @@ struct RelayStruct {
     "UTCDateGNRMCUnder",
     "UTCDateGNRMCEqual",
     "UTCDateGNRMCRange",
-    "InertialFlagGPATTEqual",
     "LineFlagGPATTEqual",
     "StaticFlagGPATTEqual",
     "RunStateFlagGPATTEqual",
@@ -1748,35 +1747,49 @@ struct RelayStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GPATT DATA
 
-  char InertialFlagGPATTEqual[56] = "InertialFlagGPATTEqual";
-  char LineFlagGPATTEqual[56]     = "LineFlagGPATTEqual";
-  char StaticFlagGPATTEqual[56]   = "StaticFlagGPATTEqual";
+  char LineFlagGPATTEqual[56]     = "LineFlagGPATTEqual";    // specify x (0-1) in matrix. 1 : straight driving, 0: turning driving
+  char StaticFlagGPATTEqual[56]   = "StaticFlagGPATTEqual";  // specify x (0-1) in matrix. 1 : static, 0 : dynamic
+
+  /*
+  // specify x (flag) in matrix. 0: Prepare for initialization.
+                                 1: INS converged. Inertial navigation can be started. flag: 01/02
+                                 2: Initial convergence of Inertial Navigation. Inertial navigation can be started. flag: 03/04
+                                 3: Inertial Navigation is converging. Inertial navigation can be started. flag: 03/04
+                                 4. Inertial Navigation convergence complete. Inertial navigation can be started. flag: 03/04
+  */
   char RunStateFlagGPATTEqual[56] = "RunStateFlagGPATTEqual";
-  char INSGPATTEqual[56]          = "INSGPATTEqual";
-  char SpeedNumGPATTOver[56]      = "SpeedNumGPATTOver";
-  char SpeedNumGPATTUnder[56]     = "SpeedNumGPATTUnder[";
-  char SpeedNumGPATTEqual[56]     = "SpeedNumGPATTEqual";
-  char SpeedNumGPATTRange[56]     = "SpeedNumGPATTRange";
-  char MileageGPATTOver[56]       = "MileageGPATTOver";
-  char MileageGPATTUnder[56]      = "MileageGPATTUnder[";
-  char MileageGPATTEqual[56]      = "MileageGPATTEqual";
-  char MileageGPATTRange[56]      = "MileageGPATTRange";
-  char GSTDataGPATTOver[56]       = "GSTDataGPATTOver";
-  char GSTDataGPATTUnder[56]      = "GSTDataGPATTUnder[";
-  char GSTDataGPATTEqual[56]      = "GSTDataGPATTEqual";
-  char GSTDataGPATTRange[56]      = "GSTDataGPATTRange";
-  char YawGPATTOver[56]           = "YawGPATTOver";
-  char YawGPATTUnder[56]          = "YawGPATTUnder[";
-  char YawGPATTEqual[56]          = "YawGPATTEqual";
-  char YawGPATTRange[56]          = "YawGPATTRange";
-  char RollGPATTOver[56]          = "RollGPATTOver";
-  char RollGPATTUnder[56]         = "RollGPATTUnder[";
-  char RollGPATTEqual[56]         = "RollGPATTEqual";
-  char RollGPATTRange[56]         = "RollGPATTRange";
-  char PitchGPATTOver[56]         = "PitchGPATTOver";
-  char PitchGPATTUnder[56]        = "PitchGPATTUnder[";
-  char PitchGPATTEqual[56]        = "PitchGPATTEqual";
-  char PitchGPATTRange[56]        = "PitchGPATTRange";
+
+  char INSGPATTEqual[56]          = "INSGPATTEqual";        // specify x (0-1) in matrix. 1 : On, 0 : Off
+
+  char SpeedNumGPATTOver[56]      = "SpeedNumGPATTOver";    // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
+  char SpeedNumGPATTUnder[56]     = "SpeedNumGPATTUnder[";  // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
+  char SpeedNumGPATTEqual[56]     = "SpeedNumGPATTEqual";   // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
+  char SpeedNumGPATTRange[56]     = "SpeedNumGPATTRange";   // specify x (0-99) y (0-99) in matrix. add one each time, return to zero after reaching 99
+
+  char MileageGPATTOver[56]       = "MileageGPATTOver";     // specify x (mileage) in matrix.
+  char MileageGPATTUnder[56]      = "MileageGPATTUnder[";   // specify x (mileage) in matrix.
+  char MileageGPATTEqual[56]      = "MileageGPATTEqual";    // specify x (mileage) in matrix.
+  char MileageGPATTRange[56]      = "MileageGPATTRange";    // specify x (mileage) y (mileage) in matrix.
+
+  char GSTDataGPATTOver[56]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix. satellite accuracy
+  char GSTDataGPATTUnder[56]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix. satellite accuracy
+  char GSTDataGPATTEqual[56]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix. satellite accuracy
+  char GSTDataGPATTRange[56]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix. satellite accuracy
+
+  char YawGPATTOver[56]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix. satellite accuracy
+  char YawGPATTUnder[56]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix. satellite accuracy
+  char YawGPATTEqual[56]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix. satellite accuracy
+  char YawGPATTRange[56]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix. satellite accuracy
+
+  char RollGPATTOver[56]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix. satellite accuracy
+  char RollGPATTUnder[56]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix. satellite accuracy
+  char RollGPATTEqual[56]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix. satellite accuracy
+  char RollGPATTRange[56]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix. satellite accuracy
+
+  char PitchGPATTOver[56]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix. satellite accuracy
+  char PitchGPATTUnder[56]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix. satellite accuracy
+  char PitchGPATTEqual[56]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix. satellite accuracy
+  char PitchGPATTRange[56]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix. satellite accuracy
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                            
@@ -4251,7 +4264,6 @@ void matrixSwitch() {
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.SpeedNumGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.LineFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag), relayData.relays_data[Ri][Fi][0]);}
-        else if (strcmp(relayData.relays[Ri][Fi], relayData.InertialFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_inetial_flag), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.INSGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.RunStateFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.StaticFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag), relayData.relays_data[Ri][Fi][0]);}
