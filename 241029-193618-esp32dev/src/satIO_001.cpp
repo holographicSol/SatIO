@@ -30,7 +30,7 @@
                The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
                is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
                                               projects requiring use of GPS data. 
-                                       Robots and flying machines and everything in between.
+                                          Robots and flying machines and automation.
 
                          The IO is currently simulated as a virtual switch, while the system is being built.
 
