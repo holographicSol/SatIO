@@ -6,7 +6,7 @@
 
                 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
-                  Possible combinations example: 
+                Possible combinations example: 
 
     10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch    20=switches   190=available functions
                                                   (((10^15 * 3) * 10) * 20) ^ 190
