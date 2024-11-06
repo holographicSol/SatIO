@@ -331,7 +331,13 @@ int getCheckSum(char * string) {
   return XOR;
 }
 
+// takes a character representing a hexadecimal digit and returns the decimal equivalent of that digit.
 uint8_t h2d(char hex) {if(hex > 0x39) hex -= 7; return(hex & 0xf);}
+
+/*
+converts each digit it to its decimal equivalent, shifts first digit left by 4 bits and 'ORing' with the second digit.
+The result is a single byte value representing two hexadecimal digits combined.
+*/
 uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
 bool validateChecksum(char * buffer) {
