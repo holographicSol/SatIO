@@ -1436,8 +1436,8 @@ struct RelayStruct {
 
     "ModeGNRMCA",
     "ModeGNRMCD",
-    "ModeGNRMCN",
     "ModeGNRMCE",
+    "ModeGNRMCN",
 
     "LatGNRMCOver",
     "LatGNRMCUnder",
@@ -1518,56 +1518,56 @@ struct RelayStruct {
     "GPATTInvalidCheckData",
 
     "SunAzimuthRange",
-    "SunAltitide",
+    "SunAltitudeRange",
     "DayTime",
     "NightTime",
     "Sunrise",
     "Sunset",
     "MoonAzimuthRange",
-    "MoonAltitide",
+    "MoonAltitudeRange",
     "MoonUp",
     "MoonDown",
     "Moonrise",
     "Moonset",
     "MoonPhase",
     "MercuryAzimuthRange",
-    "MercuryAltitide",
+    "MercuryAltitudeRange",
     "MercuryUp",
     "MercuryDown",
     "MercuryRise",
     "MercurySet",
     "VenusAzimuthRange",
-    "VenusAltitide",
+    "VenusAltitudeRange",
     "VenusUp",
     "VenusDown",
     "VenusRise",
     "VenusSet",
     "MarsAzimuthRange",
-    "MarsAltitide",
+    "MarsAltitudeRange",
     "MarsUp",
     "MarsDown",
     "MarsRise",
     "MarsSet",
     "JupiterAzimuthRange",
-    "JupiterAltitide",
+    "JupiterAltitudeRange",
     "JupiterUp",
     "JupiterDown",
     "JupiterRise",
     "JupiterSet",
     "SaturnAzimuthRange",
-    "SaturnAltitide",
+    "SaturnAltitudeRange",
     "SaturnUp",
     "SaturnDown",
     "SaturnRise",
     "SaturnSet",
     "UranusAzimuthRange",
-    "UranusAltitide",
+    "UranusAltitudeRange",
     "UranusUp",
     "UranusDown",
     "UranusRise",
     "UranusSet",
     "NeptuneAzimuthRange",
-    "NeptuneAltitide",
+    "NeptuneAltitudeRange",
     "NeptuneUp",
     "NeptuneDown",
     "NeptuneRise",
@@ -4189,6 +4189,7 @@ void matrixSwitch() {
         else if (strcmp(relayData.relays[Ri][Fi], relayData.PositioningStatusGNRMCV) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCD) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCE) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.ModeGNRMCN) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
@@ -4196,6 +4197,7 @@ void matrixSwitch() {
 
         else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
+        else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.PitchGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch), relayData.relays_data[Ri][Fi][0], relayData.relays_data[Ri][Fi][1]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0]);}
         else if (strcmp(relayData.relays[Ri][Fi], relayData.RollGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.roll), relayData.relays_data[Ri][Fi][0]);}
