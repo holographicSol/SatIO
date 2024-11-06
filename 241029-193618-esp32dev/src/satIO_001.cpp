@@ -271,13 +271,13 @@ SDCardStruct sdcardData;
 //                                                                                                                   DATA: TIME
 
 struct TimeStruct {
-  unsigned long seconds;
-  unsigned long mainLoopTimeTaken;
-  unsigned long mainLoopTimeStart;
-  unsigned long mainLoopTimeTakenMax;
-  unsigned long mainLoopTimeTakenMin;
-  unsigned long t0;
-  unsigned long t1;
+  unsigned long seconds;               // seconds accumulated since startup 
+  unsigned long mainLoopTimeTaken;     // current main loop time
+  unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
+  unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
+  unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
+  unsigned long t0;                    // micros time 0
+  unsigned long t1;                    // micros time 1
 };
 TimeStruct timeData;
 
