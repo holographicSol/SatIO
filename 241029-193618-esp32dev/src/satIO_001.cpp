@@ -3808,7 +3808,15 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Mi) {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   MATRIX FUNCTIONS: ADVANCED
 
-// build astronomical, ephemeris and other advanced caculations here
+/*
+Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
+           Dec: Declination     (ranges from -90 to 90 degrees)
+           Az:  Azimuth         (ranges from 0 to 360 degrees)
+           Alt: Altitude        (ranges from -90 to 90 degrees)
+           R:   Rise            (time)
+           S:   Set             (time)
+           P:   Phase
+*/
 
 struct SiderealPlantetsStruct {
   long sun_ra;
