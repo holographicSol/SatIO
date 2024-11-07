@@ -2245,8 +2245,8 @@ struct SatDatatruct {
   char lt_second[56];                 // last second satellite count > zero
   char lt_millisecond[56];            // last millisecond satellite count > zero
 
-  char hours_minutes[56];
-  char day_of_the_week_name[56];
+  char hours_minutes[56];             // current hours.minutes in format hh.mm
+  char day_of_the_week_name[56];      // current weekday name
 };
 SatDatatruct satData;
 
