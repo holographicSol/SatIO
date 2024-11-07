@@ -3795,7 +3795,7 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(unsigned long n0, unsigned long n1, int Mi) {
-  // (requires maintenace now that the main loop time is measured in micros and now that this system is multitasking)
+  // currently requiress main loop time is <1sec
   // max seconds 18446744073709551616 (584942417355.07202148 years)
   // n0: interval
   // n1: on time
