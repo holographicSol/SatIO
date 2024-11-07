@@ -2337,7 +2337,7 @@ void calculateLocation(){
 char digitsnew[56];
 char current_digits[56];
 
-String printDigits(int digits) {
+String padDigitsZero(int digits) {
   /* preappends char 0 to pad datetime strings evenly */
   memset(digitsnew, 0, sizeof(digitsnew));
   memset(current_digits, 0, sizeof(current_digits));
@@ -2413,27 +2413,27 @@ void buildSatIOSentence() {
 
   // update year
   memset(satData.year, 0, sizeof(satData.year));
-  strcat(satData.year, printDigits(year()).c_str());
+  strcat(satData.year, padDigitsZero(year()).c_str());
 
   // update month
   memset(satData.month, 0, sizeof(satData.month));
-  strcat(satData.month, printDigits(month()).c_str());
+  strcat(satData.month, padDigitsZero(month()).c_str());
 
   // update day
   memset(satData.day, 0, sizeof(satData.day));
-  strcat(satData.day, printDigits(day()).c_str());
+  strcat(satData.day, padDigitsZero(day()).c_str());
 
   // update hour
   memset(satData.hour, 0, sizeof(satData.hour));
-  strcat(satData.hour, printDigits(hour()).c_str());
+  strcat(satData.hour, padDigitsZero(hour()).c_str());
 
   // update minute
   memset(satData.minute, 0, sizeof(satData.minute));
-  strcat(satData.minute, printDigits(minute()).c_str());
+  strcat(satData.minute, padDigitsZero(minute()).c_str());
 
   // update second
   memset(satData.second, 0, sizeof(satData.second));
-  strcat(satData.second, printDigits(second()).c_str());
+  strcat(satData.second, padDigitsZero(second()).c_str());
 
   // update millisecond
   memset(satData.millisecond, 0, sizeof(satData.millisecond));
