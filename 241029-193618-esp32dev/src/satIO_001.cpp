@@ -45,20 +45,22 @@
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    LIBRARIES
-#include <Arduino.h>
+
 #include <stdio.h>
-#include <string.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <XPT2046_Bitbang.h>
-#include <TFT_eSPI.h>
-#include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
-#include <SiderealObjects.h>
 #include "FS.h"
 #include "SD.h"
+#include <SPI.h>
+#include <string.h>
 #include <iostream>
-#include <Timezone.h>   // https://github.com/JChristensen/Timezone
-#include <TimeLib.h>    // https://github.com/PaulStoffregen/Time
+#include <Arduino.h>
+#include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
+#include <Timezone.h>         // https://github.com/JChristensen/Timezone
+#include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
+#include <XPT2046_Bitbang.h>  // https://github.com/ddxfish/XPT2046_Bitbang_Arduino_Library/
+#include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
+#include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
+
+
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         PINS
