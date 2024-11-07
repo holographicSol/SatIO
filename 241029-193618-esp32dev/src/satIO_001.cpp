@@ -2248,8 +2248,8 @@ struct SatDatatruct {
   char hours_minutes[56];             // current hours.minutes in format hh.mm
   char day_of_the_week_name[56];      // current weekday name
 
-  char pad_digits_new[56];
-  char pad_current_digits[56];
+  char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
+  char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
 };
 SatDatatruct satData;
 
