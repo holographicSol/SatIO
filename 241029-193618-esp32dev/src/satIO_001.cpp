@@ -2193,60 +2193,57 @@ struct SatDatatruct {
   double secondsLong;                                               // used for converting absolute latitude and longitude
   double millisecondsLat;                                           // used for converting absolute latitude and longitude
   double millisecondsLong;                                          // used for converting absolute latitude and longitude
-  // todo: fully integrate utc offset into SatIO datetime
-  // timezones and daylight saving are subject to geopolitics are therefore subject to change. it may be preferrable to set offset manually, and an automatic option might be added but may be unpreferrable.
-  // this system intends to be correct regardless of geopolitical variables, by illiminating those variables. this allows the systems data to be objectively correct long into the future. no maps, no geopolitics.
-  signed int utc_offset = 0;          // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
-  bool utc_offset_flag = 0;    // 0: add hours to time, 1: deduct hours from time
 
-  int year_int;
-  int month_int;
-  int day_int;
-  int hour_int;
-  int minute_int;
-  int second_int;
-  int millisecond_int;
+  signed int utc_offset = 0;          // can be used to offset hours (+/-) from UTC, to account for daylight saving and ot timezones.
+  bool utc_offset_flag = 0;           // 0: add hours to time; 1: deduct hours from time
+
+  int year_int;                       // current year
+  int month_int;                      // current month
+  int day_int;                        // current day
+  int hour_int;                       // current hour
+  int minute_int;                     // current minute
+  int second_int;                     // current second
+  int millisecond_int;                // current millisecond
   
-  char year_prefix[56] = "20"; // inline with trying to keep everything simple, this value is intended to require one ammendment every 100 years.
-  char year[56];
-  char month[56];
-  char day[56];
-  char hour[56];
-  char minute[56];
-  char second[56];
-  char millisecond[56];
+  char year[56];                      // current year
+  char month[56];                     // current month
+  char day[56];                       // current day
+  char hour[56];                      // current hour
+  char minute[56];                    // current minute
+  char second[56];                    // current second
+  char millisecond[56];               // current millisecond
 
-  int tmp_year_int;
-  int tmp_month_int;
-  int tmp_day_int;
-  int tmp_hour_int;
-  int tmp_minute_int;
-  int tmp_second_int;
-  int tmp_millisecond_int;
+  int tmp_year_int;                   // temp current year
+  int tmp_month_int;                  // temp current month
+  int tmp_day_int;                    // temp current day
+  int tmp_hour_int;                   // temp current hour
+  int tmp_minute_int;                 // temp current minute
+  int tmp_second_int;                 // temp current second
+  int tmp_millisecond_int;            // temp current millisecond
 
-  char tmp_year[56];
-  char tmp_month[56];
-  char tmp_day[56];
-  char tmp_hour[56];
-  char tmp_minute[56];
-  char tmp_second[56];
-  char tmp_millisecond[56];
+  char tmp_year[56];                  // temp current year
+  char tmp_month[56];                 // temp current month
+  char tmp_day[56];                   // temp current day
+  char tmp_hour[56];                  // temp current hour
+  char tmp_minute[56];                // temp current minute
+  char tmp_second[56];                // temp current second
+  char tmp_millisecond[56];           // temp current millisecond
 
-  int lt_year_int;
-  int lt_month_int;
-  int lt_day_int;
-  int lt_hour_int;
-  int lt_minute_int;
-  int lt_second_int;
-  int lt_millisecond_int;
+  int lt_year_int;                    // last year satellite count > zero
+  int lt_month_int;                   // last month satellite count > zero
+  int lt_day_int;                     // last day satellite count > zero
+  int lt_hour_int;                    // last hour satellite count > zero
+  int lt_minute_int;                  // last minute satellite count > zero
+  int lt_second_int;                  // last second satellite count > zero
+  int lt_millisecond_int;             // last millisecond satellite count > zero
 
-  char lt_year[56];
-  char lt_month[56];
-  char lt_day[56];
-  char lt_hour[56];
-  char lt_minute[56];
-  char lt_second[56];
-  char lt_millisecond[56];
+  char lt_year[56];                   // last year satellite count > zero
+  char lt_month[56];                  // last month satellite count > zero
+  char lt_day[56];                    // last day satellite count > zero
+  char lt_hour[56];                   // last hour satellite count > zero
+  char lt_minute[56];                 // last minute satellite count > zero
+  char lt_second[56];                 // last second satellite count > zero
+  char lt_millisecond[56];            // last millisecond satellite count > zero
 
   char hours_minutes[56];
   char day_of_the_week_name[56];
@@ -2333,7 +2330,6 @@ void calculateLocation(){
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SATIO SENTENCE
 
-char digitize[56];
 char digitsnew[56];
 char current_digits[56];
 
@@ -2813,15 +2809,6 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println("");
 
     memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "YEAR_PREFIX,");
-    strcat(sdcardData.file_data, satData.year_prefix);
-    strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "TRACK_SUN,");
     itoa(systemData.sidereal_track_sun, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3115,16 +3102,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           if (is_all_digits(sdcardData.token) == true) {
             Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {satData.utc_offset_flag = false;} else {satData.utc_offset_flag = true;}
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "YEAR_PREFIX", strlen("YEAR_PREFIX")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
-            memset(satData.year_prefix, 0, 256);
-            strcat(satData.year_prefix, sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN")) == 0) {
@@ -6107,10 +6084,6 @@ bool DisplaySettingsTime() {
     }
     if (i==1) {
       DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));
-    }
-    // if (i==2) {
-    //   DisplayPlusMinus(170, 43+i*20, String(satData.year_prefix), String(""));
-    // }
     }
     return true;
   }
