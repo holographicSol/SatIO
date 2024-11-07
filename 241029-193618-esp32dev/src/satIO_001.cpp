@@ -5954,7 +5954,7 @@ void DisplayGeneralTitleBar(String v0) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TOUCH TITLEBAR
+//                                                                                                           TOUCHSCREEN TITLEBAR
 
 bool isTouchTitleBar(TouchPoint p) {
   // choose where home button will be registered
@@ -6124,7 +6124,7 @@ bool DisplayPage0() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   TOUCH PAGE 0
+//                                                                                                             TOUCHSCREEN PAGE 0
 
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6183,7 +6183,7 @@ bool DisplayPage1() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   TOUCH PAGE 1
+//                                                                                                             TOUCHSCREEN PAGE 1
 
 bool isTouchPage1(TouchPoint p) {
   /*
@@ -6307,7 +6307,7 @@ bool DisplaySelectMatrixFunction() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          TOUCH MATRIX FUNCTION
+//                                                                                                    TOUCHSCREEN MATRIX FUNCTION
 
 bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6415,7 +6415,7 @@ bool DisplayNumpad() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   TOUCH NUMPAD
+//                                                                                                             TOUCHSCREEN NUMPAD
 
 bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6492,6 +6492,9 @@ bool isTouchNumpad(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                     DISPLAY MAIN SETTINGS MENU
+
 bool DisplaySettingsMenu() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
@@ -6510,6 +6513,9 @@ bool DisplaySettingsMenu() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                 TOUCHSCREEN MAIN SETTINGS MENU
 
 bool isDisplaySettingsMenu(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6530,6 +6536,9 @@ bool isDisplaySettingsMenu(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY SYSTEM SETTINGS
+
 bool DisplaySettingsSystem() {
   if (menuData.page == 4) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -6548,6 +6557,8 @@ bool DisplaySettingsSystem() {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                    TOUCHSCREEN SYSTEM SETTINGS
 bool isDisplaySettingsSystem(TouchPoint p) {
   if (menuData.page == 4) {
     // select list column item
@@ -6563,6 +6574,9 @@ bool isDisplaySettingsSystem(TouchPoint p) {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY MATRIX SETTINGS
 
 bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
@@ -6648,6 +6662,9 @@ bool DisplaySettingsMatrix() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                    TOUCHSCREEN MATRIX SETTINGS
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
@@ -6755,6 +6772,9 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                           DISPLAY GPS SETTINGS
+
 bool DisplaySettingsGPS() {
   if (menuData.page == 6) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -6777,6 +6797,9 @@ bool DisplaySettingsGPS() {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       TOUCHSCREEN GPS SETTINGS
+
 bool isDisplaySettingsGPS(TouchPoint p) {
   if (menuData.page == 6) {
     // select list column item
@@ -6796,6 +6819,9 @@ bool isDisplaySettingsGPS(TouchPoint p) {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY SERIAL SETTINGS
 
 bool DisplaySettingsSerial() {
   if (menuData.page == 7) {
@@ -6820,6 +6846,9 @@ bool DisplaySettingsSerial() {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                    TOUCHSCREEN SERIAL SETTINGS
+
 bool isDisplaySettingsSerial(TouchPoint p) {
   if (menuData.page == 7) {
     // select list column item
@@ -6840,6 +6869,9 @@ bool isDisplaySettingsSerial(TouchPoint p) {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY FILE SETTINGS
 
 bool DisplaySettingsFile() {
   if (menuData.page == 8) {
@@ -6873,6 +6905,9 @@ bool DisplaySettingsFile() {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                      TOUCHSCREEN FILE SETTINGS
+
 bool isDisplaySettingsFile(TouchPoint p) {
   if (menuData.page == 8) {
     // select list column item
@@ -6898,6 +6933,9 @@ bool isDisplaySettingsFile(TouchPoint p) {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            DISPLAY SAVE MATRIX
 
 bool DisplaySettingsSaveMatrix() {
   if (menuData.page == 400) {
@@ -6925,6 +6963,9 @@ bool DisplaySettingsSaveMatrix() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        TOUCHSCREEN SAVE MATRIX
 
 bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   if (menuData.page == 400) {
@@ -6976,6 +7017,9 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            DISPLAY LOAD MATRIX
+
 bool DisplaySettingsLoadMatrix() {
   if (menuData.page == 401) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -7003,6 +7047,9 @@ bool DisplaySettingsLoadMatrix() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        TOUCHSCREEN LOAD MATRIX
 
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   if (menuData.page == 401) {
@@ -7042,6 +7089,9 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY DELETE MATRIX
+
 bool DisplaySettingsDeleteMatrix() {
   if (menuData.page == 402) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -7069,6 +7119,9 @@ bool DisplaySettingsDeleteMatrix() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                      TOUCHSCREEN DELETE MATRIX
 
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   if (menuData.page == 402) {
@@ -7108,6 +7161,9 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY TIME SETTINGS
+
 bool DisplaySettingsTime() {
   if (menuData.page == 9) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -7128,6 +7184,9 @@ bool DisplaySettingsTime() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                      TOUCHSCREEN TIME SETTINGS
 
 bool isDisplaySettingsTime(TouchPoint p) {
   if (menuData.page == 9) {
@@ -7155,6 +7214,9 @@ bool isDisplaySettingsTime(TouchPoint p) {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY SETTINGS
 
 bool DisplaySettingsDisplay() {
   if (menuData.page == 10) {
@@ -7194,6 +7256,9 @@ bool DisplaySettingsDisplay() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                   TOUCHSCREEN DISPLAY SETTINGS
 
 bool isDisplaySettingsDisplay(TouchPoint p) {
   if (menuData.page == 10) {
@@ -7268,6 +7333,9 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY PLANET SETTINGS
+
 bool SiderealPlanetsSettings() {
   if (menuData.page == 11) {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
@@ -7294,6 +7362,9 @@ bool SiderealPlanetsSettings() {
   }
   else {return false;}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                    TOUCHSCREEN PLANET SETTINGS
 
 bool isSiderealPlanetsSettings(TouchPoint p) {
   if (menuData.page == 11) {
