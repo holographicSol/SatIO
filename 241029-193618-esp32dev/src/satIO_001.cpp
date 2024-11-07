@@ -83,9 +83,7 @@ XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 //                                                                                                                      DISPLAY
 
 TFT_eSPI tft = TFT_eSPI();
-
 TFT_eSPI_Button key[6];
-
 TFT_eSprite hud = TFT_eSprite(&tft);
 
 
