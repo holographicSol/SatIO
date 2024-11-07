@@ -3547,6 +3547,7 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
 //                                                                                                            MATRIX: SET ENTRY
 
 /*
+updates a matrix entry over serial.
 example test command: $MATRIX_SET_ENTRY,0,0,SatelliteCountOver,1,0,0
 */
 
@@ -3599,6 +3600,10 @@ void matrix_object_set_entry() {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                 MATRIX: ENABLE/DISABLE ENTRY
+
+/*
+updates a matrix entry over serial.
+*/
 
 void matriobject_set_enabled(bool b) {
   Serial.println("[matriobject_set_enabled] connected");
