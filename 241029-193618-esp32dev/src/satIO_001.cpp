@@ -32,7 +32,7 @@
            Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
                      where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
                making a foundation for other creative projects that may make use of such satellite and or inertial data.
-               The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
+                   The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
                is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
                                                 projects requiring use of GPS data. 
                                             Robots and flying machines and automation.
