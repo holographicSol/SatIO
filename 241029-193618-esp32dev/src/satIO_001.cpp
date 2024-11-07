@@ -6248,6 +6248,9 @@ bool isTouchPage1(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                DISPLAY PRIMARY VERTICAL SCROLL
+
 void DisplayVerticalScroll() {
   // scroll buttons
   hud.fillRect(0, 23, 150, 16, TFTOBJ_COL0);
@@ -6259,6 +6262,9 @@ void DisplayVerticalScroll() {
   hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
   hud.drawString(String("DOWN")+String(""), 250, 32);
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY ITERATION BOX
 
 void DisplayPlusMinus(int x, int y, String v0, String v1) {
   // minus
