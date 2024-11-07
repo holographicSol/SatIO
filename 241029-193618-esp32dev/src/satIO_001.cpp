@@ -4462,6 +4462,8 @@ void matrixSwitch() {
         /*
         WARNING: why do you think you can trust the data you are receiving?
                  once you plug something into this, the 'satellites' are in control unless you have a way to override.
+
+                 critical systems: arduino is not medical or military grade.
         */
 
         // debug (same as line below but with output)
