@@ -5583,23 +5583,23 @@ void readGPS() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 STATS COUNTERS
 
-void countmatrixEnabled(){
+void CountMatrixEnabled(){
   matrixData.matrix_enabled_i = 0;
   matrixData.matrix_disabled_i = 0;
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}}
 }
 
-void countmatrixActive(){
+void CountMatrixActive(){
   matrixData.matrix_active_i = 0;
   matrixData.matrix_inactive_i = 0;
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
 }
 
-void CountElements() {
-  countmatrixEnabled();
-  countmatrixActive();
+void MatrixStatsCounter() {
+  CountMatrixEnabled();
+  CountMatrixActive();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7626,7 +7626,7 @@ void loop() {
   satIOData();
   trackPlanets();
   MatrixSwitchTask();
-  CountElements();
+  MatrixStatsCounter();
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
