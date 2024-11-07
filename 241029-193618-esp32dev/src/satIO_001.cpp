@@ -2259,6 +2259,7 @@ void calculateLocation(){
 
   if (String(satData.coordinate_conversion_mode) == "GNGGA") {
     // convert GNGGA latitude
+    satData.abs_latitude_gngga_0 = atof(String(gnggaData.latitude).c_str());
     satData.temp_latitude_gngga = satData.abs_latitude_gngga_0;
     satData.degreesLat = trunc(satData.temp_latitude_gngga / 100);
     satData.minutesLat = satData.temp_latitude_gngga - (satData.degreesLat * 100);
@@ -2274,6 +2275,7 @@ void calculateLocation(){
     scanf("%f17", &satData.location_latitude_gngga);
     sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
     // convert GNGGA longitude
+    satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
     satData.temp_longitude_gngga = satData.abs_longitude_gngga_0;
     satData.degreesLong = trunc(satData.temp_longitude_gngga / 100);
     satData.minutesLong = satData.temp_longitude_gngga - (satData.degreesLong * 100);
@@ -2295,6 +2297,7 @@ void calculateLocation(){
 
   else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
     // convert GNRMC latitude
+    satData.abs_latitude_gnrmc_0 = atof(String(gnrmcData.latitude).c_str());
     satData.temp_latitude_gnrmc = satData.abs_latitude_gnrmc_0;
     satData.degreesLat = trunc(satData.temp_latitude_gnrmc / 100);
     satData.minutesLat = satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
@@ -2310,6 +2313,7 @@ void calculateLocation(){
     scanf("%f17", &satData.location_latitude_gnrmc);
     sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
     // convert GNRMC longitude
+    satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
     satData.temp_longitude_gnrmc = satData.abs_longitude_gnrmc_0;
     satData.degreesLong = trunc(satData.temp_longitude_gnrmc / 100);
     satData.minutesLong = satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
@@ -2343,7 +2347,7 @@ String printDigits(int digits) {
   return digitsnew;
 }
 
-void extrapulatedSatData() {
+void buildSatIOSentence() {
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           EXTRAPULATE DATA
@@ -2526,18 +2530,6 @@ void extrapulatedSatData() {
 
   // coordinate conversion mode
   if (satData.convert_coordinates == true) {
-    // convert from GNGGA
-    if (String(satData.coordinate_conversion_mode) == "GNGGA") {
-      satData.abs_latitude_gngga_0 = atof(String(gnggaData.latitude).c_str());
-      satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
-    }
-    // convert from GNRMC
-    else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
-      satData.abs_latitude_gnrmc_0 = atof(String(gnrmcData.latitude).c_str());
-      satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
-    }
-    // convert coordinates to decimal
-    calculateLocation();
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
       // append to satio sentence
       strcat(satData.satio_sentence, satData.location_latitude_gngga_str);
@@ -2555,9 +2547,6 @@ void extrapulatedSatData() {
   }
   else {strcat(satData.satio_sentence, "0.0,0.0,");}
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                       SATIO SENTENCE: END
-
   // finally append checksum to satio sentence
   strcat(satData.satio_sentence, "*");
   satData.checksum_i = getCheckSum(satData.satio_sentence);
@@ -2565,7 +2554,6 @@ void extrapulatedSatData() {
   strcat(satData.satio_sentence, satData.checksum_str);
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
 
-  // delay(1000);
   }
 
 
@@ -4665,7 +4653,8 @@ void MatrixSwitchTask() {
 //                                                                                                                 TASK: SATIO
 
 void getSATIOData() {
-  if (systemData.satio_enabled == true) {extrapulatedSatData();}
+  if (satData.convert_coordinates == true) {calculateLocation();}
+  if (systemData.satio_enabled == true) {buildSatIOSentence();}
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -6079,13 +6068,10 @@ bool DisplaySettingsTime() {
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
-    if (i==0) {
-      DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));
-    }
-    if (i==1) {
-      DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));
-    }
+    if (i==0) {DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));}
+    if (i==1) {DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
     return true;
+    }
   }
   else {return false;}
 }
