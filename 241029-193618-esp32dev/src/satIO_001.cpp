@@ -2347,11 +2347,10 @@ String padDigitsZero(int digits) {
   return satData.pad_digits_new;
 }
 
-void buildSatIOSentence() {
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         CONVERT UTC TO LOCAL
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                           EXTRAPULATE DATA
-
+void convertUTCToLocal() {
   // temporary char time values
   char temp_sat_time_stamp_string[56];
   memset(temp_sat_time_stamp_string, 0, 56);
@@ -2487,14 +2486,12 @@ void buildSatIOSentence() {
   // append temporary string to actual sat time char array
   memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
   strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
+}
 
-  // start building satio sentence
-  memset(satData.satio_sentence, 0, 1024);
-  strcat(satData.satio_sentence, satData.satDataTag);
-  strcat(satData.satio_sentence, ",");
-  strcat(satData.satio_sentence, satData.sat_time_stamp_string);
-  strcat(satData.satio_sentence, ",");
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                      SET LAST SATELLITE TIME
 
+void setLastSatelliteTime() {
   // update last time satellite count > zero
   if (atoi(gnggaData.satellite_count_gngga) > 0) {
     // update sentence
@@ -2522,8 +2519,21 @@ void buildSatIOSentence() {
     satData.lt_minute_int = satData.minute_int;
     satData.lt_second_int = satData.second_int;
     satData.lt_millisecond_int = satData.millisecond_int;
-
   }
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         BUILD SATIO SENTENCE
+
+void buildSatIOSentence() {
+
+  // start building satio sentence
+  memset(satData.satio_sentence, 0, 1024);
+  strcat(satData.satio_sentence, satData.satDataTag);
+  strcat(satData.satio_sentence, ",");
+  strcat(satData.satio_sentence, satData.sat_time_stamp_string);
+  strcat(satData.satio_sentence, ",");
+
   // append to satio sentence
   strcat(satData.satio_sentence, satData.last_sat_time_stamp_str);
   strcat(satData.satio_sentence, ",");
@@ -4654,6 +4664,8 @@ void MatrixSwitchTask() {
 
 void getSATIOData() {
   if (satData.convert_coordinates == true) {calculateLocation();}
+  convertUTCToLocal();
+  setLastSatelliteTime();
   if (systemData.satio_enabled == true) {buildSatIOSentence();}
 }
 
