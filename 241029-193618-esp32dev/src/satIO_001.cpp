@@ -2655,6 +2655,9 @@ void buildSatIOSentence() {
 //                                                                                                           SDCARD: INITIALIZE
 
 void init_sdcard() {
+
+  /* basic sdcard initialization. todo: make some bool of initialization results */
+
   if (!SD.begin(SS, sdspi, 80000000)) {
     Serial.println("Card Mount Failed");
   }
