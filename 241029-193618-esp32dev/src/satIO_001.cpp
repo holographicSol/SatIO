@@ -2611,6 +2611,9 @@ void setLastSatelliteTime() {
 //                                                                                                         BUILD SATIO SENTENCE
 
 void buildSatIOSentence() {
+
+  /* create a comma delimited sentence of new data, to print over serial that can be parsed by other systems */
+
   // start building satio sentence
   memset(satData.satio_sentence, 0, 1024);
   strcat(satData.satio_sentence, satData.satDataTag);
