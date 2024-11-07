@@ -2247,6 +2247,9 @@ struct SatDatatruct {
 
   char hours_minutes[56];             // current hours.minutes in format hh.mm
   char day_of_the_week_name[56];      // current weekday name
+
+  char pad_digits_new[56];
+  char pad_current_digits[56];
 };
 SatDatatruct satData;
 
@@ -2334,17 +2337,14 @@ void calculateLocation(){
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SATIO SENTENCE
 
-char digitsnew[56];
-char current_digits[56];
-
 String padDigitsZero(int digits) {
   /* preappends char 0 to pad datetime strings evenly */
-  memset(digitsnew, 0, sizeof(digitsnew));
-  memset(current_digits, 0, sizeof(current_digits));
-  if(digits < 10) {strcat(digitsnew, "0");}
-  itoa(digits, current_digits, 10);
-  strcat(digitsnew, current_digits);
-  return digitsnew;
+  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
+  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
+  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
+  itoa(digits, satData.pad_current_digits, 10);
+  strcat(satData.pad_digits_new, satData.pad_current_digits);
+  return satData.pad_digits_new;
 }
 
 void buildSatIOSentence() {
