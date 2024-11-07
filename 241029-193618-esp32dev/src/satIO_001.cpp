@@ -2338,7 +2338,7 @@ void calculateLocation(){
 //                                                                                                               SATIO SENTENCE
 
 String padDigitsZero(int digits) {
-  /* preappends char 0 to pad datetime strings evenly */
+  /* preappends char 0 to pad string digits evenly */
   memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
   memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
   if(digits < 10) {strcat(satData.pad_digits_new, "0");}
@@ -2566,7 +2566,6 @@ void buildSatIOSentence() {
 
   }
 
-
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           SDCARD: INITIALIZE
 
@@ -2744,7 +2743,6 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
-
 
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "OUTPUT_SATIO_SENTENCE,");
