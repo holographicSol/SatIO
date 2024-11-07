@@ -2408,7 +2408,7 @@ void calculateLocation(){
 //                                                                                                               SATIO SENTENCE
 
 String padDigitsZero(int digits) {
-  /* preappends char 0 to pad string digits evenly */
+  /* preappends char 0 to pad string of digits evenly */
   memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
   memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
   if(digits < 10) {strcat(satData.pad_digits_new, "0");}
@@ -2421,7 +2421,8 @@ String padDigitsZero(int digits) {
 //                                                                                                         CONVERT UTC TO LOCAL
 
 void convertUTCToLocal() {
-  // temporary char time values
+
+  // temporary char time values so that we do not disturb the primary values while converting.
   char temp_sat_time_stamp_string[56];
   memset(temp_sat_time_stamp_string, 0, 56);
   strcat(temp_sat_time_stamp_string, gnrmcData.utc_date);
@@ -2447,9 +2448,11 @@ void convertUTCToLocal() {
   memset(satData.tmp_millisecond, 0, 56);
   strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[13], 1);
   strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[14], 1);
+
+  // uncomment to debug
   // Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
 
-  // temporary int time values
+  // temporary int time values so that we do not disturb the primary values while converting.
   satData.tmp_day_int = atoi(satData.tmp_day);
   satData.tmp_month_int = atoi(satData.tmp_month);
   satData.tmp_year_int = atoi(satData.tmp_year);
@@ -2458,7 +2461,7 @@ void convertUTCToLocal() {
   satData.tmp_second_int = atoi(satData.tmp_second);
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
-  // uncomment to debug before converting UTC date and time to UTC offset date and time (compare to after, below)
+  // uncomment to debug before conversion
   // Serial.print("utc int:              ");
   // Serial.print(satData.tmp_hour_int);
   // Serial.print(":"); Serial.print(satData.tmp_minute_int);
@@ -2469,7 +2472,7 @@ void convertUTCToLocal() {
   // Serial.print("."); Serial.print(satData.tmp_year_int);
   // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
 
-  // set time to cached time elements (pass through 2 digit year)
+  // set time using time elements with 2 digit year
   setTime(
     satData.tmp_hour_int,
     satData.tmp_minute_int,
@@ -2478,8 +2481,10 @@ void convertUTCToLocal() {
     satData.tmp_month_int,
     satData.tmp_year_int);
 
-  // set elements to time return functions
+  // set elements as time return functions
   tmElements_t tm_return = {second(), minute(), hour(), weekday(), day(), month(), year()};
+
+  // return time
   time_t current_local_time = makeTime(tm_return);
 
   // adjust UTC time according to UTC offset
@@ -2562,7 +2567,7 @@ void convertUTCToLocal() {
   strcat(temp_sat_time_stamp_string, ".");
   strcat(temp_sat_time_stamp_string, satData.millisecond);
 
-  // append temporary string to actual sat time char array
+  // copy temporary time stamp string to actual time stamp string
   memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
   strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
 }
