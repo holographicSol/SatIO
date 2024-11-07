@@ -2581,7 +2581,7 @@ void setLastSatelliteTime() {
     // update sentence
     memset(satData.last_sat_time_stamp_str, 0, 56);
     strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
-    // update elements
+    // update char elements
     memset(satData.lt_year, 0, 56);
     strcat(satData.lt_year, satData.year);
     memset(satData.lt_month, 0, 56);
@@ -2596,6 +2596,7 @@ void setLastSatelliteTime() {
     strcat(satData.lt_second, satData.second);
     memset(satData.lt_millisecond, 0, 56);
     strcat(satData.lt_millisecond, satData.millisecond);
+    // update int elements
     satData.lt_year_int = satData.year_int;
     satData.lt_month_int = satData.month_int;
     satData.lt_day_int = satData.day_int;
