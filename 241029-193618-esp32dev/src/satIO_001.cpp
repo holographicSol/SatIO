@@ -4653,23 +4653,6 @@ void readGPS() {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          TASK: MATRIX SWITCH
-
-void MatrixSwitchTask() {
-  if (systemData.matrix_enabled == true) {matrixSwitch();}
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TASK: SATIO
-
-void getSATIOData() {
-  if (satData.convert_coordinates == true) {calculateLocation();}
-  convertUTCToLocal();
-  setLastSatelliteTime();
-  if (systemData.satio_enabled == true) {buildSatIOSentence();}
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       TASK: ELEMENTS COUNTER
 
 void countmatrixEnabled(){
@@ -6420,22 +6403,18 @@ void setup() {
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: DISPLAY
 
-  // Start the SPI for the touch screen and init the TS library
-  ts.begin();
-  // Start the tft display and set it to black
-  tft.init();
-  // Setting up the LEDC and configuring the Back light pin
-  // NOTE: this needs to be done after tft.init()
-  #if ESP_IDF_VERSION_MAJOR == 5
+  ts.begin();  // start the SPI for the touch screen and init the TS library
+  tft.init();  // start the tft display and set it to black
+  
+  #if ESP_IDF_VERSION_MAJOR == 5  // setup up LEDC, configuring backlight pin. NOTE: this needs to be done after tft.init()
     ledcAttach(LCD_BACK_LIGHT_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
   #else
     ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
     ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
   #endif
-  // set display rotation as landscape
-  tft.setRotation(1); //This is the display in landscape
-  // Clear the screen before writing to it
-  tft.fillScreen(BG_COL_0);
+
+  tft.setRotation(1);        // this is the display in landscape
+  tft.fillScreen(BG_COL_0);  // clear screen before writing to it
   tft.setFreeFont(FONT5X7_H);
   ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
@@ -6490,6 +6469,23 @@ void setup() {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                MATRIX SWITCH
+
+void MatrixSwitchTask() {
+  if (systemData.matrix_enabled == true) {matrixSwitch();}
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   SATIO DATA
+
+void satIOData() {
+  if (satData.convert_coordinates == true) {calculateLocation();}
+  convertUTCToLocal();
+  setLastSatelliteTime();
+  if (systemData.satio_enabled == true) {buildSatIOSentence();}
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MAIN LOOP
 
 void loop() {
@@ -6500,7 +6496,7 @@ void loop() {
   // for now serial commands are disabled for SatIO on CYD.
   // readSerialCommands();
   readGPS();
-  getSATIOData();
+  satIOData();
   trackPlanets();
   MatrixSwitchTask();
   CountElements();
