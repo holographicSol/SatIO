@@ -4727,6 +4727,7 @@ void matrixSwitch() {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
+          
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCRange) == 0) {
           tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
