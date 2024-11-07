@@ -2,6 +2,8 @@
 
                                         SatIO - Written by Benjamin Jack Cullen.
 
+                                                   "The GPS MAster"
+
                               A general purpose programmable satellite and inertial switch.
 
                                       SatIO is the system, a matrix is the program.
