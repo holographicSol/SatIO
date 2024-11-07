@@ -6065,8 +6065,8 @@ bool DisplaySettingsTime() {
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     if (i==0) {DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));}
     if (i==1) {DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
-    return true;
     }
+    return true;
   }
   else {return false;}
 }
