@@ -1,46 +1,46 @@
 /*
 
-                                           SatIO - Written by Benjamin Jack Cullen.
+                                        SatIO - Written by Benjamin Jack Cullen.
 
-                                  A general purpose programmable satellite and inertial switch.
+                              A general purpose programmable satellite and inertial switch.
 
-                                          SatIO is the system, a matrix is the program.
+                                      SatIO is the system, a matrix is the program.
 
-                Receives and Processes Transmissions from Satellites and makes the data available for calculations.
+            Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
-                Possible combinations example: 
+            Possible combinations example: 
 
-    10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch    20=switches   190=available functions
-                                                  (((10^15 * 3) * 10) * 20) ^ 190
+10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch    20=switches   190=available functions
+                                              (((10^15 * 3) * 10) * 20) ^ 190
 
-            Currently there are over 200 different checks that can be performed using just several small primitive functions and
-             currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
-                                      
-                                            Wiring For ESP32-2432S028 development board (CYD)
-                  
-                      WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+        Currently there are over 200 different checks that can be performed using just several small primitive functions and
+          currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+                                  
+                                        Wiring For ESP32-2432S028 development board (CYD)
+              
+                  WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
 
-                                                           SENTENCE $SATIO
-                                                                                    
-                            START Tag                Last Sat Time                    Converted Longitude        
-                              |                   |               |                   |               |                  
-                            $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
-                                  |               |               |                 |                              
-                                    DatetimeStamp                  Converted Latitude                                 
+                                                        SENTENCE $SATIO
+                                                                                
+                        START Tag                Last Sat Time                    Converted Longitude        
+                          |                   |               |                   |               |                  
+                        $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
+                              |               |               |                 |                              
+                                DatetimeStamp                  Converted Latitude                                 
 
 
-           Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
-                     where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
-               making a foundation for other creative projects that may make use of such satellite and or inertial data.
-                   The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
-               is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
-                                                projects requiring use of GPS data. 
-                                            Robots and flying machines and automation.
+        Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
+                  where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
+            making a foundation for other creative projects that may make use of such satellite and or inertial data.
+                The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
+            is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
+                                            projects requiring use of GPS data. 
+                                        Robots and flying machines and automation.
 
-                         The IO is currently simulated as a virtual switch, while the system is being built.
+                      The IO is currently simulated as a virtual switch, while the system is being built.
 
-               Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-                    of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
+            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -128,12 +128,12 @@ SPIClass sdspi = SPIClass(VSPI);
 //                                                                                                                 DATA: SYSTEM
 
 struct systemStruct {
-  bool satio_enabled = true;           // enables/disables new data being extrapulated from existing GPS data (coordinate degrees, etc)
+  bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
   bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
   bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
   bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
   bool matrix_enabled = false;         // enables/disables matrix switch
-  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file (default: false)
+  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
   bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
   bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
@@ -406,7 +406,8 @@ bool is_positive_negative_num(char * data) {
   validData.valid_b = true;
   validData.find_char = strchr(data, '.');
   validData.index = (int)(validData.find_char - data);
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {if (i != validData.index) {if ((data[i] != '-') && (i > 0)) {validData.valid_b = false;}}}}
+  for (int i = 0; i < strlen(data); i++) {
+    if (isdigit(data[i]) == 0) {if (i != validData.index) {if ((data[i] != '-') && (i > 0)) {validData.valid_b = false;}}}}
   return validData.valid_b;
 }
 
@@ -1581,26 +1582,30 @@ struct MatrixStruct {
     "NeptuneSet"
   };
 
-  char default_matrix_function[56]         = "$NONE";            // false if first or all functions $NONE. true if preceeding functions are populated.
-  char default_enable_matrix_function[56]  = "$ENABLED";         // always true.
-  char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";   // link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix.
-  char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";  // link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix.
+  /* false if first or all functions $NONE. true if preceeding functions are populated. */
+  char default_matrix_function[56]         = "$NONE";
 
-  // todo MatrixLink: link a matrix to switches final bool being true/false, linked matrix file should be loaded into memorys. (may be slow to load so will need testing).
+  char default_enable_matrix_function[56]  = "$ENABLED";  // always true.
+
+  /* link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix. */
+  char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";
+
+  /* link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix. */
+  char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";
   
-   char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
-   
-   char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
-   char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
-   char DayTuesday[56]   = "DayTuesday";    // true for day. takes not further arguments.
-   char DayWednesday[56] = "DayWednesday";  // true for day. takes not further arguments.
-   char DayThursday[56]  = "DayThursday";   // true for day. takes not further arguments.
-   char DayFriday[56]    = "DayFriday";     // true for day. takes not further arguments. 
-   char DaySaturday[56]  = "DaySaturday";   // true for day. takes not further arguments.
+  char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
 
-   char DateDayX[56]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
-   char DateMonthX[56]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
-   char DateYearX[56]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
+  char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
+  char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
+  char DayTuesday[56]   = "DayTuesday";    // true for day. takes not further arguments.
+  char DayWednesday[56] = "DayWednesday";  // true for day. takes not further arguments.
+  char DayThursday[56]  = "DayThursday";   // true for day. takes not further arguments.
+  char DayFriday[56]    = "DayFriday";     // true for day. takes not further arguments. 
+  char DaySaturday[56]  = "DaySaturday";   // true for day. takes not further arguments.
+
+  char DateDayX[56]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
+  char DateMonthX[56]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
+  char DateYearX[56]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
@@ -1642,7 +1647,11 @@ struct MatrixStruct {
   char LatGNGGARange[56]          = "LatGNGGARange";           // specify x (absolute lat) z (meters range) in matrix.
   char LonGNGGARange[56]          = "LonGNGGARange";           // specify x (absolute lon) z (meters range) in matrix.
   
-  char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA";  // specify x in matrix. 0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
+  /*
+  specify x in matrix.
+  0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
+  */
+  char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA";
   
   char SatelliteCountOver[56]     = "SatelliteCountOver";      // specify x (satellite number 0+) in matrix.
   char SatelliteCountUnder[56]    = "SatelliteCountUnder";     // specify x (satellite number 0+) in matrix.
@@ -1712,8 +1721,11 @@ struct MatrixStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GPATT DATA
 
-  char LineFlagGPATTEqual[56]     = "LineFlagGPATTEqual";    // specify x (0-1) in matrix. 1 : straight driving, 0: turning driving
-  char StaticFlagGPATTEqual[56]   = "StaticFlagGPATTEqual";  // specify x (0-1) in matrix. 1 : static, 0 : dynamic
+  /* specify x (0-1) in matrix. 1 : straight driving, 0: turning driving */
+  char LineFlagGPATTEqual[56]     = "LineFlagGPATTEqual";
+
+  /* specify x (0-1) in matrix. 1 : static, 0 : dynamic */
+  char StaticFlagGPATTEqual[56]   = "StaticFlagGPATTEqual";
 
   /*
   // specify x (flag) in matrix. 0: Prepare for initialization.
@@ -1726,10 +1738,17 @@ struct MatrixStruct {
 
   char INSGPATTEqual[56]          = "INSGPATTEqual";        // specify x (0-1) in matrix. 1 : On, 0 : Off
 
-  char SpeedNumGPATTOver[56]      = "SpeedNumGPATTOver";    // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
-  char SpeedNumGPATTUnder[56]     = "SpeedNumGPATTUnder[";  // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
-  char SpeedNumGPATTEqual[56]     = "SpeedNumGPATTEqual";   // specify x (0-99) in matrix. add one each time, return to zero after reaching 99
-  char SpeedNumGPATTRange[56]     = "SpeedNumGPATTRange";   // specify x (0-99) y (0-99) in matrix. add one each time, return to zero after reaching 99
+  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
+  char SpeedNumGPATTOver[56]      = "SpeedNumGPATTOver";
+
+  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
+  char SpeedNumGPATTUnder[56]     = "SpeedNumGPATTUnder[";
+
+  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
+  char SpeedNumGPATTEqual[56]     = "SpeedNumGPATTEqual";
+
+  /* specify x (0-99) y (0-99) in matrix. add one each time, return to zero after reaching 99 */
+  char SpeedNumGPATTRange[56]     = "SpeedNumGPATTRange";
 
   char MileageGPATTOver[56]       = "MileageGPATTOver";     // specify x (mileage) in matrix.
   char MileageGPATTUnder[56]      = "MileageGPATTUnder[";   // specify x (mileage) in matrix.
@@ -2165,8 +2184,8 @@ struct SatDatatruct {
   char sat_time_stamp_string[56];                                   // datetime timestamp from satellite
   char satDataTag[10]                 = "$SATIO";                   // satio sentence tag
   char last_sat_time_stamp_str[56]    = "00.00";                    // record last time satellites were seen
-  bool convert_coordinates            = true;                       // enables/disables coordinate conversion from absolute to decimal
-  char coordinate_conversion_mode[10] = "GNGGA";                    // choose a sentence that degrees/decimal coordinates will be created from
+  bool convert_coordinates            = true;                       // enables/disables coordinate conversion to degrees
+  char coordinate_conversion_mode[10] = "GNGGA";                    // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                  // one meter (tune)
   double longitude_meter              = 0.0000100;                  // one meter (tune)
   double latitude_mile                = latitude_meter  * 1609.34;  // one mile
@@ -2196,7 +2215,7 @@ struct SatDatatruct {
   double millisecondsLat;                                           // used for converting absolute latitude and longitude
   double millisecondsLong;                                          // used for converting absolute latitude and longitude
 
-  signed int utc_offset = 0;          // can be used to offset hours (+/-) from UTC, to account for daylight saving and ot timezones.
+  signed int utc_offset = 0;          // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
   bool utc_offset_flag = 0;           // 0: add hours to time; 1: deduct hours from time
 
   int year_int;                       // current year
@@ -2402,7 +2421,13 @@ void convertUTCToLocal() {
   // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
 
   // set time to cached time elements (pass through 2 digit year)
-  setTime(satData.tmp_hour_int, satData.tmp_minute_int, satData.tmp_second_int, satData.tmp_day_int, satData.tmp_month_int, satData.tmp_year_int);
+  setTime(
+    satData.tmp_hour_int,
+    satData.tmp_minute_int,
+    satData.tmp_second_int,
+    satData.tmp_day_int,
+    satData.tmp_month_int,
+    satData.tmp_year_int);
 
   // set elements to time return functions
   tmElements_t tm_return = {second(), minute(), hour(), weekday(), day(), month(), year()};
@@ -2470,7 +2495,10 @@ void convertUTCToLocal() {
 
   // get day of the week name
   memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
-  strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(satData.year_int, satData.month_int, satData.day_int).c_str());
+  strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(
+    satData.year_int,
+    satData.month_int,
+    satData.day_int).c_str());
 
   // clear satio sentence
   memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
@@ -3216,8 +3244,18 @@ void sdcard_calculate_filename_create(fs::FS &fs, char * dir, char * name, char 
   char temppath[1024];
   char temp_i[16];
   for (int i = 0; i < 100; i++) {
-    memset(temppath, 0, 1024); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
-    memset(tempname, 0, 1024); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
+    memset(temppath, 0, 1024);
+    strcpy(temppath, dir);
+    strcat(temppath, name);
+    strcat(temppath, "_");
+    itoa(i, temp_i, 10);
+    strcat(temppath, temp_i); 
+    strcat(temppath, ext);
+    memset(tempname, 0, 1024);
+    strcat(tempname, name);
+    strcat(tempname, "_");
+    strcat(tempname, temp_i);
+    strcat(tempname, ext);
     Serial.println("[sdcard] calculating: " + String(temppath));
     if (!fs.exists(temppath)) {
       Serial.println("[sdcard] calculated new filename: " + String(temppath));
@@ -3236,8 +3274,18 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
   char temp_i[4];
   for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
   for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {
-    memset(temppath, 0, 56); strcpy(temppath, dir); strcat(temppath, name); strcat(temppath, "_"); itoa(i, temp_i, 10); strcat(temppath, temp_i); strcat(temppath, ext);
-    memset(tempname, 0, 56); strcat(tempname, name); strcat(tempname, "_"); strcat(tempname, temp_i); strcat(tempname, ext);
+    memset(temppath, 0, 56);
+    strcpy(temppath, dir);
+    strcat(temppath, name);
+    strcat(temppath, "_");
+    itoa(i, temp_i, 10);
+    strcat(temppath, temp_i);
+    strcat(temppath, ext);
+    memset(tempname, 0, 56);
+    strcat(tempname, name);
+    strcat(tempname, "_");
+    strcat(tempname, temp_i);
+    strcat(tempname, ext);
     // Serial.println("[sdcard] calculating: " + String(temppath)); // debug
     if (fs.exists(temppath)) {
       Serial.println("[sdcard] calculated filename found: " + String(temppath));
@@ -3358,7 +3406,12 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     sdcardData.current_file.close();
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file)); return false; memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
+  else {
+    sdcardData.current_file.close();
+    Serial.println("[sdcard] failed to load file: " + String(file));
+    memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    return false;
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -3486,10 +3539,14 @@ void matrix_object_set_entry() {
     Serial.println("[serial0Data.data_5] "         + String(serial0Data.data_5));
   }
   char *ptr;
-  strcpy(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)], serial0Data.data_2);      // set function
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]=strtod(serial0Data.data_3, &ptr); // set function value x
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]=strtod(serial0Data.data_4, &ptr); // set function value y
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]=strtod(serial0Data.data_5, &ptr); // set function value z
+  // set function
+  strcpy(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)], serial0Data.data_2);
+  // set function value x
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]=strtod(serial0Data.data_3, &ptr);
+  // set function value x
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]=strtod(serial0Data.data_4, &ptr);
+  // set function value z
+  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]=strtod(serial0Data.data_5, &ptr);
   Serial.println("[Mi] " +String(serial0Data.data_0));
   Serial.println("[Fi] " +String(serial0Data.data_1));
   Serial.println("[Fn] " +String(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)]));
@@ -3535,7 +3592,10 @@ void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) 
 //                                                                                                           MATRIX: ENABLE ALL
 
 
-// enable all matrix entries. does not directly turn matrix switches on, instead enables matrix switch to automatically activate/deactivate.
+/*
+enable all matrix entries. does not directly turn matrix switches on, instead enables matrix switch to automatically
+activate/deactivate.
+*/
 void matrix_enable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=1;}}
 
 
@@ -3562,20 +3622,46 @@ void satio_convert_coordinates_off() {satData.convert_coordinates = false;}
 //                                                                                                 MATRIX FUNCTIONS: PRIMITIVES
 
 /*
-matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to return
-true when otherwise a check would return false, which allows more flexibility.
+matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
+return true when otherwise a check would return false, which allows more flexibility.
 */
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_true(double n0, double n1, double r) {
-  // Serial.println("in_range_check_true: (n0 " + String(n0) + " >= n1 (" + String(n1) " - r/2 " + String(r/2) + ")) && (n0 " + String(n0) + " <= n1 (" + String(n1) " + r/2 " + String(r/2) + "))");
+  // Serial.println(
+  //   "in_range_check_true: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
   if (n0  >=  n1 - r/2) {if (n0  <= n1 + r/2) {return true;}}
   else {return false;}
 }
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_false(double n0, double n1, double r) {
-  // Serial.println("in_range_check_false: (n0 " + String(n0) + " >= n1 (" + String(n1) " - r/2 " + String(r/2) + ")) && (n0 " + String(n0) + " <= n1 (" + String(n1) " + r/2 " + String(r/2) + "))");
+  // Serial.println(
+  //   "in_range_check_false: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
   if (n0  >=  n1 - r/2) {if (n0  <= n1 + r/2) {return false;}}
   else {return true;}
 }
@@ -4148,7 +4234,7 @@ void trackPlanets() {
 void matrixSwitch() {
 
   /*
-  compound condition checks, each resulting in zero/one at the final_bool. allowing for sextillions of combinations with the current data
+  compound condition checks, each resulting in zero/one at the final_bool.
   */
 
   // iterate through matrices
@@ -4156,7 +4242,9 @@ void matrixSwitch() {
     // Serial.println("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
 
-      // temporary switch must be zero each time
+      /*
+      temporary switch must be zero each time
+      */
       bool tmp_matrix[matrixData.max_matrix_functions] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       int count_none_function = 0;
 
@@ -4168,294 +4256,1044 @@ void matrixSwitch() {
         // Serial.println("[Fi] " + String(Fi));
         // Serial.println("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
-        // perfromance and logic prefers adding functions from position zero else if position zero $NONE then break.
+        /*
+        perfromance and logic prefers adding functions from position zero else if position zero $NONE then break.
+        */
         if ((strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) && (Fi == 0)) {break;}
 
-        // put true in temporary matrix for functions after position zero that are set to $NONE. allows for 1-10 functions to be set.
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) {tmp_matrix[Fi] = 1; count_none_function++;}
+        /*
+        put true in temporary matrix for functions after position zero that are set to $NONE. allows for 1-10 functions to be set.
+        */
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) {
+          tmp_matrix[Fi] = 1; count_none_function++;}
 
-        // put true in temporary matrix if switch is $ENABLED (different from enabling disabling) regardless of data. if used, function name $ENABLED will always return true.
+        /*
+        put true in temporary matrix if switch is $ENABLED (different from enabling disabling) regardless of data. if used,
+        function name $ENABLED will always return true.
+        */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_enable_matrix_function) == 0) {tmp_matrix[Fi] = 1;}
 
-        // Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits: gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkTrue) == 0) {tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkFalse) == 0) {tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
+        /*
+         Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
+         gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
+        */
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkTrue) == 0) {
+          tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
+          
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkFalse) == 0) {
+          tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    TIME DATA
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SecondsTimer) == 0) {tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1], Mi);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayMonday) == 0) {if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTuesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayWednesday) == 0) {if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayThursday) == 0) {if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayFriday) == 0) {if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SecondsTimer) == 0) {
+          tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayMonday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTuesday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
+          
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayWednesday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayThursday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayFriday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {
+          if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                       SATIO
 
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
+
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGARange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGARange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
+          
+          }
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNGGARanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][0], satData.location_longitude_gngga, matrixData.matrix_function_xyz[Mi][Fi][1], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNGGARanges) == 0) {
+          tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          satData.location_longitude_gngga,
+          matrixData.matrix_function_xyz[Mi][Fi][1],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
         
         // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
+
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCRange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCRange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNRMCRanges) == 0) {tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][0], satData.location_longitude_gnrmc, matrixData.matrix_function_xyz[Mi][Fi][1], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNRMCRanges) == 0) {
+          tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          satData.location_longitude_gnrmc,
+          matrixData.matrix_function_xyz[Mi][Fi][1],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
         
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GNGGA
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGARange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNGGA) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.positioning_status), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGANorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGASouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGARange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGARange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGARange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNGGA) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.positioning_status),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGANorth) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAEast) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGASouth) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAWest) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGARange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GNRMC
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCRange) == 0) {tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);} // is n in [2]range of [0]x (no y required)
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCNorth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCEast) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCSouth) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCWest) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCV) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCA) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCD) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCE) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCN) == 0) {tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCRange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCRange) == 0) {
+          tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCNorth) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCEast) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCSouth) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCWest) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCA) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi],matrixData.PositioningStatusGNRMCV) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCA) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCD) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCE) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCN) == 0) {
+          tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                        GPATT
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTOver) == 0) {tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTUnder) == 0) {tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}  
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num), matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][1]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LineFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.INSGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RunStateFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.StaticFlagGPATTEqual) == 0) {tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag), matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.roll),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.roll),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }  
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num),
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LineFlagGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.INSGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RunStateFlagGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.StaticFlagGPATTEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag),
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                           SIDEREAL TIME: SUN
 
         // sun azimuth:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
         // sun altitude:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
         // daytime: current time in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTime) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.sun_r, siderealPlanetData.sun_s);
+          }
+
         // nighttime: current time not in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NightTime) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.sun_r, siderealPlanetData.sun_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NightTime) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.sun_r,
+          siderealPlanetData.sun_s);
+          }
+
         // sunrise time less than current time: true after sunrise until midnight
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunrise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r,
+          atof(satData.hours_minutes));
+          }
+
         // sunset time less than current time: true after sunset until midnight                                                                  
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, atof(satData.hours_minutes));}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunset) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s,
+          atof(satData.hours_minutes));
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MOON
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonrise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonset) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.moon_r, siderealPlanetData.moon_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonPhase) == 0) {tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p, matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonrise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonset) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.moon_r,
+          siderealPlanetData.moon_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.moon_r,
+          siderealPlanetData.moon_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonPhase) == 0) {
+          tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: MERCURY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercurySet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mercury_r, siderealPlanetData.mercury_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercurySet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.mercury_r,
+          siderealPlanetData.mercury_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.mercury_r,
+          siderealPlanetData.mercury_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                         SIDEREAL TIME: VENUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.venus_r, siderealPlanetData.venus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.venus_r, 
+          siderealPlanetData.venus_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.venus_r,
+          siderealPlanetData.venus_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                          SIDEREAL TIME: MARS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.mars_r, siderealPlanetData.mars_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.mars_r,
+          siderealPlanetData.mars_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.mars_r,
+          siderealPlanetData.mars_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: JUPITER
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.jupiter_r, siderealPlanetData.jupiter_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.jupiter_r,
+          siderealPlanetData.jupiter_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.jupiter_r,
+          siderealPlanetData.jupiter_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: SATURN
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.saturn_r, siderealPlanetData.saturn_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.saturn_r,
+          siderealPlanetData.saturn_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.saturn_r,
+          siderealPlanetData.saturn_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                        SIDEREAL TIME: URANUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.uranus_r, siderealPlanetData.uranus_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.uranus_r,
+          siderealPlanetData.uranus_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.uranus_r,
+          siderealPlanetData.uranus_s);
+          }
 
         // // ----------------------------------------------------------------------------------------------------------------------------
         // //                                                                                                       SIDEREAL TIME: NEPTUNE
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAzimuthRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAltitudeRange) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt, matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneRise) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneSet) == 0) {tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s, atof(satData.hours_minutes));}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneUp) == 0) {tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneDown) == 0) {tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes), siderealPlanetData.neptune_r, siderealPlanetData.neptune_s);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAzimuthRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAltitudeRange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneRise) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneSet) == 0) {
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s,
+          atof(satData.hours_minutes));
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneUp) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          siderealPlanetData.neptune_r,
+          siderealPlanetData.neptune_s);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneDown) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          siderealPlanetData.neptune_r,
+          siderealPlanetData.neptune_s);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                     VALIDITY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidChecksum) == 0) {tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidChecksum) == 0) {tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidCheckData) == 0) {tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidCheckData) == 0) {tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidChecksum) == 0) {
+          tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidCheckData) == 0) {
+          tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
       
-      // safety layer: disengage if all entries are $NONE. a second layer on top of initial check for $NONE set at position zero, function 0.
+      /*
+      safety layer: disengage if all entries are $NONE.
+      this is a second layer on top of initial check for $NONE set at position zero, function 0.
+      */
       if (count_none_function <= matrixData.max_matrix_functions-1) {
 
-        // default final bool default is true: if a single false is found then final bool should be set to false and remain false. prevent/allow the matrix switch to activate.
+        /*
+        it all comes down to this, the final switch.
+        default final bool default is true: if a single false is found then final bool should be set to false and remain false.
+        prevent/allow the matrix switch to activate.
+        */
         bool final_bool = true;
-
+        
         // debug (same as line below but with output)
-        // for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
+        // for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
+        //   Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
 
         for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
 
@@ -4491,10 +5329,14 @@ void matrixSwitch() {
       itoa(matrixData.checksum_i, matrixData.checksum_str, 10);
       strcat(matrixData.matrix_results_sentence, matrixData.checksum_str);
       Serial.println(matrixData.matrix_results_sentence);
-      // todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
-      //       the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0. requires settings page 'IO'.
-      //       this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD where SatIO requires
-      //       more IO than is physically available on the CYD.
+
+      /*
+      todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
+            the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0.
+            requires settings page 'IO'.
+            this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD
+            where SatIO requires more IO than is physically available on the CYD.
+      */ 
       }
   }
 }
@@ -4650,23 +5492,30 @@ void readGPS() {
       }
     }
     // clear and exit
-    if (serial1Data.collected==3) {serial1Data.collected=0; serial1Data.gngga_bool=false; serial1Data.gnrmc_bool=false; serial1Data.gpatt_bool=false; break;}
+    if (serial1Data.collected==3) {
+      serial1Data.collected=0;
+      serial1Data.gngga_bool=false;
+      serial1Data.gnrmc_bool=false;
+      serial1Data.gpatt_bool=false;
+      break;}
   }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       TASK: ELEMENTS COUNTER
+//                                                                                                              STATS COUNTERS
 
 void countmatrixEnabled(){
   matrixData.matrix_enabled_i = 0;
   matrixData.matrix_disabled_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) { if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;} }
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}}
 }
 
 void countmatrixActive(){
   matrixData.matrix_active_i = 0;
   matrixData.matrix_inactive_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) { if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;} }
+  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+    if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
 }
 
 void CountElements() {
@@ -4968,9 +5817,8 @@ struct SettingsDataStruct {
 
   int max_settingstimevalues = 2;
   char settingstimevalues[2][56] = {
-    "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
-    "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
-    // "YEAR PREFIX", // example: prefix 20 for year 2024
+    "UTC OFFSET",   // can be used to offset hours (+/-) from UTC
+    "OFFSET FLAG",  // 0: add hours to time, 1: deduct hours from time
   };
 
   int max_settingsdisplayvalues = 4;
@@ -5031,16 +5879,33 @@ void DisplayGeneralTitleBar(String v0) {
 
 bool isTouchTitleBar(TouchPoint p) {
   // choose where home button will be registered
-  for (int i=0; i<tss.max_homebtn_pages; i++) {if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
+  for (int i=0; i<tss.max_homebtn_pages; i++) {
+    if (menuData.page==tss.homebtn_pages[i]) {tss.homebutton_bool=true; break;} else {tss.homebutton_bool=false;}}
   // Serial.println(tss.homebutton_bool);
   if (tss.homebutton_bool==true) {
-    if ((p.x >= tss.general_titlebar_x[0][0] && p.x <= tss.general_titlebar_x[0][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {menuData.page=0; return true;}
+    if (
+      (p.x >= tss.general_titlebar_x[0][0] && p.x <= tss.general_titlebar_x[0][1])
+      &&
+      (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])
+      )
+      {
+        menuData.page=0;
+        return true;
+      }
   }
   // choose where back button will be registered
-  for (int i=0; i<tss.max_backbtn_pages; i++) {if (menuData.page==tss.backbtn_pages[i]) {tss.backbtn_pages_bool=true; break;} else {tss.backbtn_pages_bool=false;}}
+  for (int i=0; i<tss.max_backbtn_pages; i++) {
+    if (menuData.page==tss.backbtn_pages[i]) {tss.backbtn_pages_bool=true; break;} else {tss.backbtn_pages_bool=false;}}
   // Serial.println(tss.backbtn_pages_bool);
   if (tss.backbtn_pages_bool==true) {
-    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {menuData.page=menuData.backpage;}
+    if (
+      (p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1])
+      &&
+      (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])
+      )
+      {
+        menuData.page=menuData.backpage;
+      }
   }
   return false;
 }
@@ -5081,12 +5946,34 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setCursor(0,80);
     hud.print("T  ");
-    hud.print(satData.year); hud.print("."); hud.print(satData.month); hud.print("."); hud.print(satData.day); hud.print(" ");
-    hud.print(satData.hour); hud.print(":"); hud.print(satData.minute); hud.print(":"); hud.print(satData.second); hud.print("."); hud.print(satData.millisecond);
+    hud.print(satData.year);
+    hud.print(".");
+    hud.print(satData.month);
+    hud.print(".");
+    hud.print(satData.day);
+    hud.print(" ");
+    hud.print(satData.hour);
+    hud.print(":");
+    hud.print(satData.minute);
+    hud.print(":");
+    hud.print(satData.second);
+    hud.print(".");
+    hud.print(satData.millisecond);
     hud.setCursor(0,90);
     hud.print("LT ");
-    hud.print(satData.lt_year); hud.print("."); hud.print(satData.lt_month); hud.print("."); hud.print(satData.lt_day); hud.print(" ");
-    hud.print(satData.lt_hour); hud.print(":"); hud.print(satData.lt_minute); hud.print(":"); hud.print(satData.lt_second); hud.print("."); hud.print(satData.lt_millisecond);
+    hud.print(satData.lt_year);
+    hud.print(".");
+    hud.print(satData.lt_month);
+    hud.print(".");
+    hud.print(satData.lt_day);
+    hud.print(" ");
+    hud.print(satData.lt_hour);
+    hud.print(":");
+    hud.print(satData.lt_minute);
+    hud.print(":");
+    hud.print(satData.lt_second);
+    hud.print(".");
+    hud.print(satData.lt_millisecond);
     hud.setCursor(0,100);
     hud.print("GS "); hud.print(gnrmcData.ground_speed);
     hud.setCursor(0,110);
@@ -5220,9 +6107,10 @@ bool DisplayPage1() {
 //                                                                                                                 TOUCH PAGE 1
 
 bool isTouchPage1(TouchPoint p) {
-  // check page here rather than in calling function so that we can see where we are when we're here
-  // it is strongly recommended to first disable a matrix switch before modifying its functionality (selecting functions, changing function values, clearing, etc),
-  // this is good practice for when the switches have GPIO/matrix. disabling can be done automatically but will limit potential scenarios, this way we can choose.
+  /*
+  for good practice it is strongly recommended to first disable a matrix switch before modifying its functionality unless you
+  know what you are doing.
+  */
   if (menuData.page == 1) {
     // page 1: Function Select
     if (p.x >= tss.page_1_items_x[0][0] && p.x <= tss.page_1_items_x[0][1]) {
@@ -5320,14 +6208,19 @@ bool DisplaySelectMatrixFunction() {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         menuData.backpage=1;
         // page header
-        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select));
+        DisplayGeneralTitleBar(
+          String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select)
+          );
         // scroll buttons
         DisplayVerticalScroll();
         // values
         for (int i=0; i<10; i++) {
         hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i); hud.print(" "); hud.print(matrixData.matrix_function_names[menuData.function_index+i]);
+        hud.setCursor(4, 47+i*20);
+        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(menuData.function_index+i);
+        hud.print(" ");
+        hud.print(matrixData.matrix_function_names[menuData.function_index+i]);
         }
         return true;
     }
@@ -5341,21 +6234,37 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 100) {
     // previous list items
-    if ((p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    if (
+      (p.x >= tss.select_matrix_function_x[0][0] && p.x <= tss.select_matrix_function_x[0][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])
+      )
+      {
       menuData.function_index--;
       if (menuData.function_index-10<0) {menuData.function_index=matrixData.max_matrix_function_names-10;}
-    }
+      }
     // next list items
-    else if ((p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    else if (
+      (p.x >= tss.select_matrix_function_x[1][0] && p.x <= tss.select_matrix_function_x[1][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.function_index++;
       if (menuData.function_index+10>matrixData.max_matrix_function_names) {menuData.function_index=0;}
-    }
+      }
     // select list item
     if (p.x >= tss.select_matrix_function_x[2][0] && p.x <= tss.select_matrix_function_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          memset(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], 0, sizeof(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select]));
-          strcpy(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select], matrixData.matrix_function_names[i+menuData.function_index]);
+          memset(
+            matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select],
+            0,
+            sizeof(matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select])
+            );
+          strcpy(
+            matrixData.matrix_function[menuData.matrix_select][menuData.matrix_function_select],
+            matrixData.matrix_function_names[i+menuData.function_index]
+            );
           menuData.page=1;
           break;
         }
@@ -5433,16 +6342,33 @@ bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 300) {
      // back (special back case clears input)
-    if ((p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1]) && (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1])) {
+    if (
+      (p.x >= tss.general_titlebar_x[2][0] && p.x <= tss.general_titlebar_x[2][1])
+      &&
+      (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1]))
+      {
       memset(menuData.input, 0, sizeof(menuData.input));
       menuData.page = menuData.backpage;
       }
     // enter
     if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
       if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
-        if (menuData.numpad_key == 0) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][0] = strtod(menuData.input, &ptr);}      // x
-        else if (menuData.numpad_key == 1) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][1] = strtod(menuData.input, &ptr);} // y
-        else if (menuData.numpad_key == 2) {char *ptr; matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][2] = strtod(menuData.input, &ptr);} // z
+        // x
+        if (menuData.numpad_key == 0) {
+          char *ptr;
+          matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][0] = strtod(menuData.input, &ptr);
+          }
+        // y
+        else if (
+          menuData.numpad_key == 1) {
+            char *ptr;
+            matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][1] = strtod(menuData.input, &ptr);
+            }
+        // z
+        else if (menuData.numpad_key == 2) {
+          char *ptr;
+          matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][2] = strtod(menuData.input, &ptr);
+          }
         menuData.page=1;
       }
     }
@@ -5567,7 +6493,10 @@ bool DisplaySettingsMatrix() {
     DisplayGeneralTitleBar(String("Matrix"));
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
-    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    /*
+    switch enable column 0 (0-9) (enables/disables individual switch from turning on and off.
+    switch will remain on/ off according to its current state.)
+    */
     hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (matrixData.matrix_switch_enabled[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
@@ -5595,7 +6524,10 @@ bool DisplaySettingsMatrix() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("ENABLE")+String(""), 160, 51+i*20);
     }
-    // disable all (disables all switches turning on and off. switches will remain on/ off according to their current state.)
+    /*
+    disable all switches turning on and off. switches will remain on/ off according to their
+    current state.
+    */
     if (i==1) {
       hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -5609,7 +6541,10 @@ bool DisplaySettingsMatrix() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("OFF")+String(""), 160, 51+i*20);
     }
-    // switch enable column 0 (10-19) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    /*
+    switch enable column 0 (10-19) (enables/disables individual switch from turning on and off.
+    switch will remain on/ off according to its current state.)
+    */
     hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (matrixData.matrix_switch_enabled[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
@@ -5637,7 +6572,10 @@ bool DisplaySettingsMatrix() {
 
 bool isDisplaySettingsMatrix(TouchPoint p) {
   if (menuData.page == 5) {
-    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    /*
+    switch enable column 0 (0-9) (enables/disables individual switch from turning on and off.
+    switch will remain on/ off according to its current state.)
+    */
     if (p.x >= tss.matrix_page[0][0] && p.x <= tss.matrix_page[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
@@ -5680,7 +6618,10 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
             Serial.print("[matrix switch enable all]");
             matrix_enable_all();
           }
-          // disable all (disables all switches turning on and off. switches will remain on/ off according to their current state.)
+          /*
+          disable all (disables all switches turning on and off.
+          switches will remain on/ off according to their current state.)
+          */
           if (i==1) {
             Serial.print("[matrix switch disable all]");
             matrix_disable_all();
@@ -5694,7 +6635,10 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
         }
       }
     }
-    // switch enable column 0 (0-9) (enables/disables individual switch from turning on and off. switch will remain on/ off according to its current state.)
+    /*
+    switch enable column 0 (0-9) (enables/disables individual switch from turning on and off.
+    switch will remain on/ off according to its current state.)
+    */
     else if (p.x >= tss.matrix_page[4][0] && p.x <= tss.matrix_page[4][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
@@ -5859,10 +6803,14 @@ bool isDisplaySettingsFile(TouchPoint p) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
           if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-          else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));} // zero the matrix and clear current matrix file path
-          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;} // create list of matrix filespaths and go to save page
-          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;} // create list of matrix filespaths and go to load page
-          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;} // create list of matrix filespaths and go to delete page
+          // zero the matrix and clear current matrix file path
+          else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
+          // create list of matrix filespaths and go to save page
+          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          // create list of matrix filespaths and go to load page
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          // create list of matrix filespaths and go to delete page
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
           break;
         }
       }
@@ -5902,24 +6850,36 @@ bool DisplaySettingsSaveMatrix() {
 bool isDisplaySettingsSaveMatrix(TouchPoint p) {
   if (menuData.page == 400) {
     // previous list items
-    if ((p.x >= tss.save_matrix_menu_x[0][0] && p.x <= tss.save_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    if (
+      (p.x >= tss.save_matrix_menu_x[0][0] && p.x <= tss.save_matrix_menu_x[0][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
-    }
+      }
     // next list items
-    else if ((p.x >= tss.save_matrix_menu_x[1][0] && p.x <= tss.save_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    else if (
+      (p.x >= tss.save_matrix_menu_x[1][0] && p.x <= tss.save_matrix_menu_x[1][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
-    }
+      }
     // select list item
     if (p.x >= tss.save_matrix_menu_x[2][0] && p.x <= tss.save_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           // create filename
-          memset(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 0, sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]));
+          memset(
+            sdcardData.matrix_filenames[menuData.matrix_filenames_index+i],
+            0,
+            sizeof(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i])
+            );
           strcpy(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "/MATRIX/MATRIX_");
           char tmp_i[16];
           itoa(menuData.matrix_filenames_index+i, tmp_i, 10);
@@ -5968,17 +6928,25 @@ bool DisplaySettingsLoadMatrix() {
 bool isDisplaySettingsLoadMatrix(TouchPoint p) {
   if (menuData.page == 401) {
     // previous list items
-    if ((p.x >= tss.load_matrix_menu_x[0][0] && p.x <= tss.load_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    if (
+      (p.x >= tss.load_matrix_menu_x[0][0] && p.x <= tss.load_matrix_menu_x[0][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
-    }
+      }
     // next list items
-    else if ((p.x >= tss.load_matrix_menu_x[1][0] && p.x <= tss.load_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    else if (
+      (p.x >= tss.load_matrix_menu_x[1][0] && p.x <= tss.load_matrix_menu_x[1][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
-    }
+      }
     // select list item
     if (p.x >= tss.load_matrix_menu_x[2][0] && p.x <= tss.load_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
@@ -6026,17 +6994,25 @@ bool DisplaySettingsDeleteMatrix() {
 bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
   if (menuData.page == 402) {
     // previous list items
-    if ((p.x >= tss.delete_matrix_menu_x[0][0] && p.x <= tss.delete_matrix_menu_x[0][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    if (
+      (p.x >= tss.delete_matrix_menu_x[0][0] && p.x <= tss.delete_matrix_menu_x[0][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index--;
       if (menuData.matrix_filenames_index<0) {menuData.matrix_filenames_index=sdcardData.max_matrix_filenames-10;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
     }
     // next list items
-    else if ((p.x >= tss.delete_matrix_menu_x[1][0] && p.x <= tss.delete_matrix_menu_x[1][1]) && (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1])) {
+    else if (
+      (p.x >= tss.delete_matrix_menu_x[1][0] && p.x <= tss.delete_matrix_menu_x[1][1])
+      &&
+      (p.y >= tss.general_vertical_scroll_y[0][0] && p.y <= tss.general_vertical_scroll_y[0][1]))
+      {
       menuData.matrix_filenames_index++;
       if (menuData.matrix_filenames_index+10>sdcardData.max_matrix_filenames) {menuData.matrix_filenames_index=0;}
       Serial.println("[matrix_filenames_index] " + String(menuData.matrix_filenames_index));
-    }
+      }
     // select list item
     if (p.x >= tss.delete_matrix_menu_x[2][0] && p.x <= tss.delete_matrix_menu_x[2][1]) {
       for (int i=0; i<10; i++) {
@@ -6066,7 +7042,8 @@ bool DisplaySettingsTime() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     if (i==0) {DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));}
-    if (i==1) {DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
+    if (i==1) {
+      DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
     }
     return true;
   }
@@ -6336,7 +7313,12 @@ void TouchScreenInput( void * pvParameters ) {
         tss.ts_t0 = millis();
         tss.ts_t1=millis();
         tss.ts_t2=millis();
-        Serial.print("[ts debug] x:"); Serial.print(p.x); Serial.print(" y:"); Serial.print(p.y); Serial.print(" z:"); Serial.println(p.zRaw);
+        Serial.print("[ts debug] x:");
+        Serial.print(p.x);
+        Serial.print(" y:");
+        Serial.print(p.y);
+        Serial.print(" z:");
+        Serial.println(p.zRaw);
         bool display_handled_wakeup = false;
         // autodim: increase brightness
         if (systemData.display_auto_dim==true) {
