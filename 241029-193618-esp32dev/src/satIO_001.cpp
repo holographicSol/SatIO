@@ -3799,7 +3799,6 @@ bool SecondsTimer(unsigned long n0, unsigned long n1, int Mi) {
   // max seconds 18446744073709551616 (584942417355.07202148 years)
   // n0: interval
   // n1: on time
-  // backend interface example for on 1sec/off 1sec: $MATRIobject_sET_ENTRY,0,0,SecondsTimer,1,1,0
   if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
   else {return false;}
