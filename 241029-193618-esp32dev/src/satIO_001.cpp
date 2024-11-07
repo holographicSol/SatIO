@@ -10,7 +10,7 @@
 
             Possible combinations example: 
 
-10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch    20=switches   190=available functions
+10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch   20=switches  190=available functions
                                               (((10^15 * 3) * 10) * 20) ^ 190
 
         Currently there are over 200 different checks that can be performed using just several small primitive functions and
@@ -43,8 +43,8 @@
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 */
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                    LIBRARIES
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      LIBRARIES
 
 #include <stdio.h>
 #include "FS.h"
@@ -62,15 +62,15 @@
 
 
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                         PINS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                           PINS
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte gpstxpin = 27;  // GPS serial TXD
 const byte gpsrxpin = 22;  // GPS serial RXD
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  TOUCHSCREEN
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    TOUCHSCREEN
 #define XPT2046_IRQ 36
 #define XPT2046_MOSI 32
 #define XPT2046_MISO 39
@@ -79,8 +79,8 @@ const byte gpsrxpin = 22;  // GPS serial RXD
 
 XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      DISPLAY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        DISPLAY
 
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSPI_Button key[6];
@@ -102,30 +102,30 @@ uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object
 uint16_t BG_COL_0 = TFT_BLACK;                // background
 uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        TASKS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          TASKS
 
 TaskHandle_t TSTask;             // touchscreen task
 TaskHandle_t UpdateDisplayTask;  // write sprite task
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SIDEREAL PLANETS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               SIDEREAL PLANETS
 
 SiderealPlanets myAstro;    // for calculating azimuth and altitude
 SiderealObjects myAstroObj; // for getting right ascension and declination of objects from star table
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                       SDCARD
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                         SDCARD
 
 SPIClass sdspi = SPIClass(VSPI);
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                          ETX
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                            ETX
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: SYSTEM
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   DATA: SYSTEM
 
 struct systemStruct {
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
@@ -174,8 +174,8 @@ struct systemStruct {
 };
 systemStruct systemData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  DATA: DEBUG
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    DATA: DEBUG
 
 struct sysDebugStruct {
   bool gngga_sentence = false;    // enables/disables itemized sentence value output after processing
@@ -186,8 +186,8 @@ struct sysDebugStruct {
 };
 sysDebugStruct sysDebugData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   DATA: MENU
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     DATA: MENU
 
 struct menuStruct {
   char input[2024];                // char array input by user
@@ -201,8 +201,8 @@ struct menuStruct {
 };
 menuStruct menuData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DATA: SERIAL 0
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DATA: SERIAL 0
 
 struct Serial0Struct {
   unsigned long nbytes;                // number of bytes read by serial
@@ -219,8 +219,8 @@ struct Serial0Struct {
 };
 Serial0Struct serial0Data;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DATA: SERIAL 1
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DATA: SERIAL 1
 
 struct Serial1Struct {
   unsigned long nbytes;                // number of bytes read by serial
@@ -234,8 +234,8 @@ struct Serial1Struct {
 };
 Serial1Struct serial1Data;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: SDCARD
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   DATA: SDCARD
 
 struct SDCardStruct {
   int max_matrix_filenames = 20;                               // max matrix file names available 
@@ -271,8 +271,8 @@ struct SDCardStruct {
 };
 SDCardStruct sdcardData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   DATA: TIME
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     DATA: TIME
 
 struct TimeStruct {
   unsigned long seconds;               // seconds accumulated since startup 
@@ -293,8 +293,8 @@ void time_counter() {
     }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             DATA: VALIDATION
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DATA: VALIDATION
 
 struct validationStruct {
   int  valid_i = 0;           // validation counter
@@ -306,8 +306,8 @@ struct validationStruct {
 };
 validationStruct validData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               ANALOGUE WRITE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 ANALOGUE WRITE
 
 // value has to be between 0 and valueMax
 void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
@@ -317,8 +317,8 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
   ledcWrite(channel, duty);
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                         VALIDATION: CHECKSUM
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                           VALIDATION: CHECKSUM
 
 int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
@@ -355,8 +355,8 @@ bool validateChecksum(char * buffer) {
   if (checksum_of_buffer == checksum_in_buffer) {return true;} else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             VALIDATION: DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               VALIDATION: DATA
 
 /*
 checks can be tuned and ellaborated upon individually.
@@ -398,10 +398,14 @@ bool is_all_digits_plus_char(char * data, char * find_char) {
 }
 
 bool is_positive_negative_num(char * data) {
-  /* designed to check all chars are digits except one period and the signed bit. allows positive/negative floats, doubles and ints
-     allows one period anywhere.
-     allows one minus (-) sign at index zero.
+
+  /*
+  designed to check all chars are digits except one period and the signed bit. allows positive/negative floats,
+  doubles and ints.
+  allows one period anywhere.
+  allows one minus (-) sign at index zero.
   */
+
   if (sysDebugData.validation == true) {Serial.println("[connected] is_positive_negative_num: " + String(data));}
   validData.valid_b = true;
   validData.find_char = strchr(data, '.');
@@ -1180,8 +1184,8 @@ bool val_scalable(char * data) {
   return check_pass;
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   DATA: MATRIX
 
 struct MatrixStruct {
 
@@ -1862,8 +1866,8 @@ struct MatrixStruct {
 };
 MatrixStruct matrixData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  DATA: GNGGA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    DATA: GNGGA
 
 struct GNGGAStruct {
   char sentence[2000];
@@ -1889,8 +1893,8 @@ struct GNGGAStruct {
 };
 GNGGAStruct gnggaData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        GNGGA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          GNGGA
 
 void GNGGA() {
   gnggaData.check_data = 0;
@@ -1944,8 +1948,8 @@ void GNGGA() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  DATA: GNRMC
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    DATA: GNRMC
 
 struct GNRMCStruct {
   char sentence[2000];
@@ -1969,8 +1973,8 @@ struct GNRMCStruct {
 };
 GNRMCStruct gnrmcData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        GNRMC
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          GNRMC
 
 void GNRMC() {
   gnrmcData.check_data = 0;
@@ -2019,8 +2023,8 @@ void GNRMC() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  DATA: GPATT
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    DATA: GPATT
 
 struct GPATTStruct {
   char sentence[2000];
@@ -2071,8 +2075,8 @@ struct GPATTStruct {
 };
 GPATTStruct gpattData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        GPATT
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          GPATT
 
 void GPATT() {
   gpattData.check_data = 0;
@@ -2174,8 +2178,8 @@ void GPATT() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  DATA: SATIO
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    DATA: SATIO
 
 struct SatDatatruct {
   char checksum_str[56];                                            // checksum string
@@ -2274,12 +2278,12 @@ struct SatDatatruct {
 };
 SatDatatruct satData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       CONVERT COORDINTE DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         CONVERT COORDINTE DATA
 void calculateLocation(){
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                GNGGA COORDINATE CONVERSION
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                  GNGGA COORDINATE CONVERSION
 
   /*
   Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
@@ -2404,8 +2408,8 @@ void calculateLocation(){
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               SATIO SENTENCE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 SATIO SENTENCE
 
 String padDigitsZero(int digits) {
   /* preappends char 0 to pad string of digits evenly */
@@ -2417,8 +2421,8 @@ String padDigitsZero(int digits) {
   return satData.pad_digits_new;
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                         CONVERT UTC TO LOCAL
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                           CONVERT UTC TO LOCAL
 
 void convertUTCToLocal() {
 
@@ -2572,8 +2576,8 @@ void convertUTCToLocal() {
   strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                      SET LAST SATELLITE TIME
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        SET LAST SATELLITE TIME
 
 void setLastSatelliteTime() {
   // update last time satellite count > zero
@@ -2607,8 +2611,8 @@ void setLastSatelliteTime() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                         BUILD SATIO SENTENCE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                           BUILD SATIO SENTENCE
 
 void buildSatIOSentence() {
 
@@ -2651,8 +2655,8 @@ void buildSatIOSentence() {
 
   }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                           SDCARD: INITIALIZE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SDCARD: INITIALIZE
 
 void init_sdcard() {
 
@@ -2679,8 +2683,8 @@ void init_sdcard() {
   Serial.printf("SD Card Size: %lluMB\n", cardSize);
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                        SDCARD: PRINT FILE CONTENTS TO SERIAL
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                          SDCARD: PRINT FILE CONTENTS TO SERIAL
 
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 
@@ -2695,8 +2699,8 @@ bool sdcard_read_to_serial(fs::FS &fs, char * file) {
   else {sdcardData.current_file.close(); return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                            SDCARD: SAVE SYSTEM CONFIGURATION
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              SDCARD: SAVE SYSTEM CONFIGURATION
 
 void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) {
 
@@ -2993,8 +2997,8 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                            SDCARD: LOAD SYSTEM CONFIGURATION 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
 
 bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) {
   Serial.println("[sdcard] attempting to load file: " + String(file));
@@ -3274,8 +3278,8 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file)); return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       SDCARD: MAKE DIRECTORY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         SDCARD: MAKE DIRECTORY
 
 /* creates a single directory */
 
@@ -3287,15 +3291,15 @@ void sdcard_mkdir(fs::FS &fs, char * dir){
   else {Serial.println("[sdcard] directory already exists: " + String(dir));}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                     SDCARD: MAKE DIRECTORIES
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       SDCARD: MAKE DIRECTORIES
 
 /* creates root directories required by the system to work properly */
 
 void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(SD, sdcardData.system_dirs[i]);}}
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                    SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
 
 /* discovers and compiles an array of matrix filenames */
 
@@ -3326,8 +3330,8 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  ZERO MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    ZERO MATRIX
 
 /* writes $NONE to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
 
@@ -3346,8 +3350,8 @@ void zero_matrix() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          SDCARD: LOAD MATRIX 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            SDCARD: LOAD MATRIX 
 
 /* loads tagged, comma delimited data from a matrix file */
 
@@ -3453,8 +3457,8 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          SDCARD: SAVE MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            SDCARD: SAVE MATRIX
 
 /* saves tagged, comma delimited data to a matrix file */
 
@@ -3519,8 +3523,8 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file)); return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   SDCARD: DELETE MATRIX FILE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                     SDCARD: DELETE MATRIX FILE
 
 void sdcard_delete_matrix(fs::FS &fs, char * file) {
   // at least for now, do not allow deletion of MATRIX_0.SAVE.
@@ -3543,8 +3547,8 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
   else {Serial.println("[sdcard] file does not exist: " + String(file));}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            MATRIX: SET ENTRY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              MATRIX: SET ENTRY
 
 /*
 updates a matrix entry over serial.
@@ -3598,8 +3602,8 @@ void matrix_object_set_entry() {
 }
 
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                 MATRIX: ENABLE/DISABLE ENTRY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                   MATRIX: ENABLE/DISABLE ENTRY
 
 /*
 updates a matrix entry over serial.
@@ -3620,11 +3624,15 @@ void matriobject_set_enabled(bool b) {
     Serial.println("[serial0Data.data_0] "         + String(serial0Data.data_0));
   }
   matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)] = b; // set enable/disable
-  Serial.println("[R] " + String(serial0Data.data_0) + " [E] " + String(matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)]));
+  Serial.println(
+    "[R] " +
+    String(serial0Data.data_0) +
+    " [E] " +
+    String(matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)]));
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          MATRIX: DISABLE ALL
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            MATRIX: DISABLE ALL
 
 /*
 disable all matrix entries. does not turn matrices off. this allows for overriding a matrix switch without deactivating.
@@ -3634,8 +3642,8 @@ this is explicitly disable matrix switch from automatically activating/deactivat
 */
 void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=0;}}
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                           MATRIX: ENABLE ALL
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             MATRIX: ENABLE ALL
 
 
 /*
@@ -3645,27 +3653,27 @@ activate/deactivate.
 void matrix_enable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=1;}}
 
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       MATRIX: ALL MATRIX OFF
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         MATRIX: ALL MATRIX OFF
 
 // turn all matrix switches off. recommended to first disable matrix switches from being automatically activated/deactivated.
 void matrix_deactivate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=0;}}
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        MATRIX: ALL MATRIX ON
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          MATRIX: ALL MATRIX ON
 
 // turn all matrix switches on. recommended to first disable matrix switches from being automatically activated/deactivated.
 void matrix_activate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=1;}}
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   SATIO: CONVERT COORDINATES
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                     SATIO: CONVERT COORDINATES
 
 // enable/disable coordinate conversion. performance/efficiency as required.
 void satio_convert_coordinates_on()  {satData.convert_coordinates = true;}
 void satio_convert_coordinates_off() {satData.convert_coordinates = false;}
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                 MATRIX FUNCTIONS: PRIMITIVES
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                   MATRIX FUNCTIONS: PRIMITIVES
 
 /*
 matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
@@ -3822,8 +3830,8 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   MATRIX FUNCTIONS: ADVANCED
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                     MATRIX FUNCTIONS: ADVANCED
 
 /*
 Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
@@ -4221,8 +4229,8 @@ void trackNeptune(double latitude, double longitude, int year, int month, int da
   siderealPlanetData.neptune_s = myAstro.getSetTime();
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                 TASK: PLANETARY CALCULATIONS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                   TASK: PLANETARY CALCULATIONS
 
 void trackPlanets() {
   if (systemData.sidereal_track_sun == true) {trackSun(satData.location_latitude_gngga,
@@ -4299,8 +4307,8 @@ void trackPlanets() {
                                                         atoi(satData.second));}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               MATRIX: SWITCH
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 MATRIX: SWITCH
 
 void matrixSwitch() {
 
@@ -4354,8 +4362,8 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkFalse) == 0) {
           tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                    TIME DATA
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                              TIME DATA
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SecondsTimer) == 0) {
           tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -4395,8 +4403,8 @@ void matrixSwitch() {
           tmp_matrix[Fi] = check_equal_true(satData.year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                       SATIO
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  SATIO
 
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
 
@@ -4511,8 +4519,8 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                        GNGGA
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GNGGA
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAOver) == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
@@ -4660,8 +4668,8 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                        GNRMC
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GNRMC
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCOver) == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time),
@@ -4828,8 +4836,8 @@ void matrixSwitch() {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);
           }
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                        GPATT
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GPATT
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTOver) == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch),
@@ -4977,8 +4985,8 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                           SIDEREAL TIME: SUN
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     SIDEREAL TIME: SUN
 
         // sun azimuth:
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAzimuthRange) == 0) {
@@ -5019,8 +5027,8 @@ void matrixSwitch() {
           atof(satData.hours_minutes));
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                          SIDEREAL TIME: MOON
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                                 SIDEREAL TIME: MOON
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
@@ -5061,8 +5069,8 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                       SIDEREAL TIME: MERCURY
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                              SIDEREAL TIME: MERCURY
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
@@ -5098,8 +5106,8 @@ void matrixSwitch() {
           siderealPlanetData.mercury_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                         SIDEREAL TIME: VENUS
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                                SIDEREAL TIME: VENUS
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
@@ -5135,8 +5143,8 @@ void matrixSwitch() {
           siderealPlanetData.venus_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                          SIDEREAL TIME: MARS
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                                 SIDEREAL TIME: MARS
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
@@ -5172,8 +5180,8 @@ void matrixSwitch() {
           siderealPlanetData.mars_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                       SIDEREAL TIME: JUPITER
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                              SIDEREAL TIME: JUPITER
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
@@ -5209,8 +5217,8 @@ void matrixSwitch() {
           siderealPlanetData.jupiter_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                        SIDEREAL TIME: SATURN
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                               SIDEREAL TIME: SATURN
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
@@ -5246,8 +5254,8 @@ void matrixSwitch() {
           siderealPlanetData.saturn_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                        SIDEREAL TIME: URANUS
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                               SIDEREAL TIME: URANUS
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
@@ -5283,8 +5291,8 @@ void matrixSwitch() {
           siderealPlanetData.uranus_s);
           }
 
-        // // ----------------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                       SIDEREAL TIME: NEPTUNE
+        // // -------------------------------------------------------------------------------------------------------------------
+        // //                                                                                              SIDEREAL TIME: NEPTUNE
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAzimuthRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
@@ -5320,8 +5328,8 @@ void matrixSwitch() {
           siderealPlanetData.neptune_s);
           }
 
-        // ----------------------------------------------------------------------------------------------------------------------------
-        //                                                                                                                     VALIDITY
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               VALIDITY
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {
           tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
@@ -5412,8 +5420,8 @@ void matrixSwitch() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   READ RXD 0
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     READ RXD 0
 
 void readSerialCommands() {
     
@@ -5423,15 +5431,15 @@ void readSerialCommands() {
     serial0Data.nbytes = (Serial.readBytesUntil('\n', serial0Data.BUFFER, sizeof(serial0Data.BUFFER)));
     // Serial.println(serial0Data.nbytes); // debug
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                        MATRIX: SET ENTRY
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                          MATRIX: SET ENTRY
 
     if (strncmp(serial0Data.BUFFER, "$MATRIX_SET_ENTRY", 17) == 0) {
       matrix_object_set_entry();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                             MATRIX: ENABLE/DISABLE ENTRY
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                               MATRIX: ENABLE/DISABLE ENTRY
 
     else if (strncmp(serial0Data.BUFFER, "$MATRIX_ENABLE_ENTRY", 19) == 0) {
       matriobject_set_enabled(true);
@@ -5441,57 +5449,57 @@ void readSerialCommands() {
       matriobject_set_enabled(false);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                      MATRIX: DISABLE ALL
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                        MATRIX: DISABLE ALL
 
     else if (strcmp(serial0Data.BUFFER, "$MATRIX_DISABLE_ALL") == 0) {
       matrix_disable_all();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                       MATRIX: ENABLE ALL
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                         MATRIX: ENABLE ALL
 
     else if (strcmp(serial0Data.BUFFER, "$MATRIX_ENABLE_ALL") == 0) {
       matrix_enable_all();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               MATRIX: TURN ALL matrix ON
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                 MATRIX: TURN ALL matrix ON
 
     else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_ON") == 0) {
       matrix_activate_all();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                              MATRIX: TURN ALL matrix OFF
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                MATRIX: TURN ALL matrix OFF
 
     else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_OFF") == 0) {
       matrix_deactivate_all();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                         SDCARD: SERIAL PRINT MATRIX FILE
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                           SDCARD: SERIAL PRINT MATRIX FILE
 
     else if (strcmp(serial0Data.BUFFER, "$SDCARD_READ_MATRIX") == 0) {
       sdcard_read_to_serial(SD, sdcardData.matrix_filepath);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                            SDCARD: SAVE MATRIX TO SDCARD
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                              SDCARD: SAVE MATRIX TO SDCARD
 
     else if (strcmp(serial0Data.BUFFER, "$SDCARD_SAVE_MATRIX") == 0) {
       sdcard_save_matrix(SD, sdcardData.matrix_filepath);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                          SDCARD: LOAD MATRIX FROM SDCARD
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                            SDCARD: LOAD MATRIX FROM SDCARD
 
     else if (strcmp(serial0Data.BUFFER, "$SDCARD_LOAD_MATRIX") == 0) {
       sdcard_load_matrix(SD, sdcardData.matrix_filepath);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               SATIO: CONVERT COORDINATES
+    // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                 SATIO: CONVERT COORDINATES
 
     else if (strcmp(serial0Data.BUFFER, "$SATIO_CONVERT_COORDINATES_ON") == 0) {
       satio_convert_coordinates_on();
@@ -5500,7 +5508,7 @@ void readSerialCommands() {
       satio_convert_coordinates_off();
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------------------------
 
     else {
       Serial.println("[unknown] " + String(serial0Data.BUFFER));
@@ -5508,8 +5516,8 @@ void readSerialCommands() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                READ GPS DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  READ GPS DATA
 
 void readGPS() {
   while(1) {
@@ -5572,8 +5580,8 @@ void readGPS() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              STATS COUNTERS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 STATS COUNTERS
 
 void countmatrixEnabled(){
   matrixData.matrix_enabled_i = 0;
@@ -5594,8 +5602,8 @@ void CountElements() {
   countmatrixActive();
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TOUCH STRUCT
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   TOUCH STRUCT
 
 struct TouchScreenStruct {
   /* contains values for touchscreen data */
@@ -5795,8 +5803,8 @@ struct TouchScreenStruct {
 };
 TouchScreenStruct tss;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     SETTINGS
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       SETTINGS
 
 struct SettingsDataStruct {
 
@@ -5915,8 +5923,8 @@ struct SettingsDataStruct {
 };
 SettingsDataStruct sData;
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                     DISPLAY GENERAL TITLEBAR
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       DISPLAY GENERAL TITLEBAR
 
 void DisplayGeneralTitleBar(String v0) {
   // main title bar
@@ -5945,8 +5953,8 @@ void DisplayGeneralTitleBar(String v0) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               TOUCH TITLEBAR
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 TOUCH TITLEBAR
 
 bool isTouchTitleBar(TouchPoint p) {
   // choose where home button will be registered
@@ -5981,8 +5989,8 @@ bool isTouchTitleBar(TouchPoint p) {
   return false;
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DISPLAY PAGE 0
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DISPLAY PAGE 0
 
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6115,8 +6123,8 @@ bool DisplayPage0() {
   else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TOUCH PAGE 0
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   TOUCH PAGE 0
 
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6138,8 +6146,8 @@ bool isTouchPage0(TouchPoint p) {
 else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DISPLAY PAGE 1
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DISPLAY PAGE 1
 
 bool DisplayPage1() {
     // check page here rather than in calling function so that we can see where we are when we're here
@@ -6174,8 +6182,8 @@ bool DisplayPage1() {
     else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TOUCH PAGE 1
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   TOUCH PAGE 1
 
 bool isTouchPage1(TouchPoint p) {
   /*
@@ -6270,8 +6278,8 @@ void DisplayPlusMinus(int x, int y, String v0, String v1) {
   hud.drawString(String("+")+String(""), x+120+15, y+9);
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                      DISPLAY MATRIX FUNCTION
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY MATRIX FUNCTION
 
 bool DisplaySelectMatrixFunction() {
     // check page here rather than in calling function so that we can see where we are when we're here
@@ -6298,8 +6306,8 @@ bool DisplaySelectMatrixFunction() {
     else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        TOUCH MATRIX FUNCTION
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          TOUCH MATRIX FUNCTION
 
 bool isTouchSelectMatrixFunction(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6346,8 +6354,8 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
   else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DISPLAY NUMPAD
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DISPLAY NUMPAD
 
 bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
@@ -6406,8 +6414,8 @@ bool DisplayNumpad() {
     else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 TOUCH NUMPAD
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   TOUCH NUMPAD
 
 bool isTouchNumpad(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -7312,8 +7320,8 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
   else {return false;}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               UPDATE DISPLAY
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 UPDATE DISPLAY
 
 void UpdateDisplay(void * pvParameters) {
   // populate strite according to page then display
@@ -7349,8 +7357,8 @@ void UpdateDisplay(void * pvParameters) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            TOUCHSCREEN INPUT
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              TOUCHSCREEN INPUT
 
 void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
@@ -7435,13 +7443,13 @@ void TouchScreenInput( void * pvParameters ) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        SETUP
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          SETUP
 
 void setup() {
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              SETUP: SERIAL
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                SETUP: SERIAL
 
   Serial.begin(115200);
   while(!Serial);
@@ -7449,14 +7457,14 @@ void setup() {
   Serial1.setPins(gpsrxpin, gpstxpin, ctsPin, rtsPin);
   Serial1.begin(115200);
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                           SETUP: CORE INFO
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                             SETUP: CORE INFO
 
   delay(1000);
   Serial.println("Running on Core: " + String(xPortGetCoreID()));
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                             SETUP: DISPLAY
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                               SETUP: DISPLAY
 
   ts.begin();  // start the SPI for the touch screen and init the TS library
   tft.init();  // start the tft display and set it to black
@@ -7493,13 +7501,13 @@ void setup() {
       &UpdateDisplayTask,  /* Task handle. */
       0);                  /* Core where the task should run */
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    SETUP: SIDEREAL PLANETS
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              SETUP: SDCARD
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                SETUP: SDCARD
 
   init_sdcard();
   sdcard_mkdirs();
@@ -7518,15 +7526,15 @@ void setup() {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                MATRIX SWITCH
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  MATRIX SWITCH
 
 void MatrixSwitchTask() {
   if (systemData.matrix_enabled == true) {matrixSwitch();}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   SATIO DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     SATIO DATA
 
 void satIOData() {
   if (satData.convert_coordinates == true) {calculateLocation();}
@@ -7535,8 +7543,8 @@ void satIOData() {
   if (systemData.satio_enabled == true) {buildSatIOSentence();}
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                    MAIN LOOP
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      MAIN LOOP
 
 void loop() {
 
