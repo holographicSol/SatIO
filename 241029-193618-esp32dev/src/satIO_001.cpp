@@ -5356,6 +5356,9 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidCheckData) == 0) {
           tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
+
+      // ----------------------------------------------------------------------------------------------------------------------
+      //                                                                                                           FINAL SWITCH
       
       /*
       safety layer: disengage if all entries are $NONE.
@@ -5509,6 +5512,7 @@ void readSerialCommands() {
     }
 
     // --------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                            UNKNOWN COMMAND
 
     else {
       Serial.println("[unknown] " + String(serial0Data.BUFFER));
@@ -5603,7 +5607,7 @@ void MatrixStatsCounter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   TOUCH STRUCT
+//                                                                                                             TOUCHSCREEN STRUCT
 
 struct TouchScreenStruct {
   /* contains values for touchscreen data */
