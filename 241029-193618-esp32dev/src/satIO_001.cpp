@@ -3009,7 +3009,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
-
       // check matrix filepath
       if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
@@ -3031,7 +3030,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       }
       // continue to enable/disable only if auto resume is true
       if (systemData.run_on_startup == true) {
-      
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3077,7 +3075,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             if (atoi(sdcardData.token) == 0) {systemData.gpatt_enabled = false;} else {systemData.gpatt_enabled = true;}
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_BRIGHTNESS", strlen("DISPLAY_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3087,7 +3084,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             systemData.display_brightness = atoi(sdcardData.token);
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_BRIGHTNESS", strlen("DISPLAY_AUTO_DIM_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3097,7 +3093,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             systemData.display_autodim_brightness = atoi(sdcardData.token);
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_TIMEOUT", strlen("DISPLAY_AUTO_DIM_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3107,7 +3102,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             systemData.display_auto_dim_p0 = atoi(sdcardData.token);
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3117,7 +3111,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF_TIMEOUT", strlen("DISPLAY_AUTO_OFF_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3127,7 +3120,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             systemData.display_auto_off_p0 = atoi(sdcardData.token);
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
@@ -3138,7 +3130,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
             Serial.println("RESULT: " + String(systemData.display_auto_off ));
           }
         }
-
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
