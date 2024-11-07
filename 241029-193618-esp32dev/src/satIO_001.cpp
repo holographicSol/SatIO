@@ -2,7 +2,9 @@
 
                                            SatIO - Written by Benjamin Jack Cullen.
 
-                                  A general purpose programmable satellite and inertial switch. 
+                                  A general purpose programmable satellite and inertial switch.
+
+                                          SatIO is the system, a matrix is the program.
 
                 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
