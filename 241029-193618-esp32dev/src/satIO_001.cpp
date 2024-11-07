@@ -2281,11 +2281,18 @@ void calculateLocation(){
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                GNGGA COORDINATE CONVERSION
 
+  /*
+  Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
+  */
   if (String(satData.coordinate_conversion_mode) == "GNGGA") {
-    // convert GNGGA latitude
+
+    // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_latitude_gngga_0 = atof(String(gnggaData.latitude).c_str());
+    // Store absolute latitude in temporary variable for further processing.
     satData.temp_latitude_gngga = satData.abs_latitude_gngga_0;
+    // Separate the integer degrees value from the fractional part.
     satData.degreesLat = trunc(satData.temp_latitude_gngga / 100);
+    // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLat = satData.temp_latitude_gngga - (satData.degreesLat * 100);
     satData.secondsLat = (satData.minutesLat - trunc(satData.minutesLat)) * 60;
     satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
@@ -2298,10 +2305,14 @@ void calculateLocation(){
     }
     scanf("%f17", &satData.location_latitude_gngga);
     sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
-    // convert GNGGA longitude
+
+    // Extract absolute longitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
+    // Store absolute latitude in temporary variable for further processing.
     satData.temp_longitude_gngga = satData.abs_longitude_gngga_0;
+    // Separate the integer degrees value from the fractional part.
     satData.degreesLong = trunc(satData.temp_longitude_gngga / 100);
+    // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLong = satData.temp_longitude_gngga - (satData.degreesLong * 100);
     satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
     satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
@@ -2319,11 +2330,17 @@ void calculateLocation(){
   // ------------------------------------------------------------------------------------------------------------------------
   //                                                                                              GNRMC COORDINATE CONVERSION
 
+  /*
+  Convert GNRMC latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
+  */
   else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
-    // convert GNRMC latitude
+    // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_latitude_gnrmc_0 = atof(String(gnrmcData.latitude).c_str());
+    // Store absolute latitude in temporary variable for further processing.
     satData.temp_latitude_gnrmc = satData.abs_latitude_gnrmc_0;
+    // Separate the integer degrees value from the fractional part.
     satData.degreesLat = trunc(satData.temp_latitude_gnrmc / 100);
+    // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLat = satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
     satData.secondsLat = (satData.minutesLat - (satData.minutesLat)) * 60;
     satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
@@ -2336,10 +2353,13 @@ void calculateLocation(){
     }
     scanf("%f17", &satData.location_latitude_gnrmc);
     sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
-    // convert GNRMC longitude
+    // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
+    // Store absolute latitude in temporary variable for further processing.
     satData.temp_longitude_gnrmc = satData.abs_longitude_gnrmc_0;
+    // Separate the integer degrees value from the fractional part.
     satData.degreesLong = trunc(satData.temp_longitude_gnrmc / 100);
+    // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLong = satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
     satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
     satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
