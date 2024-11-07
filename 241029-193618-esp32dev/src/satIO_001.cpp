@@ -3761,13 +3761,29 @@ bool check_equal_false(double n0, double n1) {
 }
 
 bool check_ge_and_le_true(double n0, double n1, double n2) {
-  // Serial.println("check_ge_and_le_true: n0 " + String(n0) + " >= n1 " + String(n1) + " && n0 " + String(n0) + " <= " + String(n2));
+  // Serial.println(
+  //   "check_ge_and_le_true: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+  //   String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return true;}
   else {return false;}
 }
 
 bool check_ge_and_le_false(double n0, double n1, double n2) {
-  // Serial.println("check_ge_and_le_false: n0 " + String(n0) + " >= n1 " + String(n1) + " && n0 " + String(n0) + " <= " + String(n2));
+  // Serial.println(
+  //   "check_ge_and_le_false: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+  //   String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return false;}
   else {return true;}
 }
@@ -3799,7 +3815,9 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
-  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {
+    matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;
+    }
   else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
   else {return false;}
 }
