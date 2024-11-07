@@ -5794,11 +5794,11 @@ struct TouchScreenStruct {
   };
 
   int max_homebtn_pages = 14;
-  int homebtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};
+  int homebtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};  // pages that will have homebutton
   bool homebutton_bool = false;
 
   int max_backbtn_pages = 14;
-  int backbtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};
+  int backbtn_pages[14] = {1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 100, 400, 401, 402};  // pages that will have back button
   bool backbtn_pages_bool = false;
 };
 TouchScreenStruct tss;
@@ -5810,59 +5810,59 @@ struct SettingsDataStruct {
 
   int max_main_titlebar_values = 5;
   char main_titlebar_values[5][56] = {
-    "Settings",
-    "Matrix",
-    "",
-    "",
-    "",
+    "Settings",  // got to p3
+    "Matrix",    // got to p5
+    "",          // reserved
+    "",          // reserved
+    "",          // reserved
   };
 
   int max_general_titlebar_values = 3;
   char general_titlebar_values[3][56] = {
-    "HOME",
+    "HOME",  // p0
     "",
-    "BACK",
+    "BACK",  // backpage int
   };
 
   int max_settings0values = 8;
   char settings0values[8][56] = {
-    "System",  // p4
-    "Matrix",  // p5
-    "GPS",     // p6
-    "Serial",  // p7
-    "File",    // p8
-    "Time",    // p9
-    "Display", // p10
-    "Planet Tracking", // p12
+    "System",          // got to p4
+    "Matrix",          // got to p5
+    "GPS",             // got to p6
+    "Serial",          // got to p7
+    "File",            // got to p8
+    "Time",            // got to p9
+    "Display",         // got to p10
+    "Planet Tracking", // got to p12
   };
 
   int max_settingsystemvalues = 1;
   char settingsystemvalues[1][56] = {
-    "RUN ON STARTUP", // run_on_startup
+    "RUN ON STARTUP", // enables/disables run on startup
   };
 
   int max_settingsmatrixvalues_c0 = 20;
   char settingsmatrixvalues_c0[20][56] = {
-    "S0",
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6",
-    "S7",
-    "S8",
-    "S9",
-    "S10",
-    "S11",
-    "S12",
-    "S13",
-    "S14",
-    "S15",
-    "S16",
-    "S17",
-    "S18",
-    "S19",
+    "S0",   // matrix switch 0
+    "S1",   // matrix switch 1
+    "S2",   // matrix switch 2
+    "S3",   // matrix switch 3
+    "S4",   // matrix switch 4
+    "S5",   // matrix switch 5
+    "S6",   // matrix switch 6
+    "S7",   // matrix switch 7 
+    "S8",   // matrix switch 8
+    "S9",   // matrix switch 9 
+    "S10",  // matrix switch 10
+    "S11",  // matrix switch 11
+    "S12",  // matrix switch 12
+    "S13",  // matrix switch 13
+    "S14",  // matrix switch 14
+    "S15",  // matrix switch 15
+    "S16",  // matrix switch 16
+    "S17",  // matrix switch 17
+    "S18",  // matrix switch 18
+    "S19",  // matrix switch 19
   };
 
   int max_settingsgpsvalues = 4;
@@ -5885,40 +5885,40 @@ struct SettingsDataStruct {
 
   int max_settingsfilevalues = 7;
   char settingsfilevalues[7][56] = {
-    "SYSTEM FILE",
-    "SAVE SYSTEM FILE",
-    "MATRIX FILE",
-    "NEW MATRIX FILE",
-    "SAVE MATRIX FILE",
-    "LOAD MATRIX FILE",
-    "DELETE MATRIX FILE",
+    "SYSTEM FILE",         // side header left of value
+    "SAVE SYSTEM FILE",    // saves system configuration
+    "MATRIX FILE",         // side header left of value
+    "NEW MATRIX FILE",     // zeros matrix and removes current file association
+    "SAVE MATRIX FILE",    // got to p400
+    "LOAD MATRIX FILE",    // got to p401
+    "DELETE MATRIX FILE",  // got to p402
   };
 
   int max_settingstimevalues = 2;
   char settingstimevalues[2][56] = {
-    "UTC OFFSET",   // can be used to offset hours (+/-) from UTC
-    "OFFSET FLAG",  // 0: add hours to time, 1: deduct hours from time
+    "UTC OFFSET",   // side header left of displayed offset value. can be used to offset hours (+/-) from UTC
+    "OFFSET FLAG",  // side header left of displayed offset flag value. 0: add hours to time, 1: deduct hours from time
   };
 
   int max_settingsdisplayvalues = 4;
   char settingsdisplayvalues[4][56] = {
-    "BRIGHTNESS",
-    "AUTO DIM TIMEOUT",
-    "AUTO DIM BRIGHTNESS",
-    "AUTO OFF TIMEOUT",
+    "BRIGHTNESS",           // side header left of value
+    "AUTO DIM TIMEOUT",     // side header left of value
+    "AUTO DIM BRIGHTNESS",  // side header left of value
+    "AUTO OFF TIMEOUT",     // side header left of value
   };
 
   int max_settingssiderealplanetsvalues = 9;
   char settingssiderealplanetsvalues[9][56] = {
-    "TRACK SUN",
-    "TRACK MOON",
-    "TRACK MERCURY",
-    "TRACK VENUS",
-    "TRACK MARS",
-    "TRACK JUPITER",
-    "TRACK SATURN",
-    "TRACK URANUS",
-    "TRACK NEPTUNE",
+    "TRACK SUN",      // enables/disables tracking
+    "TRACK MOON",     // enables/disables tracking
+    "TRACK MERCURY",  // enables/disables tracking
+    "TRACK VENUS",    // enables/disables tracking
+    "TRACK MARS",     // enables/disables tracking
+    "TRACK JUPITER",  // enables/disables tracking
+    "TRACK SATURN",   // enables/disables tracking
+    "TRACK URANUS",   // enables/disables tracking
+    "TRACK NEPTUNE",  // enables/disables tracking
   };
 };
 SettingsDataStruct sData;
