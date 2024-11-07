@@ -3794,9 +3794,9 @@ bool check_bool_false(bool _bool) {
   if (_bool == false) {return true;} else {return false;}
 }
 
-bool SecondsTimer(unsigned long n0, unsigned long n1, int Mi) {
+bool SecondsTimer(double n0, double n1, int Mi) {
   // currently requiress main loop time is <1sec
-  // max seconds 18446744073709551616 (584942417355.07202148 years)
+  // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
   if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
