@@ -1605,25 +1605,25 @@ struct MatrixStruct {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
-  char DegreesLatGNGGAOver[56]             = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAUnder[56]            = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAEqual[56]            = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNGGAOver[56]             = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAUnder[56]            = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAEqual[56]            = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNGGARange[56]            = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNGGARange[56]            = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNGGARanges[56]               = "DegreesGNGGARanges";   // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesLatGNGGAOver[56]   = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAUnder[56]  = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAEqual[56]  = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNGGAOver[56]   = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAUnder[56]  = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAEqual[56]  = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNGGARange[56]  = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNGGARange[56]  = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNGGARanges[56]    = "DegreesGNGGARanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
-  char DegreesLatGNRMCOver[56]             = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCUnder[56]            = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCEqual[56]            = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNRMCOver[56]             = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCUnder[56]            = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCEqual[56]            = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNRMCRange[56]            = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNRMCRange[56]            = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNRMCRanges[56]               = "DegreesGNRMCRanges";   // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesLatGNRMCOver[56]   = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCUnder[56]  = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCEqual[56]  = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNRMCOver[56]   = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCUnder[56]  = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCEqual[56]  = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNRMCRange[56]  = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNRMCRange[56]  = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNRMCRanges[56]    = "DegreesGNRMCRanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNGGA DATA
