@@ -3277,6 +3277,8 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       SDCARD: MAKE DIRECTORY
 
+/* creates a single directory */
+
 void sdcard_mkdir(fs::FS &fs, char * dir){
   if (!fs.exists(dir)) {
     Serial.println("[sdcard] attempting to create directory: " + String(dir));
@@ -3288,39 +3290,14 @@ void sdcard_mkdir(fs::FS &fs, char * dir){
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     SDCARD: MAKE DIRECTORIES
 
+/* creates root directories required by the system to work properly */
+
 void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(SD, sdcardData.system_dirs[i]);}}
 
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                         SDCARD: CALCULATE AVAILABLE FILENAME
-
-void sdcard_calculate_filename_create(fs::FS &fs, char * dir, char * name, char * ext) {
-  char tempname[1024];
-  char temppath[1024];
-  char temp_i[16];
-  for (int i = 0; i < 100; i++) {
-    memset(temppath, 0, 1024);
-    strcpy(temppath, dir);
-    strcat(temppath, name);
-    strcat(temppath, "_");
-    itoa(i, temp_i, 10);
-    strcat(temppath, temp_i); 
-    strcat(temppath, ext);
-    memset(tempname, 0, 1024);
-    strcat(tempname, name);
-    strcat(tempname, "_");
-    strcat(tempname, temp_i);
-    strcat(tempname, ext);
-    Serial.println("[sdcard] calculating: " + String(temppath));
-    if (!fs.exists(temppath)) {
-      Serial.println("[sdcard] calculated new filename: " + String(temppath));
-      memset(sdcardData.matrix_filepath, 0, 56); strcpy(sdcardData.matrix_filepath, temppath);
-      break;}
-    else {Serial.println("[sdcard] skipping filename: " + String(temppath));}
-  }
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                    SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
+
+/* discovers and compiles an array of matrix filenames */
 
 void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
   char tempname[56];
@@ -3352,6 +3329,8 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  ZERO MATRIX
 
+/* writes $NONE to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
+
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
   // iterate over each matrix matrix
@@ -3370,6 +3349,8 @@ void zero_matrix() {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                          SDCARD: LOAD MATRIX 
 
+/* loads tagged, comma delimited data from a matrix file */
+
 bool sdcard_load_matrix(fs::FS &fs, char * file) {
   Serial.println("[sdcard] attempting to load file: " + String(file));
   // open file to read
@@ -3383,6 +3364,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      // tag: r
       if (strncmp(sdcardData.BUFFER, "r", 1) == 0) {
         // ensure cleared
         memset(sdcardData.data_0, 0, 56); memset(sdcardData.data_1, 0, 56); memset(sdcardData.data_2, 0, 56);
@@ -3440,6 +3422,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
           else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
         }
       }
+      // tag: e
       else if (strncmp(sdcardData.BUFFER, "e", 1) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         sdcardData.token = strtok(NULL, ",");
@@ -3452,6 +3435,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
       }
     }
+    // update current matrix filepath
     strcpy(sdcardData.tempmatrixfilepath, file);
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
@@ -3460,6 +3444,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     sdcardData.current_file.close();
     return true;
   }
+  // update matrix filepath (clear)
   else {
     sdcardData.current_file.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
