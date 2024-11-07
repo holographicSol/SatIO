@@ -6390,7 +6390,7 @@ void setup() {
 
   Serial.begin(115200);
   while(!Serial);
-  // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
+  // ESP32 can map hardware serial to alternative pins. Mmp Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(gpsrxpin, gpstxpin, ctsPin, rtsPin);
   Serial1.begin(115200);
 
@@ -6439,11 +6439,6 @@ void setup() {
       0);                  /* Core where the task should run */
 
   // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                SETUP: WIRE
-
-  // Wire.begin();
-
-  // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                    SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
@@ -6490,25 +6485,19 @@ void satIOData() {
 
 void loop() {
 
-  // store current time to measure this loop time
-  timeData.mainLoopTimeStart = micros();
+  timeData.mainLoopTimeStart = micros();  // store current time to measure this loop time
 
-  // for now serial commands are disabled for SatIO on CYD.
-  // readSerialCommands();
+  // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
   satIOData();
   trackPlanets();
   MatrixSwitchTask();
   CountElements();
 
-  // store time taken to complete
-  timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;
+  timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   // Serial.print("micros: "); Serial.println(timeData.mainLoopTimeTaken);
 
-  // keep track of time in seconds
-  time_counter();
-
-  // delay(1000);
+  time_counter();  // keep track of time in seconds
 }
