@@ -2683,6 +2683,9 @@ void init_sdcard() {
 //                                                                                        SDCARD: PRINT FILE CONTENTS TO SERIAL
 
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
+
+  /* prints the contents of a file to serial  */
+
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file);
   if (sdcardData.current_file) {
@@ -2696,12 +2699,14 @@ bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 //                                                                                            SDCARD: SAVE SYSTEM CONFIGURATION
 
 void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) {
+
+  /* saves tagged, system configuration data to file */
+
   Serial.println("[sdcard] attempting to save file: " + String(file));
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
 
-    // note that this should always be default file.
     memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
     if (!sdcardData.matrix_filepath) {strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);}
