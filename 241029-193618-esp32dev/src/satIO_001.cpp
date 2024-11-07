@@ -2294,16 +2294,23 @@ void calculateLocation(){
     satData.degreesLat = trunc(satData.temp_latitude_gngga / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLat = satData.temp_latitude_gngga - (satData.degreesLat * 100);
+    // Convert excess fractional part to seconds.
     satData.secondsLat = (satData.minutesLat - trunc(satData.minutesLat)) * 60;
+    // Convert excess seconds to milliseconds.
     satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    // Round off minutes and seconds values to nearest integer.
     satData.minutesLat = trunc(satData.minutesLat);
     satData.secondsLat = trunc(satData.secondsLat);
+    // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.location_latitude_gngga =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
+    // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnggaData.latitude_hemisphere, "S") == 0) {
       satData.location_latitude_gngga = 0 - satData.location_latitude_gngga;
     }
+    // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gngga);
+    // Convert latitude value to a human-readable string representation.
     sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
 
     // Extract absolute longitude value from GNGGA data as decimal degrees.
@@ -2314,16 +2321,23 @@ void calculateLocation(){
     satData.degreesLong = trunc(satData.temp_longitude_gngga / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLong = satData.temp_longitude_gngga - (satData.degreesLong * 100);
+    // Convert excess fractional part to seconds.
     satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    // Convert excess seconds to milliseconds.
     satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    // Round off minutes and seconds values to nearest integer.
     satData.minutesLong = trunc(satData.minutesLong);
     satData.secondsLong = trunc(satData.secondsLong);
+    // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.location_longitude_gngga =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
+    // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnggaData.longitude_hemisphere, "W") == 0) {
       satData.location_longitude_gngga = 0 - satData.location_longitude_gngga;
     }
+    // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gngga);
+    // Convert latitude value to a human-readable string representation.
     sprintf(satData.location_longitude_gngga_str, "%f", satData.location_longitude_gngga);
   }
 
@@ -2342,17 +2356,25 @@ void calculateLocation(){
     satData.degreesLat = trunc(satData.temp_latitude_gnrmc / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLat = satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
+    // Convert excess fractional part to seconds.
     satData.secondsLat = (satData.minutesLat - (satData.minutesLat)) * 60;
+    // Convert excess seconds to milliseconds.
     satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    // Round off minutes and seconds values to nearest integer.
     satData.minutesLat = trunc(satData.minutesLat);
     satData.secondsLat = trunc(satData.secondsLat);
+    // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.location_latitude_gnrmc =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
+    // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnrmcData.latitude_hemisphere, "S") == 0) {
       satData.location_latitude_gnrmc = 0 - satData.location_latitude_gnrmc;
     }
+    // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gnrmc);
+    // Convert latitude value to a human-readable string representation.
     sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
+
     // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
     // Store absolute latitude in temporary variable for further processing.
@@ -2361,16 +2383,23 @@ void calculateLocation(){
     satData.degreesLong = trunc(satData.temp_longitude_gnrmc / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
     satData.minutesLong = satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
+    // Convert excess fractional part to seconds.
     satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    // Convert excess seconds to milliseconds.
     satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    // Round off minutes and seconds values to nearest integer.
     satData.minutesLong = trunc(satData.minutesLong);
     satData.secondsLong = trunc(satData.secondsLong);
+    // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.location_longitude_gnrmc =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
+    // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnrmcData.longitude_hemisphere, "W") == 0) {
       satData.location_longitude_gnrmc = 0 - satData.location_longitude_gnrmc;
     }
+    // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gnrmc);
+    // Convert latitude value to a human-readable string representation.
     sprintf(satData.location_longitude_gnrmc_str, "%f", satData.location_longitude_gnrmc);
   }
 }
