@@ -2390,15 +2390,15 @@ void extrapulatedSatData() {
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
   // uncomment to debug before converting UTC date and time to UTC offset date and time (compare to after, below)
-  Serial.print("utc int:              ");
-  Serial.print(satData.tmp_hour_int);
-  Serial.print(":"); Serial.print(satData.tmp_minute_int);
-  Serial.print(":"); Serial.print(satData.tmp_second_int);
-  Serial.print("."); Serial.print(satData.tmp_millisecond_int);
-  Serial.print(" "); Serial.print(satData.tmp_day_int);
-  Serial.print("."); Serial.print(satData.tmp_month_int);
-  Serial.print("."); Serial.print(satData.tmp_year_int);
-  Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
+  // Serial.print("utc int:              ");
+  // Serial.print(satData.tmp_hour_int);
+  // Serial.print(":"); Serial.print(satData.tmp_minute_int);
+  // Serial.print(":"); Serial.print(satData.tmp_second_int);
+  // Serial.print("."); Serial.print(satData.tmp_millisecond_int);
+  // Serial.print(" "); Serial.print(satData.tmp_day_int);
+  // Serial.print("."); Serial.print(satData.tmp_month_int);
+  // Serial.print("."); Serial.print(satData.tmp_year_int);
+  // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
 
   // set time to cached time elements (pass through 2 digit year)
   setTime(satData.tmp_hour_int, satData.tmp_minute_int, satData.tmp_second_int, satData.tmp_day_int, satData.tmp_month_int, satData.tmp_year_int);
@@ -2446,17 +2446,17 @@ void extrapulatedSatData() {
   strcat(satData.hours_minutes, satData.minute);
 
   // uncomment to debug after converting UTC date and time to UTC offset date and time
-  Serial.print("converted time (raw): "); Serial.println(current_local_time);
-  Serial.print("converted time:       ");
-  Serial.print(satData.hour);
-  Serial.print(":"); Serial.print(satData.minute);
-  Serial.print(":"); Serial.print(satData.second);
-  Serial.print(".");  Serial.print(satData.millisecond);
-  Serial.print(" "); Serial.print(satData.year); 
-  Serial.print("."); Serial.print(satData.month);
-  Serial.print("."); Serial.print(satData.day);
-  Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
-  Serial.println("\n-------------");
+  // Serial.print("converted time (raw): "); Serial.println(current_local_time);
+  // Serial.print("converted time:       ");
+  // Serial.print(satData.hour);
+  // Serial.print(":"); Serial.print(satData.minute);
+  // Serial.print(":"); Serial.print(satData.second);
+  // Serial.print(".");  Serial.print(satData.millisecond);
+  // Serial.print(" "); Serial.print(satData.year); 
+  // Serial.print("."); Serial.print(satData.month);
+  // Serial.print("."); Serial.print(satData.day);
+  // Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
+  // Serial.println("\n-------------");
 
   // update local int time
   satData.year_int = atoi(satData.year);
