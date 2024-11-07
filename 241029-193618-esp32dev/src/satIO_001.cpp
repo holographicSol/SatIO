@@ -55,6 +55,8 @@
 #include "FS.h"
 #include "SD.h"
 #include <iostream>
+#include <Timezone.h>   // https://github.com/JChristensen/Timezone
+#include <TimeLib.h>    // https://github.com/PaulStoffregen/Time
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         PINS
@@ -2194,24 +2196,58 @@ struct SatDatatruct {
   // todo: fully integrate utc offset into SatIO datetime
   // timezones and daylight saving are subject to geopolitics are therefore subject to change. it may be preferrable to set offset manually, and an automatic option might be added but may be unpreferrable.
   // this system intends to be correct regardless of geopolitical variables, by illiminating those variables. this allows the systems data to be objectively correct long into the future. no maps, no geopolitics.
-  int utc_offset = 0;          // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
+  signed int utc_offset = 0;          // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
   bool utc_offset_flag = 0;    // 0: add hours to time, 1: deduct hours from time
-  char year_prefix[56] = "20"; // inline with trying to keep everything simple, this value is intended to require one ammendment every 100 years.
-  int year_prefix_int = 20;
-  char year_full[56];
-  int year_full_int;
-  char month[56];
+
+  int year_int;
   int month_int;
-  char day[56];
   int day_int;
-  char hour[56];
   int hour_int;
-  char minute[56];
   int minute_int;
-  char second[56];
   int second_int;
-  char millisecond[56];
   int millisecond_int;
+  
+  char year_prefix[56] = "20"; // inline with trying to keep everything simple, this value is intended to require one ammendment every 100 years.
+  char year[56];
+  char month[56];
+  char day[56];
+  char hour[56];
+  char minute[56];
+  char second[56];
+  char millisecond[56];
+
+  int tmp_year_int;
+  int tmp_month_int;
+  int tmp_day_int;
+  int tmp_hour_int;
+  int tmp_minute_int;
+  int tmp_second_int;
+  int tmp_millisecond_int;
+
+  char tmp_year[56];
+  char tmp_month[56];
+  char tmp_day[56];
+  char tmp_hour[56];
+  char tmp_minute[56];
+  char tmp_second[56];
+  char tmp_millisecond[56];
+
+  int lt_year_int;
+  int lt_month_int;
+  int lt_day_int;
+  int lt_hour_int;
+  int lt_minute_int;
+  int lt_second_int;
+  int lt_millisecond_int;
+
+  char lt_year[56];
+  char lt_month[56];
+  char lt_day[56];
+  char lt_hour[56];
+  char lt_minute[56];
+  char lt_second[56];
+  char lt_millisecond[56];
+
   char hours_minutes[56];
   char day_of_the_week_name[56];
 };
@@ -2297,130 +2333,224 @@ void calculateLocation(){
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SATIO SENTENCE
 
+char digitize[56];
+char digitsnew[56];
+char current_digits[56];
+
+String printDigits(int digits) {
+  /* preappends char 0 to pad datetime strings evenly */
+  memset(digitsnew, 0, sizeof(digitsnew));
+  memset(current_digits, 0, sizeof(current_digits));
+  if(digits < 10) {strcat(digitsnew, "0");}
+  itoa(digits, current_digits, 10);
+  strcat(digitsnew, current_digits);
+  return digitsnew;
+}
+
 void extrapulatedSatData() {
 
   // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                      SATIO SENTENCE: BEGIN
+  //                                                                                                           EXTRAPULATE DATA
 
-  memset(satData.satio_sentence, 0, 1024);
-  strcat(satData.satio_sentence, satData.satDataTag);
-  strcat(satData.satio_sentence, ",");
-
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                    SATIO SENTENCE: TIMESTAMP FROM SAT TIME
-
+  // temporary char time values
   char temp_sat_time_stamp_string[56];
   memset(temp_sat_time_stamp_string, 0, 56);
   strcat(temp_sat_time_stamp_string, gnrmcData.utc_date);
-  strcat(temp_sat_time_stamp_string, gnggaData.utc_time);
-  strcat(satData.satio_sentence, temp_sat_time_stamp_string);
-  strcat(satData.satio_sentence, ",");
-  
-  memset(satData.year_full, 0, 56);
-  strcat(satData.year_full, satData.year_prefix);
-  strncat(satData.year_full, &temp_sat_time_stamp_string[4], 1);
-  strncat(satData.year_full, &temp_sat_time_stamp_string[5], 1);
+  strcat(temp_sat_time_stamp_string, gnrmcData.utc_time);
+  memset(satData.tmp_day, 0, 56);
+  strncat(satData.tmp_day, &temp_sat_time_stamp_string[0], 1);
+  strncat(satData.tmp_day, &temp_sat_time_stamp_string[1], 1);
+  memset(satData.tmp_month, 0, 56);
+  strncat(satData.tmp_month, &temp_sat_time_stamp_string[2], 1);
+  strncat(satData.tmp_month, &temp_sat_time_stamp_string[3], 1);
+  memset(satData.tmp_year, 0, 56);
+  strncat(satData.tmp_year, &temp_sat_time_stamp_string[4], 1);
+  strncat(satData.tmp_year, &temp_sat_time_stamp_string[5], 1);
+  memset(satData.tmp_hour, 0, 56);
+  strncat(satData.tmp_hour, &temp_sat_time_stamp_string[6], 1);
+  strncat(satData.tmp_hour, &temp_sat_time_stamp_string[7], 1);
+  memset(satData.tmp_minute, 0, 56);
+  strncat(satData.tmp_minute, &temp_sat_time_stamp_string[8], 1);
+  strncat(satData.tmp_minute, &temp_sat_time_stamp_string[9], 1);
+  memset(satData.tmp_second, 0, 56);
+  strncat(satData.tmp_second, &temp_sat_time_stamp_string[10], 1);
+  strncat(satData.tmp_second, &temp_sat_time_stamp_string[11], 1);
+  memset(satData.tmp_millisecond, 0, 56);
+  strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[13], 1);
+  strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[14], 1);
+  Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
 
-  memset(satData.month, 0, 56);
-  strncat(satData.month, &temp_sat_time_stamp_string[2], 1);
-  strncat(satData.month, &temp_sat_time_stamp_string[3], 1);
+  // temporary int time values
+  satData.tmp_day_int = atoi(satData.tmp_day);
+  satData.tmp_month_int = atoi(satData.tmp_month);
+  satData.tmp_year_int = atoi(satData.tmp_year);
+  satData.tmp_hour_int = atoi(satData.tmp_hour);
+  satData.tmp_minute_int = atoi(satData.tmp_minute);
+  satData.tmp_second_int = atoi(satData.tmp_second);
+  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
-  memset(satData.day, 0, 56);
-  strncat(satData.day, &temp_sat_time_stamp_string[0], 1);
-  strncat(satData.day, &temp_sat_time_stamp_string[1], 1);
+  // uncomment to debug before converting UTC date and time to UTC offset date and time (compare to after, below)
+  Serial.print("utc int:              ");
+  Serial.print(satData.tmp_hour_int);
+  Serial.print(":"); Serial.print(satData.tmp_minute_int);
+  Serial.print(":"); Serial.print(satData.tmp_second_int);
+  Serial.print("."); Serial.print(satData.tmp_millisecond_int);
+  Serial.print(" "); Serial.print(satData.tmp_day_int);
+  Serial.print("."); Serial.print(satData.tmp_month_int);
+  Serial.print("."); Serial.print(satData.tmp_year_int);
+  Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
 
-  memset(satData.hour, 0, 56);
-  strncat(satData.hour, &temp_sat_time_stamp_string[6], 1);
-  strncat(satData.hour, &temp_sat_time_stamp_string[7], 1);
+  // set time to cached time elements (pass through 2 digit year)
+  setTime(satData.tmp_hour_int, satData.tmp_minute_int, satData.tmp_second_int, satData.tmp_day_int, satData.tmp_month_int, satData.tmp_year_int);
 
-  memset(satData.hour, 0, 56);
-  strncat(satData.hour, &temp_sat_time_stamp_string[6], 1);
-  strncat(satData.hour, &temp_sat_time_stamp_string[7], 1);
+  // set elements to time return functions
+  tmElements_t tm_return = {second(), minute(), hour(), weekday(), day(), month(), year()};
+  time_t current_local_time = makeTime(tm_return);
 
-  memset(satData.minute, 0, 56);
-  strncat(satData.minute, &temp_sat_time_stamp_string[8], 1);
-  strncat(satData.minute, &temp_sat_time_stamp_string[9], 1);
+  // adjust UTC time according to UTC offset
+  if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
+  else if (satData.utc_offset_flag==1) {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
 
-  memset(satData.second, 0, 56);
-  strncat(satData.second, &temp_sat_time_stamp_string[10], 1);
-  strncat(satData.second, &temp_sat_time_stamp_string[11], 1);
+  // update year
+  memset(satData.year, 0, sizeof(satData.year));
+  strcat(satData.year, printDigits(year()).c_str());
 
-  memset(satData.millisecond, 0, 56);
-  strncat(satData.millisecond, &temp_sat_time_stamp_string[13], 1);
-  strncat(satData.millisecond, &temp_sat_time_stamp_string[14], 1);
+  // update month
+  memset(satData.month, 0, sizeof(satData.month));
+  strcat(satData.month, printDigits(month()).c_str());
 
-  memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
-  strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(satData.year_full_int, satData.month_int, satData.day_int).c_str());
+  // update day
+  memset(satData.day, 0, sizeof(satData.day));
+  strcat(satData.day, printDigits(day()).c_str());
 
-  // store hour ready for timezone conversion
-  int temp_hour = atoi(satData.hour);
-  // add hour(s)
-  if (satData.utc_offset_flag == 0) {for (int i = 0; i < satData.utc_offset; i++) {if (temp_hour < 24) {temp_hour++;} else {temp_hour=0;}}}
-  // deduct hour(s)
-  else if (satData.utc_offset_flag == 1) {for (int i = 0; i < satData.utc_offset; i++) {if (temp_hour > 0) {temp_hour--;} else {temp_hour=23;}}}
-  // initialize space for hour string
-  char temp_hour_str[56];
-  memset(satData.hour, 0, 56);
-  // reconstruct hours with leading zero
-  if (temp_hour < 10) {strcat(satData.hour, "0"); itoa(temp_hour, temp_hour_str, 10); strcat(satData.hour, temp_hour_str);}
-  // reconstruct hours without modification
-  else {itoa(temp_hour, satData.hour, 10);}
+  // update hour
+  memset(satData.hour, 0, sizeof(satData.hour));
+  strcat(satData.hour, printDigits(hour()).c_str());
 
-  // store hours.minutes
+  // update minute
+  memset(satData.minute, 0, sizeof(satData.minute));
+  strcat(satData.minute, printDigits(minute()).c_str());
+
+  // update second
+  memset(satData.second, 0, sizeof(satData.second));
+  strcat(satData.second, printDigits(second()).c_str());
+
+  // update millisecond
+  memset(satData.millisecond, 0, sizeof(satData.millisecond));
+  strcat(satData.millisecond, satData.tmp_millisecond);
+
+  // store period delimited hours and minutes
   memset(satData.hours_minutes, 0, 56);
   strcat(satData.hours_minutes, satData.hour);
   strcat(satData.hours_minutes, ".");
   strcat(satData.hours_minutes, satData.minute);
 
-  // reconstruct satio datetime timestamp
-  memset(satData.sat_time_stamp_string, 0, 56);
-  strcat(satData.sat_time_stamp_string, gnrmcData.utc_date);
-  strcat(satData.sat_time_stamp_string, satData.hour);
-  strcat(satData.sat_time_stamp_string, satData.minute);
-  strcat(satData.sat_time_stamp_string, satData.second);
-  strcat(satData.sat_time_stamp_string, ".");
-  strcat(satData.sat_time_stamp_string, satData.millisecond);
+  // uncomment to debug after converting UTC date and time to UTC offset date and time
+  Serial.print("converted time (raw): "); Serial.println(current_local_time);
+  Serial.print("converted time:       ");
+  Serial.print(satData.hour);
+  Serial.print(":"); Serial.print(satData.minute);
+  Serial.print(":"); Serial.print(satData.second);
+  Serial.print(".");  Serial.print(satData.millisecond);
+  Serial.print(" "); Serial.print(satData.year); 
+  Serial.print("."); Serial.print(satData.month);
+  Serial.print("."); Serial.print(satData.day);
+  Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
+  Serial.println("\n-------------");
 
-  // store char times as int times
-  satData.day_int = atoi(satData.day);
+  // update local int time
+  satData.year_int = atoi(satData.year);
   satData.month_int = atoi(satData.month);
-  satData.year_full_int = atoi(satData.year_full);
+  satData.day_int = atoi(satData.day);
   satData.hour_int = atoi(satData.hour);
   satData.minute_int = atoi(satData.minute);
   satData.second_int = atoi(satData.second);
   satData.millisecond_int = atoi(satData.millisecond);
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                       SATIO SENTENCE: LAST KNOWN DOWNLINK
-  // sat_time_stamp_string
+  // get day of the week name
+  memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
+  strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(satData.year_int, satData.month_int, satData.day_int).c_str());
+
+  // clear satio sentence
+  memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
+
+  // build temporary time stamp string
+  strcat(temp_sat_time_stamp_string, satData.year);
+  strcat(temp_sat_time_stamp_string, satData.month);
+  strcat(temp_sat_time_stamp_string, satData.day);
+  strcat(temp_sat_time_stamp_string, satData.hour);
+  strcat(temp_sat_time_stamp_string, satData.minute);
+  strcat(temp_sat_time_stamp_string, satData.second);
+  strcat(temp_sat_time_stamp_string, ".");
+  strcat(temp_sat_time_stamp_string, satData.millisecond);
+
+  // append temporary string to actual sat time char array
+  memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
+  strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
+
+  // start building satio sentence
+  memset(satData.satio_sentence, 0, 1024);
+  strcat(satData.satio_sentence, satData.satDataTag);
+  strcat(satData.satio_sentence, ",");
+  strcat(satData.satio_sentence, satData.sat_time_stamp_string);
+  strcat(satData.satio_sentence, ",");
+
+  // update last time satellite count > zero
   if (atoi(gnggaData.satellite_count_gngga) > 0) {
+    // update sentence
     memset(satData.last_sat_time_stamp_str, 0, 56);
     strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
+    // update elements
+    memset(satData.lt_year, 0, 56);
+    strcat(satData.lt_year, satData.year);
+    memset(satData.lt_month, 0, 56);
+    strcat(satData.lt_month, satData.month);
+    memset(satData.lt_day, 0, 56);
+    strcat(satData.lt_day, satData.day);
+    memset(satData.lt_hour, 0, 56);
+    strcat(satData.lt_hour, satData.hour);
+    memset(satData.lt_minute, 0, 56);
+    strcat(satData.lt_minute, satData.minute);
+    memset(satData.lt_second, 0, 56);
+    strcat(satData.lt_second, satData.second);
+    memset(satData.lt_millisecond, 0, 56);
+    strcat(satData.lt_millisecond, satData.millisecond);
+    satData.lt_year_int = satData.year_int;
+    satData.lt_month_int = satData.month_int;
+    satData.lt_day_int = satData.day_int;
+    satData.lt_hour_int = satData.hour_int;
+    satData.lt_minute_int = satData.minute_int;
+    satData.lt_second_int = satData.second_int;
+    satData.lt_millisecond_int = satData.millisecond_int;
+
   }
+  // append to satio sentence
   strcat(satData.satio_sentence, satData.last_sat_time_stamp_str);
   strcat(satData.satio_sentence, ",");
 
-  // --------------------------------------------------------------------------------------------------------------------------
-  //                                                                                 SATIO SENTENCE: CONVERT DATA FROM STRINGS
-
+  // coordinate conversion mode
   if (satData.convert_coordinates == true) {
+    // convert from GNGGA
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
       satData.abs_latitude_gngga_0 = atof(String(gnggaData.latitude).c_str());
       satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
     }
+    // convert from GNRMC
     else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
       satData.abs_latitude_gnrmc_0 = atof(String(gnrmcData.latitude).c_str());
       satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
     }
+    // convert coordinates to decimal
     calculateLocation();
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
-
+      // append to satio sentence
       strcat(satData.satio_sentence, satData.location_latitude_gngga_str);
       strcat(satData.satio_sentence, ",");
       strcat(satData.satio_sentence, satData.location_longitude_gngga_str);
       strcat(satData.satio_sentence, ",");
     }
     else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
+      // append to satio sentence
       strcat(satData.satio_sentence, satData.location_latitude_gnrmc_str);
       strcat(satData.satio_sentence, ",");
       strcat(satData.satio_sentence, satData.location_longitude_gnrmc_str);
@@ -2431,11 +2561,15 @@ void extrapulatedSatData() {
 
   // --------------------------------------------------------------------------------------------------------------------------
   //                                                                                                       SATIO SENTENCE: END
+
+  // finally append checksum to satio sentence
   strcat(satData.satio_sentence, "*");
   satData.checksum_i = getCheckSum(satData.satio_sentence);
   itoa(satData.checksum_i, satData.checksum_str, 10);
   strcat(satData.satio_sentence, satData.checksum_str);
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+
+  // delay(1000);
   }
 
 
@@ -3961,7 +4095,7 @@ void trackNeptune(double latitude, double longitude, int year, int month, int da
 void trackPlanets() {
   if (systemData.sidereal_track_sun == true) {trackSun(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -3969,7 +4103,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_moon == true) {trackMoon(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -3977,7 +4111,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_mercury == true) {trackMercury(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -3985,7 +4119,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_venus == true) {trackVenus(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -3993,7 +4127,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_mars == true) {trackMars(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -4001,7 +4135,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_jupiter == true) {trackJupiter(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -4009,7 +4143,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_saturn == true) {trackSaturn(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -4017,7 +4151,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_uranus == true) {trackUranus(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -4025,7 +4159,7 @@ void trackPlanets() {
                                                         atoi(satData.second));}
   if (systemData.sidereal_track_neptune == true) {trackNeptune(satData.location_latitude_gngga,
                                                         satData.location_longitude_gngga,
-                                                        atoi(satData.year_full),
+                                                        atoi(satData.year),
                                                         atoi(satData.month),
                                                         atoi(satData.day),
                                                         atoi(satData.hour),
@@ -4085,7 +4219,7 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_full_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {tmp_matrix[Fi] = check_equal_true(satData.year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);}
 
         // ----------------------------------------------------------------------------------------------------------------------------
         //                                                                                                                       SATIO
@@ -4869,11 +5003,11 @@ struct SettingsDataStruct {
     "DELETE MATRIX FILE",
   };
 
-  int max_settingstimevalues = 3;
-  char settingstimevalues[3][56] = {
+  int max_settingstimevalues = 2;
+  char settingstimevalues[2][56] = {
     "UTC OFFSET",  // can be used to offset hours (+/-) from UTC and can also be used to account for daylight saving. notice this is not called timezone or daylight saving.
     "OFFSET FLAG", // 0: add hours to time, 1: deduct hours from time
-    "YEAR PREFIX", // example: prefix 20 for year 2024
+    // "YEAR PREFIX", // example: prefix 20 for year 2024
   };
 
   int max_settingsdisplayvalues = 4;
@@ -4984,22 +5118,12 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setCursor(0,80);
     hud.print("T  ");
-    hud.print(satData.sat_time_stamp_string[0]); hud.print(satData.sat_time_stamp_string[1]); hud.print(".");
-    hud.print(satData.sat_time_stamp_string[2]); hud.print(satData.sat_time_stamp_string[3]); hud.print(".");
-    hud.print(satData.sat_time_stamp_string[4]); hud.print(satData.sat_time_stamp_string[5]); hud.print(" ");
-    hud.print(satData.sat_time_stamp_string[6]); hud.print(satData.sat_time_stamp_string[7]); hud.print(":");
-    hud.print(satData.sat_time_stamp_string[8]); hud.print(satData.sat_time_stamp_string[9]); hud.print(":");
-    hud.print(satData.sat_time_stamp_string[10]); hud.print(satData.sat_time_stamp_string[11]); hud.print("");
-    hud.print(satData.sat_time_stamp_string[12]); hud.print(satData.sat_time_stamp_string[13]); hud.print(""); hud.print(satData.sat_time_stamp_string[14]); hud.print(""); // ms
+    hud.print(satData.year); hud.print("."); hud.print(satData.month); hud.print("."); hud.print(satData.day); hud.print(" ");
+    hud.print(satData.hour); hud.print(":"); hud.print(satData.minute); hud.print(":"); hud.print(satData.second); hud.print("."); hud.print(satData.millisecond);
     hud.setCursor(0,90);
     hud.print("LT ");
-    hud.print(satData.last_sat_time_stamp_str[0]); hud.print(satData.last_sat_time_stamp_str[1]); hud.print(".");
-    hud.print(satData.last_sat_time_stamp_str[2]); hud.print(satData.last_sat_time_stamp_str[3]); hud.print(".");
-    hud.print(satData.last_sat_time_stamp_str[4]); hud.print(satData.last_sat_time_stamp_str[5]); hud.print(" ");
-    hud.print(satData.last_sat_time_stamp_str[6]); hud.print(satData.last_sat_time_stamp_str[7]); hud.print(":");
-    hud.print(satData.last_sat_time_stamp_str[8]); hud.print(satData.last_sat_time_stamp_str[9]); hud.print(":");
-    hud.print(satData.last_sat_time_stamp_str[10]); hud.print(satData.last_sat_time_stamp_str[11]); hud.print("");
-    hud.print(satData.last_sat_time_stamp_str[12]); hud.print(satData.last_sat_time_stamp_str[13]); hud.print(""); hud.print(satData.last_sat_time_stamp_str[14]); hud.print(""); // ms
+    hud.print(satData.lt_year); hud.print("."); hud.print(satData.lt_month); hud.print("."); hud.print(satData.lt_day); hud.print(" ");
+    hud.print(satData.lt_hour); hud.print(":"); hud.print(satData.lt_minute); hud.print(":"); hud.print(satData.lt_second); hud.print("."); hud.print(satData.lt_millisecond);
     hud.setCursor(0,100);
     hud.print("GS "); hud.print(gnrmcData.ground_speed);
     hud.setCursor(0,110);
@@ -5984,9 +6108,9 @@ bool DisplaySettingsTime() {
     if (i==1) {
       DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));
     }
-    if (i==2) {
-      DisplayPlusMinus(170, 43+i*20, String(satData.year_prefix), String(""));
-    }
+    // if (i==2) {
+    //   DisplayPlusMinus(170, 43+i*20, String(satData.year_prefix), String(""));
+    // }
     }
     return true;
   }
@@ -6002,10 +6126,6 @@ bool isDisplaySettingsTime(TouchPoint p) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if      (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
-          if (i==2) {
-            satData.year_prefix_int--; if (satData.year_prefix_int<0) {satData.year_prefix_int=999999999;} // 999billion
-            itoa(satData.year_prefix_int, satData.year_prefix, 10);
-            }
           }
         }
       }
@@ -6016,10 +6136,6 @@ bool isDisplaySettingsTime(TouchPoint p) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if      (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
-          if (i==2) {
-            satData.year_prefix_int++; if (satData.year_prefix_int>999999999) {satData.year_prefix_int=0;} // 999billion
-            itoa(satData.year_prefix_int, satData.year_prefix, 10);
-            }
           }
         }
       }
