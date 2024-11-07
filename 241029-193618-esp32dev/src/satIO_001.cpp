@@ -40,7 +40,7 @@
                          The IO is currently simulated as a virtual switch, while the system is being built.
 
                Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-               of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
+                    of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
