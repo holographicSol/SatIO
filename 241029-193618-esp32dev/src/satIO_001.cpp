@@ -2611,18 +2611,15 @@ void setLastSatelliteTime() {
 //                                                                                                         BUILD SATIO SENTENCE
 
 void buildSatIOSentence() {
-
   // start building satio sentence
   memset(satData.satio_sentence, 0, 1024);
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
   strcat(satData.satio_sentence, satData.sat_time_stamp_string);
   strcat(satData.satio_sentence, ",");
-
   // append to satio sentence
   strcat(satData.satio_sentence, satData.last_sat_time_stamp_str);
   strcat(satData.satio_sentence, ",");
-
   // coordinate conversion mode
   if (satData.convert_coordinates == true) {
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
