@@ -128,12 +128,12 @@ SPIClass sdspi = SPIClass(VSPI);
 //                                                                                                                 DATA: SYSTEM
 
 struct systemStruct {
-  bool satio_enabled = true;  // enables/disables new data being extrapulated from existing GPS data (coordinate degrees, etc)
-  bool gngga_enabled = true;  // enables/disables parsing of serial GPS data
-  bool gnrmc_enabled = true;  // enables/disables parsing of serial GPS data
-  bool gpatt_enabled = true;  // enables/disables parsing of serial GPS data
-  bool matrix_enabled = false;  // enables/disables matrix switch
-  bool run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file (default: false)
+  bool satio_enabled = true;           // enables/disables new data being extrapulated from existing GPS data (coordinate degrees, etc)
+  bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
+  bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
+  bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
+  bool matrix_enabled = false;         // enables/disables matrix switch
+  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file (default: false)
   bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
   bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
