@@ -6078,7 +6078,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
-          if      (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
+          if (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
           }
         }
@@ -6088,7 +6088,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
-          if      (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
+          if (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
           }
         }
