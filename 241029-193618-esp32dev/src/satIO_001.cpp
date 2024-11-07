@@ -3456,6 +3456,8 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                          SDCARD: SAVE MATRIX
 
+/* saves tagged, comma delimited data to a matrix file */
+
 bool sdcard_save_matrix(fs::FS &fs, char * file) {
   Serial.println("[sdcard] attempting to save file: " + String(file));
   sdcardData.current_file.flush();
