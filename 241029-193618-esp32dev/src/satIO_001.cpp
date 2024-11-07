@@ -2525,7 +2525,7 @@ void convertUTCToLocal() {
   strcat(satData.hours_minutes, ".");
   strcat(satData.hours_minutes, satData.minute);
 
-  // uncomment to debug after converting UTC date and time to UTC offset date and time
+  // uncomment to debug after conversion
   // Serial.print("converted time (raw): "); Serial.println(current_local_time);
   // Serial.print("converted time:       ");
   // Serial.print(satData.hour);
