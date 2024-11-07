@@ -2378,7 +2378,7 @@ void extrapulatedSatData() {
   memset(satData.tmp_millisecond, 0, 56);
   strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[13], 1);
   strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[14], 1);
-  Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
+  // Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
 
   // temporary int time values
   satData.tmp_day_int = atoi(satData.tmp_day);
