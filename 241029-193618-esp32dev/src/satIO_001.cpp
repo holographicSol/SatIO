@@ -3882,7 +3882,8 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-  // under development. may be buggy
+  // seconds time is currently counted by a task that accumulates seconds.
+  // there may be a bug here
   // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
