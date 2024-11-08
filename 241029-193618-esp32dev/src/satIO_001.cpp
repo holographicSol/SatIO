@@ -7410,34 +7410,38 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 //                                                                                                                 UPDATE DISPLAY
 
 void UpdateDisplay() {
-  // populate strite according to page then display
-    // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
-    hud.setColorDepth(8);
-    hud.createSprite(320, 240);
-    hud.fillSprite(TFT_TRANSPARENT);
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    // menuData.page=5;  // force a specific page to be displayed (dev)
-    // determine which sprite to build
-    bool checktouch = false;
-    if (checktouch == false) {checktouch = DisplayPage0();}
-    if (checktouch == false) {checktouch = DisplayPage1();}
-    if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
-    if (checktouch == false) {checktouch = DisplayNumpad();}
-    if (checktouch == false) {checktouch = DisplaySettingsMenu();}
-    if (checktouch == false) {checktouch = DisplaySettingsSystem();}
-    if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
-    if (checktouch == false) {checktouch = DisplaySettingsGPS();}
-    if (checktouch == false) {checktouch = DisplaySettingsSerial();}
-    if (checktouch == false) {checktouch = DisplaySettingsFile();}
-    if (checktouch == false) {checktouch = DisplaySettingsTime();}
-    if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
-    if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
-    if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
-    if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
-    if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
-    // display the sprite and free memory
-    hud.pushSprite(0, 0, TFT_TRANSPARENT);
-    hud.deleteSprite();
+
+  /* populates strite according to page then displays sprite */
+
+  // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
+  hud.setColorDepth(8);
+  hud.createSprite(320, 240);
+  hud.fillSprite(TFT_TRANSPARENT);
+  hud.fillRect(0, 0, 320, 240, BG_COL_0);
+
+  // menuData.page=5;  // force a specific page to be displayed (dev)
+
+  // determine which sprite to build
+  bool checktouch = false;
+  if (checktouch == false) {checktouch = DisplayPage0();}
+  if (checktouch == false) {checktouch = DisplayPage1();}
+  if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
+  if (checktouch == false) {checktouch = DisplayNumpad();}
+  if (checktouch == false) {checktouch = DisplaySettingsMenu();}
+  if (checktouch == false) {checktouch = DisplaySettingsSystem();}
+  if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
+  if (checktouch == false) {checktouch = DisplaySettingsGPS();}
+  if (checktouch == false) {checktouch = DisplaySettingsSerial();}
+  if (checktouch == false) {checktouch = DisplaySettingsFile();}
+  if (checktouch == false) {checktouch = DisplaySettingsTime();}
+  if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
+  if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
+  if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
+  if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
+  if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
+  // display the sprite and free memory
+  hud.pushSprite(0, 0, TFT_TRANSPARENT);
+  hud.deleteSprite();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
