@@ -112,7 +112,8 @@ uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/obje
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
 
-TaskHandle_t TSTask;             // touchscreen task
+TaskHandle_t TSTask;    // touchscreen task
+TaskHandle_t SystemSecondsTimerTask;  // time task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
@@ -291,12 +292,16 @@ struct TimeStruct {
 };
 TimeStruct timeData;
 
-void time_counter() {
-  timeData.t0 = micros();
-  if (timeData.t0 > (timeData.t1+1000000)) {
-    timeData.t1 = timeData.t0;
-    timeData.seconds++;
-    }
+
+void SystemSecondsTimer(void * pvParameters) {
+  while (1) {
+    timeData.t0 = micros();
+    if (timeData.t0 > (timeData.t1+1000000)) {
+      timeData.t1 = timeData.t0;
+      timeData.seconds++;
+      }
+      delay(1);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3877,14 +3882,12 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-  // currently requiress main loop time is <1sec but will run as its own task later accumulating time more precisely.
+  // under development. may be buggy
   // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
-  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {
-    matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;
-    }
-  else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
+  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else {return false;}
 }
 
@@ -7642,6 +7645,16 @@ void setup() {
       1,                /* Priority of the task */
       &TSTask,          /* Task handle. */
       0);               /* Core where the task should run */
+  
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+      SystemSecondsTimer, /* Function to implement the task */
+      "SystemSecondsTimerTask",         /* Name of the task */
+      10000,            /* Stack size in words */
+      NULL,             /* Task input parameter */
+      1,                /* Priority of the task */
+      &SystemSecondsTimerTask,          /* Task handle. */
+      0);               /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -7705,6 +7718,4 @@ void loop() {
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   // Serial.print("micros: "); Serial.println(timeData.mainLoopTimeTaken);
-
-  time_counter();  // keep track of time in seconds
 }
