@@ -70,13 +70,16 @@ SerialLinkStruct SerialLink;
 
 int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
-  if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
+
+  // uncomment to debug
+  // if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
   for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
     if (SerialLink.c_XOR == '*') break;
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
-  Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
+  // uncomment to debug
+  // Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 
@@ -91,7 +94,9 @@ uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
-  if (SerialLink.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
+
+  // uncomment to debug
+  // if (SerialLink.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
   SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
