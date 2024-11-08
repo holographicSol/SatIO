@@ -5453,14 +5453,10 @@ void matrixSwitch() {
       if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
       else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
     }
-
     createChecksum(matrixData.matrix_results_sentence);
     strcat(matrixData.matrix_results_sentence, "*");
-    // Serial.println("buffer:                  " + String(matrixData.matrix_results_sentence));
-    // Serial.println("checksum_of_buffer:      " + String(checksum));
     strcat(matrixData.matrix_results_sentence, SerialLink.checksum);
     strcat(matrixData.matrix_results_sentence, "\n");
-    // Serial.println("matrix_results_sentence: " + String(matrixData.matrix_results_sentence));
 
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {
