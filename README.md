@@ -47,8 +47,7 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
-                     ToDo: RTC + IO expansion + black rubber case with waterproof IO ports, and potentially a server hosting
-                                                             an RSS Feed.                       
+                                ToDo: RTC + IO expansion + black rubber case with waterproof IO ports.       
   
 
 ---
