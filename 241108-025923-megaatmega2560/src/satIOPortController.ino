@@ -99,14 +99,15 @@ bool validateChecksum(char * buffer) {
 
 void createChecksum(char * buffer) {
   uint8_t checksum_of_buffer = getCheckSum(buffer);
-  // Serial.print("checksum_of_buffer: ");
-  // Serial.println(checksum_of_buffer);
-  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); 
-  // Serial.println();
+
+  // uncomment to debug
+  // Serial.print("checksum_of_buffer: "); Serial.println(checksum_of_buffer);
+  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); Serial.println();
+
   sprintf(SerialLink.checksum,"%X",checksum_of_buffer);
-  // Serial.print("checksum: ");
-  // Serial.println(checksum);
-  // Serial.println();
+
+  // uncomment to debug
+  // Serial.print("checksum: "); Serial.println(checksum); Serial.println();
 }
 
 // ------------------------------------------------------------------------------------------------------------------
