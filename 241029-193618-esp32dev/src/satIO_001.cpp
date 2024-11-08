@@ -2640,15 +2640,6 @@ void convertUTCToLocal() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        SET RTC
-
-/* this function should set an RTC if satellite count is over zero and time data is validated */
-
-void setRTC() {
-}
-
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        SET LAST SATELLITE TIME
 
 void setLastSatelliteTime() {
@@ -3891,13 +3882,13 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-  // experimenting with different option: gps seconds / second accumulator / RTC. 
+  // seconds time is currently counted by a task that accumulates seconds.
   // there may be a bug here
   // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
-  if ((satData.second_int - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = satData.second_int; return true;}
-  else if ((satData.second_int - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = satData.second_int; return true;}
+  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else {return false;}
 }
 
