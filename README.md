@@ -60,6 +60,10 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
 ![plot](./images/vlcsnap-2024-11-08-10h58m42s127.png)
 
 ---
+
+![plot](./images/DSC_0004_BURST20241108194742300_COVER.JPG)
+
+---
   
        Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
        of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
