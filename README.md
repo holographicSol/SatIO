@@ -60,18 +60,6 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
 ![plot](./images/vlcsnap-2024-11-08-10h58m42s127.png)
 
 ---
-
-
-Ultimately this system is being built as a unit to make IO high/low, to control other devices/microcontrollers.
-
----
-
-
-The relays are currently simulated while the system is being built and the simulation is designed to be easily
-relaceable by the actual relays themselves once the logic has been completed to a satisfactory degree and currently
-all logic required to activate and deactivate relays is in place.
-
----
   
        Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
        of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
