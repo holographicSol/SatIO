@@ -300,6 +300,26 @@ void time_counter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SERIAL LINK STRUCT
+
+struct SerialLinkStruct {
+  unsigned long nbytes;
+  char BUFFER[1024];            // read incoming bytes into this buffer
+  char DATA[1024];              // buffer refined using ETX
+  unsigned long T0_RXD_1 = 0;   // hard throttle current time
+  unsigned long T1_RXD_1 = 0;   // hard throttle previous time
+  unsigned long TT_RXD_1 = 0;   // hard throttle interval
+  unsigned long T0_TXD_1 = 0;   // hard throttle current time
+  unsigned long T1_TXD_1 = 0;   // hard throttle previous time
+  unsigned long TT_TXD_1 = 10;  // hard throttle interval
+  int i_token = 0;
+  char * token;
+  bool validation = false;
+  char checksum[56];
+};
+SerialLinkStruct SerialLink;
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
 
 struct validationStruct {
@@ -325,6 +345,7 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           VALIDATION: CHECKSUM
+
 
 int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
@@ -359,6 +380,18 @@ bool validateChecksum(char * buffer) {
   uint8_t checksum_of_buffer =  getCheckSum(buffer);
   uint8_t checksum_in_buffer = h2d2(gotSum[0], gotSum[1]);
   if (checksum_of_buffer == checksum_in_buffer) {return true;} else {return false;}
+}
+
+void createChecksum(char * buffer) {
+  uint8_t checksum_of_buffer = getCheckSum(buffer);
+  // Serial.print("checksum_of_buffer: ");
+  // Serial.println(checksum_of_buffer);
+  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); 
+  // Serial.println();
+  sprintf(SerialLink.checksum,"%X",checksum_of_buffer);
+  // Serial.print("checksum: ");
+  // Serial.println(checksum);
+  // Serial.println();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -1206,7 +1239,7 @@ struct MatrixStruct {
   char temp[2048];                     // a general place to store temporary chars relative to MatrixStruct
   char matrix_results_sentence[2048];  // an NMEA inspired sentence reflecting matrix switch states  
   char checksum_str[56];               // placeholder for char checksum relative to MatrixStruct
-  int checksum_i;                      // placeholder for int checksum relative to MatrixStruct
+  char checksum[56];                      // placeholder for int checksum relative to MatrixStruct
 
   // reflects matrix switch active/inactive states each loop of matrix switch function
   bool matrix_switch_state[1][20] = {
@@ -2661,11 +2694,11 @@ void buildSatIOSentence() {
   else {strcat(satData.satio_sentence, "0.0,0.0,");}
 
   // finally append checksum to satio sentence
-  strcat(satData.satio_sentence, "*");
-  satData.checksum_i = getCheckSum(satData.satio_sentence);
-  itoa(satData.checksum_i, satData.checksum_str, 10);
-  strcat(satData.satio_sentence, satData.checksum_str);
-  if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+  // strcat(satData.satio_sentence, "*");
+  // satData.checksum_i = getCheckSum(satData.satio_sentence);
+  // itoa(satData.checksum_i, satData.checksum_str, 10);
+  // strcat(satData.satio_sentence, satData.checksum_str);
+  // if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
 
   }
 
@@ -5415,15 +5448,19 @@ void matrixSwitch() {
 
     // create matrix switch state sentence. 
     memset(matrixData.matrix_results_sentence, 0, sizeof(matrixData.matrix_results_sentence));
-    strcpy(matrixData.matrix_results_sentence, "$MATRIXSWITCH,");
+    strcpy(matrixData.matrix_results_sentence, "$MATRX,");
     for (int i=0; i < matrixData.max_matrices; i++) {
       if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
       else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
     }
+
+    createChecksum(matrixData.matrix_results_sentence);
     strcat(matrixData.matrix_results_sentence, "*");
-    matrixData.checksum_i = getCheckSum(matrixData.matrix_results_sentence);
-    itoa(matrixData.checksum_i, matrixData.checksum_str, 10);
-    strcat(matrixData.matrix_results_sentence, matrixData.checksum_str);
+    // Serial.println("buffer:                  " + String(matrixData.matrix_results_sentence));
+    // Serial.println("checksum_of_buffer:      " + String(checksum));
+    strcat(matrixData.matrix_results_sentence, SerialLink.checksum);
+    strcat(matrixData.matrix_results_sentence, "\n");
+    // Serial.println("matrix_results_sentence: " + String(matrixData.matrix_results_sentence));
 
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {
