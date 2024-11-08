@@ -2642,7 +2642,7 @@ void convertUTCToLocal() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SET RTC
 
-/* this function should set an RTC if satellite count is over zero */
+/* this function should set an RTC if satellite count is over zero and time data is validated */
 
 void setRTC() {
 }
