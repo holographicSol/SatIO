@@ -43,7 +43,7 @@ SatIO - Written by Benjamin Jack Cullen.
                                             projects requiring use of GPS data. 
                                         Robots and flying machines and automation.
 
-                                         The IO is virtualized as well as physical! 
+                            The IO is virtualized as well as physical (requires SatIO Port Controller)
 
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
