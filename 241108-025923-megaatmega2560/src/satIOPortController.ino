@@ -10,15 +10,10 @@ ATMEGA2560 TX1 (18) -> Serial1
 
 */
 
+#include <stdio.h>
+#include <string.h>
+// #include <iostream>
 #include <Arduino.h>
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      TEST DATA
-
-unsigned long unitTest_i_mainIter = 0;
-unsigned long unitTest_i_subToken = 0;
-unsigned long unitTest_i_subTokenTotal = 0;
-unsigned long passedUnitTest = 0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -60,6 +55,7 @@ struct SerialLinkStruct {
   int i_token = 0;
   char * token;
   bool validation = false;
+  char checksum[56];
 };
 SerialLinkStruct SerialLink;
 
@@ -77,7 +73,7 @@ int getCheckSum(char * string) {
     if (c == '*') break;
     if (c != '$') XOR ^= c;
   }
-  if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(XOR));}
+  Serial.println("[connected] getCheckSum: " + String(XOR));
   return XOR;
 }
 
@@ -99,6 +95,18 @@ bool validateChecksum(char * buffer) {
   uint8_t checksum_of_buffer =  getCheckSum(buffer);
   uint8_t checksum_in_buffer = h2d2(gotSum[0], gotSum[1]);
   if (checksum_of_buffer == checksum_in_buffer) {return true;} else {return false;}
+}
+
+void createChecksum(char * buffer) {
+  uint8_t checksum_of_buffer = getCheckSum(buffer);
+  // Serial.print("checksum_of_buffer: ");
+  // Serial.println(checksum_of_buffer);
+  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); 
+  // Serial.println();
+  sprintf(SerialLink.checksum,"%X",checksum_of_buffer);
+  // Serial.print("checksum: ");
+  // Serial.println(checksum);
+  // Serial.println();
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -149,68 +157,71 @@ void readRXD1_Method0() {
     SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
     if (readRXD1_Method00() == true) {
       Serial.println("-------------------------------------------");
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      strcpy(SerialLink.BUFFER, SerialLink.DATA);
       Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
       SerialLink.token = strtok(SerialLink.DATA, ",");
 
       // tag specific processing (like nmea sentences, if we know the tag then we should know what elements are where)
-      if (strcmp(SerialLink.token, "$MATRIXSWITCH") == 0) {
+      if (strcmp(SerialLink.token, "$MATRX") == 0) {
 
         // initiate counter; compare expected element to actual RXD TOKEN; count negative comparison; for 1 million iterations
         SerialLink.validation = false;
-        unitTest_i_subToken = 0;
         SerialLink.i_token = 0;
         SerialLink.token = strtok(NULL, ",");
         while(SerialLink.token != NULL) {
-          Serial.print("[" + String(matrix_port_map[0][unitTest_i_subToken]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+          Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
 
           // check eack token for exactly 1 or 0
-          if (SerialLink.i_token == 0)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][0] = 0;}}
-          if (SerialLink.i_token == 0)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][0] = 1;}}
-          if (SerialLink.i_token == 1)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][1] = 0;}}
-          if (SerialLink.i_token == 1)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][1] = 1;}}
-          if (SerialLink.i_token == 2)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][2] = 0;}}
-          if (SerialLink.i_token == 2)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][2] = 1;}}
-          if (SerialLink.i_token == 3)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][3] = 0;}}
-          if (SerialLink.i_token == 3)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][3] = 1;}}
-          if (SerialLink.i_token == 4)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][4] = 0;}}
-          if (SerialLink.i_token == 4)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][4] = 1;}}
-          if (SerialLink.i_token == 5)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][5] = 0;}}
-          if (SerialLink.i_token == 5)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][5] = 1;}}
-          if (SerialLink.i_token == 6)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][6] = 0;}}
-          if (SerialLink.i_token == 6)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][6] = 1;}}
-          if (SerialLink.i_token == 7)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][7] = 0;}}
-          if (SerialLink.i_token == 7)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][7] = 1;}}
-          if (SerialLink.i_token == 8)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][8] = 0;}}
-          if (SerialLink.i_token == 8)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][8] = 1;}}
-          if (SerialLink.i_token == 9)   {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][9] = 0;}}
-          if (SerialLink.i_token == 9)   {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][9] = 1;}}
-          if (SerialLink.i_token == 10)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][10] = 0;}}
-          if (SerialLink.i_token == 10)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][10] = 1;}}
-          if (SerialLink.i_token == 11)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][11] = 0;}}
-          if (SerialLink.i_token == 11)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][11] = 1;}}
-          if (SerialLink.i_token == 12)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][12] = 0;}}
-          if (SerialLink.i_token == 12)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][12] = 1;}}
-          if (SerialLink.i_token == 13)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][13] = 0;}}
-          if (SerialLink.i_token == 13)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][13] = 1;}}
-          if (SerialLink.i_token == 14)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][14] = 0;}}
-          if (SerialLink.i_token == 14)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][14] = 1;}}
-          if (SerialLink.i_token == 15)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][15] = 0;}}
-          if (SerialLink.i_token == 15)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][15] = 1;}}
-          if (SerialLink.i_token == 16)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][16] = 0;}}
-          if (SerialLink.i_token == 16)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][16] = 1;}}
-          if (SerialLink.i_token == 17)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][17] = 0;}}
-          if (SerialLink.i_token == 17)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][17] = 1;}}
-          if (SerialLink.i_token == 18)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][18] = 0;}}
-          if (SerialLink.i_token == 18)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][18] = 1;}}
-          if (SerialLink.i_token == 19)  {if (strcmp(SerialLink.token, "0") == 0) {passedUnitTest++; matrix_switch_state[0][19] = 0;}}
-          if (SerialLink.i_token == 19)  {if (strcmp(SerialLink.token, "1") == 0) {passedUnitTest++; matrix_switch_state[0][19] = 1;}}
+          if (SerialLink.i_token == 0)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][0] = 0;}}
+          if (SerialLink.i_token == 0)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][0] = 1;}}
+          if (SerialLink.i_token == 1)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][1] = 0;}}
+          if (SerialLink.i_token == 1)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][1] = 1;}}
+          if (SerialLink.i_token == 2)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][2] = 0;}}
+          if (SerialLink.i_token == 2)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][2] = 1;}}
+          if (SerialLink.i_token == 3)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][3] = 0;}}
+          if (SerialLink.i_token == 3)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][3] = 1;}}
+          if (SerialLink.i_token == 4)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][4] = 0;}}
+          if (SerialLink.i_token == 4)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][4] = 1;}}
+          if (SerialLink.i_token == 5)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][5] = 0;}}
+          if (SerialLink.i_token == 5)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][5] = 1;}}
+          if (SerialLink.i_token == 6)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][6] = 0;}}
+          if (SerialLink.i_token == 6)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][6] = 1;}}
+          if (SerialLink.i_token == 7)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][7] = 0;}}
+          if (SerialLink.i_token == 7)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][7] = 1;}}
+          if (SerialLink.i_token == 8)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][8] = 0;}}
+          if (SerialLink.i_token == 8)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][8] = 1;}}
+          if (SerialLink.i_token == 9)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][9] = 0;}}
+          if (SerialLink.i_token == 9)   {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][9] = 1;}}
+          if (SerialLink.i_token == 10)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][10] = 0;}}
+          if (SerialLink.i_token == 10)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][10] = 1;}}
+          if (SerialLink.i_token == 11)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][11] = 0;}}
+          if (SerialLink.i_token == 11)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][11] = 1;}}
+          if (SerialLink.i_token == 12)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][12] = 0;}}
+          if (SerialLink.i_token == 12)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][12] = 1;}}
+          if (SerialLink.i_token == 13)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][13] = 0;}}
+          if (SerialLink.i_token == 13)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][13] = 1;}}
+          if (SerialLink.i_token == 14)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][14] = 0;}}
+          if (SerialLink.i_token == 14)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][14] = 1;}}
+          if (SerialLink.i_token == 15)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][15] = 0;}}
+          if (SerialLink.i_token == 15)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][15] = 1;}}
+          if (SerialLink.i_token == 16)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][16] = 0;}}
+          if (SerialLink.i_token == 16)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][16] = 1;}}
+          if (SerialLink.i_token == 17)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][17] = 0;}}
+          if (SerialLink.i_token == 17)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][17] = 1;}}
+          if (SerialLink.i_token == 18)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][18] = 0;}}
+          if (SerialLink.i_token == 18)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][18] = 1;}}
+          if (SerialLink.i_token == 19)  {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][19] = 0;}}
+          if (SerialLink.i_token == 19)  {if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][19] = 1;}}
 
-          // todo: handle checksum
-          SerialLink.validation = true;
+          // handle expected checksum
+          if (SerialLink.i_token == 20)  {
+            SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+          }
+          
 
           // iterate counters
-          unitTest_i_subToken++;
-          unitTest_i_subTokenTotal++;
           SerialLink.i_token++;
           // snap off used token
           SerialLink.token = strtok(NULL, ",");
@@ -226,11 +237,9 @@ void readRXD1_Method0() {
 /* please ensure checksum was validated properly before actually implementing this final function in the feild */
 
 void satIOPortController() {
-  if (SerialLink.validation==true) {
-    for (int i=0; i<20; i++) {
-      digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
-      Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
-    }
+  for (int i=0; i<20; i++) {
+    digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
+    Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
   }
 }
 
@@ -238,18 +247,6 @@ void satIOPortController() {
 //                                                                                                         MAIN LOOP
 
 void loop() {
-  unitTest_i_mainIter = 0;
-  passedUnitTest = 0;
-  unitTest_i_subTokenTotal = 0;
-  while (unitTest_i_mainIter<100) {
     readRXD1_Method0();
-    unitTest_i_mainIter++;
-    satIOPortController();
-  }
-
-  /* currently we are counting pass rates. validation is in development */
-  Serial.println("-------------------------------------------------------");
-  Serial.print("Testing Passed: "); Serial.print(passedUnitTest); Serial.print("/"); Serial.println(unitTest_i_subTokenTotal);
-  Serial.println("-------------------------------------------------------");
-  delay(10);
+    if (SerialLink.validation == true) {satIOPortController();}
 }
