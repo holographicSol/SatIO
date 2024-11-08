@@ -56,6 +56,12 @@ struct SerialLinkStruct {
   char * token;
   bool validation = false;
   char checksum[56];
+  uint8_t checksum_of_buffer;
+  uint8_t checksum_in_buffer;
+  char gotSum[2];
+  int i_XOR;
+  int XOR;
+  int c_XOR;
 };
 SerialLinkStruct SerialLink;
 
@@ -65,16 +71,13 @@ SerialLinkStruct SerialLink;
 int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
   if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
-  int i;
-  int XOR;
-  int c;
-  for (XOR = 0, i = 0; i < strlen(string); i++) {
-    c = (unsigned char)string[i];
-    if (c == '*') break;
-    if (c != '$') XOR ^= c;
+  for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
+    SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
+    if (SerialLink.c_XOR == '*') break;
+    if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
-  Serial.println("[connected] getCheckSum: " + String(XOR));
-  return XOR;
+  Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
+  return SerialLink.XOR;
 }
 
 // takes a character representing a hexadecimal digit and returns the decimal equivalent of that digit.
@@ -89,22 +92,22 @@ uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
   if (SerialLink.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
-  char gotSum[2];
-  gotSum[0] = buffer[strlen(buffer) - 3];
-  gotSum[1] = buffer[strlen(buffer) - 2];
-  uint8_t checksum_of_buffer =  getCheckSum(buffer);
-  uint8_t checksum_in_buffer = h2d2(gotSum[0], gotSum[1]);
-  if (checksum_of_buffer == checksum_in_buffer) {return true;} else {return false;}
+  SerialLink.gotSum[2];
+  SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
+  SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
+  SerialLink.checksum_of_buffer =  getCheckSum(buffer);
+  SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
+  if (SerialLink.checksum_of_buffer == SerialLink.checksum_in_buffer) {return true;} else {return false;}
 }
 
 void createChecksum(char * buffer) {
-  uint8_t checksum_of_buffer = getCheckSum(buffer);
+  SerialLink.checksum_of_buffer = getCheckSum(buffer);
 
   // uncomment to debug
   // Serial.print("checksum_of_buffer: "); Serial.println(checksum_of_buffer);
   // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); Serial.println();
 
-  sprintf(SerialLink.checksum,"%X",checksum_of_buffer);
+  sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
   // uncomment to debug
   // Serial.print("checksum: "); Serial.println(checksum); Serial.println();
