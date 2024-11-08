@@ -3,42 +3,53 @@ Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Di
 
 ---
 
-    SATIO - Written by Benjamin Jack Cullen.
+SatIO - Written by Benjamin Jack Cullen.
 
-    A general purpose programmable satellite and inertial switch.
-    Continuing project development here with PlatformIO.
-    (Early development and migration to PlatformIO) 
+                                                   "The GPS MAster"
 
----
+                              A general purpose programmable satellite and inertial switch.
 
-Receives and Processes Transmissions from Satellites and makes the data available for calculations.
+                                      SatIO is the system, a matrix is the program.
 
-    Possible combinations example: 100 checks ^ 10 functions = 100,000,000,000,000,000,000 combinations.
-    100 Quintillion.
+            Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
----
+            Possible combinations example: 
 
-Currently there are over 200 different checks that can be performed using just several small primitive
-functions and currently each relays activation/deactivaion can occur based on up to 10 different checks
-resulting true or false. 
+    10=digit characters   15=lenght of double   3=doubles per function   10=functions per switch   20=switches  190=available functions
+                                              (((10^15 * 3) * 10) * 20) ^ 190
 
----
+        Currently there are over 200 different checks that can be performed using just several small primitive functions and
+          currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+                                  
+                                        Wiring For ESP32-2432S028 development board (CYD)
+              
+                           WTGPS300P TX -> CYD io22 remapped as RXD (already remapped in setup funtion)
+                     ATMEGA2560 RX1 (pin 19) -> CYD io27 remapped as TXD (already remapped in setup function)
 
-Wiring For ESP32-2432S028 development board (CYD):
+                                                        SENTENCE $SATIO
+                                                                                
+                        START Tag                Last Sat Time                    Converted Longitude        
+                          |                   |               |                   |               |                  
+                        $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
+                              |               |               |                 |                              
+                                DatetimeStamp                  Converted Latitude                                 
 
-WTGPS300P TX --> CYD io22
-ATMEGA2560 RX1 --> CYD io27 TXD
 
----
+        Ultimately this system is being built as a unit to turn on/off IO/GPIO/relays and or send messages to other controllers,
+                  where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
+            making a foundation for other creative projects that may make use of such satellite and or inertial data.
+                The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
+            is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
+                                            projects requiring use of GPS data. 
+                                        Robots and flying machines and automation.
 
-  
-                                              SENTENCE $SATIO
-                                                                            
-              START Tag                Last Sat Time                    Converted Longitude        
-                 |                   |               |                   |               |                  
-              $SATIO,000000000000.00,000000000000.00,00.00000000000000,00.00000000000000,*Z
-                     |               |               |                 |                              
-                       DatetimeStamp                  Converted Latitude                                 
+                                         The IO is virtualized as well as physical! 
+
+            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
+
+                     ToDo: RTC + IO expansion + black rubber case with waterproof IO ports, and potentially a server hosting
+                                                             an RSS Feed.                       
   
 
 ---
