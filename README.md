@@ -1,9 +1,9 @@
 #                                                        SatIO
 
-This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cullen
+This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cullen.
 
 ---
-
+                                                         SatIO
                                                    "The GPS MAster"
 
                               A general purpose programmable satellite and inertial switch.
