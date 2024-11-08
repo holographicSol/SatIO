@@ -1,9 +1,8 @@
-# SatIO
-Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Display)
+#                                                       SatIO
+
+#                Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Display)
 
 ---
-
-SatIO - Written by Benjamin Jack Cullen.
 
                                                    "The GPS MAster"
 
@@ -55,8 +54,6 @@ SatIO - Written by Benjamin Jack Cullen.
 ---
 
 ![plot](./images/vlcsnap-2024-11-08-11h00m47s505.png)
-
----
 
 ---
 
