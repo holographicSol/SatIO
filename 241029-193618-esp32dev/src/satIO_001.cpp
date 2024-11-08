@@ -3858,7 +3858,7 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-  // currently requiress main loop time is <1sec
+  // currently requiress main loop time is <1sec but will run as its own task later accumulating time more precisely.
   // max seconds 179769313486232 (5700447.53571258206 years)
   // n0: interval
   // n1: on time
