@@ -111,7 +111,6 @@ uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/obje
 //                                                                                                                          TASKS
 
 TaskHandle_t TSTask;             // touchscreen task
-TaskHandle_t UpdateDisplayTask;  // write sprite task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
@@ -7410,10 +7409,8 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 UPDATE DISPLAY
 
-void UpdateDisplay(void * pvParameters) {
+void UpdateDisplay() {
   // populate strite according to page then display
-  while (1) {
-    delay(1);
     // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
     hud.setColorDepth(8);
     hud.createSprite(320, 240);
@@ -7441,7 +7438,6 @@ void UpdateDisplay(void * pvParameters) {
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
     hud.deleteSprite();
-  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7577,16 +7573,6 @@ void setup() {
       1,                /* Priority of the task */
       &TSTask,          /* Task handle. */
       0);               /* Core where the task should run */
-  
-  // Create display task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-      UpdateDisplay,       /* Function to implement the task */
-      "UpdateDisplayTask", /* Name of the task */
-      10000,               /* Stack size in words */
-      NULL,                /* Task input parameter */
-      1,                   /* Priority of the task */
-      &UpdateDisplayTask,  /* Task handle. */
-      0);                  /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -7643,6 +7629,7 @@ void loop() {
   trackPlanets();
   MatrixSwitchTask();
   MatrixStatsCounter();
+  UpdateDisplay();
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
