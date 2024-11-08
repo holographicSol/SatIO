@@ -20,7 +20,8 @@
                                   
                                         Wiring For ESP32-2432S028 development board (CYD)
               
-                  WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+                           WTGPS300P TX -> CYD io22 remapped as RXD (already remapped in setup funtion)
+                     ATMEGA2560 RX1 (pin 19) -> CYD io27 remapped as TXD (already remapped in setup function)
 
                                                         SENTENCE $SATIO
                                                                                 
@@ -72,15 +73,8 @@
 //                                                                                                                           PINS
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte gpstxpin = 27;  // GPS serial TXD
-const byte gpsrxpin = 22;  // GPS serial RXD
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     SOFTSERIAL
-const byte rxPin = 22;
-const byte txPin = 35;
-// Set up a new SoftwareSerial object
-SoftwareSerial SerialPortController (rxPin, txPin);
+const byte txd_to_atmega = 27;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
+const byte rxd_from_gps = 22;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TOUCHSCREEN
@@ -304,25 +298,6 @@ void time_counter() {
     timeData.seconds++;
     }
 }
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SERIAL LINK STRUCT
-struct SerialLinkStruct {
-  char debugData[1024];
-  unsigned long nbytes;
-  unsigned long i_nbytes;
-  char BUFFER[1024];           // read incoming bytes into this buffer
-  char DATA[1024];             // buffer refined using ETX
-  unsigned long T0_RXD_2 = 0;  // hard throttle current time
-  unsigned long T1_RXD_2 = 0;  // hard throttle previous time
-  unsigned long TT_RXD_2 = 0;  // hard throttle interval
-  unsigned long T0_TXD_2 = 0;   // hard throttle current time
-  unsigned long T1_TXD_2 = 0;   // hard throttle previous time
-  unsigned long TT_TXD_2 = 0;  // hard throttle interval
-  unsigned long TOKEN_i;
-  char * token = strtok(BUFFER, ",");
-};
-SerialLinkStruct SerialLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
@@ -5435,33 +5410,25 @@ void matrixSwitch() {
       }
       else {Serial.println("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
     }
-    // handle Mi's that are disbaled
+    // handle Mi's that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
 
-    // Serial Output: switch states
-    if (systemData.output_matrix_enabled == true) {
-      memset(matrixData.matrix_results_sentence, 0, sizeof(matrixData.matrix_results_sentence));
-      strcpy(matrixData.matrix_results_sentence, "$MATRIXSWITCH,");
-      for (int i=0; i < matrixData.max_matrices; i++) {
-        if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
-        else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
-      }
-      strcat(matrixData.matrix_results_sentence, "*");
-      matrixData.checksum_i = getCheckSum(matrixData.matrix_results_sentence);
-      itoa(matrixData.checksum_i, matrixData.checksum_str, 10);
-      strcat(matrixData.matrix_results_sentence, matrixData.checksum_str);
-      Serial.println(matrixData.matrix_results_sentence);
+    // create matrix switch state sentence. 
+    memset(matrixData.matrix_results_sentence, 0, sizeof(matrixData.matrix_results_sentence));
+    strcpy(matrixData.matrix_results_sentence, "$MATRIXSWITCH,");
+    for (int i=0; i < matrixData.max_matrices; i++) {
+      if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
+      else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
+    }
+    strcat(matrixData.matrix_results_sentence, "*");
+    matrixData.checksum_i = getCheckSum(matrixData.matrix_results_sentence);
+    itoa(matrixData.checksum_i, matrixData.checksum_str, 10);
+    strcat(matrixData.matrix_results_sentence, matrixData.checksum_str);
 
-      /*
-      todo: output matrix_results_sentence to softserial for a second microcontroller to read using SerialLink (for actual IO).
-            the sentence will be slightly different in that true (1) will be pin number while false (0) will still be 0.
-            requires settings page 'IO'.
-            this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD
-            where SatIO requires more IO than is physically available on the CYD.
-      */
-      memset(SerialLink.BUFFER, 0, 1024);
-      strcat(SerialLink.BUFFER, matrixData.matrix_results_sentence);
-      }
+    // serial output: switch states.
+    if (systemData.output_matrix_enabled == true) {
+      Serial.println(matrixData.matrix_results_sentence);
+    }
   }
 }
 
@@ -7569,12 +7536,17 @@ void TouchScreenInput( void * pvParameters ) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                           TXD
-void WriteTXD2() {
-    if (SerialPortController.availableForWrite()) {
-      Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER);
-      SerialPortController.write(SerialLink.BUFFER);
-      SerialPortController.write(ETX);
+//                                                                                                                PORT CONTROLLER
+
+void SatIOPortController() {
+    if (Serial1.availableForWrite()) {
+
+      /* uncomment to see what will be sent to the port controller */
+      // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
+
+      /* write matrix switch states to the port controller */
+      Serial1.write(matrixData.matrix_results_sentence);
+      Serial1.write(ETX);
     }
 }
 
@@ -7588,10 +7560,10 @@ void setup() {
 
   Serial.begin(115200);
   while(!Serial);
-  // ESP32 can map hardware serial to alternative pins. Mmp Serial1 for GPS module to the following, we will need this on CYD
-  Serial1.setPins(gpsrxpin, gpstxpin, ctsPin, rtsPin);
+  // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
+  Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
   Serial1.begin(115200);
-  SerialPortController.begin(115200);
+  // SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
@@ -7683,7 +7655,7 @@ void loop() {
   MatrixSwitchTask();
   MatrixStatsCounter();
   UpdateDisplay();
-  // WriteTXD2();
+  SatIOPortController();
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
