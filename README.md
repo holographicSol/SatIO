@@ -1,5 +1,7 @@
 #                                                        SatIO
 
+This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cullen
+
 ---
 
                                                    "The GPS MAster"
