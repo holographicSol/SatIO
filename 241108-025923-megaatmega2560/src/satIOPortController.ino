@@ -165,13 +165,13 @@ void readRXD1_Method0() {
   if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
     SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
     if (readRXD1_Method00() == true) {
-      Serial.println("-------------------------------------------");
+      // Serial.println("-------------------------------------------");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, SerialLink.DATA);
 
       // uncomment to debug
-      Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
+      // Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
       
       // tag specific processing (like nmea sentences, if we know the tag then we should know what elements are where)
       SerialLink.token = strtok(SerialLink.DATA, ",");
