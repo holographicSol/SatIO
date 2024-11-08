@@ -218,9 +218,9 @@ void readRXD1_Method0() {
           // handle expected checksum
           if (SerialLink.i_token == 20)  {
             SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+            break;
           }
           
-
           // iterate counters
           SerialLink.i_token++;
           // snap off used token
