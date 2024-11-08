@@ -58,6 +58,7 @@
 #include <string.h>
 #include <iostream>
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
 #include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
@@ -73,6 +74,13 @@ const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte gpstxpin = 27;  // GPS serial TXD
 const byte gpsrxpin = 22;  // GPS serial RXD
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     SOFTSERIAL
+const byte rxPin = 22;
+const byte txPin = 35;
+// Set up a new SoftwareSerial object
+SoftwareSerial SerialPortController (rxPin, txPin);
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TOUCHSCREEN
@@ -296,6 +304,25 @@ void time_counter() {
     timeData.seconds++;
     }
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SERIAL LINK STRUCT
+struct SerialLinkStruct {
+  char debugData[1024];
+  unsigned long nbytes;
+  unsigned long i_nbytes;
+  char BUFFER[1024];           // read incoming bytes into this buffer
+  char DATA[1024];             // buffer refined using ETX
+  unsigned long T0_RXD_2 = 0;  // hard throttle current time
+  unsigned long T1_RXD_2 = 0;  // hard throttle previous time
+  unsigned long TT_RXD_2 = 0;  // hard throttle interval
+  unsigned long T0_TXD_2 = 0;   // hard throttle current time
+  unsigned long T1_TXD_2 = 0;   // hard throttle previous time
+  unsigned long TT_TXD_2 = 0;  // hard throttle interval
+  unsigned long TOKEN_i;
+  char * token = strtok(BUFFER, ",");
+};
+SerialLinkStruct SerialLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
@@ -1227,6 +1254,14 @@ struct MatrixStruct {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    }
+  };
+
+  // a placeholder for matrix switch ports
+  signed int matrix_port_map[1][20] = {
+    {
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     }
   };
 
@@ -5423,7 +5458,9 @@ void matrixSwitch() {
             requires settings page 'IO'.
             this is an easy to wire (1-2 wires), efficient and potentially high performing solution to limited IO on the CYD
             where SatIO requires more IO than is physically available on the CYD.
-      */ 
+      */
+      memset(SerialLink.BUFFER, 0, 1024);
+      strcat(SerialLink.BUFFER, matrixData.matrix_results_sentence);
       }
   }
 }
@@ -7439,6 +7476,7 @@ void UpdateDisplay() {
   if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
   if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
   if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
+  
   // display the sprite and free memory
   hud.pushSprite(0, 0, TFT_TRANSPARENT);
   hud.deleteSprite();
@@ -7531,6 +7569,16 @@ void TouchScreenInput( void * pvParameters ) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                           TXD
+void WriteTXD2() {
+    if (SerialPortController.availableForWrite()) {
+      Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER);
+      SerialPortController.write(SerialLink.BUFFER);
+      SerialPortController.write(ETX);
+    }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
 void setup() {
@@ -7543,6 +7591,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Mmp Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(gpsrxpin, gpstxpin, ctsPin, rtsPin);
   Serial1.begin(115200);
+  SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
@@ -7634,6 +7683,7 @@ void loop() {
   MatrixSwitchTask();
   MatrixStatsCounter();
   UpdateDisplay();
+  // WriteTXD2();
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
