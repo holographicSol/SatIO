@@ -32,6 +32,12 @@ WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work
                        DatetimeStamp                  Converted Latitude                                 
   
 
+---
+
+![plot](./images/vlcsnap-2024-11-08-11h00m47s505.png)
+
+---
+
 Ultimately this system is being built as a unit to turn on/off multiplexed relays/GPIO,
 where potentially anything can be plugged in such as simple modules or pre-programmed MCU's, 
 making a foundation for other creative projects that may make use of such satellite and or inertial data.
