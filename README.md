@@ -1,6 +1,7 @@
 # SatIO
 Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Display)
 
+---
 
     SATIO - Written by Benjamin Jack Cullen.
 
@@ -8,19 +9,27 @@ Programmable Satellite &amp; Inertial Navigation IO For The CYD (Cheap Yellow Di
     Continuing project development here with PlatformIO.
     (Early development and migration to PlatformIO) 
 
+---
+
 Receives and Processes Transmissions from Satellites and makes the data available for calculations.
 
     Possible combinations example: 100 checks ^ 10 functions = 100,000,000,000,000,000,000 combinations.
     100 Quintillion.
 
+---
+
 Currently there are over 200 different checks that can be performed using just several small primitive
 functions and currently each relays activation/deactivaion can occur based on up to 10 different checks
 resulting true or false. 
 
+---
 
 Wiring For ESP32-2432S028 development board (CYD):
 
-WTGPS300P TX --> CYD io22 as RXD (requires implemented Serial1.setPins() to work on CYD)
+WTGPS300P TX --> CYD io22
+ATMEGA2560 RX1 --> CYD io27 TXD
+
+---
 
   
                                               SENTENCE $SATIO
