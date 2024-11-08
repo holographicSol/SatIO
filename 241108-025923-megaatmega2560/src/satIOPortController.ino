@@ -12,6 +12,7 @@ ATMEGA2560 TX1 (18) -> Serial1
 
 #include <stdio.h>
 #include <string.h>
+// #include <iostream>
 #include <Arduino.h>
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -159,10 +160,12 @@ void readRXD1_Method0() {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, SerialLink.DATA);
-      Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
-      SerialLink.token = strtok(SerialLink.DATA, ",");
 
+      // uncomment to debug
+      Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
+      
       // tag specific processing (like nmea sentences, if we know the tag then we should know what elements are where)
+      SerialLink.token = strtok(SerialLink.DATA, ",");
       if (strcmp(SerialLink.token, "$MATRX") == 0) {
 
         // initiate counter; compare expected element to actual RXD TOKEN; count negative comparison; for 1 million iterations
@@ -170,7 +173,9 @@ void readRXD1_Method0() {
         SerialLink.i_token = 0;
         SerialLink.token = strtok(NULL, ",");
         while(SerialLink.token != NULL) {
-          Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+
+          // uncomment to debug
+          // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
 
           // check eack token for exactly 1 or 0
           if (SerialLink.i_token == 0)   {if (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][0] = 0;}}
@@ -220,9 +225,8 @@ void readRXD1_Method0() {
             break;
           }
           
-          // iterate counters
+          // iterate counters and snap off used token
           SerialLink.i_token++;
-          // snap off used token
           SerialLink.token = strtok(NULL, ",");
         }
       }
@@ -236,9 +240,12 @@ void readRXD1_Method0() {
 /* please ensure checksum was validated properly before actually implementing this final function in the feild */
 
 void satIOPortController() {
+
   for (int i=0; i<20; i++) {
     digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
-    Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
+
+    // uncomment to debug
+    // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
   }
 }
 
