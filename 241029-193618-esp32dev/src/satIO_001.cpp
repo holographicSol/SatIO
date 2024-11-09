@@ -7692,7 +7692,7 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SDCARD
 
-  if (!SD.begin(SS, sdspi, 80000000)) {
+  if (SD.begin(SS, sdspi, 80000000)) {
     Serial.println("[sdcard] initialized.");
     if (sdcardCheck()== true) {
       sdcard_mkdirs();
