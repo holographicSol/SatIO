@@ -2765,8 +2765,8 @@ void sdcardCheck() {
       sdcardData.card_size = SD.cardSize() / (1024 * 1024);
       
       // uncomment to debug
-      Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
-      Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
+      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
+      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
     }
     else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
   }
