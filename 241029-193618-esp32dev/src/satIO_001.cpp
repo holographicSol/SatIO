@@ -296,29 +296,29 @@ SDCardStruct sdcardData;
 //                                                                                                                     DATA: TIME
 
 struct TimeStruct {
-  unsigned long seconds;               // seconds accumulated since startup 
-  unsigned long mainLoopTimeTaken;     // current main loop time
+  double seconds;               // seconds accumulated since startup 
+  double mainLoopTimeTaken;     // current main loop time
   unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
   unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
+  int i_accumukate_time_taken;
+  int accumukate_time_taken;
 };
 TimeStruct timeData;
 
 
-void SystemSecondsTimer(void * pvParameters) {
-  // todo; account for drift. notice there is drift compared to gps time.
-  while (1) {
+volatile int interruptCounter;  //for counting interrupt
+int totalInterruptCounter;   	//total interrupt counting
+hw_timer_t * timer = NULL;      //H/W timer defining (Pointer to the Structure)
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 
-    timeData.t0 = millis();
-    if (timeData.t0 >= timeData.t1+1000) {
-      timeData.t1 = millis();
-      // Serial.println("[system second timer] " + String(timeData.t1));
-      timeData.seconds++;
-      }
-      delay(1);
-  }
+void IRAM_ATTR isr_second_timer() {      //Defining Inerrupt function with IRAM_ATTR for faster access
+  portENTER_CRITICAL_ISR(&timerMux);
+  interruptCounter++;
+  timeData.seconds++;
+  portEXIT_CRITICAL_ISR(&timerMux);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3930,7 +3930,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn off and stay off
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
-    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
+    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
     else {true;}
   }
 }
@@ -7646,6 +7646,11 @@ void SatIOPortController() {
 
 void setup() {
 
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &isr_second_timer, true);
+  timerAlarmWrite(timer, 1000000, true);
+  timerAlarmEnable(timer);
+
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
 
@@ -7691,14 +7696,14 @@ void setup() {
       0);               /* Core where the task should run */
   
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-      SystemSecondsTimer, /* Function to implement the task */
-      "SystemSecondsTimerTask",         /* Name of the task */
-      10000,            /* Stack size in words */
-      NULL,             /* Task input parameter */
-      1,                /* Priority of the task */
-      &SystemSecondsTimerTask,          /* Task handle. */
-      0);               /* Core where the task should run */
+  // xTaskCreatePinnedToCore(
+  //     SystemSecondsTimer, /* Function to implement the task */
+  //     "SystemSecondsTimerTask",         /* Name of the task */
+  //     10000,            /* Stack size in words */
+  //     NULL,             /* Task input parameter */
+  //     1,                /* Priority of the task */
+  //     &SystemSecondsTimerTask,          /* Task handle. */
+  //     0);               /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -7749,8 +7754,19 @@ void satIOData() {
 //                                                                                                                      MAIN LOOP
 
 void loop() {
+  if (interruptCounter > 0) {
+    portENTER_CRITICAL(&timerMux);
+    interruptCounter--;
+    portEXIT_CRITICAL(&timerMux);
 
-  timeData.mainLoopTimeStart = micros();  // store current time to measure this loop time
+    // uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds.)
+    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    // Serial.println();
+
+  }
+  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
@@ -7762,8 +7778,8 @@ void loop() {
   SatIOPortController();
   sdcardCheck(); // automatic sdcard discovery
 
-  timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
+  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("micros: "); Serial.println(timeData.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }
