@@ -3923,7 +3923,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn on and stay on
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true; }
     else {false;}
   }
 
@@ -7760,22 +7760,6 @@ void satIOData() {
 //                                                                                                                      MAIN LOOP
 
 void loop() {
-  if (interruptCounter > 0) {
-    portENTER_CRITICAL(&timerMux);
-    interruptCounter--;
-    portEXIT_CRITICAL(&timerMux);
-
-    /*
-    uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
-    be 0/1 proportionally to time according to timer style stacked/integrated.)
-    */
-    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
-    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
-    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
-    // Serial.println();
-
-  }
-  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
@@ -7791,4 +7775,20 @@ void loop() {
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+
+
+  if (interruptCounter > 0) {
+    portENTER_CRITICAL(&timerMux);
+    interruptCounter--;
+    portEXIT_CRITICAL(&timerMux);
+    /*
+    uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
+    be 0/1 proportionally to time according to timer style stacked/integrated.)
+    */
+    Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    Serial.println();
+  }
+  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 }
