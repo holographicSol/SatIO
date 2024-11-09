@@ -309,16 +309,15 @@ struct TimeStruct {
 TimeStruct timeData;
 
 
-volatile int interruptCounter;  //for counting interrupt
-int totalInterruptCounter;   	//total interrupt counting
-hw_timer_t * timer = NULL;      //H/W timer defining (Pointer to the Structure)
-portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+volatile int interrupt_second_counter;  //for counting interrupt
+hw_timer_t * second_timer = NULL;      //H/W timer defining (Pointer to the Structure)
+portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR isr_second_timer() {      //Defining Inerrupt function with IRAM_ATTR for faster access
-  portENTER_CRITICAL_ISR(&timerMux);
-  interruptCounter++;
+  portENTER_CRITICAL_ISR(&second_timer_mux);
+  interrupt_second_counter++;
   timeData.seconds++;
-  portEXIT_CRITICAL_ISR(&timerMux);
+  portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7652,10 +7651,10 @@ void SatIOPortController() {
 
 void setup() {
 
-  timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(timer, &isr_second_timer, true);
-  timerAlarmWrite(timer, 1000000, true);
-  timerAlarmEnable(timer);
+  second_timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(second_timer, &isr_second_timer, true);
+  timerAlarmWrite(second_timer, 1000000, true);
+  timerAlarmEnable(second_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
@@ -7777,10 +7776,10 @@ void loop() {
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
 
-  if (interruptCounter > 0) {
-    portENTER_CRITICAL(&timerMux);
-    interruptCounter--;
-    portEXIT_CRITICAL(&timerMux);
+  if (interrupt_second_counter > 0) {
+    portENTER_CRITICAL(&second_timer_mux);
+    interrupt_second_counter--;
+    portEXIT_CRITICAL(&second_timer_mux);
     /*
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
     be 0/1 proportionally to time according to timer style stacked/integrated.)
