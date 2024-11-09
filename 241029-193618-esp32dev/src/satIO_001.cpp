@@ -3930,7 +3930,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn off and stay off
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
-    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
+    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
     else {true;}
   }
 }
@@ -7759,7 +7759,10 @@ void loop() {
     interruptCounter--;
     portEXIT_CRITICAL(&timerMux);
 
-    // uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds.)
+    /*
+    uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds.)
+    note that a SecondTimer function with off time 10 and on time 1 should drift by 1 second every 11 second.
+    */
     // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
     // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
     // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
