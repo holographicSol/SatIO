@@ -2759,7 +2759,7 @@ void sdcardCheck() {
 
   if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
     sdcardData.last_initialization_time = satData.current_unixtime;
-
+    
     // note that information will be displayed if sdcard not present.
     if (SD.exists("/")==true) {
       sdcardData.card_type = SD.cardType();
@@ -3909,19 +3909,13 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-  /*
-  
-  max xy seconds (long) 179769313486232 (5700447.53571258206 years)
-  x n0: interval
-  y n1: on time
-  
-  */
-  if ((satData.current_unixtime - matrixData.matrix_timers[0][Mi]) > n0) {
-    matrixData.matrix_timers[0][Mi] = satData.current_unixtime; return true;}
-
-  else if ((satData.current_unixtime - matrixData.matrix_timers[0][Mi]) < n1) {
-    matrixData.matrix_timers[0][Mi] = satData.current_unixtime; return true;}
-
+  // seconds time is currently counted by a task that accumulates seconds. this does not use satellite data.
+  // there may be a bug here
+  // max seconds 179769313486232 (5700447.53571258206 years)
+  // n0: interval
+  // n1: on time
+  if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else {return false;}
 }
 
