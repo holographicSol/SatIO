@@ -310,9 +310,11 @@ TimeStruct timeData;
 void SystemSecondsTimer(void * pvParameters) {
   // todo; account for drift. notice there is drift compared to gps time.
   while (1) {
-    timeData.t0 = micros();
-    if (timeData.t0 >= timeData.t1+1000000) {
-      timeData.t1 = micros();
+
+    timeData.t0 = millis();
+    if (timeData.t0 >= timeData.t1+1000) {
+      timeData.t1 = millis();
+      // Serial.println("[system second timer] " + String(timeData.t1));
       timeData.seconds++;
       }
       delay(1);
