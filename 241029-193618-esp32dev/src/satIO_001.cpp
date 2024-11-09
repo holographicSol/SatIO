@@ -3911,9 +3911,9 @@ bool check_bool_false(bool _bool) {
 bool SecondsTimer(double n0, double n1, int Mi) {
   // seconds time is currently counted by a task that accumulates seconds. this does not use satellite data.
   // there may be a bug here
-  // max seconds 179769313486232 (5700447.53571258206 years)
+  // 
   // n0: interval
-  // n1: on time
+  // n1: on time (recommended 1)
   if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
   else {return false;}
