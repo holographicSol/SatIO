@@ -3930,7 +3930,13 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn off and stay off
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
-    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
+
+    // timer style: stacked time. on time occurrs outside of off time meaning that next on time is later in real time than previous on time in real time.
+    // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
+
+    // timer style: integrated time. on time occurrs for a period within off time. meaning that on time should be the same time every time and off time will be off time minus on time.
+    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
+
     else {true;}
   }
 }
@@ -7761,13 +7767,11 @@ void loop() {
 
     /*
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds.)
-    note that a SecondTimer function with off time 10 and on time 1, on time should be 1 second later in sat time than previous
-    on time in sat time.
     */
-    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
-    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
-    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
-    // Serial.println();
+    Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    Serial.println();
 
   }
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
