@@ -7761,7 +7761,8 @@ void loop() {
 
     /*
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds.)
-    note that a SecondTimer function with off time 10 and on time 1 should drift by 1 second every 11 second.
+    note that a SecondTimer function with off time 10 and on time 1, on time should be 1 second later in sat time than previous
+    on time in sat time.
     */
     // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
     // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
