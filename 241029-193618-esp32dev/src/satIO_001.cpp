@@ -2760,7 +2760,7 @@ bool sdcardCheck() {
   if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
     sdcardData.last_initialization_time = satData.current_unixtime;
     // note that information will be displayed if sdcard not present.
-    if (SD.exists("")==true) {
+    if (SD.totalBytes()) {
       sdcardData.card_type = SD.cardType();
       sdcardData.card_size = SD.cardSize() / (1024 * 1024);
       return true;
