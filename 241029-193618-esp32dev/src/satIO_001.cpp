@@ -3940,7 +3940,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
     /*
     timer style: integrated time. y on time occurrs for a period within x time interval.
                  (1) total on off time is x.
-                 (2) total off time is x - y (time interval minus on time).
+                 (2) total off time is x - y (time interval minus on time period).
     */
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
 
