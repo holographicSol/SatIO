@@ -2745,7 +2745,7 @@ bool check_sdcard_type() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SDCARD: INITIALIZE
 
-void init_sdcard() {
+bool init_sdcard() {
 
   if (sdcardData.initialize_flag==true) {
 
@@ -2757,9 +2757,11 @@ void init_sdcard() {
         sdcardData.initialize_flag = false;
         // uncomment to debug
         // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
+        return true;
       }
     }
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
