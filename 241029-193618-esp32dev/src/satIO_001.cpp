@@ -2753,24 +2753,23 @@ void buildSatIOSentence() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SDCARD: INITIALIZE
 
-bool sdcardCheck() {
+void sdcardCheck() {
 
   /* basic sdcard initialization. todo: make some bool of initialization results */
 
   if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
     sdcardData.last_initialization_time = satData.current_unixtime;
     // note that information will be displayed if sdcard not present.
-    if (SD.totalBytes()) {
+    if (SD.exists("/")==true) {
       sdcardData.card_type = SD.cardType();
       sdcardData.card_size = SD.cardSize() / (1024 * 1024);
-      return true;
+      
       // uncomment to debug
-      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
-      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
+      Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
+      Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
     }
     else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
   }
-  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7694,19 +7693,18 @@ void setup() {
 
   if (SD.begin(SS, sdspi, 80000000)) {
     Serial.println("[sdcard] initialized.");
-    if (sdcardCheck()== true) {
-      sdcard_mkdirs();
-      // load system configuration file
-      if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-      // load matrix file specified by configuration file
-      if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
-        Serial.println("[sdcard] specified matrix file not found!");
-        // create default matrix file
-        if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-          Serial.println("[sdcard] default matrix file not found!");
-          if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-          else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
-        }
+    sdcardCheck();
+    sdcard_mkdirs();
+    // load system configuration file
+    if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+    // load matrix file specified by configuration file
+    if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
+      Serial.println("[sdcard] specified matrix file not found!");
+      // create default matrix file
+      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+        Serial.println("[sdcard] default matrix file not found!");
+        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
       }
     }
   }
@@ -7745,7 +7743,7 @@ void loop() {
   MatrixStatsCounter();
   UpdateDisplay();
   SatIOPortController();
-  sdcardData.initialization_flag = sdcardCheck(); // automatic sdcard discovery
+  sdcardCheck(); // automatic sdcard discovery
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
