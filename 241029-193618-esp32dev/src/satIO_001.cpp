@@ -245,6 +245,10 @@ Serial1Struct serial1Data;
 //                                                                                                                   DATA: SDCARD
 
 struct SDCardStruct {
+  bool sdcard_mount_bool = false;
+  bool sdcard_attached_bool = false;
+  uint8_t card_type = CARD_NONE;
+  uint64_t card_size = 0;
   int max_matrix_filenames = 20;                               // max matrix file names available 
   char matrix_filenames[20][56] = {  
     "", "", "", "", "",
@@ -275,6 +279,8 @@ struct SDCardStruct {
   char tag_0[56] = "r";                                        // file line tag
   char tag_1[56] = "e";                                        // file line tag
   File current_file;                                           // file currently handled
+  bool initialize_flag = true;
+  int initialization_interval = 3000;
 };
 SDCardStruct sdcardData;
 
@@ -2716,34 +2722,44 @@ void buildSatIOSentence() {
   // strcat(satData.satio_sentence, satData.checksum_str);
   // if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
 
-  }
+}
+
+bool check_sdcard_mount() {
+  // mount
+  if (!SD.begin(SS, sdspi, 80000000)) {sdcardData.sdcard_mount_bool = false; return false;}
+  else {sdcardData.sdcard_mount_bool = true; return true;}
+}
+
+bool check_sdcard_type() {
+  // card type
+  sdcardData.card_type = SD.cardType();
+  if (sdcardData.card_type == CARD_NONE) {Serial.println("No SD card attached");}
+  if (sdcardData.card_type == CARD_MMC) {Serial.println("MMC"); return true;}
+  else if (sdcardData.card_type == CARD_SD) {Serial.println("SDSC"); return true;}
+  else if (sdcardData.card_type == CARD_SDHC) {Serial.println("SDHC"); return true;}
+  // uncomment to debug
+  // else {Serial.println("[sdcard] card type: unknown");}
+  return false;
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SDCARD: INITIALIZE
 
 void init_sdcard() {
 
-  /* basic sdcard initialization. todo: make some bool of initialization results */
+  if (sdcardData.initialize_flag==true) {
 
-  if (!SD.begin(SS, sdspi, 80000000)) {
-    Serial.println("Card Mount Failed");
+    /* basic sdcard initialization. todo: make some bool of initialization results */
+
+    if (check_sdcard_mount()==true) {
+      if (check_sdcard_type()==true) {
+        sdcardData.card_size = SD.cardSize() / (1024 * 1024);
+        sdcardData.initialize_flag = false;
+        // uncomment to debug
+        // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
+      }
+    }
   }
-  uint8_t cardType = SD.cardType();
-  if (cardType == CARD_NONE) {
-    Serial.println("No SD card attached");
-  }
-  Serial.print("SD Card Type: ");
-  if (cardType == CARD_MMC) {
-    Serial.println("MMC");
-  } else if (cardType == CARD_SD) {
-    Serial.println("SDSC");
-  } else if (cardType == CARD_SDHC) {
-    Serial.println("SDHC");
-  } else {
-    Serial.println("UNKNOWN");
-  }
-  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
