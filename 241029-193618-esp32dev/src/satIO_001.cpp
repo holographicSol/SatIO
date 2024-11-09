@@ -3912,10 +3912,12 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // seconds time is currently counted by a task that accumulates seconds. this does not use satellite data.
   // there may be a bug here
   // 
-  // n0: interval
-  // n1: on time (recommended 1)
+  // n0: off time interval (period in which false will be returned)
+  // n1: on time period. recommended 1 (period of time in which true will be returned)
   if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+
   else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+  
   else {return false;}
 }
 
