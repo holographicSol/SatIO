@@ -3915,25 +3915,25 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   /*
   seconds time is currently counted by a task that accumulates seconds. this does not use satellite data. 
   
-  x: off time interval (period in which false will be returned)
-  y: on time period (period of time in which true will be returned)
+  x: time interval
+  y: on time period
   */
 
-  // turn on and stay on
+  // turn on or remain off
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true; }
     else {false;}
   }
 
-  // turn off and stay off
+  // turn off or remain on
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
 
-    // timer style: stacked time. on time occurrs outside of off time meaning that next on time is later in real time than previous on time in real time.
+    // timer style: stacked time. on time period is stacked on top of time interval. meaning total on off time is n0+n1.
     // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
 
-    // timer style: integrated time. on time occurrs for a period within off time. meaning that on time should be the same time every time and off time will be off time minus on time.
+    // timer style: integrated time. on time occurrs for a period within time interval. meaning total on off time is n0.
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
 
     else {true;}
@@ -7782,12 +7782,12 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
     /*
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
-    be 0/1 proportionally to time according to timer style stacked/integrated.)
+    be 0/1 proportional to time according to timer style stacked/integrated.)
     */
-    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
-    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
-    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
-    // Serial.println();
+    Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    Serial.println();
   }
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 }
