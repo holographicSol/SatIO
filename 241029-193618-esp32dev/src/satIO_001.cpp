@@ -3914,7 +3914,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   seconds time is currently counted by a task that accumulates seconds. this does not use satellite data. 
   
   x: off time interval (period in which false will be returned)
-  y: on time period. recommended 1 (period of time in which true will be returned)
+  y: on time period (period of time in which true will be returned)
   */
 
   // turn on and stay on
