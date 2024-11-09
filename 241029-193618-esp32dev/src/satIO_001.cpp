@@ -310,8 +310,8 @@ TimeStruct timeData;
 void SystemSecondsTimer(void * pvParameters) {
   while (1) {
     timeData.t0 = micros();
-    if (timeData.t0 > ((timeData.t1+1000000-(timeData.mainLoopTimeTaken/3)))) {
-      timeData.t1 = timeData.t0;
+    if (timeData.t0 >= timeData.t1+1000000) {
+      timeData.t1 = micros();
       timeData.seconds++;
       }
       delay(1);
