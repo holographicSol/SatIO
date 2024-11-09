@@ -60,6 +60,7 @@
 #include <iostream>
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include <RTClib.h>
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
 #include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
@@ -248,6 +249,12 @@ struct SDCardStruct {
   bool sdcard_mount_bool = false;
   bool sdcard_attached_bool = false;
   uint8_t card_type = CARD_NONE;
+  char sdcard_types[1][4][56] = {
+    "NONE",
+    "MMC",
+    "SD",
+    "SDHC"
+  };
   uint64_t card_size = 0;
   int max_matrix_filenames = 20;                               // max matrix file names available 
   char matrix_filenames[20][56] = {  
@@ -279,8 +286,9 @@ struct SDCardStruct {
   char tag_0[56] = "r";                                        // file line tag
   char tag_1[56] = "e";                                        // file line tag
   File current_file;                                           // file currently handled
-  bool initialize_flag = true;
   int initialization_interval = 3000;
+  long last_initialization_time = 0;
+  bool initialization_flag = false;
 };
 SDCardStruct sdcardData;
 
@@ -1680,6 +1688,8 @@ struct MatrixStruct {
   char DateMonthX[56]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
   char DateYearX[56]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
 
+  // do local time
+
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
@@ -2344,6 +2354,8 @@ struct SatDatatruct {
 
   char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
   char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
+
+  long current_unixtime;
 };
 SatDatatruct satData;
 
@@ -2643,6 +2655,20 @@ void convertUTCToLocal() {
   // copy temporary time stamp string to actual time stamp string
   memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
   strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
+
+  // make unix second time
+  DateTime dt0 (
+    satData.year_int,
+    satData.month_int,
+    satData.day_int,
+    satData.hour_int,
+    satData.minute_int,
+    satData.second_int);
+  satData.current_unixtime = dt0.unixtime();
+
+  // uncomment to debug
+  // Serial.println(dt0.unixtime());
+
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2724,42 +2750,25 @@ void buildSatIOSentence() {
 
 }
 
-bool check_sdcard_mount() {
-  // mount
-  if (!SD.begin(SS, sdspi, 80000000)) {sdcardData.sdcard_mount_bool = false; return false;}
-  else {sdcardData.sdcard_mount_bool = true; return true;}
-}
-
-bool check_sdcard_type() {
-  // card type
-  sdcardData.card_type = SD.cardType();
-  if (sdcardData.card_type == CARD_NONE) {Serial.println("No SD card attached");}
-  if (sdcardData.card_type == CARD_MMC) {Serial.println("MMC"); return true;}
-  else if (sdcardData.card_type == CARD_SD) {Serial.println("SDSC"); return true;}
-  else if (sdcardData.card_type == CARD_SDHC) {Serial.println("SDHC"); return true;}
-  // uncomment to debug
-  // else {Serial.println("[sdcard] card type: unknown");}
-  return false;
-}
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SDCARD: INITIALIZE
 
-bool init_sdcard() {
+bool sdcardCheck() {
 
-  if (sdcardData.initialize_flag==true) {
+  /* basic sdcard initialization. todo: make some bool of initialization results */
 
-    /* basic sdcard initialization. todo: make some bool of initialization results */
-
-    if (check_sdcard_mount()==true) {
-      if (check_sdcard_type()==true) {
-        sdcardData.card_size = SD.cardSize() / (1024 * 1024);
-        sdcardData.initialize_flag = false;
-        // uncomment to debug
-        // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
-        return true;
-      }
+  if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
+    sdcardData.last_initialization_time = satData.current_unixtime;
+    // note that information will be displayed if sdcard not present.
+    if (SD.exists("")==true) {
+      sdcardData.card_type = SD.cardType();
+      sdcardData.card_size = SD.cardSize() / (1024 * 1024);
+      return true;
+      // uncomment to debug
+      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
+      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
     }
+    else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
   }
   return false;
 }
@@ -7683,21 +7692,25 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SDCARD
 
-  if (init_sdcard()==true) {
-    sdcard_mkdirs();
-    // load system configuration file
-    if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-    // load matrix file specified by configuration file
-    if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
-      Serial.println("[sdcard] specified matrix file not found!");
-      // create default matrix file
-      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        Serial.println("[sdcard] default matrix file not found!");
-        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+  if (!SD.begin(SS, sdspi, 80000000)) {
+    Serial.println("[sdcard] initialized.");
+    if (sdcardCheck()== true) {
+      sdcard_mkdirs();
+      // load system configuration file
+      if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+      // load matrix file specified by configuration file
+      if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
+        Serial.println("[sdcard] specified matrix file not found!");
+        // create default matrix file
+        if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+          Serial.println("[sdcard] default matrix file not found!");
+          if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+          else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+        }
       }
     }
   }
+  else {Serial.println("[sdcard] failed to initialize.");}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7732,6 +7745,7 @@ void loop() {
   MatrixStatsCounter();
   UpdateDisplay();
   SatIOPortController();
+  sdcardData.initialization_flag = sdcardCheck(); // automatic sdcard discovery
 
   timeData.mainLoopTimeTaken = micros() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
