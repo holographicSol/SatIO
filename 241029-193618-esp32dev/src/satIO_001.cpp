@@ -308,6 +308,7 @@ TimeStruct timeData;
 
 
 void SystemSecondsTimer(void * pvParameters) {
+  // todo; account for drift. notice there is drift compared to gps time.
   while (1) {
     timeData.t0 = micros();
     if (timeData.t0 >= timeData.t1+1000000) {
