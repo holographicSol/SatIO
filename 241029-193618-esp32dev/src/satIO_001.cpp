@@ -3915,8 +3915,8 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   /*
   seconds time is currently counted by a task that accumulates seconds. this does not use satellite data. 
   
-  x: time interval
-  y: on time period
+  x (n0): time interval
+  y (n1): on time period
   */
 
   // turn on or remain off
@@ -3930,10 +3930,18 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
 
-    // timer style: stacked time. on time period is stacked on top of time interval. meaning total on off time is n0+n1.
+    /*
+    timer style: stacked time. on time period is stacked on top of time interval.
+                 (1) total on off time is x+y.
+                 (2) x time interval effectively becomes an off time period.
+    */
     // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
 
-    // timer style: integrated time. on time occurrs for a period within time interval. meaning total on off time is n0.
+    /*
+    timer style: integrated time. on time occurrs for a period within x time interval.
+                 (1) total on off time is x.
+                 (2) total off time is x - y
+    */
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
 
     else {true;}
