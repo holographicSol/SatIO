@@ -5652,14 +5652,12 @@ bool readRXD1UntilETX() {
   serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
   if (serial1Data.nbytes != 0) {
     for(int i = 0; i < serial1Data.nbytes; i++) {
-      if (SerialLink.BUFFER[i] == ETX) {
-        break;}
-      else {
-        SerialLink.DATA[i] = SerialLink.BUFFER[i];
-      }
+      if (SerialLink.BUFFER[i] == ETX) {break;}
+      else {SerialLink.DATA[i] = SerialLink.BUFFER[i];}
     }
     return true;
   }
+  else {return false;}
 }
 
 
