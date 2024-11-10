@@ -5666,13 +5666,14 @@ bool readRXD1UntilETX() {
 
 
 void readGPS() {
+  
+  // check if available once here before loop reading
   if (Serial1.available() > 0) {
 
-  // loop until we have collected everything or break after so many attempts
-  for (int i=0; i<20; i++) {
+    // loop until we have collected everything or break after so many attempts
+    for (int i=0; i<20; i++) {
     
-    // read serial until and not including ETX char
-    // if (Serial1.available() > 0) {
+      // read serial until and not including ETX char
       if (readRXD1UntilETX()==true) {
       
         // ----------------------------------------------------------------------------------------------------------------------
@@ -5723,8 +5724,9 @@ void readGPS() {
       serial1Data.gngga_bool=false;
       serial1Data.gnrmc_bool=false;
       serial1Data.gpatt_bool=false;
-      break;}
-  }
+      break;
+      }
+    }
   }
 }
 
