@@ -5646,10 +5646,9 @@ void readSerialCommands() {
 //                                                                                                                  READ GPS DATA
 
 bool readRXD1UntilETX() {
-  if (Serial1.available() > 0) {
+  // if (Serial1.available() > 0) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
-    // int rlen = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
     serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
     if (serial1Data.nbytes != 0) {
       for(int i = 0; i < serial1Data.nbytes; i++) {
@@ -5661,7 +5660,7 @@ bool readRXD1UntilETX() {
       }
       return true;
     }
-  }
+  // }
 }
 
 
@@ -5671,7 +5670,7 @@ void readGPS() {
   if (Serial1.available() > 0) {
 
     // loop until we have collected everything or break after so many attempts
-    for (int i=0; i<20; i++) {
+    for (int i=0; i<40; i++) {
     
       // read serial until and not including ETX char
       if (readRXD1UntilETX()==true) {
@@ -7812,37 +7811,37 @@ void loop() {
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   readGPS();
-  Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
+  // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   satIOData();
-  Serial.println("[time satIOData]           " + String(millis()-timeData.t0));
+  // Serial.println("[time satIOData]           " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   trackPlanets();
-  Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
+  // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   MatrixSwitchTask();
-  Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
+  // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   MatrixStatsCounter();
-  Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
+  // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   UpdateDisplay();
-  Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
+  // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   SatIOPortController();
-  Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
+  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
 
-  timeData.t0=millis();
+  // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery
-  Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
+  // Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
 
   Serial.println();
 
