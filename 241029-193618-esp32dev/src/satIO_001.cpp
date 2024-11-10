@@ -3929,7 +3929,6 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn off or remain on
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
-
     /*
     timer style: stacked time: y on time period is stacked on top of x time interval.
                  (1) total off time is x (x time interval effectively becomes an off time period).
@@ -3947,7 +3946,6 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
-   
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
     else {true;}
   }
