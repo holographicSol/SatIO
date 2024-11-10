@@ -19,11 +19,17 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
 
         Currently there are over 200 different checks that can be performed using just several small primitive functions and
           currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+
                                   
-                                        Wiring For ESP32-2432S028 development board (CYD)
+                                         Wiring For ESP32-2432S028 development board (CYD)
+
+                                          ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
+                                          ESP32 io22 (RXD) -> ATMEGA2560 Serial1 (TXD)
+
+                                                   Wiring For ATMEGA2560
               
-                           WTGPS300P TX -> CYD io22 remapped as RXD (already remapped in setup funtion)
-                     ATMEGA2560 RX1 (pin 19) -> CYD io27 remapped as TXD (already remapped in setup function)
+                                          WTGPS300P (TXD)  -> ATMEGA2560 Serial3 (RXD)
+
 
                                                         SENTENCE $SATIO
                                                                                 
