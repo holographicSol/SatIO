@@ -5,8 +5,13 @@ Serial Link - Stable inter-microcontroller serial communication. Written by Benj
 SatIOPortController - Receives messages from SatIO over serial and manipulates IO accordingly.
                       This file should be flashed to ATMEGA2560.
 
-ATMEGA2560 RX1 (19) -> Serial1
-ATMEGA2560 TX1 (18) -> Serial1
+Required wiring:
+
+  ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
+
+  ESP32 io22 (RXD) -> ATMEGA2560 Serial1 (TXD)
+
+  WTGPS300P (TXD)  -> ATMEGA2560 Serial3 (RXD)
 
 */
 
@@ -44,8 +49,8 @@ signed int matrix_port_map[1][20] = {
 
 struct SerialLinkStruct {
   unsigned long nbytes;
-  char BUFFER[1024];            // read incoming bytes into this buffer
-  char DATA[1024];              // buffer refined using ETX
+  char BUFFER[2000];            // read incoming bytes into this buffer
+  char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
   unsigned long TT_RXD_1 = 0;   // hard throttle interval
@@ -124,6 +129,8 @@ void createChecksum(char * buffer) {
 void setup(void) {
   Serial.begin(115200); while(!Serial);
   Serial1.begin(115200); while(!Serial1);
+  Serial2.begin(115200); while(!Serial2);
+  Serial3.begin(115200); while(!Serial3);
   Serial1.setTimeout(10);
   Serial.flush();
   Serial1.flush();
@@ -141,9 +148,9 @@ void setup(void) {
 
 bool readRXD1_Method00() {
   if (Serial1.available() > 0) {
-    memset(SerialLink.BUFFER, 0, 1024);
-    memset(SerialLink.DATA, 0, 1024);
-    int rlen = Serial1.readBytes(SerialLink.BUFFER, 1024);
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
+    int rlen = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
     if (rlen != 0) {
       for(int i = 0; i < rlen; i++) {
         if (SerialLink.BUFFER[i] == ETX)
@@ -175,6 +182,7 @@ void readRXD1_Method0() {
       
       // tag specific processing (like nmea sentences, if we know the tag then we should know what elements are where)
       SerialLink.token = strtok(SerialLink.DATA, ",");
+
       if (strcmp(SerialLink.token, "$MATRX") == 0) {
 
         // initiate counter; compare expected element to actual RXD TOKEN; count negative comparison; for 1 million iterations
@@ -259,10 +267,27 @@ void satIOPortController() {
   }
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  READ GPS DATA
+
+void readGPS() {
+  for (int i=0; i <10; i++) {
+    if (Serial3.available() > 0) {
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
+      SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      // Serial.print(SerialLink.nbytes); Serial.print(" "); Serial.println(SerialLink.BUFFER); // debug
+      Serial1.write(SerialLink.BUFFER);
+      Serial1.write(ETX);
+    }
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
 void loop() {
-    readRXD1_Method0();
-    if (SerialLink.validation == true) {satIOPortController();}
+  readGPS();
+  readRXD1_Method0();
+  if (SerialLink.validation == true) {satIOPortController();}
 }
