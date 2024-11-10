@@ -5668,7 +5668,7 @@ bool readRXD1_Method00() {
 void readGPS() {
   int i_attempts = 0;
   // loop until we have collected everything or break after so many attempts
-  for (int i=0; i<20; i++) {
+  for (int i=0; i<40; i++) {
     i_attempts++;
     
     // read serial until and not including ETX char
@@ -7590,7 +7590,7 @@ void UpdateDisplay() {
 void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
   while (1) {
-    delay(1);
+    delay(2);
     // autodim: decrease brightness
     if (systemData.display_auto_dim==true) {
       if (systemData.display_dim_bool==false) {
