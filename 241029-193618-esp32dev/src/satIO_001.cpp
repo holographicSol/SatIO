@@ -7723,7 +7723,7 @@ void setup() {
   #endif
 
   tft.setRotation(1);        // this is the display in landscape
-  tft.fillScreen(TFT_GREEN);  // clear screen before writing to it
+  tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
   tft.setFreeFont(FONT5X7_H);
   ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
