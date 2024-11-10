@@ -5674,7 +5674,7 @@ void readGPS() {
     
       // read serial until and not including ETX char
       if (readRXD1UntilETX()==true) {
-        Serial.println(SerialLink.DATA);
+        // Serial.println(SerialLink.DATA);
       
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
