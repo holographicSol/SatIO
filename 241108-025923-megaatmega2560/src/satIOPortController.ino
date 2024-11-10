@@ -51,7 +51,7 @@ struct SerialLinkStruct {
   unsigned long TT_RXD_1 = 0;   // hard throttle interval
   unsigned long T0_TXD_1 = 0;   // hard throttle current time
   unsigned long T1_TXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_TXD_1 = 10;  // hard throttle interval
+  unsigned long TT_TXD_1 = 1000;  // hard throttle interval
   int i_token = 0;
   char * token;
   bool validation = false;
@@ -250,6 +250,7 @@ void readRXD1_Method0() {
 
 void satIOPortController() {
 
+  Serial.println(SerialLink.BUFFER);
   for (int i=0; i<20; i++) {
     digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
 
