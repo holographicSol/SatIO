@@ -7826,6 +7826,6 @@ void loop() {
     // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
     // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
     // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
-    Serial.println();
+    // Serial.println();
   }
 }
