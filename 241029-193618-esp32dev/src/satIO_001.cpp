@@ -3931,16 +3931,19 @@ bool SecondsTimer(double n0, double n1, int Mi) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
 
     /*
-    timer style: stacked time. y on time period is stacked on top of x time interval.
-                 (1) total on off time is x+y.
-                 (2) total off time is x (x time interval effectively becomes an off time period)
+    timer style: stacked time: y on time period is stacked on top of x time interval.
+                 (1) total off time is x (x time interval effectively becomes an off time period).
+                 (2) total on time is y.
+                 (3) total on off time is x+y.
     */
     // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
 
     /*
-    timer style: integrated time. y on time occurrs for a period within x time interval.
-                 (1) total on off time is x.
-                 (2) total off time is x - y (time interval minus on time period).
+    timer style: integrated time: y on time occurrs for a period within x time interval.
+                 (1) total off time is x - y (time interval minus on time period).
+                 (2) total on time is y.
+                 (3) total on off time is x.
+                 
     */
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
 
