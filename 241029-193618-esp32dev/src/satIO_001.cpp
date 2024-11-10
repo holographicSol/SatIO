@@ -3922,7 +3922,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   // turn on or remain off
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true; }
+    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
     else {false;}
   }
 
