@@ -3947,8 +3947,8 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
+   
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
-
     else {true;}
   }
 }
