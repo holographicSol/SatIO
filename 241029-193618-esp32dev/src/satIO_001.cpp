@@ -5667,7 +5667,7 @@ bool readRXD1UntilETX() {
 
 void readGPS() {
   // loop until we have collected everything or break after so many attempts
-  for (int i=0; i<5; i++) {
+  for (int i=0; i<20; i++) {
     
     // read serial until and not including ETX char
     if (Serial1.available() > 0) {
@@ -7734,7 +7734,7 @@ void setup() {
       "TSTask",         /* Name of the task */
       10000,            /* Stack size in words */
       NULL,             /* Task input parameter */
-      1,                /* Priority of the task */
+      2,                /* Priority of the task */
       &TSTask,          /* Task handle. */
       0);               /* Core where the task should run */
   
@@ -7802,15 +7802,13 @@ void loop() {
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
-  if ((gnggaData.valid_checksum==true) && (gnrmcData.valid_checksum==true) && (gpattData.valid_checksum==true)) {
-    satIOData();
-    trackPlanets();
-    MatrixSwitchTask();
-    MatrixStatsCounter();
-    UpdateDisplay();
-    SatIOPortController();
-    sdcardCheck(); // automatic sdcard discovery
-  }
+  satIOData();
+  trackPlanets();
+  MatrixSwitchTask();
+  MatrixStatsCounter();
+  UpdateDisplay();
+  SatIOPortController();
+  sdcardCheck(); // automatic sdcard discovery
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
