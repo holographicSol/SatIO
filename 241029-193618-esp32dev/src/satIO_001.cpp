@@ -17,11 +17,17 @@
 
         Currently there are over 200 different checks that can be performed using just several small primitive functions and
           currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+
                                   
                                         Wiring For ESP32-2432S028 development board (CYD)
+
+                                          ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
+                                          ESP32 io22 (RXD) -> ATMEGA2560 Serial1 (TXD)
+
+                                                   Wiring For ATMEGA2560
               
-                           WTGPS300P TX -> CYD io22 remapped as RXD (already remapped in setup funtion)
-                     ATMEGA2560 RX1 (pin 19) -> CYD io27 remapped as TXD (already remapped in setup function)
+                                          WTGPS300P (TXD)  -> ATMEGA2560 Serial3 (RXD)
+                                          
 
                                                         SENTENCE $SATIO
                                                                                 
@@ -325,8 +331,8 @@ void IRAM_ATTR isr_second_timer() {      //Defining Inerrupt function with IRAM_
 
 struct SerialLinkStruct {
   unsigned long nbytes;
-  char BUFFER[1024];            // read incoming bytes into this buffer
-  char DATA[1024];              // buffer refined using ETX
+  char BUFFER[2000];            // read incoming bytes into this buffer
+  char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
   unsigned long TT_RXD_1 = 0;   // hard throttle interval
@@ -5639,54 +5645,74 @@ void readSerialCommands() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
+bool readRXD1_Method00() {
+  if (Serial1.available() > 0) {
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
+    // int rlen = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+    if (serial1Data.nbytes != 0) {
+      for(int i = 0; i < serial1Data.nbytes; i++) {
+        if (SerialLink.BUFFER[i] == ETX) {
+          break;}
+        else {
+          SerialLink.DATA[i] = SerialLink.BUFFER[i];
+        }
+      }
+      return true;
+    }
+  }
+}
+
+
 void readGPS() {
+  int i_attempts = 0;
   while(1) {
+    i_attempts++;
     if (Serial1.available() > 0) {
-      memset(serial1Data.BUFFER, 0, sizeof(serial1Data.BUFFER));
-      // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
-      serial1Data.nbytes = (Serial1.readBytesUntil('\n', serial1Data.BUFFER, sizeof(serial1Data.BUFFER)));
-      // Serial.print(serial1Data.nbytes); Serial.print(" "); Serial.println(serial1Data.BUFFER); // debug
+
+      if (readRXD1_Method00()==true) {
       
-      
-      // ------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                                    GNGGA
-      
-      if ((systemData.gngga_enabled == true) && (serial1Data.gngga_bool==false)){
-        if (strncmp(serial1Data.BUFFER, "$GNGGA", 6) == 0) {
-          if (systemData.output_gngga_enabled == true) {Serial.println(serial1Data.BUFFER);}
-          memset(gnggaData.sentence, 0, sizeof(gnrmcData.sentence));
-          strcpy(gnggaData.sentence, serial1Data.BUFFER);
-          gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-          if (gnggaData.valid_checksum == true) {GNGGA(); serial1Data.collected++; serial1Data.gngga_bool = true;}
-          else {gnggaData.bad_checksum_validity++;}
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GNGGA
+        
+        if ((systemData.gngga_enabled == true) && (serial1Data.gngga_bool==false)){
+          if (strncmp(SerialLink.DATA, "$GNGGA", 6) == 0) {
+            if (systemData.output_gngga_enabled == true) {Serial.println(SerialLink.DATA);}
+            memset(gnggaData.sentence, 0, sizeof(gnrmcData.sentence));
+            strcpy(gnggaData.sentence, SerialLink.DATA);
+            gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
+            if (gnggaData.valid_checksum == true) {GNGGA(); serial1Data.collected++; serial1Data.gngga_bool = true;}
+            else {gnggaData.bad_checksum_validity++;}
+          }
         }
-      }
 
-      // ------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                                    GNRMC
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GNRMC
 
-      else if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
-        if (strncmp(serial1Data.BUFFER, "$GNRMC", 6) == 0) {
-          if (systemData.output_gnrmc_enabled == true) {Serial.println(serial1Data.BUFFER);}
-          memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
-          strcpy(gnrmcData.sentence, serial1Data.BUFFER);
-          gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-          if (gnrmcData.valid_checksum == true) {GNRMC(); serial1Data.collected++; serial1Data.gnrmc_bool = true;}
-          else {gnrmcData.bad_checksum_validity++;}
+        else if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
+          if (strncmp(SerialLink.DATA, "$GNRMC", 6) == 0) {
+            if (systemData.output_gnrmc_enabled == true) {Serial.println(SerialLink.DATA);}
+            memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
+            strcpy(gnrmcData.sentence, SerialLink.DATA);
+            gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
+            if (gnrmcData.valid_checksum == true) {GNRMC(); serial1Data.collected++; serial1Data.gnrmc_bool = true;}
+            else {gnrmcData.bad_checksum_validity++;}
+          }
         }
-      }
 
-      // ------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                                    GPATT
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                  GPATT
 
-      else if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
-        if (strncmp(serial1Data.BUFFER, "$GPATT", 6) == 0) {
-            if (systemData.output_gpatt_enabled == true) {Serial.println(serial1Data.BUFFER);}
-            memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-            strcpy(gpattData.sentence, serial1Data.BUFFER);
-            gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-            if (gpattData.valid_checksum == true) {GPATT(); serial1Data.collected++; serial1Data.gpatt_bool = true;}
-            else {gpattData.bad_checksum_validity++;}
+        else if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
+          if (strncmp(SerialLink.DATA, "$GPATT", 6) == 0) {
+              if (systemData.output_gpatt_enabled == true) {Serial.println(SerialLink.DATA);}
+              memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
+              strcpy(gpattData.sentence, SerialLink.DATA);
+              gpattData.valid_checksum = validateChecksum(gpattData.sentence);
+              if (gpattData.valid_checksum == true) {GPATT(); serial1Data.collected++; serial1Data.gpatt_bool = true;}
+              else {gpattData.bad_checksum_validity++;}
+          }
         }
       }
     }
@@ -7697,7 +7723,7 @@ void setup() {
   #endif
 
   tft.setRotation(1);        // this is the display in landscape
-  tft.fillScreen(BG_COL_0);  // clear screen before writing to it
+  tft.fillScreen(TFT_GREEN);  // clear screen before writing to it
   tft.setFreeFont(FONT5X7_H);
   ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
@@ -7771,6 +7797,8 @@ void satIOData() {
 
 void loop() {
 
+  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
   satIOData();
@@ -7795,10 +7823,9 @@ void loop() {
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
     be 0/1 proportional to time according to timer style stacked/integrated.)
     */
-    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
-    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
-    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
-    // Serial.println();
+    Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    Serial.println();
   }
-  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 }
