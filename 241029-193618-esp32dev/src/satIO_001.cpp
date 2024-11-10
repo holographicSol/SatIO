@@ -7843,7 +7843,7 @@ void loop() {
   sdcardCheck(); // automatic sdcard discovery
   // Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
 
-  Serial.println();
+  // Serial.println();
 
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
