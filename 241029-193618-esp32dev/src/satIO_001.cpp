@@ -5645,7 +5645,7 @@ void readSerialCommands() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
-bool readRXD1_Method00() {
+bool readRXD1UntilETX() {
   if (Serial1.available() > 0) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
@@ -5667,11 +5667,11 @@ bool readRXD1_Method00() {
 
 void readGPS() {
   // loop until we have collected everything or break after so many attempts
-  for (int i=0; i<40; i++) {
+  for (int i=0; i<5; i++) {
     
     // read serial until and not including ETX char
     if (Serial1.available() > 0) {
-      if (readRXD1_Method00()==true) {
+      if (readRXD1UntilETX()==true) {
       
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
@@ -7588,7 +7588,7 @@ void UpdateDisplay() {
 void TouchScreenInput( void * pvParameters ) {
   // keep looping because this function runs as its own task
   while (1) {
-    delay(2);
+    
     // autodim: decrease brightness
     if (systemData.display_auto_dim==true) {
       if (systemData.display_dim_bool==false) {
@@ -7665,6 +7665,7 @@ void TouchScreenInput( void * pvParameters ) {
         else {Serial.println("[touchscreen] skiping input");}
       }
     }
+    delay(1);
   }
 }
 
@@ -7801,13 +7802,15 @@ void loop() {
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
   readGPS();
-  satIOData();
-  trackPlanets();
-  MatrixSwitchTask();
-  MatrixStatsCounter();
-  UpdateDisplay();
-  SatIOPortController();
-  sdcardCheck(); // automatic sdcard discovery
+  if ((gnggaData.valid_checksum==true) && (gnrmcData.valid_checksum==true) && (gpattData.valid_checksum==true)) {
+    satIOData();
+    trackPlanets();
+    MatrixSwitchTask();
+    MatrixStatsCounter();
+    UpdateDisplay();
+    SatIOPortController();
+    sdcardCheck(); // automatic sdcard discovery
+  }
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
