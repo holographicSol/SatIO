@@ -3913,7 +3913,7 @@ bool check_bool_false(bool _bool) {
 bool SecondsTimer(double n0, double n1, int Mi) {
 
   /*
-  seconds time is currently counted by a task that accumulates seconds. this does not use satellite data. 
+  seconds accumulated by an isr alarm. this does not use satellite data. 
   
   x (n0): time interval
   y (n1): on time period
