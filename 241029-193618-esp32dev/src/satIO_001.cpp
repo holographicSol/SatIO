@@ -414,6 +414,8 @@ bool validateChecksum(char * buffer) {
   SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
+  // Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
+  // Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   if (SerialLink.checksum_of_buffer == SerialLink.checksum_in_buffer) {return true;} else {return false;}
@@ -5650,19 +5652,22 @@ bool readRXD1UntilETX() {
   memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
   memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
   serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+  int i = 0;
   if (serial1Data.nbytes != 0) {
-    for(int i = 0; i < serial1Data.nbytes; i++) {
+    
+    for(i = 0; i < serial1Data.nbytes; i++) {
       if (SerialLink.BUFFER[i] == ETX)
         break;
       else {
         SerialLink.DATA[i] = SerialLink.BUFFER[i];
       }
     }
-    return true;
   }
-  return false;
+  return true;
 }
 
+// int read_attempts=0;
+// int for_attempts=0;
 
 void readGPS() {
   
@@ -5670,8 +5675,9 @@ void readGPS() {
   if (Serial1.available() > 0) {
 
     // loop until we have collected everything or break after so many attempts
+    // for_attempts = 0;
     for (int i=0; i<40; i++) {
-    
+      // for_attempts++;
       // read serial until and not including ETX char
       if (readRXD1UntilETX()==true) {
         // Serial.println(SerialLink.DATA);
@@ -5718,12 +5724,15 @@ void readGPS() {
           }
         }
       }
+      // else {read_attempts++;}
     // clear and exit
     if (serial1Data.collected==3) {
       serial1Data.collected=0;
       serial1Data.gngga_bool=false;
       serial1Data.gnrmc_bool=false;
       serial1Data.gpatt_bool=false;
+      // Serial.println("[read_attempts] " + String(read_attempts));
+      // Serial.println("[for_attempts] " + String(for_attempts));
       break;
       }
     }
