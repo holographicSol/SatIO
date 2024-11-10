@@ -3935,7 +3935,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (1) total off time is x (x time interval effectively becomes an off time period).
                  (2) total on time is y.
                  (3) total on off time is x+y.
-                 (4) considerations: harder to predict.
+                 (4) considerations: harder to predict because on and off times will creep.
     */
     // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
 
@@ -3944,7 +3944,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (1) total off time is x - y (time interval minus on time period).
                  (2) total on time is y.
                  (3) total on off time is x.
-                 (4) considerations: take care no to overlap x and y.
+                 (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
