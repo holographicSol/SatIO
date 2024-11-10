@@ -120,7 +120,7 @@ uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/obje
 //                                                                                                                          TASKS
 
 TaskHandle_t TSTask;    // touchscreen task
-TaskHandle_t SystemSecondsTimerTask;  // time task
+TaskHandle_t UpdateDisplayTask;  // time task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
@@ -7546,7 +7546,10 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 UPDATE DISPLAY
 
+// void UpdateDisplay( void * pvParameters ) {
 void UpdateDisplay() {
+
+  // while (1) {
 
   /* populates strite according to page then displays sprite */
 
@@ -7580,6 +7583,9 @@ void UpdateDisplay() {
   // display the sprite and free memory
   hud.pushSprite(0, 0, TFT_TRANSPARENT);
   hud.deleteSprite();
+
+  // delay(5);
+  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7665,7 +7671,7 @@ void TouchScreenInput( void * pvParameters ) {
         else {Serial.println("[touchscreen] skiping input");}
       }
     }
-    delay(1);
+    delay(10);
   }
 }
 
@@ -7738,14 +7744,14 @@ void setup() {
       &TSTask,          /* Task handle. */
       0);               /* Core where the task should run */
   
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   // xTaskCreatePinnedToCore(
-  //     SystemSecondsTimer, /* Function to implement the task */
-  //     "SystemSecondsTimerTask",         /* Name of the task */
+  //     UpdateDisplay, /* Function to implement the task */
+  //     "UpdateDisplayTask",         /* Name of the task */
   //     10000,            /* Stack size in words */
   //     NULL,             /* Task input parameter */
-  //     1,                /* Priority of the task */
-  //     &SystemSecondsTimerTask,          /* Task handle. */
+  //     2,                /* Priority of the task */
+  //     &UpdateDisplayTask,          /* Task handle. */
   //     0);               /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -7801,14 +7807,41 @@ void loop() {
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
+
+  // timeData.t0=millis();
   readGPS();
+  // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   satIOData();
+  // Serial.println("[time satIOData]           " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   trackPlanets();
+  // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   MatrixSwitchTask();
+  // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   MatrixStatsCounter();
+  // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   UpdateDisplay();
+  // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   SatIOPortController();
+  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery
+  // Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
+
+  // Serial.println();
+
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
