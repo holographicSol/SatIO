@@ -5646,21 +5646,20 @@ void readSerialCommands() {
 //                                                                                                                  READ GPS DATA
 
 bool readRXD1UntilETX() {
-  // if (Serial1.available() > 0) {
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
-    serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-    if (serial1Data.nbytes != 0) {
-      for(int i = 0; i < serial1Data.nbytes; i++) {
-        if (SerialLink.BUFFER[i] == ETX) {
-          break;}
-        else {
-          SerialLink.DATA[i] = SerialLink.BUFFER[i];
-        }
+  // is not efficient yet
+  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+  memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
+  serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+  if (serial1Data.nbytes != 0) {
+    for(int i = 0; i < serial1Data.nbytes; i++) {
+      if (SerialLink.BUFFER[i] == ETX) {
+        break;}
+      else {
+        SerialLink.DATA[i] = SerialLink.BUFFER[i];
       }
-      return true;
     }
-  // }
+    return true;
+  }
 }
 
 
