@@ -221,7 +221,7 @@ menuStruct menuData;
 struct Serial0Struct {
   unsigned long nbytes;                // number of bytes read by serial
   unsigned long iter_token;            // count token iterations
-  char BUFFER[1024];                   // serial buffer
+  char BUFFER[2000];                   // serial buffer
   char * token = strtok(BUFFER, ",");  // token pointer 
   char data_0[56];                     // value placeholder
   char data_1[56];                     // value placeholder
@@ -247,6 +247,32 @@ struct Serial1Struct {
   bool gpatt_bool = false;             // has sentence been collected
 };
 Serial1Struct serial1Data;
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SERIAL LINK STRUCT
+
+struct SerialLinkStruct {
+  unsigned long nbytes;
+  char BUFFER[2000];            // read incoming bytes into this buffer
+  char DATA[2000];              // buffer refined using ETX
+  unsigned long T0_RXD_1 = 0;   // hard throttle current time
+  unsigned long T1_RXD_1 = 0;   // hard throttle previous time
+  unsigned long TT_RXD_1 = 0;   // hard throttle interval
+  unsigned long T0_TXD_1 = 0;   // hard throttle current time
+  unsigned long T1_TXD_1 = 0;   // hard throttle previous time
+  unsigned long TT_TXD_1 = 10;  // hard throttle interval
+  int i_token = 0;
+  char * token;
+  bool validation = false;
+  char checksum[56];
+  uint8_t checksum_of_buffer;
+  uint8_t checksum_in_buffer;
+  char gotSum[2];
+  int i_XOR;
+  int XOR;
+  int c_XOR;
+};
+SerialLinkStruct SerialLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SDCARD
@@ -325,32 +351,6 @@ void IRAM_ATTR isr_second_timer() {      //Defining Inerrupt function with IRAM_
   timeData.seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SERIAL LINK STRUCT
-
-struct SerialLinkStruct {
-  unsigned long nbytes;
-  char BUFFER[2000];            // read incoming bytes into this buffer
-  char DATA[2000];              // buffer refined using ETX
-  unsigned long T0_RXD_1 = 0;   // hard throttle current time
-  unsigned long T1_RXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_RXD_1 = 0;   // hard throttle interval
-  unsigned long T0_TXD_1 = 0;   // hard throttle current time
-  unsigned long T1_TXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_TXD_1 = 10;  // hard throttle interval
-  int i_token = 0;
-  char * token;
-  bool validation = false;
-  char checksum[56];
-  uint8_t checksum_of_buffer;
-  uint8_t checksum_in_buffer;
-  char gotSum[2];
-  int i_XOR;
-  int XOR;
-  int c_XOR;
-};
-SerialLinkStruct SerialLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
@@ -5656,18 +5656,20 @@ bool readRXD1UntilETX() {
   if (serial1Data.nbytes != 0) {
     
     for(i = 0; i < serial1Data.nbytes; i++) {
+      if (SerialLink.BUFFER[0] != '$') {return false;}
       if (SerialLink.BUFFER[i] == ETX)
         break;
       else {
         SerialLink.DATA[i] = SerialLink.BUFFER[i];
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }
 
-// int read_attempts=0;
-// int for_attempts=0;
+int for_attempts=0;
+int read_attempts=0;
 
 void readGPS() {
   
@@ -5675,9 +5677,20 @@ void readGPS() {
   if (Serial1.available() > 0) {
 
     // loop until we have collected everything or break after so many attempts
-    // for_attempts = 0;
-    for (int i=0; i<40; i++) {
-      // for_attempts++;
+    for_attempts = 0;
+    read_attempts=0;
+    serial1Data.collected=0;
+    serial1Data.gngga_bool=false;
+    serial1Data.gnrmc_bool=false;
+    serial1Data.gpatt_bool=false;
+    for (int i=0; i<10; i++) {
+      for_attempts++;
+      // Serial.println("---------------------------------------------------");
+      // Serial.println("[i]             " + String(i));
+      // Serial.println("[gngga_bool]    " + String(serial1Data.gngga_bool));
+      // Serial.println("[gnrmc_bool]    " + String(serial1Data.gnrmc_bool));
+      // Serial.println("[gpatt_bool]    " + String(serial1Data.gpatt_bool));
+
       // read serial until and not including ETX char
       if (readRXD1UntilETX()==true) {
         // Serial.println(SerialLink.DATA);
@@ -5693,13 +5706,14 @@ void readGPS() {
             gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
             if (gnggaData.valid_checksum == true) {GNGGA(); serial1Data.collected++; serial1Data.gngga_bool = true;}
             else {gnggaData.bad_checksum_validity++;}
+            // Serial.println("[gngga_bool]    " + String(serial1Data.gngga_bool));
           }
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNRMC
 
-        else if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
+        if ((systemData.gnrmc_enabled == true) && (serial1Data.gnrmc_bool==false)) {
           if (strncmp(SerialLink.DATA, "$GNRMC", 6) == 0) {
             if (systemData.output_gnrmc_enabled == true) {Serial.println(SerialLink.DATA);}
             memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
@@ -5707,13 +5721,14 @@ void readGPS() {
             gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
             if (gnrmcData.valid_checksum == true) {GNRMC(); serial1Data.collected++; serial1Data.gnrmc_bool = true;}
             else {gnrmcData.bad_checksum_validity++;}
+            // Serial.println("[gnrmc_bool]    " + String(serial1Data.gnrmc_bool));
           }
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GPATT
 
-        else if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
+        if ((systemData.gpatt_enabled == true) && (serial1Data.gpatt_bool==false)) {
           if (strncmp(SerialLink.DATA, "$GPATT", 6) == 0) {
               if (systemData.output_gpatt_enabled == true) {Serial.println(SerialLink.DATA);}
               memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
@@ -5721,21 +5736,20 @@ void readGPS() {
               gpattData.valid_checksum = validateChecksum(gpattData.sentence);
               if (gpattData.valid_checksum == true) {GPATT(); serial1Data.collected++; serial1Data.gpatt_bool = true;}
               else {gpattData.bad_checksum_validity++;}
+              // Serial.println("[gpatt_bool]    " + String(serial1Data.gpatt_bool));
           }
         }
       }
-      // else {read_attempts++;}
-    // clear and exit
+      else {read_attempts++;}
+
+    // exit
     if (serial1Data.collected==3) {
-      serial1Data.collected=0;
-      serial1Data.gngga_bool=false;
-      serial1Data.gnrmc_bool=false;
-      serial1Data.gpatt_bool=false;
-      // Serial.println("[read_attempts] " + String(read_attempts));
-      // Serial.println("[for_attempts] " + String(for_attempts));
       break;
       }
     }
+    // Serial.println("[read_attempts] " + String(read_attempts));
+    // Serial.println("[for_attempts]  " + String(for_attempts));
+    // Serial.println("[collected]     " + String(serial1Data.collected));
   }
 }
 
