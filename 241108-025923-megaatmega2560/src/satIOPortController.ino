@@ -126,12 +126,13 @@ void createChecksum(char * buffer) {
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SETUP 
 
-void setup(void) {
+void setup() {
   Serial.begin(115200); while(!Serial);
   Serial1.begin(115200); while(!Serial1);
   Serial2.begin(115200); while(!Serial2);
   Serial3.begin(115200); while(!Serial3);
   Serial1.setTimeout(10);
+  Serial3.setTimeout(10);
   Serial.flush();
   Serial1.flush();
 
@@ -146,7 +147,7 @@ void setup(void) {
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                 READ RXD: METHOD 0
 
-bool readRXD1_Method00() {
+bool readRXD1UntilETX() {
   if (Serial1.available() > 0) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
@@ -171,7 +172,7 @@ void readRXD1_Method0() {
   SerialLink.T0_RXD_1 = millis();
   if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
     SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
-    if (readRXD1_Method00() == true) {
+    if (readRXD1UntilETX() == true) {
       // Serial.println("-------------------------------------------");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
@@ -271,8 +272,8 @@ void satIOPortController() {
 //                                                                                                                  READ GPS DATA
 
 void readGPS() {
-  for (int i=0; i <10; i++) {
-    if (Serial3.available() > 0) {
+  if (Serial3.available() > 0) {
+    for (int i=0; i <5; i++) {
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
       SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
