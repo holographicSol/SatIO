@@ -286,8 +286,10 @@ void readGPS() {
       // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
       SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
       // Serial.print(SerialLink.nbytes); Serial.print(" "); Serial.println(SerialLink.BUFFER); // debug
-      Serial1.write(SerialLink.BUFFER);
-      Serial1.write(ETX);
+      if (!strncmp(SerialLink.BUFFER, "$DESBI", 6) == 0) {
+        Serial1.write(SerialLink.BUFFER);
+        Serial1.write(ETX);
+      }
     }
   }
 }
