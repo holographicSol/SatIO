@@ -7823,9 +7823,9 @@ void loop() {
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
     be 0/1 proportional to time according to timer style stacked/integrated.)
     */
-    Serial.print("[sat seconds] "); Serial.println(satData.second_int);
-    Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
-    Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
+    // Serial.print("[sat seconds] "); Serial.println(satData.second_int);
+    // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
+    // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
     Serial.println();
   }
 }
