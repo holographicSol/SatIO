@@ -5666,10 +5666,8 @@ bool readRXD1_Method00() {
 
 
 void readGPS() {
-  int i_attempts = 0;
   // loop until we have collected everything or break after so many attempts
   for (int i=0; i<40; i++) {
-    i_attempts++;
     
     // read serial until and not including ETX char
     if (Serial1.available() > 0) {
