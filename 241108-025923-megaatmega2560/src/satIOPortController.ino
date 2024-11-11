@@ -155,6 +155,8 @@ void setup() {
   Serial.println("starting...");
 }
 
+int i = 0;
+
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                 READ RXD: METHOD 0
 
@@ -164,7 +166,7 @@ bool readRXD1UntilETX() {
   if (Serial1.available() > 0) {
     SerialLink.nbytes = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
     if (SerialLink.nbytes > 80) { 
-        for(int i = 0; i < SerialLink.nbytes; i++) {
+        for(i = 0; i < SerialLink.nbytes; i++) {
           if (SerialLink.BUFFER[i] == ETX)
             break;
           else {
@@ -218,7 +220,7 @@ void readRXD1_Method0() {
 
             // check eack token for portmap
             if (SerialLink.i_token<20) { 
-              for (int i=0; i<20; i++) {
+              for (i=0; i<20; i++) {
                 tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
                 if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
                 // uncomment to debug
@@ -231,7 +233,7 @@ void readRXD1_Method0() {
 
             // check eack token for exactly 1 or 0 for matrix switch state
             if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
-              for (int i=0; i<20; i++) {
+              for (i=0; i<20; i++) {
                 if (atoi(SerialLink.token) != matrix_switch_state[0][i]) {
                   update_switchstate_bool = true;
                   if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
@@ -271,7 +273,7 @@ void satIOPortController() {
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
   // make ports high or low according to validated data
-  for (int i=0; i<20; i++) {
+  for (i=0; i<20; i++) {
 
     // handle current port configuration
     if (update_portmap_bool==true) {
@@ -303,7 +305,7 @@ void satIOPortController() {
 void readGPS() {
   if (Serial3.available() > 0) {
     // loop to write gps serial to SatIO serial about 5 times because we are looking for GNGGA, GNRMC, GPATT and ignoring DESBI.
-    for (int i=0; i <5; i++) {
+    for (i=0; i <5; i++) {
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
       SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
