@@ -3456,6 +3456,7 @@ void zero_matrix() {
       matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
+      matrixData.matrix_port_map[0][Mi] = -1;
     }
   }
 }
