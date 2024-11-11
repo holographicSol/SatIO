@@ -6263,18 +6263,17 @@ bool DisplayPage0() {
       }
     }
     // SD
-    hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    hud.drawString(String("SD")+String(""), 271, 8);
-
-    // satellite dish: blue=precision_factor_good  yellow=precision_factor=mid, red=satellite_count_zero
     hud.drawRect(290, 0, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    hud.drawString(String("SD")+String(""), 305, 8);
+    // reserved
+    hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
     // if () {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    // hud.drawString(String("")+String(""), 305, 8);
+    // hud.drawString(String("")+String(""), 271, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
