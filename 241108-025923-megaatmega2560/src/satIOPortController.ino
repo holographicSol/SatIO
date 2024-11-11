@@ -24,6 +24,7 @@ Required wiring:
 //                                                                                                                    MATRIX DATA
 
 signed int tmp_port;
+bool update_portmap_bool = false;
 // reflects matrix switch active/inactive states each loop of matrix switch function
 int max_matrix_switch_states = 20;
 bool matrix_switch_state[1][20] = {
@@ -204,6 +205,7 @@ void readRXD1_Method0() {
           strcpy(SerialLink.BUFFER1, SerialLink.BUFFER);
 
           // reset values
+          update_portmap_bool=false;
           SerialLink.validation = false;
           SerialLink.i_token = 0;
           SerialLink.token = strtok(NULL, ",");
@@ -216,7 +218,7 @@ void readRXD1_Method0() {
             if (SerialLink.i_token<20) { 
               for (int i=0; i<20; i++) {
                 tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
-
+                if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
                 // uncomment to debug
                 // Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
                 
@@ -264,15 +266,17 @@ void satIOPortController() {
   for (int i=0; i<20; i++) {
 
     // handle current port configuration
-    if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
-      digitalWrite(matrix_port_map[0][i], LOW);
-      pinMode(matrix_port_map[0][i], INPUT);
+    if (update_portmap_bool==true) {
+      if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
+        digitalWrite(matrix_port_map[0][i], LOW);
+        pinMode(matrix_port_map[0][i], INPUT);
 
-      Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
+        Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
 
-      // setup new port
-      matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
-      pinMode(matrix_port_map[0][i], OUTPUT);
+        // setup new port
+        matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
+        pinMode(matrix_port_map[0][i], OUTPUT);
+      }
     }
 
     // set port high/low
