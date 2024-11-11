@@ -5683,9 +5683,9 @@ void readGPS() {
     serial1Data.gngga_bool=false;
     serial1Data.gnrmc_bool=false;
     serial1Data.gpatt_bool=false;
+      // Serial.println("---------------------------------------------------");
     for (int i=0; i<10; i++) {
       for_attempts++;
-      // Serial.println("---------------------------------------------------");
       // Serial.println("[i]             " + String(i));
       // Serial.println("[gngga_bool]    " + String(serial1Data.gngga_bool));
       // Serial.println("[gnrmc_bool]    " + String(serial1Data.gnrmc_bool));
