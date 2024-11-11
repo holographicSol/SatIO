@@ -7737,17 +7737,15 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
 
-  Serial.begin(115200);
-  while(!Serial);
+  Serial.begin(115200); while(!Serial);
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
-  Serial1.begin(115200);
+  Serial1.begin(115200); while(!Serial1);
   // SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
 
-  delay(1000);
   Serial.println("Running on Core: " + String(xPortGetCoreID()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
