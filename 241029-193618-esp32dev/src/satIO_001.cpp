@@ -153,6 +153,7 @@ struct systemStruct {
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
+  bool port_controller_enabled = true; // may be false by default but is default true for now.
 
   bool sidereal_track_sun = true;      // enables/disables celestial body tracking
   bool sidereal_track_moon = true;     // enables/disables celestial body tracking
@@ -7987,7 +7988,7 @@ void loop() {
   // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
-  SatIOPortController();
+  if (systemData.port_controller_enabled==true) {SatIOPortController();}
   // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
