@@ -6244,25 +6244,29 @@ bool DisplayPage0() {
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
+      if (i==3) {
+        // main loop time over threshold: possible overload
+        if (timeData.mainLoopTimeTaken>=300) {
+          hud.drawRect((i*62)+2*i, 0, 60, 16, TFT_YELLOW);
+          hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
+          hud.setTextDatum(MC_DATUM);
+          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
+        }
+        // main loop time under threshold.
+        else {
+          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+          hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+          hud.setTextDatum(MC_DATUM);
+          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
+          }
       }
+    }
     // SD
     hud.drawRect(294, 0, 26, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
     hud.drawString(String("SD")+String(""), 307, 8);
-    // possible overload
-    hud.drawRect(250, 0, 46, 16, TFTOBJ_COL0);
-    if (timeData.mainLoopTimeTaken>=300) {
-      hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
-      hud.drawRect(250, 0, 46, 16, TFT_RED);
-      hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String("!"), 273, 8);
-    }
-    else {
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0); 
-      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 273, 8);
-    }
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
