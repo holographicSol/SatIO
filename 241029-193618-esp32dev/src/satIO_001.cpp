@@ -7863,7 +7863,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
   Serial1.begin(115200);
-  Serial1.setTimeout(500);
+  Serial1.setTimeout(300);
   Serial1.flush();
 
   // ----------------------------------------------------------------------------------------------------------------------------
