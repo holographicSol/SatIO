@@ -6146,6 +6146,38 @@ void DisplayGeneralTitleBar(String v0) {
   }
 }
 
+void DisplayPage1lTitleBar(String v0) {
+  // main title bar
+  for (int i=0; i<sData.max_general_titlebar_values; i++) {
+    if (i==0) {
+      // home
+      hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
+    }
+    if (i==1) {
+      // title
+      hud.drawRect(64, 0, 92, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(v0)+String(""), 110, 9);
+      // port
+      hud.drawRect(162, 0, 92, 16, TFT_RED);
+      hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(matrixData.matrix_port_map[0][menuData.matrix_select])+String(""), 208, 9);
+    }
+    if (i==2) {
+    // back
+      hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
+    }
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           TOUCHSCREEN TITLEBAR
 
@@ -6349,7 +6381,7 @@ bool DisplayPage1() {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
         menuData.backpage=5;
         // page header
-        DisplayGeneralTitleBar(String("Matrix ")+String(menuData.matrix_select));
+        DisplayPage1lTitleBar(String("Matrix ")+String(menuData.matrix_select));
         hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         // table headers
         hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
@@ -6384,6 +6416,20 @@ bool isTouchPage1(TouchPoint p) {
   know what you are doing.
   */
   if (menuData.page == 1) {
+    // main_titlebar_x
+    // general_titlebar_y
+
+    // page 1: Port Select
+    if (p.x >= tss.main_titlebar_x[3][0] && p.x <= tss.main_titlebar_x[3][1]) {
+      if (p.y >= tss.general_titlebar_y[0][0] && p.y <= tss.general_titlebar_y[0][1]) {
+        Serial.println("[port select]");
+        menuData.backpage=1;
+        menuData.numpad_key=3;
+        memset(menuData.input, 0, sizeof(menuData.input));
+        menuData.page=300;
+      }
+    }
+
     // page 1: Function Select
     if (p.x >= tss.page_1_items_x[0][0] && p.x <= tss.page_1_items_x[0][1]) {
       for (int i=0; i<10; i++) {
@@ -6563,6 +6609,7 @@ bool DisplayNumpad() {
         if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"));}
         else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"));}
         else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"));}
+        else if (menuData.numpad_key==3) {DisplayGeneralTitleBar(String("IO Port"));}
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String(menuData.input)+String(""), 160, 40+9);
@@ -6631,8 +6678,15 @@ bool isTouchNumpad(TouchPoint p) {
     // enter
     if (p.x >=  tss.numpad_x[0][0] && p.x <= tss.numpad_x[0][1]) {
       if (p.y > tss.numpad_page_y[3][0] &&  p.y < tss.numpad_page_y[3][1]) {
+        Serial.println("[numpad] " + String(menuData.input));
+        // port
+        if (menuData.numpad_key == 3) {
+          char *ptr;
+          matrixData.matrix_port_map[0][menuData.matrix_select] = atoi(menuData.input);
+          Serial.println("[" + String(menuData.matrix_select) + "] " + String(matrixData.matrix_port_map[0][menuData.matrix_select]));
+          }
         // x
-        if (menuData.numpad_key == 0) {
+        else if (menuData.numpad_key == 0) {
           char *ptr;
           matrixData.matrix_function_xyz[menuData.matrix_select][menuData.matrix_function_select][0] = strtod(menuData.input, &ptr);
           }

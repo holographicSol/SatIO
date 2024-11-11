@@ -23,6 +23,7 @@ Required wiring:
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
+signed int tmp_port;
 // reflects matrix switch active/inactive states each loop of matrix switch function
 int max_matrix_switch_states = 20;
 bool matrix_switch_state[1][20] = {
@@ -35,8 +36,8 @@ bool matrix_switch_state[1][20] = {
 // a placeholder for matrix switch ports
 signed int matrix_port_map[1][20] = {
   {
-    23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-    33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   }
 };
 
@@ -206,8 +207,20 @@ void readRXD1_Method0() {
             // check eack token for portmap
             if (SerialLink.i_token<20) { 
               for (int i=0; i<20; i++) {
-                if (isdigit(*SerialLink.token)==0) {matrix_port_map[0][i]=atoi(SerialLink.token);}
-                Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
+
+                // handle current port
+                tmp_port = atoi(SerialLink.token);
+                if (matrix_port_map[0][i] != tmp_port) {
+                  digitalWrite(matrix_port_map[0][i], LOW);
+                  pinMode(matrix_port_map[0][i], INPUT);
+                  // handle new port
+                  matrix_port_map[0][i]=atoi(SerialLink.token);
+                  pinMode(matrix_port_map[0][i], OUTPUT);
+                }
+
+                // uncomment to debug
+                // Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
+                
                 SerialLink.i_token++;
                 SerialLink.token = strtok(NULL, ",");
               }
