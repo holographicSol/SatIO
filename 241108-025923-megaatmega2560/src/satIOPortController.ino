@@ -264,10 +264,11 @@ void satIOPortController() {
   for (int i=0; i<20; i++) {
 
     // handle current port configuration
-    tmp_port = atoi(SerialLink.token);
-    if (matrix_port_map[0][i] != tmp_port) {
+    if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
       digitalWrite(matrix_port_map[0][i], LOW);
       pinMode(matrix_port_map[0][i], INPUT);
+
+      Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
 
       // setup new port
       matrix_port_map[0][i]=tmp_matrix_port_map[0][i];

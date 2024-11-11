@@ -313,6 +313,7 @@ struct SDCardStruct {
   char data_4[56];                                             // value placeholder
   char data_5[56];                                             // value placeholder
   char data_6[56];                                             // value placeholder
+  char data_7[56];                                             // value placeholder
   char file_data[256];                                         // buffer
   char delim[2] = ",";                                         // delimiter char
   char tmp[256];                                               // buffer
@@ -1306,21 +1307,21 @@ struct MatrixStruct {
     }
   };
 
-  // // a placeholder for matrix switch ports
-  // signed int matrix_port_map[1][20] = {
-  //   {
-  //     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  //     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  //   }
-  // };
-
-  // a placeholder for matrix switch ports
+  // a placeholder for matrix switch ports (default no port)
   signed int matrix_port_map[1][20] = {
     {
-      23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-      33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     }
   };
+
+  // // a placeholder for matrix switch ports (default ATMEGA2560 digital)
+  // signed int matrix_port_map[1][20] = {
+  //   {
+  //     23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+  //     33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+  //   }
+  // };
 
   // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
   char matrix_function[20][10][100] = {
@@ -3482,7 +3483,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         // ensure cleared
         memset(sdcardData.data_0, 0, 56); memset(sdcardData.data_1, 0, 56); memset(sdcardData.data_2, 0, 56);
         memset(sdcardData.data_3, 0, 56); memset(sdcardData.data_4, 0, 56); memset(sdcardData.data_5, 0, 56);
-        memset(sdcardData.data_6, 0, 56);
+        memset(sdcardData.data_6, 0, 56); memset(sdcardData.data_7, 0, 56);
         validData.bool_data_0 = false;
         validData.bool_data_1 = false;
         // split line on delimiter
@@ -3540,12 +3541,22 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         sdcardData.token = strtok(NULL, ",");
         sdcardData.token = strtok(NULL, ",");
+        // enabled/disabled
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
           matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
           Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
           }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
+        // port
+        sdcardData.token = strtok(NULL, ",");
+        // check
+        if (is_all_digits_plus_char(sdcardData.data_7, "-") == true) {
+          strcpy(sdcardData.data_7, sdcardData.token);
+          matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
+          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
+          }
+        else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
       }
     }
     // update current matrix filepath
@@ -3617,6 +3628,11 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       // matrix enabled 0/1
       memset(sdcardData.tmp, 0 , 256);
       itoa(matrixData.matrix_switch_enabled[0][Mi], sdcardData.tmp, 10);
+      strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+      // matrix switch port
+      memset(sdcardData.tmp, 0 , 256);
+      itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
+      Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
       Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
