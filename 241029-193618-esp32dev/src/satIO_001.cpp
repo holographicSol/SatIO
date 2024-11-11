@@ -254,6 +254,7 @@ Serial1Struct serial1Data;
 struct SerialLinkStruct {
   unsigned long nbytes;
   char BUFFER[2000];            // read incoming bytes into this buffer
+  char BUFFER1[2000];           // store bytes when they are different from previous read bytes
   char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -7706,15 +7707,21 @@ void TouchScreenInput( void * pvParameters ) {
 //                                                                                                                PORT CONTROLLER
 
 void SatIOPortController() {
-    if (Serial1.availableForWrite()) {
+  if (Serial1.availableForWrite()) {
 
-      /* uncomment to see what will be sent to the port controller */
-      // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
+    /* uncomment to see what will be sent to the port controller */
+    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
+
+    // igonore a switch message if its the same as previous switch message
+    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.BUFFER1)==0) {
+      memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
+      strcpy(SerialLink.BUFFER1, matrixData.matrix_results_sentence);
 
       /* write matrix switch states to the port controller */
       Serial1.write(matrixData.matrix_results_sentence);
       Serial1.write(ETX);
     }
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7869,13 +7876,6 @@ void loop() {
 
   // Serial.println();
 
-
-  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
-
-
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
@@ -7889,4 +7889,9 @@ void loop() {
     // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
     // Serial.println();
   }
+
+  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
+  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
+  if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }

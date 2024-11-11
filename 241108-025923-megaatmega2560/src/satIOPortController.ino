@@ -50,7 +50,7 @@ signed int matrix_port_map[1][20] = {
 struct SerialLinkStruct {
   unsigned long nbytes;
   char BUFFER[2000];            // read incoming bytes into this buffer
-  char BUFFER1[2000];            // read incoming bytes into this buffer
+  char BUFFER1[2000];           // store bytes when they are different from previous read bytes
   char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -128,14 +128,14 @@ void createChecksum(char * buffer) {
 //                                                                                                              SETUP 
 
 void setup() {
-  Serial.begin(115200); while(!Serial);
+  Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
-  Serial2.begin(115200); while(!Serial2);
   Serial3.begin(115200); while(!Serial3);
   Serial1.setTimeout(10);
   Serial3.setTimeout(10);
   Serial.flush();
   Serial1.flush();
+  Serial3.flush();
 
   // setup IO
   for (int i=0; i<20; i++) {
@@ -175,22 +175,24 @@ void readRXD1_Method0() {
   if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
     SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
     if (readRXD1UntilETX() == true) {
+
       // Serial.println("-------------------------------------------");
+      
+      // store a second copy of buffer that does not contain ETX.
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      strcpy(SerialLink.BUFFER, SerialLink.DATA);
 
-      if (!strcmp(SerialLink.DATA, SerialLink.BUFFER1)==0) {
-        memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-        strcpy(SerialLink.BUFFER1, SerialLink.DATA);
+      // uncomment to debug
+      // Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
+      
+      // break off and compare first token
+      SerialLink.token = strtok(SerialLink.DATA, ",");
+      if (strcmp(SerialLink.token, "$MATRX") == 0) {
 
-        memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-        strcpy(SerialLink.BUFFER, SerialLink.DATA);
-
-        // uncomment to debug
-        // Serial.print("[RXD]       "); Serial.println(SerialLink.DATA);
-        
-        // tag specific processing (like nmea sentences, if we know the tag then we should know what elements are where)
-        SerialLink.token = strtok(SerialLink.DATA, ",");
-
-        if (strcmp(SerialLink.token, "$MATRX") == 0) {
+        // igonore a switch message if its the same as previous switch message
+        if (!strcmp(SerialLink.BUFFER, SerialLink.BUFFER1)==0) {
+          memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
+          strcpy(SerialLink.BUFFER1, SerialLink.BUFFER);
 
           // initiate counter; compare expected element to actual RXD TOKEN; count negative comparison; for 1 million iterations
           SerialLink.validation = false;
@@ -254,8 +256,8 @@ void readRXD1_Method0() {
             SerialLink.token = strtok(NULL, ",");
           }
         }
+        // else {Serial.println("[skipping]   " + String(SerialLink.BUFFER));}
       }
-      // else {Serial.println("[skipping]   " + String(SerialLink.BUFFER));}
     }
   }
 }
@@ -268,6 +270,8 @@ void readRXD1_Method0() {
 void satIOPortController() {
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
+
+  // make ports high or low according to validated data
   for (int i=0; i<20; i++) {
     digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
 
@@ -281,6 +285,7 @@ void satIOPortController() {
 
 void readGPS() {
   if (Serial3.available() > 0) {
+    // loop to write gps serial to SatIO serial about 5 times because we are looking for GNGGA, GNRMC, GPATT and ignoring DESBI.
     for (int i=0; i <5; i++) {
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
