@@ -254,7 +254,7 @@ Serial1Struct serial1Data;
 struct SerialLinkStruct {
   unsigned long nbytes;
   char BUFFER[2000];            // read incoming bytes into this buffer
-  char MTRX_BUFFER_1[2000];           // store bytes when they are different from previous read bytes
+  char BUFFER1[2000];           // store bytes when they are different from previous read bytes
   char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -2006,7 +2006,14 @@ void GNGGA() {
     else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token) == true)                  {memset(gnggaData.geoidal, 0, 56);               strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal = false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal = true;}}
     else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token) == true)            {memset(gnggaData.geoidal_units, 0, 56);         strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units = false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units = true;}}
     else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token) == true)       {memset(gnggaData.differential_delay, 0, 56);    strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay = false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay = true;}}
-    // add id
+    // else if (serial1Data.iter_token ==14) {
+    //   memset(gnggaData.temporary_data, 0, 56);
+    //   strcpy(gnggaData.temporary_data, strtok(serial1Data.token, "*"));
+    //   if (val_basestation_id(gnggaData.temporary_data) == true) {memset(gnggaData.id, 0, 56); strcpy(gnggaData.id, gnggaData.temporary_data); gnggaData.check_data++; gnggaData.bad_id = false;} else {gnggaData.bad_id_i++; gnggaData.bad_id = true;}
+    //   serial1Data.token = strtok(NULL, "*");
+    //   memset(gnggaData.temporary_data_1, 0, 56);
+    //   strcpy(gnggaData.temporary_data_1, strtok(serial1Data.token, "*"));
+    //   if (val_checksum(gnggaData.temporary_data_1) == true) {memset(gnggaData.check_sum, 0, 56); strcpy(gnggaData.check_sum, gnggaData.temporary_data_1); gnggaData.check_data++; gnggaData.bad_check_sum = false;} else {gnggaData.bad_check_sum_i++; gnggaData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -2076,7 +2083,14 @@ void GNRMC() {
     else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token) == true)                     {memset(gnrmcData.utc_date, 0, 56);                     strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date = false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date = true;}}
     else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token) == true)           {memset(gnrmcData.installation_angle, 0, 56);           strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle = false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle = true;}}
     else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token) == true) {memset(gnrmcData.installation_angle_direction, 0, 56); strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction = false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction = true;}}
-    // add mode_indication
+    // else if (serial1Data.iter_token ==12) {
+    //   memset(gnggaData.temporary_data, 0, 56);
+    //   strcpy(gnrmcData.temporary_data, strtok(serial1Data.token, "*"));
+    //   if (val_mode_indication(gnrmcData.temporary_data) == true) {memset(gnrmcData.mode_indication, 0, 56); strcpy(gnrmcData.mode_indication, gnrmcData.temporary_data); gnrmcData.check_data++; gnrmcData.bad_mode_indication = false;} else {gnrmcData.bad_mode_indication_i++; gnrmcData.bad_mode_indication = true;}
+    //   serial1Data.token = strtok(NULL, "*");
+    //   memset(gnggaData.temporary_data_1, 0, 56);
+    //   strcpy(gnrmcData.temporary_data_1, strtok(serial1Data.token, "*"));
+    //   if (val_checksum(gnrmcData.temporary_data_1) == true) {memset(gnrmcData.check_sum, 0, 56); strcpy(gnrmcData.check_sum, gnrmcData.temporary_data_1); gnrmcData.check_data++; gnrmcData.bad_check_sum = false;} else {gnrmcData.bad_check_sum_i++; gnrmcData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -2198,7 +2212,14 @@ void GPATT() {
     else if (serial1Data.iter_token == 36) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_10, 0, 56); strcpy(gpattData.custom_logo_10, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_10 = false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10 = true;}}
     else if (serial1Data.iter_token == 37) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_11, 0, 56); strcpy(gpattData.custom_logo_11, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_11 = false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11 = true;}}
     else if (serial1Data.iter_token == 38) {if (val_speed_num_gpatt(serial1Data.token) == true)        {memset(gpattData.speed_num, 0, 56); strcpy(gpattData.speed_num, serial1Data.token);               gpattData.check_data++; gpattData.bad_speed_num = false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num = true;}}
-    // add scalable
+    // else if (serial1Data.iter_token == 39) {
+    //   memset(gnggaData.temporary_data, 0, 56);
+    //   strcpy(gpattData.temporary_data, strtok(serial1Data.token, "*"));
+    //   if (val_scalable(gpattData.temporary_data) == true) {memset(gpattData.scalable, 0, 56); strcpy(gpattData.scalable, gpattData.temporary_data); gpattData.check_data++; gpattData.bad_scalable = false;} else {gpattData.bad_scalable_i++; gpattData.bad_scalable = true;}
+    //   serial1Data.token = strtok(NULL, "*");
+    //   memset(gnggaData.temporary_data_1, 0, 56);
+    //   strcpy(gpattData.temporary_data_1, strtok(serial1Data.token, "*"));
+    //   if (val_checksum(gpattData.temporary_data_1) == true) {memset(gpattData.check_sum, 0, 56); strcpy(gpattData.check_sum, gpattData.temporary_data_1); gpattData.check_data++; gpattData.bad_check_sum = false;} else {gpattData.bad_check_sum_i++; gpattData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -7692,9 +7713,9 @@ void SatIOPortController() {
     // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
 
     // igonore a switch message if its the same as previous switch message
-    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.MTRX_BUFFER_1)==0) {
-      memset(SerialLink.MTRX_BUFFER_1, 0, sizeof(SerialLink.MTRX_BUFFER_1));
-      strcpy(SerialLink.MTRX_BUFFER_1, matrixData.matrix_results_sentence);
+    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.BUFFER1)==0) {
+      memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
+      strcpy(SerialLink.BUFFER1, matrixData.matrix_results_sentence);
 
       /* write matrix switch states to the port controller */
       Serial1.write(matrixData.matrix_results_sentence);
@@ -7716,15 +7737,17 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
 
-  Serial.begin(115200); while(!Serial);
+  Serial.begin(115200);
+  while(!Serial);
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
-  Serial1.begin(115200); while(!Serial1);
+  Serial1.begin(115200);
   // SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
 
+  delay(1000);
   Serial.println("Running on Core: " + String(xPortGetCoreID()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -7870,6 +7893,5 @@ void loop() {
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // i am getting 199ms per loop (x5 loops a second) with all martix switches enabled and set.
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }
