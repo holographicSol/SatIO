@@ -7893,5 +7893,6 @@ void loop() {
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  // i am getting 199ms per loop (x5 loops a second) with all martix switches enabled and set.
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }
