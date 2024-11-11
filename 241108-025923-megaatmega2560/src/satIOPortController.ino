@@ -25,6 +25,7 @@ Required wiring:
 
 signed int tmp_port;
 bool update_portmap_bool = false;
+bool update_switchstate_bool = false;
 // reflects matrix switch active/inactive states each loop of matrix switch function
 int max_matrix_switch_states = 20;
 bool matrix_switch_state[1][20] = {
@@ -162,18 +163,19 @@ bool readRXD1UntilETX() {
   memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
   memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
   if (Serial1.available() > 0) {
-    int rlen = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    if (rlen != 0) {
-      for(int i = 0; i < rlen; i++) {
-        if (SerialLink.BUFFER[i] == ETX)
-          break;
-        else {
-          SerialLink.DATA[i] = SerialLink.BUFFER[i];
+    SerialLink.nbytes = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    if (SerialLink.nbytes > 80) { 
+        for(int i = 0; i < SerialLink.nbytes; i++) {
+          if (SerialLink.BUFFER[i] == ETX)
+            break;
+          else {
+            SerialLink.DATA[i] = SerialLink.BUFFER[i];
+          }
         }
-      }
-      return true;
+        return true;
     }
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -206,6 +208,7 @@ void readRXD1_Method0() {
 
           // reset values
           update_portmap_bool=false;
+          update_switchstate_bool = false;
           SerialLink.validation = false;
           SerialLink.i_token = 0;
           SerialLink.token = strtok(NULL, ",");
@@ -230,8 +233,11 @@ void readRXD1_Method0() {
             // check eack token for exactly 1 or 0 for matrix switch state
             if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
               for (int i=0; i<20; i++) {
-                if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
-                else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
+                if (atoi(SerialLink.token) != matrix_switch_state[0][i]) {
+                  update_switchstate_bool = true;
+                  if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
+                  else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
+                }
                 SerialLink.i_token++;
                 SerialLink.token = strtok(NULL, ",");
               }
@@ -283,7 +289,9 @@ void satIOPortController() {
     }
 
     // set port high/low
-    digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
+    if (update_switchstate_bool==true) {
+      digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
+    }
 
     // uncomment to debug
     // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
