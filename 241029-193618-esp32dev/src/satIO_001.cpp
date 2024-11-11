@@ -6119,7 +6119,7 @@ SettingsDataStruct sData;
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       DISPLAY GENERAL TITLEBAR
 
-void DisplayGeneralTitleBar(String v0) {
+void DisplayGeneralTitleBar(String v0, uint16_t col0, uint16_t col1) {
   // main title bar
   for (int i=0; i<sData.max_general_titlebar_values; i++) {
     if (i==0) {
@@ -6132,7 +6132,7 @@ void DisplayGeneralTitleBar(String v0) {
     if (i==1) {
       // title
       hud.drawRect(64, 0, 192, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.setTextColor(col0, col1);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 160, 9);
     }
@@ -6533,8 +6533,8 @@ bool DisplaySelectMatrixFunction() {
         menuData.backpage=1;
         // page header
         DisplayGeneralTitleBar(
-          String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select)
-          );
+          String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select),
+          TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
         // scroll buttons
         DisplayVerticalScroll();
         // values
@@ -6606,10 +6606,10 @@ bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 300) {
         hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"));}
-        else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"));}
-        else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"));}
-        else if (menuData.numpad_key==3) {DisplayGeneralTitleBar(String("IO Port"));}
+        if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
+        else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
+        else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
+        else if (menuData.numpad_key==3) {DisplayGeneralTitleBar(String("IO Port"), TFT_RED, TFT_BLACK);}
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String(menuData.input)+String(""), 160, 40+9);
@@ -6754,7 +6754,7 @@ bool DisplaySettingsMenu() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     // page header
     menuData.backpage=0;
-    DisplayGeneralTitleBar(String("Settings"));
+    DisplayGeneralTitleBar(String("Settings"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
     hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
@@ -6797,7 +6797,7 @@ bool DisplaySettingsSystem() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("System"));
+    DisplayGeneralTitleBar(String("System"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -6836,7 +6836,7 @@ bool DisplaySettingsMatrix() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Matrix"));
+    DisplayGeneralTitleBar(String("Matrix"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
     /*
@@ -7033,7 +7033,7 @@ bool DisplaySettingsGPS() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("GPS"));
+    DisplayGeneralTitleBar(String("GPS"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -7081,7 +7081,7 @@ bool DisplaySettingsSerial() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Serial"));
+    DisplayGeneralTitleBar(String("Serial"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -7131,7 +7131,7 @@ bool DisplaySettingsFile() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("File"));
+    DisplayGeneralTitleBar(String("File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -7195,7 +7195,7 @@ bool DisplaySettingsSaveMatrix() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Save Matrix File"));
+    DisplayGeneralTitleBar(String("Save Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
@@ -7278,7 +7278,7 @@ bool DisplaySettingsLoadMatrix() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Load Matrix File"));
+    DisplayGeneralTitleBar(String("Load Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
@@ -7350,7 +7350,7 @@ bool DisplaySettingsDeleteMatrix() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Delete Matrix File"));
+    DisplayGeneralTitleBar(String("Delete Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
@@ -7422,7 +7422,7 @@ bool DisplaySettingsTime() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Time"));
+    DisplayGeneralTitleBar(String("Time"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -7476,7 +7476,7 @@ bool DisplaySettingsDisplay() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Display"));
+    DisplayGeneralTitleBar(String("Display"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
@@ -7594,7 +7594,7 @@ bool SiderealPlanetsSettings() {
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
     menuData.backpage=3;
     // page header max_settingssiderealplanetsvalues
-    DisplayGeneralTitleBar(String("Planet Tracking"));
+    DisplayGeneralTitleBar(String("Planet Tracking"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
     for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
