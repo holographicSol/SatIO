@@ -138,6 +138,46 @@ SPIClass sdspi = SPIClass(VSPI);
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
+int i_touch = 0;
+int i_display = 0;
+int i_VAL = 0;
+bool check_pass = false;
+int i_MKDIR = 0;
+int i_LISTFILES = 0;
+int ZROMTRX_Mi = 0;
+int ZROMTRX_Fi = 0;
+int SVMTRX_Mi = 0;
+int SVMTRX_Fi = 0;
+int GNRLMTRX_Mi = 0;
+int GNRLMTRX_Fi = 0;
+int Mi = 0;
+int Fi = 0;
+int FC = 0;
+int i_MTRX = 0;
+int i_RUETX = 0;
+int for_attempts=0;
+int read_attempts=0;
+int i_readGPS=0;
+int i_CME = 0;
+int i_DisplayGeneralTitleBar = 0;
+int i_DisplayPage1lTitleBar = 0;
+int i_DisplayPage0 = 0;
+int i_DisplayPage1 = 0;
+int i_DisplaySelectMatrixFunction = 0;
+int i_DisplayNumpad= 0;
+int i_DisplaySettingsMenu= 0;
+int i_DisplaySettingsSystem= 0;
+int i_DisplaySettingsMatrix = 0;
+int i_DisplaySettingsGPS = 0;
+int i_DisplaySettingsSerial = 0;
+int i_DisplaySettingsFile = 0;
+int i_DisplaySettingsSaveMatrix = 0;
+int i_DisplaySettingsLoadMatrix = 0;
+int i_DisplaySettingsDeleteMatrix = 0;
+int i_DisplaySettingsTimex = 0;
+int i_DisplaySettingsDisplay = 0;
+int i_SiderealPlanetsSettings = 0;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 
@@ -447,25 +487,24 @@ sanitizing each element of a sentence. thorough testing is required to ensure no
 the extra work, rather than assuming all elements will be what we expect every time.
 */
 
-
 bool count_digits(char * data, int expected) {
   if (sysDebugData.validation == true) {Serial.println("[connected] count_digits: " + String(data));}
   validData.valid_i = 0;
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 1) {validData.valid_i++;}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {if (isdigit(data[i_VAL]) == 1) {validData.valid_i++;}}
   if (validData.valid_i == expected) {return true;} else {return false;}
 }
 
 bool count_alpha(char * data, int expected) {
   if (sysDebugData.validation == true) {Serial.println("[connected] count_alpha: " + String(data));}
   validData.valid_i = 0;
-  for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 1) {validData.valid_i++;}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {if (isalpha(data[i_VAL]) == 1) {validData.valid_i++;}}
   if (validData.valid_i == expected) {return true;} else {return false;}
 }
 
 bool is_all_digits(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] is_all_digits: " + String(data));}
   validData.valid_b = true;
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {validData.valid_b = false;}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {if (isdigit(data[i_VAL]) == 0) {validData.valid_b = false;}}
   return validData.valid_b;
 }
 
@@ -475,7 +514,7 @@ bool is_all_digits_plus_char(char * data, char * find_char) {
   validData.valid_b = true;
   validData.find_char = strchr(data, * find_char);
   validData.index = (int)(validData.find_char - data);
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {if (i != validData.index) {validData.valid_b = false;}}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {if (isdigit(data[i_VAL]) == 0) {if (i_VAL != validData.index) {validData.valid_b = false;}}}
   return validData.valid_b;
 }
 
@@ -492,21 +531,21 @@ bool is_positive_negative_num(char * data) {
   validData.valid_b = true;
   validData.find_char = strchr(data, '.');
   validData.index = (int)(validData.find_char - data);
-  for (int i = 0; i < strlen(data); i++) {
-    if (isdigit(data[i]) == 0) {if (i != validData.index) {if ((data[i] != '-') && (i > 0)) {validData.valid_b = false;}}}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {
+    if (isdigit(data[i_VAL]) == 0) {if (i_VAL != validData.index) {if ((data[i_VAL] != '-') && (i_VAL > 0)) {validData.valid_b = false;}}}}
   return validData.valid_b;
 }
 
 bool is_all_alpha(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] is_all_alpha: " + String(data));}
   validData.valid_b = true;
-  for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 0) {validData.valid_b = false;}}
+  for (i_VAL = 0; i_VAL < strlen(data); i_VAL++) {if (isalpha(data[i_VAL]) == 0) {validData.valid_b = false;}}
   return validData.valid_b;
 }
 
 bool val_utc_time(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_utc_time: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 9) {
     if (data[6] == '.') {
       if (count_digits(data, 8) == true) {
@@ -519,7 +558,7 @@ bool val_utc_time(char * data) {
 
 bool val_utc_date(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_utc_date: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 6) {
     if (is_all_digits(data) == true) {
       if ((atoi(data) >= 0.0) && (atoi(data) <= 999999)) {check_pass = true;}
@@ -530,7 +569,7 @@ bool val_utc_date(char * data) {
 
 bool val_latitude(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_latitude: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 13) {
     if (data[4] == '.') {
       if (count_digits(data, 12) == true) {
@@ -545,7 +584,7 @@ bool val_latitude(char * data) {
 
 bool val_longitude(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_longitude: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 14) {
     if (data[5] == '.') {
       if (count_digits(data, 13) == true) {
@@ -560,7 +599,7 @@ bool val_longitude(char * data) {
 
 bool val_latitude_H(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_latitude_H: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "N") == 0) || (strcmp(data, "S") == 0)) {
       check_pass = true;
@@ -571,7 +610,7 @@ bool val_latitude_H(char * data) {
 
 bool val_longitude_H(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_longitude_H: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0)) {
       check_pass = true;
@@ -582,7 +621,7 @@ bool val_longitude_H(char * data) {
 
 bool val_positioning_status_gngga(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_positioning_status_gngga: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if (is_all_digits(data) == true) {
       if ((atoi(data) >= 0) && (atoi(data) <= 6)) {
@@ -595,7 +634,7 @@ bool val_positioning_status_gngga(char * data) {
 
 bool val_satellite_count(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_satellite_count: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) >= 0){
       check_pass = true;
@@ -606,7 +645,7 @@ bool val_satellite_count(char * data) {
 
 bool val_hdop_precision_factor(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_hdop_precision_factor: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits_plus_char(data, ".") == true) {
     if (atoi(data) >= 0){
       check_pass = true;
@@ -618,7 +657,7 @@ bool val_hdop_precision_factor(char * data) {
 bool val_altitude(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_altitude: " + String(data));}
   // account for decimal point
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
       check_pass = true;
   }
@@ -627,7 +666,7 @@ bool val_altitude(char * data) {
 
 bool val_altitude_units(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_altitude_units: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if (strcmp(data, "M") == 0) {
       check_pass = true;
@@ -638,7 +677,7 @@ bool val_altitude_units(char * data) {
 
 bool val_geoidal(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_geoidal: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -647,7 +686,7 @@ bool val_geoidal(char * data) {
 
 bool val_geoidal_units(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_geoidal_units: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if (strcmp(data, "M") == 0) {
       check_pass = true;
@@ -658,7 +697,7 @@ bool val_geoidal_units(char * data) {
 
 bool val_differential_delay(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_differential_delay: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -667,7 +706,7 @@ bool val_differential_delay(char * data) {
 
 bool val_basestation_id(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_basestation_id: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if (strlen(data) == 4) {
       check_pass = true;
@@ -678,7 +717,7 @@ bool val_basestation_id(char * data) {
 
 bool val_positioning_status_gnrmc(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_positioning_status_gnrmc: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "A") == 0) || (strcmp(data, "V") == 0)) {
       check_pass = true;
@@ -689,7 +728,7 @@ bool val_positioning_status_gnrmc(char * data) {
 
 bool val_ground_speed(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ground_speed: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -698,7 +737,7 @@ bool val_ground_speed(char * data) {
 
 bool val_ground_heading(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ground_heading: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits_plus_char(data, ".") == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 360)) {
       check_pass = true;
@@ -710,7 +749,7 @@ bool val_ground_heading(char * data) {
 // todo
 bool val_installation_angle(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_installation_angle: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits_plus_char(data, ".") == true) {
     if (atoi(data) >= 0) {
       check_pass = true;
@@ -721,7 +760,7 @@ bool val_installation_angle(char * data) {
 
 bool val_installation_angle_direction(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_installation_angle_direction: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0) || (strcmp(data, "M") == 0)) {
       check_pass = true;
@@ -732,7 +771,7 @@ bool val_installation_angle_direction(char * data) {
 
 bool val_mode_indication(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_mode_indication: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "A") == 0) || (strcmp(data, "D") == 0) || (strcmp(data, "E") == 0) || (strcmp(data, "N") == 0)) {
       check_pass = true;
@@ -743,7 +782,7 @@ bool val_mode_indication(char * data) {
 
 bool val_pitch_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_pitch_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -752,7 +791,7 @@ bool val_pitch_gpatt(char * data) {
 
 bool val_roll_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_roll_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -761,7 +800,7 @@ bool val_roll_gpatt(char * data) {
 
 bool val_yaw_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_yaw_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -770,35 +809,35 @@ bool val_yaw_gpatt(char * data) {
 
 bool val_angle_channle_p_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_p_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "p") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_angle_channle_r_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_r_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "r") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_angle_channle_y_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_y_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "y") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_version_channel_s_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_version_channel_s_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "S") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_software_version_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_software_version_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) == 20230219) {check_pass = true;}
   }
@@ -807,21 +846,21 @@ bool val_software_version_gpatt(char * data) {
 
 bool val_product_id_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_product_id_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "003E009") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_id_channel_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_id_channel_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "ID") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_ins_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
   }
@@ -830,14 +869,14 @@ bool val_ins_gpatt(char * data) {
 
 bool val_ins_channel_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_channel_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "INS") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_hardware_version_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_hardware_version_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if (strcmp(data, "3335") == 0) {check_pass = true;}
   }
@@ -846,7 +885,7 @@ bool val_hardware_version_gpatt(char * data) {
 
 bool val_run_state_flag_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_run_state_flag_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((strcmp(data, "01") == 0) || (strcmp(data, "02") == 0) || (strcmp(data, "03") == 0)) {check_pass = true;}
   }
@@ -856,7 +895,7 @@ bool val_run_state_flag_gpatt(char * data) {
 // todo
 bool val_mis_angle_num_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_mis_angle_num_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -865,7 +904,7 @@ bool val_mis_angle_num_gpatt(char * data) {
 
 bool val_static_flag_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_static_flag_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
   }
@@ -875,7 +914,7 @@ bool val_static_flag_gpatt(char * data) {
 // todo
 bool val_user_code_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_user_code_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits_plus_char(data, ".") == true) {
     if (atoi(data) >= 0) {check_pass = true;}
   }
@@ -884,7 +923,7 @@ bool val_user_code_gpatt(char * data) {
 
 bool val_gst_data_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_gst_data_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) >= 0) {check_pass = true;}
   }
@@ -893,7 +932,7 @@ bool val_gst_data_gpatt(char * data) {
 
 bool val_line_flag_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_line_flag_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
   }
@@ -902,7 +941,7 @@ bool val_line_flag_gpatt(char * data) {
 
 bool val_mis_att_flag_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_mis_att_flag_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
   }
@@ -911,7 +950,7 @@ bool val_mis_att_flag_gpatt(char * data) {
 
 bool val_imu_kind_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_imu_kind_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
   }
@@ -920,7 +959,7 @@ bool val_imu_kind_gpatt(char * data) {
 
 bool val_ubi_car_kind_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_car_kind_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 1) && (atoi(data) <= 4)) {check_pass = true;}
   }
@@ -929,7 +968,7 @@ bool val_ubi_car_kind_gpatt(char * data) {
 
 bool val_mileage_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_mileage_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -938,7 +977,7 @@ bool val_mileage_gpatt(char * data) {
 
 bool val_run_inetial_flag_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_run_inetial_flag_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
   }
@@ -947,7 +986,7 @@ bool val_run_inetial_flag_gpatt(char * data) {
 
 bool val_speed_enable_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_enable_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
   }
@@ -956,7 +995,7 @@ bool val_speed_enable_gpatt(char * data) {
 
 bool val_speed_num_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_num_gpatt: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -965,7 +1004,7 @@ bool val_speed_num_gpatt(char * data) {
 
 bool val_speed_status(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_status: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
   }
@@ -974,14 +1013,14 @@ bool val_speed_status(char * data) {
 
 bool val_accelleration_delimiter(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_accelleration_delimiter: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "A") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_axis_accelleration(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_axis_accelleration: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -990,14 +1029,14 @@ bool val_axis_accelleration(char * data) {
 
 bool val_angular_velocity_delimiter(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_angular_velocity_delimiter: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "G") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_gyro_angular_velocity(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_gyro_angular_velocity: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1006,14 +1045,14 @@ bool val_gyro_angular_velocity(char * data) {
 
 bool val_status_delimiter(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_status_delimiter: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strcmp(data, "S") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_ubi_state_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_state_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1022,7 +1061,7 @@ bool val_ubi_state_flag(char * data) {
 
 bool val_ubi_state_kind_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_state_kind_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
   }
@@ -1031,7 +1070,7 @@ bool val_ubi_state_kind_flag(char * data) {
 
 bool val_code_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_code_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1040,7 +1079,7 @@ bool val_code_flag(char * data) {
 
 bool val_gset_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_gset_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1049,7 +1088,7 @@ bool val_gset_flag(char * data) {
 
 bool val_sset_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_sset_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1058,7 +1097,7 @@ bool val_sset_flag(char * data) {
 
 bool val_ang_dget_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ang_dget_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1067,7 +1106,7 @@ bool val_ang_dget_flag(char * data) {
 
 bool val_ins_run_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_run_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1076,7 +1115,7 @@ bool val_ins_run_flag(char * data) {
 
 bool val_fix_kind_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_fix_kind_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1085,7 +1124,7 @@ bool val_fix_kind_flag(char * data) {
 
 bool val_fiobject_roll_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_fiobject_roll_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1094,7 +1133,7 @@ bool val_fiobject_roll_flag(char * data) {
 
 bool val_fix_pitch_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_fix_pitch_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1103,7 +1142,7 @@ bool val_fix_pitch_flag(char * data) {
 
 bool val_ubi_on_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_on_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
   }
@@ -1112,7 +1151,7 @@ bool val_ubi_on_flag(char * data) {
 
 bool val_ubi_kind_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_kind_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
   }
@@ -1121,7 +1160,7 @@ bool val_ubi_kind_flag(char * data) {
 
 bool val_ubi_a_set(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_a_set: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
   }
@@ -1130,7 +1169,7 @@ bool val_ubi_a_set(char * data) {
 
 bool val_ubi_b_set(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_b_set: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
   }
@@ -1139,7 +1178,7 @@ bool val_ubi_b_set(char * data) {
 
 bool val_acc_X_data(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_acc_X_data: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1148,7 +1187,7 @@ bool val_acc_X_data(char * data) {
 
 bool val_acc_Y_data(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_acc_Y_data: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1157,7 +1196,7 @@ bool val_acc_Y_data(char * data) {
 
 bool val_gyro_Z_data(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_gyro_Z_data: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1166,7 +1205,7 @@ bool val_gyro_Z_data(char * data) {
 
 bool val_pitch_angle(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_pitch_angle: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1175,7 +1214,7 @@ bool val_pitch_angle(char * data) {
 
 bool val_roll_angle(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_roll_angle: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1184,7 +1223,7 @@ bool val_roll_angle(char * data) {
 
 bool val_yaw_angle(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_yaw_angle: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1193,7 +1232,7 @@ bool val_yaw_angle(char * data) {
 
 bool val_car_speed(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_car_speed: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits_plus_char(data, ".") == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 100)) {check_pass = true;}
   }
@@ -1202,7 +1241,7 @@ bool val_car_speed(char * data) {
 
 bool val_ins_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
   }
@@ -1211,7 +1250,7 @@ bool val_ins_flag(char * data) {
 
 bool val_ubi_num(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_num: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1220,7 +1259,7 @@ bool val_ubi_num(char * data) {
 
 bool val_ubi_valid(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_valid: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
   }
@@ -1229,7 +1268,7 @@ bool val_ubi_valid(char * data) {
 
 bool val_coll_T_data(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_coll_T_data: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1238,7 +1277,7 @@ bool val_coll_T_data(char * data) {
 
 bool val_coll_T_heading(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_coll_T_heading: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
   }
@@ -1247,21 +1286,21 @@ bool val_coll_T_heading(char * data) {
 
 bool val_custom_flag(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_custom_flag: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) >= 1) {check_pass = true;}
   return check_pass;
 }
 
 bool val_checksum(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_checksum: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) == 3) {check_pass = true;}
   return check_pass;
 }
 
 bool val_scalable(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_scalable: " + String(data));}
-  bool check_pass = false;
+  check_pass = false;
   if (strlen(data) >= 1) {check_pass = true;}
   return check_pass;
 }
@@ -3407,7 +3446,7 @@ void sdcard_mkdir(fs::FS &fs, char * dir){
 
 /* creates root directories required by the system to work properly */
 
-void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(SD, sdcardData.system_dirs[i]);}}
+void sdcard_mkdirs() {for (i_MKDIR = 0; i_MKDIR < 2; i_MKDIR++) {sdcard_mkdir(SD, sdcardData.system_dirs[i_MKDIR]);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
@@ -3418,13 +3457,13 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
   char tempname[56];
   char temppath[56];
   char temp_i[4];
-  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
-  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {
+  for (int i_LISTFILES = 0; i_LISTFILES < sdcardData.max_matrix_filenames; i_LISTFILES++) {memset(sdcardData.matrix_filenames[i_LISTFILES], 0, 56);}
+  for (int i_LISTFILES = 0; i_LISTFILES < sdcardData.max_matrix_filenames; i_LISTFILES++) {
     memset(temppath, 0, 56);
     strcpy(temppath, dir);
     strcat(temppath, name);
     strcat(temppath, "_");
-    itoa(i, temp_i, 10);
+    itoa(i_LISTFILES, temp_i, 10);
     strcat(temppath, temp_i);
     strcat(temppath, ext);
     memset(tempname, 0, 56);
@@ -3435,8 +3474,8 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
     // Serial.println("[sdcard] calculating: " + String(temppath)); // debug
     if (fs.exists(temppath)) {
       Serial.println("[sdcard] calculated filename found: " + String(temppath));
-      memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
-      Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
+      memset(sdcardData.matrix_filenames[i_LISTFILES], 0, 56); strcpy(sdcardData.matrix_filenames[i_LISTFILES], temppath);
+      Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i_LISTFILES]));
       }
   }
 }
@@ -3449,15 +3488,15 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
   // iterate over each matrix matrix
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    matrixData.matrix_switch_enabled[0][Mi] = 0;
-    for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
-      memset(matrixData.matrix_function[Mi][Fi], 0, 56);
-      strcpy(matrixData.matrix_function[Mi][Fi], "$NONE");
-      matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
-      matrixData.matrix_port_map[0][Mi] = -1;
+  for (ZROMTRX_Mi = 0; ZROMTRX_Mi < matrixData.max_matrices; ZROMTRX_Mi++) {
+    matrixData.matrix_switch_enabled[0][ZROMTRX_Mi] = 0;
+    for (ZROMTRX_Fi = 0; ZROMTRX_Fi < matrixData.max_matrix_functions; ZROMTRX_Fi++) {
+      memset(matrixData.matrix_function[ZROMTRX_Mi][ZROMTRX_Fi], 0, 56);
+      strcpy(matrixData.matrix_function[ZROMTRX_Mi][ZROMTRX_Fi], "$NONE");
+      matrixData.matrix_function_xyz[ZROMTRX_Mi][ZROMTRX_Fi][0] = 0.0;
+      matrixData.matrix_function_xyz[ZROMTRX_Mi][ZROMTRX_Fi][1] = 0.0;
+      matrixData.matrix_function_xyz[ZROMTRX_Mi][ZROMTRX_Fi][2] = 0.0;
+      matrixData.matrix_port_map[0][ZROMTRX_Mi] = -1;
     }
   }
 }
@@ -3589,32 +3628,32 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
-    for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+    for (SVMTRX_Mi = 0; SVMTRX_Mi < matrixData.max_matrices; SVMTRX_Mi++) {
+      for (SVMTRX_Fi = 0; SVMTRX_Fi < matrixData.max_matrix_functions; SVMTRX_Fi++) {
         memset(sdcardData.file_data, 0 , 256);
         // tag: matrix (r)
         strcat(sdcardData.file_data, sdcardData.tag_0); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix index
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%d", Mi);
+        sprintf(sdcardData.tmp, "%d", SVMTRX_Mi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix function index
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%d", Fi);
+        sprintf(sdcardData.tmp, "%d", SVMTRX_Fi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function name
-        strcat(sdcardData.file_data, matrixData.matrix_function[Mi][Fi]); strcat(sdcardData.file_data, sdcardData.delim);
+        strcat(sdcardData.file_data, matrixData.matrix_function[SVMTRX_Mi][SVMTRX_Fi]); strcat(sdcardData.file_data, sdcardData.delim);
         // function value x
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][0]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[SVMTRX_Mi][SVMTRX_Fi][0]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value y
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][1]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[SVMTRX_Mi][SVMTRX_Fi][1]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value z
         memset(sdcardData.tmp, 0 , 256);
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
+        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[SVMTRX_Mi][SVMTRX_Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
         Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -3625,16 +3664,16 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       strcat(sdcardData.file_data, sdcardData.tag_1); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix index
       memset(sdcardData.tmp, 0 , 256);
-      sprintf(sdcardData.tmp, "%d", Mi);
+      sprintf(sdcardData.tmp, "%d", SVMTRX_Mi);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix enabled 0/1
       memset(sdcardData.tmp, 0 , 256);
-      itoa(matrixData.matrix_switch_enabled[0][Mi], sdcardData.tmp, 10);
+      itoa(matrixData.matrix_switch_enabled[0][SVMTRX_Mi], sdcardData.tmp, 10);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix switch port
       memset(sdcardData.tmp, 0 , 256);
-      itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
-      Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));
+      itoa(matrixData.matrix_port_map[0][SVMTRX_Mi], sdcardData.tmp, 10);
+      Serial.println("[check] " + String(matrixData.matrix_port_map[0][SVMTRX_Mi]));
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
       Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -3767,7 +3806,7 @@ automatically deactivating a matrix when a matrix is made disabled should be car
 automatically/manually enabling/disabling. 
 this is explicitly disable matrix switch from automatically activating/deactivating.
 */
-void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=0;}}
+void matrix_disable_all() {for (GNRLMTRX_Mi = 0; GNRLMTRX_Mi < matrixData.max_matrices; GNRLMTRX_Mi++) {matrixData.matrix_switch_enabled[0][GNRLMTRX_Mi]=0;}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             MATRIX: ENABLE ALL
@@ -3777,20 +3816,20 @@ void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) 
 enable all matrix entries. does not directly turn matrix switches on, instead enables matrix switch to automatically
 activate/deactivate.
 */
-void matrix_enable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=1;}}
+void matrix_enable_all() {for (GNRLMTRX_Mi = 0; GNRLMTRX_Mi < matrixData.max_matrices; GNRLMTRX_Mi++) {matrixData.matrix_switch_enabled[0][GNRLMTRX_Mi]=1;}}
 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MATRIX: ALL MATRIX OFF
 
 // turn all matrix switches off. recommended to first disable matrix switches from being automatically activated/deactivated.
-void matrix_deactivate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=0;}}
+void matrix_deactivate_all() {for (GNRLMTRX_Mi = 0; GNRLMTRX_Mi < matrixData.max_matrices; GNRLMTRX_Mi++) {matrixData.matrix_switch_state[0][GNRLMTRX_Mi]=0;}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                          MATRIX: ALL MATRIX ON
 
 // turn all matrix switches on. recommended to first disable matrix switches from being automatically activated/deactivated.
-void matrix_activate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=1;}}
+void matrix_activate_all() {for (GNRLMTRX_Mi = 0; GNRLMTRX_Mi < matrixData.max_matrices; GNRLMTRX_Mi++) {matrixData.matrix_switch_state[0][GNRLMTRX_Mi]=1;}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     SATIO: CONVERT COORDINATES
@@ -4473,7 +4512,7 @@ void matrixSwitch() {
   */
 
   // iterate through matrices
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+  for (Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     // Serial.println("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
 
@@ -4484,7 +4523,7 @@ void matrixSwitch() {
       int count_none_function = 0;
 
       // iterate over each function name in the current matrix
-      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+      for (Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
 
         // uncomment to debug
         // Serial.println("[Mi] " + String(Mi));
@@ -5534,7 +5573,7 @@ void matrixSwitch() {
         // for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
         //   Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
 
-        for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
+        for (FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
 
         /*
         WARNING: why do you think you can trust the data you are receiving?
@@ -5560,16 +5599,16 @@ void matrixSwitch() {
     strcpy(matrixData.matrix_sentence, "$MATRX,");
 
     // append port mapping data
-    for (int i=0; i < matrixData.max_matrices; i++) {
-      itoa(matrixData.matrix_port_map[0][i], matrixData.temp, 10);
+    for (i_MTRX=0; i_MTRX < matrixData.max_matrices; i_MTRX++) {
+      itoa(matrixData.matrix_port_map[0][i_MTRX], matrixData.temp, 10);
       strcat(matrixData.matrix_sentence, matrixData.temp);
       strcat(matrixData.matrix_sentence, ",");
       }
     
     // append matrix switch state data
-    for (int i=0; i < matrixData.max_matrices; i++) {
-      if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_sentence, "0,");}
-      else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
+    for (i_MTRX=0; i_MTRX < matrixData.max_matrices; i_MTRX++) {
+      if      (matrixData.matrix_switch_state[0][i_MTRX] == 0) {strcat(matrixData.matrix_sentence, "0,");}
+      else if (matrixData.matrix_switch_state[0][i_MTRX] == 1) {strcat(matrixData.matrix_sentence, "1,");}
     }
 
     // append checksum
@@ -5687,32 +5726,31 @@ void readSerialCommands() {
 
 bool readRXD1UntilETX() {
   // is not efficient
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-  memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
-  serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-  int i = 0;
-  if (serial1Data.nbytes != 0) {
-    
-    for(i = 0; i < serial1Data.nbytes; i++) {
-      if (SerialLink.BUFFER[0] != '$') {return false;}
-      if (SerialLink.BUFFER[i] == ETX)
-        break;
-      else {
-        SerialLink.DATA[i] = SerialLink.BUFFER[i];
+  if (Serial1.available() > 0) {
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
+    serial1Data.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+    if (serial1Data.nbytes != 0) {
+      
+      for(i_RUETX = 0; i_RUETX < serial1Data.nbytes; i_RUETX++) {
+        if (SerialLink.BUFFER[0] != '$') {return false;}
+        if (SerialLink.BUFFER[i_RUETX] == ETX)
+          break;
+        else {
+          SerialLink.DATA[i_RUETX] = SerialLink.BUFFER[i_RUETX];
+        }
       }
+      return true;
     }
-    return true;
   }
   return false;
 }
 
-int for_attempts=0;
-int read_attempts=0;
-
-void readGPS() {
+bool readGPS() {
   
   // check if available once here before loop reading
-  if (Serial1.available() > 0) {
+
+  // if (Serial1.available() > 0) {
 
     // loop until we have collected everything or break after so many attempts
     for_attempts = 0;
@@ -5722,7 +5760,7 @@ void readGPS() {
     serial1Data.gnrmc_bool=false;
     serial1Data.gpatt_bool=false;
       // Serial.println("---------------------------------------------------");
-    for (int i=0; i<10; i++) {
+    for (i_readGPS=0; i_readGPS<10; i_readGPS++) {
       for_attempts++;
       // Serial.println("[i]             " + String(i));
       // Serial.println("[gngga_bool]    " + String(serial1Data.gngga_bool));
@@ -5782,13 +5820,14 @@ void readGPS() {
 
     // exit
     if (serial1Data.collected==3) {
-      break;
+      return true;
       }
     }
     // Serial.println("[read_attempts] " + String(read_attempts));
     // Serial.println("[for_attempts]  " + String(for_attempts));
     // Serial.println("[collected]     " + String(serial1Data.collected));
-  }
+  // }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5797,15 +5836,15 @@ void readGPS() {
 void CountMatrixEnabled(){
   matrixData.matrix_enabled_i = 0;
   matrixData.matrix_disabled_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}}
+  for (i_CME = 0; i_CME < matrixData.max_matrices; i_CME++) {
+    if (matrixData.matrix_switch_enabled[0][i_CME] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}}
 }
 
 void CountMatrixActive(){
   matrixData.matrix_active_i = 0;
   matrixData.matrix_inactive_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
+  for (i_CME = 0; i_CME < matrixData.max_matrices; i_CME++) {
+    if (matrixData.matrix_switch_state[0][i_CME] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
 }
 
 void MatrixStatsCounter() {
@@ -6140,42 +6179,42 @@ SettingsDataStruct sData;
 
 void DisplayGeneralTitleBar(String v0, uint16_t col0, uint16_t col1) {
   // main title bar
-  for (int i=0; i<sData.max_general_titlebar_values; i++) {
-    if (i==0) {
+  for (i_DisplayGeneralTitleBar=0; i_DisplayGeneralTitleBar<sData.max_general_titlebar_values; i_DisplayGeneralTitleBar++) {
+    if (i_DisplayGeneralTitleBar==0) {
       // home
       hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
+      hud.drawString(String(sData.general_titlebar_values[i_DisplayGeneralTitleBar])+String(""), 30, 9);
     }
-    if (i==1) {
+    if (i_DisplayGeneralTitleBar==1) {
       // title
       hud.drawRect(64, 0, 192, 16, TFTOBJ_COL0);
       hud.setTextColor(col0, col1);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 160, 9);
     }
-    if (i==2) {
+    if (i_DisplayGeneralTitleBar==2) {
     // back
       hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
+      hud.drawString(String(sData.general_titlebar_values[i_DisplayGeneralTitleBar])+String(""), 290, 9);
     }
   }
 }
 
 void DisplayPage1lTitleBar(String v0) {
   // main title bar
-  for (int i=0; i<sData.max_general_titlebar_values; i++) {
-    if (i==0) {
+  for (i_DisplayPage1lTitleBar=0; i_DisplayPage1lTitleBar<sData.max_general_titlebar_values; i_DisplayPage1lTitleBar++) {
+    if (i_DisplayPage1lTitleBar==0) {
       // home
       hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
+      hud.drawString(String(sData.general_titlebar_values[i_DisplayPage1lTitleBar])+String(""), 30, 9);
     }
-    if (i==1) {
+    if (i_DisplayPage1lTitleBar==1) {
       // title
       hud.drawRect(64, 0, 92, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
@@ -6187,12 +6226,12 @@ void DisplayPage1lTitleBar(String v0) {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(matrixData.matrix_port_map[0][menuData.matrix_select])+String(""), 208, 9);
     }
-    if (i==2) {
+    if (i_DisplayPage1lTitleBar==2) {
     // back
       hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
+      hud.drawString(String(sData.general_titlebar_values[i_DisplayPage1lTitleBar])+String(""), 290, 9);
     }
   }
 }
@@ -6240,25 +6279,25 @@ bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
     // main title bar (special title bar)
-    for (int i=0; i<sData.max_main_titlebar_values; i++) {
-      hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+    for (i_DisplayPage0=0; i_DisplayPage0<sData.max_main_titlebar_values; i_DisplayPage0++) {
+      hud.drawRect((i_DisplayPage0*62)+2*i_DisplayPage0, 0, 60, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
-      if (i==3) {
+      hud.drawString(String(sData.main_titlebar_values[i_DisplayPage0])+String(""), 31+(i_DisplayPage0*62)+2*i_DisplayPage0, 8);
+      if (i_DisplayPage0==3) {
         // main loop time over threshold: possible overload
         if (timeData.mainLoopTimeTaken>=300) {
-          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+          hud.drawRect((i_DisplayPage0*62)+2*i_DisplayPage0, 0, 60, 16, TFTOBJ_COL0);
           hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
-          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
+          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i_DisplayPage0*62)+2*i_DisplayPage0, 8);
         }
         // main loop time under threshold.
         else {
-          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+          hud.drawRect((i_DisplayPage0*62)+2*i_DisplayPage0, 0, 60, 16, TFTOBJ_COL0);
           hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
-          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
+          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i_DisplayPage0*62)+2*i_DisplayPage0, 8);
           }
       }
     }
@@ -6276,23 +6315,23 @@ bool DisplayPage0() {
     // hud.drawString(String("")+String(""), 271, 8);
 
     // virtual matrix switch
-    for (int i=0; i<10; i++) {
+    for (i_DisplayPage0=0; i_DisplayPage0<10; i_DisplayPage0++) {
       // virtual matrix switch enabled/disbaled rect row 0
-      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 30, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i_DisplayPage0]==true) {hud.drawRect((i_DisplayPage0*30)+2*i_DisplayPage0, 30, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i_DisplayPage0*30)+2*i_DisplayPage0, 30, 30, 16, TFTOBJ_COL0);}
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      if (matrixData.matrix_switch_state[0][i_DisplayPage0]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 38);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i_DisplayPage0])+String(""), 15+(i_DisplayPage0*30)+2*i_DisplayPage0, 38);
       // virtual matrix switch enabled/disbaled rect row 1
-      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 50, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i_DisplayPage0+10]==true) {hud.drawRect((i_DisplayPage0*30)+2*i_DisplayPage0, 50, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i_DisplayPage0*30)+2*i_DisplayPage0, 50, 30, 16, TFTOBJ_COL0);}
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      if (matrixData.matrix_switch_state[0][i_DisplayPage0+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 58);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i_DisplayPage0+10])+String(""), 15+(i_DisplayPage0*30)+2*i_DisplayPage0, 58);
       }
     // gps data column 0
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
@@ -6439,16 +6478,16 @@ bool DisplayPage1() {
         hud.setCursor(220, 28); hud.print("Y");
         hud.setCursor(278, 28); hud.print("Z");
         // table values
-        for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(i); hud.print(" "); hud.print(matrixData.matrix_function[menuData.matrix_select][i]);
-        hud.setCursor(164, 47+i*20);
-        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][0]);
-        hud.setCursor(220, 47+i*20);
-        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][1]);
-        hud.setCursor(278, 47+i*20);
-        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][2]);
+        for (i_DisplayPage1=0; i_DisplayPage1<10; i_DisplayPage1++) {
+        hud.drawRect(0, 43+i_DisplayPage1*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i_DisplayPage1*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.print(i_DisplayPage1); hud.print(" "); hud.print(matrixData.matrix_function[menuData.matrix_select][i_DisplayPage1]);
+        hud.setCursor(164, 47+i_DisplayPage1*20);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i_DisplayPage1][0]);
+        hud.setCursor(220, 47+i_DisplayPage1*20);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i_DisplayPage1][1]);
+        hud.setCursor(278, 47+i_DisplayPage1*20);
+        hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i_DisplayPage1][2]);
         }
         return true;
     }
@@ -6586,13 +6625,13 @@ bool DisplaySelectMatrixFunction() {
         // scroll buttons
         DisplayVerticalScroll();
         // values
-        for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20);
+        for (i_DisplaySelectMatrixFunction=0; i_DisplaySelectMatrixFunction<10; i_DisplaySelectMatrixFunction++) {
+        hud.drawRect(0, 43+i_DisplaySelectMatrixFunction*20, 320, 16, TFTOBJ_COL0);
+        hud.setCursor(4, 47+i_DisplaySelectMatrixFunction*20);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        hud.print(menuData.function_index+i);
+        hud.print(menuData.function_index+i_DisplaySelectMatrixFunction);
         hud.print(" ");
-        hud.print(matrixData.matrix_function_names[menuData.function_index+i]);
+        hud.print(matrixData.matrix_function_names[menuData.function_index+i_DisplaySelectMatrixFunction]);
         }
         return true;
     }
@@ -6662,45 +6701,45 @@ bool DisplayNumpad() {
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
         hud.drawString(String(menuData.input)+String(""), 160, 40+9);
         // col 0
-        for (int i=0; i<4; i++) {
+        for (i_DisplayNumpad=0; i_DisplayNumpad<4; i_DisplayNumpad++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==3) {
-          hud.drawString(String("ENTER")+String(""), 32, 81+i*40);
+        if (i_DisplayNumpad==3) {
+          hud.drawString(String("ENTER")+String(""), 32, 81+i_DisplayNumpad*40);
         }
         // col 1
-        for (int i=0; i<4; i++) {
+        for (i_DisplayNumpad=0; i_DisplayNumpad<4; i_DisplayNumpad++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("7")+String(""), 96, 81+i*40);}
-        if (i==1) {hud.drawString(String("4")+String(""), 96, 81+i*40);}
-        if (i==2) {hud.drawString(String("1")+String(""), 96, 81+i*40);}
-        if (i==3) {hud.drawString(String("0")+String(""), 96, 81+i*40);}
+        if (i_DisplayNumpad==0) {hud.drawString(String("7")+String(""), 96, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==1) {hud.drawString(String("4")+String(""), 96, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==2) {hud.drawString(String("1")+String(""), 96, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==3) {hud.drawString(String("0")+String(""), 96, 81+i_DisplayNumpad*40);}
         }
         // col 2
-        for (int i=0; i<4; i++) {
+        for (i_DisplayNumpad=0; i_DisplayNumpad<4; i_DisplayNumpad++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("8")+String(""), 160, 81+i*40);}
-        if (i==1) {hud.drawString(String("5")+String(""), 160, 81+i*40);}
-        if (i==2) {hud.drawString(String("2")+String(""), 160, 81+i*40);}
-        if (i==3) {hud.drawString(String(".")+String(""), 160, 81+i*40);}
+        if (i_DisplayNumpad==0) {hud.drawString(String("8")+String(""), 160, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==1) {hud.drawString(String("5")+String(""), 160, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==2) {hud.drawString(String("2")+String(""), 160, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==3) {hud.drawString(String(".")+String(""), 160, 81+i_DisplayNumpad*40);}
         }
         // col 3
-        for (int i=0; i<4; i++) {
+        for (i_DisplayNumpad=0; i_DisplayNumpad<4; i_DisplayNumpad++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("9")+String(""), 228, 81+i*40);}
-        if (i==1) {hud.drawString(String("6")+String(""), 228, 81+i*40);}
-        if (i==2) {hud.drawString(String("3")+String(""), 228, 81+i*40);}
-        if (i==3) {hud.drawString(String("-")+String(""), 228, 81+i*40);}
+        if (i_DisplayNumpad==0) {hud.drawString(String("9")+String(""), 228, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==1) {hud.drawString(String("6")+String(""), 228, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==2) {hud.drawString(String("3")+String(""), 228, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==3) {hud.drawString(String("-")+String(""), 228, 81+i_DisplayNumpad*40);}
         }
         // col 4
-        for (int i=0; i<4; i++) {
+        for (i_DisplayNumpad=0; i_DisplayNumpad<4; i_DisplayNumpad++) {
         hud.setTextDatum(MC_DATUM);
         hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-        if (i==0) {hud.drawString(String("DELETE")+String(""), 292, 81+i*40);}
-        if (i==3) {hud.drawString(String("CLEAR")+String(""), 292, 81+i*40);}
+        if (i_DisplayNumpad==0) {hud.drawString(String("DELETE")+String(""), 292, 81+i_DisplayNumpad*40);}
+        if (i_DisplayNumpad==3) {hud.drawString(String("CLEAR")+String(""), 292, 81+i_DisplayNumpad*40);}
         }
         }
         return true;
@@ -6804,11 +6843,11 @@ bool DisplaySettingsMenu() {
     menuData.backpage=0;
     DisplayGeneralTitleBar(String("Settings"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settings0values; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsMenu=0; i_DisplaySettingsMenu<sData.max_settings0values; i_DisplaySettingsMenu++) {
+    hud.drawRect(0, 43+i_DisplaySettingsMenu*20, 320, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
+    hud.drawString(String(sData.settings0values[i_DisplaySettingsMenu])+String(""), 160, 51+i_DisplaySettingsMenu*20);
     }
     return true;
   }
@@ -6847,11 +6886,11 @@ bool DisplaySettingsSystem() {
     // page header
     DisplayGeneralTitleBar(String("System"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsystemvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsSystem=0; i_DisplaySettingsSystem<sData.max_settingsystemvalues; i_DisplaySettingsSystem++) {
+    hud.drawRect(0, 43+i_DisplaySettingsSystem*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
+    hud.drawString(String(sData.settingsystemvalues[i_DisplaySettingsSystem])+String(""), 75, 51+i_DisplaySettingsSystem*20);
     }
     return true;
   }
@@ -6886,78 +6925,78 @@ bool DisplaySettingsMatrix() {
     // page header
     DisplayGeneralTitleBar(String("Matrix"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
+    for (i_DisplaySettingsMatrix=0; i_DisplaySettingsMatrix<sData.max_settingsmatrixvalues_c0; i_DisplaySettingsMatrix++) {
     /*
     switch enable column 0 (0-9) (enables/disables individual switch from turning on and off.
     switch will remain on/ off according to its current state.)
     */
-    hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i_DisplaySettingsMatrix*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (matrixData.matrix_switch_enabled[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    if (matrixData.matrix_switch_enabled[0][i_DisplaySettingsMatrix] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15, 51+i*20);
+    hud.drawString(String(sData.settingsmatrixvalues_c0[i_DisplaySettingsMatrix])+String(""), 15, 51+i_DisplaySettingsMatrix*20);
     // switch setup column 1 (0-9) (access individual switch setup)
-    hud.drawRect(30, 43+i*20, 40, 16, TFTOBJ_COL0);
+    hud.drawRect(30, 43+i_DisplaySettingsMatrix*20, 40, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("SETUP")+String(""), 50, 51+i*20);
+    hud.drawString(String("SETUP")+String(""), 50, 51+i_DisplaySettingsMatrix*20);
     // switch off column 2 (0-9) (turns off an individual switch)
-    hud.drawRect(70, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(70, 43+i_DisplaySettingsMatrix*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("OFF")+String(""), 85, 51+i*20);
+    hud.drawString(String("OFF")+String(""), 85, 51+i_DisplaySettingsMatrix*20);
     // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
-    hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (matrixData.matrix_switch_state[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_ENABLED);}
-    else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);
+    hud.drawRect(100, 43+i_DisplaySettingsMatrix*20, 10, 16, TFTOBJ_COL0);
+    if (matrixData.matrix_switch_state[0][i_DisplaySettingsMatrix] == true) {hud.fillRect(104, 46+i_DisplaySettingsMatrix*20, 2, 10, TFT_ENABLED);}
+    else {hud.fillRect(104, 46+i_DisplaySettingsMatrix*20, 2, 10, TFT_RED);
     }
     // enable all (enables all switches to turn on)
-    if (i==0) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+    if (i_DisplaySettingsMatrix==0) {
+      hud.drawRect(120, 43+i_DisplaySettingsMatrix*20, 80, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String("ENABLE")+String(""), 160, 51+i*20);
+      hud.drawString(String("ENABLE")+String(""), 160, 51+i_DisplaySettingsMatrix*20);
     }
     /*
     disable all switches turning on and off. switches will remain on/ off according to their
     current state.
     */
-    if (i==1) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+    if (i_DisplaySettingsMatrix==1) {
+      hud.drawRect(120, 43+i_DisplaySettingsMatrix*20, 80, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String("DISABLE")+String(""), 160, 51+i*20);
+      hud.drawString(String("DISABLE")+String(""), 160, 51+i_DisplaySettingsMatrix*20);
     }
     // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
-    if (i==2) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
+    if (i_DisplaySettingsMatrix==2) {
+      hud.drawRect(120, 43+i_DisplaySettingsMatrix*20, 80, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String("OFF")+String(""), 160, 51+i*20);
+      hud.drawString(String("OFF")+String(""), 160, 51+i_DisplaySettingsMatrix*20);
     }
     /*
     switch enable column 0 (10-19) (enables/disables individual switch from turning on and off.
     switch will remain on/ off according to its current state.)
     */
-    hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(210, 43+i_DisplaySettingsMatrix*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (matrixData.matrix_switch_enabled[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    if (matrixData.matrix_switch_enabled[0][i_DisplaySettingsMatrix+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 225, 51+i*20);
+    hud.drawString(String(sData.settingsmatrixvalues_c0[i_DisplaySettingsMatrix+10])+String(""), 225, 51+i_DisplaySettingsMatrix*20);
     // // switch setup column 1 (10-19) (access individual switch setup)
-    hud.drawRect(240, 43+i*20, 40, 16, TFTOBJ_COL0);
+    hud.drawRect(240, 43+i_DisplaySettingsMatrix*20, 40, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("SETUP")+String(""), 260, 51+i*20);
+    hud.drawString(String("SETUP")+String(""), 260, 51+i_DisplaySettingsMatrix*20);
     // switch turn off column 2 (10-19) (turns off an individual switch)
-    hud.drawRect(280, 43+i*20, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(280, 43+i_DisplaySettingsMatrix*20, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("OFF")+String(""), 295, 51+i*20);
+    hud.drawString(String("OFF")+String(""), 295, 51+i_DisplaySettingsMatrix*20);
     // switch indicator column 3 (10-19) (indicates if individual switch is either on or off)
-    hud.drawRect(310, 43+i*20, 10, 16, TFTOBJ_COL0);
-    if (matrixData.matrix_switch_state[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_ENABLED);}
-    else {hud.fillRect(314, 46+i*20, 2, 10, TFT_RED);}
+    hud.drawRect(310, 43+i_DisplaySettingsMatrix*20, 10, 16, TFTOBJ_COL0);
+    if (matrixData.matrix_switch_state[0][i_DisplaySettingsMatrix+10] == true) {hud.fillRect(314, 46+i_DisplaySettingsMatrix*20, 2, 10, TFT_ENABLED);}
+    else {hud.fillRect(314, 46+i_DisplaySettingsMatrix*20, 2, 10, TFT_RED);}
     }
     return true;
   }
@@ -7083,15 +7122,15 @@ bool DisplaySettingsGPS() {
     // page header
     DisplayGeneralTitleBar(String("GPS"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsgpsvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsGPS=0; i_DisplaySettingsGPS<sData.max_settingsgpsvalues; i_DisplaySettingsGPS++) {
+    hud.drawRect(0, 43+i_DisplaySettingsGPS*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    if      (i_DisplaySettingsGPS==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsGPS==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsGPS==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsGPS==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingsgpsvalues[i])+String(""), 75, 51+i*20);
+    hud.drawString(String(sData.settingsgpsvalues[i_DisplaySettingsGPS])+String(""), 75, 51+i_DisplaySettingsGPS*20);
     }
     return true;
   }
@@ -7131,16 +7170,16 @@ bool DisplaySettingsSerial() {
     // page header
     DisplayGeneralTitleBar(String("Serial"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsserialvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsSerial=0; i_DisplaySettingsSerial<sData.max_settingsserialvalues; i_DisplaySettingsSerial++) {
+    hud.drawRect(0, 43+i_DisplaySettingsSerial*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    if      (i_DisplaySettingsSerial==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsSerial==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsSerial==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsSerial==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsSerial==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingsserialvalues[i])+String(""), 75, 51+i*20);
+    hud.drawString(String(sData.settingsserialvalues[i_DisplaySettingsSerial])+String(""), 75, 51+i_DisplaySettingsSerial*20);
     }
     return true;
   }
@@ -7181,24 +7220,24 @@ bool DisplaySettingsFile() {
     // page header
     DisplayGeneralTitleBar(String("File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsfilevalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsFile=0; i_DisplaySettingsFile<sData.max_settingsfilevalues; i_DisplaySettingsFile++) {
+    hud.drawRect(0, 43+i_DisplaySettingsFile*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
+    hud.drawString(String(sData.settingsfilevalues[i_DisplaySettingsFile])+String(""), 75, 51+i_DisplaySettingsFile*20);
     // display system configuration filepath
-    if (i==0) {
-      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+    if (i_DisplaySettingsFile==0) {
+      hud.drawRect(150, 43+i_DisplaySettingsFile*20, 170, 16, TFTOBJ_COL0);
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(sdcardData.sysconf)+String(""), 240, 51+i*20);
+      hud.drawString(String(sdcardData.sysconf)+String(""), 240, 51+i_DisplaySettingsFile*20);
     }
     // display current matrix filepath
-    else if (i==2) {
-      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+    else if (i_DisplaySettingsFile==2) {
+      hud.drawRect(150, 43+i_DisplaySettingsFile*20, 170, 16, TFTOBJ_COL0);
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i*20);
+      hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i_DisplaySettingsFile*20);
     }
     }
     return true;
@@ -7247,17 +7286,17 @@ bool DisplaySettingsSaveMatrix() {
     // scroll buttons
     DisplayVerticalScroll();
     // values
-    for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+    for (i_DisplaySettingsSaveMatrix=0; i_DisplaySettingsSaveMatrix<10; i_DisplaySettingsSaveMatrix++) {
+    hud.drawRect(0, 43+i_DisplaySettingsSaveMatrix*20, 320, 16, TFTOBJ_COL0);
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsSaveMatrix], "")==0) {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i_DisplaySettingsSaveMatrix), 160, 52+i_DisplaySettingsSaveMatrix*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsSaveMatrix], 160, 52+i_DisplaySettingsSaveMatrix*20);
       }
     }
     return true;
@@ -7330,18 +7369,18 @@ bool DisplaySettingsLoadMatrix() {
     // scroll buttons
     DisplayVerticalScroll();
     // values
-    for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+    for (i_DisplaySettingsLoadMatrix=0; i_DisplaySettingsLoadMatrix<10; i_DisplaySettingsLoadMatrix++) {
+    hud.drawRect(0, 43+i_DisplaySettingsLoadMatrix*20, 320, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i_DisplaySettingsLoadMatrix*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsLoadMatrix], "")==0) {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i_DisplaySettingsLoadMatrix), 160, 52+i_DisplaySettingsLoadMatrix*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsLoadMatrix], 160, 52+i_DisplaySettingsLoadMatrix*20);
       }
     }
     return true;
@@ -7402,18 +7441,18 @@ bool DisplaySettingsDeleteMatrix() {
     // scroll buttons
     DisplayVerticalScroll();
     // values
-    for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
+    for (i_DisplaySettingsDeleteMatrix=0; i_DisplaySettingsDeleteMatrix<10; i_DisplaySettingsDeleteMatrix++) {
+    hud.drawRect(0, 43+i_DisplaySettingsDeleteMatrix*20, 320, 16, TFTOBJ_COL0);
+    hud.setCursor(4, 47+i_DisplaySettingsDeleteMatrix*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsDeleteMatrix], "")==0) {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
+      hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i_DisplaySettingsDeleteMatrix), 160, 52+i_DisplaySettingsDeleteMatrix*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
+      hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i_DisplaySettingsDeleteMatrix], 160, 52+i_DisplaySettingsDeleteMatrix*20);
       }
     }
     return true;
@@ -7472,14 +7511,14 @@ bool DisplaySettingsTime() {
     // page header
     DisplayGeneralTitleBar(String("Time"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingstimevalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsTimex=0; i_DisplaySettingsTimex<sData.max_settingstimevalues; i_DisplaySettingsTimex++) {
+    hud.drawRect(0, 43+i_DisplaySettingsTimex*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
-    if (i==0) {DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));}
-    if (i==1) {
-      DisplayPlusMinus(170, 43+i*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
+    hud.drawString(sData.settingstimevalues[i_DisplaySettingsTimex], 75, 52+i_DisplaySettingsTimex*20);
+    if (i_DisplaySettingsTimex==0) {DisplayPlusMinus(170, 43+i_DisplaySettingsTimex*20, String(satData.utc_offset), String(" hours"));}
+    if (i_DisplaySettingsTimex==1) {
+      DisplayPlusMinus(170, 43+i_DisplaySettingsTimex*20, String(String(systemData.translate_plus_minus[satData.utc_offset_flag])), String(""));}
     }
     return true;
   }
@@ -7526,31 +7565,31 @@ bool DisplaySettingsDisplay() {
     // page header
     DisplayGeneralTitleBar(String("Display"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_DisplaySettingsDisplay=0; i_DisplaySettingsDisplay<sData.max_settingsdisplayvalues; i_DisplaySettingsDisplay++) {
+    hud.drawRect(0, 43+i_DisplaySettingsDisplay*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // auto dim enabled
-    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    if      (i_DisplaySettingsDisplay==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     // auto off enabled
-    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_DisplaySettingsDisplay==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     // draw value
-    hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
+    hud.drawString(sData.settingsdisplayvalues[i_DisplaySettingsDisplay], 75, 52+i_DisplaySettingsDisplay*20);
     // brightness level
-    if (i==0) {
-      DisplayPlusMinus(170, 43+i*20, String(systemData.display_brightness), String(""));
+    if (i_DisplaySettingsDisplay==0) {
+      DisplayPlusMinus(170, 43+i_DisplaySettingsDisplay*20, String(systemData.display_brightness), String(""));
     }
     // auto dim timeout
-    if (i==1) {
-      DisplayPlusMinus(170, 43+i*20, String(systemData.display_auto_dim_p0), String(""));
+    if (i_DisplaySettingsDisplay==1) {
+      DisplayPlusMinus(170, 43+i_DisplaySettingsDisplay*20, String(systemData.display_auto_dim_p0), String(""));
     }
     // auto dim brightness
-    if (i==2) {
-      DisplayPlusMinus(170, 43+i*20, String(systemData.display_autodim_brightness), String(""));
+    if (i_DisplaySettingsDisplay==2) {
+      DisplayPlusMinus(170, 43+i_DisplaySettingsDisplay*20, String(systemData.display_autodim_brightness), String(""));
     }
     // auto off timeout
-    if (i==3) {
-      DisplayPlusMinus(170, 43+i*20, String(systemData.display_auto_off_p0), String(""));
+    if (i_DisplaySettingsDisplay==3) {
+      DisplayPlusMinus(170, 43+i_DisplaySettingsDisplay*20, String(systemData.display_auto_off_p0), String(""));
     }
     }
     return true;
@@ -7644,20 +7683,20 @@ bool SiderealPlanetsSettings() {
     // page header max_settingssiderealplanetsvalues
     DisplayGeneralTitleBar(String("Planet Tracking"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
     // values
-    for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    for (i_SiderealPlanetsSettings=0; i_SiderealPlanetsSettings<sData.max_settingssiderealplanetsvalues; i_SiderealPlanetsSettings++) {
+    hud.drawRect(0, 43+i_SiderealPlanetsSettings*20, 150, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    if      (i_SiderealPlanetsSettings==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i_SiderealPlanetsSettings==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(sData.settingssiderealplanetsvalues[i])+String(""), 75, 51+i*20);
+    hud.drawString(String(sData.settingssiderealplanetsvalues[i_SiderealPlanetsSettings])+String(""), 75, 51+i_SiderealPlanetsSettings*20);
     }
     return true;
   }
@@ -7827,7 +7866,7 @@ void TouchScreenInput( void * pvParameters ) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
-void SatIOPortController() {
+bool SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
@@ -7842,7 +7881,9 @@ void SatIOPortController() {
       Serial1.write(matrixData.matrix_sentence);
       Serial1.write(ETX);
     }
+    return true;
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7863,13 +7904,12 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
   Serial1.begin(115200);
-  Serial1.setTimeout(300);
-  Serial1.flush();
+  Serial1.setTimeout(10);
+  // Serial1.flush();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
 
-  delay(1000);
   Serial.println("Running on Core: " + String(xPortGetCoreID()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -7988,7 +8028,6 @@ void loop() {
   UpdateDisplay();
   // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
-  // timeData.t0=millis();
   if (systemData.port_controller_enabled==true) {SatIOPortController();}
   // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
 

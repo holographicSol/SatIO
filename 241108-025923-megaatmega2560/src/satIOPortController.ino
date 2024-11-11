@@ -23,6 +23,7 @@ Required wiring:
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
+int i = 0;
 signed int tmp_port;
 bool update_portmap_bool = false;
 bool update_switchstate_bool = false;
@@ -155,8 +156,6 @@ void setup() {
   Serial.println("starting...");
 }
 
-int i = 0;
-
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                 READ RXD: METHOD 0
 
@@ -182,7 +181,7 @@ bool readRXD1UntilETX() {
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                        PROCESS RXD
 
-void readRXD1_Method0() {
+bool readRXD1_Method0() {
   SerialLink.validation = false;
   SerialLink.T0_RXD_1 = millis();
   if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
@@ -249,6 +248,7 @@ void readRXD1_Method0() {
               SerialLink.validation = validateChecksum(SerialLink.BUFFER);
               // try to get another read. this may be written differently later but currently this is the primary objective.
               // if (SerialLink.validation==false) {readRXD1_Method0();}
+              return true;
               break;
             }
             // iterate counters and snap off used token
@@ -261,6 +261,7 @@ void readRXD1_Method0() {
       // else {readRXD1_Method0();}
     }
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -302,7 +303,7 @@ void satIOPortController() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
-void readGPS() {
+bool readGPS() {
   if (Serial3.available() > 0) {
     // loop to write gps serial to SatIO serial about 5 times because we are looking for GNGGA, GNRMC, GPATT and ignoring DESBI.
     for (i=0; i <5; i++) {
@@ -311,18 +312,24 @@ void readGPS() {
       SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
       // Serial.print(SerialLink.nbytes); Serial.print(" "); Serial.println(SerialLink.BUFFER); // debug
       if (!strncmp(SerialLink.BUFFER, "$DESBI", 6) == 0) {
-        Serial1.write(SerialLink.BUFFER);
-        Serial1.write(ETX);
+        if (Serial1.available() > 0) {
+          Serial1.write(SerialLink.BUFFER);
+          Serial1.write(ETX);
+        }
       }
     }
+    return true;
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
 void loop() {
-  readGPS();
-  readRXD1_Method0();
+  // wait for portmap
+  while (readRXD1_Method0()==false);
+  // wait for gps
+  while (readGPS()==false);
   if (SerialLink.validation == true) {satIOPortController();}
 }
