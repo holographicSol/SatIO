@@ -203,17 +203,28 @@ void readRXD1_Method0() {
             // uncomment to debug
             // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
 
-            // check eack token for exactly 1 or 0
+            // check eack token for portmap
             if (SerialLink.i_token<20) { 
-              for (int i=0; i<19; i++) {
+              for (int i=0; i<20; i++) {
+                if (isdigit(*SerialLink.token)==0) {matrix_port_map[0][i]=atoi(SerialLink.token);}
+                Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
+                SerialLink.i_token++;
+                SerialLink.token = strtok(NULL, ",");
+              }
+            }
+
+            // check eack token for exactly 1 or 0 for matrix switch state
+            if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
+              for (int i=0; i<20; i++) {
                 if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
                 else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
                 SerialLink.i_token++;
                 SerialLink.token = strtok(NULL, ",");
               }
             }
+
             // handle expected checksum
-            if (SerialLink.i_token == 20)  {
+            if (SerialLink.i_token == 40)  {
               SerialLink.validation = validateChecksum(SerialLink.BUFFER);
               break;
             }

@@ -1278,7 +1278,7 @@ struct MatrixStruct {
   int matrix_inactive_i = 0;      // count how many matrx switches are inactive
 
   char temp[2048];                     // a general place to store temporary chars relative to MatrixStruct
-  char matrix_results_sentence[2048];  // an NMEA inspired sentence reflecting matrix switch states  
+  char matrix_sentence[2048];  // an NMEA inspired sentence reflecting matrix switch states  
   char checksum_str[56];               // placeholder for char checksum relative to MatrixStruct
   char checksum[56];                      // placeholder for int checksum relative to MatrixStruct
 
@@ -1306,11 +1306,19 @@ struct MatrixStruct {
     }
   };
 
+  // // a placeholder for matrix switch ports
+  // signed int matrix_port_map[1][20] = {
+  //   {
+  //     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  //     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  //   }
+  // };
+
   // a placeholder for matrix switch ports
   signed int matrix_port_map[1][20] = {
     {
-      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+      33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
     }
   };
 
@@ -5529,21 +5537,32 @@ void matrixSwitch() {
     // handle Mi's that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
 
-    // create matrix switch state sentence. 
-    memset(matrixData.matrix_results_sentence, 0, sizeof(matrixData.matrix_results_sentence));
-    strcpy(matrixData.matrix_results_sentence, "$MATRX,");
+    // reset matrix switch state sentence.
+    memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
+    strcpy(matrixData.matrix_sentence, "$MATRX,");
+
+    // append port mapping data
     for (int i=0; i < matrixData.max_matrices; i++) {
-      if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_results_sentence, "0,");}
-      else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_results_sentence, "1,");}
+      itoa(matrixData.matrix_port_map[0][i], matrixData.temp, 10);
+      strcat(matrixData.matrix_sentence, matrixData.temp);
+      strcat(matrixData.matrix_sentence, ",");
+      }
+    
+    // append matrix switch state data
+    for (int i=0; i < matrixData.max_matrices; i++) {
+      if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_sentence, "0,");}
+      else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
     }
-    createChecksum(matrixData.matrix_results_sentence);
-    strcat(matrixData.matrix_results_sentence, "*");
-    strcat(matrixData.matrix_results_sentence, SerialLink.checksum);
-    strcat(matrixData.matrix_results_sentence, "\n");
+
+    // append checksum
+    createChecksum(matrixData.matrix_sentence);
+    strcat(matrixData.matrix_sentence, "*");
+    strcat(matrixData.matrix_sentence, SerialLink.checksum);
+    strcat(matrixData.matrix_sentence, "\n");
 
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {
-      Serial.println(matrixData.matrix_results_sentence);
+      Serial.println(matrixData.matrix_sentence);
     }
   }
 }
@@ -7710,15 +7729,15 @@ void SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
-    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
+    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence;
 
     // igonore a switch message if its the same as previous switch message
-    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.BUFFER1)==0) {
+    if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
       memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-      strcpy(SerialLink.BUFFER1, matrixData.matrix_results_sentence);
+      strcpy(SerialLink.BUFFER1, matrixData.matrix_sentence);
 
       /* write matrix switch states to the port controller */
-      Serial1.write(matrixData.matrix_results_sentence);
+      Serial1.write(matrixData.matrix_sentence);
       Serial1.write(ETX);
     }
   }
