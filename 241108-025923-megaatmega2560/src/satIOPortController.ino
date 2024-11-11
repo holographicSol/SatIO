@@ -41,6 +41,14 @@ signed int matrix_port_map[1][20] = {
   }
 };
 
+// a placeholder for matrix switch ports
+signed int tmp_matrix_port_map[1][20] = {
+  {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  }
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------
 
 #define ETX 0x03  // end of text character
@@ -207,16 +215,7 @@ void readRXD1_Method0() {
             // check eack token for portmap
             if (SerialLink.i_token<20) { 
               for (int i=0; i<20; i++) {
-
-                // handle current port
-                tmp_port = atoi(SerialLink.token);
-                if (matrix_port_map[0][i] != tmp_port) {
-                  digitalWrite(matrix_port_map[0][i], LOW);
-                  pinMode(matrix_port_map[0][i], INPUT);
-                  // handle new port
-                  matrix_port_map[0][i]=atoi(SerialLink.token);
-                  pinMode(matrix_port_map[0][i], OUTPUT);
-                }
+                tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
 
                 // uncomment to debug
                 // Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
@@ -263,6 +262,19 @@ void satIOPortController() {
 
   // make ports high or low according to validated data
   for (int i=0; i<20; i++) {
+
+    // handle current port configuration
+    tmp_port = atoi(SerialLink.token);
+    if (matrix_port_map[0][i] != tmp_port) {
+      digitalWrite(matrix_port_map[0][i], LOW);
+      pinMode(matrix_port_map[0][i], INPUT);
+
+      // setup new port
+      matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
+      pinMode(matrix_port_map[0][i], OUTPUT);
+    }
+
+    // set port high/low
     digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
 
     // uncomment to debug
