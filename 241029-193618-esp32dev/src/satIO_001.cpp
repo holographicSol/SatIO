@@ -6262,7 +6262,7 @@ bool DisplayPage0() {
       }
     }
     // SD
-    hud.drawRect(294, 0, 26, 16, TFTOBJ_COL0);
+    hud.drawRect(290, 0, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
