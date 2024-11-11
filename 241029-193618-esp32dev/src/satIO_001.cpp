@@ -6267,6 +6267,12 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
     hud.drawString(String("SD")+String(""), 305, 8);
+    // reserved
+    hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    // if () {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    // hud.drawString(String("A")+String(""), 271, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
