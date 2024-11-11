@@ -241,7 +241,7 @@ void readRXD1_Method0() {
             if (SerialLink.i_token == 40)  {
               SerialLink.validation = validateChecksum(SerialLink.BUFFER);
               // try to get another read. this may be written differently later but currently this is the primary objective.
-              if (SerialLink.validation==false) {readRXD1_Method0();}
+              // if (SerialLink.validation==false) {readRXD1_Method0();}
               break;
             }
             // iterate counters and snap off used token
@@ -251,6 +251,7 @@ void readRXD1_Method0() {
         }
         // else {Serial.println("[skipping]   " + String(SerialLink.BUFFER));}
       }
+      // else {readRXD1_Method0();}
     }
   }
 }
