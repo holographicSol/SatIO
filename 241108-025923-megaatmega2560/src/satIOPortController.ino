@@ -144,7 +144,6 @@ void setup() {
   Serial3.begin(115200); while(!Serial3);
   Serial1.setTimeout(10);
   Serial3.setTimeout(10);
-  Serial.flush();
   Serial1.flush();
   Serial3.flush();
 
