@@ -6248,7 +6248,7 @@ bool DisplayPage0() {
       if (i==3) {
         // main loop time over threshold: possible overload
         if (timeData.mainLoopTimeTaken>=300) {
-          hud.drawRect((i*62)+2*i, 0, 60, 16, TFT_YELLOW);
+          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
           hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
