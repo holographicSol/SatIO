@@ -6018,14 +6018,15 @@ TouchScreenStruct tss;
 
 struct SettingsDataStruct {
 
-  int max_main_titlebar_values = 5;
-  char main_titlebar_values[5][56] = {
+  int max_main_titlebar_values = 4;
+  char main_titlebar_values[4][56] = {
     "Settings",  // got to p3
     "Matrix",    // got to p5
     "",          // reserved
     "",          // reserved
-    "",          // reserved
-  };
+    // "",          // reserved  SD  !(possible overload, loop time over threshhold)  
+    //                                                 |
+  };             //       (time long enough to throw off any functions requiring second accuracy)
 
   int max_general_titlebar_values = 3;
   char general_titlebar_values[3][56] = {
@@ -6244,6 +6245,25 @@ bool DisplayPage0() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       }
+    // SD
+    hud.drawRect(294, 0, 26, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    hud.drawString(String("SD")+String(""), 307, 8);
+    // possible overload
+    hud.drawRect(250, 0, 46, 16, TFTOBJ_COL0);
+    if (timeData.mainLoopTimeTaken>=300) {
+      hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
+      hud.drawRect(250, 0, 46, 16, TFT_RED);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String("!"), 273, 8);
+    }
+    else {
+      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0); 
+      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 273, 8);
+    }
+
     // virtual matrix switch
     for (int i=0; i<10; i++) {
       // virtual matrix switch enabled/disbaled rect row 0
