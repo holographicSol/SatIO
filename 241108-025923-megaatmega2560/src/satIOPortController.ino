@@ -50,7 +50,7 @@ signed int matrix_port_map[1][20] = {
 struct SerialLinkStruct {
   unsigned long nbytes;
   char BUFFER[2000];            // read incoming bytes into this buffer
-  char BUFFER1[2000];           // store bytes when they are different from previous read bytes
+  char MTRX_BUFFER_1[2000];           // store bytes when they are different from previous read bytes
   char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -190,9 +190,9 @@ void readRXD1_Method0() {
       if (strcmp(SerialLink.token, "$MATRX") == 0) {
 
         // igonore a switch message if its the same as previous switch message
-        if (!strcmp(SerialLink.BUFFER, SerialLink.BUFFER1)==0) {
-          memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-          strcpy(SerialLink.BUFFER1, SerialLink.BUFFER);
+        if (!strcmp(SerialLink.BUFFER, SerialLink.MTRX_BUFFER_1)==0) {
+          memset(SerialLink.MTRX_BUFFER_1, 0, sizeof(SerialLink.MTRX_BUFFER_1));
+          strcpy(SerialLink.MTRX_BUFFER_1, SerialLink.BUFFER);
 
           // initiate counter; compare expected element to actual RXD TOKEN; count negative comparison; for 1 million iterations
           SerialLink.validation = false;

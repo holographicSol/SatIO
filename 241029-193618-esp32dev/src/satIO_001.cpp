@@ -254,7 +254,7 @@ Serial1Struct serial1Data;
 struct SerialLinkStruct {
   unsigned long nbytes;
   char BUFFER[2000];            // read incoming bytes into this buffer
-  char BUFFER1[2000];           // store bytes when they are different from previous read bytes
+  char MTRX_BUFFER_1[2000];           // store bytes when they are different from previous read bytes
   char DATA[2000];              // buffer refined using ETX
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -7713,9 +7713,9 @@ void SatIOPortController() {
     // Serial.print("[TXD] "); Serial.println(matrixData.matrix_results_sentence;
 
     // igonore a switch message if its the same as previous switch message
-    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.BUFFER1)==0) {
-      memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-      strcpy(SerialLink.BUFFER1, matrixData.matrix_results_sentence);
+    if (!strcmp(matrixData.matrix_results_sentence, SerialLink.MTRX_BUFFER_1)==0) {
+      memset(SerialLink.MTRX_BUFFER_1, 0, sizeof(SerialLink.MTRX_BUFFER_1));
+      strcpy(SerialLink.MTRX_BUFFER_1, matrixData.matrix_results_sentence);
 
       /* write matrix switch states to the port controller */
       Serial1.write(matrixData.matrix_results_sentence);
