@@ -6300,7 +6300,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     if (gnggaData.satellite_count_gngga>0) {
       if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-      if (atof(gnggaData.hdop_precision_factor)==0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+      if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     }
     hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 305, 8);
 
