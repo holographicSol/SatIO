@@ -6381,7 +6381,7 @@ bool DisplayPage0() {
     hud.drawRect(290, rdata_y+18, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atof(gnggaData.hdop_precision_factor)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atof(gnggaData.hdop_precision_factor)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 305, rdata_y+18+8);
@@ -6390,7 +6390,7 @@ bool DisplayPage0() {
     hud.drawRect(290, rdata_y+18*2, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gnggaData.solution_status)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gnggaData.solution_status)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     if (atoi(gnggaData.solution_status)==1) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     if (atoi(gnggaData.solution_status)==2) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     if (atoi(gnggaData.solution_status)==6) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
@@ -6401,14 +6401,14 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (strcmp(gnrmcData.positioning_status, "A")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    if (strcmp(gnrmcData.positioning_status, "V")==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (strcmp(gnrmcData.positioning_status, "V")==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     hud.drawString(String(gnrmcData.positioning_status)+String(""), 305, rdata_y+18*3+8);
 
     // Static Flag: 1=static=dark grey | 0=dynamic=BLUE
     hud.drawRect(290, rdata_y+18*4, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gpattData.static_flag)==1) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gpattData.static_flag)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gpattData.static_flag)+String(""), 305, rdata_y+18*4+8);
 
     // INS: 0=on=BLUE | 1=off=dark grey
