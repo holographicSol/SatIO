@@ -8062,10 +8062,10 @@ void loop() {
     while(1) {
       if (x==false) {x = SatIOPortController();}
       if (y==false) {y = readGPS();}
-      if (x==true && y==true) {break;}
       z++;
       if (z==0) {UpdateDisplay();}
       if (z>4) {z=0; UpdateDisplay();}
+      if (x==true && y==true) {break;}
     }
   }
 
