@@ -55,6 +55,9 @@
                                                           an RSS Feed.
                                             
             NOTICE: the system is still being tuned for perfromance and efficiency. Precision may not always be within a second.
+
+            Future: I hope to finnish up here and move on to the Octa M7 for a premium high performance version of this programmable
+                    switch. This is a switch, for in the feild, in flight, desktop, dashboard, handheld or wall mounted.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
