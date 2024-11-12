@@ -7915,7 +7915,8 @@ void UpdateDisplay() {
   hud.pushSprite(0, 0, TFT_TRANSPARENT);
   hud.deleteSprite();
 
-  // in development: a line representing a vehicular craft with corresponding pitch roll and yaw.  
+  // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
+  // the craft will be accomponied by a scale and mapped to scale.
   pod_wing.createSprite(100, 100); // create the hud Sprite 11 pixels wide by 49 high
   hud.fillSprite(TFT_TRANSPARENT);
   hud.fillRect(0, 0, 320, 240, BG_COL_0);
