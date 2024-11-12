@@ -117,6 +117,7 @@ XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSPI_Button key[6];
 TFT_eSprite hud = TFT_eSprite(&tft);
+TFT_eSprite pod_wing = TFT_eSprite(&tft); // Sprite object for hud
 
 
 #define LCD_BACK_LIGHT_PIN 21    // backlight pin
@@ -6287,6 +6288,7 @@ bool DisplayPage0() {
   if (menuData.page == 0) {
     // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
+
       hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
@@ -6473,6 +6475,15 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
+    /*
+    virtual altitude: map 10000 -> 100
+    roll: (0° representing a head-on wind and 180° representing a tailwind. 
+    with a 20° yaw angle would be cycling at an angle of 20° with respect to the wind).
+    0°: A head-on wind 
+    90°: The top of an image points east/right when the camera is looking down 
+    180°: A tailwind 
+    270°: The top of an image points west/left when the camera is looking down 
+    */
 
     // geo
     // gnggaData.latitude_hemisphere
@@ -7904,6 +7915,29 @@ void UpdateDisplay() {
   hud.pushSprite(0, 0, TFT_TRANSPARENT);
   hud.deleteSprite();
 
+  // in development: a line representing a vehicular craft with corresponding pitch roll and yaw.  
+  pod_wing.createSprite(100, 100); // create the hud Sprite 11 pixels wide by 49 high
+  hud.fillSprite(TFT_TRANSPARENT);
+  hud.fillRect(0, 0, 320, 240, BG_COL_0);
+  // Define hud pivot point
+  uint16_t pod_piv_X = pod_wing.width() / 2;   // x pivot of Sprite (middle)
+  uint16_t pod_piv_y = 100/2; // y pivot of Sprite (10 pixels from bottom)
+  pod_wing.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
+  // Draw the red hud with a yellow tip
+  // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
+  pod_wing.fillRect(pod_piv_X - 1, 2, 3, pod_piv_y +100, TFT_GREEN);  // hud
+  // pod_wing.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);       // hud tip
+  // Draw hud centre boss
+  pod_wing.fillCircle(pod_piv_X, pod_piv_y, 5, TFT_GREEN);
+  // pod_wing.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
+  tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
+  int roll_offset = atoi(gpattData.roll);
+  roll_offset+=90;
+  if (roll_offset>360) {roll_offset=-90;}
+  pod_wing.pushRotated(roll_offset); 
+  yield();
+  pod_wing.deleteSprite();
+
   // delay(5);
   // }
 }
@@ -8146,16 +8180,16 @@ void loop() {
   if (systemData.port_controller_enabled==true) {
     while(1) {
       if (z==0) {
+        // Serial.println("[update]");
         if (interrupt_second_counter > 0) {
           portENTER_CRITICAL(&second_timer_mux);
           interrupt_second_counter--;
           portEXIT_CRITICAL(&second_timer_mux);
         }
-        MatrixSwitchTask();
         UpdateDisplay();
       }
-      if (z>4) {z=0;}
       z++;
+      if (z>4) {z=0;}
       if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
@@ -8176,7 +8210,7 @@ void loop() {
   // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
 
   // // timeData.t0=millis();
-  // MatrixSwitchTask();
+  MatrixSwitchTask();
   // // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
