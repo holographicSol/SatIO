@@ -3678,6 +3678,7 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
 //                                                                                                     SDCARD: DELETE MATRIX FILE
 
 void sdcard_delete_matrix(fs::FS &fs, char * file) {
+  sdcardData.is_writing = true;
   // at least for now, do not allow deletion of MATRIX_0.SAVE.
   if (fs.exists(file)) {
     Serial.println("[sdcard] attempting to delete file: " + String(file));
@@ -3696,6 +3697,7 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
     else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
   }
   else {Serial.println("[sdcard] file does not exist: " + String(file));}
+  sdcardData.is_writing = false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7211,9 +7213,9 @@ bool DisplaySettingsFile() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // sdcardData.is_writing
     if (i==1) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==4) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==4) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==5) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==5) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==6) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==6) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==4) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==5) {if (sdcardData.is_reading==true) {if (sdcardData.rwKey==2) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==6) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==3) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
     hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
