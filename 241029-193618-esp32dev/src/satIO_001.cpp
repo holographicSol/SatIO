@@ -68,7 +68,9 @@
                     Each matrix switch can be mapped to a unique IO port or share the same IO port as another switch switch.
                     'Switch linking' allows for matrix switches (therefore IO ports) to be made high or low symmetrically and or
                     asymetrically to another matrix switch, allowing for stacking conditions/functions/logic accross multiple matrix
-                    switches and or different wiring/hardware configurations on the Physical Layer. 
+                    switches and or different wiring/hardware configurations on the Physical Layer.
+
+                    The UI provides various high and low level access to the microcontroller, allowing for configuratoin and setup.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
