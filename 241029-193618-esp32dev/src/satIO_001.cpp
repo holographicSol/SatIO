@@ -7502,7 +7502,7 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         DISPLAY SPLASH SCREENS
 
-/* these splash screens are informational with zero touchscreen input for locking */
+/* these splash screens are informational with zero touchscreen input for when locks are required */
 
 bool DisplaySavingSplash() {
   if (menuData.page == 403) {
@@ -7511,7 +7511,7 @@ bool DisplaySavingSplash() {
     hud.drawRect(0, 0, 320, 240, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.drawString(String("[ SAVING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
+    hud.drawString(String("[ SAVING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
   else {return false;}
@@ -7524,7 +7524,7 @@ bool DisplayLoadingSplash() {
     hud.drawRect(0, 0, 320, 260, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.drawString(String("[ LOADING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
+    hud.drawString(String("[ LOADING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
   else {return false;}
@@ -7537,7 +7537,7 @@ bool DisplayDeleteSplash() {
     hud.drawRect(0, 0, 320, 260, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.drawString(String("[ DELETING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
+    hud.drawString(String("[ DELETING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
   else {return false;}
