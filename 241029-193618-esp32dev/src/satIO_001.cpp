@@ -8060,15 +8060,24 @@ void loop() {
   bool y = false;
   if (systemData.port_controller_enabled==true) {
     while(1) {
-      if (z==0) {UpdateDisplay();}
-      if (z>5) {z=0; UpdateDisplay();}
-      if (x==false) {x = SatIOPortController();}
+      if (z==0) {
+        if (interrupt_second_counter > 0) {
+          portENTER_CRITICAL(&second_timer_mux);
+          interrupt_second_counter--;
+          portEXIT_CRITICAL(&second_timer_mux);
+        }
+        UpdateDisplay();
+      }
+      if (z>4) {z=0; UpdateDisplay();}
       z++;
+      if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
     }
   }
-
+  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
+  
+  // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
   satIOData();
@@ -8087,15 +8096,19 @@ void loop() {
   // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
+  // UpdateDisplay();
+  // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery
   // Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
 
   // Serial.println();
 
-  if (interrupt_second_counter > 0) {
-    portENTER_CRITICAL(&second_timer_mux);
-    interrupt_second_counter--;
-    portEXIT_CRITICAL(&second_timer_mux);
+  // if (interrupt_second_counter > 0) {
+  //   portENTER_CRITICAL(&second_timer_mux);
+  //   interrupt_second_counter--;
+  //   portEXIT_CRITICAL(&second_timer_mux);
     /*
     uncomment to debug a timer (sat seconds required to be proportional not equal to isr seconds and switch state required to
     be 0/1 proportional to time according to timer style stacked/integrated.)
@@ -8104,7 +8117,7 @@ void loop() {
     // Serial.print("[isr seconds] "); Serial.println(timeData.seconds, 4);
     // Serial.print("[matrixstate] "); Serial.println(matrixData.matrix_switch_state[0][0]);
     // Serial.println();
-  }
+  // }
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
