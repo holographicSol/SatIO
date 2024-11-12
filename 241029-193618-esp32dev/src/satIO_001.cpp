@@ -6450,7 +6450,7 @@ bool DisplayPage0() {
     hud.drawRect(198, rdata_y+18*8, 60, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), 228, rdata_y+18*8+8);
 
