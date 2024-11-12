@@ -7248,7 +7248,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
-          if      (i==1) {menuData.page=406; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); menuData.page=8;}
+          if      (i==1) {menuData.page=403; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); menuData.page=8;}
           // zero the matrix and clear current matrix file path
           else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
           // create list of matrix filespaths and go to save page
