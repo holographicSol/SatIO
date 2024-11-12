@@ -8053,8 +8053,9 @@ void loop() {
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
-
+  
   // timeData.t0=millis();
+  // int m = 0;
   int z = 0;
   bool x = false;
   bool y = false;
@@ -8073,6 +8074,7 @@ void loop() {
       if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
+      // if (m>=10) {break;}
     }
   }
   // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
@@ -8122,5 +8124,5 @@ void loop() {
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }
