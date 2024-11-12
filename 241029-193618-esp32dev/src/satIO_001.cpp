@@ -6439,18 +6439,16 @@ bool DisplayPage0() {
 
     // Mileage:
     hud.drawRect(260, 198, 60, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gpattData.mileage)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    if (atoi(gpattData.mileage)>1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     hud.drawString(String(gpattData.mileage)+String(""), 290, 206);
 
     // Ground Speed:
     hud.drawRect(198, 198, 60, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    if (atoi(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), 228, 206);
 
     // geo
