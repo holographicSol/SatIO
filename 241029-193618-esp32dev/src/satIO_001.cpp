@@ -58,8 +58,8 @@
 
             Future: I hope to finnish up here and move on to the Octa M7 for a premium high performance version of this programmable
                     switch, with a superior GPS module and higher quality panel, 18650's with power for at least a week and being
-                    able to power/charge other devices. This is a switch. For in the feild, in flight, desktop, dashboard,
-                                                     handheld or wall mounted.
+                    able to power/charge other devices. This is a switch, a utility for in the feild, in flight,
+                    desktop, dashboard, handheld or wall mounted. 
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
