@@ -62,8 +62,9 @@
                     desktop, dashboard, handheld or wall mounted.
                     
                     The setup has been designed for general computation, so that possibilities for purpose are drastically increased
-                    by implementing and increasing combinations of often simple functions currently for GPS and INS data, but does no
-                    have to be and is not limited to such data.
+                    by implementing and increasing combinations of often simple functions currently for GPS and INS data, but does not
+                    have to be and is not limited to such data. The general purpose nature of the programmable switching design is also
+                    simple to scale when necessary.
                     
                     Each matrix switch can be mapped to a unique IO port or share the same IO port as another switch switch.
                     'Switch linking' allows for matrix switches (therefore IO ports) to be made high or low symmetrically and or
