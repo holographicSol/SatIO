@@ -351,7 +351,7 @@ SDCardStruct sdcardData;
 //                                                                                                                     DATA: TIME
 
 struct TimeStruct {
-  double seconds;               // seconds accumulated since startup 
+  double seconds;               // seconds accumulated since startup
   double mainLoopTimeTaken;     // current main loop time
   unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
   unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
@@ -360,6 +360,7 @@ struct TimeStruct {
   unsigned long t1;                    // micros time 1
   int i_accumukate_time_taken;
   int accumukate_time_taken;
+  long main_seconds_0;
 };
 TimeStruct timeData;
 
@@ -8116,6 +8117,7 @@ void loop() {
           interrupt_second_counter--;
           portEXIT_CRITICAL(&second_timer_mux);
         }
+        MatrixSwitchTask();
         UpdateDisplay();
       }
       if (z>4) {z=0;}
@@ -8123,6 +8125,7 @@ void loop() {
       if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
+      // if (timeData.seconds>timeData.main_seconds_0+2000) {timeData.main_seconds_0=timeData.seconds; break;}
       // if (m>=10) {break;}
     }
   }
