@@ -6446,9 +6446,6 @@ bool DisplayPage0() {
     // siderealPlanetData.sun_r
     // siderealPlanetData.sun_s
 
-    // status
-    // gnggaData.satellite_count_gngga  0-?
-
     // small telemetry graph -----------------------------------
 
     // gnrmcData.ground_speed
