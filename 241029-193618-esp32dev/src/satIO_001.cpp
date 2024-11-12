@@ -8071,6 +8071,9 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
   Serial1.begin(115200);
+  Serial.setTimeout(10);
+  Serial1.setTimeout(10);
+  Serial1.flush();
   // SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -8180,8 +8183,9 @@ void loop() {
   bool y = false;
   if (systemData.port_controller_enabled==true) {
     while(1) {
+      Serial.println("[check 0]");
       if (z==0) {
-        // Serial.println("[update]");
+        Serial.println("[check 1]");
         if (interrupt_second_counter > 0) {
           portENTER_CRITICAL(&second_timer_mux);
           interrupt_second_counter--;
