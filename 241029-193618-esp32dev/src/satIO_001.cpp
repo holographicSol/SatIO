@@ -6414,6 +6414,28 @@ bool DisplayPage0() {
     if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String("INS")+String(""), 305, 158);
 
+    // Run State Flag: 0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while  GRAPHIC
+    hud.drawRect(290, 166, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gpattData.run_state_flag)==1) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
+    if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(gpattData.run_state_flag)+String(""), 305, 174);
+
+    // Run Inertial Flag: 00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
+    hud.drawRect(290, 182, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (strcmp(gpattData.run_inetial_flag, "01")==0) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
+    if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(gpattData.run_inetial_flag)+String(""), 305, 190);
+
     // geo
     // gnggaData.latitude_hemisphere
     // satData.location_latitude_gngga_str
@@ -6426,9 +6448,6 @@ bool DisplayPage0() {
 
     // status
     // gnggaData.satellite_count_gngga  0-?
-
-    // gpattData.run_state_flag    0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while  GRAPHIC
-    // gpattData.run_inetial_flag  00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
 
     // small telemetry graph -----------------------------------
 
