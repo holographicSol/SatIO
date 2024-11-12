@@ -6287,21 +6287,21 @@ bool DisplayPage0() {
   if (menuData.page == 0) {
     // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
-      hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+      hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
       hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       if (i==3) {
         // main loop time over threshold: possible overload
         if (timeData.mainLoopTimeTaken>=500) {
-          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+          hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
           hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
         }
         // main loop time under threshold.
         else {
-          hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
+          hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
           hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
@@ -6309,7 +6309,7 @@ bool DisplayPage0() {
       }
     }
     // SD
-    hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(252, 0, 32, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
@@ -6322,7 +6322,7 @@ bool DisplayPage0() {
       if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
       if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     }
-    hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 305, 8);
+    hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 306, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
