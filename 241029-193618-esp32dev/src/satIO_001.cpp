@@ -6451,6 +6451,15 @@ bool DisplayPage0() {
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), 228, 206);
 
+    // Altitude:
+    hud.drawRect(164, 198, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    hud.drawString(String(atoi(gnggaData.altitude))+String(""), 178, 206);
+
     // geo
     // gnggaData.latitude_hemisphere
     // satData.location_latitude_gngga_str
@@ -6463,13 +6472,10 @@ bool DisplayPage0() {
 
     // small telemetry graph -----------------------------------
 
-    // gnrmcData.ground_speed
     // gnggaData.altitude gnggaData.altitude_units
     // gpattData.pitch
     // gpattData.roll
     // gpattData.yaw
-    // gpattData.mileage
-    // gnrmcData.ground_heading
 
     // small telemetry graph
     // altitude                 N/S/E/W
