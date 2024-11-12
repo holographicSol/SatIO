@@ -8150,7 +8150,6 @@ void loop() {
           interrupt_second_counter--;
           portEXIT_CRITICAL(&second_timer_mux);
         }
-        MatrixSwitchTask();
         UpdateDisplay();
       }
       if (z>4) {z=0;}
