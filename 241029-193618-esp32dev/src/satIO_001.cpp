@@ -8052,6 +8052,10 @@ void loop() {
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
 
   // timeData.t0=millis();
+  if (systemData.port_controller_enabled==true) {SatIOPortController();}
+  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
+
+  // timeData.t0=millis();
   readGPS();
   // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
 
@@ -8074,10 +8078,6 @@ void loop() {
   // timeData.t0=millis();
   UpdateDisplay();
   // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
-
-  // timeData.t0=millis();
-  if (systemData.port_controller_enabled==true) {SatIOPortController();}
-  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery

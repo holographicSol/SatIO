@@ -312,7 +312,7 @@ void readGPS() {
 //                                                                                                         MAIN LOOP
 
 void loop() {
+  if (SerialLink.validation == true) {satIOPortController();}
   readGPS();
   readRXD1_Method0();
-  if (SerialLink.validation == true) {satIOPortController();}
 }
