@@ -6289,119 +6289,129 @@ bool DisplayPage0() {
       }
     }
     // SD
-    hud.drawRect(290, 0, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    hud.drawString(String("SD")+String(""), 305, 8);
-    // reserved
     hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    // if () {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    // hud.drawString(String("")+String(""), 271, 8);
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    hud.drawString(String("SD")+String(""), 271, 8);
+    // satellite count / precision factor
+    hud.drawRect(290, 0, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (gnggaData.satellite_count_gngga>0) {
+      if (atoi(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+      if (atoi(gnggaData.hdop_precision_factor)==0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    }
+    hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 305, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
       // virtual matrix switch enabled/disbaled rect row 0
-      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 30, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 30, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 24, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i*30)+2*i, 24, 30, 16, TFTOBJ_COL0);}
+
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 38);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 32);
+
       // virtual matrix switch enabled/disbaled rect row 1
-      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 50, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 50, 30, 16, TFTOBJ_COL0);}
-      // virtual matrix switch on/off text row 0
+      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 44, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i*30)+2*i, 44, 30, 16, TFTOBJ_COL0);}
+      
+      // virtual matrix switch on/off text row 1
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 58);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 52);
       }
+    
+    hud.drawRect(0, 66, 320, 174, TFTOBJ_COL0);
     // gps data column 0
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setCursor(0,80);
-    hud.print("T  ");
-    hud.print(satData.year);
-    hud.print(".");
-    hud.print(satData.month);
-    hud.print(".");
-    hud.print(satData.day);
-    hud.print(" ");
-    hud.print(satData.hour);
-    hud.print(":");
-    hud.print(satData.minute);
-    hud.print(":");
-    hud.print(satData.second);
-    hud.print(".");
-    hud.print(satData.millisecond);
-    hud.setCursor(0,90);
-    hud.print("LT ");
-    hud.print(satData.lt_year);
-    hud.print(".");
-    hud.print(satData.lt_month);
-    hud.print(".");
-    hud.print(satData.lt_day);
-    hud.print(" ");
-    hud.print(satData.lt_hour);
-    hud.print(":");
-    hud.print(satData.lt_minute);
-    hud.print(":");
-    hud.print(satData.lt_second);
-    hud.print(".");
-    hud.print(satData.lt_millisecond);
-    hud.setCursor(0,100);
-    hud.print("GS "); hud.print(gnrmcData.ground_speed);
-    hud.setCursor(0,110);
-    hud.print("AL "); hud.print(gnggaData.altitude); hud.print(" "); hud.print(gnggaData.altitude_units);
-    hud.setCursor(0,120);
-    hud.print("P  "); hud.print(gpattData.pitch);
-    hud.setCursor(0,130);
-    hud.print("R  "); hud.print(gpattData.roll);
-    hud.setCursor(0,140);
-    hud.print("Y  "); hud.print(gpattData.yaw);
-    // gps data column 1
-    hud.setCursor(160,80);
-    hud.print(""); hud.print(gnggaData.latitude_hemisphere);
-    hud.print("   "); hud.print(satData.location_latitude_gngga_str);
-    hud.setCursor(160,90);
-    hud.print(""); hud.print(gnggaData.longitude_hemisphere);
-    hud.print("   "); hud.print(satData.location_longitude_gngga_str);
-    hud.setCursor(160,100);
-    hud.print("GH  "); hud.print(gnrmcData.ground_heading);
-    hud.setCursor(160,110);
-    hud.print("LF  "); hud.print(gpattData.line_flag);
-    hud.setCursor(160,120);
-    hud.print("RSF "); hud.print(gpattData.run_state_flag);
-    hud.setCursor(160,130);
-    hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
-    hud.setCursor(160,140);
-    hud.print("MIL "); hud.print(gpattData.mileage);
-    // gps data column 2
-    hud.setCursor(250,80);
-    hud.print("S   "); hud.print(gnggaData.satellite_count_gngga);
-    hud.setCursor(250,90);
-    hud.print("PF  "); hud.print(gnggaData.hdop_precision_factor);
-    hud.setCursor(250,100);
-    hud.print("PS  "); hud.print(gnggaData.positioning_status);
-    hud.setCursor(250,110);
-    hud.print("PS  "); hud.print(gnrmcData.positioning_status);
-    hud.setCursor(250,120);
-    hud.print("GST "); hud.print(gpattData.gst_data);
-    hud.setCursor(250,130);
-    hud.print("INS "); hud.print(gpattData.ins);
-    hud.setCursor(250,140);
-    hud.print("SF  "); hud.print(gpattData.static_flag);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setCursor(0,80);
+    // hud.print("T ");
+    // hud.print(satData.year);
+    // hud.print(".");
+    // hud.print(satData.month);
+    // hud.print(".");
+    // hud.print(satData.day);
+    // hud.print(" ");
+    // hud.print(satData.hour);
+    // hud.print(":");
+    // hud.print(satData.minute);
+    // hud.print(":");
+    // hud.print(satData.second);
+    // hud.print(".");
+    // hud.print(satData.millisecond);
+    // hud.setCursor(170,80);
+    // hud.print("LT ");
+    // hud.print(satData.lt_year);
+    // hud.print(".");
+    // hud.print(satData.lt_month);
+    // hud.print(".");
+    // hud.print(satData.lt_day);
+    // hud.print(" ");
+    // hud.print(satData.lt_hour);
+    // hud.print(":");
+    // hud.print(satData.lt_minute);
+    // hud.print(":");
+    // hud.print(satData.lt_second);
+    // hud.print(".");
+    // hud.print(satData.lt_millisecond);
 
-    // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
-    hud.setCursor(0,160);
-    hud.print("D  "); hud.print(satData.day_of_the_week_name);
-    hud.setCursor(0,170);
-    hud.print("SR "); hud.print(siderealPlanetData.sun_r);
-    hud.setCursor(0,180);
-    hud.print("SS "); hud.print(siderealPlanetData.sun_s);
+    // hud.setCursor(0,100);
+    // hud.print("GS "); hud.print(gnrmcData.ground_speed);
+    // hud.setCursor(0,110);
+    // hud.print("AL "); hud.print(gnggaData.altitude); hud.print(" "); hud.print(gnggaData.altitude_units);
+    // hud.setCursor(0,120);
+    // hud.print("P  "); hud.print(gpattData.pitch);
+    // hud.setCursor(0,130);
+    // hud.print("R  "); hud.print(gpattData.roll);
+    // hud.setCursor(0,140);
+    // hud.print("Y  "); hud.print(gpattData.yaw);
+
+    // // gps data column 1
+    // hud.setCursor(0,230);
+    // hud.print(""); hud.print(gnggaData.latitude_hemisphere);
+    // hud.print(" "); hud.print(satData.location_latitude_gngga_str);
+    // hud.print(" "); hud.print(gnggaData.longitude_hemisphere);
+    // hud.print(" "); hud.print(satData.location_longitude_gngga_str);
+    // hud.setCursor(150,230);
+    // hud.print("GH "); hud.print(gnrmcData.ground_heading);
+    // hud.setCursor(160,110);
+    // hud.print("LF  "); hud.print(gpattData.line_flag);
+    // hud.setCursor(160,120);
+    // hud.print("RSF "); hud.print(gpattData.run_state_flag);
+    // hud.setCursor(160,130);
+    // hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
+    // hud.setCursor(160,230);
+    // hud.print("MI "); hud.print(gpattData.mileage);
+
+    // // gps data column 2
+    // hud.setCursor(250,80);
+    // hud.print("S   "); hud.print(gnggaData.satellite_count_gngga);
+    // hud.setCursor(250,90);
+    // hud.print("PF  "); hud.print(gnggaData.hdop_precision_factor);
+    // hud.setCursor(250,100);
+    // hud.print("PS  "); hud.print(gnggaData.positioning_status);
+    // hud.setCursor(250,110);
+    // hud.print("PS  "); hud.print(gnrmcData.positioning_status);
+    // hud.setCursor(250,120);
+    // hud.print("GST "); hud.print(gpattData.gst_data);
+    // hud.setCursor(250,130);
+    // hud.print("INS "); hud.print(gpattData.ins);
+    // hud.setCursor(250,140);
+    // hud.print("SF  "); hud.print(gpattData.static_flag);
+
+    // // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
+    // hud.setCursor(0,160);
+    // hud.print("D  "); hud.print(satData.day_of_the_week_name);
+    // hud.setCursor(0,170);
+    // hud.print("SR "); hud.print(siderealPlanetData.sun_r);
+    // hud.setCursor(0,180);
+    // hud.print("SS "); hud.print(siderealPlanetData.sun_s);
 
     // small planetarium
     // map 24(hours) to 360 (degrees)
@@ -7248,7 +7258,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
-          if      (i==1) {menuData.page=403; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); menuData.page=8;}
+          if      (i==1) {menuData.page=403; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); delay(1000); menuData.page=8;}
           // zero the matrix and clear current matrix file path
           else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
           // create list of matrix filespaths and go to save page
