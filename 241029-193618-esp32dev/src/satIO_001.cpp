@@ -6437,6 +6437,22 @@ bool DisplayPage0() {
     if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gpattData.run_inetial_flag)+String(""), 305, 190);
 
+    // Mileage:
+    hud.drawRect(260, 198, 60, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), 290, 206);
+
+    // Ground Speed:
+    hud.drawRect(198, 198, 60, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), 228, 206);
+
     // geo
     // gnggaData.latitude_hemisphere
     // satData.location_latitude_gngga_str
