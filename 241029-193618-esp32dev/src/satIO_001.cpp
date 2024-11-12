@@ -280,6 +280,8 @@ SerialLinkStruct SerialLink;
 //                                                                                                                   DATA: SDCARD
 
 struct SDCardStruct {
+  bool is_writing = false;
+  bool is_reading = false;
   bool sdcard_mount_bool = false;
   bool sdcard_attached_bool = false;
   uint8_t card_type = CARD_NONE;
@@ -324,6 +326,7 @@ struct SDCardStruct {
   int initialization_interval = 3000;
   long last_initialization_time = 0;
   bool initialization_flag = false;
+  int rwKey = 0;
 };
 SDCardStruct sdcardData;
 
@@ -2817,6 +2820,8 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
   /* saves tagged, system configuration data to file */
 
+  sdcardData.is_writing = true;
+
   Serial.println("[sdcard] attempting to save file: " + String(file));
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
@@ -3106,12 +3111,16 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     Serial.println("[sdcard] saved file successfully: " + String(file));
   }
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
+  sdcardData.is_writing = false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
 
 bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) {
+
+  sdcardData.is_reading = true;
+
   Serial.println("[sdcard] attempting to load file: " + String(file));
   // open file to read
   sdcardData.current_file.flush();
@@ -3384,9 +3393,12 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
     }
     sdcardData.current_file.close();
     Serial.println("[sdcard] loaded file successfully: " + String(file));
+    sdcardData.is_reading = false;
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file)); return false;}
+  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file));
+  sdcardData.is_reading = false;
+  return false;}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3468,6 +3480,9 @@ void zero_matrix() {
 /* loads tagged, comma delimited data from a matrix file */
 
 bool sdcard_load_matrix(fs::FS &fs, char * file) {
+
+  sdcardData.is_reading = true;
+  
   Serial.println("[sdcard] attempting to load file: " + String(file));
   // open file to read
   sdcardData.current_file.flush();
@@ -3568,6 +3583,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     Serial.println("[sdcard] loaded file successfully:   " + String(file));
     Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
     sdcardData.current_file.close();
+    sdcardData.is_reading = false;
     return true;
   }
   // update matrix filepath (clear)
@@ -3575,8 +3591,10 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     sdcardData.current_file.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    sdcardData.is_reading = false;
     return false;
     }
+  sdcardData.is_reading = false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3585,6 +3603,9 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
 /* saves tagged, comma delimited data to a matrix file */
 
 bool sdcard_save_matrix(fs::FS &fs, char * file) {
+
+  sdcardData.is_writing = true;
+
   Serial.println("[sdcard] attempting to save file: " + String(file));
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
@@ -3645,9 +3666,12 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
     sdcardData.current_file.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     strcpy(sdcardData.matrix_filepath, file);
+    sdcardData.is_writing = false;
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file)); return false;}
+  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));
+  sdcardData.is_writing = false;
+  return false;}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7185,6 +7209,11 @@ bool DisplaySettingsFile() {
     hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // sdcardData.is_writing
+    if (i==1) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==4) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==4) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==5) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==5) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    if (i==6) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==6) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
     hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
@@ -7217,15 +7246,15 @@ bool isDisplaySettingsFile(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
-          if      (i==1) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+          if      (i==1) {sdcardData.rwKey=0; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
           // zero the matrix and clear current matrix file path
           else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
           // create list of matrix filespaths and go to save page
-          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          else if (i==4) {sdcardData.rwKey=1; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
           // create list of matrix filespaths and go to load page
-          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          else if (i==5) {sdcardData.rwKey=2; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
           // create list of matrix filespaths and go to delete page
-          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
+          else if (i==6) {sdcardData.rwKey=3; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
           break;
         }
       }
