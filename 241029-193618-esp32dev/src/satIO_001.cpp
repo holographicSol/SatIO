@@ -8068,7 +8068,7 @@ void loop() {
         }
         UpdateDisplay();
       }
-      if (z>4) {z=0; UpdateDisplay();}
+      if (z>4) {z=0;}
       z++;
       if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
