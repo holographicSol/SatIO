@@ -6369,12 +6369,12 @@ bool DisplayPage0() {
     // gnrmcData.positioning_status
 
     // flags
-    // gpattData.ins
-    // gpattData.gst_data
-    // gpattData.static_flag
-    // gpattData.run_state_flag
-    // gpattData.line_flag
-    // gpattData.run_inetial_flag
+    // gpattData.ins               0 on | 1 off
+    // gpattData.gst_data          User satellite accuracy
+    // gpattData.static_flag       1 : static | 0 : dynamic
+    // gpattData.line_flag         1 : Straight driving, 0 : Turning
+    // gpattData.run_state_flag    0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while
+    // gpattData.run_inetial_flag  00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
 
     // astro
     // siderealPlanetData.sun_r
