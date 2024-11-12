@@ -326,7 +326,6 @@ struct SDCardStruct {
   int initialization_interval = 3000;
   long last_initialization_time = 0;
   bool initialization_flag = false;
-  int rwKey = 0;
 };
 SDCardStruct sdcardData;
 
@@ -3109,6 +3108,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
     sdcardData.current_file.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
+    sdcardData.is_writing = false;
   }
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
   sdcardData.is_writing = false;
@@ -7212,10 +7212,10 @@ bool DisplaySettingsFile() {
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // sdcardData.is_writing
-    if (i==1) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==4) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==1) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==5) {if (sdcardData.is_reading==true) {if (sdcardData.rwKey==2) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
-    if (i==6) {if (sdcardData.is_writing==true) {if (sdcardData.rwKey==3) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}}
+    // if (i==1) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // if (i==4) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // if (i==5) {if (sdcardData.is_reading==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // if (i==6) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
     hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
@@ -7248,15 +7248,15 @@ bool isDisplaySettingsFile(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
-          if      (i==1) {sdcardData.rwKey=0; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+          if      (i==1) {menuData.page=406; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); menuData.page=8;}
           // zero the matrix and clear current matrix file path
           else if (i==3) {zero_matrix(); memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));}
           // create list of matrix filespaths and go to save page
-          else if (i==4) {sdcardData.rwKey=1; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
+          else if (i==4) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=400;}
           // create list of matrix filespaths and go to load page
-          else if (i==5) {sdcardData.rwKey=2; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
+          else if (i==5) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=401;}
           // create list of matrix filespaths and go to delete page
-          else if (i==6) {sdcardData.rwKey=3; sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
+          else if (i==6) {sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE"); menuData.page=402;}
           break;
         }
       }
@@ -7327,6 +7327,7 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[saving matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
           // create filename
+          menuData.page=403;
           memset(
             sdcardData.matrix_filenames[menuData.matrix_filenames_index+i],
             0,
@@ -7337,9 +7338,10 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
           itoa(menuData.matrix_filenames_index+i, tmp_i, 10);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
-          menuData.page=8;
           // save
           sdcard_save_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+          delay(1000);
+          menuData.page=8;
           break;
         }
       }
@@ -7410,8 +7412,10 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[loading matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
-          menuData.page=8;
+          menuData.page=404;
           sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+          delay(1000);
+          menuData.page=8;
           break;
         }
       }
@@ -7482,12 +7486,58 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[deleting matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
-          menuData.page=8;
+          menuData.page=405;
           sdcard_delete_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
+          delay(1000);
+          menuData.page=8;
           break;
         }
       }
     }
+    return true;
+  }
+  else {return false;}
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                         DISPLAY SPLASH SCREENS
+
+/* these splash screens are informational with zero touchscreen input for locking */
+
+bool DisplaySavingSplash() {
+  if (menuData.page == 403) {
+    Serial.println("[DisplaySavingSplash]");
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.drawRect(0, 0, 320, 240, TFT_GREEN);
+    hud.setTextDatum(MC_DATUM);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.drawString(String("[ SAVING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplayLoadingSplash() {
+  if (menuData.page == 404) {
+    Serial.println("[DisplayLoadingSplash]");
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.drawRect(0, 0, 320, 260, TFT_GREEN);
+    hud.setTextDatum(MC_DATUM);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.drawString(String("[ LOADING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
+    return true;
+  }
+  else {return false;}
+}
+
+bool DisplayDeleteSplash() {
+  if (menuData.page == 405) {
+    Serial.println("[DisplayDeleteSplash]");
+    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.drawRect(0, 0, 320, 260, TFT_GREEN);
+    hud.setTextDatum(MC_DATUM);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.drawString(String("[ DELETING ]")+String(), TFT_WIDTH/2, TFT_HEIGHT/2);
     return true;
   }
   else {return false;}
@@ -7743,6 +7793,9 @@ void UpdateDisplay() {
 
   // determine which sprite to build
   bool checktouch = false;
+  if (checktouch == false) {checktouch = DisplaySavingSplash();}
+  if (checktouch == false) {checktouch = DisplayLoadingSplash();}
+  if (checktouch == false) {checktouch = DisplayDeleteSplash();}
   if (checktouch == false) {checktouch = DisplayPage0();}
   if (checktouch == false) {checktouch = DisplayPage1();}
   if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
@@ -7966,6 +8019,8 @@ void setup() {
     }
   }
   else {Serial.println("[sdcard] failed to initialize.");}
+
+  menuData.page=0;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
