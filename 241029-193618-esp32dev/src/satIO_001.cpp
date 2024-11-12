@@ -6354,60 +6354,39 @@ bool DisplayPage0() {
       String(satData.lt_minute)+":"+
       String(satData.lt_second), 240, 74);
 
-    // hud.setCursor(0,100);
-    // hud.print("GS "); hud.print(gnrmcData.ground_speed);
-    // hud.setCursor(0,110);
-    // hud.print("AL "); hud.print(gnggaData.altitude); hud.print(" "); hud.print(gnggaData.altitude_units);
-    // hud.setCursor(0,120);
-    // hud.print("P  "); hud.print(gpattData.pitch);
-    // hud.setCursor(0,130);
-    // hud.print("R  "); hud.print(gpattData.roll);
-    // hud.setCursor(0,140);
-    // hud.print("Y  "); hud.print(gpattData.yaw);
+    // geo
+    // gnggaData.latitude_hemisphere
+    // satData.location_latitude_gngga_str
+    // gnggaData.longitude_hemisphere
+    // satData.location_longitude_gngga_str
 
-    // // gps data column 1
-    // hud.setCursor(0,230);
-    // hud.print(""); hud.print(gnggaData.latitude_hemisphere);
-    // hud.print(" "); hud.print(satData.location_latitude_gngga_str);
-    // hud.print(" "); hud.print(gnggaData.longitude_hemisphere);
-    // hud.print(" "); hud.print(satData.location_longitude_gngga_str);
-    // hud.setCursor(150,230);
-    // hud.print("GH "); hud.print(gnrmcData.ground_heading);
-    // hud.setCursor(160,110);
-    // hud.print("LF  "); hud.print(gpattData.line_flag);
-    // hud.setCursor(160,120);
-    // hud.print("RSF "); hud.print(gpattData.run_state_flag);
-    // hud.setCursor(160,130);
-    // hud.print("RIF "); hud.print(gpattData.run_inetial_flag);
-    // hud.setCursor(160,230);
-    // hud.print("MI "); hud.print(gpattData.mileage);
+    // status
+    // gnggaData.satellite_count_gngga
+    // gnggaData.hdop_precision_factor
+    // gnggaData.positioning_status
+    // gnrmcData.positioning_status
 
-    // // gps data column 2
-    // hud.setCursor(250,80);
-    // hud.print("S   "); hud.print(gnggaData.satellite_count_gngga);
-    // hud.setCursor(250,90);
-    // hud.print("PF  "); hud.print(gnggaData.hdop_precision_factor);
-    // hud.setCursor(250,100);
-    // hud.print("PS  "); hud.print(gnggaData.positioning_status);
-    // hud.setCursor(250,110);
-    // hud.print("PS  "); hud.print(gnrmcData.positioning_status);
-    // hud.setCursor(250,120);
-    // hud.print("GST "); hud.print(gpattData.gst_data);
-    // hud.setCursor(250,130);
-    // hud.print("INS "); hud.print(gpattData.ins);
-    // hud.setCursor(250,140);
-    // hud.print("SF  "); hud.print(gpattData.static_flag);
+    // flags
+    // gpattData.ins
+    // gpattData.gst_data
+    // gpattData.static_flag
+    // gpattData.run_state_flag
+    // gpattData.line_flag
+    // gpattData.run_inetial_flag
 
-    // // currently its either daytime or nighttime, no astrononical dawn/dusk yet.
-    // hud.setCursor(0,160);
-    // hud.print("D  "); hud.print(satData.day_of_the_week_name);
-    // hud.setCursor(0,170);
-    // hud.print("SR "); hud.print(siderealPlanetData.sun_r);
-    // hud.setCursor(0,180);
-    // hud.print("SS "); hud.print(siderealPlanetData.sun_s);
+    // astro
+    // siderealPlanetData.sun_r
+    // siderealPlanetData.sun_s
 
-    // small planetarium
-    // map 24(hours) to 360 (degrees)
+    // small telemetry graph -----------------------------------
+
+    // gnrmcData.ground_speed
+    // gnggaData.altitude gnggaData.altitude_units
+    // gpattData.pitch
+    // gpattData.roll
+    // gpattData.yaw
+    // gpattData.mileage
+    // gnrmcData.ground_heading
 
     // small telemetry graph
     // altitude                 N/S/E/W
@@ -6415,6 +6394,8 @@ bool DisplayPage0() {
     // roll     (secondary)  |           |
     // pitch                 | ----o---- | -> roll/pitch/yaw
     // yaw                   |___________|
+    //
+    // ----------------------------------------------------------
 
     // create a page for debug/error table
 
