@@ -8064,12 +8064,11 @@ void loop() {
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
       z++;
+      if (z==0) {UpdateDisplay();}
       if (z>4) {z=0; UpdateDisplay();}
     }
   }
-  // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
-  
-  // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
+
 
   // timeData.t0=millis();
   satIOData();
@@ -8086,10 +8085,6 @@ void loop() {
   // timeData.t0=millis();
   MatrixStatsCounter();
   // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
-
-  // timeData.t0=millis();
-  // UpdateDisplay();
-  // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery
@@ -8114,5 +8109,5 @@ void loop() {
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 }
