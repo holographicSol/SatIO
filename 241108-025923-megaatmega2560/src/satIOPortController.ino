@@ -23,10 +23,8 @@ Required wiring:
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
-int i = 0;
 signed int tmp_port;
 bool update_portmap_bool = false;
-bool update_switchstate_bool = false;
 // reflects matrix switch active/inactive states each loop of matrix switch function
 int max_matrix_switch_states = 20;
 bool matrix_switch_state[1][20] = {
@@ -145,6 +143,7 @@ void setup() {
   Serial3.begin(115200); while(!Serial3);
   Serial1.setTimeout(10);
   Serial3.setTimeout(10);
+  Serial.flush();
   Serial1.flush();
   Serial3.flush();
 
@@ -163,25 +162,24 @@ bool readRXD1UntilETX() {
   memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
   memset(SerialLink.DATA, 0, sizeof(SerialLink.DATA));
   if (Serial1.available() > 0) {
-    SerialLink.nbytes = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    if (SerialLink.nbytes > 80) { 
-        for(i = 0; i < SerialLink.nbytes; i++) {
-          if (SerialLink.BUFFER[i] == ETX)
-            break;
-          else {
-            SerialLink.DATA[i] = SerialLink.BUFFER[i];
-          }
+    int rlen = Serial1.readBytes(SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    if (rlen != 0) {
+      for(int i = 0; i < rlen; i++) {
+        if (SerialLink.BUFFER[i] == ETX)
+          break;
+        else {
+          SerialLink.DATA[i] = SerialLink.BUFFER[i];
         }
-        return true;
+      }
+      return true;
     }
   }
-  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                        PROCESS RXD
 
-bool readRXD1_Method0() {
+void readRXD1_Method0() {
   SerialLink.validation = false;
   SerialLink.T0_RXD_1 = millis();
   if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
@@ -208,7 +206,6 @@ bool readRXD1_Method0() {
 
           // reset values
           update_portmap_bool=false;
-          update_switchstate_bool = false;
           SerialLink.validation = false;
           SerialLink.i_token = 0;
           SerialLink.token = strtok(NULL, ",");
@@ -219,7 +216,7 @@ bool readRXD1_Method0() {
 
             // check eack token for portmap
             if (SerialLink.i_token<20) { 
-              for (i=0; i<20; i++) {
+              for (int i=0; i<20; i++) {
                 tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
                 if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
                 // uncomment to debug
@@ -232,12 +229,9 @@ bool readRXD1_Method0() {
 
             // check eack token for exactly 1 or 0 for matrix switch state
             if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
-              for (i=0; i<20; i++) {
-                if (atoi(SerialLink.token) != matrix_switch_state[0][i]) {
-                  update_switchstate_bool = true;
-                  if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
-                  else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
-                }
+              for (int i=0; i<20; i++) {
+                if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
+                else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
                 SerialLink.i_token++;
                 SerialLink.token = strtok(NULL, ",");
               }
@@ -247,8 +241,7 @@ bool readRXD1_Method0() {
             if (SerialLink.i_token == 40)  {
               SerialLink.validation = validateChecksum(SerialLink.BUFFER);
               // try to get another read. this may be written differently later but currently this is the primary objective.
-              // if (SerialLink.validation==false) {readRXD1_Method0();}
-              return true;
+              if (SerialLink.validation==false) {readRXD1_Method0();}
               break;
             }
             // iterate counters and snap off used token
@@ -258,10 +251,8 @@ bool readRXD1_Method0() {
         }
         // else {Serial.println("[skipping]   " + String(SerialLink.BUFFER));}
       }
-      // else {readRXD1_Method0();}
     }
   }
-  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -274,7 +265,7 @@ void satIOPortController() {
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
   // make ports high or low according to validated data
-  for (i=0; i<20; i++) {
+  for (int i=0; i<20; i++) {
 
     // handle current port configuration
     if (update_portmap_bool==true) {
@@ -291,9 +282,7 @@ void satIOPortController() {
     }
 
     // set port high/low
-    if (update_switchstate_bool==true) {
-      digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
-    }
+    digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
 
     // uncomment to debug
     // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
@@ -303,33 +292,27 @@ void satIOPortController() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
-bool readGPS() {
+void readGPS() {
   if (Serial3.available() > 0) {
     // loop to write gps serial to SatIO serial about 5 times because we are looking for GNGGA, GNRMC, GPATT and ignoring DESBI.
-    for (i=0; i <5; i++) {
+    for (int i=0; i <5; i++) {
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       // After migrating to CYD, lets see if the Serial1 set pins will be be stable.
       SerialLink.nbytes = (Serial3.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
       // Serial.print(SerialLink.nbytes); Serial.print(" "); Serial.println(SerialLink.BUFFER); // debug
       if (!strncmp(SerialLink.BUFFER, "$DESBI", 6) == 0) {
-        if (Serial1.available() > 0) {
-          Serial1.write(SerialLink.BUFFER);
-          Serial1.write(ETX);
-        }
+        Serial1.write(SerialLink.BUFFER);
+        Serial1.write(ETX);
       }
     }
-    return true;
   }
-  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
 void loop() {
-  // wait for portmap
-  while (readRXD1_Method0()==false);
-  // wait for gps
-  while (readGPS()==false);
+  readGPS();
+  readRXD1_Method0();
   if (SerialLink.validation == true) {satIOPortController();}
 }
