@@ -8158,7 +8158,7 @@ void loop() {
       if (x==false) {if (systemData.port_controller_enabled==true) {x=SatIOPortController();} else {x=true;}}
       if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
-      if (timeData.seconds>timeData.main_seconds_0+2000) {timeData.main_seconds_0=timeData.seconds; break;}
+      if (timeData.seconds>timeData.main_seconds_0+3000) {timeData.main_seconds_0=timeData.seconds; break;}
       // if (m>=10) {break;}
     }
   }
