@@ -7335,9 +7335,9 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
           itoa(menuData.matrix_filenames_index+i, tmp_i, 10);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], tmp_i);
           strcat(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], ".SAVE");
+          menuData.page=8;
           // save
           sdcard_save_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
-          menuData.page=8;
           break;
         }
       }
@@ -7408,8 +7408,8 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[loading matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
-          sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
+          sdcard_load_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           break;
         }
       }
@@ -7480,8 +7480,8 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           Serial.println("[deleting matrix_filenames_index] " + String(menuData.matrix_filenames_index+i));
-          sdcard_delete_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           menuData.page=8;
+          sdcard_delete_matrix(SD, sdcardData.matrix_filenames[menuData.matrix_filenames_index+i]);
           break;
         }
       }
