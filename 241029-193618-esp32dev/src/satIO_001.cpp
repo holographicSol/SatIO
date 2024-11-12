@@ -8150,6 +8150,7 @@ void loop() {
           interrupt_second_counter--;
           portEXIT_CRITICAL(&second_timer_mux);
         }
+        MatrixSwitchTask();
         UpdateDisplay();
       }
       if (z>4) {z=0;}
@@ -8174,7 +8175,7 @@ void loop() {
   // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
 
   // // timeData.t0=millis();
-  MatrixSwitchTask();
+  // MatrixSwitchTask();
   // // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
