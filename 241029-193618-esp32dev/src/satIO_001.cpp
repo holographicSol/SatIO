@@ -6418,8 +6418,8 @@ bool DisplayPage0() {
 
     // small telemetry graph
     // altitude                 N/S/E/W
-    // heading               |           | -> alt
-    // roll                  |           |
+    // heading    gyro -o-   |           | -> alt
+    // roll     (secondary)  |           |
     // pitch                 | ----o---- | -> roll/pitch/yaw
     // yaw                   |___________|
 
