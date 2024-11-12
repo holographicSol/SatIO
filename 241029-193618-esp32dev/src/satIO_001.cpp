@@ -6326,27 +6326,32 @@ bool DisplayPage0() {
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 52);
       }
-    
+    // data area
     hud.drawRect(0, 66, 320, 174, TFTOBJ_COL0);
-    // gps data column 0
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setCursor(0,80);
-    // hud.print("T ");
-    // hud.print(satData.year);
-    // hud.print(".");
-    // hud.print(satData.month);
-    // hud.print(".");
-    // hud.print(satData.day);
-    // hud.print(" ");
-    // hud.print(satData.hour);
-    // hud.print(":");
-    // hud.print(satData.minute);
-    // hud.print(":");
-    // hud.print(satData.second);
-    // hud.print(".");
-    // hud.print(satData.millisecond);
+    hud.drawRect(0, 66, 158, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(
+      String(satData.year)+"."+
+      String(satData.month)+"."+
+      String(satData.day)+"  "+
+      String(satData.hour)+":"+
+      String(satData.minute)+":"+
+      String(satData.second), 80, 74);
+    
+    hud.drawRect(162, 66, 158, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(
+      String(satData.lt_year)+"."+
+      String(satData.lt_month)+"."+
+      String(satData.lt_day)+"  "+
+      String(satData.lt_hour)+":"+
+      String(satData.lt_minute)+":"+
+      String(satData.lt_second), 240, 74);
+
     // hud.setCursor(170,80);
-    // hud.print("LT ");
+    // // hud.print("LT ");
     // hud.print(satData.lt_year);
     // hud.print(".");
     // hud.print(satData.lt_month);
