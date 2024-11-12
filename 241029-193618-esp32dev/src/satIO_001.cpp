@@ -7508,7 +7508,7 @@ bool DisplaySavingSplash() {
   if (menuData.page == 403) {
     Serial.println("[DisplaySavingSplash]");
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    hud.drawRect(0, 0, 320, 240, TFT_GREEN);
+    // hud.drawRect(0, 0, 320, 240, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.drawString(String("[ SAVING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
@@ -7521,7 +7521,7 @@ bool DisplayLoadingSplash() {
   if (menuData.page == 404) {
     Serial.println("[DisplayLoadingSplash]");
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    hud.drawRect(0, 0, 320, 260, TFT_GREEN);
+    // hud.drawRect(0, 0, 320, 260, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.drawString(String("[ LOADING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
@@ -7534,7 +7534,7 @@ bool DisplayDeleteSplash() {
   if (menuData.page == 405) {
     Serial.println("[DisplayDeleteSplash]");
     hud.fillRect(0, 0, 320, 240, BG_COL_0);
-    hud.drawRect(0, 0, 320, 260, TFT_GREEN);
+    // hud.drawRect(0, 0, 320, 260, TFT_GREEN);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.drawString(String("[ DELETING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
