@@ -5753,7 +5753,7 @@ bool readRXD1UntilETX() {
 int for_attempts=0;
 int read_attempts=0;
 
-void readGPS() {
+bool readGPS() {
   
   // check if available once here before loop reading
   if (Serial1.available() > 0) {
@@ -5766,7 +5766,7 @@ void readGPS() {
     serial1Data.gnrmc_bool=false;
     serial1Data.gpatt_bool=false;
       // Serial.println("---------------------------------------------------");
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<20; i++) {
       for_attempts++;
       // Serial.println("[i]             " + String(i));
       // Serial.println("[gngga_bool]    " + String(serial1Data.gngga_bool));
@@ -5826,13 +5826,14 @@ void readGPS() {
 
     // exit
     if (serial1Data.collected==3) {
-      break;
+      return true;
       }
     }
     // Serial.println("[read_attempts] " + String(read_attempts));
     // Serial.println("[for_attempts]  " + String(for_attempts));
     // Serial.println("[collected]     " + String(serial1Data.collected));
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6069,7 +6070,7 @@ struct SettingsDataStruct {
     "Matrix",    // got to p5
     "",          // reserved
     "",          // reserved
-    // "",          // reserved  SD  !(possible overload, loop time over threshhold)  
+    // "",       // reserved  SD  !(possible overload, loop time over threshhold)  
     //                                                 |
   };             //       (time long enough to throw off any functions requiring second accuracy)
 
@@ -6291,7 +6292,7 @@ bool DisplayPage0() {
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       if (i==3) {
         // main loop time over threshold: possible overload
-        if (timeData.mainLoopTimeTaken>=300) {
+        if (timeData.mainLoopTimeTaken>=500) {
           hud.drawRect((i*62)+2*i, 0, 60, 16, TFTOBJ_COL0);
           hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
@@ -7913,7 +7914,7 @@ void TouchScreenInput( void * pvParameters ) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
-void SatIOPortController() {
+bool SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
@@ -7928,7 +7929,9 @@ void SatIOPortController() {
       Serial1.write(matrixData.matrix_sentence);
       Serial1.write(ETX);
     }
+    return true;
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -8052,11 +8055,20 @@ void loop() {
   // readSerialCommands();  // for now serial commands are disabled for SatIO on CYD.
 
   // timeData.t0=millis();
-  if (systemData.port_controller_enabled==true) {SatIOPortController();}
+  int z = 0;
+  bool x = false;
+  bool y = false;
+  if (systemData.port_controller_enabled==true) {
+    while(1) {
+      if (x==false) {x = SatIOPortController();}
+      if (y==false) {y = readGPS();}
+      if (x==true && y==true) {break;}
+      z++;
+      if (z>4) {z=0; UpdateDisplay();}
+    }
+  }
   // Serial.println("[time SatIOPortController] " + String(millis()-timeData.t0));
-
-  // timeData.t0=millis();
-  readGPS();
+  
   // Serial.println("[time readGPS]             " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
@@ -8067,16 +8079,16 @@ void loop() {
   trackPlanets();
   // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
 
-  // timeData.t0=millis();
+  // // timeData.t0=millis();
   MatrixSwitchTask();
-  // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
+  // // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
   MatrixStatsCounter();
   // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
-  UpdateDisplay();
+  // UpdateDisplay();
   // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
   // timeData.t0=millis();
