@@ -6452,13 +6452,26 @@ bool DisplayPage0() {
     hud.drawString(String(gnrmcData.ground_speed)+String(""), 228, 206);
 
     // Altitude:
-    hud.drawRect(164, 198, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(162, 198, 34, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
     if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
-    if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(atoi(gnggaData.altitude))+String(""), 178, 206);
+
+    // Latitude:
+    hud.drawRect(162, 216, 80, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), 202, 224);
+
+    // Longitude:
+    hud.drawRect(244, 216, 80, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 224);
+
 
     // geo
     // gnggaData.latitude_hemisphere
