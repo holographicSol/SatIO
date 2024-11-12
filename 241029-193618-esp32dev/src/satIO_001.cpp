@@ -1997,7 +1997,7 @@ struct GNGGAStruct {
   char latitude_hemisphere[56];         unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;    // <3> Latitude hemisphere, N or S (north latitude or south latitude)
   char longitude[56];                   unsigned long bad_longitude_i;             bool bad_longitude = true;              // <4> Longitude, the format is dddmm.mmmmmmm
   char longitude_hemisphere[56];        unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;   // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char positioning_status[56];          unsigned long bad_positioning_status_i;    bool bad_positioning_status = true;     // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char solution_status[56];             unsigned long bad_solution_status_i;       bool bad_solution_status = true;            // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
   char satellite_count_gngga[56] = "0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga = true;  // <7> Number of satellites used
   char hdop_precision_factor[56];       unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor = true;  // <8> HDOP level precision factor
   char altitude[56];                    unsigned long bad_altitude_i;              bool bad_altitude = true;               // <9> Altitude
@@ -2028,7 +2028,7 @@ void GNGGA() {
     else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token) == true)               {memset(gnggaData.latitude_hemisphere, 0, 56);   strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere = false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere = true;}}
     else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token) == true)                {memset(gnggaData.longitude, 0, 56);             strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude = false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude = true;}}
     else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token) == true)              {memset(gnggaData.longitude_hemisphere, 0, 56);  strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere = false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token) == true) {memset(gnggaData.positioning_status, 0, 56);    strcpy(gnggaData.positioning_status, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_positioning_status = false;}    else {gnggaData.bad_positioning_status_i++;    gnggaData.bad_positioning_status = true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token) == true) {memset(gnggaData.solution_status, 0, 56);       strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status = false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status = true;}}
     else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token) == true)          {memset(gnggaData.satellite_count_gngga, 0, 56); strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga = false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga = true;}}
     else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token) == true)    {memset(gnggaData.hdop_precision_factor, 0, 56); strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor = false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor = true;}}
     else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token) == true)                 {memset(gnggaData.altitude, 0, 56);              strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude = false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude = true;}}
@@ -2054,7 +2054,7 @@ void GNGGA() {
     Serial.println("[gnggaData.latitude_hemisphere] "     + String(gnggaData.latitude_hemisphere));
     Serial.println("[gnggaData.longitude] "               + String(gnggaData.longitude));
     Serial.println("[gnggaData.longitude_hemisphere] "    + String(gnggaData.longitude_hemisphere));
-    Serial.println("[gnggaData.positioning_status] "      + String(gnggaData.positioning_status));
+    Serial.println("[gnggaData.solution_status] "      + String(gnggaData.solution_status));
     Serial.println("[gnggaData.satellite_count_gngga] "   + String(gnggaData.satellite_count_gngga));
     Serial.println("[gnggaData.hdop_precision_factor] "   + String(gnggaData.hdop_precision_factor));
     Serial.println("[gnggaData.altitude] "                + String(gnggaData.altitude));
@@ -4785,7 +4785,7 @@ void matrixSwitch() {
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNGGA) == 0) {
-          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.positioning_status),
+          tmp_matrix[Fi] = check_equal_true(atol(gnggaData.solution_status),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
@@ -6373,6 +6373,45 @@ bool DisplayPage0() {
       String(satData.lt_minute)+":"+
       String(satData.lt_second), 240, 74);
 
+    // Precision Factor: 0.0 > 1.0
+    hud.drawRect(290, 84, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 305, 92);
+
+    // Solution Stats: 0:invalid solution | 1:single point positioning | 2:pseudorange difference | 6:pure ins solution
+    hud.drawRect(290, 102, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gnggaData.solution_status)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atoi(gnggaData.solution_status)==1) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (atoi(gnggaData.solution_status)==2) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (atoi(gnggaData.solution_status)==6) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(gnggaData.solution_status)+String(""), 305, 110);
+
+    // Positioning Status: A=valid positioning | V=invalid positioning
+    hud.drawRect(290, 118, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (strcmp(gnrmcData.positioning_status, "A")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    if (strcmp(gnrmcData.positioning_status, "V")==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    hud.drawString(String(gnrmcData.positioning_status)+String(""), 305, 126);
+
+    // Static Flag: 1=static=dark grey | 0=dynamic=BLUE
+    hud.drawRect(290, 134, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gpattData.static_flag)==1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(gpattData.static_flag)+String(""), 305, 142);
+
+    // INS: 0=on=BLUE | 1=off=dark grey
+    hud.drawRect(290, 150, 30, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String("INS")+String(""), 305, 158);
+
     // geo
     // gnggaData.latitude_hemisphere
     // satData.location_latitude_gngga_str
@@ -6384,15 +6423,7 @@ bool DisplayPage0() {
     // siderealPlanetData.sun_s
 
     // status
-    // gnggaData.satellite_count_gngga
-    // gnggaData.hdop_precision_factor
-    // gnggaData.positioning_status
-    // gnrmcData.positioning_status
-
-    // flags
-    // gpattData.ins               0 on | 1 off                       RED/BLUE
-    // gpattData.static_flag       1 : static | 0 : dynamic           RED/BLUE
-    // gpattData.line_flag         1 : Straight driving, 0 : Turning  RED/BLUE
+    // gnggaData.satellite_count_gngga  0-?
 
     // gpattData.run_state_flag    0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while  GRAPHIC
     // gpattData.run_inetial_flag  00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
