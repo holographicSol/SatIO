@@ -8060,11 +8060,11 @@ void loop() {
   bool y = false;
   if (systemData.port_controller_enabled==true) {
     while(1) {
-      if (x==false) {x = SatIOPortController();}
-      if (y==false) {y = readGPS();}
-      z++;
       if (z==0) {UpdateDisplay();}
-      if (z>4) {z=0; UpdateDisplay();}
+      if (z>5) {z=0; UpdateDisplay();}
+      if (x==false) {x = SatIOPortController();}
+      z++;
+      if (y==false) {y = readGPS();}
       if (x==true && y==true) {break;}
     }
   }
