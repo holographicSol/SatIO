@@ -6327,24 +6327,24 @@ bool DisplayPage0() {
     // virtual matrix switch
     for (int i=0; i<10; i++) {
       // virtual matrix switch enabled/disbaled rect row 0
-      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 24, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 24, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 22, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i*30)+2*i, 22, 30, 16, TFTOBJ_COL0);}
 
       // virtual matrix switch on/off text row 0
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 32);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 30);
 
       // virtual matrix switch enabled/disbaled rect row 1
-      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 44, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 44, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 42, 30, 16, TFT_ENABLED);}
+      else {hud.drawRect((i*30)+2*i, 42, 30, 16, TFTOBJ_COL0);}
       
       // virtual matrix switch on/off text row 1
       hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
       if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 52);
+      hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 50);
       }
 
     // data area
