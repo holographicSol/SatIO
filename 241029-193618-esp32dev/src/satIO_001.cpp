@@ -6409,7 +6409,7 @@ bool DisplayPage0() {
 
     // INS: 0=on=BLUE | 1=off=dark grey
     hud.drawRect(290, 150, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String("INS")+String(""), 305, 158);
