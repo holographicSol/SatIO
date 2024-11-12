@@ -6377,9 +6377,9 @@ bool DisplayPage0() {
     hud.drawRect(290, 84, 30, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gnggaData.hdop_precision_factor)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
-    if (atoi(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    if (atoi(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (atof(gnggaData.hdop_precision_factor)==0) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 305, 92);
 
     // Solution Stats: 0:invalid solution | 1:single point positioning | 2:pseudorange difference | 6:pure ins solution
