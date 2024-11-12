@@ -52,7 +52,9 @@
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
                      ToDo: RTC + IO expansion + black rubber case with waterproof IO ports, and potentially a server hosting
-                                                             an RSS Feed.
+                                                          an RSS Feed.
+                                            
+            NOTICE: the system is still being tuned for perfromance and efficiency. Precision may not always be within a second.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
