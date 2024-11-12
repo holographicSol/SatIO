@@ -6322,7 +6322,7 @@ bool DisplayPage0() {
       if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
       if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     }
-    hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 306, 8);
+    hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 304, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
