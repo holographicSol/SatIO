@@ -144,35 +144,11 @@ The result is a single byte value representing two hexadecimal digits combined.
 */
 uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
-bool nmeaChecksumCompare(const uint8_t packet[], const uint8_t packetEndIndex, const uint8_t receivedCSbyte1, const uint8_t receivedCSbyte2)
-    {
-      uint8_t calcChecksum = 0;
-
-      for(uint8_t i=1; i<packetEndIndex-4; ++i) // packetEndIndex is the "size" of the packet minus 1. Loop from 1 to packetEndIndex-4 because the checksum is calculated between $ and *
-      {
-        calcChecksum = calcChecksum^packet[i];
-      }
-
-      uint8_t nibble1 = (calcChecksum&0xF0) >> 4; //"Extracts" the first four bits and shifts them 4 bits to the right. Bitwise AND followed by a bitshift
-      uint8_t nibble2 = calcChecksum&0x0F; 
-
-      uint8_t translatedByte1 = (nibble1<=0x9) ? (nibble1+'0') : (nibble1-10+'A'); //Converting the number "nibble1" into the ASCII representation of that number
-      uint8_t translatedByte2 = (nibble2<=0x9) ? (nibble2+'0') : (nibble2-10+'A'); //Converting the number "nibble2" into the ASCII representation of that number
-
-      if(translatedByte1==receivedCSbyte1 && translatedByte2==receivedCSbyte2) //Check if the checksum calculated from the packet payload matches the checksum in the packet
-      { 
-        return true; 
-      } 
-      else
-      { 
-        return false; 
-      }
-    }
-
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
 
   // uncomment to debug
+  // Serial.println("[validateChecksum]");
   // Serial.println("[validateChecksum] " + String(buffer));
 
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
@@ -182,46 +158,15 @@ bool validateChecksum(char * buffer) {
 
   // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.gotSum);
 
-  uint8_t calcChecksum = 0;
-
-  for(uint8_t i=1; i<strlen(buffer)-4; ++i) // packetEndIndex is the "size" of the packet minus 1. Loop from 1 to packetEndIndex-4 because the checksum is calculated between $ and *
-  {
-    // Serial.println(calcChecksum);
-    calcChecksum = calcChecksum^(uint8_t)buffer[i];
-  }
-
-  uint8_t nibble1 = (calcChecksum&0xF0) >> 4; //"Extracts" the first four bits and shifts them 4 bits to the right. Bitwise AND followed by a bitshift
-  uint8_t nibble2 = calcChecksum&0x0F;
-
-  // Serial.println("[nibble1] " + String(nibble1));
-  // Serial.println("[nibble2] " + String(nibble2));
-
-  uint8_t translatedByte1 = (nibble1<=0x9) ? (nibble1+'0') : (nibble1-10+'A'); //Converting the number "nibble1" into the ASCII representation of that number
-  uint8_t translatedByte2 = (nibble2<=0x9) ? (nibble2+'0') : (nibble2-10+'A'); //Converting the number "nibble2" into the ASCII representation of that number
-
-  // Serial.println("[translatedByte1] " + String(translatedByte1));
-  // Serial.println("[translatedByte2] " + String(translatedByte2));
-
-  if(translatedByte1==SerialLink.gotSum[0] && translatedByte2==SerialLink.gotSum[1]) //Check if the checksum calculated from the packet payload matches the checksum in the packet
-  {
-    // Serial.println("[validateChecksum] true");
-    return true; 
-  } 
-  else
-  { 
-    // Serial.println("[validateChecksum] false");
-    return false; 
-  }
-
-  // SerialLink.checksum_of_buffer =  getCheckSum(buffer);
+  SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   // Serial.print("[checksum_of_buffer] "); Serial.println(SerialLink.checksum_of_buffer);
-  // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
+  sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
   // Serial.print("[checksum_of_buffer converted] "); Serial.println(SerialLink.checksum);
   // SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.checksum_in_buffer);
 
-  // if (strcmp(SerialLink.gotSum, SerialLink.checksum)==0) {return true;}
-  // return false;
+  if (strcmp(SerialLink.gotSum, SerialLink.checksum)==0) {return true;}
+  return false;
 }
 
 void createChecksum(char * buffer) {
@@ -341,12 +286,6 @@ void satIOPortController() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
-
-// $GNGGA,081016.80,0.0,N,0.0,W,2,34,0.5,6.000*70
-// $GNGGA,081017.60,0.0,N,0.0,W,2,33,0.5,6.000*74
-
-// $GNRMC,081016.80,A,0.0,N,0.0,W,0.01,128.4941124,0,W,A*38
-// $GNRMC,081017.60,A,0.0,N,0.0,W,0.01,128.491124,0,W,A*3B  // note received is not ddmmyy like it should be: 128.491124
 
 void readGPS() {
   gngga_bool = false;
@@ -536,5 +475,4 @@ void loop() {
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
-
 }
