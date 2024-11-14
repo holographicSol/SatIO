@@ -6408,6 +6408,7 @@ bool DisplayPage0() {
     // int gpatt_roll = 45; // uncomment to test roll
     // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
     // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
+    int offset_gpatt_roll = 90;
     int temporary_gpatt_roll;
     temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
     if (temporary_gpatt_roll>360) {
