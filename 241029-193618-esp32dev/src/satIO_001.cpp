@@ -89,7 +89,7 @@
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 
-bool ack = false; 
+int MAX_GPS_RETIES = 0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -8106,19 +8106,10 @@ void check_gpatt() {
   }
 }
 
-
-bool gngga_bool = false;
-bool gnrmc_bool = false;
-bool gpatt_bool = false;
-bool gngga_valid_checksum = false;
-bool gnrmc_valid_checksum = false;
-bool gpatt_valid_checksum = false;
-int MAX_GPS_RETIES = 0;
-
 void readGPS() {
-  gngga_bool = false;
-  gnrmc_bool = false;
-  gpatt_bool = false;
+  serial1Data.gngga_bool = false;
+  serial1Data.gnrmc_bool = false;
+  serial1Data.gpatt_bool = false;
   memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
   memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
@@ -8134,22 +8125,22 @@ void readGPS() {
 
         // Serial.print("[RXD] " + String(SerialLink.BUFFER)); // debug
 
-        if (gngga_bool==true && gnrmc_bool==true && gpatt_bool==true) {break;}
+        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
         if (MAX_GPS_RETIES>8) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
-          gngga_bool = true;
+          serial1Data.gngga_bool = true;
         }
 
         if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
           strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-          gnrmc_bool = true; 
+          serial1Data.gnrmc_bool = true; 
         }
 
         if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
           strcpy(gpattData.sentence, SerialLink.BUFFER);
-          gpatt_bool = true;
+          serial1Data.gpatt_bool = true;
         }
       }
     }
@@ -8162,10 +8153,6 @@ void readGPS() {
 void loop() {
 
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
-
-  serial1Data.gngga_bool = false;
-  serial1Data.gnrmc_bool = false;
-  serial1Data.gpatt_bool = false;
 
   readGPS();
   check_gngga();
