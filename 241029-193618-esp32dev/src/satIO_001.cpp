@@ -6385,8 +6385,8 @@ bool DisplayPage0() {
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
     hud.deleteSprite();
     
-    // // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
-    // // the craft will be accomponied by a scale and mapped to scale.
+    // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
+    // the craft will be accomponied by a scale and mapped to scale.
     pod_wing.createSprite(100, 100); // create the hud Sprite 11 pixels wide by 49 high
     // Define hud pivot point
     uint16_t pod_piv_X = pod_wing.width() / 2;   // x pivot of Sprite (middle)
@@ -6400,11 +6400,20 @@ bool DisplayPage0() {
     pod_wing.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
     // pod_wing.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
     tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
-    // temporary horizontal at zero degrees 
-    int roll_offset = atoi(gpattData.roll);
-    roll_offset+=90;
-    if (roll_offset>360) {roll_offset=-90;}
-    pod_wing.pushRotated(roll_offset); 
+
+    // rotate pod wing according to INS data
+    int gpatt_roll = atoi(gpattData.roll); // plugged in
+    // int gpatt_roll = 360; // dev
+    int offset_gpatt_roll = 90;
+    int temporary_gpatt_roll;
+    temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
+    if (temporary_gpatt_roll>360) {
+      int offset_2 = temporary_gpatt_roll-360;
+      temporary_gpatt_roll=0;
+      for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
+    }
+    Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
+    pod_wing.pushRotated(temporary_gpatt_roll);
     // yield();
     pod_wing.deleteSprite();
 
