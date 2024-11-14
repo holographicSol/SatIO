@@ -23,7 +23,7 @@ Required wiring:
 #include <stdlib.h>
 // #include <conio.h>
 
-TinyGPSPlus gps;
+#define MAX_BUFF 1000
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -68,8 +68,8 @@ struct SerialLinkStruct {
   char char_i_sync[56];
   bool syn = false;
   bool data = false;
-  char BUFFER[1500];            // read incoming bytes into this buffer
-  char TMP[1500];               // buffer refined using ETX
+  char BUFFER[MAX_BUFF];            // read incoming bytes into this buffer
+  char TMP[MAX_BUFF];               // buffer refined using ETX
   signed int nbytes;
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -108,9 +108,9 @@ TimeStruct timeData;
 bool gngga_bool = false;
 bool gnrmc_bool = false;
 bool gpatt_bool = false;
-char gngga_sentence[1200];
-char gnrmc_sentence[1200];
-char gpatt_sentence[1200];
+char gngga_sentence[MAX_BUFF];
+char gnrmc_sentence[MAX_BUFF];
+char gpatt_sentence[MAX_BUFF];
 bool gngga_valid_checksum = false;
 bool gnrmc_valid_checksum = false;
 bool gpatt_valid_checksum = false;
@@ -148,25 +148,15 @@ bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
 
   // uncomment to debug
-  // Serial.println("[validateChecksum]");
-  // Serial.println("[validateChecksum] " + String(buffer));
-
-  memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
-  
+  // if (SerialLink.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
+  SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
-
-  // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.gotSum);
-
+  // Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
+  // Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
-  // Serial.print("[checksum_of_buffer] "); Serial.println(SerialLink.checksum_of_buffer);
-  sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
-  // Serial.print("[checksum_of_buffer converted] "); Serial.println(SerialLink.checksum);
-  // SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
-  // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.checksum_in_buffer);
-
-  if (strcmp(SerialLink.gotSum, SerialLink.checksum)==0) {return true;}
-  return false;
+  SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
+  if (SerialLink.checksum_of_buffer == SerialLink.checksum_in_buffer) {return true;} else {return false;}
 }
 
 void createChecksum(char * buffer) {
@@ -202,54 +192,6 @@ void setup() {
   Serial.println("starting...");
 }
 
-// RXD1 THROTTLE CHECKS ---------------------------------------------------------------------------------------------
-bool RXD1ThrottleChecks() {
-  SerialLink.T0_RXD_1 = millis();
-  if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
-    SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
-    return true;
-  }
-}
-
-// TXD1 THROTTLE CHECKS ---------------------------------------------------------------------------------------------
-bool TXD1ThrottleChecks() {
-  SerialLink.T0_TXD_1 = millis();
-  if (SerialLink.T0_TXD_1 >= SerialLink.T1_TXD_1+SerialLink.TT_TXD_1) {
-    SerialLink.T1_TXD_1 = SerialLink.T0_TXD_1;
-    return true;
-  }
-}
-
-// REMOVE ETX -------------------------------------------------------------------------------------------------------
-void removeNL() {
-  memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-  SerialLink.nbytes = sizeof(SerialLink.BUFFER);
-  if (SerialLink.nbytes != 0) {
-    for(SerialLink.i_nbytes = 0; SerialLink.i_nbytes < SerialLink.nbytes; SerialLink.i_nbytes++) {
-      if (SerialLink.BUFFER[SerialLink.i_nbytes] == '\n')
-        break;
-      else {SerialLink.TMP[SerialLink.i_nbytes] = SerialLink.BUFFER[SerialLink.i_nbytes];}
-    }
-  }
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-  strcpy(SerialLink.BUFFER, SerialLink.TMP);
-}
-
-// REMOVE ETX -------------------------------------------------------------------------------------------------------
-void removeETX() {
-  memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-  SerialLink.nbytes = sizeof(SerialLink.BUFFER);
-  if (SerialLink.nbytes != 0) {
-    for(SerialLink.i_nbytes = 0; SerialLink.i_nbytes < SerialLink.nbytes; SerialLink.i_nbytes++) {
-      if (SerialLink.BUFFER[SerialLink.i_nbytes] == ETX)
-        break;
-      else {SerialLink.TMP[SerialLink.i_nbytes] = SerialLink.BUFFER[SerialLink.i_nbytes];}
-    }
-  }
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-  strcpy(SerialLink.BUFFER, SerialLink.TMP);
-}
-
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                    PORT CONTROLLER
 
@@ -281,62 +223,6 @@ void satIOPortController() {
 
     // uncomment to debug
     // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  READ GPS DATA
-
-void readGPS() {
-  gngga_bool = false;
-  gnrmc_bool = false;
-  gpatt_bool = false;
-  memset(gngga_sentence, 0, sizeof(gngga_sentence));
-  memset(gnrmc_sentence, 0, sizeof(gnrmc_sentence));
-  memset(gpatt_sentence, 0, sizeof(gpatt_sentence));
-
-  if (Serial2.available() > 0) {
-
-    while(1) {
-      
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial2.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-
-      if (SerialLink.nbytes>0) {
-
-        // Serial.print("[RXD] " + String(SerialLink.BUFFER)); // debug
-
-        if (gngga_bool==true && gnrmc_bool==true && gpatt_bool==true) {break;}
-
-        if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-          strcpy(gpatt_sentence, SerialLink.BUFFER);
-          gpatt_bool = true;
-        }
-
-        if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-          strcpy(gngga_sentence, SerialLink.BUFFER);
-          gngga_bool = true;
-        }
-
-        if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-          strcpy(gnrmc_sentence, SerialLink.BUFFER);
-          gnrmc_bool = true; 
-        }
-      }
-    }
-    // Serial.println("[CHECKING] ");
-    // gngga_valid_checksum = validateChecksum(gngga_sentence);
-    // gnrmc_valid_checksum = validateChecksum(gnrmc_sentence);
-    // gpatt_valid_checksum = validateChecksum(gpatt_sentence);
-
-    // if (gngga_valid_checksum==true && gnrmc_valid_checksum==true && gpatt_valid_checksum==true) {
-    // Serial.println("[WRITING] ");
-    Serial1.write(gngga_sentence);
-    Serial1.write(ETX);
-    Serial1.write(gnrmc_sentence);
-    Serial1.write(ETX);
-    Serial1.write(gpatt_sentence);
-    Serial1.write(ETX);
   }
 }
 
@@ -395,64 +281,15 @@ void readRXD1() {
     SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
     if (SerialLink.nbytes > 1) {
       
-      removeETX();
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       strcpy(SerialLink.TMP, SerialLink.BUFFER);
-      // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+      Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
       SerialLink.TOKEN_i = 0;
 
       SerialLink.token = strtok(SerialLink.TMP, ",");
-      if (strcmp(SerialLink.token, "$MATRX") == 0) {SerialLink.syn = true;}
-      // if (strcmp(SerialLink.token, "$MATRX") == 0) {SerialLink.syn = true; processMatrixData();}
-      else if (strcmp(SerialLink.token, "$SYN") == 0) {SerialLink.syn = true;}
+      if (strcmp(SerialLink.token, "$MATRX") == 0) {processMatrixData();}
     }
   }
-}
-
-// WRITE TXD1 -------------------------------------------------------------------------------------------------------
-void writeTXD1() {
-  if (TXD1ThrottleChecks() == true) {
-    if (Serial1.availableForWrite()) {
-      // Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER);
-      Serial1.write(SerialLink.BUFFER);
-      Serial1.write(ETX);
-    }
-  }
-}
-
-// SEND SYN ---------------------------------------------------------------------------------------------------------
-void sendSyn() {
-  SerialLink.i_sync++;
-  if (SerialLink.i_sync>LONG_MAX) {SerialLink.i_sync=0;}
-  itoa(SerialLink.i_sync, SerialLink.char_i_sync, 10);
-  memset(SerialLink.BUFFER, 0, 1024);
-  strcat(SerialLink.BUFFER, "$SYN,");
-  strcat(SerialLink.BUFFER, SerialLink.char_i_sync);
-  writeTXD1();
-}
-
-// RECEIVE SYN ------------------------------------------------------------------------------------------------------
-void receiveSyn() {
-  // while (1) {readRXD1(); Serial.println("[syn] waiting"); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-  while (1) {readRXD1(); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-}
-
-// SEND RECEIVE SYN -------------------------------------------------------------------------------------------------
-void synCom() {
-  // Serial.println("-------------------------------------------");
-  sendSyn();
-  receiveSyn();
-}
-
-// RECEIVE DATA -----------------------------------------------------------------------------------------------------
-void receiveData() {
-  // while (1) {readRXD1(); Serial.println("[data] waiting"); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-  while (1) {readRXD1(); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-}
-
-// SEND DATA --------------------------------------------------------------------------------------------------------
-void sendData(char * data) {
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER)); strcat(SerialLink.BUFFER, data); writeTXD1();
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -463,16 +300,12 @@ void loop() {
   // Serial.println("---------------------------------------");
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
-  // sendSyn();
-
-  // sync received
-  synCom(); readGPS();
+  // readRXD1();
 
   // make high/low
   // satIOPortController();
 
-  // delay(1000);
-
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+
 }

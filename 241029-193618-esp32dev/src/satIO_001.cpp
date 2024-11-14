@@ -454,12 +454,12 @@ bool validateChecksum(char * buffer) {
 
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   // Serial.print("[checksum_of_buffer] "); Serial.println(SerialLink.checksum_of_buffer);
-  sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
+  // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
   // Serial.print("[checksum_of_buffer converted] "); Serial.println(SerialLink.checksum);
-  // SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
+  SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.checksum_in_buffer);
 
-  if (strcmp(SerialLink.gotSum, SerialLink.checksum)==0) {return true;}
+  if (SerialLink.checksum_in_buffer == SerialLink.checksum_of_buffer) {return true;}
   return false;
 }
 
@@ -8072,148 +8072,6 @@ void satIOData() {
   if (systemData.satio_enabled == true) {buildSatIOSentence();}
 }
 
-// RXD1 THROTTLE CHECKS ---------------------------------------------------------------------------------------------
-bool RXD1ThrottleChecks() {
-  SerialLink.T0_RXD_1 = millis();
-  if (SerialLink.T0_RXD_1 >= SerialLink.T1_RXD_1+SerialLink.TT_RXD_1) {
-    SerialLink.T1_RXD_1 = SerialLink.T0_RXD_1;
-    return true;
-  }
-}
-
-// TXD1 THROTTLE CHECKS ---------------------------------------------------------------------------------------------
-bool TXD1ThrottleChecks() {
-  SerialLink.T0_TXD_1 = millis();
-  if (SerialLink.T0_TXD_1 >= SerialLink.T1_TXD_1+SerialLink.TT_TXD_1) {
-    SerialLink.T1_TXD_1 = SerialLink.T0_TXD_1;
-    return true;
-  }
-}
-
-// REMOVE ETX -------------------------------------------------------------------------------------------------------
-void removeETX() {
-  memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-  SerialLink.nbytes = sizeof(SerialLink.BUFFER);
-  if (SerialLink.nbytes != 0) {
-    for(SerialLink.i_nbytes = 0; SerialLink.i_nbytes < SerialLink.nbytes; SerialLink.i_nbytes++) {
-      if (SerialLink.BUFFER[SerialLink.i_nbytes] == ETX)
-        break;
-      else {SerialLink.TMP[SerialLink.i_nbytes] = SerialLink.BUFFER[SerialLink.i_nbytes];}
-    }
-  }
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-  strcpy(SerialLink.BUFFER, SerialLink.TMP);
-}
-
-// REMOVE ETX -------------------------------------------------------------------------------------------------------
-void removeNL() {
-  memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-  SerialLink.nbytes = sizeof(SerialLink.BUFFER);
-  if (SerialLink.nbytes != 0) {
-    for(SerialLink.i_nbytes = 0; SerialLink.i_nbytes < SerialLink.nbytes; SerialLink.i_nbytes++) {
-      if (SerialLink.BUFFER[SerialLink.i_nbytes] == '\n')
-        break;
-      else {SerialLink.TMP[SerialLink.i_nbytes] = SerialLink.BUFFER[SerialLink.i_nbytes];}
-    }
-  }
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-  strcpy(SerialLink.BUFFER, SerialLink.TMP);
-}
-
-// READ RXD1 --------------------------------------------------------------------------------------------------------
-void readRXD1() {
-  if (Serial1.available() > 0) {
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-    
-    SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-    if (SerialLink.nbytes > 1) {
-      
-      removeETX();
-      strcpy(SerialLink.BUFFER1, SerialLink.BUFFER);
-      Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-      SerialLink.TOKEN_i = 0;
-
-      SerialLink.token = strtok(SerialLink.BUFFER, ",");
-
-      if (serial1Data.gngga_bool==false) {
-        if (strcmp(SerialLink.token, "$GNGGA") == 0) {
-          memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
-          strcpy(gnggaData.sentence, SerialLink.BUFFER1);
-          Serial.print("[gnggaData.sentence] "); Serial.println(gnggaData.sentence);
-          SerialLink.syn = true;
-          serial1Data.gngga_bool = true;
-          }
-      }
-      if (serial1Data.gnrmc_bool==false) {
-        if (strcmp(SerialLink.token, "$GNRMC") == 0) {
-          memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
-          strcpy(gnrmcData.sentence, SerialLink.BUFFER1);
-          Serial.print("[gnrmcData.sentence] "); Serial.println(gnrmcData.sentence);
-          SerialLink.syn = true;
-          serial1Data.gnrmc_bool = true;
-          }
-      }
-      if (serial1Data.gpatt_bool==false) {
-        if (strcmp(SerialLink.token, "$GPATT") == 0) {
-          memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-          strcpy(gpattData.sentence, SerialLink.BUFFER1);
-          Serial.print("[gpattData.sentence] "); Serial.println(gpattData.sentence);
-          SerialLink.syn = true;
-          serial1Data.gpatt_bool = true;
-          }
-      }
-      if (strcmp(SerialLink.token, "$SYN") == 0) {SerialLink.syn = true;}
-    }
-  }
-}
-
-// WRITE TXD1 -------------------------------------------------------------------------------------------------------
-void writeTXD1() {
-  if (TXD1ThrottleChecks() == true) {
-    if (Serial1.availableForWrite()) {
-      Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER);
-      Serial1.write(SerialLink.BUFFER);
-      Serial1.write(ETX);
-    }
-  }
-}
-
-// SEND SYN ---------------------------------------------------------------------------------------------------------
-void sendSyn() {
-  SerialLink.i_sync++;
-  if (SerialLink.i_sync>LONG_MAX) {SerialLink.i_sync=0;}
-  itoa(SerialLink.i_sync, SerialLink.char_i_sync, 10);
-  memset(SerialLink.BUFFER, 0, 2000);
-  strcat(SerialLink.BUFFER, "$SYN,");
-  strcat(SerialLink.BUFFER, SerialLink.char_i_sync);
-  writeTXD1();
-}
-
-// RECEIVE SYN ------------------------------------------------------------------------------------------------------
-void receiveSyn() {
-  // while (1) {readRXD1(); Serial.println("[syn] waiting"); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-  while (1) {readRXD1(); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-}
-
-// SEND RECEIVE SYN -------------------------------------------------------------------------------------------------
-void synCom() {
-  Serial.println("-------------------------------------------");
-  sendSyn();
-  receiveSyn();
-}
-
-// RECEIVE DATA -----------------------------------------------------------------------------------------------------
-void receiveData() {
-  // while (1) {readRXD1(); Serial.println("[data] waiting"); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-  while (1) {readRXD1(); if (SerialLink.syn == true) {SerialLink.syn = false; break;}}
-}
-
-// SEND DATA --------------------------------------------------------------------------------------------------------
-void sendData(char * data) {
-  memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER)); strcat(SerialLink.BUFFER, data); writeTXD1();
-}
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
@@ -8252,6 +8110,54 @@ void check_gpatt() {
   }
 }
 
+
+bool gngga_bool = false;
+bool gnrmc_bool = false;
+bool gpatt_bool = false;
+bool gngga_valid_checksum = false;
+bool gnrmc_valid_checksum = false;
+bool gpatt_valid_checksum = false;
+
+void readGPS() {
+  gngga_bool = false;
+  gnrmc_bool = false;
+  gpatt_bool = false;
+  memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
+  memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
+  memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
+
+  if (Serial1.available() > 0) {
+
+    while(1) {
+      
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+
+      if (SerialLink.nbytes>0) {
+
+        // Serial.print("[RXD] " + String(SerialLink.BUFFER)); // debug
+
+        if (gngga_bool==true && gnrmc_bool==true && gpatt_bool==true) {break;}
+
+        if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+          strcpy(gnggaData.sentence, SerialLink.BUFFER);
+          gngga_bool = true;
+        }
+
+        if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+          strcpy(gnrmcData.sentence, SerialLink.BUFFER);
+          gnrmc_bool = true; 
+        }
+
+        if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+          strcpy(gpattData.sentence, SerialLink.BUFFER);
+          gpatt_bool = true;
+        }
+      }
+    }
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
@@ -8263,52 +8169,25 @@ void loop() {
   serial1Data.gnrmc_bool = false;
   serial1Data.gpatt_bool = false;
 
-  sendSyn();
-
-  while (1) {
-    // sendSyn();
-    synCom(); receiveData();
-    if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-    MatrixSwitchTask();
-    UpdateDisplay();
-  }
+  readGPS();
 
   check_gngga();
   check_gnrmc();
   check_gpatt();
 
-  // // timeData.t0=millis();
   satIOData();
-  // // Serial.println("[time satIOData]           " + String(millis()-timeData.t0));
 
-  // // timeData.t0=millis();
-  // trackPlanets();
-  // // Serial.println("[time trackPlanets]        " + String(millis()-timeData.t0));
+  trackPlanets();
 
-  // // // timeData.t0=millis();
   MatrixSwitchTask();
-  // // // Serial.println("[time MatrixSwitchTask]    " + String(millis()-timeData.t0));
 
-  // // timeData.t0=millis();
-  // MatrixStatsCounter();
-  // // Serial.println("[time MatrixStatsCounter]  " + String(millis()-timeData.t0));
+  MatrixStatsCounter();
 
-  // timeData.t0=millis();
-  // delay(10);
-  // SatIOPortController();
-  // Serial1.flush();
-  // delay(10);
-  // Serial.println("[bool x]" + String(x));
+  // SatIOPortController();  // will be plugged back in soon
 
-  // // timeData.t0=millis();
   UpdateDisplay();
-  // // Serial.println("[time UpdateDisplay]       " + String(millis()-timeData.t0));
 
-  // // timeData.t0=millis();
   sdcardCheck(); // automatic sdcard discovery
-  // // Serial.println("[time sdcardCheck]         " + String(millis()-timeData.t0));
-
-  // Serial.println();
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
