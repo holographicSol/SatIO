@@ -6406,7 +6406,8 @@ bool DisplayPage0() {
     // rotate pod wing according to INS data
     int gpatt_roll = atoi(gpattData.roll); // comment to test roll
     // int gpatt_roll = 45; // uncomment to test roll
-    // offset_gpatt_roll -=1;  // uncomment to test roll
+    // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise
+    // offset_gpatt_roll +=1;  // uncomment to test roll clockwise
     int temporary_gpatt_roll;
     temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
     if (temporary_gpatt_roll>360) {
