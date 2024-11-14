@@ -5616,7 +5616,7 @@ void matrixSwitch() {
 
     // reset matrix switch state sentence.
     memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
-    strcpy(matrixData.matrix_sentence, "$MATRX,");
+    strcpy(matrixData.matrix_sentence, "$MATRIX,");
 
     // append port mapping data
     for (int i=0; i < matrixData.max_matrices; i++) {
@@ -8178,7 +8178,7 @@ void loop() {
 
   MatrixStatsCounter();
 
-  // SatIOPortController();  // will be plugged back in soon
+  SatIOPortController();  // will be plugged back in soon
 
   UpdateDisplay();
 

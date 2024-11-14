@@ -283,7 +283,7 @@ void readRXD1() {
       SerialLink.TOKEN_i = 0;
 
       SerialLink.token = strtok(SerialLink.TMP, ",");
-      if (strcmp(SerialLink.token, "$MATRX") == 0) {processMatrixData();}
+      if (strcmp(SerialLink.token, "$MATRIX") == 0) {processMatrixData();}
     }
   }
 }
@@ -296,10 +296,10 @@ void loop() {
   // Serial.println("---------------------------------------");
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
-  // readRXD1();
+  readRXD1();
 
   // make high/low
-  // satIOPortController();
+  satIOPortController();
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
