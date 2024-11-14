@@ -148,8 +148,8 @@ bool validateChecksum(char * buffer) {
   SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
-  Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
-  Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
+  // Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
+  // Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   if (SerialLink.checksum_of_buffer == SerialLink.checksum_in_buffer) {return true;} else {return false;}
