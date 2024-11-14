@@ -22,11 +22,7 @@
                                         Wiring For ESP32-2432S028 development board (CYD)
 
                                           ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
-                                          ESP32 io22 (RXD) -> ATMEGA2560 Serial1 (TXD)
-
-                                                   Wiring For ATMEGA2560
-              
-                                          WTGPS300P (TXD)  -> ATMEGA2560 Serial3 (RXD)
+                                          ESP32 io22 (RXD) -> WTGPS300P (TXD)
                                           
 
                                                         SENTENCE $SATIO

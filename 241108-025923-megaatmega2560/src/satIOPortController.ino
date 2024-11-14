@@ -7,11 +7,7 @@ SatIOPortController - Receives messages from SatIO over serial and manipulates I
 
 Required wiring:
 
-  ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
-
-  ESP32 io22 (RXD) -> ATMEGA2560 Serial1 (TXD)
-
-  WTGPS300P (TXD)  -> ATMEGA2560 Serial2 (RXD)
+ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
 
 */
 
