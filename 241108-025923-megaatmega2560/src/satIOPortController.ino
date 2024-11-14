@@ -64,8 +64,8 @@ struct SerialLinkStruct {
   char char_i_sync[56];
   bool syn = false;
   bool data = false;
-  char BUFFER[MAX_BUFF];            // read incoming bytes into this buffer
-  char TMP[MAX_BUFF];               // buffer refined using ETX
+  char BUFFER[MAX_BUFF];        // read incoming bytes into this buffer
+  char TMP[MAX_BUFF];           // buffer refined using ETX
   signed int nbytes;
   unsigned long T0_RXD_1 = 0;   // hard throttle current time
   unsigned long T1_RXD_1 = 0;   // hard throttle previous time
@@ -88,8 +88,8 @@ struct SerialLinkStruct {
 SerialLinkStruct SerialLink;
 
 struct TimeStruct {
-  double seconds;               // seconds accumulated since startup
-  double mainLoopTimeTaken;     // current main loop time
+  double seconds;                      // seconds accumulated since startup
+  double mainLoopTimeTaken;            // current main loop time
   unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
   unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
@@ -228,7 +228,6 @@ void processMatrixData() {
   update_portmap_bool=false;
   SerialLink.validation = false;
   SerialLink.i_token = 0;
-  // SerialLink.token = strtok(SerialLink.TMP, ",");
   while(SerialLink.token != NULL) {
 
     // uncomment to debug
@@ -260,8 +259,6 @@ void processMatrixData() {
     // handle expected checksum
     if (SerialLink.i_token == 40)  {
       SerialLink.validation = validateChecksum(SerialLink.BUFFER);
-      // try to get another read. this may be written differently later but currently this is the primary objective.
-      // Serial.print("[matrix validation] "); Serial.println(SerialLink.validation);
       break;
     }
     // iterate counters and snap off used token
