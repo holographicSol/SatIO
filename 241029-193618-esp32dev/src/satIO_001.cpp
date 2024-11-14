@@ -6398,7 +6398,7 @@ bool DisplayPage0() {
     // hemispherical heading scale: moves left and right above or below the uap
     // memset(gnrmcData.ground_heading, 0 , sizeof(gnrmcData.ground_heading)); // test ground heading
     // strcpy(gnrmcData.ground_heading, "359"); // test ground heading
-    // int map_ground_heading = 222;  // test
+    int map_ground_heading = 222;  // test
     //                                                  heading     inmin inmax  outmin  outmax
     // int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   182,    268);
     // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
