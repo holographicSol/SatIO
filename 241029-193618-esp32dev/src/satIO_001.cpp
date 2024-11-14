@@ -6187,6 +6187,11 @@ bool isTouchTitleBar(TouchPoint p) {
 
 // int offset_gpatt_roll = 90;  // uncomment to test roll
 
+// long map(long x, long in_min, long in_max, long out_min, long out_max)
+// {
+//   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+// }
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY PAGE 0
 
@@ -6382,6 +6387,70 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
+
+    // blue vertical lines: reflect yaw (turning left/right)
+
+    // red horizontal lines: reflect pitch (turning up/down)
+
+    // altitude scale: moves up and down, left of uap
+
+    // hemispherical heading scale: moves left and right above or below the uap
+    //                                      ccccccccccc heading     inmin inmax  outmin  outmax
+    int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   162,    278);
+    // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
+    // Serial.println("[map_ground_heading] " + String(map_ground_heading));
+    // hud.drawRect(map_ground_heading, 88, 30, 30, TFT_GREEN);
+    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+
+    if (atof(gnrmcData.ground_heading) == 0) {
+    hud.drawString(String("N"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 180) {
+    hud.drawString(String("S"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 90) {
+    hud.drawString(String("E"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 270) {
+    hud.drawString(String("W"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 1 && atoi(gnrmcData.ground_heading) <=19) {
+    hud.drawString(String("NWE"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 71 && atoi(gnrmcData.ground_heading) <=89) {
+    hud.drawString(String("ENE"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 91 && atoi(gnrmcData.ground_heading) <=109) {
+    hud.drawString(String("ESE"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 161 && atoi(gnrmcData.ground_heading) <=179) {
+    hud.drawString(String("SSE"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 181 && atoi(gnrmcData.ground_heading) <=199) {
+    hud.drawString(String("SSW"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 251 && atoi(gnrmcData.ground_heading) <=269) {
+    hud.drawString(String("WSW"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 271 && atoi(gnrmcData.ground_heading) <=289) {
+    hud.drawString(String("WSW"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) >= 341 && atoi(gnrmcData.ground_heading) <=359) {
+    hud.drawString(String("NNNW"), map_ground_heading, 94);
+    }
+    
   
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
@@ -6419,15 +6488,7 @@ bool DisplayPage0() {
     Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
     uap.pushRotated(temporary_gpatt_roll);
     // yield();
-    uap.deleteSprite();#
-
-    // blue vertical lines: reflect yaw (turning left/right)
-
-    // red horizontal lines: reflect pitch (turning up/down)
-
-    // altitude scale: moves up and down, left of uap
-
-    // north east south west scale: moves left and right above or below the uap
+    uap.deleteSprite();
 
     // other sensory data
 
