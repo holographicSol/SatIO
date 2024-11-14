@@ -6429,6 +6429,8 @@ bool DisplayPage0() {
 
     // north east south west scale: moves left and right above or below the uap
 
+    // other sensory data
+
     /*
     virtual altitude: map 10000 -> 100
     roll: (0° representing a head-on wind and 180° representing a tailwind. 
