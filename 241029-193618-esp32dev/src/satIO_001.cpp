@@ -51,6 +51,8 @@
                                                           an RSS Feed.
                                             
             NOTICE: the system is still being tuned for perfromance and efficiency. Precision may not always be within a second.
+                    also the system is currently almost entirely dependent on GPS data being received in order to server any real
+                    purpose except the second timer which runs off one of the ESP32 clocks. 
 
             Future: I hope to finnish up here and move on to the Octa M7 for a premium high performance version of this programmable
                     switch, with a superior GPS module and higher quality panel, 18650's with power for at least a week and being
