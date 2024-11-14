@@ -6191,6 +6191,7 @@ bool isTouchTitleBar(TouchPoint p) {
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
+
     // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
 
@@ -6379,6 +6380,33 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
+  
+    // display the sprite and free memory
+    hud.pushSprite(0, 0, TFT_TRANSPARENT);
+    hud.deleteSprite();
+    
+    // // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
+    // // the craft will be accomponied by a scale and mapped to scale.
+    pod_wing.createSprite(100, 100); // create the hud Sprite 11 pixels wide by 49 high
+    // Define hud pivot point
+    uint16_t pod_piv_X = pod_wing.width() / 2;   // x pivot of Sprite (middle)
+    uint16_t pod_piv_y = 100/2; // y pivot of Sprite (10 pixels from bottom)
+    pod_wing.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
+    // Draw the red hud with a yellow tip
+    // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
+    pod_wing.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
+    // pod_wing.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
+    // Draw hud centre boss
+    pod_wing.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
+    // pod_wing.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
+    tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
+    // temporary horizontal at zero degrees 
+    int roll_offset = atoi(gpattData.roll);
+    roll_offset+=90;
+    if (roll_offset>360) {roll_offset=-90;}
+    pod_wing.pushRotated(roll_offset); 
+    // yield();
+    pod_wing.deleteSprite();
 
     /*
     virtual altitude: map 10000 -> 100
@@ -7791,7 +7819,6 @@ void UpdateDisplay() {
   hud.createSprite(320, 240);
   hud.fillSprite(TFT_TRANSPARENT);
   hud.fillRect(0, 0, 320, 240, BG_COL_0);
-
   // menuData.page=5;  // force a specific page to be displayed (dev)
 
   // determine which sprite to build
@@ -7815,34 +7842,6 @@ void UpdateDisplay() {
   if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
   if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
   if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
-  
-  // display the sprite and free memory
-  hud.pushSprite(0, 0, TFT_TRANSPARENT);
-  hud.deleteSprite();
-  
-  // // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
-  // // the craft will be accomponied by a scale and mapped to scale.
-  // pod_wing.createSprite(100, 100); // create the hud Sprite 11 pixels wide by 49 high
-  // hud.fillSprite(TFT_TRANSPARENT);
-  // hud.fillRect(0, 0, 320, 240, BG_COL_0);
-  // // Define hud pivot point
-  // uint16_t pod_piv_X = pod_wing.width() / 2;   // x pivot of Sprite (middle)
-  // uint16_t pod_piv_y = 100/2; // y pivot of Sprite (10 pixels from bottom)
-  // pod_wing.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
-  // // Draw the red hud with a yellow tip
-  // // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
-  // pod_wing.fillRect(pod_piv_X - 1, 2, 3, pod_piv_y +100, TFT_GREEN);  // hud
-  // // pod_wing.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);       // hud tip
-  // // Draw hud centre boss
-  // pod_wing.fillCircle(pod_piv_X, pod_piv_y, 5, TFT_GREEN);
-  // // pod_wing.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
-  // tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
-  // int roll_offset = atoi(gpattData.roll);
-  // roll_offset+=90;
-  // if (roll_offset>360) {roll_offset=-90;}
-  // pod_wing.pushRotated(roll_offset); 
-  // yield();
-  // pod_wing.deleteSprite();
 
   // delay(5);
   // }
