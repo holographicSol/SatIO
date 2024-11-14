@@ -6419,7 +6419,13 @@ bool DisplayPage0() {
     Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
     uap.pushRotated(temporary_gpatt_roll);
     // yield();
-    uap.deleteSprite();
+    uap.deleteSprite();#
+
+    // blue vertical lines: reflect yaw (turning left/right)
+
+    // red horizontal lines: reflect pitch (turning up/down)
+
+    // altitude scale: moves up and down, left of uap
 
     /*
     virtual altitude: map 10000 -> 100
