@@ -117,6 +117,7 @@ TFT_eSPI tft = TFT_eSPI();
 TFT_eSPI_Button key[6];
 TFT_eSprite hud = TFT_eSprite(&tft);
 TFT_eSprite uap = TFT_eSprite(&tft); // Sprite object for hud
+TFT_eSprite v_heading = TFT_eSprite(&tft); 
 
 
 #define LCD_BACK_LIGHT_PIN 21    // backlight pin
@@ -6395,10 +6396,14 @@ bool DisplayPage0() {
     // altitude scale: moves up and down, left of uap
 
     // hemispherical heading scale: moves left and right above or below the uap
-    //                                      ccccccccccc heading     inmin inmax  outmin  outmax
-    int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   162,    278);
+    // memset(gnrmcData.ground_heading, 0 , sizeof(gnrmcData.ground_heading)); // test ground heading
+    // strcpy(gnrmcData.ground_heading, "359"); // test ground heading
+    // int map_ground_heading = 222;  // test
+    //                                                  heading     inmin inmax  outmin  outmax
+    // int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   182,    268);
     // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
     // Serial.println("[map_ground_heading] " + String(map_ground_heading));
+
     // hud.drawRect(map_ground_heading, 88, 30, 30, TFT_GREEN);
     hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
@@ -6450,7 +6455,6 @@ bool DisplayPage0() {
     else if (atof(gnrmcData.ground_heading) >= 341 && atoi(gnrmcData.ground_heading) <=359) {
     hud.drawString(String("NNNW"), map_ground_heading, 94);
     }
-    
   
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
