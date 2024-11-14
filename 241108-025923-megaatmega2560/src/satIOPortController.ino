@@ -239,7 +239,7 @@ void processMatrixData() {
         tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
         if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
         // uncomment to debug
-        Serial.println(String(i) + " [portmap] " + String(matrix_port_map[0][i]));
+        Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "]");
         
         SerialLink.i_token++;
         SerialLink.token = strtok(NULL, ",");
