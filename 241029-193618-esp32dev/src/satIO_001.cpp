@@ -5635,7 +5635,7 @@ void matrixSwitch() {
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
     strcat(matrixData.matrix_sentence, SerialLink.checksum);
-    // strcat(matrixData.matrix_sentence, "\n");
+    strcat(matrixData.matrix_sentence, "\n");
 
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {

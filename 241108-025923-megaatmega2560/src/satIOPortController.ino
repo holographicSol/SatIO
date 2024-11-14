@@ -148,8 +148,8 @@ bool validateChecksum(char * buffer) {
   SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
-  // Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
-  // Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
+  Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
+  Serial.print("[gotSum[1] "); Serial.println(SerialLink.gotSum[1]);
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   if (SerialLink.checksum_of_buffer == SerialLink.checksum_in_buffer) {return true;} else {return false;}
@@ -228,7 +228,7 @@ void processMatrixData() {
   update_portmap_bool=false;
   SerialLink.validation = false;
   SerialLink.i_token = 0;
-  SerialLink.token = strtok(SerialLink.BUFFER, ",");
+  // SerialLink.token = strtok(SerialLink.TMP, ",");
   while(SerialLink.token != NULL) {
 
     // uncomment to debug
@@ -259,7 +259,7 @@ void processMatrixData() {
 
     // handle expected checksum
     if (SerialLink.i_token == 40)  {
-      SerialLink.validation = validateChecksum(SerialLink.TMP);
+      SerialLink.validation = validateChecksum(SerialLink.BUFFER);
       // try to get another read. this may be written differently later but currently this is the primary objective.
       // Serial.print("[matrix validation] "); Serial.println(SerialLink.validation);
       break;
@@ -296,10 +296,11 @@ void loop() {
   // Serial.println("---------------------------------------");
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
+  // read matrix data
   readRXD1();
 
   // make high/low
-  satIOPortController();
+  if (SerialLink.validation==true) {satIOPortController();}
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
