@@ -116,7 +116,7 @@ XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSPI_Button key[6];
 TFT_eSprite hud = TFT_eSprite(&tft);
-TFT_eSprite pod_wing = TFT_eSprite(&tft); // Sprite object for hud
+TFT_eSprite uap = TFT_eSprite(&tft); // Sprite object for hud
 
 
 #define LCD_BACK_LIGHT_PIN 21    // backlight pin
@@ -6389,18 +6389,18 @@ bool DisplayPage0() {
     
     // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
     // the craft will be accomponied by a scale and mapped to scale.
-    pod_wing.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
+    uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
     // Define hud pivot point
-    uint16_t pod_piv_X = pod_wing.width() / 2;   // x pivot of Sprite (middle)
+    uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
     uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
-    pod_wing.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
+    uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
     // Draw the red hud with a yellow tip
     // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
-    pod_wing.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
-    // pod_wing.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
+    uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
+    // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
     // Draw hud centre boss
-    pod_wing.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
-    // pod_wing.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
+    uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
+    // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
     tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
 
     // rotate pod wing according to INS data
@@ -6416,9 +6416,9 @@ bool DisplayPage0() {
       for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
     }
     Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
-    pod_wing.pushRotated(temporary_gpatt_roll);
+    uap.pushRotated(temporary_gpatt_roll);
     // yield();
-    pod_wing.deleteSprite();
+    uap.deleteSprite();
 
     /*
     virtual altitude: map 10000 -> 100
