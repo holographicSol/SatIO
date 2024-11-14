@@ -6398,79 +6398,80 @@ bool DisplayPage0() {
     // hemispherical heading scale: moves left and right above or below the uap
     // memset(gnrmcData.ground_heading, 0 , sizeof(gnrmcData.ground_heading)); // test ground heading
     // strcpy(gnrmcData.ground_heading, "359"); // test ground heading
-    int map_ground_heading = 224;  // test
+    // int map_ground_heading = 224;  // test
     //                                                  heading     inmin inmax  outmin  outmax
     // int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   182,    268);
     // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
     // Serial.println("[map_ground_heading] " + String(map_ground_heading));
 
     // hud.drawRect(map_ground_heading, 88, 30, 30, TFT_GREEN);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
+    // hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    
 
-    if (atof(gnrmcData.ground_heading) == 0) {
-    hud.drawString(String("N"), map_ground_heading, 94);
-    }
+    // if (atof(gnrmcData.ground_heading) == 0) {
+    // hud.drawString(String("N"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 180) {
-    hud.drawString(String("S"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 180) {
+    // hud.drawString(String("S"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 90) {
-    hud.drawString(String("E"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 90) {
+    // hud.drawString(String("E"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 270) {
-    hud.drawString(String("W"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 270) {
+    // hud.drawString(String("W"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 45) {
-    hud.drawString(String("NE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 45) {
+    // hud.drawString(String("NE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 225) {
-    hud.drawString(String("SW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 225) {
+    // hud.drawString(String("SW"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 320) {
-    hud.drawString(String("NW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 320) {
+    // hud.drawString(String("NW"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) == 135) {
-    hud.drawString(String("SE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) == 135) {
+    // hud.drawString(String("SE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 1 && atoi(gnrmcData.ground_heading) <=19) {
-    hud.drawString(String("NWE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 1 && atoi(gnrmcData.ground_heading) <=19) {
+    // hud.drawString(String("NWE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 71 && atoi(gnrmcData.ground_heading) <=89) {
-    hud.drawString(String("ENE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 71 && atoi(gnrmcData.ground_heading) <=89) {
+    // hud.drawString(String("ENE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 91 && atoi(gnrmcData.ground_heading) <=109) {
-    hud.drawString(String("ESE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 91 && atoi(gnrmcData.ground_heading) <=109) {
+    // hud.drawString(String("ESE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 161 && atoi(gnrmcData.ground_heading) <=179) {
-    hud.drawString(String("SSE"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 161 && atoi(gnrmcData.ground_heading) <=179) {
+    // hud.drawString(String("SSE"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 181 && atoi(gnrmcData.ground_heading) <=199) {
-    hud.drawString(String("SSW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 181 && atoi(gnrmcData.ground_heading) <=199) {
+    // hud.drawString(String("SSW"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 251 && atoi(gnrmcData.ground_heading) <=269) {
-    hud.drawString(String("WSW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 251 && atoi(gnrmcData.ground_heading) <=269) {
+    // hud.drawString(String("WSW"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 271 && atoi(gnrmcData.ground_heading) <=289) {
-    hud.drawString(String("WSW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 271 && atoi(gnrmcData.ground_heading) <=289) {
+    // hud.drawString(String("WSW"), map_ground_heading, 94);
+    // }
 
-    else if (atof(gnrmcData.ground_heading) >= 341 && atoi(gnrmcData.ground_heading) <=359) {
-    hud.drawString(String("NNNW"), map_ground_heading, 94);
-    }
+    // else if (atof(gnrmcData.ground_heading) >= 341 && atoi(gnrmcData.ground_heading) <=359) {
+    // hud.drawString(String("NNNW"), map_ground_heading, 94);
+    // }
   
     // display the sprite and free memory
     hud.pushSprite(0, 0, TFT_TRANSPARENT);
