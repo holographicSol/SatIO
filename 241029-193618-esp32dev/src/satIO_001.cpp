@@ -5976,8 +5976,8 @@ struct SettingsDataStruct {
   char main_titlebar_values[4][56] = {
     "Settings",  // got to p3
     "Matrix",    // got to p5
-    "",          // reserved
-    "",          // reserved
+    // "",          // reserved
+    // "",          // reserved
     // "",       // reserved  SD  !(possible overload, loop time over threshhold)  
     //                                                 |
   };             //       (time long enough to throw off any functions requiring second accuracy)
@@ -6474,42 +6474,42 @@ bool DisplayPage0() {
     // }
   
     // display the sprite and free memory
-    hud.pushSprite(0, 0, TFT_TRANSPARENT);
-    hud.deleteSprite();
+    // hud.pushSprite(0, 0, TFT_TRANSPARENT);
+    // hud.deleteSprite();
     
-    // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
-    // the craft will be accomponied by a scale and mapped to scale.
-    uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
-    // Define hud pivot point
-    uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-    uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
-    uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
-    // Draw the red hud with a yellow tip
-    // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
-    uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
-    // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
-    // Draw hud centre boss
-    uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
-    // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
-    tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
+    // // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
+    // // the craft will be accomponied by a scale and mapped to scale.
+    // uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
+    // // Define hud pivot point
+    // uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
+    // uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
+    // uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
+    // // Draw the red hud with a yellow tip
+    // // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
+    // uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
+    // // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
+    // // Draw hud centre boss
+    // uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
+    // // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
+    // tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
 
-    // rotate pod wing according to INS data
-    int gpatt_roll = atoi(gpattData.roll); // comment to test roll
-    // int gpatt_roll = 45; // uncomment to test roll
-    // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
-    // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
-    int offset_gpatt_roll = 90;
-    int temporary_gpatt_roll;
-    temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
-    if (temporary_gpatt_roll>360) {
-      int offset_2 = temporary_gpatt_roll-360;
-      temporary_gpatt_roll=0;
-      for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
-    }
-    Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
-    uap.pushRotated(temporary_gpatt_roll);
+    // // rotate pod wing according to INS data
+    // int gpatt_roll = atoi(gpattData.roll); // comment to test roll
+    // // int gpatt_roll = 45; // uncomment to test roll
+    // // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
+    // // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
+    // int offset_gpatt_roll = 90;
+    // int temporary_gpatt_roll;
+    // temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
+    // if (temporary_gpatt_roll>360) {
+    //   int offset_2 = temporary_gpatt_roll-360;
+    //   temporary_gpatt_roll=0;
+    //   for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
+    // }
+    // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
+    // uap.pushRotated(temporary_gpatt_roll);
     // yield();
-    uap.deleteSprite();
+    // uap.deleteSprite();
 
     // other sensory data
 
@@ -6563,7 +6563,9 @@ bool DisplayPage0() {
 
 bool isTouchPage0(TouchPoint p) {
   // check page here rather than in calling function so that we can see where we are when we're here
+  Serial.println("[page] " + String(menuData.page));
   if (menuData.page == 0) {
+    Serial.println("[isTouchPage0]");
 
     // title bar
     if (p.y >= tss.main_page_y[0][0] && p.y <= tss.main_page_y[0][1]) {
@@ -7915,6 +7917,8 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // void UpdateDisplay( void * pvParameters ) {
 void UpdateDisplay() {
 
+  Serial.println("[page] " + String(menuData.page));
+
   // while (1) {
 
   /* populates strite according to page then displays sprite */
@@ -7948,6 +7952,8 @@ void UpdateDisplay() {
   if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
   if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
 
+  hud.pushSprite(0, 0, TFT_TRANSPARENT);
+  hud.deleteSprite();
   // delay(5);
   // }
 }
@@ -8035,7 +8041,7 @@ void TouchScreenInput( void * pvParameters ) {
         else {Serial.println("[touchscreen] skiping input");}
       }
     }
-    delay(10);
+    delay(1);
   }
 }
 
