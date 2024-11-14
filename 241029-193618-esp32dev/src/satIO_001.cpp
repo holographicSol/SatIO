@@ -8178,7 +8178,7 @@ void loop() {
 
   MatrixStatsCounter();
 
-  SatIOPortController();  // will be plugged back in soon
+  SatIOPortController();
 
   UpdateDisplay();
 
