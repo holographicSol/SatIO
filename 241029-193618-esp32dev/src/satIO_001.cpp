@@ -6185,6 +6185,8 @@ bool isTouchTitleBar(TouchPoint p) {
   return false;
 }
 
+// int offset_gpatt_roll = 90;  // uncomment to test roll
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY PAGE 0
 
@@ -6402,9 +6404,9 @@ bool DisplayPage0() {
     tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
 
     // rotate pod wing according to INS data
-    // int gpatt_roll = atoi(gpattData.roll); // plugged in
-    int gpatt_roll = 45; // dev
-    int offset_gpatt_roll = 90;
+    int gpatt_roll = atoi(gpattData.roll); // comment to test roll
+    // int gpatt_roll = 45; // uncomment to test roll
+    // offset_gpatt_roll -=1;  // uncomment to test roll
     int temporary_gpatt_roll;
     temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
     if (temporary_gpatt_roll>360) {
