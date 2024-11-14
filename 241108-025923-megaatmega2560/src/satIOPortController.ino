@@ -228,42 +228,41 @@ void processMatrixData() {
   update_portmap_bool=false;
   SerialLink.validation = false;
   SerialLink.i_token = 0;
-  while(SerialLink.token != NULL) {
 
-    // uncomment to debug
-    Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+  SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+  if (SerialLink.validation==true) {
+    while(SerialLink.token != NULL) {
 
-    // check eack token for portmap
-    if (SerialLink.i_token<20) { 
-      for (int i=0; i<20; i++) {
-        tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
-        if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
-        // uncomment to debug
-        Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "]");
-        
-        SerialLink.i_token++;
-        SerialLink.token = strtok(NULL, ",");
+      // uncomment to debug
+      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      
+      // check eack token for portmap
+      if (SerialLink.i_token<20) { 
+        for (int i=0; i<20; i++) {
+          tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
+          if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
+          // uncomment to debug
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "]");
+          
+          SerialLink.i_token++;
+          SerialLink.token = strtok(NULL, ",");
+        }
       }
-    }
 
-    // check eack token for exactly 1 or 0 for matrix switch state
-    if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
-      for (int i=0; i<20; i++) {
-        if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
-        else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
-        SerialLink.i_token++;
-        SerialLink.token = strtok(NULL, ",");
+      // check eack token for exactly 1 or 0 for matrix switch state
+      if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
+        for (int i=0; i<20; i++) {
+          if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
+          else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
+          SerialLink.i_token++;
+          SerialLink.token = strtok(NULL, ",");
+        }
       }
-    }
 
-    // handle expected checksum
-    if (SerialLink.i_token == 40)  {
-      SerialLink.validation = validateChecksum(SerialLink.BUFFER);
-      break;
+      // iterate counters and snap off used token
+      SerialLink.i_token++;
+      SerialLink.token = strtok(NULL, ",");
     }
-    // iterate counters and snap off used token
-    SerialLink.i_token++;
-    SerialLink.token = strtok(NULL, ",");
   }
 }
 
@@ -276,7 +275,7 @@ void readRXD1() {
       
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       strcpy(SerialLink.TMP, SerialLink.BUFFER);
-      Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+      // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
       SerialLink.TOKEN_i = 0;
 
       SerialLink.token = strtok(SerialLink.TMP, ",");
