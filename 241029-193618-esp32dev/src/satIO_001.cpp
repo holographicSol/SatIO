@@ -6398,7 +6398,7 @@ bool DisplayPage0() {
     // hemispherical heading scale: moves left and right above or below the uap
     // memset(gnrmcData.ground_heading, 0 , sizeof(gnrmcData.ground_heading)); // test ground heading
     // strcpy(gnrmcData.ground_heading, "359"); // test ground heading
-    int map_ground_heading = 222;  // test
+    int map_ground_heading = 224;  // test
     //                                                  heading     inmin inmax  outmin  outmax
     // int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   182,    268);
     // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
@@ -6422,6 +6422,22 @@ bool DisplayPage0() {
 
     else if (atof(gnrmcData.ground_heading) == 270) {
     hud.drawString(String("W"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 45) {
+    hud.drawString(String("NE"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 225) {
+    hud.drawString(String("SW"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 320) {
+    hud.drawString(String("NW"), map_ground_heading, 94);
+    }
+
+    else if (atof(gnrmcData.ground_heading) == 135) {
+    hud.drawString(String("SE"), map_ground_heading, 94);
     }
 
     else if (atof(gnrmcData.ground_heading) >= 1 && atoi(gnrmcData.ground_heading) <=19) {
