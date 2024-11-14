@@ -8113,6 +8113,7 @@ bool gpatt_bool = false;
 bool gngga_valid_checksum = false;
 bool gnrmc_valid_checksum = false;
 bool gpatt_valid_checksum = false;
+int MAX_GPS_RETIES = 0;
 
 void readGPS() {
   gngga_bool = false;
@@ -8134,6 +8135,7 @@ void readGPS() {
         // Serial.print("[RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (gngga_bool==true && gnrmc_bool==true && gpatt_bool==true) {break;}
+        if (MAX_GPS_RETIES>8) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
