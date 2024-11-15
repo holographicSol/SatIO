@@ -6395,9 +6395,9 @@ bool DisplayPage0() {
     //               x 1st vertex  y 1st vertex   x 2nd vertex  y 2nd vertex  x 3rd vertex  y 3rd vertex
     // hud.drawTriangle(50,           50,           100,           150,          150,          10,           TFT_YELLOW);
     if (atoi(gpattData.yaw)==0) {
-      hud.fillTriangle(temporary_yaw-3, 196, temporary_yaw+3, 196, temporary_yaw, 196-3, TFT_GREEN);
+      hud.fillTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_GREEN);
     }
-    else {hud.fillTriangle(temporary_yaw-3, 196, temporary_yaw+3, 196, temporary_yaw, 196-3, TFT_BLUE);}
+    else {hud.fillTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_BLUE);}
     
 
     // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
@@ -6412,9 +6412,9 @@ bool DisplayPage0() {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
       }
     if (atoi(gpattData.pitch)==0) {
-      hud.fillTriangle(280, temporary_pitch-3, 280, temporary_pitch+3, 280-3, temporary_pitch, TFT_GREEN);
+      hud.fillTriangle(280, temporary_pitch-2, 280, temporary_pitch+2, 280-2, temporary_pitch, TFT_GREEN);
     }
-    else {hud.fillTriangle(280, temporary_pitch-3, 280, temporary_pitch+3, 280-3, temporary_pitch, TFT_RED);}
+    else {hud.fillTriangle(280, temporary_pitch-2, 280, temporary_pitch+2, 280-2, temporary_pitch, TFT_RED);}
 
 
     // blue vertical lines: reflect yaw (turning left/right)
