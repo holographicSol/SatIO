@@ -7918,10 +7918,8 @@ void DisplayUAP() {
 
 void UpdateDisplay() {
     // menuData.page=5;  // force a specific page to be displayed (dev)
-    
-  Serial.println("[page] " + String(menuData.page));
 
-  // while (1) {
+  Serial.println("[page] " + String(menuData.page));
 
   /* populates strite according to page then displays sprite */
 
