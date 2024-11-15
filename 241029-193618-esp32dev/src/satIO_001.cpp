@@ -7893,10 +7893,10 @@ int offset_2;
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  uap.createSprite(70, 70); // create the hud Sprite 11 pixels wide by 49 high
+  uap.createSprite(65, 65); // create the hud Sprite 11 pixels wide by 49 high
 
   uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 70/2;              // y pivot of Sprite (10 pixels from bottom)
+  uint16_t pod_piv_y = 65/2;              // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
 
   uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
