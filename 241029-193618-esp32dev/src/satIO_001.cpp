@@ -69,6 +69,9 @@
                     switches and or different wiring/hardware configurations on the Physical Layer.
 
                     The UI provides various high and low level access to the microcontroller, allowing for configuratoin and setup.
+
+                    Use case from a syncronized clock to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
+                    expected drift, if GPS data is stale or unavailable.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
