@@ -6392,11 +6392,13 @@ bool DisplayPage0() {
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       temporary_yaw = map(atof(gpattData.yaw), 180, 360, 184, 235);
       }
-    // hud.drawRect(temporary_yaw, 196, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
     //               x 1st vertex  y 1st vertex   x 2nd vertex  y 2nd vertex  x 3rd vertex  y 3rd vertex
     // hud.drawTriangle(50,           50,           100,           150,          150,          10,           TFT_YELLOW);
-
-    hud.drawTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_BLUE);
+    if (atoi(gpattData.yaw)==0) {
+      hud.fillTriangle(temporary_yaw-4, 196, temporary_yaw+4, 196, temporary_yaw, 196-4, TFT_GREEN);
+    }
+    else {hud.fillTriangle(temporary_yaw-4, 196, temporary_yaw+4, 196, temporary_yaw, 196-4, TFT_BLUE);}
+    
 
     // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
     hud.drawRect(284, 100, 1, 100, TFT_RED);  // y axis: pitch
@@ -7911,10 +7913,10 @@ int offset_2;
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  uap.createSprite(60, 60); // create the hud Sprite 11 pixels wide by 49 high
+  uap.createSprite(55, 55); // create the hud Sprite 11 pixels wide by 49 high
 
   uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 60/2;              // y pivot of Sprite (10 pixels from bottom)
+  uint16_t pod_piv_y = 55/2;              // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
 
   uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
