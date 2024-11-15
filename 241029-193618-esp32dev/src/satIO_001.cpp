@@ -6383,19 +6383,20 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
     // Yaw Scale:
-    hud.drawRect(185, 202, 100, 1, TFT_BLUE);  // x axis: yaw
+    hud.drawRect(184, 200, 100, 1, TFT_BLUE);  // x axis: yaw
     int temporary_yaw = 0;
     //  memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       temporary_yaw = map(atof(gpattData.yaw), 0, 180, 235, 285);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
-      temporary_yaw = map(atof(gpattData.yaw), 180, 360, 185, 235);
+      temporary_yaw = map(atof(gpattData.yaw), 180, 360, 184, 235);
       }
-    hud.drawRect(temporary_yaw, 198, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
+    hud.drawRect(temporary_yaw, 196, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
 
     // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
-    hud.drawRect(285, 102, 1, 100, TFT_RED);  // y axis: pitch
+    hud.drawRect(284, 100, 1, 100, TFT_RED);  // y axis: pitch
+    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "180"); // uncomment to test pitch degrees
     int temporary_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
       temporary_pitch = map(atof(gpattData.pitch), 0, 180, 150, 100);
@@ -6404,7 +6405,7 @@ bool DisplayPage0() {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
       }
-    hud.drawRect(281, temporary_pitch, 4, 1, TFT_RED);  // y axis: draw mapped pitch
+    hud.drawRect(280, temporary_pitch, 4, 1, TFT_RED);  // y axis: draw mapped pitch
 
 
     // blue vertical lines: reflect yaw (turning left/right)
@@ -7906,10 +7907,10 @@ int offset_2;
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  uap.createSprite(65, 65); // create the hud Sprite 11 pixels wide by 49 high
+  uap.createSprite(60, 60); // create the hud Sprite 11 pixels wide by 49 high
 
   uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 65/2;              // y pivot of Sprite (10 pixels from bottom)
+  uint16_t pod_piv_y = 60/2;              // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
 
   uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
