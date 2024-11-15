@@ -7927,7 +7927,6 @@ void DisplayUAP() {
   uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
   tft.setPivot(235, 152);                                        // set the TFT pivot point that the hud will rotate around
-
   offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise n degrees a frame
   // gpatt_roll = atoi(gpattData.roll);                          // uncomment to rotate according to actual INS data
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
@@ -7944,59 +7943,62 @@ void DisplayUAP() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 UPDATE DISPLAY
 
-void UpdateDisplay() {
+void UpdateDisplay(void * pvParameters) {
     // menuData.page=5;  // force a specific page to be displayed (dev)
 
-  Serial.println("[page] " + String(menuData.page));
+    while (1) {
+      delay(1);
+      Serial.println("[page] " + String(menuData.page));
 
-  /* populates strite according to page then displays sprite */
+      /* populates strite according to page then displays sprite */
 
-  // layer zero sprite: create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
-  hud.setColorDepth(8);
-  hud.createSprite(320, 240);
-  hud.fillSprite(TFT_TRANSPARENT);
+      // layer zero sprite: create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
+      hud.setColorDepth(8);
+      hud.createSprite(320, 240);
+      hud.fillSprite(TFT_TRANSPARENT);
 
-  // currently we clear screen as a general rule if the previous page is not equal to current page, otherwise leave it
-  if (!menuData.page==menuData.previous_page) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
+      // currently we clear screen as a general rule if the previous page is not equal to current page, otherwise leave it
+      if (!menuData.page==menuData.previous_page) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
 
-  // then decide if we will fill screen or portions of screen according to page, with layers of sprites in mind
-  if (menuData.page==0) {
-    if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
-    hud.fillRect(0, 0, 320, 94, BG_COL_0);
-    hud.fillRect(0, 205, 320, 35, BG_COL_0);
-    hud.fillRect(0, 0, 35, 240, BG_COL_0);
-    hud.fillRect(288, 0, 35, 240, BG_COL_0);
+      // then decide if we will fill screen or portions of screen according to page, with layers of sprites in mind
+      if (menuData.page==0) {
+        if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
+        hud.fillRect(0, 0, 320, 94, BG_COL_0);
+        hud.fillRect(0, 205, 320, 35, BG_COL_0);
+        hud.fillRect(0, 0, 35, 240, BG_COL_0);
+        hud.fillRect(288, 0, 35, 240, BG_COL_0);
+        }
+      else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
+
+      // layer zero sprites: draw
+      bool checktouch = false;
+      if (checktouch == false) {checktouch = DisplaySavingSplash();}
+      if (checktouch == false) {checktouch = DisplayLoadingSplash();}
+      if (checktouch == false) {checktouch = DisplayDeleteSplash();}
+      if (checktouch == false) {checktouch = DisplayPage0();}
+      if (checktouch == false) {checktouch = DisplayPage1();}
+      if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
+      if (checktouch == false) {checktouch = DisplayNumpad();}
+      if (checktouch == false) {checktouch = DisplaySettingsMenu();}
+      if (checktouch == false) {checktouch = DisplaySettingsSystem();}
+      if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
+      if (checktouch == false) {checktouch = DisplaySettingsGPS();}
+      if (checktouch == false) {checktouch = DisplaySettingsSerial();}
+      if (checktouch == false) {checktouch = DisplaySettingsFile();}
+      if (checktouch == false) {checktouch = DisplaySettingsTime();}
+      if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
+      if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
+      if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
+      if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
+      if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
+
+      // layer zero sprites: push and free memory
+      hud.pushSprite(0, 0, TFT_TRANSPARENT);
+      hud.deleteSprite();
+      
+      // layer 1 sprites: draw
+      if (menuData.page==0) {DisplayUAP();}
     }
-  else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
-
-  // layer zero sprites: draw
-  bool checktouch = false;
-  if (checktouch == false) {checktouch = DisplaySavingSplash();}
-  if (checktouch == false) {checktouch = DisplayLoadingSplash();}
-  if (checktouch == false) {checktouch = DisplayDeleteSplash();}
-  if (checktouch == false) {checktouch = DisplayPage0();}
-  if (checktouch == false) {checktouch = DisplayPage1();}
-  if (checktouch == false) {checktouch = DisplaySelectMatrixFunction();}
-  if (checktouch == false) {checktouch = DisplayNumpad();}
-  if (checktouch == false) {checktouch = DisplaySettingsMenu();}
-  if (checktouch == false) {checktouch = DisplaySettingsSystem();}
-  if (checktouch == false) {checktouch = DisplaySettingsMatrix();}
-  if (checktouch == false) {checktouch = DisplaySettingsGPS();}
-  if (checktouch == false) {checktouch = DisplaySettingsSerial();}
-  if (checktouch == false) {checktouch = DisplaySettingsFile();}
-  if (checktouch == false) {checktouch = DisplaySettingsTime();}
-  if (checktouch == false) {checktouch = DisplaySettingsDisplay();}
-  if (checktouch == false) {checktouch = DisplaySettingsLoadMatrix();}
-  if (checktouch == false) {checktouch = DisplaySettingsDeleteMatrix();}
-  if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
-  if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
-
-  // layer zero sprites: push and free memory
-  hud.pushSprite(0, 0, TFT_TRANSPARENT);
-  hud.deleteSprite();
-  
-  // layer 1 sprites: draw
-  if (menuData.page==0) {DisplayUAP();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -8165,14 +8167,14 @@ void setup() {
       0);               /* Core where the task should run */
   
   // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  // xTaskCreatePinnedToCore(
-  //     UpdateDisplay, /* Function to implement the task */
-  //     "UpdateDisplayTask",         /* Name of the task */
-  //     10000,            /* Stack size in words */
-  //     NULL,             /* Task input parameter */
-  //     2,                /* Priority of the task */
-  //     &UpdateDisplayTask,          /* Task handle. */
-  //     0);               /* Core where the task should run */
+  xTaskCreatePinnedToCore(
+      UpdateDisplay, /* Function to implement the task */
+      "UpdateDisplayTask",         /* Name of the task */
+      10000,            /* Stack size in words */
+      NULL,             /* Task input parameter */
+      2,                /* Priority of the task */
+      &UpdateDisplayTask,          /* Task handle. */
+      0);               /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -8322,7 +8324,7 @@ void loop() {
 
   SatIOPortController();
 
-  UpdateDisplay();
+  // UpdateDisplay();
 
   sdcardCheck(); // automatic sdcard discovery
 
