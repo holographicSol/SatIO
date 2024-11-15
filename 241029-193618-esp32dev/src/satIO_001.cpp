@@ -228,6 +228,7 @@ struct menuStruct {
   int numpad_key = NULL;           // allows numpad to differentiate between values
   int page = 0;                    // currently displayed page
   int backpage = 0;                // page we would like to return to after current page
+  int previous_page = 0;           // a page different from backpage, as should be distintly previous page
   int matrix_select = 0;           // index matrix switch
   int matrix_function_select = 0;  // index available functions for matrix switch
   int function_index = 0;          // index function for matrix switch
@@ -6476,40 +6477,6 @@ bool DisplayPage0() {
     // display the sprite and free memory
     // hud.pushSprite(0, 0, TFT_TRANSPARENT);
     // hud.deleteSprite();
-    
-    // // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
-    // // the craft will be accomponied by a scale and mapped to scale.
-    // uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
-    // // Define hud pivot point
-    // uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-    // uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
-    // uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
-    // // Draw the red hud with a yellow tip
-    // // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
-    // uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
-    // // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
-    // // Draw hud centre boss
-    // uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
-    // // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
-    // tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
-
-    // // rotate pod wing according to INS data
-    // int gpatt_roll = atoi(gpattData.roll); // comment to test roll
-    // // int gpatt_roll = 45; // uncomment to test roll
-    // // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
-    // // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
-    // int offset_gpatt_roll = 90;
-    // int temporary_gpatt_roll;
-    // temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
-    // if (temporary_gpatt_roll>360) {
-    //   int offset_2 = temporary_gpatt_roll-360;
-    //   temporary_gpatt_roll=0;
-    //   for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
-    // }
-    // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
-    // uap.pushRotated(temporary_gpatt_roll);
-    // yield();
-    // uap.deleteSprite();
 
     // other sensory data
 
@@ -7911,26 +7878,72 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
   else {return false;}
 }
 
+void DisplayUAP() {
+  // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
+  // the craft will be accomponied by a scale and mapped to scale.
+  uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
+  // Define hud pivot point
+  uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
+  uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
+  uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
+  // Draw the red hud with a yellow tip
+  // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
+  uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
+  // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
+  // Draw hud centre boss
+  uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
+  // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
+  tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
+
+  // rotate pod wing according to INS data
+  int gpatt_roll = atoi(gpattData.roll); // comment to test roll
+  // int gpatt_roll = 45; // uncomment to test roll
+  // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
+  // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
+  int offset_gpatt_roll = 90;
+  int temporary_gpatt_roll;
+  temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
+  if (temporary_gpatt_roll>360) {
+    int offset_2 = temporary_gpatt_roll-360;
+    temporary_gpatt_roll=0;
+    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
+  }
+  // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
+  uap.pushRotated(temporary_gpatt_roll);
+  yield(); uap.deleteSprite();
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 UPDATE DISPLAY
 
-// void UpdateDisplay( void * pvParameters ) {
 void UpdateDisplay() {
-
+    // menuData.page=5;  // force a specific page to be displayed (dev)
+    
   Serial.println("[page] " + String(menuData.page));
 
   // while (1) {
 
   /* populates strite according to page then displays sprite */
 
-  // Create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
+  // // layer zero sprite: create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
   hud.setColorDepth(8);
   hud.createSprite(320, 240);
   hud.fillSprite(TFT_TRANSPARENT);
-  hud.fillRect(0, 0, 320, 240, BG_COL_0);
-  // menuData.page=5;  // force a specific page to be displayed (dev)
 
-  // determine which sprite to build
+  // currently we clear screen as a general rule if the previous page is not equal to current page, otherwise leave it
+  if (!menuData.page==menuData.previous_page) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
+
+  // then decide if we will fill screen or portions of screen according to page, with layers of sprites in mind
+  if (menuData.page==0) {
+    if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
+    hud.fillRect(0, 0, 320, 94, BG_COL_0);
+    hud.fillRect(0, 205, 320, 35, BG_COL_0);
+    hud.fillRect(0, 0, 35, 240, BG_COL_0);
+    hud.fillRect(288, 0, 35, 240, BG_COL_0);
+    }
+  else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
+
+  // layer zero sprites: draw
   bool checktouch = false;
   if (checktouch == false) {checktouch = DisplaySavingSplash();}
   if (checktouch == false) {checktouch = DisplayLoadingSplash();}
@@ -7952,10 +7965,12 @@ void UpdateDisplay() {
   if (checktouch == false) {checktouch = DisplaySettingsSaveMatrix();}
   if (checktouch == false) {checktouch = SiderealPlanetsSettings();}
 
+  // layer zero sprites: push and free memory
   hud.pushSprite(0, 0, TFT_TRANSPARENT);
   hud.deleteSprite();
-  // delay(5);
-  // }
+  
+  // layer 1 sprites: draw
+  if (menuData.page==0) {DisplayUAP();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
