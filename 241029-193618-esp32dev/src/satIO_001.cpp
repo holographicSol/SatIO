@@ -6385,7 +6385,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
-    // Yaw Scale:
+    /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
     hud.drawRect(184, 200, 100, 1, TFT_BLUE);  // x axis: yaw
     int temporary_yaw = 0;
     //  memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
@@ -6402,8 +6402,7 @@ bool DisplayPage0() {
     }
     else {hud.fillTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_BLUE);}
     
-
-    // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
+    /* Pitch Scale: 0/360 = center | 90=vertical up | 180=upside doown | 180=upside down | 270=vertical down */
     hud.drawRect(284, 100, 1, 100, TFT_RED);  // y axis: pitch
     // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "180"); // uncomment to test pitch degrees
     int temporary_pitch = 0;
