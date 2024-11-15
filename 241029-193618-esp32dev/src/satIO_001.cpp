@@ -6385,7 +6385,7 @@ bool DisplayPage0() {
     // Yaw Scale:
     hud.drawRect(185, 202, 100, 1, TFT_BLUE);  // x axis: yaw
     int temporary_yaw = 0;
-     memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
+    //  memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       temporary_yaw = map(atof(gpattData.yaw), 0, 180, 235, 285);
       }
