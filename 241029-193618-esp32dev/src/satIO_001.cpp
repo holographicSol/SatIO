@@ -6386,25 +6386,28 @@ bool DisplayPage0() {
     hud.drawRect(285, 102, 1, 100, TFT_RED);   // y axis: pitch
     
     int temporary_yaw = 0;
+     memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90.00"); // uncomment to test pitch degrees
+     Serial.println("[yaw] " + String(gpattData.yaw));
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       temporary_yaw = map(atof(gpattData.yaw), 0, 180, 235, 285);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
-      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 185, 235);
+      temporary_yaw = map(atof(gpattData.yaw), 180, 360, 185, 235);
       }
+    Serial.println("[mapped yaw] " + String(temporary_yaw));
     hud.drawRect(temporary_yaw, 198, 1, 4, TFT_BLUE);  // x axis: mapped yaw
 
+    // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
     int temporary_pitch = 0;
-    memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "0.00"); // uncomment to test pitch degrees
-    Serial.println("[pitch] " + String(gpattData.pitch));
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
-      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 100, 150);
+      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 150, 100);
       }
     else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
-      temporary_pitch = map(atof(gpattData.pitch), 180, 360, 150, 300);
+      temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
+      temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
       }
-    Serial.println("[mapped pitch] " + String(temporary_pitch));
     hud.drawRect(281, temporary_pitch, 4, 1, TFT_RED);  // y axis: mapped pitch
+
 
     // blue vertical lines: reflect yaw (turning left/right)
 
