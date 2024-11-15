@@ -6540,10 +6540,10 @@ bool DisplayPage0() {
     // small telemetry graph
     // altitude                 N/S/E/W
     // heading    gyro -o-   |           | -> alt
-    // roll     (secondary)  |           |
-    // pitch                 | ----o---- | -> roll/pitch/yaw
+    // roll      (primary)   |           |                  
+    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, secondary gyro)  
     // yaw                   |___________|
-    //
+    // (currently there is no primary gyro)
     // ----------------------------------------------------------
 
     // create a page for debug/error table
