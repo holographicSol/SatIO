@@ -7890,7 +7890,7 @@ void DisplayUAP() {
 
   uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
   // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
-  uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);            // draw hud centre boss
+  uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);            // draw hud centre boss
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
   tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
 
