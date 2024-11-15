@@ -6382,22 +6382,20 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
+    // Yaw Scale:
     hud.drawRect(185, 202, 100, 1, TFT_BLUE);  // x axis: yaw
-    hud.drawRect(285, 102, 1, 100, TFT_RED);   // y axis: pitch
-    
     int temporary_yaw = 0;
-     memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90.00"); // uncomment to test pitch degrees
-     Serial.println("[yaw] " + String(gpattData.yaw));
+     memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       temporary_yaw = map(atof(gpattData.yaw), 0, 180, 235, 285);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       temporary_yaw = map(atof(gpattData.yaw), 180, 360, 185, 235);
       }
-    Serial.println("[mapped yaw] " + String(temporary_yaw));
-    hud.drawRect(temporary_yaw, 198, 1, 4, TFT_BLUE);  // x axis: mapped yaw
+    hud.drawRect(temporary_yaw, 198, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
 
     // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
+    hud.drawRect(285, 102, 1, 100, TFT_RED);  // y axis: pitch
     int temporary_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
       temporary_pitch = map(atof(gpattData.pitch), 0, 180, 150, 100);
@@ -6406,7 +6404,7 @@ bool DisplayPage0() {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
       }
-    hud.drawRect(281, temporary_pitch, 4, 1, TFT_RED);  // y axis: mapped pitch
+    hud.drawRect(281, temporary_pitch, 4, 1, TFT_RED);  // y axis: draw mapped pitch
 
 
     // blue vertical lines: reflect yaw (turning left/right)
