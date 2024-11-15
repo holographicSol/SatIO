@@ -6541,7 +6541,8 @@ bool DisplayPage0() {
     // altitude                 N/S/E/W
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
-    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro. focused gyro may be considered by scenario)
+    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro. focused gyro may be considered by scenario
+    //                       |           |    due to primary gyro being independent of inertia)
     // yaw                   |___________|
     // (currently there is no primary)
     // ----------------------------------------------------------
