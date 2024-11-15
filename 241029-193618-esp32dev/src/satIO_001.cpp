@@ -6411,7 +6411,11 @@ bool DisplayPage0() {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
       }
-    hud.drawRect(280, temporary_pitch, 4, 1, TFT_RED);  // y axis: draw mapped pitch
+    // hud.drawRect(280, temporary_pitch, 4, 1, TFT_RED);  // y axis: draw mapped pitch
+    if (atoi(gpattData.pitch)==0) {
+      hud.fillTriangle(280, temporary_pitch-3, 280, temporary_pitch+3, 280-3, temporary_pitch, TFT_GREEN);
+    }
+    else {hud.fillTriangle(280, temporary_pitch-3, 280, temporary_pitch+3, 280-3, temporary_pitch, TFT_RED);}
 
 
     // blue vertical lines: reflect yaw (turning left/right)
