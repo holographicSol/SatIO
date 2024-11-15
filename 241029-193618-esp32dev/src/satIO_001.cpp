@@ -6392,7 +6392,11 @@ bool DisplayPage0() {
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       temporary_yaw = map(atof(gpattData.yaw), 180, 360, 184, 235);
       }
-    hud.drawRect(temporary_yaw, 196, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
+    // hud.drawRect(temporary_yaw, 196, 1, 4, TFT_BLUE);  // x axis: draw mapped yaw
+    //               x 1st vertex  y 1st vertex   x 2nd vertex  y 2nd vertex  x 3rd vertex  y 3rd vertex
+    // hud.drawTriangle(50,           50,           100,           150,          150,          10,           TFT_YELLOW);
+
+    hud.drawTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-4, TFT_BLUE);
 
     // Pitch Scale: 0>180 is center to upper | 180->360 is lower to center 
     hud.drawRect(284, 100, 1, 100, TFT_RED);  // y axis: pitch
