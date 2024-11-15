@@ -6187,13 +6187,6 @@ bool isTouchTitleBar(TouchPoint p) {
   return false;
 }
 
-// int offset_gpatt_roll = 90;  // uncomment to test roll
-
-// long map(long x, long in_min, long in_max, long out_min, long out_max)
-// {
-//   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-// }
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY PAGE 0
 
@@ -7878,6 +7871,10 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
   else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY INS DATA
+// int offset_gpatt_roll = 90;  // uncomment to test roll
+
 void DisplayUAP() {
   // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
   // the craft will be accomponied by a scale and mapped to scale.
@@ -7899,7 +7896,7 @@ void DisplayUAP() {
   int gpatt_roll = atoi(gpattData.roll); // comment to test roll
   // int gpatt_roll = 45; // uncomment to test roll
   // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
-  // offset_gpatt_roll +=1;  // uncomment to test roll clockwise 1 degree a frame
+  // offset_gpatt_roll +=5;  // uncomment to test roll clockwise 1 degree a frame
   int offset_gpatt_roll = 90;
   int temporary_gpatt_roll;
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
