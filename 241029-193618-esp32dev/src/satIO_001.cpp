@@ -7894,7 +7894,8 @@ void DisplayUAP() {
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
   tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
 
-  offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise 1 degree a frame
+  offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise n degrees a frame
+  // gpatt_roll = atoi(gpattData.roll);                             // uncomment to rotate according to actual INS data
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
   if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
     offset_2 = temporary_gpatt_roll-360;                         // new offset is units over 360 degrees 
