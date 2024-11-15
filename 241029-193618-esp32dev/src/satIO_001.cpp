@@ -7923,7 +7923,7 @@ void UpdateDisplay() {
 
   /* populates strite according to page then displays sprite */
 
-  // // layer zero sprite: create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
+  // layer zero sprite: create an 8-bit sprite 70x 80 pixels (uses 5600 bytes of RAM)
   hud.setColorDepth(8);
   hud.createSprite(320, 240);
   hud.fillSprite(TFT_TRANSPARENT);
