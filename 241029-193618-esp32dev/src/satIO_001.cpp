@@ -115,9 +115,8 @@ XPT2046_Bitbang ts(XPT2046_MOSI, XPT2046_MISO, XPT2046_CLK, XPT2046_CS);
 
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSPI_Button key[6];
-TFT_eSprite hud = TFT_eSprite(&tft);
-TFT_eSprite uap = TFT_eSprite(&tft); // Sprite object for hud
-TFT_eSprite v_heading = TFT_eSprite(&tft); 
+TFT_eSprite hud = TFT_eSprite(&tft);        // general sprite
+TFT_eSprite uap = TFT_eSprite(&tft);        // INS roll sprite
 
 
 #define LCD_BACK_LIGHT_PIN 21    // backlight pin
@@ -6383,6 +6382,9 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
+    hud.drawRect(185, 202, 100, 1, TFT_BLUE);  // x axis: yaw
+    hud.drawRect(285, 102, 1, 100, TFT_RED);   // y axis: pitch
+
     // blue vertical lines: reflect yaw (turning left/right)
 
     // red horizontal lines: reflect pitch (turning up/down)
@@ -7882,20 +7884,20 @@ int offset_2;
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
+  uap.createSprite(70, 70); // create the hud Sprite 11 pixels wide by 49 high
 
   uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 75/2;              // y pivot of Sprite (10 pixels from bottom)
+  uint16_t pod_piv_y = 70/2;              // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
 
   uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
   // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
   uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
-  tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
+  tft.setPivot(235, 152);                                        // set the TFT pivot point that the hud will rotate around
 
   offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise n degrees a frame
-  // gpatt_roll = atoi(gpattData.roll);                             // uncomment to rotate according to actual INS data
+  // gpatt_roll = atoi(gpattData.roll);                          // uncomment to rotate according to actual INS data
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
   if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
     offset_2 = temporary_gpatt_roll-360;                         // new offset is units over 360 degrees 
