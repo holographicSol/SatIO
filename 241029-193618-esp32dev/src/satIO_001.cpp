@@ -7873,7 +7873,6 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY INS DATA
-int offset_gpatt_roll = 90;  // uncomment to test roll
 
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
@@ -7890,7 +7889,7 @@ void DisplayUAP() {
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
   tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
 
-  
+  int offset_gpatt_roll = 90;                                    // allows craft to have a default horizontal orientation
   int gpatt_roll = atoi(gpattData.roll);                         // rotate pod wing according to INS data
   offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise 1 degree a frame
   int temporary_gpatt_roll;                                      // mapped roll
