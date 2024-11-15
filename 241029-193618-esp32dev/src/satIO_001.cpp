@@ -7896,7 +7896,7 @@ void DisplayUAP() {
   int temporary_gpatt_roll;                                      // mapped roll
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
   if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
-    int offset_2 = temporary_gpatt_roll-360;                     // new offset is how much over 360 degrees 
+    int offset_2 = temporary_gpatt_roll-360;                     // new offset is units over 360 degrees 
     temporary_gpatt_roll=0;                                      // repurpose temporary roll
     for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0
   }
