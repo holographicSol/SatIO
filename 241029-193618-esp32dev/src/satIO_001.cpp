@@ -7895,10 +7895,10 @@ void DisplayUAP() {
   offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise 1 degree a frame
   int temporary_gpatt_roll;                                      // mapped roll
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
-  if (temporary_gpatt_roll>360) {                                // check if offset roll > 360 degrees
+  if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
     int offset_2 = temporary_gpatt_roll-360;                     // new offset is how much over 360 degrees 
     temporary_gpatt_roll=0;                                      // repurpose temporary roll
-    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0 
+    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0
   }
   // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
   uap.pushRotated(temporary_gpatt_roll);
