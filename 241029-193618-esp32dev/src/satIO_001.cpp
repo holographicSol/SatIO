@@ -7873,37 +7873,32 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY INS DATA
-// int offset_gpatt_roll = 90;  // uncomment to test roll
+int offset_gpatt_roll = 90;  // uncomment to test roll
 
 void DisplayUAP() {
-  // in development: a line representing a vehicular craft with corresponding pitch roll and yaw. 
-  // the craft will be accomponied by a scale and mapped to scale.
-  uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
-  // Define hud pivot point
-  uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 75/2; // y pivot of Sprite (10 pixels from bottom)
-  uap.setPivot(pod_piv_X, pod_piv_y);         // Set pivot point in this Sprite
-  // Draw the red hud with a yellow tip
-  // Keep hud tip 1 pixel inside dial circle to avoid leaving stray pixels
-  uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // needle
-  // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // needla tip
-  // Draw hud centre boss
-  uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);
-  // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE); 
-  tft.setPivot(225, 94+50); // Set the TFT pivot point that the hud will rotate around
+  /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  // rotate pod wing according to INS data
-  int gpatt_roll = atoi(gpattData.roll); // comment to test roll
-  // int gpatt_roll = 45; // uncomment to test roll
-  // offset_gpatt_roll -=1;  // uncomment to test roll counter clockwise 1 degree a frame
-  // offset_gpatt_roll +=5;  // uncomment to test roll clockwise 1 degree a frame
-  int offset_gpatt_roll = 90;
-  int temporary_gpatt_roll;
-  temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;
-  if (temporary_gpatt_roll>360) {
-    int offset_2 = temporary_gpatt_roll-360;
-    temporary_gpatt_roll=0;
-    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}
+  uap.createSprite(75, 75); // create the hud Sprite 11 pixels wide by 49 high
+
+  uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
+  uint16_t pod_piv_y = 75/2;              // y pivot of Sprite (10 pixels from bottom)
+  uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
+
+  uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
+  // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
+  uap.fillCircle(pod_piv_X, pod_piv_y, 3, TFT_GREEN);            // draw hud centre boss
+  // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
+  tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
+
+  
+  int gpatt_roll = atoi(gpattData.roll);                         // rotate pod wing according to INS data
+  offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise 1 degree a frame
+  int temporary_gpatt_roll;                                      // mapped roll
+  temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
+  if (temporary_gpatt_roll>360) {                                // check if offset roll > 360 degrees
+    int offset_2 = temporary_gpatt_roll-360;                     // new offset is how much over 360 degrees 
+    temporary_gpatt_roll=0;                                      // repurpose temporary roll
+    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0 
   }
   // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
   uap.pushRotated(temporary_gpatt_roll);
