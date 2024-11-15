@@ -6384,6 +6384,15 @@ bool DisplayPage0() {
 
     hud.drawRect(185, 202, 100, 1, TFT_BLUE);  // x axis: yaw
     hud.drawRect(285, 102, 1, 100, TFT_RED);   // y axis: pitch
+    
+    int temporary_yaw = 0;
+    if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
+      temporary_yaw = map(atof(gpattData.yaw), 0, 360, 235, 285);
+      }
+    else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
+      temporary_yaw = map(atof(gpattData.yaw), 0, 360, 185, 235);
+      }
+    hud.drawRect(temporary_yaw, 198, 1, 4, TFT_BLUE);  // x axis: mapped yaw
 
     // blue vertical lines: reflect yaw (turning left/right)
 
