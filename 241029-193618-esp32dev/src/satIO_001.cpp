@@ -7874,6 +7874,11 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY INS DATA
 
+int temporary_gpatt_roll;                                      // mapped roll
+int offset_gpatt_roll = 90;                                    // allows craft to have a default horizontal orientation
+int gpatt_roll = atoi(gpattData.roll);                         // rotate pod wing according to INS data
+int offset_2;
+
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
@@ -7889,13 +7894,10 @@ void DisplayUAP() {
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
   tft.setPivot(225, 94+50);                                      // set the TFT pivot point that the hud will rotate around
 
-  int offset_gpatt_roll = 90;                                    // allows craft to have a default horizontal orientation
-  int gpatt_roll = atoi(gpattData.roll);                         // rotate pod wing according to INS data
   offset_gpatt_roll +=5;                                         // uncomment to test roll clockwise 1 degree a frame
-  int temporary_gpatt_roll;                                      // mapped roll
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
   if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
-    int offset_2 = temporary_gpatt_roll-360;                     // new offset is units over 360 degrees 
+    offset_2 = temporary_gpatt_roll-360;                     // new offset is units over 360 degrees 
     temporary_gpatt_roll=0;                                      // repurpose temporary roll
     for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0
   }
