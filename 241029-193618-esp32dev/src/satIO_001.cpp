@@ -6217,6 +6217,37 @@ bool isTouchTitleBar(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY PAGE 0
 
+// Heading:
+char ground_heading_names[16][4] = {
+  "N",  "NNE",  "NW",  "ENE",
+  "E", "ESE", "SE", "SSE",
+  "S", "SSW", "SW", "WSW",
+  "W", "WNW", "NW", "NNW"
+};
+float ground_heading_range[16][2][3] {
+  {0, 0},      // n
+  {1, 45},     // nne
+  {45, 45},    // ne
+  {45, 90},    // ene
+
+  {90, 90},    // e
+  {90, 135},   // ese
+  {135, 135},  // se
+  {135, 180},  // sse
+
+  {180, 180},  // s
+  {180, 225},  // ssw
+  {225, 225},  // sw
+  {225, 270},  // wsw
+
+  {270, 270},  // w
+  {270, 315},  // wnw
+  {315, 315},  // nw
+  {315, 360},  // nnw
+};
+
+char ground_heading_name[10];
+
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 0) {
@@ -6388,53 +6419,33 @@ bool DisplayPage0() {
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
-    
+
     // Heading:
-    char ground_heading_names[16][10] = {
-      "N",  "NNE",  "NW",  "ENE",
-      "E", "ESE", "SE", "SSE",
-      "S", "SSW", "SW", "WSW",
-      "W", "WNW", "NW", "NNW"
-    };
-    float ground_heading_range[16][2][8] {
-      {0, 0},      // n
-      {1, 45},     // nne
-      {45, 45},    // ne
-      {45, 90},    // ene
-
-      {90, 90},    // e
-      {90, 135},   // ese
-      {135, 135},  // se
-      {135, 180},  // sse
-
-      {180, 180},  // s
-      {180, 225},  // ssw
-      {225, 225},  // sw
-      {225, 270},  // wsw
-
-      {270, 270},  // w
-      {270, 315},  // wnw
-      {315, 315},  // nw
-      {315, 360},  // nnw
-    };
-
-    char ground_heading_name[10];
-
-    // for (int i = 0; i<15; i++) {
-    //   if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
-    //     uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[0][i][0], ground_heading_range[0][i][1], 50+uiData.yaw_x, 100+uiData.yaw_x);
-    //     memset(ground_heading_name, 0, sizeof(ground_heading_name));
-    //     strcpy(ground_heading_name, ground_heading_names[i]);
-    //   }
-    // }
-
     Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+    for (int i = 0; i<16; i++) {
+      if (atof(gnrmcData.ground_heading)>=0 && atof(gnrmcData.ground_heading)<=180) {
+        if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
+          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 15, 50+uiData.yaw_x, 100+uiData.yaw_x);
+          memset(ground_heading_name, 0, sizeof(ground_heading_name));
+          strcpy(ground_heading_name, ground_heading_names[i]);
+          // break;
+        }
+      }
+      else if (atof(gnrmcData.ground_heading)>180 && atof(gnrmcData.ground_heading)<=360) {
+        if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
+          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 15, uiData.yaw_x, uiData.yaw_x+50);
+          memset(ground_heading_name, 0, sizeof(ground_heading_name));
+          strcpy(ground_heading_name, ground_heading_names[i]);
+          // break;
+        }
+      }
+    }
+    Serial.println("[mapped ground name] " + String(ground_heading_name));
     Serial.println("[mapped ground_heading] " + String(uiData.mapped_ground_heading));
-
-    // hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
+    hud.drawRect(162, rdata_y+18*1, 120, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(ground_heading_name)+String(""), 232, rdata_y+18*1+8);
 
 
 
