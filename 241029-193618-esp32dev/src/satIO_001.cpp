@@ -7963,7 +7963,7 @@ void DisplayUAP() {
   uiData.uap_piv_X = uap.width() / 2;                                          // x pivot of Sprite (middle)
   uiData.uap_piv_y = 55/2;                                                     // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                            // Set pivot point in this Sprite
-  uap.fillRect(uiData.uap_piv_X - 1, 1, 3, uiData.uap_piv_y +100, TFT_GREEN);  // uap
+  uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
   uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
   // offset_gpatt_roll_0 +=45;                                                 // uncomment to test roll clockwise n degrees a frame
