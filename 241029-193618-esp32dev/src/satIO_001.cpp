@@ -6386,45 +6386,81 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
-    int yaw_x = 178;
-    int yaw_y = 202;
+    int yaw_x = 182;
+    int yaw_y = 198;
     int yaw_w = 100;
     int yaw_h = 1;
     int yaw_triangle_base = 5;
-    hud.drawRect(yaw_x, yaw_y, yaw_w+yaw_triangle_base, yaw_h, TFT_BLUE);  // x axis: yaw
+    int yaw_square_base = 2;
+    // uncomment to use square pointer
+    hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);  // x axis: yaw
+    // uncomment to use triangle pointer
+    // hud.drawRect(yaw_x, yaw_y, yaw_w+yaw_triangle_base, yaw_h, TFT_BLUE);  // x axis: yaw
     int temporary_yaw = 0;
-    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "270"); // uncomment to test pitch degrees
+    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "180"); // uncomment to test yaw degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
-      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x+yaw_triangle_base/2, 100+yaw_x+yaw_triangle_base/2);
+      // uncomment to use square pointer
+      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x, 100+yaw_x);
+      // uncomment to use triangle pointer
+      // temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x+yaw_triangle_base/2, 100+yaw_x+yaw_triangle_base/2);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
-      temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
+      // uncomment to use square pointer
+      temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x, 50+yaw_x);
+      // uncomment to use triangle pointer
+      // temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
       }
     if ((atof(gpattData.yaw)==0) || (atof(gpattData.yaw)==90) || (atof(gpattData.yaw)==180) || (atof(gpattData.yaw)==270)) {
-      hud.fillTriangle(temporary_yaw-yaw_triangle_base/2, yaw_y-3, temporary_yaw+yaw_triangle_base/2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
+      // uncomment to use square pointer
+      hud.fillRect(temporary_yaw, yaw_y+3, yaw_square_base, yaw_square_base, TFT_GREEN);
+      // uncomment to use triangle pointer
+      // hud.fillTriangle(temporary_yaw-yaw_triangle_base/2, yaw_y-3, temporary_yaw+yaw_triangle_base/2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
     }
-    else {hud.fillTriangle(temporary_yaw-2, yaw_y-3, temporary_yaw+2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_BLUE);}
+    else {
+      // uncomment to use square pointer
+      hud.fillRect(temporary_yaw, yaw_y+3, yaw_square_base, yaw_square_base, TFT_BLUE);
+      // uncomment to use triangle pointer
+      // hud.fillTriangle(temporary_yaw-2, yaw_y-3, temporary_yaw+2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_BLUE);
+      }
     
     /* Pitch Scale: 0/360 = center | 90=vertical up | 180=upside doown | 180=upside down | 270=vertical down */
-    int pitch_x = 286;
+    int pitch_x = 282;
     int pitch_y = 98;
     int pitch_w = 1;
     int pitch_h = 100;
     int pitch_triangle_base = 5;
-    hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h+pitch_triangle_base, TFT_RED);  // y axis: pitch
-    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "270"); // uncomment to test pitch degrees
+    int pitch_square_base = 2;
+    // uncomment to use square pointer
+    hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h, TFT_RED);  // y axis: pitch
+    // uncomment to use triangle pointer
+    // hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h+pitch_triangle_base, TFT_RED);  // y axis: pitch
+    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "220"); // uncomment to test pitch degrees
     int temporary_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
-      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y+pitch_triangle_base/2, pitch_y+pitch_triangle_base/2);
+      // uncomment to use square pointer
+      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y, pitch_y);
+      // uncomment to use triangle pointer
+      // temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y+pitch_triangle_base/2, pitch_y+pitch_triangle_base/2);
       }
     else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
-      temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y+pitch_triangle_base/2)*2-temporary_pitch, 50+pitch_y+pitch_triangle_base+temporary_pitch);
+      // uncomment to use square pointer
+      temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y-temporary_pitch)*2, 50+pitch_y+temporary_pitch);
+      // uncomment to use triangle pointer
+      // temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y+pitch_triangle_base/2)*2-temporary_pitch, 50+pitch_y+pitch_triangle_base+temporary_pitch);
       }
     if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
-      hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_GREEN);
+      // uncomment to use square pointer
+      hud.fillRect(pitch_x+3, temporary_pitch, pitch_square_base, pitch_square_base, TFT_GREEN);
+      // uncomment to use triangle pointer
+      // hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_GREEN);
     }
-    else {hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_RED);}
+    else {
+    // uncomment to use square pointer
+    hud.fillRect(pitch_x+3, temporary_pitch, pitch_square_base, pitch_square_base, TFT_RED);
+    // uncomment to use triangle pointer
+    // hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_RED);
+    }
 
 
     // blue vertical lines: reflect yaw (turning left/right)
@@ -7937,7 +7973,7 @@ void DisplayUAP() {
   // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
   uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
-  tft.setPivot(230, 150);                                        // set the TFT pivot point that the hud will rotate around
+  tft.setPivot(232, 148);                                        // set the TFT pivot point that the hud will rotate around
   // offset_gpatt_roll +=45;                                     // uncomment to test roll clockwise n degrees a frame
   offset_gpatt_roll +=1;                                         // uncomment to test roll clockwise n degrees a frame
   // gpatt_roll = atoi(gpattData.roll);                          // uncomment to rotate according to actual INS data
@@ -7974,11 +8010,11 @@ void UpdateDisplay(void * pvParameters) {
 
       // then decide if we will fill screen or portions of screen according to page, with layers of sprites in mind
       if (menuData.page==0) {
-        if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
-        hud.fillRect(0, 0, 320, 94, BG_COL_0);
-        hud.fillRect(0, 205, 320, 35, BG_COL_0);
-        hud.fillRect(0, 0, 35, 240, BG_COL_0);
-        hud.fillRect(288, 0, 35, 240, BG_COL_0);
+        if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;} // full
+        hud.fillRect(0, 0, 320, 94, BG_COL_0);    // upper
+        hud.fillRect(0, 195, 320, 45, BG_COL_0);  // lower 
+        hud.fillRect(0, 0, 35, 240, BG_COL_0);    // left
+        hud.fillRect(278, 0, 35, 240, BG_COL_0);  // right
         }
       else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
 
