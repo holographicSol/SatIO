@@ -8348,7 +8348,7 @@ void readGPS() {
 
 void loop() {
 
-  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+  timeData.mainLoopTimeStart = millis();
 
   /* take a snapshot of sensory and calculated data */
   readGPS();
@@ -8372,7 +8372,7 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
-  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
+  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
