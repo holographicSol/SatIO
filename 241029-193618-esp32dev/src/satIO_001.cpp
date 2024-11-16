@@ -6400,8 +6400,6 @@ bool DisplayPage0() {
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
       }
-    //               x 1st vertex  y 1st vertex   x 2nd vertex  y 2nd vertex  x 3rd vertex  y 3rd vertex
-    // hud.drawTriangle(50,           50,           100,           150,          150,          10,           TFT_YELLOW);
     if (atoi(gpattData.yaw)==0) {
       hud.fillTriangle(temporary_yaw-yaw_triangle_base/2, yaw_y-3, temporary_yaw+yaw_triangle_base/2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
     }
