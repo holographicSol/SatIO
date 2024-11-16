@@ -6434,15 +6434,15 @@ bool DisplayPage0() {
     // Heading: maps heading dgrees to screen x,y coordinates (in development)
     // uiData.mapped_ground_heading++; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
     // uiData.mapped_ground_heading--; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
-    // uiData.mapped_ground_heading=0; // uncomment to test ground heading azimuth
-    // ltoa(uiData.mapped_ground_heading, gnrmcData.ground_heading, 10);  // uncomment to test ground heading azimuth
+    uiData.mapped_ground_heading=0; // uncomment to test ground heading azimuth
+    ltoa(uiData.mapped_ground_heading, gnrmcData.ground_heading, 10);  // uncomment to test ground heading azimuth
     
-    // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+    Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
-      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
+      Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] || atof(gnrmcData.ground_heading)==ground_heading_range[i][1]) {
-        // Serial.println("[ground_heading in range i==n] " + String(i));
+        Serial.println("[ground_heading in range i==n] " + String(i));
         uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
         break;
@@ -6450,7 +6450,7 @@ bool DisplayPage0() {
       }
       else {
         if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) < ground_heading_range[i][1]) {
-          // Serial.println("[ground_heading in range i!=n] " + String(i));
+          Serial.println("[ground_heading in range i!=n] " + String(i));
           uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
           memset(name_ground_heading, 0, sizeof(name_ground_heading));
           strcpy(name_ground_heading, ground_heading_names[i]);
@@ -6458,8 +6458,8 @@ bool DisplayPage0() {
         }
       }
     }
-    // Serial.println("[mapped ground name] " + String(name_ground_heading));
-    // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
+    Serial.println("[mapped ground name] " + String(name_ground_heading));
+    Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(uiData.yaw_x, uiData.pitch_y-16, 100, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (atof(gnrmcData.ground_speed)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
@@ -6475,31 +6475,31 @@ bool DisplayPage0() {
     180°: A tailwind 
     270°: The top of an image points west/left when the camera is looking down 
     */
-    // hud.drawRect(118, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    // if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
-    // if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    // hud.drawString(String(atoi(gnggaData.altitude))+String(""), 143, rdata_y+18*4+8);
-
-    // Pitch:
-    // hud.drawRect(238, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // hud.drawString(String(atoi(gpattData.pitch))+String(""), 263, rdata_y+18*1+8);
+    hud.drawRect(uiData.yaw_x-70, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    hud.drawString(String(atoi(gnggaData.altitude))+String(""), uiData.yaw_x-40, rdata_y+18*4+8);
 
     // Roll:
-    // hud.drawRect(118, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // hud.drawString(String(atoi(gpattData.roll))+String(""), 143, rdata_y+18*6+8);
+    hud.drawRect(uiData.yaw_x-70, rdata_y+18*5, 50, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atoi(gpattData.roll))+String(""), uiData.yaw_x-40, rdata_y+18*5+8);
 
-    // // Yaw:
-    // hud.drawRect(118, rdata_y+18*7, 50, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // hud.drawString(String(atoi(gpattData.yaw))+String(""), 143, rdata_y+18*7+8);
+    // Pitch:
+    hud.drawRect(uiData.yaw_x-70, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atoi(gpattData.pitch))+String(""), uiData.yaw_x-40, rdata_y+18*6+8);
+
+    // Yaw:
+    hud.drawRect(uiData.yaw_x-70, rdata_y+18*7, 50, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atoi(gpattData.yaw))+String(""), uiData.yaw_x-40, rdata_y+18*7+8);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
