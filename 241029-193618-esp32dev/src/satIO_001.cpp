@@ -6392,24 +6392,23 @@ bool DisplayPage0() {
     int yaw_h = 1;
     int yaw_triangle_base = 5;
     int yaw_square_base = 2;
-    // uncomment to use square pointer
     hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);  // x axis: yaw
-    // uncomment to use triangle pointer
-    // hud.drawRect(yaw_x, yaw_y, yaw_w+yaw_triangle_base, yaw_h, TFT_BLUE);  // x axis: yaw
+    // hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);  // x axis: 90 degrees
     int temporary_yaw = 0;
-    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0"); // uncomment to test yaw degrees
+    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90"); // uncomment to test yaw degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       // uncomment to use square pointer
       // temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x, 100+yaw_x);
       // uncomment to use triangle pointer
-      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x+yaw_triangle_base/2, 100+yaw_x+yaw_triangle_base/2);
+      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x, 100+yaw_x);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       // uncomment to use square pointer
       // temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x, 50+yaw_x);
       // uncomment to use triangle pointer
-      temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
+      temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x, 50);
       }
+    Serial.println("[temporary_yaw] " + String(temporary_yaw));
     if ((atof(gpattData.yaw)==0) || (atof(gpattData.yaw)==90) || (atof(gpattData.yaw)==180) || (atof(gpattData.yaw)==270)) {
       // uncomment to use square pointer
       // hud.fillRect(temporary_yaw, yaw_y+3, yaw_square_base, yaw_square_base, TFT_GREEN);
@@ -6432,23 +6431,22 @@ bool DisplayPage0() {
     int pitch_square_base = 2;
     // uncomment to use square pointer
     hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h, TFT_RED);  // y axis: pitch
-    // uncomment to use triangle pointer
-    // hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h+pitch_triangle_base, TFT_RED);  // y axis: pitch
-    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "0"); // uncomment to test pitch degrees
+    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "90"); // uncomment to test pitch degrees
     int temporary_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
       // uncomment to use square pointer
       // temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y, pitch_y);
       // uncomment to use triangle pointer
-      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y+pitch_triangle_base/2, pitch_y+pitch_triangle_base/2);
+      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y, pitch_y);
       }
     else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       // uncomment to use square pointer
       // temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y-temporary_pitch)*2, 50+pitch_y+temporary_pitch);
       // uncomment to use triangle pointer
-      temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y+pitch_triangle_base/2)*2-temporary_pitch, 50+pitch_y+pitch_triangle_base+temporary_pitch);
+      temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y)*2-temporary_pitch, 50+pitch_y+temporary_pitch);
       }
+    Serial.println("[temporary_pitch] " + String(temporary_pitch));
     if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
       // uncomment to use square pointer
       // hud.fillRect(pitch_x+3, temporary_pitch, pitch_square_base, pitch_square_base, TFT_GREEN);
