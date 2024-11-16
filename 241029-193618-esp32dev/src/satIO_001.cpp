@@ -8350,24 +8350,21 @@ void loop() {
 
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
+  /* take a snapshot of sensory and calculated data */
   readGPS();
   check_gngga();
   check_gnrmc();
   check_gpatt();
-
   satIOData();
-
   trackPlanets();
+  sdcardCheck();
 
+  /* calculate switches */
   MatrixSwitchTask();
-
   MatrixStatsCounter();
 
+  /* instruct the portcontroller */
   SatIOPortController();
-
-  // UpdateDisplay();
-
-  sdcardCheck(); // automatic sdcard discovery
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
