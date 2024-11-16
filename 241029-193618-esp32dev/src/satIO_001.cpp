@@ -6475,31 +6475,31 @@ bool DisplayPage0() {
     180°: A tailwind 
     270°: The top of an image points west/left when the camera is looking down 
     */
-    hud.drawRect(uiData.yaw_x+120, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*4, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(atof(gnggaData.altitude))+String(""), uiData.yaw_x+120+25, rdata_y+18*4+8);
+    hud.drawString(String(atof(gnggaData.altitude))+String(""), uiData.yaw_x+120+31, rdata_y+18*4+8);
 
     // Pitch:
-    hud.drawRect(uiData.yaw_x+120, rdata_y+18*5, 50, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*5, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.pitch))+String(""), uiData.yaw_x+120+25, rdata_y+18*5+8);
+    hud.drawString(String(atof(gpattData.pitch))+String(""), uiData.yaw_x+120+31, rdata_y+18*5+8);
 
     // Roll:
-    hud.drawRect(uiData.yaw_x+120, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*6, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.roll))+String(""), uiData.yaw_x+120+25, rdata_y+18*6+8);
+    hud.drawString(String(atof(gpattData.roll))+String(""), uiData.yaw_x+120+31, rdata_y+18*6+8);
 
     // Yaw:
-    hud.drawRect(uiData.yaw_x+120, rdata_y+18*7, 50, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*7, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.yaw))+String(""), uiData.yaw_x+120+25, rdata_y+18*7+8);
+    hud.drawString(String(atof(gpattData.yaw))+String(""), uiData.yaw_x+120+31, rdata_y+18*7+8);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
