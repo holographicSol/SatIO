@@ -6435,11 +6435,13 @@ bool DisplayPage0() {
     int pitch_square_base = 2;
     // uncomment to use square pointer
     hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h, TFT_RED);  // y axis: pitch
-    hud.drawRect(pitch_x+pitch_h, pitch_y+25, 2, 1, TFT_RED);   // x axis: 90 degrees
-    hud.drawRect(pitch_x+pitch_h, pitch_y+75, 2, 1, TFT_RED);   // x axis: 270 degrees
-    hud.drawRect(pitch_x+pitch_h, pitch_y+50, 2, 1, TFT_RED);   // x axis: 0/360 degrees
-    hud.drawRect(pitch_x+pitch_h, pitch_y+100, 2, 1, TFT_RED);      // x axis: 181 degrees
-    hud.drawRect(pitch_x+pitch_h, pitch_y+0, 2, 1, TFT_RED);  // x axis: 180 degrees
+
+    hud.drawRect(pitch_x+pitch_h, pitch_y+25, 2, 1, TFT_RED);   // y axis: 90 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+75, 2, 1, TFT_RED);   // y axis: 270 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+50, 2, 1, TFT_RED);   // y axis: 0/360 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+100, 2, 1, TFT_RED);  // y axis: 181 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+0, 2, 1, TFT_RED);    // y axis: 180 degrees
+    
     // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "90"); // uncomment to test pitch degrees
     int mapped_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
