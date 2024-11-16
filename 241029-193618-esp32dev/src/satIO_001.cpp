@@ -6102,8 +6102,8 @@ struct UIDataStruct {
   int pitch_w = 1;
   int pitch_h = 100;
   int pitch_triangle_base = 5;
-  int mapped_yaw = 0;
-  int mapped_pitch = 0;
+  float mapped_yaw = 0;
+  float mapped_pitch = 0;
 };
 UIDataStruct uiData;
 
