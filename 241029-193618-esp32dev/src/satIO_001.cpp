@@ -7956,11 +7956,11 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 //                                                                                                               DISPLAY INS DATA
 
 void DisplayUAP() {
-  /* in development: a line representing a vehicular craft with corresponding roll */
+  /* a line representing a vehicular craft with corresponding roll */
+  
   int uap_w = 50;
   int uap_h = 50;
-  uap.createSprite(uap_w, uap_h); // create the Sprite pixels width and height
-
+  uap.createSprite(uap_w, uap_h);                                              // create the Sprite pixels width and height
   uiData.uap_piv_X = uap.width() / 2;                                          // x pivot of Sprite (middle)
   uiData.uap_piv_y = uap_h/2;                                                  // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                            // Set pivot point in this Sprite
