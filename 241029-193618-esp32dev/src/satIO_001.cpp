@@ -6481,7 +6481,7 @@ bool DisplayPage0() {
     if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(atof(gnggaData.altitude))+String(""), uiData.yaw_x+120+255, rdata_y+18*4+8);
+    hud.drawString(String(atof(gnggaData.altitude))+String(""), uiData.yaw_x+120+25, rdata_y+18*4+8);
 
     // Pitch:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*5, 50, 16, TFTOBJ_COL0);
