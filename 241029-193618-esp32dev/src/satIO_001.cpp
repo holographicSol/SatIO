@@ -6387,32 +6387,41 @@ bool DisplayPage0() {
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), 168, rdata_y+18*8+8);
 
+    /*
+      int yaw_x = 182;
+      int yaw_y = 198;
+      int yaw_w = 100;
+      int yaw_h = 1;
+      int yaw_triangle_base = 5;
+      int pitch_x = yaw_x+100;
+    */
+
     // Altitude:
-    hud.drawRect(118, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
-    if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(atoi(gnggaData.altitude))+String(""), 143, rdata_y+18*4+8);
+    // hud.drawRect(118, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // if (atof(gnggaData.altitude)<0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    // if (atof(gnggaData.altitude)==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    // if (atof(gnggaData.altitude)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    // hud.drawString(String(atoi(gnggaData.altitude))+String(""), 143, rdata_y+18*4+8);
 
     // Pitch:
-    hud.drawRect(118, rdata_y+18*5, 50, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atoi(gpattData.pitch))+String(""), 143, rdata_y+18*5+8);
+    // hud.drawRect(108, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // hud.drawString(String(atoi(gpattData.pitch))+String(""), 133, rdata_y+18*5+8);
 
     // Roll:
-    hud.drawRect(118, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atoi(gpattData.roll))+String(""), 143, rdata_y+18*6+8);
+    // hud.drawRect(118, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // hud.drawString(String(atoi(gpattData.roll))+String(""), 143, rdata_y+18*6+8);
 
-    // Yaw:
-    hud.drawRect(118, rdata_y+18*7, 50, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atoi(gpattData.yaw))+String(""), 143, rdata_y+18*7+8);
+    // // Yaw:
+    // hud.drawRect(118, rdata_y+18*7, 50, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // hud.drawString(String(atoi(gpattData.yaw))+String(""), 143, rdata_y+18*7+8);
 
     // Latitude:
     hud.drawRect(118, 224, 100, 16, TFTOBJ_COL0);
