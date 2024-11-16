@@ -6390,13 +6390,13 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
     
     // Heading:
-    char heading_names[16][10] = {
+    char ground_heading_names[16][10] = {
       "N",  "NNE",  "NW",  "ENE",
       "E", "ESE", "SE", "SSE",
       "S", "SSW", "SW", "WSW",
       "W", "WNW", "NW", "NNW"
     };
-    int ground_heading_range[16][2][8] {
+    float ground_heading_range[16][2][8] {
       {0, 0},      // n
       {1, 45},     // nne
       {45, 45},    // ne
@@ -6418,19 +6418,23 @@ bool DisplayPage0() {
       {315, 360},  // nnw
     };
 
-    if (atof(gnrmcData.ground_heading)>=0 && atof(gnrmcData.ground_heading)<=180) {
-      uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 180, 50+uiData.yaw_x, 100+uiData.yaw_x);
+    char ground_heading_name[10];
+
+    for (int i = 0; i<16; i++) {
+      if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
+        uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[0][i][0], ground_heading_range[0][i][1], 50+uiData.yaw_x, 100+uiData.yaw_x);
+        memset(ground_heading_name, 0, sizeof(ground_heading_name));
+        strcpy(ground_heading_name, ground_heading_names[i]);
       }
-    else if (atof(gnrmcData.ground_heading)>180 && atof(gnrmcData.ground_heading)<=360) {
-      uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 180, 360, uiData.yaw_x, 50);
-      }
+    }
+
     Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     Serial.println("[mapped ground_heading] " + String(uiData.mapped_ground_heading));
 
-    hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
+    // hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
 
 
 
