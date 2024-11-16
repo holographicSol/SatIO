@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
       };
     */
 
-    // Heading: (in development)
+    // Heading: maps heading dgrees to screen x,y coordinates (in development)
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "00.0"); // uncomment to test ground heading azimuth
     // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
@@ -6466,7 +6466,7 @@ bool DisplayPage0() {
       else {
         if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[i][1]) {
           // Serial.println("[ground_heading in range i] " + String(i));
-          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[i][0], ground_heading_range[i][1], uiData.yaw_x, uiData.yaw_x + 70);
+          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[i][0], ground_heading_range[i][1], uiData.yaw_x, uiData.yaw_x + 74);
           memset(name_ground_heading, 0, sizeof(name_ground_heading));
           strcpy(name_ground_heading, ground_heading_names[i]);
           break;
@@ -6475,7 +6475,7 @@ bool DisplayPage0() {
     }
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
-    hud.drawRect(uiData.yaw_x, rdata_y+18*1, 104, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x, uiData.yaw_x-102, 104, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, rdata_y+18*1+8);
