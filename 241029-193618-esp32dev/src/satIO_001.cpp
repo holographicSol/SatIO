@@ -6476,7 +6476,8 @@ bool DisplayPage0() {
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(uiData.yaw_x, uiData.yaw_x-102, 104, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    if (gnrmcData.ground_speed>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, rdata_y+18*1+8);
 
