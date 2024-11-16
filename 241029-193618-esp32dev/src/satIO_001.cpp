@@ -6218,35 +6218,34 @@ bool isTouchTitleBar(TouchPoint p) {
 //                                                                                                                 DISPLAY PAGE 0
 
 // Heading:
-char ground_heading_names[16][4] = {
-  "N",  "NNE",  "NW",  "ENE",
+char name_ground_heading[10];
+char ground_heading_names[16][10] = {
+  "N",  "NNE",  "NE",  "ENE",
   "E", "ESE", "SE", "SSE",
   "S", "SSW", "SW", "WSW",
-  "W", "WNW", "NW", "NNW"
+  "W", "WNW", "NW", "NNW",
 };
-float ground_heading_range[16][2][3] {
-  {0, 0},      // n
-  {1, 45},     // nne
-  {45, 45},    // ne
-  {45, 90},    // ene
+float ground_heading_range[16][2] {
+  {0.0, 360},      // n
+  {1.0, 44.0},     // nne
+  {45.0, 45.0},    // ne
+  {46.0, 89.0},    // ene
 
-  {90, 90},    // e
-  {90, 135},   // ese
-  {135, 135},  // se
-  {135, 180},  // sse
+  {90.0, 90.0},    // e
+  {91.0, 134.0},   // ese
+  {135.0, 135.0},  // se
+  {136.0, 179.0},  // sse
 
-  {180, 180},  // s
-  {180, 225},  // ssw
-  {225, 225},  // sw
-  {225, 270},  // wsw
+  {180.0, 180.0},  // s
+  {181.0, 224.0},  // ssw
+  {225.0, 225.0},  // sw
+  {226.0, 269.0},  // wsw
 
-  {270, 270},  // w
-  {270, 315},  // wnw
-  {315, 315},  // nw
-  {315, 360},  // nnw
+  {270.0, 270.0},  // w
+  {271.0, 314.0},  // wnw
+  {315.0, 315.0},  // nw
+  {316.0, 359.0},   // nnw
 };
-
-char ground_heading_name[10];
 
 bool DisplayPage0() {
   // check page here rather than in calling function so that we can see where we are when we're here
@@ -6420,34 +6419,63 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
 
+    /*
+    
+    char ground_heading_names[16][10] = {
+      "N",  "NNE",  "NE",  "ENE",
+      "E", "ESE", "SE", "SSE",
+      "S", "SSW", "SW", "WSW",
+      "W", "WNW", "NW", "NNW",
+    };
+
+    float ground_heading_range[16][2] {
+      {0.0, 360},      // n
+      {1.0, 44.0},     // nne
+      {45.0, 45.0},    // ne
+      {46.0, 89.0},    // ene
+
+      {90.0, 90.0},    // e
+      {91.0, 134.0},   // ese
+      {135.0, 135.0},  // se
+      {136.0, 179.0},  // sse
+
+      {180.0, 180.0},  // s
+      {181.0, 224.0},  // ssw
+      {225.0, 225.0},  // sw
+      {226.0, 269.0},  // wsw
+
+      {270.0, 270.0},  // w
+      {271.0, 314.0},  // wnw
+      {315.0, 315.0},  // nw
+      {316.0, 359.0},   // nnw
+      };
+    */
+
     // Heading:
-    Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "45.0"); // uncomment to test ground heading azimuth
+    // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
-      if (atof(gnrmcData.ground_heading)>=0 && atof(gnrmcData.ground_heading)<=180) {
-        if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
-          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 15, 50+uiData.yaw_x, 100+uiData.yaw_x);
-          memset(ground_heading_name, 0, sizeof(ground_heading_name));
-          strcpy(ground_heading_name, ground_heading_names[i]);
-          // break;
-        }
-      }
-      else if (atof(gnrmcData.ground_heading)>180 && atof(gnrmcData.ground_heading)<=360) {
-        if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
-          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 15, uiData.yaw_x, uiData.yaw_x+50);
-          memset(ground_heading_name, 0, sizeof(ground_heading_name));
-          strcpy(ground_heading_name, ground_heading_names[i]);
-          // break;
+      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
+      if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
+        if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] == atof(gnrmcData.ground_heading) || atof(gnrmcData.ground_heading)==ground_heading_range[i][1] == atof(gnrmcData.ground_heading)) {
+          // Serial.println("[ground_heading in range i] " + String(i));
+          uiData.mapped_ground_heading=uiData.yaw_x+50; memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);}}
+      else {
+        if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[i][1]) {
+          // Serial.println("[ground_heading in range i] " + String(i));
+          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[i][0], ground_heading_range[i][1], uiData.yaw_x, uiData.yaw_x + 70);
+          memset(name_ground_heading, 0, sizeof(name_ground_heading));
+          strcpy(name_ground_heading, ground_heading_names[i]);
+          break;
         }
       }
     }
-    Serial.println("[mapped ground name] " + String(ground_heading_name));
-    Serial.println("[mapped ground_heading] " + String(uiData.mapped_ground_heading));
+    // Serial.println("[mapped ground name] " + String(name_ground_heading));
+    // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(162, rdata_y+18*1, 120, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(ground_heading_name)+String(""), 232, rdata_y+18*1+8);
-
-
+    hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, rdata_y+18*1+8);
 
     /*
     virtual altitude: map n -> 100
@@ -6590,7 +6618,7 @@ bool DisplayPage0() {
 
     // location pinning
     
-    return true;
+  return true;
   }
   else {return false;}
 }
