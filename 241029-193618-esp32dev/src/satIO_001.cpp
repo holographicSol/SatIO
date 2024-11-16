@@ -6386,37 +6386,47 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
-    hud.drawRect(184, 200, 100, 1, TFT_BLUE);  // x axis: yaw
+    int yaw_x = 178;
+    int yaw_y = 202;
+    int yaw_w = 100;
+    int yaw_h = 1;
+    int yaw_triangle_base = 5;
+    hud.drawRect(yaw_x, yaw_y, yaw_w+yaw_triangle_base, yaw_h, TFT_BLUE);  // x axis: yaw
     int temporary_yaw = 0;
-    //  memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0.00"); // uncomment to test pitch degrees
+    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "270"); // uncomment to test pitch degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
-      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 235, 285);
+      temporary_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x+yaw_triangle_base/2, 100+yaw_x+yaw_triangle_base/2);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
-      temporary_yaw = map(atof(gpattData.yaw), 180, 360, 184, 235);
+      temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
       }
     //               x 1st vertex  y 1st vertex   x 2nd vertex  y 2nd vertex  x 3rd vertex  y 3rd vertex
     // hud.drawTriangle(50,           50,           100,           150,          150,          10,           TFT_YELLOW);
     if (atoi(gpattData.yaw)==0) {
-      hud.fillTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_GREEN);
+      hud.fillTriangle(temporary_yaw-yaw_triangle_base/2, yaw_y-3, temporary_yaw+yaw_triangle_base/2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
     }
-    else {hud.fillTriangle(temporary_yaw-2, 196, temporary_yaw+2, 196, temporary_yaw, 196-2, TFT_BLUE);}
+    else {hud.fillTriangle(temporary_yaw-2, yaw_y-3, temporary_yaw+2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_BLUE);}
     
     /* Pitch Scale: 0/360 = center | 90=vertical up | 180=upside doown | 180=upside down | 270=vertical down */
-    hud.drawRect(284, 100, 1, 100, TFT_RED);  // y axis: pitch
-    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "180"); // uncomment to test pitch degrees
+    int pitch_x = 286;
+    int pitch_y = 98;
+    int pitch_w = 1;
+    int pitch_h = 100;
+    int pitch_triangle_base = 5;
+    hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h+pitch_triangle_base, TFT_RED);  // y axis: pitch
+    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "270"); // uncomment to test pitch degrees
     int temporary_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
-      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 150, 100);
+      temporary_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y+pitch_triangle_base/2, pitch_y+pitch_triangle_base/2);
       }
     else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
-      temporary_pitch = map(atof(gpattData.pitch), 180, 360, 200-temporary_pitch, 150+temporary_pitch);
+      temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y+pitch_triangle_base/2)*2-temporary_pitch, 50+pitch_y+pitch_triangle_base+temporary_pitch);
       }
     if (atoi(gpattData.pitch)==0) {
-      hud.fillTriangle(280, temporary_pitch-2, 280, temporary_pitch+2, 280-2, temporary_pitch, TFT_GREEN);
+      hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_GREEN);
     }
-    else {hud.fillTriangle(280, temporary_pitch-2, 280, temporary_pitch+2, 280-2, temporary_pitch, TFT_RED);}
+    else {hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_RED);}
 
 
     // blue vertical lines: reflect yaw (turning left/right)
@@ -7929,9 +7939,9 @@ void DisplayUAP() {
   // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
   uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
-  tft.setPivot(235, 152);                                        // set the TFT pivot point that the hud will rotate around
-  // offset_gpatt_roll +=45;                                        // uncomment to test roll clockwise n degrees a frame
-  offset_gpatt_roll +=1;                                        // uncomment to test roll clockwise n degrees a frame
+  tft.setPivot(230, 150);                                        // set the TFT pivot point that the hud will rotate around
+  // offset_gpatt_roll +=45;                                     // uncomment to test roll clockwise n degrees a frame
+  offset_gpatt_roll +=1;                                         // uncomment to test roll clockwise n degrees a frame
   // gpatt_roll = atoi(gpattData.roll);                          // uncomment to rotate according to actual INS data
   temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
   if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
