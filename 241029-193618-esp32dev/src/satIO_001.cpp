@@ -6093,7 +6093,7 @@ SettingsDataStruct sData;
 
 struct UIDataStruct {
   int yaw_x = 110;
-  int yaw_y = 198;
+  int yaw_y = 199;
   int yaw_w = 100;
   int yaw_h = 1;
   int yaw_triangle_base = 5;
