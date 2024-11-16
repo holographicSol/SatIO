@@ -6104,6 +6104,13 @@ struct UIDataStruct {
   int pitch_triangle_base = 5;
   float mapped_yaw = 0;
   float mapped_pitch = 0;
+
+  int temporary_gpatt_roll;               // mapped roll
+  int offset_gpatt_roll = 90;             // allows craft to have a default horizontal orientation
+  int gpatt_roll = atoi(gpattData.roll);  // rotate pod wing according to INS data
+  int offset_2;
+  uint16_t uap_piv_X;  // x pivot of Sprite (middle)
+  uint16_t uap_piv_y;  // y pivot of Sprite (10 pixels from bottom)
 };
 UIDataStruct uiData;
 
@@ -7948,36 +7955,28 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY INS DATA
 
-int temporary_gpatt_roll;                                      // mapped roll
-int offset_gpatt_roll = 90;                                    // allows craft to have a default horizontal orientation
-int gpatt_roll = atoi(gpattData.roll);                         // rotate pod wing according to INS data
-int offset_2;
-
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
   uap.createSprite(55, 55); // create the hud Sprite 11 pixels wide by 49 high
 
-  uint16_t pod_piv_X = uap.width() / 2;   // x pivot of Sprite (middle)
-  uint16_t pod_piv_y = 55/2;              // y pivot of Sprite (10 pixels from bottom)
-  uap.setPivot(pod_piv_X, pod_piv_y);     // Set pivot point in this Sprite
-
-  uap.fillRect(pod_piv_X - 1, 1, 3, pod_piv_y +100, TFT_GREEN);  // uap
-  // uap.fillRect(pod_piv_X - 1, 2, 3, 5, TFT_DARKCYAN);         // uap tip
-  uap.fillCircle(pod_piv_X-3, pod_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
-  // uap.drawPixel( pod_piv_X, pod_piv_y, TFT_WHITE);            // draw on pivot center pixel 
-  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);              // set the TFT pivot point that the hud will rotate around
-  // offset_gpatt_roll +=45;                                     // uncomment to test roll clockwise n degrees a frame
-  offset_gpatt_roll +=1;                                         // uncomment to test roll clockwise n degrees a frame
-  // gpatt_roll = atoi(gpattData.roll);                          // uncomment to rotate according to actual INS data
-  temporary_gpatt_roll=gpatt_roll + offset_gpatt_roll;           // add actual degrees roll to roll offset 
-  if (temporary_gpatt_roll>360) {                                // check if temporary roll > 360 degrees
-    offset_2 = temporary_gpatt_roll-360;                         // new offset is units over 360 degrees 
-    temporary_gpatt_roll=0;                                      // repurpose temporary roll
-    for (int i=0; i<offset_2; i++) {temporary_gpatt_roll++;}     // add each unit over 360 to 0
+  uiData.uap_piv_X = uap.width() / 2;                                          // x pivot of Sprite (middle)
+  uiData.uap_piv_y = 55/2;                                                     // y pivot of Sprite (10 pixels from bottom)
+  uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                            // Set pivot point in this Sprite
+  uap.fillRect(uiData.uap_piv_X - 1, 1, 3, uiData.uap_piv_y +100, TFT_GREEN);  // uap
+  uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
+  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
+  // offset_gpatt_roll +=45;                                                   // uncomment to test roll clockwise n degrees a frame
+  uiData.offset_gpatt_roll +=1;                                                // uncomment to test roll clockwise n degrees a frame
+  // gpatt_roll = atoi(gpattData.roll);                                        // uncomment to rotate according to actual INS data
+  uiData.temporary_gpatt_roll=uiData.gpatt_roll + uiData.offset_gpatt_roll;    // add actual degrees roll to roll offset 
+  if (uiData.temporary_gpatt_roll>360) {                                       // check if temporary roll > 360 degrees
+    uiData.offset_2 = uiData.temporary_gpatt_roll-360;                         // new offset is units over 360 degrees 
+    uiData.temporary_gpatt_roll=0;                                             // repurpose temporary roll
+    for (int i=0; i<uiData.offset_2; i++) {uiData.temporary_gpatt_roll++;}     // add each unit over 360 to 0
   }
   // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
-  uap.pushRotated(temporary_gpatt_roll);
+  uap.pushRotated(uiData.temporary_gpatt_roll);
   yield(); uap.deleteSprite();
 }
 
