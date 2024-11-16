@@ -6106,9 +6106,9 @@ struct UIDataStruct {
   float mapped_pitch = 0;
 
   int temporary_gpatt_roll;               // mapped roll
-  int offset_gpatt_roll = 90;             // allows craft to have a default horizontal orientation
+  int offset_gpatt_roll_0 = 90;             // allows craft to have a default horizontal orientation
   int gpatt_roll = atoi(gpattData.roll);  // rotate pod wing according to INS data
-  int offset_2;
+  int offset_gpatt_roll_1;
   uint16_t uap_piv_X;  // x pivot of Sprite (middle)
   uint16_t uap_piv_y;  // y pivot of Sprite (10 pixels from bottom)
 };
@@ -7966,16 +7966,16 @@ void DisplayUAP() {
   uap.fillRect(uiData.uap_piv_X - 1, 1, 3, uiData.uap_piv_y +100, TFT_GREEN);  // uap
   uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
-  // offset_gpatt_roll +=45;                                                   // uncomment to test roll clockwise n degrees a frame
-  uiData.offset_gpatt_roll +=1;                                                // uncomment to test roll clockwise n degrees a frame
+  // offset_gpatt_roll_0 +=45;                                                 // uncomment to test roll clockwise n degrees a frame
+  uiData.offset_gpatt_roll_0 +=1;                                              // uncomment to test roll clockwise n degrees a frame
   // gpatt_roll = atoi(gpattData.roll);                                        // uncomment to rotate according to actual INS data
-  uiData.temporary_gpatt_roll=uiData.gpatt_roll + uiData.offset_gpatt_roll;    // add actual degrees roll to roll offset 
+  uiData.temporary_gpatt_roll=uiData.gpatt_roll + uiData.offset_gpatt_roll_0;  // add actual degrees roll to roll offset 
   if (uiData.temporary_gpatt_roll>360) {                                       // check if temporary roll > 360 degrees
-    uiData.offset_2 = uiData.temporary_gpatt_roll-360;                         // new offset is units over 360 degrees 
+    uiData.offset_gpatt_roll_1 = uiData.temporary_gpatt_roll-360;              // new offset is units over 360 degrees 
     uiData.temporary_gpatt_roll=0;                                             // repurpose temporary roll
-    for (int i=0; i<uiData.offset_2; i++) {uiData.temporary_gpatt_roll++;}     // add each unit over 360 to 0
+    for (int i=0; i<uiData.offset_gpatt_roll_1; i++) {uiData.temporary_gpatt_roll++;}  // add each unit over 360 to 0
   }
-  // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll) + " [ui value] " + String(temporary_gpatt_roll));
+  // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll_0) + " [ui value] " + String(temporary_gpatt_roll));
   uap.pushRotated(uiData.temporary_gpatt_roll);
   yield(); uap.deleteSprite();
 }
