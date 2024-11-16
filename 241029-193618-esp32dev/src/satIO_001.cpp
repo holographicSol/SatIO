@@ -6466,6 +6466,12 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
 
+    // Ground Heading:
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atof(gnrmcData.ground_heading))+String(""), uiData.yaw_x+120+31, rdata_y+18*3+8);
+
     /*
     virtual altitude: map n -> 100
     roll: (0° representing a head-on wind and 180° representing a tailwind. 
