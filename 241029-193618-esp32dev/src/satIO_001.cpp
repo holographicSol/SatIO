@@ -6386,17 +6386,25 @@ bool DisplayPage0() {
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
+    
+    char heading_names[16][10] = {
+      "N",  "S",  "E",  "W",
+      "NE", "NW", "SE", "SW",
+      "NNE", "NNW", "SSE", "SSW",
+      "ENE", "ESE", "WNW", "WSW"
+    };
+
+    
 
     /*
-      int yaw_x = 182;
-      int yaw_y = 198;
-      int yaw_w = 100;
-      int yaw_h = 1;
-      int yaw_triangle_base = 5;
-      int pitch_x = yaw_x+100;
+    virtual altitude: map n -> 100
+    roll: (0° representing a head-on wind and 180° representing a tailwind. 
+    with a 20° yaw angle would be cycling at an angle of 20° with respect to the wind).
+    0°: A head-on wind 
+    90°: The top of an image points east/right when the camera is looking down 
+    180°: A tailwind 
+    270°: The top of an image points west/left when the camera is looking down 
     */
-
-    // Altitude:
     // hud.drawRect(118, rdata_y+18*4, 50, 16, TFTOBJ_COL0);
     // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // hud.setTextDatum(MC_DATUM);
@@ -6496,99 +6504,7 @@ bool DisplayPage0() {
 
     // altitude scale: moves up and down, left of uap
 
-    // hemispherical heading scale: moves left and right above or below the uap
-    // memset(gnrmcData.ground_heading, 0 , sizeof(gnrmcData.ground_heading)); // test ground heading
-    // strcpy(gnrmcData.ground_heading, "359"); // test ground heading
-    // int map_ground_heading = 224;  // test
-    //                                                  heading     inmin inmax  outmin  outmax
-    // int map_ground_heading = map(atof(gnrmcData.ground_heading),    0,    360,   182,    268);
-    // Serial.println("[ground_heading]     " + String(gnrmcData.ground_heading));
-    // Serial.println("[map_ground_heading] " + String(map_ground_heading));
-
-    // hud.drawRect(map_ground_heading, 88, 30, 30, TFT_GREEN);
-    // hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    
-
-    // if (atof(gnrmcData.ground_heading) == 0) {
-    // hud.drawString(String("N"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 180) {
-    // hud.drawString(String("S"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 90) {
-    // hud.drawString(String("E"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 270) {
-    // hud.drawString(String("W"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 45) {
-    // hud.drawString(String("NE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 225) {
-    // hud.drawString(String("SW"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 320) {
-    // hud.drawString(String("NW"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) == 135) {
-    // hud.drawString(String("SE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 1 && atoi(gnrmcData.ground_heading) <=19) {
-    // hud.drawString(String("NWE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 71 && atoi(gnrmcData.ground_heading) <=89) {
-    // hud.drawString(String("ENE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 91 && atoi(gnrmcData.ground_heading) <=109) {
-    // hud.drawString(String("ESE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 161 && atoi(gnrmcData.ground_heading) <=179) {
-    // hud.drawString(String("SSE"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 181 && atoi(gnrmcData.ground_heading) <=199) {
-    // hud.drawString(String("SSW"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 251 && atoi(gnrmcData.ground_heading) <=269) {
-    // hud.drawString(String("WSW"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 271 && atoi(gnrmcData.ground_heading) <=289) {
-    // hud.drawString(String("WSW"), map_ground_heading, 94);
-    // }
-
-    // else if (atof(gnrmcData.ground_heading) >= 341 && atoi(gnrmcData.ground_heading) <=359) {
-    // hud.drawString(String("NNNW"), map_ground_heading, 94);
-    // }
-  
-    // display the sprite and free memory
-    // hud.pushSprite(0, 0, TFT_TRANSPARENT);
-    // hud.deleteSprite();
-
     // other sensory data
-
-    /*
-    virtual altitude: map 10000 -> 100
-    roll: (0° representing a head-on wind and 180° representing a tailwind. 
-    with a 20° yaw angle would be cycling at an angle of 20° with respect to the wind).
-    0°: A head-on wind 
-    90°: The top of an image points east/right when the camera is looking down 
-    180°: A tailwind 
-    270°: The top of an image points west/left when the camera is looking down 
-    */
 
     // geo
     // gnggaData.latitude_hemisphere
