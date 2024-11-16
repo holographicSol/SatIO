@@ -6402,7 +6402,7 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
-    hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);    // x axis: yaw
+    hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
     hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 90 degrees
     hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 270 degrees
     hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 0/360 degrees
