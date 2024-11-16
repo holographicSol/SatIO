@@ -6480,7 +6480,7 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (atof(gnrmcData.ground_speed)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(name_ground_heading)+String(" | " + String(gnrmcData.ground_heading)), uiData.mapped_ground_heading, uiData.pitch_y-16+8);
+    // hud.drawString(String(name_ground_heading)+String(" | " + String(gnrmcData.ground_heading)), uiData.mapped_ground_heading, uiData.pitch_y-16+8);
 
     /*
     virtual altitude: map n -> 100
