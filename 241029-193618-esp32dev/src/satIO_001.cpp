@@ -6403,19 +6403,31 @@ bool DisplayPage0() {
     if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gpattData.run_inetial_flag)+String(""), 305, rdata_y+18*7+8);
+    hud.drawString(String(gpattData.run_inetial_flag), 305, rdata_y+18*7+8);
+
+    // Latitude Hemisphere:
+    hud.drawRect(uiData.yaw_x+50-104, 224, 20, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.latitude_hemisphere)+String(""), uiData.yaw_x+50-104+10, 232);
 
     // Latitude:
-    hud.drawRect(uiData.yaw_x+50-77, 224, 77, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+50-82, 224, 80, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), uiData.yaw_x+50-77+38, 232);
+    hud.drawString(String(satData.location_latitude_gngga_str), uiData.yaw_x+50-80+40, 232);
 
     // Longitude:
-    hud.drawRect(uiData.yaw_x+51, 224, 77, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+51, 224, 80, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), uiData.yaw_x+51+38, 232);
+    hud.drawString(String(satData.location_longitude_gngga_str), uiData.yaw_x+51+40, 232);
+
+    // Latitude Hemisphere:
+    hud.drawRect(uiData.yaw_x+51+82, 224, 20, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+82+10, 232);
 
     // Ground Speed:
     hud.drawRect(uiData.yaw_x-18, rdata_y+18*8, 49+18, 16, TFTOBJ_COL0);
