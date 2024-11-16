@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
       };
     */
 
-    // Heading:
+    // Heading: (in development)
     memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "00.0"); // uncomment to test ground heading azimuth
     Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
