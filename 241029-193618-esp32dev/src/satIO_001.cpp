@@ -6432,7 +6432,7 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Heading: maps heading dgrees to screen x,y coordinates (in development)
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "360.0"); // uncomment to test ground heading azimuth
+    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "360.0"); // uncomment to test ground heading azimuth
     // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
       Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
