@@ -6091,6 +6091,22 @@ struct SettingsDataStruct {
 };
 SettingsDataStruct sData;
 
+struct UIDataStruct {
+  int yaw_x = 182;
+  int yaw_y = 198;
+  int yaw_w = 100;
+  int yaw_h = 1;
+  int yaw_triangle_base = 5;
+  int pitch_x = yaw_x+100;
+  int pitch_y = yaw_y-100;
+  int pitch_w = 1;
+  int pitch_h = 100;
+  int pitch_triangle_base = 5;
+  int mapped_yaw = 0;
+  int mapped_pitch = 0;
+};
+UIDataStruct uiData;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       DISPLAY GENERAL TITLEBAR
 
@@ -6386,69 +6402,57 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 284, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
-    int yaw_x = 182;
-    int yaw_y = 198;
-    int yaw_w = 100;
-    int yaw_h = 1;
-    int yaw_triangle_base = 5;
-    hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);    // x axis: yaw
-    hud.drawRect(yaw_x+75, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 90 degrees
-    hud.drawRect(yaw_x+25, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 270 degrees
-    hud.drawRect(yaw_x+50, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 0/360 degrees
-    hud.drawRect(yaw_x, yaw_y+yaw_h, 1, 2, TFT_BLUE);      // x axis: 181 degrees
-    hud.drawRect(yaw_x+100, yaw_y+yaw_h, 1, 2, TFT_BLUE);  // x axis: 180 degrees
-    int mapped_yaw = 0;
+    hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);    // x axis: yaw
+    hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 90 degrees
+    hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 270 degrees
+    hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 0/360 degrees
+    hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: 181 degrees
+    hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);  // x axis: 180 degrees
     // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90"); // uncomment to test yaw degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
       // uncomment to use triangle pointer
-      mapped_yaw = map(atof(gpattData.yaw), 0, 180, 50+yaw_x, 100+yaw_x);
+      uiData.mapped_yaw = map(atof(gpattData.yaw), 0, 180, 50+uiData.yaw_x, 100+uiData.yaw_x);
       }
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       // uncomment to use triangle pointer
-      mapped_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x, 50);
+      uiData.mapped_yaw = map(atof(gpattData.yaw), 180, 360, uiData.yaw_x, 50);
       }
-    // Serial.println("[mapped_yaw] " + String(mapped_yaw));
+    // Serial.println("[mapped_yaw] " + String(uiData.mapped_yaw));
     if ((atof(gpattData.yaw)==0) || (atof(gpattData.yaw)==90) || (atof(gpattData.yaw)==180) || (atof(gpattData.yaw)==270)) {
       // uncomment to use triangle pointer
-      hud.fillTriangle(mapped_yaw-yaw_triangle_base/2, yaw_y-3, mapped_yaw+yaw_triangle_base/2, yaw_y-3, mapped_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
+      hud.fillTriangle(uiData.mapped_yaw-uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw+uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_GREEN);
     }
     else {
       // uncomment to use triangle pointer
-      hud.fillTriangle(mapped_yaw-2, yaw_y-3, mapped_yaw+2, yaw_y-3, mapped_yaw, yaw_y-3-yaw_triangle_base/2, TFT_BLUE);
+      hud.fillTriangle(uiData.mapped_yaw-2, uiData.yaw_y-3, uiData.mapped_yaw+2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_BLUE);
       }
     
     /* Pitch Scale: 0/360 = center | 90=vertical up | 180=upside doown | 180=upside down | 270=vertical down */
-    int pitch_x = yaw_x+100;
-    int pitch_y = yaw_y-100;
-    int pitch_w = 1;
-    int pitch_h = 100;
-    int pitch_triangle_base = 5;
-    int pitch_square_base = 2;
-    hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h, TFT_RED);  // y axis: pitch
-    hud.drawRect(pitch_x+pitch_w, pitch_y+25, 2, 1, TFT_RED);   // y axis: 90 degrees
-    hud.drawRect(pitch_x+pitch_w, pitch_y+75, 2, 1, TFT_RED);   // y axis: 270 degrees
-    hud.drawRect(pitch_x+pitch_w, pitch_y+50, 2, 1, TFT_RED);   // y axis: 0/360 degrees
-    hud.drawRect(pitch_x+pitch_w, pitch_y+100, 2, 1, TFT_RED);  // y axis: 181 degrees
-    hud.drawRect(pitch_x+pitch_w, pitch_y+0, 2, 1, TFT_RED);    // y axis: 180 degrees
+    hud.drawRect(uiData.pitch_x, uiData.pitch_y, uiData.pitch_w, uiData.pitch_h, TFT_RED);  // y axis: pitch
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 2, 1, TFT_RED);   // y axis: 90 degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+75, 2, 1, TFT_RED);   // y axis: 270 degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 2, 1, TFT_RED);   // y axis: 0/360 degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: 181 degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: 180 degrees
     // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "90"); // uncomment to test pitch degrees
-    int mapped_pitch = 0;
+    
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
       // uncomment to use triangle pointer
-      mapped_pitch = map(atof(gpattData.pitch), 0, 180, 50+pitch_y, pitch_y);
+      uiData.mapped_pitch = map(atof(gpattData.pitch), 0, 180, 50+uiData.pitch_y, uiData.pitch_y);
       }
     else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
-      mapped_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
+      uiData.mapped_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       // uncomment to use triangle pointer
-      mapped_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y)*2-mapped_pitch, 50+pitch_y+mapped_pitch);
+      uiData.mapped_pitch = map(atof(gpattData.pitch), 180, 360, (uiData.pitch_y)*2-uiData.mapped_pitch, 50+uiData.pitch_y+uiData.mapped_pitch);
       }
-    // Serial.println("[mapped_pitch] " + String(mapped_pitch));
+    // Serial.println("[mapped_pitch] " + String(uiData.mapped_pitch));
     if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
       // uncomment to use triangle pointer
-      hud.fillTriangle(pitch_x-4, mapped_pitch-2, pitch_x-4, mapped_pitch+2, pitch_x-4-yaw_triangle_base/2, mapped_pitch, TFT_GREEN);
+      hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_GREEN);
     }
     else {
     // uncomment to use triangle pointer
-    hud.fillTriangle(pitch_x-4, mapped_pitch-2, pitch_x-4, mapped_pitch+2, pitch_x-4-yaw_triangle_base/2, mapped_pitch, TFT_RED);
+    hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_RED);
     }
 
 
