@@ -6392,8 +6392,12 @@ bool DisplayPage0() {
     int yaw_h = 1;
     int yaw_triangle_base = 5;
     int yaw_square_base = 2;
-    hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);  // x axis: yaw
-    // hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);  // x axis: 90 degrees
+    hud.drawRect(yaw_x, yaw_y, yaw_w, yaw_h, TFT_BLUE);    // x axis: yaw
+    hud.drawRect(yaw_x+75, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 90 degrees
+    hud.drawRect(yaw_x+25, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 270 degrees
+    hud.drawRect(yaw_x+50, yaw_y+yaw_h, 1, 2, TFT_BLUE);   // x axis: 0/360 degrees
+    hud.drawRect(yaw_x, yaw_y+yaw_h, 1, 2, TFT_BLUE);      // x axis: 181 degrees
+    hud.drawRect(yaw_x+100, yaw_y+yaw_h, 1, 2, TFT_BLUE);  // x axis: 180 degrees
     int mapped_yaw = 0;
     // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90"); // uncomment to test yaw degrees
     if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
@@ -6431,6 +6435,11 @@ bool DisplayPage0() {
     int pitch_square_base = 2;
     // uncomment to use square pointer
     hud.drawRect(pitch_x, pitch_y, pitch_w, pitch_h, TFT_RED);  // y axis: pitch
+    hud.drawRect(pitch_x+pitch_h, pitch_y+25, 2, 1, TFT_RED);   // x axis: 90 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+75, 2, 1, TFT_RED);   // x axis: 270 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+50, 2, 1, TFT_RED);   // x axis: 0/360 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+100, 2, 1, TFT_RED);      // x axis: 181 degrees
+    hud.drawRect(pitch_x+pitch_h, pitch_y+0, 2, 1, TFT_RED);  // x axis: 180 degrees
     // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "90"); // uncomment to test pitch degrees
     int mapped_pitch = 0;
     if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
