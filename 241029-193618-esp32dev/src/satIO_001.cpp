@@ -6373,19 +6373,19 @@ bool DisplayPage0() {
     if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gpattData.run_inetial_flag)+String(""), 305, rdata_y+18*7+8);
 
-    // Mileage:
-    hud.drawRect(220, rdata_y+18*8, 100, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), 270, rdata_y+18*8+8);
-
     // Ground Speed:
-    hud.drawRect(118, rdata_y+18*8, 100, 16, TFTOBJ_COL0);
+    hud.drawRect(162, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gnrmcData.ground_speed)+String(""), 168, rdata_y+18*8+8);
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), 200, rdata_y+18*8+8);
+
+    // Mileage:
+    hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
 
     /*
       int yaw_x = 182;
@@ -6406,10 +6406,10 @@ bool DisplayPage0() {
     // hud.drawString(String(atoi(gnggaData.altitude))+String(""), 143, rdata_y+18*4+8);
 
     // Pitch:
-    // hud.drawRect(108, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
-    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    // hud.setTextDatum(MC_DATUM);
-    // hud.drawString(String(atoi(gpattData.pitch))+String(""), 133, rdata_y+18*5+8);
+    hud.drawRect(238, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atoi(gpattData.pitch))+String(""), 263, rdata_y+18*1+8);
 
     // Roll:
     // hud.drawRect(118, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
@@ -6424,16 +6424,16 @@ bool DisplayPage0() {
     // hud.drawString(String(atoi(gpattData.yaw))+String(""), 143, rdata_y+18*7+8);
 
     // Latitude:
-    hud.drawRect(118, 224, 100, 16, TFTOBJ_COL0);
+    hud.drawRect(162, 224, 77, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), 164, 232);
+    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), 200, 232);
 
     // Longitude:
-    hud.drawRect(220, 224, 100, 16, TFTOBJ_COL0);
+    hud.drawRect(243, 224, 77, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 270, 232);
+    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 281, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
