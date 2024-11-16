@@ -7960,7 +7960,7 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 void DisplayUAP() {
   /* in development: a line representing a vehicular craft with corresponding pitch roll and yaw. */
 
-  uap.createSprite(uiData.uap_w, uiData.uap_h);      // create the hud Sprite 11 pixels wide by 49 high
+  uap.createSprite(uiData.uap_w, uiData.uap_h); // create the hud Sprite 11 pixels wide by 49 high
 
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);  // Set pivot point in this Sprite
 
@@ -7971,7 +7971,7 @@ void DisplayUAP() {
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                                    // set the TFT pivot point that the hud will rotate around
   // offset_gpatt_roll_0 +=45;                                                         // uncomment to test roll clockwise n degrees a frame
   uiData.offset_gpatt_roll_0 +=1;                                                      // uncomment to test roll clockwise n degrees a frame
-  // gpatt_roll = atoi(gpattData.roll);                                                // uncomment to rotate according to actual INS data
+  uiData.gpatt_roll = atoi(gpattData.roll);                                            // uncomment to rotate according to actual INS data
   uiData.temporary_gpatt_roll=uiData.gpatt_roll + uiData.offset_gpatt_roll_0;          // add actual degrees roll to roll offset 
   if (uiData.temporary_gpatt_roll>360) {                                               // check if temporary roll > 360 degrees
     uiData.offset_gpatt_roll_1 = uiData.temporary_gpatt_roll-360;                      // new offset is units over 360 degrees 
