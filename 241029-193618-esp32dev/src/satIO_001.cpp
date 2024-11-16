@@ -6432,14 +6432,14 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Heading: maps heading dgrees to screen x,y coordinates (in development)
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "00.0"); // uncomment to test ground heading azimuth
+    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "259.0"); // uncomment to test ground heading azimuth
     // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] == atof(gnrmcData.ground_heading) || atof(gnrmcData.ground_heading)==ground_heading_range[i][1] == atof(gnrmcData.ground_heading)) {
           // Serial.println("[ground_heading in range i] " + String(i));
-          uiData.mapped_ground_heading = uiData.yaw_x+50;
+          uiData.mapped_ground_heading = ground_heading_range[i][0];
           memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
           break;
         }
