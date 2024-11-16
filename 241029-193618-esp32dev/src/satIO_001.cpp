@@ -6406,10 +6406,10 @@ bool DisplayPage0() {
     // hud.drawString(String(atoi(gnggaData.altitude))+String(""), 143, rdata_y+18*4+8);
 
     // Pitch:
-    hud.drawRect(238, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atoi(gpattData.pitch))+String(""), 263, rdata_y+18*1+8);
+    // hud.drawRect(238, rdata_y+18*1, 50, 16, TFTOBJ_COL0);
+    // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    // hud.setTextDatum(MC_DATUM);
+    // hud.drawString(String(atoi(gpattData.pitch))+String(""), 263, rdata_y+18*1+8);
 
     // Roll:
     // hud.drawRect(118, rdata_y+18*6, 50, 16, TFTOBJ_COL0);
