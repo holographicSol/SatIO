@@ -6229,22 +6229,22 @@ float ground_heading_range[16][2] {
   {0.0, 360},      // n
   {1.0, 44.0},     // nne
   {45.0, 45.0},    // ne
-  {46.0, 89.0},    // ene
+  {45.0, 90.0},    // ene
 
   {90.0, 90.0},    // e
-  {91.0, 134.0},   // ese
+  {90.0, 135.0},   // ese
   {135.0, 135.0},  // se
-  {136.0, 179.0},  // sse
+  {135.0, 180.0},  // sse
 
   {180.0, 180.0},  // s
-  {181.0, 224.0},  // ssw
+  {180.0, 225.0},  // ssw
   {225.0, 225.0},  // sw
-  {226.0, 269.0},  // wsw
+  {225.0, 270.0},  // wsw
 
   {270.0, 270.0},  // w
-  {271.0, 314.0},  // wnw
+  {270.0, 315.0},  // wnw
   {315.0, 315.0},  // nw
-  {316.0, 359.0},   // nnw
+  {315.0, 360.0},   // nnw
 };
 
 bool DisplayPage0() {
@@ -6432,31 +6432,34 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Heading: maps heading dgrees to screen x,y coordinates (in development)
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "350.0"); // uncomment to test ground heading azimuth
-    // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+    // uiData.mapped_ground_heading++; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
+    // uiData.mapped_ground_heading--; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
+    // uiData.mapped_ground_heading=0; // uncomment to test ground heading azimuth
+    // ltoa(uiData.mapped_ground_heading, gnrmcData.ground_heading, 10);  // uncomment to test ground heading azimuth
+    
+    Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     for (int i = 0; i<16; i++) {
-      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
+      Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
-        if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] == atof(gnrmcData.ground_heading) || atof(gnrmcData.ground_heading)==ground_heading_range[i][1] == atof(gnrmcData.ground_heading) || atof(gnrmcData.ground_heading) == 360.00) {
-          // Serial.println("[ground_heading in range i] " + String(i));
-          if (atof(gnrmcData.ground_heading)==360) {uiData.mapped_ground_heading=uiData.yaw_x+50;}
-          else {uiData.mapped_ground_heading = ground_heading_range[i][0];}
-          memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
-          break;
+        if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] || atof(gnrmcData.ground_heading)==ground_heading_range[i][1]) {
+        Serial.println("[ground_heading in range i==n] " + String(i));
+        uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
+        memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
+        break;
         }
       }
       else {
-        if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[i][1]) {
-          // Serial.println("[ground_heading in range i] " + String(i));
-          uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[i][0], ground_heading_range[i][1], uiData.yaw_x, uiData.yaw_x + 74);
+        if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) < ground_heading_range[i][1]) {
+          Serial.println("[ground_heading in range i!=n] " + String(i));
+          uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
           memset(name_ground_heading, 0, sizeof(name_ground_heading));
           strcpy(name_ground_heading, ground_heading_names[i]);
           break;
         }
       }
     }
-    // Serial.println("[mapped ground name] " + String(name_ground_heading));
-    // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
+    Serial.println("[mapped ground name] " + String(name_ground_heading));
+    Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(uiData.yaw_x, uiData.pitch_y-16, 100, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     if (atof(gnrmcData.ground_speed)>0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
@@ -6542,6 +6545,7 @@ bool DisplayPage0() {
       // uncomment to use triangle pointer
       uiData.mapped_pitch = map(atof(gpattData.pitch), 180, 360, (uiData.pitch_y)*2-uiData.mapped_pitch, 50+uiData.pitch_y+uiData.mapped_pitch);
       }
+    
     // Serial.println("[mapped_pitch] " + String(uiData.mapped_pitch));
     if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
       // uncomment to use triangle pointer
