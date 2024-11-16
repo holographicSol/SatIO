@@ -6111,6 +6111,8 @@ struct UIDataStruct {
   int offset_gpatt_roll_1;
   uint16_t uap_piv_X;  // x pivot of Sprite (middle)
   uint16_t uap_piv_y;  // y pivot of Sprite (10 pixels from bottom)
+
+  float mapped_ground_heading;
 };
 UIDataStruct uiData;
 
@@ -6387,14 +6389,50 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
     
+    // Heading:
     char heading_names[16][10] = {
-      "N",  "S",  "E",  "W",
-      "NE", "NW", "SE", "SW",
-      "NNE", "NNW", "SSE", "SSW",
-      "ENE", "ESE", "WNW", "WSW"
+      "N",  "NNE",  "NW",  "ENE",
+      "E", "ESE", "SE", "SSE",
+      "S", "SSW", "SW", "WSW",
+      "W", "WNW", "NW", "NNW"
+    };
+    int ground_heading_range[16][2][8] {
+      {0, 0},      // n
+      {1, 45},     // nne
+      {45, 45},    // ne
+      {45, 90},    // ene
+
+      {90, 90},    // e
+      {90, 135},   // ese
+      {135, 135},  // se
+      {135, 180},  // sse
+
+      {180, 180},  // s
+      {180, 225},  // ssw
+      {225, 225},  // sw
+      {225, 270},  // wsw
+
+      {270, 270},  // w
+      {270, 315},  // wnw
+      {315, 315},  // nw
+      {315, 360},  // nnw
     };
 
-    
+    if (atof(gnrmcData.ground_heading)>=0 && atof(gnrmcData.ground_heading)<=180) {
+      uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 0, 180, 50+uiData.yaw_x, 100+uiData.yaw_x);
+      }
+    else if (atof(gnrmcData.ground_heading)>180 && atof(gnrmcData.ground_heading)<=360) {
+      uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), 180, 360, uiData.yaw_x, 50);
+      }
+    Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+    Serial.println("[mapped ground_heading] " + String(uiData.mapped_ground_heading));
+
+    hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
+
+
 
     /*
     virtual altitude: map n -> 100
