@@ -6405,51 +6405,31 @@ bool DisplayPage0() {
     if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.drawString(String(gpattData.run_inetial_flag)+String(""), 305, rdata_y+18*7+8);
 
+    // Latitude:
+    hud.drawRect(uiData.yaw_x+50-77, 224, 77, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), uiData.yaw_x+50-77+38, 232);
+
+    // Longitude:
+    hud.drawRect(uiData.yaw_x+51, 224, 77, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), uiData.yaw_x+51+38, 232);
+
     // Ground Speed:
-    hud.drawRect(162, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x-18, rdata_y+18*8, 49+18, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gnrmcData.ground_speed)+String(""), 200, rdata_y+18*8+8);
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), (uiData.yaw_x+25)-8, rdata_y+18*8+8);
 
     // Mileage:
-    hud.drawRect(243, rdata_y+18*8, 77, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+51, rdata_y+18*8, 49+18, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), 281, rdata_y+18*8+8);
-
-    /*
-    
-    char ground_heading_names[16][10] = {
-      "N",  "NNE",  "NE",  "ENE",
-      "E", "ESE", "SE", "SSE",
-      "S", "SSW", "SW", "WSW",
-      "W", "WNW", "NW", "NNW",
-    };
-
-    float ground_heading_range[16][2] {
-      {0.0, 360},      // n
-      {1.0, 44.0},     // nne
-      {45.0, 45.0},    // ne
-      {46.0, 89.0},    // ene
-
-      {90.0, 90.0},    // e
-      {91.0, 134.0},   // ese
-      {135.0, 135.0},  // se
-      {136.0, 179.0},  // sse
-
-      {180.0, 180.0},  // s
-      {181.0, 224.0},  // ssw
-      {225.0, 225.0},  // sw
-      {226.0, 269.0},  // wsw
-
-      {270.0, 270.0},  // w
-      {271.0, 314.0},  // wnw
-      {315.0, 315.0},  // nw
-      {316.0, 359.0},   // nnw
-      };
-    */
+    hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Heading: maps heading dgrees to screen x,y coordinates (in development)
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "00.0"); // uncomment to test ground heading azimuth
@@ -6516,18 +6496,6 @@ bool DisplayPage0() {
     // hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // hud.setTextDatum(MC_DATUM);
     // hud.drawString(String(atoi(gpattData.yaw))+String(""), 143, rdata_y+18*7+8);
-
-    // Latitude:
-    hud.drawRect(162, 224, 77, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.latitude_hemisphere)+String(" ")+String(satData.location_latitude_gngga_str), 200, 232);
-
-    // Longitude:
-    hud.drawRect(243, 224, 77, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.longitude_hemisphere)+String(" ")+String(satData.location_longitude_gngga_str), 281, 232);
 
     /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
