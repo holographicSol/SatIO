@@ -6400,7 +6400,7 @@ bool DisplayPage0() {
     else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
       temporary_yaw = map(atof(gpattData.yaw), 180, 360, yaw_x+yaw_triangle_base/2, 50+yaw_x+yaw_triangle_base/2);
       }
-    if (atoi(gpattData.yaw)==0) {
+    if ((atof(gpattData.yaw)==0) || (atof(gpattData.yaw)==90) || (atof(gpattData.yaw)==180) || (atof(gpattData.yaw)==270)) {
       hud.fillTriangle(temporary_yaw-yaw_triangle_base/2, yaw_y-3, temporary_yaw+yaw_triangle_base/2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_GREEN);
     }
     else {hud.fillTriangle(temporary_yaw-2, yaw_y-3, temporary_yaw+2, yaw_y-3, temporary_yaw, yaw_y-3-yaw_triangle_base/2, TFT_BLUE);}
@@ -6421,7 +6421,7 @@ bool DisplayPage0() {
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
       temporary_pitch = map(atof(gpattData.pitch), 180, 360, (pitch_y+pitch_triangle_base/2)*2-temporary_pitch, 50+pitch_y+pitch_triangle_base+temporary_pitch);
       }
-    if (atoi(gpattData.pitch)==0) {
+    if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
       hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_GREEN);
     }
     else {hud.fillTriangle(pitch_x-4, temporary_pitch-2, pitch_x-4, temporary_pitch+2, pitch_x-4-yaw_triangle_base/2, temporary_pitch, TFT_RED);}
