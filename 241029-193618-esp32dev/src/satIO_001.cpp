@@ -6420,13 +6420,13 @@ bool DisplayPage0() {
 
     char ground_heading_name[10];
 
-    for (int i = 0; i<15; i++) {
-      if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
-        uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[0][i][0], ground_heading_range[0][i][1], 50+uiData.yaw_x, 100+uiData.yaw_x);
-        memset(ground_heading_name, 0, sizeof(ground_heading_name));
-        strcpy(ground_heading_name, ground_heading_names[i]);
-      }
-    }
+    // for (int i = 0; i<15; i++) {
+    //   if (atof(gnrmcData.ground_heading) >= ground_heading_range[0][i][0] && atof(gnrmcData.ground_heading) <= ground_heading_range[0][i][1]) {
+    //     uiData.mapped_ground_heading = map(atof(gnrmcData.ground_heading), ground_heading_range[0][i][0], ground_heading_range[0][i][1], 50+uiData.yaw_x, 100+uiData.yaw_x);
+    //     memset(ground_heading_name, 0, sizeof(ground_heading_name));
+    //     strcpy(ground_heading_name, ground_heading_names[i]);
+    //   }
+    // }
 
     Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
     Serial.println("[mapped ground_heading] " + String(uiData.mapped_ground_heading));
