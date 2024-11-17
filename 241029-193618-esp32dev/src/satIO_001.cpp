@@ -6483,33 +6483,37 @@ bool DisplayPage0() {
 
     */
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    uiData.mapped_ground_heading = 67.5; // uncomment to test
+    // uiData.mapped_ground_heading = 67.5; // uncomment to test
     for (int i = 0; i<16; i++) {
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
+          // Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
         // set heading name and center heading name
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]); uiData.mapped_ground_heading = uiData.yaw_x+50; break;}}
       else {
         // being dialed in
-        if (uiData.mapped_ground_heading >= ground_heading_range[i][0] && uiData.mapped_ground_heading < ground_heading_range[i][1]) {
+        if (uiData.mapped_ground_heading >= ground_heading_range[i][0] && uiData.mapped_ground_heading <= ground_heading_range[i][1]) {
+          // Serial.println("[mapped ground_heading pixel 1] " + String(uiData.mapped_ground_heading));
           // set heading name
           memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
           // offset heading name left of center (inverted for better bearing via UI)
           if (uiData.mapped_ground_heading > ground_heading_range[i][0]+22.5) {
+            // Serial.println("[mapped ground_heading pixel 2] " + String(uiData.mapped_ground_heading));
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, ground_heading_range[i][0], ground_heading_range[i][1], 0, 50);
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x, uiData.yaw_x+50);
           }
           // offset heading name right of center (inverted for better bearing via UI)
           else {
-            uiData.mapped_yaw = map(uiData.mapped_ground_heading, ground_heading_range[i][0], ground_heading_range[i][1], 0, 50);
-            uiData.mapped_yaw = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);
+            // Serial.println("[mapped ground_heading pixel 3] " + String(uiData.mapped_ground_heading));
+            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, ground_heading_range[i][0], ground_heading_range[i][1], 0, 50);
+            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);
           }
           break;
           }
           }
     }
-    Serial.println("[mapped ground name] " + String(name_ground_heading));
-    Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
+    // Serial.println("[mapped ground name] " + String(name_ground_heading));
+    // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(uiData.yaw_x, uiData.pitch_y-18, 100, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
