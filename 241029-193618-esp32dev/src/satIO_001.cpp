@@ -6483,7 +6483,7 @@ bool DisplayPage0() {
 
     */
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    uiData.mapped_ground_heading = 22.5; // uncomment to test
+    // uiData.mapped_ground_heading = 22.5; // uncomment to test
     for (int i = 0; i<16; i++) {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
