@@ -6546,7 +6546,7 @@ bool DisplayPage0() {
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: degrees
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: degrees
     uiData.mapped_pitch = atof(gpattData.pitch);
-    uiData.mapped_pitch = -45;   // uncomment to test
+    // uiData.mapped_pitch = -90;   // uncomment to test
     if (uiData.mapped_pitch > 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+50, uiData.pitch_y);}
     else if (uiData.mapped_pitch < 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, -90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+100, uiData.pitch_y+50);}
     else {uiData.mapped_pitch = uiData.pitch_y+50;}
