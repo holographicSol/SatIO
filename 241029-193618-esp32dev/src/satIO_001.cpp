@@ -7965,7 +7965,7 @@ void DisplayUAP() {
   // uiData.temporary_gpatt_roll -= 45; // uncomment to test roll
   uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
 
-  Serial.println("[roll] " + String(gpattData.roll) + " [ui offset] " + String(uiData.offset_gpatt_roll_0) + " [ui value] " + String(uiData.temporary_gpatt_roll));
+  // Serial.println("[roll] " + String(gpattData.roll) + " [ui offset] " + String(uiData.offset_gpatt_roll_0) + " [ui value] " + String(uiData.temporary_gpatt_roll));
   uap.pushRotated(uiData.temporary_gpatt_roll);
   yield(); uap.deleteSprite();
 }
