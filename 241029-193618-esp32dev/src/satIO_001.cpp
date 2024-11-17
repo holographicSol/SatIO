@@ -6483,13 +6483,14 @@ bool DisplayPage0() {
 
     */
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    // uiData.mapped_ground_heading = 50; // uncomment to test
+    // uiData.mapped_ground_heading = 67.5; // uncomment to test
     
     for (int i = 0; i<16; i++) {
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]); uiData.mapped_ground_heading = uiData.yaw_x+50; break;}}
       else {
+        // being dialed in
         if (uiData.mapped_ground_heading >= ground_heading_range[i][0] && uiData.mapped_ground_heading < ground_heading_range[i][1]) {
           memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
           if (uiData.mapped_ground_heading > 0 && uiData.mapped_ground_heading <=180) {uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 180, 0, 50); uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);}
