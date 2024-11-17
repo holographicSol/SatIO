@@ -6452,7 +6452,7 @@ bool DisplayPage0() {
     // Ground Heading Name And Orientation:
     int i_mapped_ground_heading = 0;
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    // uiData.mapped_ground_heading = 22.5; // uncomment to test
+    uiData.mapped_ground_heading = 15; // uncomment to test
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
@@ -6494,16 +6494,17 @@ bool DisplayPage0() {
     }
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
+    Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
     int adj = 4;
     signed int l_adjust = 0;
     if (i_mapped_ground_heading==15) {adj=-12;}
-    if (i_mapped_ground_heading==1) {l_adjust=-22.5;}
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+adj])+String(""), (uiData.mapped_ground_heading+l_adjust), uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1+adj])+String(""), (uiData.mapped_ground_heading-30+l_adjust), uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1+adj])+String(""), (uiData.mapped_ground_heading+30+l_adjust), uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2+adj])+String(""), (uiData.mapped_ground_heading-60+l_adjust), uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2+adj])+String(""), (uiData.mapped_ground_heading+60+l_adjust), uiData.pitch_y-18+8);
+    if (i_mapped_ground_heading==1) {if (strcmp(ground_heading_names[(i_mapped_ground_heading+adj)], "N")==0) l_adjust=-22.5;}
+    if (i_mapped_ground_heading==1) {if (strcmp(ground_heading_names[(i_mapped_ground_heading+adj)], "NNE")==0) l_adjust=-22.5;}
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading   + adj]) + String(""), (uiData.mapped_ground_heading+l_adjust), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1 + adj]) + String(""), (uiData.mapped_ground_heading-30+l_adjust), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1 + adj]) + String(""), (uiData.mapped_ground_heading+30+l_adjust), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2 + adj]) + String(""), (uiData.mapped_ground_heading-60+l_adjust), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2 + adj]) + String(""), (uiData.mapped_ground_heading+60+l_adjust), uiData.pitch_y-18+8);
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
