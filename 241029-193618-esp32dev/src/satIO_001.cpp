@@ -6461,6 +6461,7 @@ bool DisplayPage0() {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
           // Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
         // set heading name and center heading name
+        i_mapped_ground_heading=i;
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]); uiData.mapped_ground_heading = uiData.yaw_x+50;
         break;
         }}
@@ -6476,25 +6477,23 @@ bool DisplayPage0() {
             // Serial.println("[mapped ground_heading pixel 2] " + String(uiData.mapped_ground_heading));
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, ground_heading_range[i][0], ground_heading_range[i][1], 0, 50);
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x);
-            // draw ground heading name i+-1 far right/left of center
-            // draw ground heading name i+-2 right/left of center
+            i_mapped_ground_heading=i;
           }
           // offset heading name right of center (inverted for better bearing via UI)
           else if (uiData.mapped_ground_heading < ground_heading_range[i][0]+22.5) {
             // Serial.println("[mapped ground_heading pixel 3] " + String(uiData.mapped_ground_heading));
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, ground_heading_range[i][0], ground_heading_range[i][1], 0, 50);
             uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+100, uiData.yaw_x+50);
-            // draw ground heading name i+-1 far right/left of center
-            // draw ground heading name i+-2 right/left of center
+            i_mapped_ground_heading=i;
           }
           else {
             // Serial.println("[mapped ground_heading pixel 4] " + String(uiData.mapped_ground_heading));
+            i_mapped_ground_heading=i;
             uiData.mapped_ground_heading = uiData.yaw_x+50;
           }
           break;
           }
           }
-      i_mapped_ground_heading++;
     }
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
