@@ -6611,7 +6611,7 @@ bool DisplayPage0() {
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
     // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro. focused gyro may be considered by scenario
-    //                       |           |    due to primary gyro being independent of inertia)
+    //                       |           |    due to primary gyro being independent of inertia). the ship may be dark grey with black patterning and features.
     // yaw                   |___________|
     // (currently there is no primary)
     // ----------------------------------------------------------
