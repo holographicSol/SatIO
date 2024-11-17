@@ -6452,7 +6452,7 @@ bool DisplayPage0() {
     // Ground Heading Name And Orientation:
     int i_mapped_ground_heading = 0;
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    uiData.mapped_ground_heading = 340; // uncomment to test
+    // uiData.mapped_ground_heading = 340; // uncomment to test
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
 
