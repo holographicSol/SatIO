@@ -6500,7 +6500,6 @@ bool DisplayPage0() {
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+adj])+String(""), (uiData.mapped_ground_heading), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1+adj])+String(""), (uiData.mapped_ground_heading-30), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1+adj])+String(""), (uiData.mapped_ground_heading+30), uiData.pitch_y-18+8);
-
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2+adj])+String(""), (uiData.mapped_ground_heading-60), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2+adj])+String(""), (uiData.mapped_ground_heading+60), uiData.pitch_y-18+8);
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
