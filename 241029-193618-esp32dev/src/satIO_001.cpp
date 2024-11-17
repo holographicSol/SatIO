@@ -6497,14 +6497,14 @@ bool DisplayPage0() {
     }
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
-    hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), uiData.mapped_ground_heading-30, uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), uiData.mapped_ground_heading+30, uiData.pitch_y-18+8);
-    hud.fillRect(uiData.yaw_x-40, uiData.pitch_y-18, 20, 16, TFT_BLACK);
-    hud.fillRect(uiData.yaw_x+140, uiData.pitch_y-18, 20, 16, TFT_BLACK);
+    hud.fillRect(uiData.yaw_x-20, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe left heading
+    hud.fillRect(uiData.yaw_x+120, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe right heading
+    hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display objects rect
     
     // Ground Heading Degrees:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
