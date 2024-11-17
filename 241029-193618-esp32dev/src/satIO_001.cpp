@@ -6460,8 +6460,8 @@ bool DisplayPage0() {
           // Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
         // set heading name and center heading name
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]); uiData.mapped_ground_heading = uiData.yaw_x+50;
-        // draw ground heading name i+-2 right/left of center
-        // draw ground heading name i+-2 right/left of center
+        // draw ground heading name i+-1 right/left of center
+        // draw ground heading name i+-1 right/left of center
         break;
         }}
       
