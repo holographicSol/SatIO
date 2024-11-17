@@ -6448,14 +6448,12 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
-
     // Ground Heading Name And Orientation:
     int i_mapped_ground_heading = 0;
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    // uiData.mapped_ground_heading = 340; // uncomment to test
+    uiData.mapped_ground_heading = 22.5; // uncomment to test
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
-
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
@@ -6493,19 +6491,23 @@ bool DisplayPage0() {
           }
           }
     }
-    if (i_mapped_ground_heading-1==-1) {i_mapped_ground_heading=16;}
-    if (i_mapped_ground_heading+1>=16) {i_mapped_ground_heading=0;}
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    if (i_mapped_ground_heading-1==-1) {i_mapped_ground_heading=14;}
+    if (i_mapped_ground_heading+1>15) {i_mapped_ground_heading=2;}
+    int l_adjust_mapped_ground_heading = 30;
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading])+String(""), (uiData.mapped_ground_heading)-l_adjust_mapped_ground_heading, uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), (uiData.mapped_ground_heading-30)-l_adjust_mapped_ground_heading, uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2])+String(""), (uiData.mapped_ground_heading-60)-l_adjust_mapped_ground_heading, uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), (uiData.mapped_ground_heading+30)-l_adjust_mapped_ground_heading, uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2])+String(""), (uiData.mapped_ground_heading+60)-l_adjust_mapped_ground_heading, uiData.pitch_y-18+8);
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     // Serial.println("[mapped ground_heading pixel 1] " + String(uiData.mapped_ground_heading-30));
     // Serial.println("[mapped ground_heading pixel 2] " + String(uiData.mapped_ground_heading+30));
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
-    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), uiData.mapped_ground_heading-30, uiData.pitch_y-18+8);
-    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), uiData.mapped_ground_heading+30, uiData.pitch_y-18+8);
-    hud.fillRect(uiData.yaw_x-20, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe left ground heading
-    hud.fillRect(uiData.yaw_x+120, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe right ground heading
+    // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
+    hud.fillRect(uiData.yaw_x-50, uiData.pitch_y-17, 50, 16, TFT_BLACK); // wipe left ground heading
+    hud.fillRect(uiData.yaw_x+120, uiData.pitch_y-17, 50, 16, TFT_BLACK); // wipe right ground heading
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
     
     // Ground Heading Degrees:
