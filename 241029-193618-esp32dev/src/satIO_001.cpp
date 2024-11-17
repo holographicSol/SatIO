@@ -6454,7 +6454,7 @@ bool DisplayPage0() {
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "360.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
 
-    // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
+    Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
 
@@ -6505,10 +6505,11 @@ bool DisplayPage0() {
     // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
     int adj = 4;
     signed int l_adjust = 0;
-    if (i_mapped_ground_heading==15) {adj=-12;} // special handling for NNW, shift index
+    if (i_mapped_ground_heading==15) {adj=-12;} // special handling for NNW, shift index number
     if (atof(gnrmcData.ground_heading)>0 && atof(gnrmcData.ground_heading)<22.5) {l_adjust=30;}      // special handling for NNE range < mid, shift pixels left
     if (atof(gnrmcData.ground_heading)>22.5 && atof(gnrmcData.ground_heading)<44.99) {l_adjust=-30;} // special handling for NNE range > mid, shift pixels left
-    if (atof(gnrmcData.ground_heading)>337.5 && atof(gnrmcData.ground_heading)<360) {l_adjust=-30;} // special handling for NNE range > mid, shift pixels left
+    if (atof(gnrmcData.ground_heading)>337.5 && atof(gnrmcData.ground_heading)<360) {l_adjust=-30;} // special handling for range > mid, shift pixels left
+    if (atof(gnrmcData.ground_heading)>315.5 && atof(gnrmcData.ground_heading)<337.5) {adj=1;} // special handling for range > mid, shift pixel left
     // Serial.println("[l_adjust] " + String(l_adjust));
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading   + adj]) + String(""), (uiData.mapped_ground_heading-l_adjust), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1 + adj]) + String(""), (uiData.mapped_ground_heading-30-l_adjust), uiData.pitch_y-18+8);
