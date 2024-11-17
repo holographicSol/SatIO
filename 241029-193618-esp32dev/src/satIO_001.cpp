@@ -6507,8 +6507,8 @@ bool DisplayPage0() {
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
-    hud.fillRect(uiData.yaw_x-50, uiData.pitch_y-17, 50, 16, TFT_BLACK); // wipe any left ground heading overrun 
-    hud.fillRect(uiData.yaw_x+118, uiData.pitch_y-17, 52, 16, TFT_BLACK); // wipe any right ground heading overrun 
+    hud.fillRect(uiData.yaw_x-50, uiData.pitch_y-17, 40, 16, TFT_BLACK); // wipe any left ground heading overrun 
+    hud.fillRect(uiData.yaw_x+110, uiData.pitch_y-17, 40, 16, TFT_BLACK); // wipe any right ground heading overrun 
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
     
     // Ground Heading Degrees:
