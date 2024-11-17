@@ -213,7 +213,6 @@ systemStruct systemData;
 
 signed int yaw_min = 0;     signed int yaw_max = 360;
 signed int pitch_min = -90; signed int pitch_max = 90;
-signed int roll_min = -90;  signed int roll_max = 90;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: DEBUG
@@ -7946,11 +7945,12 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DISPLAY INS DATA
 
+int uap_w = 50;
+int uap_h = 50;
+
 void DisplayUAP() {
   /* a line representing a vehicular craft with corresponding roll */
 
-  int uap_w = 50;
-  int uap_h = 50;
   uap.createSprite(uap_w, uap_h);                                              // create the Sprite pixels width and height
   uiData.uap_piv_X = uap.width() / 2;                                          // x pivot of Sprite (middle)
   uiData.uap_piv_y = uap_h/2;                                                  // y pivot of Sprite (10 pixels from bottom)
@@ -7958,11 +7958,14 @@ void DisplayUAP() {
   uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
   uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
+  
+  uiData.temporary_gpatt_roll = atof(gpattData.roll);
+  // uiData.temporary_gpatt_roll = 0;   // uncomment to test roll
+  uiData.temporary_gpatt_roll = map(uiData.temporary_gpatt_roll, -90.00, 90, 0, 360);
+  // uiData.temporary_gpatt_roll -= 45; // uncomment to test roll
+  uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
 
-  uiData.gpatt_roll = atof(gpattData.roll);
-  uiData.temporary_gpatt_roll = 90; // needs mapping
-
-  // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll_0) + " [ui value] " + String(temporary_gpatt_roll));
+  Serial.println("[roll] " + String(gpattData.roll) + " [ui offset] " + String(uiData.offset_gpatt_roll_0) + " [ui value] " + String(uiData.temporary_gpatt_roll));
   uap.pushRotated(uiData.temporary_gpatt_roll);
   yield(); uap.deleteSprite();
 }
