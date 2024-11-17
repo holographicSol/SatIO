@@ -6452,7 +6452,7 @@ bool DisplayPage0() {
     // Ground Heading Name And Orientation:
     int i_mapped_ground_heading = 0;
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    // uiData.mapped_ground_heading = 0; // uncomment to test
+    uiData.mapped_ground_heading = 0; // uncomment to test
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
@@ -6496,17 +6496,18 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
     int adj = 4;
-    if (i_mapped_ground_heading==15) {adj=-12;} else {adj=4;}
+    if (i_mapped_ground_heading==15) {adj=-12;}
+    // else if (i_mapped_ground_heading==1) {adj=3;}
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+adj])+String(""), (uiData.mapped_ground_heading), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1+adj])+String(""), (uiData.mapped_ground_heading-30), uiData.pitch_y-18+8);
-    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2+4])+String(""), (uiData.mapped_ground_heading-60), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-2+4])+String(""), (uiData.mapped_ground_heading-60), uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1+adj])+String(""), (uiData.mapped_ground_heading+30), uiData.pitch_y-18+8);
-    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2+4])+String(""), (uiData.mapped_ground_heading+60), uiData.pitch_y-18+8);
+    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+2+4])+String(""), (uiData.mapped_ground_heading+60), uiData.pitch_y-18+8);
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     // Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
     hud.fillRect(uiData.yaw_x-50, uiData.pitch_y-17, 50, 16, TFT_BLACK); // wipe any left ground heading overrun 
-    hud.fillRect(uiData.yaw_x+120, uiData.pitch_y-17, 50, 16, TFT_BLACK); // wipe any right ground heading overrun 
+    hud.fillRect(uiData.yaw_x+118, uiData.pitch_y-17, 52, 16, TFT_BLACK); // wipe any right ground heading overrun 
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
     
     // Ground Heading Degrees:
