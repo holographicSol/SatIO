@@ -6232,7 +6232,7 @@ char ground_heading_names[16][10] = {
 };
 float ground_heading_range[16][2] {
   {0.0, 360},      // n
-  {1.0, 44.0},     // nne
+  {0.0, 45.0},     // nne
   {45.0, 45.0},    // ne
   {45.0, 90.0},    // ene
 
@@ -6483,8 +6483,9 @@ bool DisplayPage0() {
 
     */
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
-    // uiData.mapped_ground_heading = 90; // uncomment to test
+    uiData.mapped_ground_heading = 22.5; // uncomment to test
     for (int i = 0; i<16; i++) {
+      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
           // Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
