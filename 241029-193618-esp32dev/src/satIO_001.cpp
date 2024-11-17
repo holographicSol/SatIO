@@ -6449,7 +6449,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
-    // Ground Heading Name And Orientation: This is not smooth yet but it may almost be dialed in
+    // Ground Heading Name And Orientation: Exactly center for named headings (needs tweaking to make the most out of pixels between named headings, for a smooth carousel) 
     int i_mapped_ground_heading = 0;
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "360.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
