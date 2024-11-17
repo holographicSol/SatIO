@@ -6531,13 +6531,14 @@ bool DisplayPage0() {
     hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
     hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
     hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);  // x axis: degrees
-    memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0"); // uncomment to test yaw degrees/
-    if (atof(gpattData.yaw)>=yaw_min && atof(gpattData.yaw)<=360) {
-    uiData.mapped_yaw = uiData.yaw_x+50; // needs mapping
-    }
+    uiData.mapped_yaw = atof(gpattData.yaw);
+    // uiData.mapped_yaw = 315;   // uncomment to test
+    if (uiData.mapped_yaw > 0 && uiData.mapped_yaw <=180) {uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 180, 0, 50); uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);}
+    else if (uiData.mapped_yaw > 180 && uiData.mapped_yaw <=360) {uiData.mapped_yaw = map(uiData.mapped_yaw, 180, 360, 0, 50); uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 50, uiData.yaw_x, uiData.yaw_x+50);}
+    else {uiData.mapped_yaw = uiData.yaw_x+50;}
+    // Serial.println("[mapped yaw pixel] " + String(uiData.mapped_yaw));
     hud.fillTriangle(uiData.mapped_yaw-uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw+uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_GREEN);
 
-    
     /* Pitch Scale:  */
     hud.drawRect(uiData.pitch_x, uiData.pitch_y, uiData.pitch_w, uiData.pitch_h, TFT_RED);  // y axis: pitch
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 2, 1, TFT_RED);   // y axis: degrees
