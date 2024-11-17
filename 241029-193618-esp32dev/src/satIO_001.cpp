@@ -8013,8 +8013,8 @@ void UpdateDisplay(void * pvParameters) {
     // menuData.page=5;  // force a specific page to be displayed (dev)
 
     while (1) {
-      delay(1);
-      Serial.println("[page] " + String(menuData.page));
+      delay(5);
+      // Serial.println("[page] " + String(menuData.page));
 
       /* populates strite according to page then displays sprite */
 
