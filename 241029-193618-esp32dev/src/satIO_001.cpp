@@ -6454,10 +6454,39 @@ bool DisplayPage0() {
     // uiData.mapped_ground_heading=0; // uncomment to test ground heading azimuth
     // ltoa(uiData.mapped_ground_heading, gnrmcData.ground_heading, 10);  // uncomment to test ground heading azimuth
 
+    /*
+
+    "N",  "NNE",  "NE",  "ENE",
+    "E",  "ESE",  "SE",  "SSE",
+    "S",  "SSW",  "SW",  "WSW",
+    "W",  "WNW",  "NW",  "NNW",
+
+    {0.0, 360},      // n     ==
+    {0.0, 45.0},     // nne   45
+    {45.0, 45.0},    // ne    ==
+    {45.0, 90.0},    // ene   45
+
+    {90.0, 90.0},    // e     ==
+    {90.0, 135.0},   // ese   45
+    {135.0, 135.0},  // se    ==
+    {135.0, 180.0},  // sse   45
+
+    {180.0, 180.0},  // s     ==
+    {180.0, 225.0},  // ssw   45
+    {225.0, 225.0},  // sw    ==
+    {225.0, 270.0},  // wsw   45
+
+    {270.0, 270.0},  // w     ==
+    {270.0, 315.0},  // wnw   45
+    {315.0, 315.0},  // nw    ==
+    {315.0, 360.0},   // nnw  45
+
+    */
+
     for (int i = 0; i<16; i++) {
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] || atof(gnrmcData.ground_heading)==ground_heading_range[i][1]) {
-        uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value (center)
+        uiData.mapped_ground_heading=uiData.yaw_x+50; // (center)
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
         break;
         }
