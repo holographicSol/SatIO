@@ -6482,29 +6482,26 @@ bool DisplayPage0() {
     {315.0, 360.0},   // nnw  45
 
     */
-
+    uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
+    // uiData.mapped_ground_heading = 50; // uncomment to test
+    
     for (int i = 0; i<16; i++) {
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
-        if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] || atof(gnrmcData.ground_heading)==ground_heading_range[i][1]) {
-        uiData.mapped_ground_heading=uiData.yaw_x+50; // (center)
-        memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
-        break;
-        }
-      }
+        if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
+        memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]); uiData.mapped_ground_heading = uiData.yaw_x+50; break;}}
       else {
-        if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) < ground_heading_range[i][1]) {
-          uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value (center)
-          memset(name_ground_heading, 0, sizeof(name_ground_heading));
-          strcpy(name_ground_heading, ground_heading_names[i]);
+        if (uiData.mapped_ground_heading >= ground_heading_range[i][0] && uiData.mapped_ground_heading < ground_heading_range[i][1]) {
+          memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
+          if (uiData.mapped_ground_heading > 0 && uiData.mapped_ground_heading <=180) {uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 180, 0, 50); uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);}
+          else if (uiData.mapped_ground_heading > 180 && uiData.mapped_ground_heading <360) {uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 180, 360, 0, 50); uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x, uiData.yaw_x+50);}
           break;
-        }
-      }
+          }
+          }
     }
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
     hud.drawRect(uiData.yaw_x, uiData.pitch_y-18, 100, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (atof(gnrmcData.ground_speed)>0.01) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
 
