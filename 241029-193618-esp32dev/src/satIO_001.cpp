@@ -6616,6 +6616,8 @@ bool DisplayPage0() {
     // (currently there is no primary)
     // ----------------------------------------------------------
 
+    // add analogue signal to port configuration in settings
+
     // create a page for debug/error table
 
     // location pinning
@@ -8013,7 +8015,7 @@ void UpdateDisplay(void * pvParameters) {
     // menuData.page=5;  // force a specific page to be displayed (dev)
 
     while (1) {
-      delay(5);
+      delay(1);
       // Serial.println("[page] " + String(menuData.page));
 
       /* populates strite according to page then displays sprite */
