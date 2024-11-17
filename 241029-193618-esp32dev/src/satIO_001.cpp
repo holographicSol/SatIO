@@ -210,6 +210,11 @@ struct systemStruct {
 };
 systemStruct systemData;
 
+
+signed int yaw_min = 0;     signed int yaw_max = 360;
+signed int pitch_min = -90; signed int pitch_max = 90;
+signed int roll_min = -90;  signed int roll_max = 90;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: DEBUG
 
@@ -6519,67 +6524,33 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(atof(gpattData.yaw))+String(""), uiData.yaw_x+120+31, rdata_y+18*7+8);
 
-    /* Yaw Scale:  0/360 = center | 90=center right | 180=right | 180=left | 270=center left */
+    /* Yaw Scale:  */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
-    hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 90 degrees
-    hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 270 degrees
-    hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: 0/360 degrees
-    hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: 181 degrees
-    hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);  // x axis: 180 degrees
-    // memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "90"); // uncomment to test yaw degrees
-    if (atof(gpattData.yaw)>=0 && atof(gpattData.yaw)<=180) {
-      // uncomment to use triangle pointer
-      uiData.mapped_yaw = map(atof(gpattData.yaw), 0, 180, 50+uiData.yaw_x, 100+uiData.yaw_x);
-      }
-    else if (atof(gpattData.yaw)>180 && atof(gpattData.yaw)<=360) {
-      // uncomment to use triangle pointer
-      uiData.mapped_yaw = map(atof(gpattData.yaw), 180, 360, uiData.yaw_x, 50);
-      }
-    // Serial.println("[mapped_yaw] " + String(uiData.mapped_yaw));
-    if ((atof(gpattData.yaw)==0) || (atof(gpattData.yaw)==90) || (atof(gpattData.yaw)==180) || (atof(gpattData.yaw)==270)) {
-      // uncomment to use triangle pointer
-      hud.fillTriangle(uiData.mapped_yaw-uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw+uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_GREEN);
+    hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);  // x axis: degrees
+    memset(gpattData.yaw, 0, sizeof(gpattData.yaw)); strcpy(gpattData.yaw, "0"); // uncomment to test yaw degrees/
+    if (atof(gpattData.yaw)>=yaw_min && atof(gpattData.yaw)<=360) {
+    uiData.mapped_yaw = uiData.yaw_x+50; // needs mapping
     }
-    else {
-      // uncomment to use triangle pointer
-      hud.fillTriangle(uiData.mapped_yaw-2, uiData.yaw_y-3, uiData.mapped_yaw+2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_BLUE);
-      }
+    hud.fillTriangle(uiData.mapped_yaw-uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw+uiData.yaw_triangle_base/2, uiData.yaw_y-3, uiData.mapped_yaw, uiData.yaw_y-3-uiData.yaw_triangle_base/2, TFT_GREEN);
+
     
-    /* Pitch Scale: 0/360 = center | 90=vertical up | 180=upside doown | 180=upside down | 270=vertical down */
+    /* Pitch Scale:  */
     hud.drawRect(uiData.pitch_x, uiData.pitch_y, uiData.pitch_w, uiData.pitch_h, TFT_RED);  // y axis: pitch
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 2, 1, TFT_RED);   // y axis: 90 degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+75, 2, 1, TFT_RED);   // y axis: 270 degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 2, 1, TFT_RED);   // y axis: 0/360 degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: 181 degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: 180 degrees
-    // memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "90"); // uncomment to test pitch degrees
-    
-    if (atof(gpattData.pitch)>=0 && atof(gpattData.pitch)<=180) {
-      // uncomment to use triangle pointer
-      uiData.mapped_pitch = map(atof(gpattData.pitch), 0, 180, 50+uiData.pitch_y, uiData.pitch_y);
-      }
-    else if (atof(gpattData.pitch)>180 && atof(gpattData.pitch)<=360) {
-      uiData.mapped_pitch = map(atof(gpattData.pitch), 180, 360, 0, 50);
-      // uncomment to use triangle pointer
-      uiData.mapped_pitch = map(atof(gpattData.pitch), 180, 360, (uiData.pitch_y)*2-uiData.mapped_pitch, 50+uiData.pitch_y+uiData.mapped_pitch);
-      }
-    
-    // Serial.println("[mapped_pitch] " + String(uiData.mapped_pitch));
-    if ((atof(gpattData.pitch)==0) || (atof(gpattData.pitch)==90) || (atof(gpattData.pitch)==180) || (atof(gpattData.pitch)==270)) {
-      // uncomment to use triangle pointer
-      hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_GREEN);
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+75, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: degrees
+    memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "0"); // uncomment to test pitch degrees
+    if (atof(gpattData.pitch)>=pitch_min && atof(gpattData.pitch)<=pitch_max) {
+    uiData.mapped_pitch = uiData.pitch_y+50; // needs mapping
     }
-    else {
-    // uncomment to use triangle pointer
     hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_RED);
-    }
 
-
-    // blue vertical lines: reflect yaw (turning left/right)
-
-    // red horizontal lines: reflect pitch (turning up/down)
-
-    // altitude scale: moves up and down, left of uap
 
     // other sensory data
 
@@ -7987,15 +7958,10 @@ void DisplayUAP() {
   uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
   uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
-  // offset_gpatt_roll_0 +=45;                                                 // uncomment to test roll clockwise n degrees a frame
-  uiData.offset_gpatt_roll_0 +=1;                                              // uncomment to test roll clockwise n degrees a frame
-  // gpatt_roll = atoi(gpattData.roll);                                        // uncomment to rotate according to actual INS data
-  uiData.temporary_gpatt_roll=uiData.gpatt_roll + uiData.offset_gpatt_roll_0;  // add actual degrees roll to roll offset 
-  if (uiData.temporary_gpatt_roll>360) {                                       // check if temporary roll > 360 degrees
-    uiData.offset_gpatt_roll_1 = uiData.temporary_gpatt_roll-360;              // new offset is units over 360 degrees 
-    uiData.temporary_gpatt_roll=0;                                             // repurpose temporary roll
-    for (int i=0; i<uiData.offset_gpatt_roll_1; i++) {uiData.temporary_gpatt_roll++;}  // add each unit over 360 to 0
-  }
+
+  uiData.gpatt_roll = atof(gpattData.roll);
+  uiData.temporary_gpatt_roll = 90; // needs mapping
+
   // Serial.println("[roll] " + String(gpatt_roll) + " [ui offset] " + String(offset_gpatt_roll_0) + " [ui value] " + String(temporary_gpatt_roll));
   uap.pushRotated(uiData.temporary_gpatt_roll);
   yield(); uap.deleteSprite();
