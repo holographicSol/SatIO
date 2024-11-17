@@ -6552,7 +6552,7 @@ bool DisplayPage0() {
     else if (uiData.mapped_pitch < 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, -90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+100, uiData.pitch_y+50);}
     else {uiData.mapped_pitch = uiData.pitch_y+50;}
     // Serial.println("[mapped pitch pixel] " + String(uiData.mapped_pitch));
-    hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_RED);
+    hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_GREEN);
 
 
     // other sensory data
