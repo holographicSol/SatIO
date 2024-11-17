@@ -6448,27 +6448,23 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
-    // Heading: maps heading dgrees to screen x,y coordinates (in development)
-    // uiData.mapped_ground_heading++; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
-    // uiData.mapped_ground_heading--; if (uiData.mapped_ground_heading<0) {uiData.mapped_ground_heading=360;} // uncomment to test ground heading azimuth
+
+    // Ground Heading Name:
+
     // uiData.mapped_ground_heading=0; // uncomment to test ground heading azimuth
     // ltoa(uiData.mapped_ground_heading, gnrmcData.ground_heading, 10);  // uncomment to test ground heading azimuth
-    
-    // Serial.println("[ground_heading] " + String(gnrmcData.ground_heading));
+
     for (int i = 0; i<16; i++) {
-      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
       if (i==0 || i==2 || i==4 || i==6 || i==8 || i==10 || i==12 || i==14 || i==16) {
         if (atof(gnrmcData.ground_heading)==ground_heading_range[i][0] || atof(gnrmcData.ground_heading)==ground_heading_range[i][1]) {
-        // Serial.println("[ground_heading in range i==n] " + String(i));
-        uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
+        uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value (center)
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i]);
         break;
         }
       }
       else {
         if (atof(gnrmcData.ground_heading) >= ground_heading_range[i][0] && atof(gnrmcData.ground_heading) < ground_heading_range[i][1]) {
-          // Serial.println("[ground_heading in range i!=n] " + String(i));
-          uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value
+          uiData.mapped_ground_heading=uiData.yaw_x+50; // temporary hardcoded value (center)
           memset(name_ground_heading, 0, sizeof(name_ground_heading));
           strcpy(name_ground_heading, ground_heading_names[i]);
           break;
@@ -6483,21 +6479,14 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
 
-    // Ground Heading:
+
+    // Ground Heading Degrees:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(atof(gnrmcData.ground_heading))+String(""), uiData.yaw_x+120+31, rdata_y+18*3+8);
 
-    /*
-    virtual altitude: map n -> 100
-    roll: (0° representing a head-on wind and 180° representing a tailwind. 
-    with a 20° yaw angle would be cycling at an angle of 20° with respect to the wind).
-    0°: A head-on wind 
-    90°: The top of an image points east/right when the camera is looking down 
-    180°: A tailwind 
-    270°: The top of an image points west/left when the camera is looking down 
-    */
+    // Altitude:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*4, 58, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
