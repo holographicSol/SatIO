@@ -6113,6 +6113,7 @@ struct UIDataStruct {
   int offset_gpatt_roll_0 = 90;             // allows craft to have a default horizontal orientation
   int gpatt_roll = atoi(gpattData.roll);  // rotate pod wing according to INS data
   int offset_gpatt_roll_1;
+  int offset_gpatt_pitch_0 = 0;
   uint16_t uap_piv_X;  // x pivot of Sprite (middle)
   uint16_t uap_piv_y;  // y pivot of Sprite (10 pixels from bottom)
 
@@ -6544,10 +6545,12 @@ bool DisplayPage0() {
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 2, 1, TFT_RED);   // y axis: degrees
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: degrees
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: degrees
-    memset(gpattData.pitch, 0, sizeof(gpattData.pitch)); strcpy(gpattData.pitch, "0"); // uncomment to test pitch degrees
-    if (atof(gpattData.pitch)>=pitch_min && atof(gpattData.pitch)<=pitch_max) {
-    uiData.mapped_pitch = uiData.pitch_y+50; // needs mapping
-    }
+    uiData.mapped_pitch = atof(gpattData.pitch);
+    uiData.mapped_pitch = -45;   // uncomment to test
+    if (uiData.mapped_pitch > 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+50, uiData.pitch_y);}
+    else if (uiData.mapped_pitch < 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, -90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+100, uiData.pitch_y+50);}
+    else {uiData.mapped_pitch = uiData.pitch_y+50;}
+    // Serial.println("[mapped pitch pixel] " + String(uiData.mapped_pitch));
     hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_RED);
 
 
