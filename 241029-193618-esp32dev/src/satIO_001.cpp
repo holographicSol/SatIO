@@ -6493,6 +6493,7 @@ bool DisplayPage0() {
           }
           }
     }
+    if (i_mapped_ground_heading-1==-1) {i_mapped_ground_heading=16;}
     if (i_mapped_ground_heading+1>=16) {i_mapped_ground_heading=0;}
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
@@ -6501,8 +6502,8 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), uiData.mapped_ground_heading-30, uiData.pitch_y-18+8);
-    hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), uiData.mapped_ground_heading+30, uiData.pitch_y-18+8);
+    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), uiData.mapped_ground_heading-30, uiData.pitch_y-18+8);
+    // hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), uiData.mapped_ground_heading+30, uiData.pitch_y-18+8);
     hud.fillRect(uiData.yaw_x-20, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe left ground heading
     hud.fillRect(uiData.yaw_x+120, uiData.pitch_y-17, 20, 16, TFT_BLACK); // wipe right ground heading
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
