@@ -6518,7 +6518,7 @@ bool DisplayPage0() {
     }
     // Serial.println("[mapped ground name] " + String(name_ground_heading));
     // Serial.println("[mapped ground_heading pixel] " + String(uiData.mapped_ground_heading));
-    hud.drawRect(uiData.yaw_x-40, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
