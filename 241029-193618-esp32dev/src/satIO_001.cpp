@@ -6503,8 +6503,8 @@ bool DisplayPage0() {
     hud.drawString(String(name_ground_heading)+String(""), uiData.mapped_ground_heading, uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading-1])+String(""), uiData.mapped_ground_heading-30, uiData.pitch_y-18+8);
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading+1])+String(""), uiData.mapped_ground_heading+30, uiData.pitch_y-18+8);
-    hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 20, 16, TFT_BLACK);
-    hud.drawRect(uiData.yaw_x+100, uiData.pitch_y-18, 20, 16, TFT_BLACK);
+    hud.drawRect(uiData.yaw_x-22, uiData.pitch_y-18, 20, 16, TFT_BLACK);
+    hud.drawRect(uiData.yaw_x+102, uiData.pitch_y-18, 20, 16, TFT_BLACK);
     
     // Ground Heading Degrees:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
