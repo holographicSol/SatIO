@@ -6478,7 +6478,7 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 232);
 
     // Ground Heading Name and Degrees:
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "21.5");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "45");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6515,7 +6515,7 @@ bool DisplayPage0() {
       " " + String(22.5),
       (160), uiData.pitch_y-19+8);}
     
-    if (i_mapped_ground_heading == 1) {
+    else if (i_mapped_ground_heading == 1) {
       Serial.println("[i check 1] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
@@ -6524,6 +6524,17 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(ground_heading_range[i_mapped_ground_heading+1][0] - abs(atof(gnrmcData.ground_heading))),
+      (160), uiData.pitch_y-19+8);}
+    
+    else if (i_mapped_ground_heading == 2) {
+      Serial.println("[i check 2] ");
+      hud.drawString(
+      "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
+      " " + String(22.50) +
+      "  " + String(name_ground_heading) +
+      " " + String(gnrmcData.ground_heading) +
+      "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
+      " " + String(22.5),
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 4) {
