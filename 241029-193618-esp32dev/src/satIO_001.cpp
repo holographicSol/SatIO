@@ -6591,10 +6591,12 @@ bool DisplayPage0() {
     // altitude                 N/S/E/W
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
-    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro.
+    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, secondary gyro. ( no primary gyro yet but future gyro independent of INS is reserved as primary gyro )
     //                       |           |    the ship may be dark grey with black patterning and features.
     // yaw                   |___________|    can represent other objects too (non vehicles).
-    // (currently there is no primary)        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
+
+    //                                        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
+                                              
     // ----------------------------------------------------------
 
     // add analogue signal to port configuration in settings
