@@ -8429,6 +8429,7 @@ void satIOData() {
 void check_gngga() {
   // Serial.println("[check_gngga]");
   if (systemData.gngga_enabled == true){
+    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
     // Serial.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
     if (gnggaData.valid_checksum == true) {GNGGA();}
@@ -8440,7 +8441,7 @@ void check_gngga() {
 void check_gnrmc() {
   // Serial.println("[check_gnrmc]");
   if (systemData.gnrmc_enabled == true) {
-    if (systemData.output_gnrmc_enabled == true) {Serial.println(SerialLink.BUFFER);}
+    if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
     // Serial.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
     if (gnrmcData.valid_checksum == true) {GNRMC();}
@@ -8452,7 +8453,7 @@ void check_gnrmc() {
 void check_gpatt() {
   // Serial.println("[check_gpatt]");
   if (systemData.gpatt_enabled == true) {
-    if (systemData.output_gpatt_enabled == true) {Serial.println(SerialLink.BUFFER);}
+    if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
     // Serial.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
     if (gpattData.valid_checksum == true) {GPATT();}
