@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Ground Heading Name and Degrees:
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "0.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "1.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6491,7 +6491,7 @@ bool DisplayPage0() {
            (160), uiData.pitch_y-18+8);
     }
     else {
-      if (i_mapped_ground_heading==0) {
+      if (i_mapped_ground_heading ==0 || i_mapped_ground_heading == 1) {
         Serial.println("[i check 2] ");
         hud.drawString(
         "" + String(ground_heading_names[15]) +
