@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Ground Heading Name and Degrees:
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "0.2");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "45.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6470,22 +6470,24 @@ bool DisplayPage0() {
       }
     }
     Serial.println("[mapped ground name] " + String(name_ground_heading));
-    Serial.println("[i mapped 1] " + String(i_mapped_ground_heading-1));
-    Serial.println("[i mapped 0] " + String(i_mapped_ground_heading));
-    Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1));
+    Serial.println("[i mapped 1] " + String(i_mapped_ground_heading-1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][1]));
+    Serial.println("[i mapped 0] " + String(i_mapped_ground_heading)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][1]));
+    Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][1]));
     hud.setTextDatum(MC_DATUM);
 
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-18, 220, 16, TFTOBJ_COL0); // display ground heading rect
 
-    if (!i_mapped_ground_heading == 0 || !i_mapped_ground_heading == 15) {
+    
+
+    if (!i_mapped_ground_heading == 0 || !i_mapped_ground_heading == 15 || !i_mapped_ground_heading == 1) {
         Serial.println("[i check 1] ");
           hud.drawString(
           "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
-          " -" + String(360-(ground_heading_range[i_mapped_ground_heading-1][1]) + uiData.mapped_ground_heading) +
+          " -" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading-1][1]/2) +
           "  " + String(name_ground_heading) +
           " " + String(gnrmcData.ground_heading) +
           " " + String(ground_heading_names[i_mapped_ground_heading+1]) +
-           " +" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading+1][0]),
+           " +" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0]/2),
            (160), uiData.pitch_y-18+8);
     }
     else {
@@ -6496,7 +6498,7 @@ bool DisplayPage0() {
         " -" + String(22.5+atof(gnrmcData.ground_heading)) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
-        "  " + String(ground_heading_names[0]) +
+        " " + String(ground_heading_names[0]) +
         " +" + String(360-uiData.mapped_ground_heading),
         (160), uiData.pitch_y-18+8);}
 
@@ -6507,7 +6509,7 @@ bool DisplayPage0() {
         " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
-        "  " + String(ground_heading_names[0]) +
+        " " + String(ground_heading_names[0]) +
         " +" + String(360-uiData.mapped_ground_heading),
         (160), uiData.pitch_y-18+8);}
     }
