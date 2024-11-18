@@ -7976,24 +7976,41 @@ int uap_w = 50;
 int uap_h = 50;
 
 void DisplayUAP() {
-  /* a line representing a vehicular craft with corresponding roll */
+  /* vehicle inertial and sensory data */
 
+  /* create vehicle */
   uap.createSprite(uap_w, uap_h);                                              // create the Sprite pixels width and height
   uiData.uap_piv_X = uap.width() / 2;                                          // x pivot of Sprite (middle)
   uiData.uap_piv_y = uap_h/2;                                                  // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                            // Set pivot point in this Sprite
-  uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
-  uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // draw hud centre boss in a way that displays orientation
-  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
-  
-  uiData.temporary_gpatt_roll = atof(gpattData.roll);
-  // uiData.temporary_gpatt_roll = 0;   // uncomment to test roll
-  uiData.temporary_gpatt_roll = map(uiData.temporary_gpatt_roll, -90.00, 90, 0, 360);
-  // uiData.temporary_gpatt_roll -= 45; // uncomment to test roll
-  uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
 
-  // Serial.println("[roll] " + String(gpattData.roll) + " [ui offset] " + String(uiData.offset_gpatt_roll_0) + " [ui value] " + String(uiData.temporary_gpatt_roll));
+  /* vehicle */
+  uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
+  uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // uap orientation
+
+  /* sea level. currently in place of terrain elevation data */
+  // signed mapped_sea_level = 0;
+  // mapped_sea_level = map(atof(gnggaData.altitude), -1000000, 1000000, 0, 15);
+  // uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level, uiData.uap_piv_y-50, 1, 100, TFT_DARKGREY);
+  // uap.fillRect(uiData.uap_piv_X + 4 + mapped_sea_level, uiData.uap_piv_y-51, 4, 1, TFT_DARKGREY);
+  // uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level-4, uiData.uap_piv_y-50, 4, 1, TFT_DARKGREY);
+
+  /* pivot vehicle according to roll */
+  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
+  uiData.temporary_gpatt_roll = atof(gpattData.roll);
+  uiData.temporary_gpatt_roll = map(uiData.temporary_gpatt_roll, -90.00, 90, 0, 360);
+  uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
+  Serial.println(
+    "[roll] " +
+    String(gpattData.roll) +
+    " [ui offset] " +
+    String(uiData.offset_gpatt_roll_0) +
+    " [ui value] " +
+    String(uiData.temporary_gpatt_roll));
+
   uap.pushRotated(uiData.temporary_gpatt_roll);
+
+  /* display and free memory */
   yield(); uap.deleteSprite();
 }
 
