@@ -6350,13 +6350,13 @@ bool DisplayPage0() {
       String(satData.lt_second), 240, rdata_y+8);
 
     // Precision Factor: 0.0 > 1.0
-    hud.drawRect(290, rdata_y+18, 30, 16, TFTOBJ_COL0);
+    hud.drawRect(272, rdata_y+18, 48, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atof(gnggaData.hdop_precision_factor)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
     if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 305, rdata_y+18+8);
+    hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 296, rdata_y+18+8);
 
     // Solution Stats: 0:invalid solution | 1:single point positioning | 2:pseudorange difference | 6:pure ins solution
     hud.drawRect(290, rdata_y+18*2, 30, 16, TFTOBJ_COL0);
@@ -6474,7 +6474,7 @@ bool DisplayPage0() {
     // Serial.println("[i mapped 0] " + String(i_mapped_ground_heading)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][1]));
     // Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][1]));
     hud.setTextDatum(MC_DATUM);
-    hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-18, 220, 16, TFTOBJ_COL0); // display ground heading rect
+    hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFTOBJ_COL0); // display ground heading rect
     if (!i_mapped_ground_heading == 0 && !i_mapped_ground_heading == 15 && !i_mapped_ground_heading == 1) {
         // Serial.println("[i check 1] ");
           hud.drawString(
@@ -6484,7 +6484,7 @@ bool DisplayPage0() {
           " " + String(gnrmcData.ground_heading) +
           "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
            " " + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0]/2),
-           (160), uiData.pitch_y-18+8);
+           (160), uiData.pitch_y-19+8);
     }
     else {
       if (i_mapped_ground_heading ==0 || i_mapped_ground_heading == 1) {
@@ -6496,7 +6496,7 @@ bool DisplayPage0() {
         " " + String(gnrmcData.ground_heading) +
         "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
         " " + String(12.5 - atof(gnrmcData.ground_heading)),
-        (160), uiData.pitch_y-18+8);}
+        (160), uiData.pitch_y-19+8);}
 
       else if (i_mapped_ground_heading==15) {
         // Serial.println("[i check 3] ");
@@ -6507,7 +6507,7 @@ bool DisplayPage0() {
         " " + String(gnrmcData.ground_heading) +
         "  " + String(ground_heading_names[0]) +
         " " + String(360 - (atof(gnrmcData.ground_heading)-12.5)),
-        (160), uiData.pitch_y-18+8);}
+        (160), uiData.pitch_y-19+8);}
     }
 
     // Altitude:
