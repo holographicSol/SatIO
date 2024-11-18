@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
 
     // Ground Heading Name And Orientation: Exactly center for named headings (needs tweaking to make the most out of pixels between named headings, for a smooth carousel) 
     int i_mapped_ground_heading = 0;
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "22.49");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "359.0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
 
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6480,15 +6480,13 @@ bool DisplayPage0() {
 
           // offset heading name left of center (inverted mapping)
           if (uiData.mapped_ground_heading > ground_heading_range[i][0]+22.5) {
-            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 360, 0, 50);
-            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+50, uiData.yaw_x);
+            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 360, uiData.yaw_x+50, uiData.yaw_x);
             i_mapped_ground_heading=i;
             Serial.println("[mapped ground_heading pixel 2] " + String(uiData.mapped_ground_heading));
           }
           // offset heading name right of center (inverted mapping)
           else if (uiData.mapped_ground_heading < ground_heading_range[i][0]+22.5) {
-            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 360, 0, 50);
-            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 50, uiData.yaw_x+100, uiData.yaw_x+50);
+            uiData.mapped_ground_heading = map(uiData.mapped_ground_heading, 0, 360, uiData.yaw_x+100, uiData.yaw_x+50);
             i_mapped_ground_heading=i;
             Serial.println("[mapped ground_heading pixel 3] " + String(uiData.mapped_ground_heading));
           }
