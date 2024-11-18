@@ -6483,11 +6483,11 @@ bool DisplayPage0() {
         Serial.println("[i check 1] ");
           hud.drawString(
           "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
-          " -" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading-1][1]/2) +
+          " " + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading-1][1]/2) +
           "  " + String(name_ground_heading) +
           " " + String(gnrmcData.ground_heading) +
           "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
-           " +" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0]/2),
+           " " + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0]/2),
            (160), uiData.pitch_y-18+8);
     }
     else {
@@ -6495,22 +6495,22 @@ bool DisplayPage0() {
         Serial.println("[i check 2] ");
         hud.drawString(
         "" + String(ground_heading_names[15]) +
-        " -" + String(atof(gnrmcData.ground_heading) + 12.5) +
+        " " + String(atof(gnrmcData.ground_heading) + 12.5) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
         "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
-        " +" + String(12.5 - atof(gnrmcData.ground_heading)),
+        " " + String(12.5 - atof(gnrmcData.ground_heading)),
         (160), uiData.pitch_y-18+8);}
 
       else if (i_mapped_ground_heading==15) {
         Serial.println("[i check 3] ");
         hud.drawString(
         "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
-        " -" + String(360 - (atof(gnrmcData.ground_heading) + 12.5)) +
+        " " + String(360 - (atof(gnrmcData.ground_heading) + 12.5)) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
         "  " + String(ground_heading_names[0]) +
-        " +" + String(360 - (atof(gnrmcData.ground_heading)-12.5)),
+        " " + String(360 - (atof(gnrmcData.ground_heading)-12.5)),
         (160), uiData.pitch_y-18+8);}
     }
 
