@@ -6596,6 +6596,12 @@ bool DisplayPage0() {
     // yaw                   |___________|    can represent other objects too (non vehicles).
 
     //                                        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
+    //                                        
+    //                                        vehicle/object types may change the appearence of the featured sprite.
+    //
+    //                                        vehicle/object sensor information may change pixels on the vehicle/object.
+    //
+    //                                        surrounding sensor information may change pixels around the vehicle/object.
                                               
     // ----------------------------------------------------------
 
