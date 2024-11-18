@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
 
     // Ground Heading Name And Orientation: Exactly center for named headings (needs tweaking to make the most out of pixels between named headings, for a smooth carousel) 
     int i_mapped_ground_heading = 0;
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "360.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "0.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
 
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6459,7 +6459,7 @@ bool DisplayPage0() {
       // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
 
       // avoid mapping untrue ranges
-      if (ground_heading_range[i][0] == ground_heading_range[i][1]) {
+      if (i==0 || i==2 ||  i==4 ||  i==6 ||  i==8 ||  i==10 || i==12 ||  i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
 
         // set heading name and manually set mapped ground heading to center
