@@ -6478,7 +6478,7 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 232);
 
     // Ground Heading Name and Degrees:
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "22.5");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     for (int i = 0; i<16; i++) {
@@ -6511,6 +6511,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 1) {
+      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6606,6 +6607,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 15) {
       // Serial.println("[i check 15] ");
+      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading) + 12.5))) +
@@ -6616,6 +6618,10 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else {
+      if (atof(gnrmcData.ground_heading)==22.50  || atof(gnrmcData.ground_heading)==67.50   ||
+          atof(gnrmcData.ground_heading)==112.50 || atof(gnrmcData.ground_heading)==157.50  ||
+          atof(gnrmcData.ground_heading)==202.50 || atof(gnrmcData.ground_heading)==247.50  ||
+          atof(gnrmcData.ground_heading)==292.50 || atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
       // Serial.println("[i check else] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
@@ -6623,8 +6629,8 @@ bool DisplayPage0() {
       "  " + String(name_ground_heading) +
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
-        " " + String(abs(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0])),
-        (160), uiData.pitch_y-19+8);
+      " " + String(abs(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0])),
+      (160), uiData.pitch_y-19+8);
     }
 
     /* Yaw Scale:  */
