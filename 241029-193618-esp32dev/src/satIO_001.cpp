@@ -6496,14 +6496,9 @@ bool DisplayPage0() {
         }
       }
     }
-    // Serial.println("[mapped ground name i] " + String(i_mapped_ground_heading));
-    // Serial.println("[mapped ground name]  " + String(name_ground_heading));
-    // Serial.println("[i mapped 1] " + String(i_mapped_ground_heading-1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][1]));
-    // Serial.println("[i mapped 0] " + String(i_mapped_ground_heading)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][1]));
-    // Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][1]));
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFTOBJ_COL0); // display ground heading rect
-
+    
     // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd there is a pattern too
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
