@@ -8004,16 +8004,10 @@ void DisplayOrb() {
   uiData.uap_piv_X = uap.width() / 2;                                             // x pivot of Sprite (middle)
   uiData.uap_piv_y = uap_h/2;                                                     // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                               // Set pivot point in this Sprite
-
-  uap.fillRect(uiData.uap_piv_X - 1, 30, 1, uiData.uap_piv_y+100, TFT_BLUE);  // uap
-
-  // uap.fillRect(uiData.uap_piv_X - 1, uiData.uap_piv_y+100, 1, 30, TFT_RED);  // uap
-
-  // uap.fillRoundRect(uiData.uap_piv_X - 1, 1, 6, uiData.uap_piv_y +100, 2, TFT_DARKGREY);  // uap
+  uap.fillRect(uiData.uap_piv_X - 1, 30, 1, uiData.uap_piv_y+100, TFT_BLUE); 
   tft.fillEllipse(uiData.uap_piv_X - 1, 1, 3, 3, TFT_DARKGREY);
-  uap.fillCircle(uiData.uap_piv_X, uiData.uap_piv_y, 6, TFT_DARKGREY);          // draw hud centre boss in a way that displays orientation
-
-  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                               // set the TFT pivot point that the hud will rotate around
+  uap.fillCircle(uiData.uap_piv_X, uiData.uap_piv_y, 6, TFT_DARKGREY);
+  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);
   
   uiData.temporary_gpatt_roll = atof(gpattData.roll);
   // uiData.temporary_gpatt_roll = 0;   // uncomment to test roll
