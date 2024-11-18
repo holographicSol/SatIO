@@ -6471,7 +6471,7 @@ bool DisplayPage0() {
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
-    hud.drawString(String(name_ground_heading) + "   " + String(gnrmcData.ground_heading), (160), uiData.pitch_y-18+8);
+    hud.drawString(String(name_ground_heading) + " " + String(gnrmcData.ground_heading), (160), uiData.pitch_y-18+8);
     
     // Ground Heading Degrees:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
