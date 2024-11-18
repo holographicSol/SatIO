@@ -6515,16 +6515,16 @@ bool DisplayPage0() {
       " " + String(22.5),
       (160), uiData.pitch_y-19+8);}
     
-    // if (i_mapped_ground_heading == 1) {
-    //   Serial.println("[i check 1] ");
-    //   hud.drawString(
-    //   "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
-    //   " " + String(22.50) +
-    //   "  " + String(name_ground_heading) +
-    //   " " + String(gnrmcData.ground_heading) +
-    //   "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
-    //   " " + String(22.5),
-    //   (160), uiData.pitch_y-19+8);}
+    if (i_mapped_ground_heading == 1) {
+      Serial.println("[i check 1] ");
+      hud.drawString(
+      "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
+      " " + String(gnrmcData.ground_heading) +
+      "  " + String(name_ground_heading) +
+      " " + String(gnrmcData.ground_heading) +
+      "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
+      " " + String(22.5),
+      (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 4) {
       Serial.println("[i check 4] ");
