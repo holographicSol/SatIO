@@ -6481,7 +6481,6 @@ bool DisplayPage0() {
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
-     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     for (int i = 0; i<16; i++) {
       if (i==0 || i==2 ||  i==4 ||  i==6 ||  i==8 ||  i==10 || i==12 ||  i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
@@ -6497,10 +6496,11 @@ bool DisplayPage0() {
     }
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFTOBJ_COL0); // display ground heading rect
-
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd, 1 and 15 need handling seperately.
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[15]) +
       " " + String(22.50) +
@@ -6511,7 +6511,6 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 1) {
-      // Serial.println("[i check 1] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6523,6 +6522,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 2) {
       // Serial.println("[i check 2] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6534,6 +6534,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 4) {
       // Serial.println("[i check 4] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6545,6 +6546,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 6) {
       // Serial.println("[i check 6] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6556,6 +6558,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 8) {
       // Serial.println("[i check 8] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6567,6 +6570,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 10) {
       // Serial.println("[i check 10] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6578,6 +6582,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 12) {
       // Serial.println("[i check 12] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6589,6 +6594,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 14) {
       // Serial.println("[i check 14] ");
+      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
