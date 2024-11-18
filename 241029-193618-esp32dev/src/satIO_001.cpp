@@ -8162,7 +8162,7 @@ void UpdateDisplay(void * pvParameters) {
         hud.fillRect(0, 0, 320, 94, BG_COL_0);    // upper
         hud.fillRect(0, 194, 320, 45, BG_COL_0);  // lower 
         hud.fillRect(0, 0, 110, 240, BG_COL_0);    // left
-        hud.fillRect(210, 0, 110, 240, BG_COL_0);  // right
+        hud.fillRect(200, 0, 110, 240, BG_COL_0);  // right
         }
       else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
 
