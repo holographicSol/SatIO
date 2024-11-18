@@ -2809,12 +2809,12 @@ void buildSatIOSentence() {
   }
   else {strcat(satData.satio_sentence, "0.0,0.0,");}
 
-  // finally append checksum to satio sentence
-  // strcat(satData.satio_sentence, "*");
-  // satData.checksum_i = getCheckSum(satData.satio_sentence);
-  // itoa(satData.checksum_i, satData.checksum_str, 10);
-  // strcat(satData.satio_sentence, satData.checksum_str);
-  // if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+  // append checksum
+  createChecksum(satData.satio_sentence);
+  strcat(satData.satio_sentence, "*");
+  strcat(satData.satio_sentence, SerialLink.checksum);
+  strcat(satData.satio_sentence, "\n");
+  if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
 
 }
 
