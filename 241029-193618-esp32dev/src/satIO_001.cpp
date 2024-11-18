@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
     // Ground Heading Name and Degrees:
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "1.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "358.00");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6486,7 +6486,7 @@ bool DisplayPage0() {
           " -" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading-1][1]/2) +
           "  " + String(name_ground_heading) +
           " " + String(gnrmcData.ground_heading) +
-          " " + String(ground_heading_names[i_mapped_ground_heading+1]) +
+          "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
            " +" + String(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0]/2),
            (160), uiData.pitch_y-18+8);
     }
@@ -6498,7 +6498,7 @@ bool DisplayPage0() {
         " -" + String(atof(gnrmcData.ground_heading) + 12.5) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
-        " " + String(ground_heading_names[i_mapped_ground_heading+1]) +
+        "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
         " +" + String(12.5 - atof(gnrmcData.ground_heading)),
         (160), uiData.pitch_y-18+8);}
 
@@ -6506,11 +6506,11 @@ bool DisplayPage0() {
         Serial.println("[i check 3] ");
         hud.drawString(
         "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
-        " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) +
+        " -" + String(360 - (atof(gnrmcData.ground_heading) + 12.5)) +
         "  " + String(name_ground_heading) +
         " " + String(gnrmcData.ground_heading) +
-        " " + String(ground_heading_names[0]) +
-        " +" + String(360-uiData.mapped_ground_heading),
+        "  " + String(ground_heading_names[0]) +
+        " +" + String(360 - (atof(gnrmcData.ground_heading)-12.5)),
         (160), uiData.pitch_y-18+8);}
     }
 
