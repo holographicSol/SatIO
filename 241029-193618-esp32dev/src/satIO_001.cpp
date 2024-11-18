@@ -6475,8 +6475,8 @@ bool DisplayPage0() {
     Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1));
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-18, 220, 16, TFTOBJ_COL0); // display ground heading rect
-    if (i_mapped_ground_heading==15) {hud.drawString("" + String(ground_heading_names[i_mapped_ground_heading-1]) + " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) + "  " + String(name_ground_heading) + " " + String(gnrmcData.ground_heading) + "  " + String(ground_heading_names[0]) + " +" + String(uiData.mapped_ground_heading-ground_heading_range[0][0]), (170), uiData.pitch_y-18+8);}
-    else {hud.drawString("" + String(ground_heading_names[i_mapped_ground_heading-1]) + " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) + " " + String(name_ground_heading) + "  " + String(gnrmcData.ground_heading) + "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +  " +" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading+1][0]), (170), uiData.pitch_y-18+8);}
+    if (i_mapped_ground_heading==15) {hud.drawString("" + String(ground_heading_names[i_mapped_ground_heading-1]) + " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) + "  " + String(name_ground_heading) + " " + String(gnrmcData.ground_heading) + "  " + String(ground_heading_names[0]) + " +" + String(uiData.mapped_ground_heading-ground_heading_range[0][0]), (160), uiData.pitch_y-18+8);}
+    else {hud.drawString("" + String(ground_heading_names[i_mapped_ground_heading-1]) + " -" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading-1][1]) + " " + String(name_ground_heading) + "  " + String(gnrmcData.ground_heading) + "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +  " +" + String(uiData.mapped_ground_heading-ground_heading_range[i_mapped_ground_heading+1][0]), (160), uiData.pitch_y-18+8);}
 
     // Altitude:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*4, 58, 16, TFTOBJ_COL0);
