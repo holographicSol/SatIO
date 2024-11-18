@@ -6587,14 +6587,14 @@ bool DisplayPage0() {
     // gpattData.roll
     // gpattData.yaw
 
-    // small telemetry graph
+    // small telemetry graph                  provide sensory information relating area around vehicle/non-vehicle.
     // altitude                 N/S/E/W
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
-    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro. focused gyro may be considered by scenario
-    //                       |           |    due to primary gyro being independent of inertia). the ship may be dark grey with black patterning and features.
-    // yaw                   |___________|
-    // (currently there is no primary)
+    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, primary/secondary gyro.
+    //                       |           |    the ship may be dark grey with black patterning and features.
+    // yaw                   |___________|    can represent other objects too (non vehicles).
+    // (currently there is no primary)        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
     // ----------------------------------------------------------
 
     // add analogue signal to port configuration in settings
