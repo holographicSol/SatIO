@@ -6478,7 +6478,7 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 232);
 
     // Ground Heading Name and Degrees:
-    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "45");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "46");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
     int i_mapped_ground_heading = 0;
     // Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6504,8 +6504,9 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFTOBJ_COL0); // display ground heading rect
 
+    // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd there is a pattern too
     if (i_mapped_ground_heading == 0) {
-      Serial.println("[i check 0] ");
+      // Serial.println("[i check 0] ");
       hud.drawString(
       "" + String(ground_heading_names[15]) +
       " " + String(22.50) +
@@ -6516,7 +6517,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 1) {
-      Serial.println("[i check 1] ");
+      // Serial.println("[i check 1] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6527,7 +6528,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 2) {
-      Serial.println("[i check 2] ");
+      // Serial.println("[i check 2] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6538,7 +6539,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 4) {
-      Serial.println("[i check 4] ");
+      // Serial.println("[i check 4] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6549,7 +6550,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 6) {
-      Serial.println("[i check 6] ");
+      // Serial.println("[i check 6] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6560,7 +6561,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 8) {
-      Serial.println("[i check 8] ");
+      // Serial.println("[i check 8] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6571,7 +6572,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 10) {
-      Serial.println("[i check 10] ");
+      // Serial.println("[i check 10] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6582,7 +6583,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 12) {
-      Serial.println("[i check 12] ");
+      // Serial.println("[i check 12] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6593,7 +6594,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 14) {
-      Serial.println("[i check 14] ");
+      // Serial.println("[i check 14] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6604,7 +6605,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else if (i_mapped_ground_heading == 15) {
-      Serial.println("[i check 15] ");
+      // Serial.println("[i check 15] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading) + 12.5))) +
@@ -6615,7 +6616,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+8);}
     
     else {
-      Serial.println("[i check else] ");
+      // Serial.println("[i check else] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading-1][1])) +
