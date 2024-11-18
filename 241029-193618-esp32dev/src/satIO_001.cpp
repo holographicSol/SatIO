@@ -6451,22 +6451,46 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
 
-    // Ground Heading Name and Degrees:
+    // Ground Heading Name And Orientation: Exactly center for named headings (needs tweaking to make the most out of pixels between named headings, for a smooth carousel) 
     int i_mapped_ground_heading = 0;
+    memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "345.0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
+
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
     for (int i = 0; i<16; i++) {
+      // Serial.println("[ranging] " + String(ground_heading_range[i][0]) + " -> " + String(ground_heading_range[i][1]));
+
+      // avoid mapping untrue ranges
       if (i==0 || i==2 ||  i==4 ||  i==6 ||  i==8 ||  i==10 || i==12 ||  i==14 || i==16) {
         if (uiData.mapped_ground_heading==ground_heading_range[i][0] || uiData.mapped_ground_heading==ground_heading_range[i][1]) {
-          i_mapped_ground_heading == i;
-        memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i+4]);
+        // set heading name and manually set mapped ground heading to center
+        i_mapped_ground_heading=i;
+        memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i+4]); uiData.mapped_ground_heading = uiData.yaw_x+50;
         break;}}
+      
+      // map true ranges
       else {
+
+        // check range
         if (uiData.mapped_ground_heading >= ground_heading_range[i][0] && uiData.mapped_ground_heading < ground_heading_range[i][1]) {
+          Serial.println("[mapped ground_heading pixel 1] " + String(uiData.mapped_ground_heading));
+
+          // set heading name
           memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i+4]);
-          i_mapped_ground_heading == i;
-        }
-      }
+
+          // offset heading name left of center (inverted mapping)
+          if (uiData.mapped_ground_heading > ground_heading_range[i][0]+22.5) {
+            i_mapped_ground_heading=i;
+          }
+          // offset heading name right of center (inverted mapping)
+          else if (uiData.mapped_ground_heading < ground_heading_range[i][0]+22.5) {
+            i_mapped_ground_heading=i;
+          }
+          else {
+            // avoid mapping equal numbers
+            i_mapped_ground_heading=i;
+          }
+          break;}}
     }
     Serial.println("[i_mapped_ground_heading] " + String(i_mapped_ground_heading));
     Serial.println("[mapped ground name] " + String(name_ground_heading));
@@ -6474,6 +6498,12 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-20, uiData.pitch_y-18, 140, 16, TFTOBJ_COL0); // display ground heading rect
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading]) + "   " + String(gnrmcData.ground_heading), (160), uiData.pitch_y-18+8);
+    
+    // Ground Heading Degrees:
+    hud.drawRect(uiData.yaw_x+120, rdata_y+18*3, 58, 16, TFTOBJ_COL0);
+    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String(atof(gnrmcData.ground_heading))+String(""), uiData.yaw_x+120+31, rdata_y+18*3+8);
 
     // Altitude:
     hud.drawRect(uiData.yaw_x+120, rdata_y+18*4, 58, 16, TFTOBJ_COL0);
