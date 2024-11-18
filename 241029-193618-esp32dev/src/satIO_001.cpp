@@ -6451,7 +6451,7 @@ bool DisplayPage0() {
 
     // Ground Heading Name And Orientation: Exactly center for named headings (needs tweaking to make the most out of pixels between named headings, for a smooth carousel) 
     int i_mapped_ground_heading = 0;
-    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "359.0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
+    // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "345.0");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
     uiData.mapped_ground_heading = atof(gnrmcData.ground_heading);
 
     Serial.println("[gnrmc ground heading] " + String(uiData.mapped_ground_heading));
@@ -6465,7 +6465,7 @@ bool DisplayPage0() {
         // set heading name and manually set mapped ground heading to center
         i_mapped_ground_heading=i;
         memset(name_ground_heading, 0, sizeof(name_ground_heading)); strcpy(name_ground_heading, ground_heading_names[i+4]); uiData.mapped_ground_heading = uiData.yaw_x+50;
-        // Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
+        Serial.println("[mapped ground_heading pixel 0] " + String(uiData.mapped_ground_heading));
         break;}}
       
       // map true ranges
@@ -6504,9 +6504,9 @@ bool DisplayPage0() {
     int adj = 4;
     signed int l_adjust = 0;
     if (i_mapped_ground_heading==15) {adj=-12;} // special handling for NNW, shift index number
-    if (atof(gnrmcData.ground_heading)>0 && atof(gnrmcData.ground_heading)<22.5) {l_adjust=30;}      // special handling for NNE range < mid, shift pixels left
-    if (atof(gnrmcData.ground_heading)>22.5 && atof(gnrmcData.ground_heading)<44.99) {l_adjust=-30;} // special handling for NNE range > mid, shift pixels left
-    if (atof(gnrmcData.ground_heading)>337.5 && atof(gnrmcData.ground_heading)<360) {l_adjust=-30;} // special handling for range > mid, shift pixels left
+    if (atof(gnrmcData.ground_heading)>0 && atof(gnrmcData.ground_heading)<22.5) {l_adjust=22.5;}      // special handling for NNE range < mid, shift pixels left
+    if (atof(gnrmcData.ground_heading)>22.5 && atof(gnrmcData.ground_heading)<44.99) {l_adjust=-22.5;} // special handling for NNE range > mid, shift pixels left
+    if (atof(gnrmcData.ground_heading)>337.5 && atof(gnrmcData.ground_heading)<360) {l_adjust=-22.5;} // special handling for range > mid, shift pixels left
     if (atof(gnrmcData.ground_heading)>315.5 && atof(gnrmcData.ground_heading)<337.5) {adj=1;} // special handling for range > mid, shift pixel left
     // Serial.println("[l_adjust] " + String(l_adjust));
     hud.drawString(String(ground_heading_names[i_mapped_ground_heading   + adj]) + String(""), (uiData.mapped_ground_heading-l_adjust), uiData.pitch_y-18+8);
