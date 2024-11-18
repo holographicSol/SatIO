@@ -6498,7 +6498,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFTOBJ_COL0); // display ground heading rect
 
-    // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd there is a pattern too
+    // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd, 1 and 15 need handling seperately.
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
       hud.drawString(
