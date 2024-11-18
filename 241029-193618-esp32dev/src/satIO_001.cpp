@@ -6496,8 +6496,8 @@ bool DisplayPage0() {
         }
       }
     }
-    Serial.println("[mapped ground name i] " + String(i_mapped_ground_heading));
-    Serial.println("[mapped ground name]  " + String(name_ground_heading));
+    // Serial.println("[mapped ground name i] " + String(i_mapped_ground_heading));
+    // Serial.println("[mapped ground name]  " + String(name_ground_heading));
     // Serial.println("[i mapped 1] " + String(i_mapped_ground_heading-1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading-1][1]));
     // Serial.println("[i mapped 0] " + String(i_mapped_ground_heading)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading][1]));
     // Serial.println("[i mapped 2] " + String(i_mapped_ground_heading+1)); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][0])); Serial.println("    " + String(ground_heading_range[i_mapped_ground_heading+1][1]));
@@ -8092,13 +8092,13 @@ void DisplayUAP() {
   uiData.temporary_gpatt_roll = atof(gpattData.roll);
   uiData.temporary_gpatt_roll = map(uiData.temporary_gpatt_roll, -90.00, 90, 0, 360);
   uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
-  Serial.println(
-    "[roll] " +
-    String(gpattData.roll) +
-    " [ui offset] " +
-    String(uiData.offset_gpatt_roll_0) +
-    " [ui value] " +
-    String(uiData.temporary_gpatt_roll));
+  // Serial.println(
+  //   "[roll] " +
+  //   String(gpattData.roll) +
+  //   " [ui offset] " +
+  //   String(uiData.offset_gpatt_roll_0) +
+  //   " [ui value] " +
+  //   String(uiData.temporary_gpatt_roll));
 
   uap.pushRotated(uiData.temporary_gpatt_roll);
 
