@@ -7991,9 +7991,12 @@ void DisplayUAP() {
   /* sea level. currently in place of terrain elevation data */
   // signed mapped_sea_level = 0;
   // mapped_sea_level = map(atof(gnggaData.altitude), -1000000, 1000000, 0, 15);
-  // uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level, uiData.uap_piv_y-50, 1, 100, TFT_DARKGREY);
-  // uap.fillRect(uiData.uap_piv_X + 4 + mapped_sea_level, uiData.uap_piv_y-51, 4, 1, TFT_DARKGREY);
-  // uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level-4, uiData.uap_piv_y-50, 4, 1, TFT_DARKGREY);
+  // if (atof(gnggaData.altitude) < 500) {
+  //   uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level, uiData.uap_piv_y-50, 1, 100, TFT_RED);
+  // }
+  // else {
+  //   uap.fillRect(uiData.uap_piv_X + 8 + mapped_sea_level, uiData.uap_piv_y-50, 1, 100, TFT_BLUE);
+  // }
 
   /* pivot vehicle according to roll */
   tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                            // set the TFT pivot point that the hud will rotate around
