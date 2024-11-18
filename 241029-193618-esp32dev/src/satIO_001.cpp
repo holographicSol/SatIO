@@ -6592,7 +6592,7 @@ bool DisplayPage0() {
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
     // pitch                 | ----o---- | -> roll/pitch/yaw (INS, secondary gyro. ( no primary gyro yet but future gyro independent of INS is reserved as primary gyro )
-    //                       |           |    the ship may be dark grey with black patterning and features.
+    //                       |           |    the ship may be dark grey with black patterning and features. 
     // yaw                   |___________|    can represent other objects too (non vehicles).
 
     //                                        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
@@ -7997,6 +7997,36 @@ void DisplayUAP() {
   yield(); uap.deleteSprite();
 }
 
+void DisplayOrb() {
+  /* a line representing a vehicular craft with corresponding roll */
+
+  uap.createSprite(uap_w, uap_h);                                                 // create the Sprite pixels width and height
+  uiData.uap_piv_X = uap.width() / 2;                                             // x pivot of Sprite (middle)
+  uiData.uap_piv_y = uap_h/2;                                                     // y pivot of Sprite (10 pixels from bottom)
+  uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                               // Set pivot point in this Sprite
+
+  uap.fillRect(uiData.uap_piv_X - 1, 30, 1, uiData.uap_piv_y+100, TFT_BLUE);  // uap
+
+  // uap.fillRect(uiData.uap_piv_X - 1, uiData.uap_piv_y+100, 1, 30, TFT_RED);  // uap
+
+  // uap.fillRoundRect(uiData.uap_piv_X - 1, 1, 6, uiData.uap_piv_y +100, 2, TFT_DARKGREY);  // uap
+  tft.fillEllipse(uiData.uap_piv_X - 1, 1, 3, 3, TFT_DARKGREY);
+  uap.fillCircle(uiData.uap_piv_X, uiData.uap_piv_y, 6, TFT_DARKGREY);          // draw hud centre boss in a way that displays orientation
+
+  tft.setPivot(uiData.yaw_x+50, uiData.pitch_y+50);                               // set the TFT pivot point that the hud will rotate around
+  
+  uiData.temporary_gpatt_roll = atof(gpattData.roll);
+  // uiData.temporary_gpatt_roll = 0;   // uncomment to test roll
+  uiData.temporary_gpatt_roll = map(uiData.temporary_gpatt_roll, -90.00, 90, 0, 360);
+  // uiData.temporary_gpatt_roll -= 45; // uncomment to test roll
+  uiData.temporary_gpatt_roll -= uiData.offset_gpatt_roll_0;
+
+  // Serial.println("[roll] " + String(gpattData.roll) + " [ui offset] " + String(uiData.offset_gpatt_roll_0) + " [ui value] " + String(uiData.temporary_gpatt_roll));
+  uap.pushRotated(uiData.temporary_gpatt_roll);
+  yield(); uap.deleteSprite();
+}
+
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 UPDATE DISPLAY
 
@@ -8054,7 +8084,11 @@ void UpdateDisplay(void * pvParameters) {
       hud.deleteSprite();
       
       // layer 1 sprites: draw
-      if (menuData.page==0) {DisplayUAP();}
+      int object_type = 0;
+      if (menuData.page==0) {
+        if (object_type == 0) {DisplayUAP();}
+        if (object_type == 1) {DisplayOrb();}
+        }
     }
 }
 
