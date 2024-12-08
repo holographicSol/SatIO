@@ -8293,7 +8293,7 @@ void SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
-    Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
 
     // igonore a switch message if its the same as previous switch message
     if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
