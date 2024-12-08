@@ -6456,18 +6456,18 @@ bool DisplayPage0() {
     hud.drawString(String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+8);
 
     // Ground Speed:
-    hud.drawRect(uiData.yaw_x-18, rdata_y+18*8, 49+18, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+64-104, rdata_y+18*8, 49+18+22, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gnrmcData.ground_speed)+String(""), (uiData.yaw_x+25)-8, rdata_y+18*8+8);
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+11, rdata_y+18*8+8);
 
     // Mileage:
-    hud.drawRect(uiData.yaw_x+51, rdata_y+18*8, 49+18, 16, TFTOBJ_COL0);
+    hud.drawRect(uiData.yaw_x+51, rdata_y+18*8, 49+18+22, 16, TFTOBJ_COL0);
     hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), (uiData.yaw_x+75)+8, rdata_y+18*8+8);
+    hud.drawString(String(gpattData.mileage)+String(""), uiData.yaw_x+51+11, rdata_y+18*8+8);
 
     // Latitude Hemisphere:
     hud.drawRect(uiData.yaw_x+64-104, 224, 20, 16, TFTOBJ_COL0);
@@ -6487,7 +6487,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(satData.location_longitude_gngga_str), uiData.yaw_x+51+33, 232);
 
-    // Latitude Hemisphere:
+    // Longitude Hemisphere:
     hud.drawRect(uiData.yaw_x+51+69, 224, 20, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
