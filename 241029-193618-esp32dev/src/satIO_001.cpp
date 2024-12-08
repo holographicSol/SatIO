@@ -6360,7 +6360,7 @@ bool DisplayPage0() {
       String(satData.day)+"  "+
       String(satData.hour)+":"+
       String(satData.minute)+":"+
-      String(satData.second), 80, rdata_y+8);
+      String(satData.second), 80, rdata_y+9);
     
     // last local time satellite count > 0
     hud.drawRect(162, rdata_y, 158, 16, TFT_HUD2_RECT);
@@ -6372,31 +6372,31 @@ bool DisplayPage0() {
       String(satData.lt_day)+"  "+
       String(satData.lt_hour)+":"+
       String(satData.lt_minute)+":"+
-      String(satData.lt_second), 240, rdata_y+8);
+      String(satData.lt_second), 240, rdata_y+9);
 
     // Precision Factor: 0.0 > 1.0
     hud.drawRect(272, rdata_y+18, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 296, rdata_y+18+8);
+    hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 296, rdata_y+18+9);
 
     // Solution Stats: 0:invalid solution | 1:single point positioning | 2:pseudorange difference | 6:pure ins solution
     hud.drawRect(252, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.solution_status)+String(""), 267, rdata_y+18*2+8);
+    hud.drawString(String(gnggaData.solution_status)+String(""), 267, rdata_y+18*2+9);
 
     // Positioning Status: A=valid positioning | V=invalid positioning
     hud.drawRect(287, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnrmcData.positioning_status)+String(""), 303, rdata_y+18*2+8);
+    hud.drawString(String(gnrmcData.positioning_status)+String(""), 303, rdata_y+18*2+9);
 
     // Static Flag: 1=static=dark grey | 0=dynamic=BLUE
     hud.drawRect(252, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.static_flag)+String(""), 267, rdata_y+18*3+8);
+    hud.drawString(String(gpattData.static_flag)+String(""), 267, rdata_y+18*3+9);
 
     // Run State Flag: 0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while  GRAPHIC
     hud.drawRect(287, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
@@ -6407,7 +6407,7 @@ bool DisplayPage0() {
     // if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     // if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     // if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gpattData.run_state_flag)+String(""), 303, rdata_y+18*3+8);
+    hud.drawString(String(gpattData.run_state_flag)+String(""), 303, rdata_y+18*3+9);
     
     // Run Inertial Flag: 00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
     hud.drawRect(252, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
@@ -6418,38 +6418,38 @@ bool DisplayPage0() {
     // if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
     // if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     // if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gpattData.run_inetial_flag), 267, rdata_y+18*4+8);
+    hud.drawString(String(gpattData.run_inetial_flag), 267, rdata_y+18*4+9);
 
     // INS: 0=on=BLUE | 1=off=dark grey
     hud.drawRect(287, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String("INS")+String(""), 303, rdata_y+18*4+8);
+    hud.drawString(String("INS")+String(""), 303, rdata_y+18*4+9);
 
     // Altitude:
     hud.drawRect(252, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gnggaData.altitude))+String(""), 286, rdata_y+18*5+8);
+    hud.drawString(String(atof(gnggaData.altitude))+String(""), 286, rdata_y+18*5+9);
 
     // Pitch:
     hud.drawRect(252, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.pitch))+String(""), 286, rdata_y+18*6+8);
+    hud.drawString(String(atof(gpattData.pitch))+String(""), 286, rdata_y+18*6+9);
 
     // Roll:
     hud.drawRect(252, rdata_y+18*7, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.roll))+String(""), 286, rdata_y+18*7+8);
+    hud.drawString(String(atof(gpattData.roll))+String(""), 286, rdata_y+18*7+9);
 
     // Yaw:
     hud.drawRect(252, rdata_y+18*8, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+8);
+    hud.drawString(String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+9);
 
     // Ground Speed:
     hud.drawRect(uiData.yaw_x+64-104, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
@@ -6457,37 +6457,37 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     // if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
     // if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+11, rdata_y+18*8+8);
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+11, rdata_y+18*8+9);
 
     // Mileage:
     hud.drawRect(uiData.yaw_x+51, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), uiData.yaw_x+51+11, rdata_y+18*8+8);
+    hud.drawString(String(gpattData.mileage)+String(""), uiData.yaw_x+51+11, rdata_y+18*8+9);
 
     // Latitude Hemisphere:
     hud.drawRect(uiData.yaw_x+64-104, 224, 20, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.latitude_hemisphere)+String(""), uiData.yaw_x+64-104+10, 232);
+    hud.drawString(String(gnggaData.latitude_hemisphere)+String(""), uiData.yaw_x+64-104+10, 233);
 
     // Latitude:
     hud.drawRect(uiData.yaw_x+64-82, 224, 67, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(satData.location_latitude_gngga_str), uiData.yaw_x+64-80+33, 232);
+    hud.drawString(String(satData.location_latitude_gngga_str), uiData.yaw_x+64-80+33, 233);
 
     // Longitude:
     hud.drawRect(uiData.yaw_x+51, 224, 67, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(satData.location_longitude_gngga_str), uiData.yaw_x+51+33, 232);
+    hud.drawString(String(satData.location_longitude_gngga_str), uiData.yaw_x+51+33, 233);
 
     // Longitude Hemisphere:
     hud.drawRect(uiData.yaw_x+51+69, 224, 20, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 232);
+    hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 233);
 
     // Ground Heading Name and Degrees:
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "22.5");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
@@ -6520,7 +6520,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 1) {
       if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
@@ -6531,7 +6531,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(ground_heading_range[i_mapped_ground_heading+1][0] - abs(atof(gnrmcData.ground_heading))),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 2) {
       // Serial.println("[i check 2] ");
@@ -6543,7 +6543,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 4) {
       // Serial.println("[i check 4] ");
@@ -6555,7 +6555,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 6) {
       // Serial.println("[i check 6] ");
@@ -6567,7 +6567,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 8) {
       // Serial.println("[i check 8] ");
@@ -6579,7 +6579,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 10) {
       // Serial.println("[i check 10] ");
@@ -6591,7 +6591,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 12) {
       // Serial.println("[i check 12] ");
@@ -6603,7 +6603,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 14) {
       // Serial.println("[i check 14] ");
@@ -6615,7 +6615,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(22.5),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 15) {
       // Serial.println("[i check 15] ");
@@ -6627,7 +6627,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[0]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading)-12.5))),
-      (160), uiData.pitch_y-19+8);}
+      (160), uiData.pitch_y-19+9);}
     
     else {
       if (atof(gnrmcData.ground_heading)==22.50  || atof(gnrmcData.ground_heading)==67.50   ||
@@ -6642,7 +6642,7 @@ bool DisplayPage0() {
       " " + String(gnrmcData.ground_heading) +
       "  " + String(ground_heading_names[i_mapped_ground_heading+1]) +
       " " + String(abs(atof(gnrmcData.ground_heading) - ground_heading_range[i_mapped_ground_heading+1][0])),
-      (160), uiData.pitch_y-19+8);
+      (160), uiData.pitch_y-19+9);
     }
 
     /* Yaw Scale:  */
