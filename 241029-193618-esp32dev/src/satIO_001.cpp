@@ -6325,24 +6325,24 @@ bool DisplayPage0() {
     hud.drawRect(0, rdata_y, 320, 178, TFTOBJ_COL0);
 
     // day of the week
-    hud.drawRect(0, rdata_y+18*2, 60, 16, TFTOBJ_COL0);
+    hud.drawRect(0, rdata_y+18*2, 62, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
     memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
     strcpy(satData.day_of_the_week_name, "Wednesday");
-    hud.drawString(String(satData.day_of_the_week_name), 30, rdata_y+(18*2)+9);
+    hud.drawString(String(satData.day_of_the_week_name), 31, rdata_y+(18*2)+9);
 
     // sunrise
-    hud.drawRect(0, rdata_y+18*3, 60, 16, TFTOBJ_COL0);
+    hud.drawRect(0, rdata_y+18*3, 62, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(siderealPlanetData.sun_r), 30, rdata_y+(18*3)+9);
+    hud.drawString(String(siderealPlanetData.sun_r), 31, rdata_y+(18*3)+9);
 
     // sunset
-    hud.drawRect(0, rdata_y+18*4, 60, 16, TFTOBJ_COL0);
+    hud.drawRect(0, rdata_y+18*4, 62, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(siderealPlanetData.sun_s), 30, rdata_y+(18*4)+9);
+    hud.drawString(String(siderealPlanetData.sun_s), 31, rdata_y+(18*4)+9);
 
     // current local time
     hud.drawRect(0, rdata_y, 158, 16, TFTOBJ_COL0);
