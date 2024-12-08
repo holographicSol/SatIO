@@ -136,11 +136,24 @@ uint16_t TFTTXT_COLF_1 = TFT_BLACK;           // text color on object color
 uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object color
 uint16_t BG_COL_0 = TFT_BLACK;                // background
 uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
-uint16_t TFT_HUD0 = TFT_BLACK;
-uint16_t TFT_HUD1 = TFT_BLACK;
+// title area
+uint16_t TFT_HUD0_TXT = TFT_DARKGREY;
+uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
+uint16_t TFT_HUD0_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD0_RECT_BG = TFT_BLACK;
+// matrix area
+uint16_t TFT_HUD1_TXT0 = TFT_DARKGREY;
+uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK;
+uint16_t TFT_HUD1_TXT1 = TFT_GREEN;
+uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK;
+uint16_t TFT_HUD1_RECT0 = TFT_DARKGREY;
+uint16_t TFT_HUD1_RECT0_BG = TFT_BLACK;
+uint16_t TFT_HUD1_RECT1 = TFT_GREEN;
+uint16_t TFT_HUD1_RECT1_BG = TFT_BLACK;
+// main area
 uint16_t TFT_HUD2_TXT = TFT_BLUE;
 uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD2_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD2_RECT = TFT_BLUE;
 uint16_t TFT_HUD2_RECT_BG = TFT_BLACK;
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6266,62 +6279,62 @@ bool DisplayPage0() {
     // main title bar (special title bar)
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
 
-      hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
+      hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       if (i==3) {
         // main loop time over threshold: possible overload
         if (timeData.mainLoopTimeTaken>=500) {
-          hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
+          hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
           hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
         }
         // main loop time under threshold.
         else {
-          hud.drawRect((i*62)+2*i, 0, 62, 16, TFTOBJ_COL0);
-          hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+          hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
+          hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
           }
       }
     }
     // SD
-    hud.drawRect(256, 0, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
+    hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (!sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
     hud.drawString(String("SD")+String(""), 271, 8);
     // satellite count / precision factor
-    hud.drawRect(288, 0, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+    hud.drawRect(288, 0, 30, 16, TFT_HUD0_RECT);
+    hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    if (gnggaData.satellite_count_gngga>0) {
-      if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-      if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
-    }
+    // if (gnggaData.satellite_count_gngga>0) {
+    //   if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
+    //   if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    // }
     hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 304, 8);
 
     // virtual matrix switch
     for (int i=0; i<10; i++) {
       // virtual matrix switch enabled/disbaled rect row 0
-      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 22, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 22, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i]==true) {hud.drawRect((i*30)+2*i, 22, 30, 16, TFT_HUD1_RECT1);}
+      else {hud.drawRect((i*30)+2*i, 22, 30, 16, TFT_HUD1_RECT0);}
 
       // virtual matrix switch on/off text row 0
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      hud.setTextColor(TFT_HUD1_TXT0, TFT_HUD1_TXT0_BG);
+      if (matrixData.matrix_switch_state[0][i]==true) {hud.setTextColor(TFT_HUD1_TXT1, TFT_HUD1_TXT1_BG);}
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15+(i*30)+2*i, 30);
 
       // virtual matrix switch enabled/disbaled rect row 1
-      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 42, 30, 16, TFT_ENABLED);}
-      else {hud.drawRect((i*30)+2*i, 42, 30, 16, TFTOBJ_COL0);}
+      if (matrixData.matrix_switch_enabled[0][i+10]==true) {hud.drawRect((i*30)+2*i, 42, 30, 16, TFT_HUD1_RECT1);}
+      else {hud.drawRect((i*30)+2*i, 42, 30, 16, TFT_HUD1_RECT0);}
       
       // virtual matrix switch on/off text row 1
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-      if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+      hud.setTextColor(TFT_HUD1_TXT0, TFT_HUD1_TXT0_BG);
+      if (matrixData.matrix_switch_state[0][i+10]==true) {hud.setTextColor(TFT_HUD1_TXT1, TFT_HUD1_TXT1_BG);}
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 15+(i*30)+2*i, 50);
       }
