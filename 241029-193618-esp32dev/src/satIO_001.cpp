@@ -153,7 +153,7 @@ uint16_t TFT_HUD1_RECT1_BG = TFT_BLACK;
 // hud main area
 uint16_t TFT_HUD2_TXT = TFT_BLUE;
 uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD2_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD2_RECT = TFT_BLUE;
 uint16_t TFT_HUD2_RECT_BG = TFT_BLACK;
 
 // ------------------------------------------------------------------------------------------------------------------------------
