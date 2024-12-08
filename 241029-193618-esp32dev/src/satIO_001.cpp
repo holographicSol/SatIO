@@ -8502,13 +8502,13 @@ void setup() {
   }
   else {Serial.println("[sdcard] failed to initialize.");}
 
-  drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);     // This draws a jpeg pulled off the SD Card
+  // startup splash screens
+  drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
   delay(2000);
-  tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
-
-  drawSdJpeg("/DATA/SatIO.jpg", 0, 0);     // This draws a jpeg pulled off the SD Card
+  tft.fillScreen(TFT_BLACK);
+  drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
   delay(2000);
-  tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
+  tft.fillScreen(TFT_BLACK);
 
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
