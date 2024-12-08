@@ -8475,7 +8475,7 @@ void setup() {
     ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
   #endif
 
-  tft.setRotation(1);        // this is the display in landscape
+  tft.setRotation(1);         // landscape
   tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
   tft.setFreeFont(FONT5X7_H);
   ledcAnalogWrite(LEDC_CHANNEL_0, 255);
@@ -8502,13 +8502,18 @@ void setup() {
   }
   else {Serial.println("[sdcard] failed to initialize.");}
 
-  // startup splash screens
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                          DSETUP: SPLASHSCREEN
+
   drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
   delay(2000);
   tft.fillScreen(TFT_BLACK);
   drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
   delay(2000);
   tft.fillScreen(TFT_BLACK);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                            SETUP: CORE TASKS
 
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
@@ -8520,7 +8525,7 @@ void setup() {
       &TSTask,          /* Task handle. */
       0);               /* Core where the task should run */
   
-  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
       UpdateDisplay, /* Function to implement the task */
       "UpdateDisplayTask",         /* Name of the task */
@@ -8535,7 +8540,11 @@ void setup() {
 
   myAstro.begin();
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                         SETUP: SET HOME PAGE
+
   menuData.page=0;
+
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
