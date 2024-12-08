@@ -137,9 +137,9 @@ uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object
 uint16_t BG_COL_0 = TFT_BLACK;                // background
 uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
 // hud title area
-uint16_t TFT_HUD0_TXT = TFT_GREEN;
+uint16_t TFT_HUD0_TXT = TFT_DARKGREY;
 uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD0_RECT = TFT_GREEN;
+uint16_t TFT_HUD0_RECT = TFT_DARKGREY;
 uint16_t TFT_HUD0_RECT_BG = TFT_BLACK;
 // hud matrix area
 uint16_t TFT_HUD1_TXT0 = TFT_DARKGREY;
@@ -6304,7 +6304,7 @@ bool DisplayPage0() {
     hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
     hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    if (!sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
     hud.drawString(String("SD")+String(""), 271, 8);
     // satellite count / precision factor
     hud.drawRect(288, 0, 30, 16, TFT_HUD0_RECT);
