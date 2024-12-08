@@ -2823,8 +2823,9 @@ void sdcardCheck() {
 
   /* basic sdcard initialization. todo: make some bool of initialization results */
 
-  if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
-    sdcardData.last_initialization_time = satData.current_unixtime;
+  // if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
+  //   sdcardData.last_initialization_time = satData.current_unixtime;
+    // Serial.printf("[checking] sdcard");
     
     // note that information will be displayed if sdcard not present.
     if (SD.exists("/")==true) {
@@ -2835,8 +2836,8 @@ void sdcardCheck() {
       // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
       // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
     }
-    else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
-  }
+  //   else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
+  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
