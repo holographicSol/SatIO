@@ -137,9 +137,9 @@ uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object
 uint16_t BG_COL_0 = TFT_BLACK;                // background
 uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
 // hud title area
-uint16_t TFT_HUD0_TXT = TFT_DARKGREY;
+uint16_t TFT_HUD0_TXT = TFT_GREEN;
 uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD0_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD0_RECT = TFT_GREEN;
 uint16_t TFT_HUD0_RECT_BG = TFT_BLACK;
 // hud matrix area
 uint16_t TFT_HUD1_TXT0 = TFT_DARKGREY;
@@ -151,9 +151,9 @@ uint16_t TFT_HUD1_RECT0_BG = TFT_BLACK;
 uint16_t TFT_HUD1_RECT1 = TFT_GREEN;
 uint16_t TFT_HUD1_RECT1_BG = TFT_BLACK;
 // hud main area
-uint16_t TFT_HUD2_TXT = TFT_BLUE;
+uint16_t TFT_HUD2_TXT = TFT_DARKGREY;
 uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD2_RECT = TFT_BLUE;
+uint16_t TFT_HUD2_RECT = TFT_DARKGREY;
 uint16_t TFT_HUD2_RECT_BG = TFT_BLACK;
 
 // ------------------------------------------------------------------------------------------------------------------------------
