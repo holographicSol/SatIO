@@ -8640,47 +8640,47 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  int t0 = millis(); 
+  // int t0 = millis(); 
   readGPS();
-  Serial.println("[gps] " + String(millis()-t0));
+  // Serial.println("[gps] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   check_gngga();
-  Serial.println("[gngga] " + String(millis()-t0));
+  // Serial.println("[gngga] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   check_gnrmc();
-  Serial.println("[gnrmc] " + String(millis()-t0));
+  // Serial.println("[gnrmc] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   check_gpatt();
-  Serial.println("[gpatt] " + String(millis()-t0));
+  // Serial.println("[gpatt] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   satIOData();
-  Serial.println("[satio] " + String(millis()-t0));
+  // Serial.println("[satio] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   trackPlanets();
-  Serial.println("[planet track] " + String(millis()-t0));
+  // Serial.println("[planet track] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   sdcardCheck();
-  Serial.println("[sdcard] " + String(millis()-t0));
+  // Serial.println("[sdcard] " + String(millis()-t0));
 
   /* calculate switches */
-  t0 = millis();
+  // t0 = millis();
   MatrixSwitchTask();
-  Serial.println("[matrix] " + String(millis()-t0));
+  // Serial.println("[matrix] " + String(millis()-t0));
 
-  t0 = millis();
+  // t0 = millis();
   MatrixStatsCounter();
-  Serial.println("[matrix counter] " + String(millis()-t0));
+  // Serial.println("[matrix counter] " + String(millis()-t0));
 
   /* instruct the portcontroller */
-  t0 = millis();
+  // t0 = millis();
   SatIOPortController();
-  Serial.println("[port controller] " + String(millis()-t0));
+  // Serial.println("[port controller] " + String(millis()-t0));
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
