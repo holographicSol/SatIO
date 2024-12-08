@@ -6328,8 +6328,8 @@ bool DisplayPage0() {
     hud.drawRect(0, rdata_y+18*2, 62, 16, TFTOBJ_COL0);
     hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
     hud.setTextDatum(MC_DATUM);
-    memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
-    strcpy(satData.day_of_the_week_name, "Wednesday");
+    // memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
+    // strcpy(satData.day_of_the_week_name, "Wednesday");
     hud.drawString(String(satData.day_of_the_week_name), 31, rdata_y+(18*2)+9);
 
     // sunrise
