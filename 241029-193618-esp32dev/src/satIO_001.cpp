@@ -140,21 +140,17 @@ uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/obje
 uint16_t TFT_HUD0_TXT = TFT_DARKGREY;
 uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
 uint16_t TFT_HUD0_RECT = TFT_DARKGREY;
-uint16_t TFT_HUD0_RECT_BG = TFT_BLACK;
 // hud matrix area
 uint16_t TFT_HUD1_TXT0 = TFT_DARKGREY;
 uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK;
 uint16_t TFT_HUD1_TXT1 = TFT_GREEN;
 uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK;
 uint16_t TFT_HUD1_RECT0 = TFT_DARKGREY;
-uint16_t TFT_HUD1_RECT0_BG = TFT_BLACK;
 uint16_t TFT_HUD1_RECT1 = TFT_GREEN;
-uint16_t TFT_HUD1_RECT1_BG = TFT_BLACK;
 // hud main area
 uint16_t TFT_HUD2_TXT = TFT_DARKGREY;
 uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
 uint16_t TFT_HUD2_RECT = TFT_DARKGREY;
-uint16_t TFT_HUD2_RECT_BG = TFT_BLACK;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
@@ -6364,7 +6360,7 @@ bool DisplayPage0() {
     hud.drawString(String(siderealPlanetData.sun_s), 34, rdata_y+(18*4)+9);
 
     // current local time
-    hud.drawRect(0, rdata_y, 158, 16, TFT_HUD2_RECT);
+    hud.drawRect(0, rdata_y, 159, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(
@@ -6376,7 +6372,7 @@ bool DisplayPage0() {
       String(satData.second), 80, rdata_y+9);
     
     // last local time satellite count > 0
-    hud.drawRect(162, rdata_y, 158, 16, TFT_HUD2_RECT);
+    hud.drawRect(161, rdata_y, 159, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(
