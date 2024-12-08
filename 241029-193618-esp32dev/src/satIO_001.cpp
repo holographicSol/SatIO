@@ -8502,7 +8502,7 @@ void setup() {
   }
   else {Serial.println("[sdcard] failed to initialize.");}
 
-  drawSdJpeg("/DATA/test.jpg", (tft.width()/2)-120, 0);     // This draws a jpeg pulled off the SD Card
+  drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);     // This draws a jpeg pulled off the SD Card
   delay(5000);
   tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
 
