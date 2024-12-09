@@ -6262,22 +6262,22 @@ bool DisplayPage0() {
       hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
-      if (i==3) {
-        // main loop time over threshold: possible overload
-        if (timeData.mainLoopTimeTaken>=500) {
-          hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-          hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);
-          hud.setTextDatum(MC_DATUM);
-          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
-        }
-        // main loop time under threshold.
-        else {
-          hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-          hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
-          hud.setTextDatum(MC_DATUM);
-          hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
-          }
-      }
+      // if (i==3) {
+      //   // main loop time over threshold: possible overload
+      //   if (timeData.mainLoopTimeTaken>=500) {
+      //     hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
+      //     // hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);
+      //     // hud.setTextDatum(MC_DATUM);
+      //     // hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
+      //   }
+      //   // main loop time under threshold.
+      //   else {
+      //     hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
+      //     hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
+      //     hud.setTextDatum(MC_DATUM);
+      //     hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
+      //     }
+      // }
     }
     // SD
     hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
@@ -6486,6 +6486,22 @@ bool DisplayPage0() {
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(gnggaData.longitude_hemisphere), uiData.yaw_x+51+69+10, 233);
+
+
+    // main loop time over threshold: possible overload
+    if (timeData.mainLoopTimeTaken>=500) {
+      hud.drawRect(0, rdata_y+18, 48, 16, TFT_HUD2_RECT);
+      hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 24, rdata_y+18+9);
+    }
+    // main loop time under threshold.
+    else {
+      hud.drawRect(0, rdata_y+18, 48, 16, TFT_HUD2_RECT);
+      hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+      hud.setTextDatum(MC_DATUM);
+      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 24, rdata_y+18+9);
+      }
 
     // Ground Heading Name and Degrees:
     // memset(gnrmcData.ground_heading, 0, sizeof(gnrmcData.ground_heading)); strcpy(gnrmcData.ground_heading, "22.5");  // uncomment to test (this will be getting overwritten periodically if testing uncommented)
