@@ -6511,13 +6511,13 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     // if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
     // if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+11, rdata_y+18*8+9);
+    hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+((49+18+22)/2), rdata_y+18*8+9);
 
     // Mileage:
     hud.drawRect(uiData.yaw_x+51, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(gpattData.mileage)+String(""), uiData.yaw_x+51+11, rdata_y+18*8+9);
+    hud.drawString(String(gpattData.mileage)+String(""), uiData.yaw_x+51+((49+18+22)/2), rdata_y+18*8+9);
 
     // Latitude Hemisphere:
     hud.drawRect(uiData.yaw_x+64-104, 224, 20, 16, TFT_HUD2_RECT);
