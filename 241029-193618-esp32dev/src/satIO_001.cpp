@@ -8527,10 +8527,10 @@ void setup() {
   //                                                                                                          DSETUP: SPLASHSCREEN
 
   drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
-  // delay(2000);
+  delay(2000);
   tft.fillScreen(TFT_BLACK);
   drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
-  // delay(2000);
+  delay(2000);
   tft.fillScreen(TFT_BLACK);
 
   // ----------------------------------------------------------------------------------------------------------------------------
