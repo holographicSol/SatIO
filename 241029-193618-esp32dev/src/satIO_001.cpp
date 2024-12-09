@@ -6510,7 +6510,7 @@ bool DisplayPage0() {
     // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd, 1 and 15 need handling seperately.
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[15]) +
       " " + String(22.50) +
@@ -6521,7 +6521,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 1) {
-      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
+      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6533,7 +6533,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 2) {
       // Serial.println("[i check 2] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6545,7 +6545,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 4) {
       // Serial.println("[i check 4] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6557,7 +6557,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 6) {
       // Serial.println("[i check 6] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6569,7 +6569,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 8) {
       // Serial.println("[i check 8] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6581,7 +6581,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 10) {
       // Serial.println("[i check 10] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6593,7 +6593,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 12) {
       // Serial.println("[i check 12] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6605,7 +6605,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 14) {
       // Serial.println("[i check 14] ");
-      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6617,7 +6617,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 15) {
       // Serial.println("[i check 15] ");
-      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
+      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading) + 12.5))) +
