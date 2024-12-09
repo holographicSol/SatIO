@@ -8099,7 +8099,7 @@ void DisplayUAP() {
   uap.setPivot(uiData.uap_piv_X, uiData.uap_piv_y);                            // Set pivot point in this Sprite
 
   /* vehicle */
-  uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_GREEN);  // uap
+  uap.fillRect(uiData.uap_piv_X - 1, 1, 2, uiData.uap_piv_y +100, TFT_NAVY);  // uap
   uap.fillCircle(uiData.uap_piv_X-3, uiData.uap_piv_y, 3, TFT_GREEN);          // uap orientation
 
   /* sea level. currently in place of terrain elevation data */
@@ -8529,9 +8529,9 @@ void setup() {
   drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
   delay(2000);
   tft.fillScreen(TFT_BLACK);
-  drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
-  delay(2000);
-  tft.fillScreen(TFT_BLACK);
+  // drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
+  // delay(2000);
+  // tft.fillScreen(TFT_BLACK);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS
