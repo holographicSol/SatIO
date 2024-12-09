@@ -134,27 +134,27 @@ TFT_eSprite uap = TFT_eSprite(&tft);        // INS roll sprite
 #define LEDC_BASE_FREQ     5000  // backlight: use 5000 Hz as a LEDC base frequency
 
 // default color theme
-uint16_t TFT_GENERAL_RECT_0 = TFT_NAVY;    // objects color
-uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;     // text color on background
-uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // text background color on background
-uint16_t TFT_GENERAL_TITLE_TXT_FG_0 = TFT_BLUE;  // emhpasize color 0
-uint16_t TFT_GENERAL_TITLE_TXT_BG_0 = TFT_BLACK; // background
-uint16_t TFT_ENABLED = TFT_GREEN;                // sets enabled color of text/objects
+uint16_t TFT_GENERAL_RECT_0 = TFT_NAVY;          // border
+uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;        // normal text
+uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // normal text
+uint16_t TFT_GENERAL_TITLE_TXT_FG_0 = TFT_BLUE;  // emhpasize normal text
+uint16_t TFT_GENERAL_TITLE_TXT_BG_0 = TFT_BLACK; // emhpasize normal text
+uint16_t TFT_ENABLED = TFT_GREEN;                // special emphasis
 // hud title area
-uint16_t TFT_HUD0_TXT = TFT_BLUE;
-uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD0_RECT = TFT_NAVY;
+uint16_t TFT_HUD0_RECT = TFT_NAVY;    // border
+uint16_t TFT_HUD0_TXT = TFT_BLUE;     // emhpasize normal text
+uint16_t TFT_HUD0_TXT_BG = TFT_BLACK; // emhpasize normal text
 // hud matrix area
-uint16_t TFT_HUD1_TXT0 = TFT_NAVY;
-uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK;
-uint16_t TFT_HUD1_TXT1 = TFT_GREEN;
-uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK;
-uint16_t TFT_HUD1_RECT0 = TFT_NAVY;
-uint16_t TFT_HUD1_RECT1 = TFT_GREEN;
+uint16_t TFT_HUD1_RECT0 = TFT_NAVY;    // border
+uint16_t TFT_HUD1_TXT0 = TFT_NAVY;     // normal text
+uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK; // normal text
+uint16_t TFT_HUD1_RECT1 = TFT_GREEN;   // border special emphasis
+uint16_t TFT_HUD1_TXT1 = TFT_GREEN;    // special emphasis
+uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK; // special emphasis
 // hud main area
-uint16_t TFT_HUD2_TXT = TFT_BLUE;
-uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD2_RECT = TFT_NAVY;
+uint16_t TFT_HUD2_RECT = TFT_NAVY;     // border
+uint16_t TFT_HUD2_TXT = TFT_BLUE;      // emhpasize normal text
+uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;  // emhpasize normal text
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
