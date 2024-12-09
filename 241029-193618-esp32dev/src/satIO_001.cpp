@@ -4168,94 +4168,94 @@ struct SiderealPlantetsStruct {
 };
 SiderealPlantetsStruct siderealPlanetData;
 
-// struct SiderealObjectStruct {
-//   char object_name[56];
-//   char object_table_name[56];
-//   int  object_number;
-//   int  object_table_i;
-//   long object_ra;
-//   long object_dec;
-//   long object_az;
-//   long object_alt;
-//   long object_mag;
-//   long object_r;
-//   long object_s;
-//   double objects_data[609][7];
-//   char object_table[7][20] =
-//   {
-//     "Star Table",          // 0
-//     "NGC Table",           // 1
-//     "IC Table",            // 2
-//     "Other Objects Table", // 3
-//     "Messier Table",       // 4
-//     "Caldwell Table",      // 5
-//     "Herschel 400 Table",  // 6
-//   };
-// };
-// SiderealObjectStruct siderealObjectData;
+struct SiderealObjectStruct {
+  char object_name[56];
+  char object_table_name[56];
+  int  object_number;
+  int  object_table_i;
+  double object_ra;
+  double object_dec;
+  double object_az;
+  double object_alt;
+  double object_mag;
+  double object_r;
+  double object_s;
+  // double objects_data[609][7];
+  char object_table[7][20] =
+  {
+    "Star Table",          // 0
+    "NGC Table",           // 1
+    "IC Table",            // 2
+    "Other Objects Table", // 3
+    "Messier Table",       // 4
+    "Caldwell Table",      // 5
+    "Herschel 400 Table",  // 6
+  };
+};
+SiderealObjectStruct siderealObjectData;
 
-// void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second,
-//                  int object_table_i, int object_i) {
-//   myAstro.setLatLong(latitude, longitude);
-//   // myAstro.setTimeZone(tz);
-//   myAstro.rejectDST();
-//   myAstro.setGMTdate(year, month, day);
-//   myAstro.setLocalTime(hour, minute, second);
-//   myAstro.setGMTtime(hour, minute, second);
-//   if (object_table_i == 0) {myAstroObj.selectStarTable(object_i);}
-//   if (object_table_i == 1) {myAstroObj.selectNGCTable(object_i);}
-//   if (object_table_i == 2) {myAstroObj.selectICTable(object_i);}
-//   if (object_table_i == 3) {myAstroObj.selectMessierTable(object_i);}
-//   if (object_table_i == 4) {myAstroObj.selectCaldwellTable(object_i);}
-//   if (object_table_i == 5) {myAstroObj.selectHershel400Table(object_i);}
-//   if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
-//   myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
-//   myAstro.doRAdec2AltAz();
-//   siderealObjectData.object_az = myAstro.getAzimuth();
-//   siderealObjectData.object_alt = myAstro.getAltitude();
-//   siderealObjectData.object_r = myAstro.getRiseTime();
-//   siderealObjectData.object_s = myAstro.getSetTime();
-// }
+void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second,
+                 int object_table_i, int object_i) {
+  myAstro.setLatLong(latitude, longitude);
+  // myAstro.setTimeZone(tz);
+  myAstro.rejectDST();
+  myAstro.setGMTdate(year, month, day);
+  myAstro.setLocalTime(hour, minute, second);
+  myAstro.setGMTtime(hour, minute, second);
+  if (object_table_i == 0) {myAstroObj.selectStarTable(object_i);}
+  if (object_table_i == 1) {myAstroObj.selectNGCTable(object_i);}
+  if (object_table_i == 2) {myAstroObj.selectICTable(object_i);}
+  if (object_table_i == 3) {myAstroObj.selectMessierTable(object_i);}
+  if (object_table_i == 4) {myAstroObj.selectCaldwellTable(object_i);}
+  if (object_table_i == 5) {myAstroObj.selectHershel400Table(object_i);}
+  if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
+  myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
+  myAstro.doRAdec2AltAz();
+  siderealObjectData.object_az = myAstro.getAzimuth();
+  siderealObjectData.object_alt = myAstro.getAltitude();
+  siderealObjectData.object_r = myAstro.getRiseTime();
+  siderealObjectData.object_s = myAstro.getSetTime();
+}
 
-// void IdentifyObject(double object_ra, double object_dec) {
-//   myAstroObj.setRAdec(object_ra, object_dec);
-//   myAstro.doRAdec2AltAz();
-//   siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
-//   myAstroObj.identifyObject();
-//   switch(myAstroObj.getIdentifiedObjectTable()) {
-//   case(1):
-//   siderealObjectData.object_table_i = 0; break;
-// 	case(2):
-//   siderealObjectData.object_table_i = 1; break;
-// 	case(3):
-//   siderealObjectData.object_table_i = 2;  break;
-// 	case(7):
-//   siderealObjectData.object_table_i = 3;  break;
-//   }
-//   if (myAstroObj.getIdentifiedObjectTable() == 1) {
-//     // set table name
-//     memset(siderealObjectData.object_table_name, 0, 56);
-//     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-//     // set object id name
-//     memset(siderealObjectData.object_name, 0, 56);
-//     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
-//     }
-//   if (myAstroObj.getAltIdentifiedObjectTable()) {
-//     switch(myAstroObj.getAltIdentifiedObjectTable()) {
-// 	  casematrix_indi_h:
-//     siderealObjectData.object_table_i = 4;  break;
-// 	  case(5):
-//     siderealObjectData.object_table_i = 5;  break;
-// 	  case(6):
-//     siderealObjectData.object_table_i = 6;  break;
-//     }
-//   // set table name
-//   memset(siderealObjectData.object_table_name, 0, 56);
-//   strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-//   // set object id number
-//   siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
-//   }
-// }
+void IdentifyObject(double object_ra, double object_dec) {
+  myAstroObj.setRAdec(object_ra, object_dec);
+  myAstro.doRAdec2AltAz();
+  siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
+  myAstroObj.identifyObject();
+  switch(myAstroObj.getIdentifiedObjectTable()) {
+  case(1):
+  siderealObjectData.object_table_i = 0; break;
+	case(2):
+  siderealObjectData.object_table_i = 1; break;
+	case(3):
+  siderealObjectData.object_table_i = 2;  break;
+	case(7):
+  siderealObjectData.object_table_i = 3;  break;
+  }
+  if (myAstroObj.getIdentifiedObjectTable() == 1) {
+    // set table name
+    memset(siderealObjectData.object_table_name, 0, 56);
+    strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+    // set object id name
+    memset(siderealObjectData.object_name, 0, 56);
+    strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
+    }
+  if (myAstroObj.getAltIdentifiedObjectTable()) {
+    switch(myAstroObj.getAltIdentifiedObjectTable()) {
+	  casematrix_indi_h:
+    siderealObjectData.object_table_i = 4;  break;
+	  case(5):
+    siderealObjectData.object_table_i = 5;  break;
+	  case(6):
+    siderealObjectData.object_table_i = 6;  break;
+    }
+  // set table name
+  memset(siderealObjectData.object_table_name, 0, 56);
+  strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+  // set object id number
+  siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
+  }
+}
 
 void trackSun(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
   myAstro.setLatLong(latitude, longitude);
