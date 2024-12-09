@@ -139,7 +139,7 @@ uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;        // normal text
 uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // normal text
 uint16_t TFT_GENERAL_TITLE_TXT_FG_0 = TFT_BLUE;  // emhpasize
 uint16_t TFT_GENERAL_TITLE_TXT_BG_0 = TFT_BLACK; // emhpasize
-uint16_t TFT_ENABLED = TFT_GREEN;                // special emphasis
+uint16_t TFT_ENABLED = TFT_GREEN;            // special emphasis
 
 // hud title area
 uint16_t TFT_HUD0_RECT = TFT_NAVY;    // border
@@ -6376,47 +6376,53 @@ bool DisplayPage0() {
     hud.drawRect(252, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
+    if (strcmp(gnggaData.solution_status, "0")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gnggaData.solution_status, "1")==0) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gnggaData.solution_status, "2")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gnggaData.solution_status, "6")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gnggaData.solution_status)+String(""), 267, rdata_y+18*2+9);
 
     // Positioning Status: A=valid positioning | V=invalid positioning
     hud.drawRect(287, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
+    if (strcmp(gnrmcData.positioning_status, "A")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gnrmcData.positioning_status)+String(""), 303, rdata_y+18*2+9);
 
-    // Static Flag: 1=static=dark grey | 0=dynamic=BLUE
+    // Static Flag: 1=static | 0=dynamic
     hud.drawRect(252, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
+    if (strcmp(gpattData.static_flag, "0")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gpattData.static_flag)+String(""), 267, rdata_y+18*3+9);
 
-    // Run State Flag: 0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while  GRAPHIC
+    // Run State Flag: 0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while
     hud.drawRect(287, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
-    // if (atoi(gpattData.run_state_flag)==1) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
-    // if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
-    // if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
-    // if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.run_state_flag)==1) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gpattData.run_state_flag)+String(""), 303, rdata_y+18*3+9);
     
     // Run Inertial Flag: 00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
     hud.drawRect(252, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "01")==0) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gpattData.run_inetial_flag, "01")==0) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gpattData.run_inetial_flag), 267, rdata_y+18*4+9);
 
-    // INS: 0=on=GREEN | 1=off=dark grey
+    // INS: 0=on | 1=off
     hud.drawRect(287, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String("INS")+String(""), 303, rdata_y+18*4+9);
 
     // Altitude:
@@ -6504,7 +6510,7 @@ bool DisplayPage0() {
     // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd, 1 and 15 need handling seperately.
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[15]) +
       " " + String(22.50) +
@@ -6515,7 +6521,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 1) {
-      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6527,7 +6533,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 2) {
       // Serial.println("[i check 2] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6539,7 +6545,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 4) {
       // Serial.println("[i check 4] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6551,7 +6557,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 6) {
       // Serial.println("[i check 6] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6563,7 +6569,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 8) {
       // Serial.println("[i check 8] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6575,7 +6581,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 10) {
       // Serial.println("[i check 10] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6587,7 +6593,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 12) {
       // Serial.println("[i check 12] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6599,7 +6605,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 14) {
       // Serial.println("[i check 14] ");
-      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
+      hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6611,7 +6617,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 15) {
       // Serial.println("[i check 15] ");
-      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading) + 12.5))) +
@@ -6625,7 +6631,7 @@ bool DisplayPage0() {
       if (atof(gnrmcData.ground_heading)==22.50  || atof(gnrmcData.ground_heading)==67.50   ||
           atof(gnrmcData.ground_heading)==112.50 || atof(gnrmcData.ground_heading)==157.50  ||
           atof(gnrmcData.ground_heading)==202.50 || atof(gnrmcData.ground_heading)==247.50  ||
-          atof(gnrmcData.ground_heading)==292.50 || atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
+          atof(gnrmcData.ground_heading)==292.50 || atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
       // Serial.println("[i check else] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
