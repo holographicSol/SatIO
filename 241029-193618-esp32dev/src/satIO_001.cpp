@@ -128,29 +128,27 @@ TFT_eSprite uap = TFT_eSprite(&tft);        // INS roll sprite
 #define LEDC_BASE_FREQ     5000  // backlight: use 5000 Hz as a LEDC base frequency
 
 // default color theme
-uint16_t TFTOBJ_COL0 = TFT_DARKGREY;          // objects color
-uint16_t TFTTXT_COLF_0 = TFT_DARKGREY;        // text color on background
-uint16_t TFTTXT_COLF_TITLE_0 = TFT_DARKGREY;  // emhpasize color 0
-uint16_t TFTTXT_COLB_0 = TFT_BLACK;           // text background color on background
-uint16_t TFTTXT_COLF_1 = TFT_BLACK;           // text color on object color
-uint16_t TFTTXT_COLB_1 = TFT_DARKGREY;        // text background color on object color
-uint16_t BG_COL_0 = TFT_BLACK;                // background
-uint16_t TFT_ENABLED = TFT_GREEN;             // sets enabled color of text/objects
+uint16_t TFT_GENERAL_RECT_0 = TFT_NAVY;    // objects color
+uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;     // text color on background
+uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // text background color on background
+uint16_t TFT_GENERAL_TITLE_TXT_FG_0 = TFT_BLUE;  // emhpasize color 0
+uint16_t TFT_GENERAL_TITLE_TXT_BG_0 = TFT_BLACK; // background
+uint16_t TFT_ENABLED = TFT_GREEN;                // sets enabled color of text/objects
 // hud title area
-uint16_t TFT_HUD0_TXT = TFT_DARKGREY;
+uint16_t TFT_HUD0_TXT = TFT_BLUE;
 uint16_t TFT_HUD0_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD0_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD0_RECT = TFT_NAVY;
 // hud matrix area
-uint16_t TFT_HUD1_TXT0 = TFT_DARKGREY;
+uint16_t TFT_HUD1_TXT0 = TFT_NAVY;
 uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK;
 uint16_t TFT_HUD1_TXT1 = TFT_GREEN;
 uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK;
-uint16_t TFT_HUD1_RECT0 = TFT_DARKGREY;
+uint16_t TFT_HUD1_RECT0 = TFT_NAVY;
 uint16_t TFT_HUD1_RECT1 = TFT_GREEN;
 // hud main area
-uint16_t TFT_HUD2_TXT = TFT_DARKGREY;
+uint16_t TFT_HUD2_TXT = TFT_BLUE;
 uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;
-uint16_t TFT_HUD2_RECT = TFT_DARKGREY;
+uint16_t TFT_HUD2_RECT = TFT_NAVY;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
@@ -3568,16 +3566,16 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
         if (is_all_digits(sdcardData.data_0) == true) {validData.bool_data_0 = true;
-        Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
+        // Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
         }
-        else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
+        // else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
         // matrix function index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
         if (is_all_digits(sdcardData.data_1) == true) {validData.bool_data_1 = true;
-          Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
+          // Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
         }
-        else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
+        // else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
         // continue if we have valid index numbers
         if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
           // matrix function name
@@ -3585,31 +3583,31 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, 56);
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
-          Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
+          // Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           // matrix function data: x
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
-            Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
+            // Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
-          else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
+          // else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
           // matrix function data: y
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
-            Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
+            // Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
-          else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
+          // else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
           // matrix function data: z
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
-            Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
+            // Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
-          else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
+          // else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
         }
       }
       // tag: e
@@ -3621,18 +3619,18 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
           matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
-          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
+          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
           }
-        else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
+        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
         // port
         sdcardData.token = strtok(NULL, ",");
         // check
         if (is_all_digits_plus_char(sdcardData.data_7, "-") == true) {
           strcpy(sdcardData.data_7, sdcardData.token);
           matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
-          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
+          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
           }
-        else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
+        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
       }
     }
     // update current matrix filepath
@@ -6145,22 +6143,22 @@ void DisplayGeneralTitleBar(String v0, uint16_t col0, uint16_t col1) {
   for (int i=0; i<sData.max_general_titlebar_values; i++) {
     if (i==0) {
       // home
-      hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect(0, 0, 60, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
     }
     if (i==1) {
       // title
-      hud.drawRect(64, 0, 192, 16, TFTOBJ_COL0);
+      hud.drawRect(64, 0, 192, 16, TFT_GENERAL_RECT_0);
       hud.setTextColor(col0, col1);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 160, 9);
     }
     if (i==2) {
     // back
-      hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect(260, 0, 60, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
     }
@@ -6172,27 +6170,27 @@ void DisplayPage1lTitleBar(String v0) {
   for (int i=0; i<sData.max_general_titlebar_values; i++) {
     if (i==0) {
       // home
-      hud.drawRect(0, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect(0, 0, 60, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 30, 9);
     }
     if (i==1) {
       // title
-      hud.drawRect(64, 0, 92, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect(64, 0, 92, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(v0)+String(""), 110, 9);
       // port
       hud.drawRect(162, 0, 92, 16, TFT_RED);
-      hud.setTextColor(TFT_RED, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_RED, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(matrixData.matrix_port_map[0][menuData.matrix_select])+String(""), 208, 9);
     }
     if (i==2) {
     // back
-      hud.drawRect(260, 0, 60, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+      hud.drawRect(260, 0, 60, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TITLE_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.general_titlebar_values[i])+String(""), 290, 9);
     }
@@ -6283,7 +6281,7 @@ bool DisplayPage0() {
         // main loop time over threshold: possible overload
         if (timeData.mainLoopTimeTaken>=500) {
           hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-          hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);
+          hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);
           hud.setTextDatum(MC_DATUM);
           hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
         }
@@ -6300,15 +6298,15 @@ bool DisplayPage0() {
     hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
     hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFTTXT_COLB_0);}
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String("SD")+String(""), 271, 8);
     // satellite count / precision factor
     hud.drawRect(288, 0, 30, 16, TFT_HUD0_RECT);
     hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     // if (gnggaData.satellite_count_gngga>0) {
-    //   if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    //   if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    //   if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
+    //   if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     // }
     hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 304, 8);
 
@@ -6411,29 +6409,29 @@ bool DisplayPage0() {
     hud.drawRect(287, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
-    // if (atoi(gpattData.run_state_flag)==1) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
-    // if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    // if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
-    // if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    // if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    // if (atoi(gpattData.run_state_flag)==1) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
+    // if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
+    // if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    // if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gpattData.run_state_flag)+String(""), 303, rdata_y+18*3+9);
     
     // Run Inertial Flag: 00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
     hud.drawRect(252, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "01")==0) {hud.setTextColor(TFT_ORANGE, TFTTXT_COLB_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFTTXT_COLB_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}
-    // if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    // if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    // if (strcmp(gpattData.run_inetial_flag, "01")==0) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
+    // if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
+    // if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
+    // if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gpattData.run_inetial_flag), 267, rdata_y+18*4+9);
 
-    // INS: 0=on=BLUE | 1=off=dark grey
+    // INS: 0=on=GREEN | 1=off=dark grey
     hud.drawRect(287, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
-    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String("INS")+String(""), 303, rdata_y+18*4+9);
 
     // Altitude:
@@ -6464,8 +6462,8 @@ bool DisplayPage0() {
     hud.drawRect(uiData.yaw_x+64-104, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);}
-    // if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+    // if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+    // if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+11, rdata_y+18*8+9);
 
     // Mileage:
@@ -6517,11 +6515,11 @@ bool DisplayPage0() {
     }
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(uiData.yaw_x-60, uiData.pitch_y-19, 220, 16, TFT_HUD2_RECT); // display ground heading rect
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // turns out if i is zero or even then we can set previous/next to 22.5 (could be a function). odd, 1 and 15 need handling seperately.
     if (i_mapped_ground_heading == 0) {
       // Serial.println("[i check 0] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[15]) +
       " " + String(22.50) +
@@ -6532,7 +6530,7 @@ bool DisplayPage0() {
       (160), uiData.pitch_y-19+9);}
     
     else if (i_mapped_ground_heading == 1) {
-      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+      if (atof(gnrmcData.ground_heading)==22.5) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(gnrmcData.ground_heading) +
@@ -6544,7 +6542,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 2) {
       // Serial.println("[i check 2] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6556,7 +6554,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 4) {
       // Serial.println("[i check 4] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6568,7 +6566,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 6) {
       // Serial.println("[i check 6] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6580,7 +6578,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 8) {
       // Serial.println("[i check 8] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6592,7 +6590,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 10) {
       // Serial.println("[i check 10] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6604,7 +6602,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 12) {
       // Serial.println("[i check 12] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6616,7 +6614,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 14) {
       // Serial.println("[i check 14] ");
-      hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(22.50) +
@@ -6628,7 +6626,7 @@ bool DisplayPage0() {
     
     else if (i_mapped_ground_heading == 15) {
       // Serial.println("[i check 15] ");
-      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+      if (atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
       " " + String(abs(360 - (atof(gnrmcData.ground_heading) + 12.5))) +
@@ -6642,7 +6640,7 @@ bool DisplayPage0() {
       if (atof(gnrmcData.ground_heading)==22.50  || atof(gnrmcData.ground_heading)==67.50   ||
           atof(gnrmcData.ground_heading)==112.50 || atof(gnrmcData.ground_heading)==157.50  ||
           atof(gnrmcData.ground_heading)==202.50 || atof(gnrmcData.ground_heading)==247.50  ||
-          atof(gnrmcData.ground_heading)==292.50 || atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFTTXT_COLB_0);}
+          atof(gnrmcData.ground_heading)==292.50 || atof(gnrmcData.ground_heading)==337.50) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
       // Serial.println("[i check else] ");
       hud.drawString(
       "" + String(ground_heading_names[i_mapped_ground_heading-1]) +
@@ -6764,22 +6762,22 @@ bool DisplayPage1() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 1) {
         // display selected matrix switch setup configuration
-        hud.fillRect(0, 0, 320, 240, BG_COL_0);
+        hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
         menuData.backpage=5;
         // page header
         DisplayPage1lTitleBar(String("Matrix ")+String(menuData.matrix_select));
-        hud.setCursor(283,4); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setCursor(283,4); hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         // table headers
-        hud.fillRect(0, 22, 320, 16, TFTOBJ_COL0);
-        hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+        hud.drawRect(0, 22, 320, 16, TFT_GENERAL_RECT_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         hud.setCursor(4,   28); hud.print("Function");
         hud.setCursor(164, 28); hud.print("X");
         hud.setCursor(220, 28); hud.print("Y");
         hud.setCursor(278, 28); hud.print("Z");
         // table values
         for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-        hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
+        hud.setCursor(4, 47+i*20); hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         hud.print(i); hud.print(" "); hud.print(matrixData.matrix_function[menuData.matrix_select][i]);
         hud.setCursor(164, 47+i*20);
         hud.print(""); hud.print(matrixData.matrix_function_xyz[menuData.matrix_select][i][0]);
@@ -6878,13 +6876,13 @@ bool isTouchPage1(TouchPoint p) {
 
 void DisplayVerticalScroll() {
   // scroll buttons
-  hud.fillRect(0, 23, 150, 16, TFTOBJ_COL0);
+  hud.drawRect(0, 23, 150, 16, TFT_GENERAL_RECT_0);
   hud.setTextDatum(MC_DATUM);
-  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
   hud.drawString(String("UP")+String(""), 75, 32);
-  hud.fillRect(170, 23, 150, 16, TFTOBJ_COL0);
+  hud.drawRect(170, 23, 150, 16, TFT_GENERAL_RECT_0);
   hud.setTextDatum(MC_DATUM);
-  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
   hud.drawString(String("DOWN")+String(""), 250, 32);
 }
 
@@ -6893,19 +6891,19 @@ void DisplayVerticalScroll() {
 
 void DisplayPlusMinus(int x, int y, String v0, String v1) {
   // minus
-  hud.fillRect(x, y, 30, 16, TFTOBJ_COL0);
+  hud.drawRect(x, y, 30, 16, TFT_GENERAL_RECT_0);
   hud.setTextDatum(MC_DATUM);
-  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
   hud.drawString(String("-")+String(""), x+15, y+9);
   // value
-  hud.drawRect(x+30, y, 90, 16, TFTOBJ_COL0);
+  hud.drawRect(x+30, y, 90, 16, TFT_GENERAL_RECT_0);
   hud.setTextDatum(MC_DATUM);
-  hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+  hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
   hud.drawString(String(v0)+String(v1), 245, y+9);
   // plus
-  hud.fillRect(x+120, y, 30, 16, TFTOBJ_COL0);
+  hud.drawRect(x+120, y, 30, 16, TFT_GENERAL_RECT_0);
   hud.setTextDatum(MC_DATUM);
-  hud.setTextColor(TFTTXT_COLF_1, TFTTXT_COLB_1);
+  hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
   hud.drawString(String("+")+String(""), x+120+15, y+9);
 }
 
@@ -6915,19 +6913,19 @@ void DisplayPlusMinus(int x, int y, String v0, String v1) {
 bool DisplaySelectMatrixFunction() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 100) {
-        hud.fillRect(0, 0, 320, 240, BG_COL_0);
+        hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
         menuData.backpage=1;
         // page header
         DisplayGeneralTitleBar(
           String("Matrix ")+String(menuData.matrix_select)+String(" Function ")+String(menuData.matrix_function_select),
-          TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+          TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         // scroll buttons
         DisplayVerticalScroll();
         // values
         for (int i=0; i<10; i++) {
-        hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+        hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
         hud.setCursor(4, 47+i*20);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         hud.print(menuData.function_index+i);
         hud.print(" ");
         hud.print(matrixData.matrix_function_names[menuData.function_index+i]);
@@ -6991,25 +6989,25 @@ bool isTouchSelectMatrixFunction(TouchPoint p) {
 bool DisplayNumpad() {
     // check page here rather than in calling function so that we can see where we are when we're here
     if (menuData.page == 300) {
-        hud.fillRect(0, 0, 320, 240, BG_COL_0);
-        if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
-        else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
-        else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);}
+        hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
+        if      (menuData.numpad_key==0) {DisplayGeneralTitleBar(String("Value X"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+        else if (menuData.numpad_key==1) {DisplayGeneralTitleBar(String("Value Y"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
+        else if (menuData.numpad_key==2) {DisplayGeneralTitleBar(String("Value Z"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
         else if (menuData.numpad_key==3) {DisplayGeneralTitleBar(String("IO Port"), TFT_RED, TFT_BLACK);}
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         hud.drawString(String(menuData.input)+String(""), 160, 40+9);
         // col 0
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         if (i==3) {
           hud.drawString(String("ENTER")+String(""), 32, 81+i*40);
         }
         // col 1
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         if (i==0) {hud.drawString(String("7")+String(""), 96, 81+i*40);}
         if (i==1) {hud.drawString(String("4")+String(""), 96, 81+i*40);}
         if (i==2) {hud.drawString(String("1")+String(""), 96, 81+i*40);}
@@ -7018,7 +7016,7 @@ bool DisplayNumpad() {
         // col 2
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         if (i==0) {hud.drawString(String("8")+String(""), 160, 81+i*40);}
         if (i==1) {hud.drawString(String("5")+String(""), 160, 81+i*40);}
         if (i==2) {hud.drawString(String("2")+String(""), 160, 81+i*40);}
@@ -7027,7 +7025,7 @@ bool DisplayNumpad() {
         // col 3
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         if (i==0) {hud.drawString(String("9")+String(""), 228, 81+i*40);}
         if (i==1) {hud.drawString(String("6")+String(""), 228, 81+i*40);}
         if (i==2) {hud.drawString(String("3")+String(""), 228, 81+i*40);}
@@ -7036,7 +7034,7 @@ bool DisplayNumpad() {
         // col 4
         for (int i=0; i<4; i++) {
         hud.setTextDatum(MC_DATUM);
-        hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+        hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
         if (i==0) {hud.drawString(String("DELETE")+String(""), 292, 81+i*40);}
         if (i==3) {hud.drawString(String("CLEAR")+String(""), 292, 81+i*40);}
         }
@@ -7137,15 +7135,15 @@ bool isTouchNumpad(TouchPoint p) {
 bool DisplaySettingsMenu() {
   // check page here rather than in calling function so that we can see where we are when we're here
   if (menuData.page == 3) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     // page header
     menuData.backpage=0;
-    DisplayGeneralTitleBar(String("Settings"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Settings"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settings0values; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.drawString(String(sData.settings0values[i])+String(""), 160, 51+i*20);
     }
     return true;
@@ -7180,15 +7178,15 @@ bool isDisplaySettingsMenu(TouchPoint p) {
 
 bool DisplaySettingsSystem() {
   if (menuData.page == 4) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("System"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("System"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsystemvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
@@ -7219,40 +7217,40 @@ bool isDisplaySettingsSystem(TouchPoint p) {
 
 bool DisplaySettingsMatrix() {
   if (menuData.page == 5) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Matrix"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Matrix"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsmatrixvalues_c0; i++) {
     /*
     switch enable column 0 (0-9) (enables/disables individual switch from turning on and off.
     switch will remain on/ off according to its current state.)
     */
-    hud.drawRect(0, 43+i*20, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (matrixData.matrix_switch_enabled[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    hud.drawRect(0, 43+i*20, 30, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if (matrixData.matrix_switch_enabled[0][i] == true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i])+String(""), 15, 51+i*20);
     // switch setup column 1 (0-9) (access individual switch setup)
-    hud.drawRect(30, 43+i*20, 40, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(30, 43+i*20, 40, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("SETUP")+String(""), 50, 51+i*20);
     // switch off column 2 (0-9) (turns off an individual switch)
-    hud.drawRect(70, 43+i*20, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(70, 43+i*20, 30, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("OFF")+String(""), 85, 51+i*20);
     // switch indicator column 3 (0-9) (indicates if individual switch is either on or off)
-    hud.drawRect(100, 43+i*20, 10, 16, TFTOBJ_COL0);
+    hud.drawRect(100, 43+i*20, 10, 16, TFT_GENERAL_RECT_0);
     if (matrixData.matrix_switch_state[0][i] == true) {hud.fillRect(104, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(104, 46+i*20, 2, 10, TFT_RED);
     }
     // enable all (enables all switches to turn on)
     if (i==0) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawRect(120, 43+i*20, 80, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("ENABLE")+String(""), 160, 51+i*20);
     }
@@ -7261,15 +7259,15 @@ bool DisplaySettingsMatrix() {
     current state.
     */
     if (i==1) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawRect(120, 43+i*20, 80, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("DISABLE")+String(""), 160, 51+i*20);
     }
     // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
     if (i==2) {
-      hud.drawRect(120, 43+i*20, 80, 16, TFTOBJ_COL0);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.drawRect(120, 43+i*20, 80, 16, TFT_GENERAL_RECT_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String("OFF")+String(""), 160, 51+i*20);
     }
@@ -7277,23 +7275,23 @@ bool DisplaySettingsMatrix() {
     switch enable column 0 (10-19) (enables/disables individual switch from turning on and off.
     switch will remain on/ off according to its current state.)
     */
-    hud.drawRect(210, 43+i*20, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if (matrixData.matrix_switch_enabled[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}
+    hud.drawRect(210, 43+i*20, 30, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if (matrixData.matrix_switch_enabled[0][i+10] == true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsmatrixvalues_c0[i+10])+String(""), 225, 51+i*20);
     // // switch setup column 1 (10-19) (access individual switch setup)
-    hud.drawRect(240, 43+i*20, 40, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(240, 43+i*20, 40, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("SETUP")+String(""), 260, 51+i*20);
     // switch turn off column 2 (10-19) (turns off an individual switch)
-    hud.drawRect(280, 43+i*20, 30, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(280, 43+i*20, 30, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("OFF")+String(""), 295, 51+i*20);
     // switch indicator column 3 (10-19) (indicates if individual switch is either on or off)
-    hud.drawRect(310, 43+i*20, 10, 16, TFTOBJ_COL0);
+    hud.drawRect(310, 43+i*20, 10, 16, TFT_GENERAL_RECT_0);
     if (matrixData.matrix_switch_state[0][i+10] == true) {hud.fillRect(314, 46+i*20, 2, 10, TFT_ENABLED);}
     else {hud.fillRect(314, 46+i*20, 2, 10, TFT_RED);}
     }
@@ -7416,18 +7414,18 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
 
 bool DisplaySettingsGPS() {
   if (menuData.page == 6) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("GPS"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("GPS"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsgpsvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if      (i==0) {if (systemData.satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==1) {if (systemData.gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==2) {if (systemData.gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==3) {if (systemData.gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsgpsvalues[i])+String(""), 75, 51+i*20);
     }
@@ -7464,19 +7462,19 @@ bool isDisplaySettingsGPS(TouchPoint p) {
 
 bool DisplaySettingsSerial() {
   if (menuData.page == 7) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Serial"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Serial"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsserialvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if      (i==0) {if (systemData.output_satio_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==1) {if (systemData.output_gngga_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==2) {if (systemData.output_gnrmc_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==3) {if (systemData.output_gpatt_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==4) {if (systemData.output_matrix_enabled==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingsserialvalues[i])+String(""), 75, 51+i*20);
     }
@@ -7514,33 +7512,33 @@ bool isDisplaySettingsSerial(TouchPoint p) {
 
 bool DisplaySettingsFile() {
   if (menuData.page == 8) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("File"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsfilevalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // sdcardData.is_writing
-    // if (i==1) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    // if (i==4) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    // if (i==5) {if (sdcardData.is_reading==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
-    // if (i==6) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);}}
+    // if (i==1) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}}
+    // if (i==4) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}}
+    // if (i==5) {if (sdcardData.is_reading==true) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}}
+    // if (i==6) {if (sdcardData.is_writing==true) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}}
     hud.drawString(String(sData.settingsfilevalues[i])+String(""), 75, 51+i*20);
     // display system configuration filepath
     if (i==0) {
-      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+      hud.drawRect(150, 43+i*20, 170, 16, TFT_GENERAL_RECT_0);
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(String(sdcardData.sysconf)+String(""), 240, 51+i*20);
     }
     // display current matrix filepath
     else if (i==2) {
-      hud.drawRect(150, 43+i*20, 170, 16, TFTOBJ_COL0);
+      hud.drawRect(150, 43+i*20, 170, 16, TFT_GENERAL_RECT_0);
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(String(sdcardData.matrix_filepath)+String(""), 240, 51+i*20);
     }
     }
@@ -7583,23 +7581,23 @@ bool isDisplaySettingsFile(TouchPoint p) {
 
 bool DisplaySettingsSaveMatrix() {
   if (menuData.page == 400) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Save Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Save Matrix File"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
     }
@@ -7668,24 +7666,24 @@ bool isDisplaySettingsSaveMatrix(TouchPoint p) {
 
 bool DisplaySettingsLoadMatrix() {
   if (menuData.page == 401) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Load Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Load Matrix File"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
     }
@@ -7742,24 +7740,24 @@ bool isDisplaySettingsLoadMatrix(TouchPoint p) {
 
 bool DisplaySettingsDeleteMatrix() {
   if (menuData.page == 402) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=8;
     // page header
-    DisplayGeneralTitleBar(String("Delete Matrix File"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Delete Matrix File"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // scroll buttons
     DisplayVerticalScroll();
     // values
     for (int i=0; i<10; i++) {
-    hud.drawRect(0, 43+i*20, 320, 16, TFTOBJ_COL0);
-    hud.setCursor(4, 47+i*20); hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.drawRect(0, 43+i*20, 320, 16, TFT_GENERAL_RECT_0);
+    hud.setCursor(4, 47+i*20); hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     if (strcmp(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], "")==0) {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(String("EMPTY SLOT ")+String(menuData.matrix_filenames_index+i), 160, 52+i*20);
       }
     else {
       hud.setTextDatum(MC_DATUM);
-      hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+      hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
       hud.drawString(sdcardData.matrix_filenames[menuData.matrix_filenames_index+i], 160, 52+i*20);
       }
     }
@@ -7819,10 +7817,10 @@ bool isDisplaySettingsDeleteMatrix(TouchPoint p) {
 bool DisplaySavingSplash() {
   if (menuData.page == 403) {
     Serial.println("[DisplaySavingSplash]");
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     hud.drawRect(0, 0, 319, 239, TFT_GREEN);
     hud.setTextDatum(CC_DATUM);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
     hud.drawString(String("[ SAVING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
@@ -7832,10 +7830,10 @@ bool DisplaySavingSplash() {
 bool DisplayLoadingSplash() {
   if (menuData.page == 404) {
     Serial.println("[DisplayLoadingSplash]");
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     hud.drawRect(0, 0, 319, 239, TFT_GREEN);
     hud.setTextDatum(CC_DATUM);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
     hud.drawString(String("[ LOADING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
@@ -7845,10 +7843,10 @@ bool DisplayLoadingSplash() {
 bool DisplayDeleteSplash() {
   if (menuData.page == 405) {
     Serial.println("[DisplayDeleteSplash]");
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     hud.drawRect(0, 0, 319, 239, TFT_GREEN);
     hud.setTextDatum(CC_DATUM);
-    hud.setTextColor(TFT_GREEN, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);
     hud.drawString(String("[ DELETING ]")+String(), TFT_HEIGHT/2, TFT_WIDTH/2);
     return true;
   }
@@ -7860,15 +7858,15 @@ bool DisplayDeleteSplash() {
 
 bool DisplaySettingsTime() {
   if (menuData.page == 9) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Time"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Time"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingstimevalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.drawString(sData.settingstimevalues[i], 75, 52+i*20);
     if (i==0) {DisplayPlusMinus(170, 43+i*20, String(satData.utc_offset), String(" hours"));}
     if (i==1) {
@@ -7914,19 +7912,19 @@ bool isDisplaySettingsTime(TouchPoint p) {
 
 bool DisplaySettingsDisplay() {
   if (menuData.page == 10) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header
-    DisplayGeneralTitleBar(String("Display"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Display"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // auto dim enabled
-    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    if      (i==1) {if (systemData.display_auto_dim==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     // auto off enabled
-    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    else if (i==3) {if (systemData.display_auto_off==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     // draw value
     hud.drawString(sData.settingsdisplayvalues[i], 75, 52+i*20);
     // brightness level
@@ -8032,23 +8030,23 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
 
 bool SiderealPlanetsSettings() {
   if (menuData.page == 11) {
-    hud.fillRect(0, 0, 320, 240, BG_COL_0);
+    hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);
     menuData.backpage=3;
     // page header max_settingssiderealplanetsvalues
-    DisplayGeneralTitleBar(String("Planet Tracking"), TFTTXT_COLF_TITLE_0, TFTTXT_COLB_0);
+    DisplayGeneralTitleBar(String("Planet Tracking"), TFT_GENERAL_TITLE_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     // values
     for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
-    hud.drawRect(0, 43+i*20, 150, 16, TFTOBJ_COL0);
-    hud.setTextColor(TFTTXT_COLF_0, TFTTXT_COLB_0);
-    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
-    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_ENABLED, TFTTXT_COLB_0);}}
+    hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
+    hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if      (i==0) {if (systemData.sidereal_track_sun==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==1) {if (systemData.sidereal_track_moon==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==2) {if (systemData.sidereal_track_mercury==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==3) {if (systemData.sidereal_track_venus==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==4) {if (systemData.sidereal_track_mars==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==5) {if (systemData.sidereal_track_jupiter==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==6) {if (systemData.sidereal_track_saturn==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==7) {if (systemData.sidereal_track_uranus==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
+    else if (i==8) {if (systemData.sidereal_track_neptune==true) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(sData.settingssiderealplanetsvalues[i])+String(""), 75, 51+i*20);
     }
@@ -8175,17 +8173,17 @@ void UpdateDisplay(void * pvParameters) {
       hud.fillSprite(TFT_TRANSPARENT);
 
       // currently we clear screen as a general rule if the previous page is not equal to current page, otherwise leave it
-      if (!menuData.page==menuData.previous_page) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;}
+      if (!menuData.page==menuData.previous_page) {hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0); menuData.previous_page=menuData.page;}
 
       // then decide if we will fill screen or portions of screen according to page, with layers of sprites in mind
       if (menuData.page==0) {
-        if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, BG_COL_0); menuData.previous_page=menuData.page;} // full
-        hud.fillRect(0, 0, 320, 94, BG_COL_0);    // upper
-        hud.fillRect(0, 194, 320, 45, BG_COL_0);  // lower 
-        hud.fillRect(0, 0, 110, 240, BG_COL_0);    // left
-        hud.fillRect(200, 0, 220, 240, BG_COL_0);  // right
+        if (!menuData.previous_page==0) {hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0); menuData.previous_page=menuData.page;} // full
+        hud.fillRect(0, 0, 320, 94, TFT_GENERAL_TITLE_TXT_BG_0);    // upper
+        hud.fillRect(0, 194, 320, 45, TFT_GENERAL_TITLE_TXT_BG_0);  // lower 
+        hud.fillRect(0, 0, 110, 240, TFT_GENERAL_TITLE_TXT_BG_0);    // left
+        hud.fillRect(200, 0, 220, 240, TFT_GENERAL_TITLE_TXT_BG_0);  // right
         }
-      else {hud.fillRect(0, 0, 320, 240, BG_COL_0);}  
+      else {hud.fillRect(0, 0, 320, 240, TFT_GENERAL_TITLE_TXT_BG_0);}  
 
       // layer zero sprites: draw
       bool checktouch = false;
@@ -8529,10 +8527,10 @@ void setup() {
   //                                                                                                          DSETUP: SPLASHSCREEN
 
   drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
-  delay(2000);
+  // delay(2000);
   tft.fillScreen(TFT_BLACK);
   drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
-  delay(2000);
+  // delay(2000);
   tft.fillScreen(TFT_BLACK);
 
   // ----------------------------------------------------------------------------------------------------------------------------
