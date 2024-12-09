@@ -3221,23 +3221,23 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       memset(sdcardData.BUFFER, 0, 2048);
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       // check matrix filepath
       if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+        // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
         sdcardData.token = strtok(NULL, ",");
-        Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+        // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
         memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
         strcpy(sdcardData.matrix_filepath, sdcardData.token);
       }
       // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+        // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
         sdcardData.token = strtok(NULL, ",");
         if (is_all_digits(sdcardData.token) == true) {
-          Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
           if (atoi(sdcardData.token) == 0) {systemData.run_on_startup = false;} else {systemData.run_on_startup = true;}
         }
       }
@@ -3245,236 +3245,236 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       if (systemData.run_on_startup == true) {
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.matrix_enabled = false;} else {systemData.matrix_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.satio_enabled = false;} else {systemData.satio_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.gngga_enabled = false;} else {systemData.gngga_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.gnrmc_enabled = false;} else {systemData.gnrmc_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.gpatt_enabled = false;} else {systemData.gpatt_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_BRIGHTNESS", strlen("DISPLAY_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             systemData.display_brightness = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_BRIGHTNESS", strlen("DISPLAY_AUTO_DIM_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             systemData.display_autodim_brightness = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_TIMEOUT", strlen("DISPLAY_AUTO_DIM_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             systemData.display_auto_dim_p0 = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF_TIMEOUT", strlen("DISPLAY_AUTO_OFF_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             systemData.display_auto_off_p0 = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
-            Serial.println("RESULT: " + String(systemData.display_auto_off ));
+            // Serial.println("RESULT: " + String(systemData.display_auto_off ));
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.output_satio_enabled = false;} else {systemData.output_satio_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.output_gngga_enabled = false;} else {systemData.output_gngga_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.output_gnrmc_enabled = false;} else {systemData.output_gnrmc_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.output_gpatt_enabled = false;} else {systemData.output_gpatt_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET,", strlen("UTC_OFFSET,")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             satData.utc_offset = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET_FLAG", strlen("UTC_OFFSET_FLAG")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {satData.utc_offset_flag = false;} else {satData.utc_offset_flag = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_sun = false;} else {systemData.sidereal_track_sun = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_moon = false;} else {systemData.sidereal_track_moon = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mercury = false;} else {systemData.sidereal_track_mercury = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_venus = false;} else {systemData.sidereal_track_venus = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mars = false;} else {systemData.sidereal_track_mars = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_jupiter = false;} else {systemData.sidereal_track_jupiter = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_saturn = false;} else {systemData.sidereal_track_saturn = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_uranus = false;} else {systemData.sidereal_track_uranus = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_neptune = false;} else {systemData.sidereal_track_neptune = true;}
           }
         }
@@ -3583,7 +3583,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
       memset(sdcardData.BUFFER, 0, 2048);
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       // tag: r
       if (strncmp(sdcardData.BUFFER, "r", 1) == 0) {
         // ensure cleared
