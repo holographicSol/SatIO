@@ -6661,11 +6661,16 @@ bool DisplayPage0() {
 
     /* Yaw Scale:  */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
-    hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
-    hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
-    hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);   // x axis: degrees
-    hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
-    hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);  // x axis: degrees
+    hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+12.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x+37.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+50, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x+62.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);   // x axis: degrees
+    hud.drawRect(uiData.yaw_x+87.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
+    hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);  // x axis: degrees
+
     uiData.mapped_yaw = atof(gpattData.yaw);
     // uiData.mapped_yaw = 315;   // uncomment to test
     if (uiData.mapped_yaw > 0 && uiData.mapped_yaw <=180) {uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 180, 0, 50); uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);}
@@ -6676,11 +6681,15 @@ bool DisplayPage0() {
 
     /* Pitch Scale:  */
     hud.drawRect(uiData.pitch_x, uiData.pitch_y, uiData.pitch_w, uiData.pitch_h, TFT_RED);  // y axis: pitch
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 2, 1, TFT_RED);   // y axis: degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+75, 2, 1, TFT_RED);   // y axis: degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 2, 1, TFT_RED);   // y axis: degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 2, 1, TFT_RED);  // y axis: degrees
-    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 1, TFT_RED);    // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 2, 4, TFT_RED);    // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+12.5, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 4, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+37.5, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+75, 4, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+87.5, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+50, 4, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+62.5, 2, 1, TFT_RED);   // y axis: degrees
+    hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+100, 4, 1, TFT_RED);  // y axis: degrees
     uiData.mapped_pitch = atof(gpattData.pitch);
     // uiData.mapped_pitch = -90;   // uncomment to test
     if (uiData.mapped_pitch > 0) {uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 90, 0, 50); uiData.mapped_pitch = map(uiData.mapped_pitch, 0, 50, uiData.pitch_y+50, uiData.pitch_y);}
