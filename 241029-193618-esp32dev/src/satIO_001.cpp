@@ -104,6 +104,12 @@ const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 27;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
 const byte rxd_from_gps = 22;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
 
+#define CYD_LED_BLUE 17
+#define CYD_LED_RED 4
+#define CYD_LED_GREEN 16
+#define CYD_LED_ON 0
+#define CYD_LED_OFF 1023
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TOUCHSCREEN
 #define XPT2046_IRQ 36
@@ -8459,6 +8465,17 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
 
 void setup() {
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SETUP: PINS
+  pinMode(CYD_LED_RED, OUTPUT);
+  pinMode(CYD_LED_GREEN, OUTPUT);
+  pinMode(CYD_LED_BLUE, OUTPUT);
+  // Green LED 
+  analogWrite(CYD_LED_RED, CYD_LED_OFF);
+  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
+  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
+
+
   second_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
@@ -8564,6 +8581,10 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                         SETUP: SET HOME PAGE
 
+  // Blue LED 
+  analogWrite(CYD_LED_RED, CYD_LED_OFF);
+  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
+  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
   menuData.page=0;
 
 }
