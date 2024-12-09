@@ -135,21 +135,23 @@ TFT_eSprite uap = TFT_eSprite(&tft);        // INS roll sprite
 
 // default color theme
 uint16_t TFT_GENERAL_RECT_0 = TFT_NAVY;          // border
-uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;        // normal text
-uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // normal text
+uint16_t TFT_GENERAL_TXT_FG_0 = TFT_BLUE;        // normal
+uint16_t TFT_GENERAL_TXT_BG_0 = TFT_BLACK;       // normal
 uint16_t TFT_GENERAL_TITLE_TXT_FG_0 = TFT_BLUE;  // emhpasize
 uint16_t TFT_GENERAL_TITLE_TXT_BG_0 = TFT_BLACK; // emhpasize
-uint16_t TFT_ENABLED = TFT_GREEN;            // special emphasis
+uint16_t TFT_ENABLED = TFT_GREEN;                // special emphasis
 
 // hud title area
-uint16_t TFT_HUD0_RECT = TFT_NAVY;    // border
-uint16_t TFT_HUD0_TXT = TFT_BLUE;     // emhpasize
-uint16_t TFT_HUD0_TXT_BG = TFT_BLACK; // emhpasize
+uint16_t TFT_HUD0_RECT = TFT_NAVY;      // border
+uint16_t TFT_HUD0_TXT_FG_0 = TFT_NAVY;  // normal
+uint16_t TFT_HUD0_TXT_BG_0 = TFT_BLACK; // normal
+uint16_t TFT_HUD0_TXT_FG_1 = TFT_BLUE;  // emhpasize
+uint16_t TFT_HUD0_TXT_BG_1 = TFT_BLACK; // emhpasize
 
 // hud matrix area
 uint16_t TFT_HUD1_RECT0 = TFT_NAVY;    // border
-uint16_t TFT_HUD1_TXT0 = TFT_NAVY;     // normal text
-uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK; // normal text
+uint16_t TFT_HUD1_TXT0 = TFT_NAVY;     // normal
+uint16_t TFT_HUD1_TXT0_BG = TFT_BLACK; // normal
 uint16_t TFT_HUD1_RECT1 = TFT_GREEN;   // special emphasis
 uint16_t TFT_HUD1_TXT1 = TFT_GREEN;    // special emphasis
 uint16_t TFT_HUD1_TXT1_BG = TFT_BLACK; // special emphasis
@@ -6304,7 +6306,7 @@ bool DisplayPage0() {
     for (int i=0; i<sData.max_main_titlebar_values; i++) {
 
       hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-      hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
+      hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
       // if (i==3) {
@@ -6318,25 +6320,27 @@ bool DisplayPage0() {
       //   // main loop time under threshold.
       //   else {
       //     hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-      //     hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
+      //     hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
       //     hud.setTextDatum(MC_DATUM);
       //     hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
       //     }
       // }
     }
+
     // SD
     hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
-    hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
+    hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
     hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_RED, TFT_GENERAL_TXT_BG_0);}
+    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_HUD0_TXT_FG_0, TFT_HUD0_TXT_BG_0);}
     hud.drawString(String("SD")+String(""), 271, 8);
+
     // satellite count / precision factor
     hud.drawRect(288, 0, 30, 16, TFT_HUD0_RECT);
-    hud.setTextColor(TFT_HUD0_TXT, TFT_HUD0_TXT_BG);
+    hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
     hud.setTextDatum(MC_DATUM);
     // if (gnggaData.satellite_count_gngga>0) {
-    //   if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
-    //   if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
+    //   if (atof(gnggaData.hdop_precision_factor)>0.5) {hud.setTextColor(TFT_YELLOW, TFT_HUD0_TXT_BG_1);}
+    //   if (atof(gnggaData.hdop_precision_factor)<=0.5) {hud.setTextColor(TFT_BLUE, TFT_HUD0_TXT_BG_1);}
     // }
     hud.drawString(String(gnggaData.satellite_count_gngga)+String(""), 304, 8);
 
