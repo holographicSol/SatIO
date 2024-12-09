@@ -7169,6 +7169,7 @@ bool DisplaySettingsSystem() {
     hud.drawRect(0, 43+i*20, 150, 16, TFT_GENERAL_RECT_0);
     hud.setTextDatum(MC_DATUM);
     hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
+    if (i==0) {if (systemData.run_on_startup==1) {hud.setTextColor(TFT_ENABLED, TFT_GENERAL_TXT_BG_0);}}
     hud.drawString(String(sData.settingsystemvalues[i])+String(""), 75, 51+i*20);
     }
     return true;
@@ -7184,7 +7185,8 @@ bool isDisplaySettingsSystem(TouchPoint p) {
     if (p.x >= tss.system_menu_x[0][0] && p.x <= tss.system_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsystemvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] system item "); Serial.println(sData.settingsystemvalues[i]);
+          Serial.print("[settings] system item " + String(i) + ": "); Serial.println(sData.settingsystemvalues[i]);
+          if (i==0) {systemData.run_on_startup ^= 1;}
           break;
         }
       }
