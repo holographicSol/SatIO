@@ -436,6 +436,51 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
   ledcWrite(channel, duty);
 }
 
+void ledRed() {
+  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
+  analogWrite(CYD_LED_RED, CYD_LED_ON);
+  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
+  
+}
+
+void ledYellow() {
+  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
+  analogWrite(CYD_LED_RED, CYD_LED_ON);
+  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
+
+}
+
+void ledGreen() {
+  analogWrite(CYD_LED_RED, CYD_LED_OFF);
+  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
+  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
+
+}
+
+void ledBlue() {
+  analogWrite(CYD_LED_RED, CYD_LED_OFF);
+  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
+  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
+}
+
+void ledLightBlue() {
+  analogWrite(CYD_LED_RED, CYD_LED_OFF);
+  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
+  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
+}
+
+void ledPurple() {
+  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
+  analogWrite(CYD_LED_RED, CYD_LED_ON);
+  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
+}
+
+void ledWhite() {
+  analogWrite(CYD_LED_RED, CYD_LED_ON);
+  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
+  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           VALIDATION: CHECKSUM
 
@@ -6723,9 +6768,9 @@ bool DisplayPage0() {
     // altitude                 N/S/E/W
     // heading    gyro -o-   |           | -> alt
     // roll      (primary)   |           |                  
-    // pitch                 | ----o---- | -> roll/pitch/yaw (INS, secondary gyro. ( no primary gyro yet but future gyro independent of INS is reserved as primary gyro )
-    //                       |           |    the ship may be dark grey with black patterning and features. 
-    // yaw                   |___________|    can represent other objects too (non vehicles).
+    // pitch       o         | ----o---- | -> roll/pitch/yaw (INS, secondary gyro. ( no primary gyro yet but future gyro independent of INS is reserved as primary gyro )
+    //           o o o       |           |    the ship may be dark grey with black patterning and features. 
+    // yaw     astronaruim   |___________|    can represent other objects too (non vehicles).
 
     //                                        provide sensory information relating to the vehicle/non-vehicle. ( red/green pixel )
     //                                        
@@ -8535,11 +8580,7 @@ void setup() {
   pinMode(CYD_LED_RED, OUTPUT);
   pinMode(CYD_LED_GREEN, OUTPUT);
   pinMode(CYD_LED_BLUE, OUTPUT);
-
-  // Green LED 
-  analogWrite(CYD_LED_RED, CYD_LED_OFF);
-  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
-  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
+  ledGreen();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SETUP: SECOND TIMER
@@ -8635,11 +8676,7 @@ void setup() {
 
   menuData.page=0;
 
-  // Blue LED
-  analogWrite(CYD_LED_RED, CYD_LED_OFF);
-  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
-  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
-
+  ledBlue();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
