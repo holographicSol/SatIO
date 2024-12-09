@@ -247,6 +247,7 @@ struct sysDebugStruct {
   bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
   bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
   bool validation = false;        // enables/disables data validation such as checksum, length and type checking
+  bool verbose_file = true;      // provide more information about files being loaded/saved/etc.
 };
 sysDebugStruct sysDebugData;
 
@@ -2910,7 +2911,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
   sdcardData.is_writing = true;
 
+  if (sysDebugData.verbose_file==true) {
   Serial.println("[sdcard] attempting to save file: " + String(file));
+  }
   sdcardData.current_file.flush();
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
@@ -2920,7 +2923,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     if (!sdcardData.matrix_filepath) {strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);}
     else {strcat(sdcardData.file_data, sdcardData.matrix_filepath);}
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2930,7 +2933,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2940,7 +2943,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2950,7 +2953,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2960,7 +2963,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2970,7 +2973,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2980,7 +2983,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -2990,7 +2993,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_brightness, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3000,7 +3003,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_auto_dim, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3010,7 +3013,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_autodim_brightness, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3020,7 +3023,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_auto_dim_p0, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3030,7 +3033,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_auto_off, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3040,7 +3043,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.display_auto_off_p0, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3050,7 +3053,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.output_satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3060,7 +3063,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.output_gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3070,7 +3073,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.output_gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3080,7 +3083,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.output_gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3090,7 +3093,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(satData.utc_offset, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3100,7 +3103,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(satData.utc_offset_flag, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3110,7 +3113,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_sun, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3120,7 +3123,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_moon, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3130,7 +3133,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_mercury, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3140,7 +3143,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_venus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3150,7 +3153,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_mars, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3160,7 +3163,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_jupiter, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3170,7 +3173,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_saturn, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3180,7 +3183,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_uranus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
@@ -3190,7 +3193,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     itoa(systemData.sidereal_track_neptune, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");    
@@ -3202,6 +3205,8 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
   sdcardData.is_writing = false;
 }
+
+void PrintFileToken() {if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " +  String(sdcardData.token));}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
@@ -3221,23 +3226,25 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       memset(sdcardData.BUFFER, 0, 2048);
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      if (sysDebugData.verbose_file==true) {
+      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      }
       // check matrix filepath
       if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+        PrintFileToken();
         sdcardData.token = strtok(NULL, ",");
-        // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+        PrintFileToken();
         memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
         strcpy(sdcardData.matrix_filepath, sdcardData.token);
       }
       // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+        PrintFileToken();
         sdcardData.token = strtok(NULL, ",");
         if (is_all_digits(sdcardData.token) == true) {
-          // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+          PrintFileToken();
           if (atoi(sdcardData.token) == 0) {systemData.run_on_startup = false;} else {systemData.run_on_startup = true;}
         }
       }
@@ -3245,236 +3252,236 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       if (systemData.run_on_startup == true) {
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.matrix_enabled = false;} else {systemData.matrix_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.satio_enabled = false;} else {systemData.satio_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.gngga_enabled = false;} else {systemData.gngga_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.gnrmc_enabled = false;} else {systemData.gnrmc_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.gpatt_enabled = false;} else {systemData.gpatt_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_BRIGHTNESS", strlen("DISPLAY_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             systemData.display_brightness = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_BRIGHTNESS", strlen("DISPLAY_AUTO_DIM_BRIGHTNESS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             systemData.display_autodim_brightness = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_TIMEOUT", strlen("DISPLAY_AUTO_DIM_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             systemData.display_auto_dim_p0 = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF_TIMEOUT", strlen("DISPLAY_AUTO_OFF_TIMEOUT")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             systemData.display_auto_off_p0 = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
-            // Serial.println("RESULT: " + String(systemData.display_auto_off ));
+            PrintFileToken();
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_satio_enabled = false;} else {systemData.output_satio_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_gngga_enabled = false;} else {systemData.output_gngga_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_gnrmc_enabled = false;} else {systemData.output_gnrmc_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_gpatt_enabled = false;} else {systemData.output_gpatt_enabled = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET,", strlen("UTC_OFFSET,")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             satData.utc_offset = atoi(sdcardData.token);
           }
         }
         else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET_FLAG", strlen("UTC_OFFSET_FLAG")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {satData.utc_offset_flag = false;} else {satData.utc_offset_flag = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_sun = false;} else {systemData.sidereal_track_sun = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_moon = false;} else {systemData.sidereal_track_moon = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mercury = false;} else {systemData.sidereal_track_mercury = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_venus = false;} else {systemData.sidereal_track_venus = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mars = false;} else {systemData.sidereal_track_mars = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_jupiter = false;} else {systemData.sidereal_track_jupiter = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_saturn = false;} else {systemData.sidereal_track_saturn = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_uranus = false;} else {systemData.sidereal_track_uranus = true;}
           }
         }
         else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          // Serial.println("[sdcard] system configuration: " + String(sdcardData.token));
+          PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
-            // Serial.println("[sdcard] system configuration setting: " + String(sdcardData.token));
+            PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_neptune = false;} else {systemData.sidereal_track_neptune = true;}
           }
         }
@@ -3583,7 +3590,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
       memset(sdcardData.BUFFER, 0, 2048);
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));}
       // tag: r
       if (strncmp(sdcardData.BUFFER, "r", 1) == 0) {
         // ensure cleared
@@ -3598,16 +3605,16 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
         if (is_all_digits(sdcardData.data_0) == true) {validData.bool_data_0 = true;
-        // Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
+          if (sysDebugData.verbose_file==true) {Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));}
         }
-        // else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
+        else {if (sysDebugData.verbose_file==true) {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}}
         // matrix function index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
         if (is_all_digits(sdcardData.data_1) == true) {validData.bool_data_1 = true;
-          // Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
+          if (sysDebugData.verbose_file==true) {Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));}
         }
-        // else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
+        else {if (sysDebugData.verbose_file==true) {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}}
         // continue if we have valid index numbers
         if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
           // matrix function name
@@ -3615,31 +3622,31 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, 56);
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
-          // Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
+          if (sysDebugData.verbose_file==true) {Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));}
           // matrix function data: x
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
-            // Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
+            if (sysDebugData.verbose_file==true) {Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));}
           }
-          // else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
+          else {if (sysDebugData.verbose_file==true) {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}}
           // matrix function data: y
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
-            // Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
+            if (sysDebugData.verbose_file==true) {Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));}
           }
-          // else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
+          else {if (sysDebugData.verbose_file==true) {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}}
           // matrix function data: z
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
-            // Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
+            if (sysDebugData.verbose_file==true) {Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));}
           }
-          // else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
+          else {if (sysDebugData.verbose_file==true) {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}}
         }
       }
       // tag: e
@@ -3651,18 +3658,18 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
           matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
-          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
+          if (sysDebugData.verbose_file==true) {Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));}
           }
-        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
+        else {if (sysDebugData.verbose_file==true) {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}}
         // port
         sdcardData.token = strtok(NULL, ",");
         // check
         if (is_all_digits_plus_char(sdcardData.data_7, "-") == true) {
           strcpy(sdcardData.data_7, sdcardData.token);
           matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
-          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
+          if (sysDebugData.verbose_file==true) {Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));}
           }
-        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
+        else {if (sysDebugData.verbose_file==true) {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}}
       }
     }
     // update current matrix filepath
@@ -3727,7 +3734,7 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
-        Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+        if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
         sdcardData.current_file.println(sdcardData.file_data);
       }
       memset(sdcardData.file_data, 0 , 256);
@@ -3744,10 +3751,10 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       // matrix switch port
       memset(sdcardData.tmp, 0 , 256);
       itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
-      Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));
+      if (sysDebugData.verbose_file==true) {Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));}
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
-      Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+      if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
       sdcardData.current_file.println("");
       sdcardData.current_file.println(sdcardData.file_data);
       sdcardData.current_file.println("");
