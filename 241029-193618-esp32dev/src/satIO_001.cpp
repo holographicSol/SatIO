@@ -2836,30 +2836,6 @@ void buildSatIOSentence() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SDCARD: INITIALIZE
-
-void sdcardCheck() {
-
-  /* basic sdcard initialization. todo: make some bool of initialization results */
-
-  // if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
-  //   sdcardData.last_initialization_time = satData.current_unixtime;
-    // Serial.printf("[checking] sdcard");
-    
-    // note that information will be displayed if sdcard not present.
-    if (SD.exists("/")==true) {
-      sdcardData.card_type = SD.cardType();
-      sdcardData.card_size = SD.cardSize() / (1024 * 1024);
-      
-      // uncomment to debug
-      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
-      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
-    }
-    else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;}
-  // }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                          SDCARD: PRINT FILE CONTENTS TO SERIAL
 
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
@@ -8461,6 +8437,57 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SDCARD: INITIALIZE
+
+void setupSDCard() {
+  if (SD.begin(SS, sdspi, 80000000)) {
+    Serial.println("[sdcard] initialized.");
+    // sdcardCheck();
+    sdcard_mkdirs();
+    // load system configuration file
+    if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+    // load matrix file specified by configuration file
+    if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
+      Serial.println("[sdcard] specified matrix file not found!");
+      // create default matrix file
+      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+        Serial.println("[sdcard] default matrix file not found!");
+        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+      }
+    }
+  }
+  else {Serial.println("[sdcard] failed to initialize.");
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  SDCARD: CHECK
+
+void sdcardCheck() {
+
+  /* basic sdcard initialization. todo: make some bool of initialization results */
+
+  // if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
+  //   sdcardData.last_initialization_time = satData.current_unixtime;
+    // Serial.printf("[checking] sdcard");
+    
+    // note that information will be displayed if sdcard not present.
+    if (SD.exists("/")==true) {
+      sdcardData.card_type = SD.cardType();
+      sdcardData.card_size = SD.cardSize() / (1024 * 1024);
+      
+      // uncomment to debug
+      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
+      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
+    }
+    else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;
+      setupSDCard();
+    }
+  // }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
 void setup() {
@@ -8470,12 +8497,14 @@ void setup() {
   pinMode(CYD_LED_RED, OUTPUT);
   pinMode(CYD_LED_GREEN, OUTPUT);
   pinMode(CYD_LED_BLUE, OUTPUT);
+
   // Green LED 
   analogWrite(CYD_LED_RED, CYD_LED_OFF);
   analogWrite(CYD_LED_GREEN, CYD_LED_ON);
   analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
 
-
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                          SETUP: SECOND TIMER
   second_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
@@ -8492,7 +8521,6 @@ void setup() {
   Serial.setTimeout(10);
   Serial1.setTimeout(10);
   Serial1.flush();
-  // SerialPortController.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
@@ -8521,31 +8549,17 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SDCARD
 
-  if (SD.begin(SS, sdspi, 80000000)) {
-    Serial.println("[sdcard] initialized.");
-    sdcardCheck();
-    sdcard_mkdirs();
-    // load system configuration file
-    if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
-    // load matrix file specified by configuration file
-    if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
-      Serial.println("[sdcard] specified matrix file not found!");
-      // create default matrix file
-      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        Serial.println("[sdcard] default matrix file not found!");
-        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
-      }
-    }
-  }
-  else {Serial.println("[sdcard] failed to initialize.");}
+  setupSDCard();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          DSETUP: SPLASHSCREEN
 
+  // Unidentified Studios
   drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
   delay(2000);
   tft.fillScreen(TFT_BLACK);
+
+  // Product Name
   // drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
   // delay(2000);
   // tft.fillScreen(TFT_BLACK);
@@ -8581,11 +8595,12 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                         SETUP: SET HOME PAGE
 
-  // Blue LED 
+  menuData.page=0;
+
+  // Blue LED
   analogWrite(CYD_LED_RED, CYD_LED_OFF);
   analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
   analogWrite(CYD_LED_BLUE, CYD_LED_ON);
-  menuData.page=0;
 
 }
 
