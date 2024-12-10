@@ -8527,11 +8527,13 @@ void setupSDCard() {
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
       Serial.println("[sdcard] specified matrix file not found!");
-      // create default matrix file
-      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        Serial.println("[sdcard] default matrix file not found!");
-        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+      if (!sdcardData.card_type==CARD_NONE) {
+        // create default matrix file
+        if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+          Serial.println("[sdcard] default matrix file not found!");
+          if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+          else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+        }
       }
     }
   }
@@ -8805,7 +8807,7 @@ void loop() {
   // Serial.println("[planet track] " + String(millis()-t0));
 
   // t0 = millis();
-  sdcardCheck();
+  // sdcardCheck();
   // Serial.println("[sdcard] " + String(millis()-t0));
 
   /* calculate switches */
