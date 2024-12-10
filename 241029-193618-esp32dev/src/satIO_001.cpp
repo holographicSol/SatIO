@@ -6036,11 +6036,9 @@ struct SettingsDataStruct {
   char main_titlebar_values[4][56] = {
     "Settings",  // got to p3
     "Matrix",    // got to p5
-    // "",          // reserved
-    // "",          // reserved
-    // "",       // reserved  SD  !(possible overload, loop time over threshhold)  
-    //                                                 |
-  };             //       (time long enough to throw off any functions requiring second accuracy)
+    "SatIO",     // title
+    "GPS",       // go to GPS
+  };
 
   int max_general_titlebar_values = 3;
   char general_titlebar_values[3][56] = {
@@ -6316,22 +6314,7 @@ bool DisplayPage0() {
       hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
       hud.setTextDatum(MC_DATUM);
       hud.drawString(String(sData.main_titlebar_values[i])+String(""), 31+(i*62)+2*i, 8);
-      // if (i==3) {
-      //   // main loop time over threshold: possible overload
-      //   if (timeData.mainLoopTimeTaken>=500) {
-      //     hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-      //     // hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);
-      //     // hud.setTextDatum(MC_DATUM);
-      //     // hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 30+(i*62)+2*i, 8);
-      //   }
-      //   // main loop time under threshold.
-      //   else {
-      //     hud.drawRect((i*62)+2*i, 0, 62, 16, TFT_HUD0_RECT);
-      //     hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
-      //     hud.setTextDatum(MC_DATUM);
-      //     hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 30+(i*62)+2*i, 8);
-      //     }
-      // }
+      // if (i==2) {}
     }
 
     // SD
@@ -6818,8 +6801,9 @@ bool isTouchPage0(TouchPoint p) {
       for (int i=0; i<sData.max_main_titlebar_values; i++) {
         if (p.x >= tss.main_titlebar_x[i][0] && p.x <= tss.main_titlebar_x[i][1]) {
           Serial.print("[titlebar] item "); Serial.println(sData.main_titlebar_values[i]);
-          if (i==0) {menuData.page=3;}
-          else if (i==1) {menuData.page=5;}
+          if (i==0) {menuData.page=3;}       // go to settings main
+          else if (i==1) {menuData.page=5;}  // go to matrix settings
+          else if (i==3) {menuData.page=6;}  // go to GPS settings
           break;
         }
       }
