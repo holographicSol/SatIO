@@ -6037,7 +6037,7 @@ struct SettingsDataStruct {
     "Settings",  // got to p3
     "Matrix",    // got to p5
     "SatIO",     // title
-    "GPS",       // go to GPS
+    "Display",   // go to p10
   };
 
   int max_general_titlebar_values = 3;
@@ -6803,7 +6803,7 @@ bool isTouchPage0(TouchPoint p) {
           Serial.print("[titlebar] item "); Serial.println(sData.main_titlebar_values[i]);
           if (i==0) {menuData.page=3;}       // go to settings main
           else if (i==1) {menuData.page=5;}  // go to matrix settings
-          else if (i==3) {menuData.page=6;}  // go to GPS settings
+          else if (i==3) {menuData.page=10;}  // go to display settings
           break;
         }
       }
