@@ -231,6 +231,7 @@ void processMatrixData() {
 
   SerialLink.validation = validateChecksum(SerialLink.BUFFER);
   if (SerialLink.validation==true) {
+    SerialLink.token = strtok(NULL, ",");
     while(SerialLink.token != NULL) {
 
       // uncomment to debug
@@ -284,6 +285,22 @@ void readRXD1() {
   }
 }
 
+void readRXD2() {
+  if (Serial2.available() > 0) {
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    SerialLink.nbytes = (Serial2.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+    if (SerialLink.nbytes > 1) {
+      Serial1.write(SerialLink.BUFFER);
+    }
+  }
+}
+
+void ISR_Deactivate() {
+  // 1: disables portcontroller instructions.
+
+  // 2: turns off all relays.
+}
+
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
@@ -291,6 +308,9 @@ void loop() {
 
   // Serial.println("---------------------------------------");
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+
+  // read other serial
+  // readRXD2();
 
   // read matrix data
   readRXD1();
