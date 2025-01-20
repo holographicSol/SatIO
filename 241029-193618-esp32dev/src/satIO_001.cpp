@@ -6387,6 +6387,12 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("DLH ") + String(abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*5)+9);
 
+    // night time hours
+    hud.drawRect(0, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("NTH ") + String(24-abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*6)+9);
+
     // current local time
     hud.drawRect(0, rdata_y, 159, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
