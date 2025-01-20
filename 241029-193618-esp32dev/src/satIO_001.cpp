@@ -6477,28 +6477,28 @@ bool DisplayPage0() {
     hud.drawString(String("INS ")+String(gpattData.ins), 272+24, rdata_y+18*4+9);
 
     // Altitude:
-    hud.drawRect(252, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
+    hud.drawRect(222, rdata_y+18*5, 98, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gnggaData.altitude))+String(""), 286, rdata_y+18*5+9);
+    hud.drawString(String("A ") + String(atof(gnggaData.altitude))+String(""), 222+49, rdata_y+18*5+9);
 
     // Pitch:
     hud.drawRect(252, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.pitch))+String(""), 286, rdata_y+18*6+9);
+    hud.drawString(String("P ") + String(atof(gpattData.pitch))+String(""), 286, rdata_y+18*6+9);
 
     // Roll:
     hud.drawRect(252, rdata_y+18*7, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.roll))+String(""), 286, rdata_y+18*7+9);
+    hud.drawString(String("R ") + String(atof(gpattData.roll))+String(""), 286, rdata_y+18*7+9);
 
     // Yaw:
     hud.drawRect(252, rdata_y+18*8, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+9);
+    hud.drawString(String("Y ") + String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+9);
 
     // null
     hud.drawRect(252, rdata_y+18*9, 68, 16, TFT_HUD2_RECT);
