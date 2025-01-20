@@ -6488,12 +6488,15 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+9);
 
+    // null
+    hud.drawRect(252, rdata_y+18*9, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+
     // Ground Speed:
     hud.drawRect(uiData.yaw_x+64-104, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // if (atof(gnrmcData.ground_speed)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
-    // if (atof(gnrmcData.ground_speed)>1) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
     hud.drawString(String(gnrmcData.ground_speed)+String(""), uiData.yaw_x+64-104+((49+18+22)/2), rdata_y+18*8+9);
 
     // Mileage:
@@ -6700,7 +6703,6 @@ bool DisplayPage0() {
 
     /* Yaw Scale:  */
     hud.drawRect(uiData.yaw_x, uiData.yaw_y, uiData.yaw_w, uiData.yaw_h, TFT_BLUE);  // x axis: yaw
-    
     hud.drawRect(uiData.yaw_x, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);      // x axis: degrees
     hud.drawRect(uiData.yaw_x+12.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
     hud.drawRect(uiData.yaw_x+25, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);   // x axis: degrees
@@ -6710,7 +6712,6 @@ bool DisplayPage0() {
     hud.drawRect(uiData.yaw_x+75, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);   // x axis: degrees
     hud.drawRect(uiData.yaw_x+87.5, uiData.yaw_y+uiData.yaw_h, 1, 2, TFT_BLUE);      // x axis: degrees
     hud.drawRect(uiData.yaw_x+100, uiData.yaw_y+uiData.yaw_h, 1, 4, TFT_BLUE);  // x axis: degrees
-
     uiData.mapped_yaw = atof(gpattData.yaw);
     // uiData.mapped_yaw = 315;   // uncomment to test
     if (uiData.mapped_yaw > 0 && uiData.mapped_yaw <=180) {uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 180, 0, 50); uiData.mapped_yaw = map(uiData.mapped_yaw, 0, 50, uiData.yaw_x+50, uiData.yaw_x+100);}
@@ -6721,7 +6722,6 @@ bool DisplayPage0() {
 
     /* Pitch Scale:  */
     hud.drawRect(uiData.pitch_x, uiData.pitch_y, uiData.pitch_w, uiData.pitch_h, TFT_RED);  // y axis: pitch
-
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+0, 4, 1, TFT_RED);    // y axis: degrees
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+12.5, 2, 1, TFT_RED);   // y axis: degrees
     hud.drawRect(uiData.pitch_x+uiData.pitch_w, uiData.pitch_y+25, 4, 1, TFT_RED);   // y axis: degrees
@@ -6739,6 +6739,37 @@ bool DisplayPage0() {
     // Serial.println("[mapped pitch pixel] " + String(uiData.mapped_pitch));
     hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_GREEN);
 
+    // null
+    hud.drawRect(0, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    
+    // null
+    hud.drawRect(0, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+
+    // warn gngga invalid checksum
+    hud.drawRect(0, rdata_y+18*7, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    if (gnggaData.valid_checksum == false) {hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);}
+    hud.drawString(String("GNGGA"), 34, rdata_y+(18*7)+9);
+
+    // warn gnrmc invalid checksum
+    hud.drawRect(0, rdata_y+18*8, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    if (gnrmcData.valid_checksum == false) {hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);}
+    hud.drawString(String("GNRMC"), 34, rdata_y+(18*8)+9);
+
+    // warn gpatt invalid checksum
+    hud.drawRect(0, rdata_y+18*9, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    if (gpattData.valid_checksum == false) {hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);}
+    hud.drawString(String("GPATT"), 34, rdata_y+(18*9)+9);
+    
     // other sensory data
 
     // geo
@@ -8519,9 +8550,8 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
 
 void setupSDCard() {
   if (SD.begin(SS, sdspi, 80000000)) {
-    Serial.println("[sdcard] initialized.");
-    // sdcardCheck();
     sdcard_mkdirs();
+    Serial.println("[sdcard] initialized.");
     // load system configuration file
     if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
     // load matrix file specified by configuration file
@@ -8548,9 +8578,9 @@ void sdcardCheck() {
 
   /* basic sdcard initialization. todo: make some bool of initialization results */
 
-  // if (satData.current_unixtime > sdcardData.last_initialization_time+5) {
-  //   sdcardData.last_initialization_time = satData.current_unixtime;
-    // Serial.printf("[checking] sdcard");
+  if (satData.current_unixtime > sdcardData.last_initialization_time+3) {
+    sdcardData.last_initialization_time = satData.current_unixtime;
+    Serial.printf("[checking] sdcard");
     
     // note that information will be displayed if sdcard not present.
     if (SD.exists("/")==true) {
@@ -8564,7 +8594,7 @@ void sdcardCheck() {
     else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;
       setupSDCard();
     }
-  // }
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
