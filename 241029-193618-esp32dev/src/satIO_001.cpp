@@ -380,8 +380,10 @@ struct SDCardStruct {
   char tag_0[56] = "r";                                        // file line tag
   char tag_1[56] = "e";                                        // file line tag
   File current_file;                                           // file currently handled
-  int initialization_interval = 3000;
+  int initialization_interval = 5000;
+  int sdcard_check_interval = 5000;
   long last_initialization_time = 0;
+  long last_sdcard_check_time = 0;
   bool initialization_flag = false;
 };
 SDCardStruct sdcardData;
@@ -2242,7 +2244,7 @@ void GNRMC() {
 //                                                                                                                    DATA: GPATT
 
 struct GPATTStruct {
-  char sentence[2000];
+  char sentence[2048];
   char tag[56];                                                                                       // <0> Log header
   char pitch[56];            unsigned long bad_pitch_i;            bool bad_pitch = true;             // <1> pitch angle
   char angle_channel_0[56];  unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;   // <2> P
@@ -6321,7 +6323,7 @@ bool DisplayPage0() {
     hud.drawRect(256, 0, 30, 16, TFT_HUD0_RECT);
     hud.setTextColor(TFT_HUD0_TXT_FG_1, TFT_HUD0_TXT_BG_1);
     hud.setTextDatum(MC_DATUM);
-    if (sdcardData.card_type==CARD_NONE) {hud.setTextColor(TFT_HUD0_TXT_FG_0, TFT_HUD0_TXT_BG_0);}
+    if (SD.cardType()==CARD_NONE) {hud.setTextColor(TFT_HUD0_TXT_FG_0, TFT_HUD0_TXT_BG_0);}
     hud.drawString(String("SD")+String(""), 271, 8);
 
     // satellite count / precision factor
@@ -6365,21 +6367,25 @@ bool DisplayPage0() {
     hud.drawRect(0, rdata_y+18*2, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    // memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
-    // strcpy(satData.day_of_the_week_name, "Wednesday");
     hud.drawString(String(satData.day_of_the_week_name), 34, rdata_y+(18*2)+9);
 
     // sunrise
     hud.drawRect(0, rdata_y+18*3, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(siderealPlanetData.sun_r), 34, rdata_y+(18*3)+9);
+    hud.drawString(String("SR ") + String(siderealPlanetData.sun_r), 34, rdata_y+(18*3)+9);
 
     // sunset
     hud.drawRect(0, rdata_y+18*4, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(siderealPlanetData.sun_s), 34, rdata_y+(18*4)+9);
+    hud.drawString(String("SS ") + String(siderealPlanetData.sun_s), 34, rdata_y+(18*4)+9);
+
+    // daylight hours
+    hud.drawRect(0, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString(String("DLH ") + String(abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*5)+9);
 
     // current local time
     hud.drawRect(0, rdata_y, 159, 16, TFT_HUD2_RECT);
@@ -6412,31 +6418,31 @@ bool DisplayPage0() {
     hud.drawString(String(gnggaData.hdop_precision_factor)+String(""), 296, rdata_y+18+9);
 
     // Solution Stats: 0:invalid solution | 1:single point positioning | 2:pseudorange difference | 6:pure ins solution
-    hud.drawRect(252, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(222, rdata_y+18*2, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (strcmp(gnggaData.solution_status, "0")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
     if (strcmp(gnggaData.solution_status, "1")==0) {hud.setTextColor(TFT_ORANGE, TFT_GENERAL_TXT_BG_0);}
     if (strcmp(gnggaData.solution_status, "2")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
     if (strcmp(gnggaData.solution_status, "6")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gnggaData.solution_status)+String(""), 267, rdata_y+18*2+9);
+    hud.drawString(String("SS ") + String(gnggaData.solution_status), 222+24, rdata_y+18*2+9);
 
     // Positioning Status: A=valid positioning | V=invalid positioning
-    hud.drawRect(287, rdata_y+18*2, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(272, rdata_y+18*2, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (strcmp(gnrmcData.positioning_status, "A")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gnrmcData.positioning_status)+String(""), 303, rdata_y+18*2+9);
+    hud.drawString(String("PS ") + String(gnrmcData.positioning_status), 272+24, rdata_y+18*2+9);
 
     // Static Flag: 1=static | 0=dynamic
-    hud.drawRect(252, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(222, rdata_y+18*3, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (strcmp(gpattData.static_flag, "0")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gpattData.static_flag)+String(""), 267, rdata_y+18*3+9);
+    hud.drawString(String("SF ") + String(gpattData.static_flag)+String(""), 222+24, rdata_y+18*3+9);
 
     // Run State Flag: 0:initialization | 1:stationary 5-10s | 2:get location | 3:>5meters/s | 4:driving for a while
-    hud.drawRect(287, rdata_y+18*3, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(272, rdata_y+18*3, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (atoi(gpattData.run_state_flag)==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
@@ -6444,10 +6450,10 @@ bool DisplayPage0() {
     if (atoi(gpattData.run_state_flag)==2) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
     if (atoi(gpattData.run_state_flag)==3) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
     if (atoi(gpattData.run_state_flag)==4) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gpattData.run_state_flag)+String(""), 303, rdata_y+18*3+9);
+    hud.drawString(String("RSF ") + String(gpattData.run_state_flag)+String(""), 272+24, rdata_y+18*3+9);
     
     // Run Inertial Flag: 00:initialization | 01/02:INS converged | 03/04:initial convergence | 03/04 converging | 03/04 convergence complete
-    hud.drawRect(252, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(222, rdata_y+18*4, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (strcmp(gpattData.run_inetial_flag, "00")==0) {hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);}
@@ -6455,14 +6461,14 @@ bool DisplayPage0() {
     if (strcmp(gpattData.run_inetial_flag, "02")==0) {hud.setTextColor(TFT_YELLOW, TFT_GENERAL_TXT_BG_0);}
     if (strcmp(gpattData.run_inetial_flag, "03")==0) {hud.setTextColor(TFT_GREEN, TFT_GENERAL_TXT_BG_0);}
     if (strcmp(gpattData.run_inetial_flag, "04")==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String(gpattData.run_inetial_flag), 267, rdata_y+18*4+9);
+    hud.drawString(String("RIF ") + String(gpattData.run_inetial_flag), 222+24, rdata_y+18*4+9);
 
     // INS: 0=on | 1=off
-    hud.drawRect(287, rdata_y+18*4, 33, 16, TFT_HUD2_RECT);
+    hud.drawRect(272, rdata_y+18*4, 48, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
     hud.setTextDatum(MC_DATUM);
     if (atoi(gpattData.ins)==0) {hud.setTextColor(TFT_BLUE, TFT_GENERAL_TXT_BG_0);}
-    hud.drawString(String("INS")+String(""), 303, rdata_y+18*4+9);
+    hud.drawString(String("INS ")+String(gpattData.ins), 272+24, rdata_y+18*4+9);
 
     // Altitude:
     hud.drawRect(252, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
@@ -8254,6 +8260,7 @@ void UpdateDisplay(void * pvParameters) {
 
     while (1) {
       delay(1);
+      // Serial.println("[UpdateDisplay] running");
       // Serial.println("[page] " + String(menuData.page));
 
       /* populates strite according to page then displays sprite */
@@ -8546,18 +8553,23 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SDCARD: INITIALIZE
+//                                                                                                        SDCARD: FULL INITIALIZE
 
 void setupSDCard() {
+  /*
+  initializes sdcard, attempts to load saved system configuration file and saved matrix file. creates new directory tree, system file
+  and matrix file if not exists.
+  */
+  Serial.println("[sdcard] initializing");
   if (SD.begin(SS, sdspi, 80000000)) {
     sdcard_mkdirs();
-    Serial.println("[sdcard] initialized.");
+    Serial.println("[sdcard] initialized");
     // load system configuration file
     if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
       Serial.println("[sdcard] specified matrix file not found!");
-      if (!sdcardData.card_type==CARD_NONE) {
+      if (!SD.cardType()==CARD_NONE) {
         // create default matrix file
         if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
           Serial.println("[sdcard] default matrix file not found!");
@@ -8572,29 +8584,49 @@ void setupSDCard() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       SDCARD: LIGHT INITIALIZE
+
+void setupSDCardLight() {
+  /*
+  attempt to initialize sdcard.
+  */
+  Serial.println("[sdcard] initializing");
+  if (SD.begin(SS, sdspi, 80000000)) {
+    // sdcard_mkdirs();
+    Serial.println("[sdcard] initialized");
+  }
+  else {Serial.println("[sdcard] failed to initialize.");
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SDCARD: CHECK
 
 void sdcardCheck() {
 
   /* basic sdcard initialization. todo: make some bool of initialization results */
 
-  if (satData.current_unixtime > sdcardData.last_initialization_time+3) {
-    sdcardData.last_initialization_time = satData.current_unixtime;
-    Serial.printf("[checking] sdcard");
+  // if (satData.current_unixtime > sdcardData.last_sdcard_check_time+sdcardData.sdcard_check_interval) {
+  //   sdcardData.last_sdcard_check_time = satData.current_unixtime;
+  //   Serial.println("[checking] sdcard");
     
     // note that information will be displayed if sdcard not present.
     if (SD.exists("/")==true) {
-      sdcardData.card_type = SD.cardType();
-      sdcardData.card_size = SD.cardSize() / (1024 * 1024);
+      // sdcardData.card_type = SD.cardType();
+      // sdcardData.card_size = SD.cardSize() / (1024 * 1024);
       
       // uncomment to debug
       // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
       // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
     }
-    else {sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;
-      setupSDCard();
+    else {
+      Serial.println("[sdcard] resetting values");
+      // sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;
+      SD.end();
+      setupSDCardLight();
     }
-  }
+  // }
+  // else {Serial.println("[pending] sdcard check");}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
