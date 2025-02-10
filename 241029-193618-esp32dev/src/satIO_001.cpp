@@ -2800,6 +2800,14 @@ void convertUTCToLocal() {
   satData.second_int = atoi(satData.second);
   satData.millisecond_int = atoi(satData.millisecond);
 
+  // build rtc time 000000 -> 235959
+  memset(satData.rtc_time, 0, 56);
+  strcat(satData.rtc_time, satData.rtc_hour);
+  strcat(satData.rtc_time, satData.rtc_minute);
+  strcat(satData.rtc_time, satData.rtc_second);
+  // strcat(satData.rtc_time, satData.rtc_millisecond); // potentially append millisecnds 
+  satData.rtc_time_int = atoi(satData.rtc_time);
+
   // get day of the week name
   memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
   strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(
@@ -2871,13 +2879,6 @@ void setLastSatelliteTime() {
     satData.lt_minute_int = satData.rtc_minute_int;
     satData.lt_second_int = satData.rtc_second_int;
     satData.lt_millisecond_int = satData.rtc_millisecond_int;
-    
-    memset(satData.rtc_time, 0, 56);
-    strcat(satData.rtc_time, satData.rtc_hour);
-    strcat(satData.rtc_time, satData.rtc_minute);
-    strcat(satData.rtc_time, satData.rtc_second);
-    strcat(satData.rtc_time, satData.rtc_millisecond);
-    satData.rtc_time_int = atoi(satData.rtc_time);
   }
 }
 
@@ -4021,13 +4022,13 @@ bool in_ranges_check_false(double x0, double x1, double y0, double y1, double r)
 }
 
 bool check_over_true(double n0, double n1) {
-  // Serial.println("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
+  Serial.println("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return true;}
   else {return false;}
 }
 
 bool check_over_false(double n0, double n1) {
-  // Serial.println("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
+  Serial.println("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return false;}
   else {return true;}
 }
