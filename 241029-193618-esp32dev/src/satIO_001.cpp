@@ -8945,7 +8945,7 @@ void readPortController() {
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes>0) {
-        Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+        // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.rtc_bool==true) {break;}
         if (MAX_PORTCONTROLLER_RETIES>8) {break;}
@@ -8955,7 +8955,7 @@ void readPortController() {
           SerialLink.token = strtok(SerialLink.BUFFER, ",");
 
           if (strcmp(SerialLink.token, "$RTC") == 0) {
-            Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
             
             SerialLink.token = strtok(NULL, ",");
             satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
