@@ -94,6 +94,17 @@
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 #include <JPEGDecoder.h>
+#include <Wire.h>
+
+#define TCAADDR   0x70
+
+void tcaselect(uint8_t channel) {
+  if (channel > 7) return;
+  Wire.beginTransmission(TCAADDR);
+  Wire.write(1 << channel);
+  Wire.endTransmission();
+}
+
 
 int MAX_GPS_RETIES = 0;
 
@@ -8755,6 +8766,12 @@ void setup() {
   Serial1.setTimeout(10);
   Serial1.flush();
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              SETUP: TCA9548A
+  Wire.begin();
+  // default i2c channel for RTC.
+  tcaselect(0);
+              
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
 

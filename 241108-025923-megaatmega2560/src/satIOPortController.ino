@@ -14,8 +14,9 @@ ESP32 io22 (RXD)       -> CD74HC4067 SIG (output selected channel to ESP32)
 ATMEGA2560 Serial1 RXD -> CD74HC4067 C0
 WTGPS300               -> CD74HC4067 C1 
 
-Wiring for portcontroller to sync RTC on latest satellite downlink:
-ATMEGA2560: SDA 20, SCL 21 -> DS3231 Precision RTC: D (Data), C (Clock)
+Wiring for TCA9548A i2C Multiplexer:
+TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
+TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 
 Other wiring for 1x button and 1x LED can be ignored for now.
 
@@ -236,6 +237,15 @@ int s3 = 11;
 //  controlPin{8, 9, 10, 11);  // create a new CD74HC4067 object with its four control pins
 int controlPin[] = {s0, s1, s2, s3};
 
+#define TCAADDR   0x70
+
+void tcaselect(uint8_t channel) {
+  if (channel > 7) return;
+  Wire.beginTransmission(TCAADDR);
+  Wire.write(1 << channel);
+  Wire.endTransmission();
+}
+
 void setup() {
   pinMode(s0, OUTPUT); 
   pinMode(s1, OUTPUT); 
@@ -257,6 +267,12 @@ void setup() {
   Serial2.setTimeout(100);
   Serial1.flush();
   Serial2.flush();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              SETUP: TCA9548A
+  Wire.begin();
+  // default i2c channel for RTC.
+  tcaselect(0);
 
   // setup IO
   for (int i=0; i<20; i++) {
