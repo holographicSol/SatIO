@@ -2488,6 +2488,22 @@ struct SatDatatruct {
   char lt_second[56] = "0";                 // last second satellite count > zero
   char lt_millisecond[56] = "0";            // last millisecond satellite count > zero
 
+  int rtc_year_int = 0;                    // last year satellite count > zero
+  int rtc_month_int = 0;                   // last month satellite count > zero
+  int rtc_day_int = 0;                     // last day satellite count > zero
+  int rtc_hour_int = 0;                    // last hour satellite count > zero
+  int rtc_minute_int = 0;                  // last minute satellite count > zero
+  int rtc_second_int = 0;                  // last second satellite count > zero
+  char rtc_millisecond_int = 0;             // last millisecond satellite count > zero
+
+  char rtc_year[56] = "0";                   // last year satellite count > zero
+  char rtc_month[56] = "0";                  // last month satellite count > zero
+  char rtc_day[56] = "0";                    // last day satellite count > zero
+  char rtc_hour[56] = "0";                   // last hour satellite count > zero
+  char rtc_minute[56] = "0";                 // last minute satellite count > zero
+  char rtc_second[56] = "0";                 // last second satellite count > zero
+  char rtc_millisecond[56] = "0";            // last millisecond satellite count > zero
+
   char hours_minutes[56];             // current hours.minutes in format hh.mm
   char day_of_the_week_name[56];      // current weekday name
 
@@ -2774,22 +2790,22 @@ void convertUTCToLocal() {
   // get day of the week name
   memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
   strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(
-    satData.year_int,
-    satData.month_int,
-    satData.day_int).c_str());
+    satData.rtc_year_int,
+    satData.rtc_month_int,
+    satData.rtc_day_int).c_str());
 
   // clear satio sentence
   memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
 
   // build temporary time stamp string
-  strcat(temp_sat_time_stamp_string, satData.year);
-  strcat(temp_sat_time_stamp_string, satData.month);
-  strcat(temp_sat_time_stamp_string, satData.day);
-  strcat(temp_sat_time_stamp_string, satData.hour);
-  strcat(temp_sat_time_stamp_string, satData.minute);
-  strcat(temp_sat_time_stamp_string, satData.second);
+  strcat(temp_sat_time_stamp_string, satData.rtc_year);
+  strcat(temp_sat_time_stamp_string, satData.rtc_month);
+  strcat(temp_sat_time_stamp_string, satData.rtc_day);
+  strcat(temp_sat_time_stamp_string, satData.rtc_hour);
+  strcat(temp_sat_time_stamp_string, satData.rtc_minute);
+  strcat(temp_sat_time_stamp_string, satData.rtc_second);
   strcat(temp_sat_time_stamp_string, ".");
-  strcat(temp_sat_time_stamp_string, satData.millisecond);
+  strcat(temp_sat_time_stamp_string, satData.rtc_millisecond);
 
   // copy temporary time stamp string to actual time stamp string
   memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
@@ -2821,27 +2837,27 @@ void setLastSatelliteTime() {
     strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
     // update char elements
     memset(satData.lt_year, 0, 56);
-    strcat(satData.lt_year, satData.year);
+    strcat(satData.lt_year, satData.rtc_year);
     memset(satData.lt_month, 0, 56);
-    strcat(satData.lt_month, satData.month);
+    strcat(satData.lt_month, satData.rtc_month);
     memset(satData.lt_day, 0, 56);
-    strcat(satData.lt_day, satData.day);
+    strcat(satData.lt_day, satData.rtc_day);
     memset(satData.lt_hour, 0, 56);
-    strcat(satData.lt_hour, satData.hour);
+    strcat(satData.lt_hour, satData.rtc_hour);
     memset(satData.lt_minute, 0, 56);
-    strcat(satData.lt_minute, satData.minute);
+    strcat(satData.lt_minute, satData.rtc_minute);
     memset(satData.lt_second, 0, 56);
-    strcat(satData.lt_second, satData.second);
+    strcat(satData.lt_second, satData.rtc_second);
     memset(satData.lt_millisecond, 0, 56);
-    strcat(satData.lt_millisecond, satData.millisecond);
+    strcat(satData.lt_millisecond, satData.rtc_millisecond);
     // update int elements
-    satData.lt_year_int = satData.year_int;
-    satData.lt_month_int = satData.month_int;
-    satData.lt_day_int = satData.day_int;
-    satData.lt_hour_int = satData.hour_int;
-    satData.lt_minute_int = satData.minute_int;
-    satData.lt_second_int = satData.second_int;
-    satData.lt_millisecond_int = satData.millisecond_int;
+    satData.lt_year_int = satData.rtc_year_int;
+    satData.lt_month_int = satData.rtc_month_int;
+    satData.lt_day_int = satData.rtc_day_int;
+    satData.lt_hour_int = satData.rtc_hour_int;
+    satData.lt_minute_int = satData.rtc_minute_int;
+    satData.lt_second_int = satData.rtc_second_int;
+    satData.lt_millisecond_int = satData.rtc_millisecond_int;
   }
 }
 
@@ -6410,19 +6426,19 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("NTH ") + String(24-abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*6)+9);
 
-    // current local time
+    // current RTC time 
     hud.drawRect(0, rdata_y, 159, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(
-      String(satData.year)+"."+
-      String(satData.month)+"."+
-      String(satData.day)+"  "+
-      String(satData.hour)+":"+
-      String(satData.minute)+":"+
-      String(satData.second), 80, rdata_y+9);
+      String(satData.rtc_year)+"."+
+      String(satData.rtc_month)+"."+
+      String(satData.rtc_day)+"  "+
+      String(satData.rtc_hour)+":"+
+      String(satData.rtc_minute)+":"+
+      String(satData.rtc_second), 80, rdata_y+9);
     
-    // last local time satellite count > 0
+    // last time satellite count > 0
     hud.drawRect(161, rdata_y, 159, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
@@ -8888,16 +8904,33 @@ void readPortController() {
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes>0) {
-        // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+        Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.rtc_bool==true) {break;}
         if (MAX_PORTCONTROLLER_RETIES>8) {break;}
 
-        if (strncmp(SerialLink.BUFFER, "$RTC", 4) == 0) {
-          // Serial.println("[RTC] " + String(SerialLink.BUFFER));
-          serial1Data.rtc_bool=true;
-        }
+        if (validateChecksum(SerialLink.BUFFER)==true) {
 
+          SerialLink.token = strtok(SerialLink.BUFFER, ",");
+
+          if (strcmp(SerialLink.token, "$RTC") == 0) {
+            Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+            
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
+            SerialLink.token = strtok(NULL, ",");
+            satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
+            serial1Data.rtc_bool=true;
+            }
+          }
       }
 
       MAX_PORTCONTROLLER_RETIES++;
