@@ -5,9 +5,13 @@ Serial Link - Stable inter-microcontroller serial communication. Written by Benj
 SatIOPortController - Receives messages from SatIO over serial and manipulates IO accordingly.
                       This file should be flashed to ATMEGA2560.
 
-Required wiring:
-
+Required wiring for port controller to receive instructions from ESP32:
 ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
+
+Wiring for portcontroller to sync RTC on latest satellite downlink:
+ATMEGA2560: SDA 20, SCL 21 -> DS3231 Precision RTC: D (Data), C (Clock)
+
+Other wiring for 1x button and 1x LED can be ignored for now.
 
 */
 
@@ -17,13 +21,32 @@ ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
 #include <limits.h>
 #include <TinyGPSPlus.h>
 #include <stdlib.h>
+#include <RTClib.h>
 // #include <conio.h>
+#include <SPI.h>
+#include <Wire.h>  
+#include <TimeLib.h>  
 
 #define MAX_BUFF 1000
+
+RTC_DS3231 rtc;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
+// last satellite time placeholders
+int rcv_year        = 2000;
+int rcv_month       = 01;
+int rcv_day         = 01;
+int rcv_hour        = 00;
+int rcv_minute      = 00;
+int rcv_second      = 00;
+int rcv_millisecond = 00;
+char rcv_dt_0[56];
+char rcv_dt_1[56];
+
+
+volatile bool portcontroller_enabled = false;
 signed int tmp_port;
 bool update_portmap_bool = false;
 // reflects matrix switch active/inactive states each loop of matrix switch function
@@ -185,7 +208,34 @@ void setup() {
     pinMode(matrix_port_map[0][i], OUTPUT);
     digitalWrite(matrix_port_map[0][i], LOW);
   }
+
+  // indicator led
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
+
+  // button
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(2), ISR_Toggle_PortController, FALLING);
+
+  Wire.begin();  //sets up the I2C  
+  rtc.begin();   //initializes the I2C to the RTC  
+  // SerialDisplayRTCDateTime();
+    
+  //  Set the RTC Time to 5:10:30 Nov 3 2020  
+  // rtc.adjust(DateTime(2020,11,3,5,10,30));  
+  //Set Arduino Time Library different than RTC time 9:27:05 so see how sync works  
+  // setTime(9, 27, 05, 4, 07, 2015);  
+
   Serial.println("starting...");
+
+
+}
+
+void SerialDisplayRTCDateTime() {
+  // test dt
+  DateTime now = rtc.now();
+  // display dt
+  Serial.println("[rtc] " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second()) + " " + String(now.day()) + "/" + String(now.month()) + "/" + String(now.year()));
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -230,7 +280,13 @@ void processMatrixData() {
   SerialLink.i_token = 0;
 
   SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+  
   if (SerialLink.validation==true) {
+
+    // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
+    memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
+
+    // snap off the first token and then keep breaking off a token in loop
     SerialLink.token = strtok(NULL, ",");
     while(SerialLink.token != NULL) {
 
@@ -242,8 +298,9 @@ void processMatrixData() {
         for (int i=0; i<20; i++) {
           tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
+
           // uncomment to debug
-          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "]");
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -260,15 +317,39 @@ void processMatrixData() {
         }
       }
 
+      // reconstruct temporary datetime char array with token each iteration
+      strcat(rcv_dt_0, SerialLink.token);
+      if (SerialLink.i_token==40) {rcv_year = atoi(SerialLink.token);}
+      if (SerialLink.i_token==41) {rcv_month = atoi(SerialLink.token);}
+      if (SerialLink.i_token==42) {rcv_day = atoi(SerialLink.token);}
+      if (SerialLink.i_token==43) {rcv_hour = atoi(SerialLink.token);}
+      if (SerialLink.i_token==44) {rcv_minute = atoi(SerialLink.token);}
+      if (SerialLink.i_token==45) {rcv_second = atoi(SerialLink.token);}
+
+      // compare and set RTC accordingly
+      if (strlen(rcv_dt_0)==14) {
+        if (!strcmp(rcv_dt_0, rcv_dt_1)) {
+          Serial.println("[adjusting RTC]");
+          memset(rcv_dt_1, 0, sizeof(rcv_dt_1));
+          strcpy(rcv_dt_1, rcv_dt_0);
+          // adjust RTC according to last datetime received from satellites
+          rtc.adjust(DateTime(rcv_year,rcv_month,rcv_day,rcv_hour,rcv_minute,rcv_second));
+        }
+      }
+
       // iterate counters and snap off used token
       SerialLink.i_token++;
       SerialLink.token = strtok(NULL, ",");
     }
   }
+  else {
+  }
 }
 
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
+
+  // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -280,7 +361,9 @@ void readRXD1() {
       SerialLink.TOKEN_i = 0;
 
       SerialLink.token = strtok(SerialLink.TMP, ",");
-      if (strcmp(SerialLink.token, "$MATRIX") == 0) {processMatrixData();}
+      if (strcmp(SerialLink.token, "$MATRIX") == 0) {
+        processMatrixData();
+      }
     }
   }
 }
@@ -295,10 +378,18 @@ void readRXD2() {
   }
 }
 
-void ISR_Deactivate() {
-  // 1: disables portcontroller instructions.
 
-  // 2: turns off all relays.
+// todo: debounce
+void ISR_Toggle_PortController() {
+  Serial.println("[ISR_Toggle_PortController] connected" + String());
+  // False
+  // 1: disables portcontroller instructions.
+  // 2: turns all satIO pins low.
+  // True
+  // 1: enables portcontroller instructions.
+  if      (portcontroller_enabled == false) {portcontroller_enabled=true;}
+  else if (portcontroller_enabled == true)  {portcontroller_enabled=false;}
+  Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -307,6 +398,7 @@ void ISR_Deactivate() {
 void loop() {
 
   // Serial.println("---------------------------------------");
+  SerialDisplayRTCDateTime();
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // read other serial
@@ -315,10 +407,35 @@ void loop() {
   // read matrix data
   readRXD1();
 
-  // make high/low
-  if (SerialLink.validation==true) {satIOPortController();}
+  // debug
+  // Serial.println("[switch] " + String(analogRead(2)));
+  // Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));
+
+  // port controller diabled
+  if (portcontroller_enabled == false) {
+    for (int i=0; i<20; i++) {
+      pinMode(matrix_port_map[0][i], OUTPUT);
+      digitalWrite(matrix_port_map[0][i], LOW);
+    }
+    // indicate portcontroller diabled
+    // digitalWrite(13, LOW);
+    digitalWrite(12, LOW);
+  }
+
+  // port controller enabled
+  else if (portcontroller_enabled == true)  {
+
+    // indicate portcontroller enabled
+    digitalWrite(12, HIGH);
+    // digitalWrite(13, HIGH);
+
+    // run portcontroller
+    if (SerialLink.validation==true) {satIOPortController();}
+  }
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+
+  // delay(1000);
 
 }
