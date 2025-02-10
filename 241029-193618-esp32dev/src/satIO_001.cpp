@@ -1576,9 +1576,9 @@ struct MatrixStruct {
   };
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 191;
+  int max_matrix_function_names = 195;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[191][56] = 
+  char matrix_function_names[195][25] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1586,6 +1586,12 @@ struct MatrixStruct {
     "$SWITCHLINKFALSE",
 
     "SecondsTimer",
+
+    "RTCTimeOver",
+    "RTCTimeGNGGAUnder",
+    "RTCTimeGNGGAEqual",
+    "RTCTimeGNGGARange",
+
     "DaySunday",
     "DayMonday",
     "DayTuesday",
@@ -1814,6 +1820,11 @@ struct MatrixStruct {
   char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";
   
   char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
+
+  char RTCTimeOver[56]            = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeGNGGAUnder[56]      = "RTCTimeGNGGAUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeGNGGAEqual[56]      = "RTCTimeGNGGAEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeGNGGARange[56]      = "RTCTimeGNGGARange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
   char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
   char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
@@ -2495,6 +2506,7 @@ struct SatDatatruct {
   int rtc_minute_int = 0;                  // last minute satellite count > zero
   int rtc_second_int = 0;                  // last second satellite count > zero
   char rtc_millisecond_int = 0;             // last millisecond satellite count > zero
+  long rtc_time_int;
 
   char rtc_year[56] = "0";                   // last year satellite count > zero
   char rtc_month[56] = "0";                  // last month satellite count > zero
@@ -2503,6 +2515,7 @@ struct SatDatatruct {
   char rtc_minute[56] = "0";                 // last minute satellite count > zero
   char rtc_second[56] = "0";                 // last second satellite count > zero
   char rtc_millisecond[56] = "0";            // last millisecond satellite count > zero
+  char rtc_time[56] = "0";
 
   char hours_minutes[56];             // current hours.minutes in format hh.mm
   char day_of_the_week_name[56];      // current weekday name
@@ -2858,6 +2871,13 @@ void setLastSatelliteTime() {
     satData.lt_minute_int = satData.rtc_minute_int;
     satData.lt_second_int = satData.rtc_second_int;
     satData.lt_millisecond_int = satData.rtc_millisecond_int;
+    
+    memset(satData.rtc_time, 0, 56);
+    strcat(satData.rtc_time, satData.rtc_hour);
+    strcat(satData.rtc_time, satData.rtc_minute);
+    strcat(satData.rtc_time, satData.rtc_second);
+    strcat(satData.rtc_time, satData.rtc_millisecond);
+    satData.rtc_time_int = atoi(satData.rtc_time);
   }
 }
 
@@ -4666,6 +4686,27 @@ void matrixSwitch() {
           tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
           }
+        
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeOver) == 0) {
+          tmp_matrix[Fi] = check_over_true(satData.rtc_time_int,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {
+          tmp_matrix[Fi] = check_under_true(satData.rtc_time_int,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+  
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {
+          tmp_matrix[Fi] = check_equal_true(satData.rtc_time_int,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+  
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(satData.rtc_time_int,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {
           if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
@@ -4689,15 +4730,15 @@ void matrixSwitch() {
           if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(satData.rtc_day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(satData.rtc_month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(satData.rtc_year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // ----------------------------------------------------------------------------------------------------------------------
