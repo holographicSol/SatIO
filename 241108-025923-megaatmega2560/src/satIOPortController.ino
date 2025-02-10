@@ -541,8 +541,6 @@ void loop() {
 
   if (MUX0_CHANNEL==0) {writeTXD1();}
 
-  
-
   // debug
   // Serial.println("[switch] " + String(analogRead(2)));
   // Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));

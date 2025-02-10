@@ -8898,16 +8898,14 @@ void readGPS() {
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
   MAX_GPS_RETIES=0;
   if (Serial1.available() > 0) {
-    int foo = 0;
     while(1) {
-      foo++;
-      
+
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
-      if (SerialLink.nbytes>0) {
+      if (SerialLink.nbytes>31) {
 
-        Serial.println("[readGPS RXD] [" + String(foo) + " ]" + String(SerialLink.BUFFER)); // debug
+        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
         if (MAX_GPS_RETIES>10) {break;}
@@ -8952,13 +8950,12 @@ void readPortController() {
         if (serial1Data.rtc_bool==true) {break;}
         if (MAX_PORTCONTROLLER_RETIES>10) {break;}
 
-        if (validateChecksum(SerialLink.BUFFER)==true) {
+        if (strncmp(SerialLink.BUFFER, "$RTC", 4) == 0) {
+          // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
-          SerialLink.token = strtok(SerialLink.BUFFER, ",");
+          if (validateChecksum(SerialLink.BUFFER)==true) {
 
-          if (strcmp(SerialLink.token, "$RTC") == 0) {
-            // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
-            
+            SerialLink.token = strtok(SerialLink.BUFFER, ",");
             SerialLink.token = strtok(NULL, ",");
             satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
             SerialLink.token = strtok(NULL, ",");
@@ -8973,7 +8970,7 @@ void readPortController() {
             satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
             serial1Data.rtc_bool=true;
             }
-          }
+        }
       }
 
       MAX_PORTCONTROLLER_RETIES++;
