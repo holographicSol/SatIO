@@ -2802,9 +2802,9 @@ void convertUTCToLocal() {
 
   // build rtc time 000000 -> 235959
   memset(satData.rtc_time, 0, 56);
-  strcat(satData.rtc_time, satData.rtc_hour);
-  strcat(satData.rtc_time, satData.rtc_minute);
-  strcat(satData.rtc_time, satData.rtc_second);
+  strcat(satData.rtc_time, padDigitsZero(satData.rtc_hour_int).c_str());
+  strcat(satData.rtc_time, padDigitsZero(satData.rtc_minute_int).c_str());
+  strcat(satData.rtc_time, padDigitsZero(satData.rtc_second_int).c_str());
   // strcat(satData.rtc_time, satData.rtc_millisecond); // potentially append millisecnds 
   satData.rtc_time_int = atoi(satData.rtc_time);
 
@@ -2819,6 +2819,7 @@ void convertUTCToLocal() {
   memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
 
   // build temporary time stamp string
+  
   strcat(temp_sat_time_stamp_string, satData.rtc_year);
   strcat(temp_sat_time_stamp_string, satData.rtc_month);
   strcat(temp_sat_time_stamp_string, satData.rtc_day);
