@@ -539,7 +539,9 @@ void loop() {
   // read matrix data
   readRXD1();
 
-  writeTXD1();
+  if (MUX0_CHANNEL==0) {writeTXD1();}
+
+  
 
   // debug
   // Serial.println("[switch] " + String(analogRead(2)));

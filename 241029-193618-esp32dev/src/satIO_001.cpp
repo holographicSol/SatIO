@@ -2819,7 +2819,6 @@ void convertUTCToLocal() {
   memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
 
   // build temporary time stamp string
-  
   strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_year_int).c_str());
   strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_month_int).c_str());
   strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_day_int).c_str());
@@ -8899,18 +8898,19 @@ void readGPS() {
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
   MAX_GPS_RETIES=0;
   if (Serial1.available() > 0) {
-
+    int foo = 0;
     while(1) {
+      foo++;
       
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes>0) {
 
-        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+        Serial.println("[readGPS RXD] [" + String(foo) + " ]" + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        if (MAX_GPS_RETIES>8) {break;}
+        if (MAX_GPS_RETIES>10) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
@@ -8950,7 +8950,7 @@ void readPortController() {
         // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.rtc_bool==true) {break;}
-        if (MAX_PORTCONTROLLER_RETIES>8) {break;}
+        if (MAX_PORTCONTROLLER_RETIES>10) {break;}
 
         if (validateChecksum(SerialLink.BUFFER)==true) {
 
