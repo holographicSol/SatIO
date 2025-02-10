@@ -297,6 +297,7 @@ struct Serial1Struct {
   bool gngga_bool = false;             // has sentence been collected
   bool gnrmc_bool = false;             // has sentence been collected
   bool gpatt_bool = false;             // has sentence been collected
+  bool rtc_bool = false;
 };
 Serial1Struct serial1Data;
 
@@ -8438,6 +8439,30 @@ void SatIOPortController() {
   }
 }
 
+void SatIOPortControllerAnalogMux(const char * channel) {
+  if (Serial1.availableForWrite()) {
+
+    // create sentence tag and set channel token
+    memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
+    strcpy(SerialLink.BUFFER1, "$MUX0,");
+    strcat(SerialLink.BUFFER1, channel);
+    strcat(SerialLink.BUFFER1, ",");
+
+    // append checksum
+    createChecksum(SerialLink.BUFFER1);
+    strcat(SerialLink.BUFFER1, "*");
+    strcat(SerialLink.BUFFER1, SerialLink.checksum);
+    strcat(SerialLink.BUFFER1, "\n");
+
+    /* uncomment to see what will be sent to the port controller */
+    // Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER1);
+
+    /* write matrix switch states to the port controller */
+    Serial1.write(SerialLink.BUFFER1);
+    Serial1.write(ETX);
+  }
+}
+
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        DISPLAY JPG FROM SDCARD
@@ -8813,7 +8838,7 @@ void readGPS() {
   memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
   memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-
+  MAX_GPS_RETIES=0;
   if (Serial1.available() > 0) {
 
     while(1) {
@@ -8823,7 +8848,7 @@ void readGPS() {
 
       if (SerialLink.nbytes>0) {
 
-        // Serial.print("[RXD] " + String(SerialLink.BUFFER)); // debug
+        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
         if (MAX_GPS_RETIES>8) {break;}
@@ -8843,12 +8868,41 @@ void readGPS() {
           serial1Data.gpatt_bool = true;
         }
       }
+
+      MAX_GPS_RETIES++;
     }
   }
 }
 
+int MAX_PORTCONTROLLER_RETIES = 0;
+
 void readPortController() {
+  MAX_PORTCONTROLLER_RETIES = 0;
+  serial1Data.rtc_bool = false;
+
   if (Serial1.available() > 0) {
+
+    while(1) {
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+
+      if (SerialLink.nbytes>0) {
+        // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+
+        if (serial1Data.rtc_bool==true) {break;}
+        if (MAX_PORTCONTROLLER_RETIES>8) {break;}
+
+        if (strncmp(SerialLink.BUFFER, "$RTC", 4) == 0) {
+          // Serial.println("[RTC] " + String(SerialLink.BUFFER));
+          serial1Data.rtc_bool=true;
+        }
+
+      }
+
+      MAX_PORTCONTROLLER_RETIES++;
+
+    }
   }
 }
 
@@ -8861,7 +8915,13 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
+  SatIOPortControllerAnalogMux("0");
+  // Serial1.flush();
+  readPortController();
+
   // int t0 = millis(); 
+  SatIOPortControllerAnalogMux("1");
+  // Serial1.flush();
   readGPS();
   // Serial.println("[gps] " + String(millis()-t0));
 

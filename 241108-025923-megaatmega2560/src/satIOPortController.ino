@@ -25,7 +25,10 @@ Other wiring for 1x button and 1x LED can be ignored for now.
 // #include <conio.h>
 #include <SPI.h>
 #include <Wire.h>  
-#include <TimeLib.h>  
+#include <TimeLib.h>
+#include <CD74HC4067.h>
+
+int MUX0_CHANNEL = 0;
 
 #define MAX_BUFF 1000
 
@@ -44,6 +47,7 @@ int rcv_second      = 00;
 int rcv_millisecond = 00;
 char rcv_dt_0[56];
 char rcv_dt_1[56];
+char tmp_dt[56];
 
 
 volatile bool portcontroller_enabled = false;
@@ -194,7 +198,52 @@ void createChecksum(char * buffer) {
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SETUP 
 
+int muxChannel[16][4]={
+    // control pin 0
+    {0,0,0,0}, //channel 0 port controller
+    {1,0,0,0}, //channel 1 GPS
+    {0,1,0,0}, //channel 2
+    {1,1,0,0}, //channel 3
+    // control pin 1
+    {0,0,1,0}, //channel 4
+    {1,0,1,0}, //channel 5
+    {0,1,1,0}, //channel 6
+    {1,1,1,0}, //channel 7
+    // control pin 2
+    {0,0,0,1}, //channel 8
+    {1,0,0,1}, //channel 9
+    {0,1,0,1}, //channel 10
+    {1,1,0,1}, //channel 11
+    // control pin 4
+    {0,0,1,1}, //channel 12
+    {1,0,1,1}, //channel 13
+    {0,1,1,1}, //channel 14
+    {1,1,1,1}  //channel 15
+  };
+
+//Mux control pins
+int s0 = 8;
+int s1 = 9;
+int s2 = 10;
+int s3 = 11;
+// s0 s1 s2 s3
+//  controlPin{8, 9, 10, 11);  // create a new CD74HC4067 object with its four control pins
+int controlPin[] = {s0, s1, s2, s3};
+
 void setup() {
+  pinMode(s0, OUTPUT); 
+  pinMode(s1, OUTPUT); 
+  pinMode(s2, OUTPUT); 
+  pinMode(s3, OUTPUT); 
+  digitalWrite(s0, LOW);
+  digitalWrite(s1, LOW);
+  digitalWrite(s2, LOW);
+  digitalWrite(s3, LOW);
+  digitalWrite(controlPin[0], muxChannel[0][0]); // default channel 0 (esp32 listens to port controller)
+  digitalWrite(controlPin[1], muxChannel[0][1]); // default channel 0 (esp32 listens to port controller)
+  digitalWrite(controlPin[2], muxChannel[0][2]); // default channel 0 (esp32 listens to port controller)
+  digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0 (esp32 listens to port controller)
+
   Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
   Serial2.begin(115200); while(!Serial2);
@@ -351,20 +400,95 @@ void readRXD1() {
 
   // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-    if (SerialLink.nbytes > 1) {
-      
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      strcpy(SerialLink.TMP, SerialLink.BUFFER);
-      // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-      SerialLink.TOKEN_i = 0;
+    // while(1) {
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      if (SerialLink.nbytes > 1) {
+        
+        memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+        strcpy(SerialLink.TMP, SerialLink.BUFFER);
+        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        SerialLink.TOKEN_i = 0;
 
-      SerialLink.token = strtok(SerialLink.TMP, ",");
+        // get tag token
+        SerialLink.token = strtok(SerialLink.TMP, ",");
+
+        // parse incoming analogu multiplexer instructions sentence
+        if (strcmp(SerialLink.token, "$MUX0") == 0) {
+          SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+          if (SerialLink.validation==true) {
+            SerialLink.token = strtok(NULL, ",");
+            MUX0_CHANNEL = atoi(SerialLink.token);
+            // Serial.println("[MUX TOKEN] " + String(MUX0_CHANNEL));
+
+            for(int i = 0; i < 4; i++){
+              // Serial.println("[MUX CHANNEL BYTE] " + String(muxChannel[MUX0_CHANNEL][i]));
+              digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
+            }
+          }
+          // break;
+        }
+      }
+
+      // parse matrix sentence
       if (strcmp(SerialLink.token, "$MATRIX") == 0) {
         processMatrixData();
-      }
+        // break;
+      // }
     }
+  }
+}
+
+void writeTXD1() {
+  if (Serial1.availableForWrite() > 0) {
+
+    DateTime now = rtc.now();
+
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+
+    strcpy(SerialLink.BUFFER, "$RTC,");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.year(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.month(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.day(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.hour(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.minute(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    memset(tmp_dt, 0, sizeof(tmp_dt));
+    itoa(now.second(), tmp_dt, 10);
+    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, ",");
+
+    // append checksum
+    createChecksum(SerialLink.BUFFER);
+    strcat(SerialLink.BUFFER, "*");
+    strcat(SerialLink.BUFFER, SerialLink.checksum);
+    strcat(SerialLink.BUFFER, "\n");
+
+    // Serial.println(SerialLink.BUFFER);
+
+    Serial1.write(SerialLink.BUFFER);
+    Serial1.write(ETX);
+
   }
 }
 
@@ -398,20 +522,25 @@ void ISR_Toggle_PortController() {
 void loop() {
 
   // Serial.println("---------------------------------------");
-  SerialDisplayRTCDateTime();
+  // SerialDisplayRTCDateTime();
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
   // read other serial
   // readRXD2();
 
+  // Serial.println("[SANITY] ");
+
   // read matrix data
   readRXD1();
+
+  writeTXD1();
 
   // debug
   // Serial.println("[switch] " + String(analogRead(2)));
   // Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));
 
   // port controller diabled
+  portcontroller_enabled = true; // debug
   if (portcontroller_enabled == false) {
     for (int i=0; i<20; i++) {
       pinMode(matrix_port_map[0][i], OUTPUT);
