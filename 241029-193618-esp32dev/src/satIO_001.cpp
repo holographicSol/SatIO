@@ -2820,14 +2820,14 @@ void convertUTCToLocal() {
 
   // build temporary time stamp string
   
-  strcat(temp_sat_time_stamp_string, satData.rtc_year);
-  strcat(temp_sat_time_stamp_string, satData.rtc_month);
-  strcat(temp_sat_time_stamp_string, satData.rtc_day);
-  strcat(temp_sat_time_stamp_string, satData.rtc_hour);
-  strcat(temp_sat_time_stamp_string, satData.rtc_minute);
-  strcat(temp_sat_time_stamp_string, satData.rtc_second);
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_year_int).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_month_int).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_day_int).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_hour_int).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_minute_int).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_second_int).c_str());
   strcat(temp_sat_time_stamp_string, ".");
-  strcat(temp_sat_time_stamp_string, satData.rtc_millisecond);
+  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_millisecond_int).c_str());
 
   // copy temporary time stamp string to actual time stamp string
   memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
@@ -2859,19 +2859,19 @@ void setLastSatelliteTime() {
     strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
     // update char elements
     memset(satData.lt_year, 0, 56);
-    strcat(satData.lt_year, satData.rtc_year);
+    strcat(satData.lt_year, padDigitsZero(satData.rtc_year_int).c_str());
     memset(satData.lt_month, 0, 56);
-    strcat(satData.lt_month, satData.rtc_month);
+    strcat(satData.lt_month, padDigitsZero(satData.rtc_month_int).c_str());
     memset(satData.lt_day, 0, 56);
-    strcat(satData.lt_day, satData.rtc_day);
+    strcat(satData.lt_day, padDigitsZero(satData.rtc_day_int).c_str());
     memset(satData.lt_hour, 0, 56);
-    strcat(satData.lt_hour, satData.rtc_hour);
+    strcat(satData.lt_hour, padDigitsZero(satData.rtc_hour_int).c_str());
     memset(satData.lt_minute, 0, 56);
-    strcat(satData.lt_minute, satData.rtc_minute);
+    strcat(satData.lt_minute, padDigitsZero(satData.rtc_minute_int).c_str());
     memset(satData.lt_second, 0, 56);
-    strcat(satData.lt_second, satData.rtc_second);
+    strcat(satData.lt_second, padDigitsZero(satData.rtc_second_int).c_str());
     memset(satData.lt_millisecond, 0, 56);
-    strcat(satData.lt_millisecond, satData.rtc_millisecond);
+    strcat(satData.lt_millisecond, padDigitsZero(satData.rtc_millisecond_int).c_str());
     // update int elements
     satData.lt_year_int = satData.rtc_year_int;
     satData.lt_month_int = satData.rtc_month_int;
@@ -6474,12 +6474,12 @@ bool DisplayPage0() {
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(
-      String(satData.rtc_year)+"."+
-      String(satData.rtc_month)+"."+
-      String(satData.rtc_day)+"  "+
-      String(satData.rtc_hour)+":"+
-      String(satData.rtc_minute)+":"+
-      String(satData.rtc_second), 80, rdata_y+9);
+      String(padDigitsZero(satData.rtc_year_int).c_str())+"."+
+      String(padDigitsZero(satData.rtc_month_int).c_str())+"."+
+      String(padDigitsZero(satData.rtc_day_int).c_str())+"  "+
+      String(padDigitsZero(satData.rtc_hour_int).c_str())+":"+
+      String(padDigitsZero(satData.rtc_minute_int).c_str())+":"+
+      String(padDigitsZero(satData.rtc_second_int).c_str()), 80, rdata_y+9);
     
     // last time satellite count > 0
     hud.drawRect(161, rdata_y, 159, 16, TFT_HUD2_RECT);
