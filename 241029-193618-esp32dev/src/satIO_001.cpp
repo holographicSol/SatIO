@@ -2404,7 +2404,7 @@ struct SatDatatruct {
   char satio_sentence[2000];                                        // buffer
   char sat_time_stamp_string[56];                                   // datetime timestamp from satellite
   char satDataTag[10]                 = "$SATIO";                   // satio sentence tag
-  char last_sat_time_stamp_str[56]    = "00.00";                    // record last time satellites were seen
+  char last_sat_time_stamp_str[56]    = "0000000000000000";         // record last time satellites were seen yyyymmddhhmmssmm
   bool convert_coordinates            = true;                       // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[10] = "GNGGA";                    // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                  // one meter (tune)
@@ -5696,6 +5696,22 @@ void matrixSwitch() {
       else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
     }
 
+    // append last_sat_dt for atmega2560 to set on RTC
+    strcat(matrixData.matrix_sentence, satData.lt_year);
+    strcat(matrixData.matrix_sentence, ",");
+    strcat(matrixData.matrix_sentence, satData.lt_month);
+    strcat(matrixData.matrix_sentence, ",");
+    strcat(matrixData.matrix_sentence, satData.lt_day);
+    strcat(matrixData.matrix_sentence, ",");
+    strcat(matrixData.matrix_sentence, satData.lt_hour);
+    strcat(matrixData.matrix_sentence, ",");
+    strcat(matrixData.matrix_sentence, satData.lt_minute);
+    strcat(matrixData.matrix_sentence, ",");
+    strcat(matrixData.matrix_sentence, satData.lt_second);
+    strcat(matrixData.matrix_sentence, ",");
+    // strcat(matrixData.matrix_sentence, satData.lt_millisecond);
+    // strcat(matrixData.matrix_sentence, ",");
+
     // append checksum
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
@@ -6500,7 +6516,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("Y ") + String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*8+9);
 
-    // null
+    // null (lower right)
     hud.drawRect(252, rdata_y+18*9, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
@@ -6750,16 +6766,6 @@ bool DisplayPage0() {
     else {uiData.mapped_pitch = uiData.pitch_y+50;}
     // Serial.println("[mapped pitch pixel] " + String(uiData.mapped_pitch));
     hud.fillTriangle(uiData.pitch_x-4, uiData.mapped_pitch-2, uiData.pitch_x-4, uiData.mapped_pitch+2, uiData.pitch_x-4-uiData.yaw_triangle_base/2, uiData.mapped_pitch, TFT_GREEN);
-
-    // null
-    hud.drawRect(0, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
-    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
-    hud.setTextDatum(MC_DATUM);
-    
-    // null
-    hud.drawRect(0, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
-    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
-    hud.setTextDatum(MC_DATUM);
 
     // warn gngga invalid checksum
     hud.drawRect(0, rdata_y+18*7, 68, 16, TFT_HUD2_RECT);
