@@ -2471,21 +2471,21 @@ struct SatDatatruct {
   char tmp_second[56];                // temp current second
   char tmp_millisecond[56];           // temp current millisecond
 
-  int lt_year_int;                    // last year satellite count > zero
-  int lt_month_int;                   // last month satellite count > zero
-  int lt_day_int;                     // last day satellite count > zero
-  int lt_hour_int;                    // last hour satellite count > zero
-  int lt_minute_int;                  // last minute satellite count > zero
-  int lt_second_int;                  // last second satellite count > zero
-  int lt_millisecond_int;             // last millisecond satellite count > zero
+  int lt_year_int = 0;                    // last year satellite count > zero
+  int lt_month_int = 0;                   // last month satellite count > zero
+  int lt_day_int = 0;                     // last day satellite count > zero
+  int lt_hour_int = 0;                    // last hour satellite count > zero
+  int lt_minute_int = 0;                  // last minute satellite count > zero
+  int lt_second_int = 0;                  // last second satellite count > zero
+  int lt_millisecond_int = 0;             // last millisecond satellite count > zero
 
-  char lt_year[56];                   // last year satellite count > zero
-  char lt_month[56];                  // last month satellite count > zero
-  char lt_day[56];                    // last day satellite count > zero
-  char lt_hour[56];                   // last hour satellite count > zero
-  char lt_minute[56];                 // last minute satellite count > zero
-  char lt_second[56];                 // last second satellite count > zero
-  char lt_millisecond[56];            // last millisecond satellite count > zero
+  char lt_year[56] = "0";                   // last year satellite count > zero
+  char lt_month[56] = "0";                  // last month satellite count > zero
+  char lt_day[56] = "0";                    // last day satellite count > zero
+  char lt_hour[56] = "0";                   // last hour satellite count > zero
+  char lt_minute[56] = "0";                 // last minute satellite count > zero
+  char lt_second[56] = "0";                 // last second satellite count > zero
+  char lt_millisecond[56] = "0";            // last millisecond satellite count > zero
 
   char hours_minutes[56];             // current hours.minutes in format hh.mm
   char day_of_the_week_name[56];      // current weekday name
@@ -8844,6 +8844,11 @@ void readGPS() {
         }
       }
     }
+  }
+}
+
+void readPortController() {
+  if (Serial1.available() > 0) {
   }
 }
 
