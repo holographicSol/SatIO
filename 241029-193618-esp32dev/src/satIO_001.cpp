@@ -1588,9 +1588,9 @@ struct MatrixStruct {
     "SecondsTimer",
 
     "RTCTimeOver",
-    "RTCTimeGNGGAUnder",
-    "RTCTimeGNGGAEqual",
-    "RTCTimeGNGGARange",
+    "RTCTimeUnder",
+    "RTCTimeEqual",
+    "RTCTimeRange",
 
     "DaySunday",
     "DayMonday",
@@ -1822,9 +1822,9 @@ struct MatrixStruct {
   char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
 
   char RTCTimeOver[56]            = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeGNGGAUnder[56]      = "RTCTimeGNGGAUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeGNGGAEqual[56]      = "RTCTimeGNGGAEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeGNGGARange[56]      = "RTCTimeGNGGARange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  char RTCTimeUnder[56]      = "RTCTimeUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeEqual[56]      = "RTCTimeEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeRange[56]      = "RTCTimeRange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
   char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
   char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
@@ -4692,17 +4692,17 @@ void matrixSwitch() {
           tmp_matrix[Fi] = check_over_true(satData.rtc_time_int,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeUnder) == 0) {
           tmp_matrix[Fi] = check_under_true(satData.rtc_time_int,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeEqual) == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.rtc_time_int,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeRange) == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(satData.rtc_time_int,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
