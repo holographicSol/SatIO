@@ -5,8 +5,14 @@ Serial Link - Stable inter-microcontroller serial communication. Written by Benj
 SatIOPortController - Receives messages from SatIO over serial and manipulates IO accordingly.
                       This file should be flashed to ATMEGA2560.
 
-Required wiring for port controller to receive instructions from ESP32:
-ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
+CD74HC4067 16-Channel Analog Digital Multiplexer:
+CD74HC4067 S0          -> ATMEGA2560 8 
+CD74HC4067 S1          -> ATMEGA2560 9
+CD74HC4067 S2          -> ATMEGA2560 10
+CD74HC4067 S3          -> ATMEGA2560 11
+ESP32 io22 (RXD)       -> CD74HC4067 SIG (output selected channel to ESP32)
+ATMEGA2560 Serial1 RXD -> CD74HC4067 C0
+WTGPS300               -> CD74HC4067 C1 
 
 Wiring for portcontroller to sync RTC on latest satellite downlink:
 ATMEGA2560: SDA 20, SCL 21 -> DS3231 Precision RTC: D (Data), C (Clock)
