@@ -5,7 +5,7 @@ Serial Link - Stable inter-microcontroller serial communication. Written by Benj
 SatIOPortController - Receives messages from SatIO over serial and manipulates IO accordingly.
                       This file should be flashed to ATMEGA2560.
 
-CD74HC4067 16-Channel Analog Digital Multiplexer:
+Wiring CD74HC4067 16-Channel Analog Digital Multiplexer:
 CD74HC4067 S0          -> ATMEGA2560 8 
 CD74HC4067 S1          -> ATMEGA2560 9
 CD74HC4067 S2          -> ATMEGA2560 10
@@ -14,9 +14,12 @@ ESP32 io22 (RXD)       -> CD74HC4067 SIG (output selected channel to ESP32)
 ATMEGA2560 Serial1 RXD -> CD74HC4067 C0
 WTGPS300               -> CD74HC4067 C1 
 
-Wiring for TCA9548A i2C Multiplexer:
+Wiring TCA9548A i2C Multiplexer:
 TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
+
+Wiring Satellite Count > 0 Indicator:
+ATMEGA2560 12 -> LED
 
 */
 
@@ -30,6 +33,8 @@ TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 #include <Wire.h>  
 #include <TimeLib.h>
 #include <CD74HC4067.h>
+
+#define LEDSATCOUNT 12
 
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
@@ -279,6 +284,9 @@ void setup() {
     digitalWrite(matrix_port_map[0][i], LOW);
   }
 
+  pinMode(LEDSATCOUNT, OUTPUT);
+  digitalWrite(LEDSATCOUNT, LOW);
+
   Serial.println("starting...");
 }
 
@@ -345,7 +353,7 @@ void processMatrixData() {
     SerialLink.token = strtok(NULL, ",");
     while(SerialLink.token != NULL) {
 
-      // uncomment to debugfRTCTime
+      // uncomment to debug
       // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // check eack token for portmap
@@ -381,14 +389,12 @@ void processMatrixData() {
       if (SerialLink.i_token==44) {rcv_minute = atoi(SerialLink.token);}
       if (SerialLink.i_token==45) {rcv_second = atoi(SerialLink.token);}
 
-      // compare and set RTC accordingly
-      if (strlen(rcv_dt_0)==14) {
-        if (!strcmp(rcv_dt_0, rcv_dt_1)) {
-          Serial.println("[adjusting RTC]");
-          memset(rcv_dt_1, 0, sizeof(rcv_dt_1));
-          strcpy(rcv_dt_1, rcv_dt_0);
-          // adjust RTC according to last datetime received from satellites
-          rtc.adjust(DateTime(rcv_year,rcv_month,rcv_day,rcv_hour,rcv_minute,rcv_second));
+      // satellite count > 0 indicator
+      if (SerialLink.i_token==46) {
+        Serial.println("[satcount] " + String(SerialLink.token));
+        if ((atoi(SerialLink.token)==0) || (atoi(SerialLink.token)==1)) {
+          if (atoi(SerialLink.token)==1) {digitalWrite(LEDSATCOUNT, HIGH);} 
+          else {digitalWrite(LEDSATCOUNT, LOW);}
         }
       }
 
@@ -405,7 +411,7 @@ void readRXD1() {
   // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
 
-    Serial.println("[readRXD1] ");
+    // Serial.println("[readRXD1] ");
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -449,7 +455,7 @@ void readRXD1() {
 void writeTXD1() {
   if (Serial1.availableForWrite() > 0) {
 
-    Serial.println("[writeTXD1] ");
+    // Serial.println("[writeTXD1] ");
 
     dt_now = rtc.now();
 
@@ -513,7 +519,7 @@ void loop() {
   // read other serial
   // readRXD2();
 
-  Serial.println("[loop] ");
+  // Serial.println("[loop] ");
 
   
   // read matrix data

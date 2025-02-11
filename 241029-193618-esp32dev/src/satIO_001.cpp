@@ -5742,6 +5742,10 @@ void matrixSwitch() {
     // strcat(matrixData.matrix_sentence, satData.lt_millisecond);
     // strcat(matrixData.matrix_sentence, ",");
 
+    // append satellite count > 0 indicator
+    if (atoi(gnggaData.satellite_count_gngga)>0) {strcat(matrixData.matrix_sentence, "1,");}
+    else {strcat(matrixData.matrix_sentence, "0,");}
+
     // append checksum
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
@@ -8952,6 +8956,26 @@ void readPortController() {
   }
 }
 
+void writeDataTXD1() {
+  if (Serial1.availableForWrite() > 0) {
+
+    Serial.println("[writeDataTXD1] ");
+
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    
+    strcpy(SerialLink.BUFFER, "$DATA,");
+
+    if (gnggaData.satellite_count_gngga>0) {strcat(SerialLink.BUFFER, "1,");}
+    else {strcat(SerialLink.BUFFER, "0,");}
+
+    // append checksum
+    createChecksum(SerialLink.BUFFER);
+    strcat(SerialLink.BUFFER, "*");
+    strcat(SerialLink.BUFFER, SerialLink.checksum);
+    strcat(SerialLink.BUFFER, "\n");
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
@@ -8964,13 +8988,14 @@ void loop() {
   /* take a snapshot of sensory and calculated data */
 
   SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
-  // Serial1.flush();
+  
+  // writeDataTXD1();
+
   readPortController();
 
-  // int t0 = millis(); 
   SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
-
-  // Serial1.flush();
+  
+  // int t0 = millis(); 
   readGPS();
   SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
   // Serial.println("[gps] " + String(millis()-t0));
