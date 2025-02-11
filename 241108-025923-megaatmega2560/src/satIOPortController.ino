@@ -29,7 +29,6 @@ Other wiring for 1x button and 1x LED can be ignored for now.
 #include <TinyGPSPlus.h>
 #include <stdlib.h>
 #include <RTClib.h>
-// #include <conio.h>
 #include <SPI.h>
 #include <Wire.h>  
 #include <TimeLib.h>
@@ -58,9 +57,10 @@ char rcv_dt_1[56];
 char tmp_dt[56];
 
 
-volatile bool portcontroller_enabled = false;
+
 signed int tmp_port;
 bool update_portmap_bool = false;
+
 // reflects matrix switch active/inactive states each loop of matrix switch function
 int max_matrix_switch_states = 20;
 bool matrix_switch_state[1][20] = {
@@ -207,22 +207,18 @@ void createChecksum(char * buffer) {
 //                                                                                                              SETUP 
 
 int muxChannel[16][4]={
-    // control pin 0
     {0,0,0,0}, //channel 0 port controller
     {1,0,0,0}, //channel 1 GPS
     {0,1,0,0}, //channel 2
     {1,1,0,0}, //channel 3
-    // control pin 1
     {0,0,1,0}, //channel 4
     {1,0,1,0}, //channel 5
     {0,1,1,0}, //channel 6
     {1,1,1,0}, //channel 7
-    // control pin 2
     {0,0,0,1}, //channel 8
     {1,0,0,1}, //channel 9
     {0,1,0,1}, //channel 10
     {1,1,0,1}, //channel 11
-    // control pin 4
     {0,0,1,1}, //channel 12
     {1,0,1,1}, //channel 13
     {0,1,1,1}, //channel 14
@@ -234,8 +230,6 @@ int s0 = 8;
 int s1 = 9;
 int s2 = 10;
 int s3 = 11;
-// s0 s1 s2 s3
-//  controlPin{8, 9, 10, 11);  // create a new CD74HC4067 object with its four control pins
 int controlPin[] = {s0, s1, s2, s3};
 
 #define TCAADDR   0x70
@@ -269,11 +263,9 @@ void setup() {
   Serial1.flush();
   Serial2.flush();
 
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              SETUP: TCA9548A
+  // setp TCA9548A
   Wire.begin();
-  // default i2c channel for RTC.
-  tcaselect(MUX1_CHANNEL);
+  tcaselect(MUX1_CHANNEL); // zero by default
 
   // setup IO
   for (int i=0; i<20; i++) {
@@ -281,26 +273,10 @@ void setup() {
     digitalWrite(matrix_port_map[0][i], LOW);
   }
 
-  // indicator led
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);
-
-  // button
-  pinMode(2, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(2), ISR_Toggle_PortController, FALLING);
-
-  Wire.begin();  //sets up the I2C  
+  // setup RTC
   rtc.begin();   //initializes the I2C to the RTC  
-  // SerialDisplayRTCDateTime();
-    
-  //  Set the RTC Time to 5:10:30 Nov 3 2020  
-  // rtc.adjust(DateTime(2020,11,3,5,10,30));  
-  //Set Arduino Time Library different than RTC time 9:27:05 so see how sync works  
-  // setTime(9, 27, 05, 4, 07, 2015);  
 
   Serial.println("starting...");
-
-
 }
 
 void SerialDisplayRTCDateTime() {
@@ -372,7 +348,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -414,8 +390,6 @@ void processMatrixData() {
       SerialLink.token = strtok(NULL, ",");
     }
   }
-  else {
-  }
 }
 
 // READ RXD1 --------------------------------------------------------------------------------------------------------
@@ -423,7 +397,7 @@ void readRXD1() {
 
   // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
-    // while(1) {
+
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
       if (SerialLink.nbytes > 1) {
@@ -453,15 +427,12 @@ void readRXD1() {
             MUX1_CHANNEL = atoi(SerialLink.token);
             tcaselect(MUX1_CHANNEL);
           }
-          // break;
         }
       }
 
       // parse matrix sentence
       if (strcmp(SerialLink.token, "$MATRIX") == 0) {
         processMatrixData();
-        // break;
-      // }
     }
   }
 }
@@ -519,30 +490,6 @@ void writeTXD1() {
   }
 }
 
-void readRXD2() {
-  if (Serial2.available() > 0) {
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    SerialLink.nbytes = (Serial2.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-    if (SerialLink.nbytes > 1) {
-      Serial1.write(SerialLink.BUFFER);
-    }
-  }
-}
-
-
-// todo: debounce
-void ISR_Toggle_PortController() {
-  Serial.println("[ISR_Toggle_PortController] connected" + String());
-  // False
-  // 1: disables portcontroller instructions.
-  // 2: turns all satIO pins low.
-  // True
-  // 1: enables portcontroller instructions.
-  if      (portcontroller_enabled == false) {portcontroller_enabled=true;}
-  else if (portcontroller_enabled == true)  {portcontroller_enabled=false;}
-  Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));
-}
-
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
@@ -557,37 +504,13 @@ void loop() {
 
   // Serial.println("[SANITY] ");
 
+  if (MUX0_CHANNEL==0) {writeTXD1();}
+
   // read matrix data
   readRXD1();
 
-  if (MUX0_CHANNEL==0) {writeTXD1();}
-
-  // debug
-  // Serial.println("[switch] " + String(analogRead(2)));
-  // Serial.println("[portcontroller_enabled] " + String(portcontroller_enabled));
-
-  // port controller diabled
-  portcontroller_enabled = true; // debug
-  if (portcontroller_enabled == false) {
-    for (int i=0; i<20; i++) {
-      pinMode(matrix_port_map[0][i], OUTPUT);
-      digitalWrite(matrix_port_map[0][i], LOW);
-    }
-    // indicate portcontroller diabled
-    // digitalWrite(13, LOW);
-    digitalWrite(12, LOW);
-  }
-
-  // port controller enabled
-  else if (portcontroller_enabled == true)  {
-
-    // indicate portcontroller enabled
-    digitalWrite(12, HIGH);
-    // digitalWrite(13, HIGH);
-
-    // run portcontroller
-    if (SerialLink.validation==true) {satIOPortController();}
-  }
+  // run portcontroller
+  if (SerialLink.validation==true) {satIOPortController();}
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
