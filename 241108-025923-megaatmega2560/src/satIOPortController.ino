@@ -518,6 +518,7 @@ void loop() {
   
   // read matrix data
   readRXD1();
+  // if (MUX0_CHANNEL==1) {readRXD1();}
   
   if (MUX0_CHANNEL==0) {writeTXD1();}
   // writeTXD1();

@@ -8963,14 +8963,16 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  SatIOPortControllerAnalogMux("0", "0");
+  SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
   // Serial1.flush();
   readPortController();
 
   // int t0 = millis(); 
-  SatIOPortControllerAnalogMux("1", "0");
+  SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
+
   // Serial1.flush();
   readGPS();
+  SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
   // Serial.println("[gps] " + String(millis()-t0));
 
   // t0 = millis();
