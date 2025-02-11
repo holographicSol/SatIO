@@ -8938,17 +8938,29 @@ void readPortController() {
 
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
+            }
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
+            }
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
+            }
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
+            }
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
+            }
             SerialLink.token = strtok(NULL, ",");
+            if (is_all_digits(SerialLink.token)) {
             satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
+            }
             serial1Data.rtc_bool=true;
             }
         }
