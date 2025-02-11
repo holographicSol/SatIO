@@ -18,7 +18,7 @@ Wiring TCA9548A i2C Multiplexer:
 TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 
-Wiring Satellite Count > 0 Indicator:
+Wiring Satellite Count and HDOP Precision Factor Indicator:
 ATMEGA2560 5 -> LEDR
 ATMEGA2560 6 -> LEDG
 ATMEGA2560 7 -> LEDB
