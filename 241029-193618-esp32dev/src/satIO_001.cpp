@@ -249,7 +249,7 @@ struct sysDebugStruct {
   bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
   bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
   bool validation = false;        // enables/disables data validation such as checksum, length and type checking
-  bool verbose_file = true;      // provide more information about files being loaded/saved/etc.
+  bool verbose_file = true;       // provide more information about files being loaded/saved/etc.
 };
 sysDebugStruct sysDebugData;
 
@@ -257,8 +257,8 @@ sysDebugStruct sysDebugData;
 //                                                                                                                     DATA: MENU
 
 struct menuStruct {
-  char input[100];                // char array input by user
-  int numpad_key = NULL;           // allows numpad to differentiate between values
+  char input[100];                 // char array input by user
+  signed int numpad_key = -1;      // allows numpad to differentiate between values
   int page = 0;                    // currently displayed page
   int backpage = 0;                // page we would like to return to after current page
   int previous_page = 0;           // a page different from backpage, as should be distintly previous page
@@ -3956,7 +3956,7 @@ bool in_range_check_true(double n0, double n1, double r) {
   //   " + r/2 " +
   //   String(r/2) +
   //   "))");
-  if (n0  >=  n1 - r/2) {if (n0  <= n1 + r/2) {return true;}}
+  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return true;}
   else {return false;}
 }
 
@@ -3976,7 +3976,7 @@ bool in_range_check_false(double n0, double n1, double r) {
   //   " + r/2 " +
   //   String(r/2) +
   //   "))");
-  if (n0  >=  n1 - r/2) {if (n0  <= n1 + r/2) {return false;}}
+  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return false;}
   else {return true;}
 }
 
@@ -8883,7 +8883,7 @@ void readGPS() {
       // MAX_GPS_RETIES++;
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      SerialLink.nbytes = (Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes>31) {
 
@@ -8893,16 +8893,19 @@ void readGPS() {
         // if (MAX_GPS_RETIES>10) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
           serial1Data.gngga_bool = true;
         }
 
         if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gnrmcData.sentence, SerialLink.BUFFER);
           serial1Data.gnrmc_bool = true; 
         }
 
         if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gpattData.sentence, SerialLink.BUFFER);
           serial1Data.gpatt_bool = true;
         }
