@@ -96,15 +96,6 @@
 #include <JPEGDecoder.h>
 #include <Wire.h>
 
-#define TCAADDR   0x70
-
-void tcaselect(uint8_t channel) {
-  if (channel > 7) return;
-  Wire.beginTransmission(TCAADDR);
-  Wire.write(1 << channel);
-  Wire.endTransmission();
-}
-
 
 int MAX_GPS_RETIES = 0;
 
@@ -8508,14 +8499,17 @@ void SatIOPortController() {
   }
 }
 
-void SatIOPortControllerAnalogMux(const char * channel) {
+void SatIOPortControllerAnalogMux(const char * mux0_channel, const char * mux1_channel) {
   if (Serial1.availableForWrite()) {
 
-    // create sentence tag and set channel token
+    // create sentence tag and set channel token(s)
     memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-    strcpy(SerialLink.BUFFER1, "$MUX0,");
-    strcat(SerialLink.BUFFER1, channel);
+    strcpy(SerialLink.BUFFER1, "$MUX,");
+    strcat(SerialLink.BUFFER1, mux0_channel);
     strcat(SerialLink.BUFFER1, ",");
+    strcat(SerialLink.BUFFER1, mux1_channel);
+    strcat(SerialLink.BUFFER1, ",");
+    
 
     // append checksum
     createChecksum(SerialLink.BUFFER1);
@@ -8765,12 +8759,6 @@ void setup() {
   Serial.setTimeout(10);
   Serial1.setTimeout(10);
   Serial1.flush();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              SETUP: TCA9548A
-  Wire.begin();
-  // default i2c channel for RTC.
-  tcaselect(0);
               
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SETUP: CORE INFO
@@ -9005,12 +8993,12 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  SatIOPortControllerAnalogMux("0");
+  SatIOPortControllerAnalogMux("0", "0");
   // Serial1.flush();
   readPortController();
 
   // int t0 = millis(); 
-  SatIOPortControllerAnalogMux("1");
+  SatIOPortControllerAnalogMux("1", "0");
   // Serial1.flush();
   readGPS();
   // Serial.println("[gps] " + String(millis()-t0));

@@ -36,6 +36,7 @@ Other wiring for 1x button and 1x LED can be ignored for now.
 #include <CD74HC4067.h>
 
 int MUX0_CHANNEL = 0;
+int MUX1_CHANNEL = 0;
 
 #define MAX_BUFF 1000
 
@@ -272,7 +273,7 @@ void setup() {
   //                                                                                                              SETUP: TCA9548A
   Wire.begin();
   // default i2c channel for RTC.
-  tcaselect(0);
+  tcaselect(MUX1_CHANNEL);
 
   // setup IO
   for (int i=0; i<20; i++) {
@@ -436,17 +437,21 @@ void readRXD1() {
         SerialLink.token = strtok(SerialLink.TMP, ",");
 
         // parse incoming analogu multiplexer instructions sentence
-        if (strcmp(SerialLink.token, "$MUX0") == 0) {
+        if (strcmp(SerialLink.token, "$MUX") == 0) {
           SerialLink.validation = validateChecksum(SerialLink.BUFFER);
           if (SerialLink.validation==true) {
+
+            // instruct analogu multiplexer
             SerialLink.token = strtok(NULL, ",");
             MUX0_CHANNEL = atoi(SerialLink.token);
-            // Serial.println("[MUX TOKEN] " + String(MUX0_CHANNEL));
-
             for(int i = 0; i < 4; i++){
-              // Serial.println("[MUX CHANNEL BYTE] " + String(muxChannel[MUX0_CHANNEL][i]));
               digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
             }
+
+            // instruct i2C multiplexer
+            SerialLink.token = strtok(NULL, ",");
+            MUX1_CHANNEL = atoi(SerialLink.token);
+            tcaselect(MUX1_CHANNEL);
           }
           // break;
         }
