@@ -24,7 +24,6 @@ TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 #include <string.h>
 #include <Arduino.h>
 #include <limits.h>
-#include <TinyGPSPlus.h>
 #include <stdlib.h>
 #include <RTClib.h>
 #include <SPI.h>
@@ -516,12 +515,12 @@ void loop() {
 
   Serial.println("[loop] ");
 
-  // if (MUX0_CHANNEL==0) {writeTXD1();}
-
+  
   // read matrix data
   readRXD1();
-
-  writeTXD1();
+  
+  if (MUX0_CHANNEL==0) {writeTXD1();}
+  // writeTXD1();
 
   // run portcontroller
   // if (SerialLink.validation==true) {satIOPortController();}
