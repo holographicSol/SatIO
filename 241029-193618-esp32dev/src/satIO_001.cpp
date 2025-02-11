@@ -1586,14 +1586,11 @@ struct MatrixStruct {
     "$ENABLED",
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
-
     "SecondsTimer",
-
     "RTCTimeOver",
     "RTCTimeUnder",
     "RTCTimeEqual",
     "RTCTimeRange",
-
     "DaySunday",
     "DayMonday",
     "DayTuesday",
@@ -1601,11 +1598,9 @@ struct MatrixStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
-
     "DateDayX",
     "DateMonthX",
     "DateYearX",
-
     "DegreesLatGNGGAOver",
     "DegreesLonGNGGAOver",
     "DegreesLatGNGGAUnder",
@@ -1615,7 +1610,6 @@ struct MatrixStruct {
     "DegreesLonGNGGARange",
     "DegreesLatGNGGARange",
     "DegreesGNGGARanges",
-
     "DegreesLatGNRMCOver",
     "DegreesLonGNRMCOver",
     "DegreesLatGNRMCUnder",
@@ -1625,12 +1619,10 @@ struct MatrixStruct {
     "DegreesLatGNRMCRange",
     "DegreesLonGNRMCRange",
     "DegreesGNRMCRanges",
-    
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
-
     "LatGNGGAOver",
     "LonGNGGAOver",
     "LatGNGGAUnder",
@@ -1639,42 +1631,33 @@ struct MatrixStruct {
     "LonGNGGAEqual",
     "LatGNGGARange",
     "LonGNGGARange",
-
     "PositioningStatusGNGGA",
-
     "SatelliteCountOver",
     "SatelliteCountUnder",
     "SatelliteCountEqual",
     "SatelliteCountRange",
-
     "HemisphereGNGGANorth",
     "HemisphereGNGGASouth",
     "HemisphereGNGGAEast",
     "HemisphereGNGGAWest",
-
     "GPSPrecisionOver",
     "GPSPrecisionUnder",
     "GPSPrecisionEqual",
     "GPSPrecisionRange",
-
     "AltitudeGNGGAOver",
     "AltitudeGNGGAUnder",
     "AltitudeGNGGAEqual",
     "AltitudeGNGGARange",
-
     "UTCTimeGNRMCOver",
     "UTCTimeGNRMCUnder",
     "UTCTimeGNRMCEqual",
     "UTCTimeGNRMCRange",
-
     "PositioningStatusGNRMCA",
     "PositioningStatusGNRMCV",
-
     "ModeGNRMCA",
     "ModeGNRMCD",
     "ModeGNRMCE",
     "ModeGNRMCN",
-
     "LatGNRMCOver",
     "LonGNRMCOver",
     "LatGNRMCUnder",
@@ -1683,76 +1666,62 @@ struct MatrixStruct {
     "LatGNRMCEqual",
     "LatGNRMCRange",
     "LonGNRMCRange",
-
     "HemisphereGNRMCNorth",
     "HemisphereGNRMCSouth",
     "HemisphereGNRMCEast",
     "HemisphereGNRMCWest",
-
     "GroundSpeedGNRMCOver",
     "GroundSpeedGNRMCUnder",
     "GroundSpeedGNRMCEqual",
     "GroundSpeedGNRMCRange",
-
     "HeadingGNRMCOver",
     "HeadingGNRMCUnder",
     "HeadingGNRMCEqual",
     "HeadingGNRMCRange",
-
     "UTCDateGNRMCOver",
     "UTCDateGNRMCUnder",
     "UTCDateGNRMCEqual",
     "UTCDateGNRMCRange",
-
     "LineFlagGPATTEqual",
     "StaticFlagGPATTEqual",
     "RunStateFlagGPATTEqual",
     "INSGPATTEqual",
-
     "SpeedNumGPATTOver",
     "SpeedNumGPATTUnder",
     "SpeedNumGPATTEqual",
     "SpeedNumGPATTRange",
-
     "MileageGPATTOver",
     "MileageGPATTUnder",
     "MileageGPATTEqual",
     "MileageGPATTRange",
-
     "GSTDataGPATTOver",
     "GSTDataGPATTUnder",
     "GSTDataGPATTEqual",
     "GSTDataGPATTRange",
-
     "YawGPATTOver",
     "YawGPATTUnder",
     "YawGPATTEqual",
     "YawGPATTRange",
-
     "RollGPATTOver",
     "RollGPATTUnder",
     "RollGPATTEqual",
     "RollGPATTRange",
-
     "PitchGPATTOver",
     "PitchGPATTUnder",
     "PitchGPATTEqual",
     "PitchGPATTRange",
-
     "GNGGAValidChecksum",
     "GNRMCValidChecksum",
     "GPATTValidChecksum",
     "GNGGAInvalidChecksum",
     "GNRMCInvalidChecksum",
     "GPATTInvalidChecksum",
-
     "GNGGAValidCheckData",
     "GNRMCValidCheckData",
     "GPATTValidCheckData",
     "GNGGAInvalidCheckData",
     "GNRMCInvalidCheckData",
     "GPATTInvalidCheckData",
-
     "SunAzimuthRange",
     "SunAltitudeRange",
     "DayTime",
@@ -8903,7 +8872,10 @@ void readGPS() {
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
   MAX_GPS_RETIES=0;
   if (Serial1.available() > 0) {
-    while(1) {
+    for (int i = 0; i < 8; i++) {
+
+      Serial.println("[readGPS] ");
+      // MAX_GPS_RETIES++;
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -8913,7 +8885,7 @@ void readGPS() {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        if (MAX_GPS_RETIES>10) {break;}
+        // if (MAX_GPS_RETIES>10) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
@@ -8930,8 +8902,6 @@ void readGPS() {
           serial1Data.gpatt_bool = true;
         }
       }
-
-      MAX_GPS_RETIES++;
     }
   }
 }
@@ -8944,7 +8914,9 @@ void readPortController() {
 
   if (Serial1.available() > 0) {
 
-    while(1) {
+    for (int i = 0; i < 8; i++) {
+
+      Serial.println("[readPortController] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -8953,7 +8925,6 @@ void readPortController() {
         // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.rtc_bool==true) {break;}
-        if (MAX_PORTCONTROLLER_RETIES>10) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$RTC", 4) == 0) {
           // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
@@ -8977,9 +8948,6 @@ void readPortController() {
             }
         }
       }
-
-      MAX_PORTCONTROLLER_RETIES++;
-
     }
   }
 }
@@ -8988,6 +8956,8 @@ void readPortController() {
 //                                                                                                                      MAIN LOOP
 
 void loop() {
+
+  Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 

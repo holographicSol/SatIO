@@ -18,8 +18,6 @@ Wiring for TCA9548A i2C Multiplexer:
 TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 
-Other wiring for 1x button and 1x LED can be ignored for now.
-
 */
 
 #include <stdio.h>
@@ -40,6 +38,7 @@ int MUX1_CHANNEL = 0;
 #define MAX_BUFF 1000
 
 RTC_DS3231 rtc;
+DateTime dt_now;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -265,6 +264,14 @@ void setup() {
 
   // setp TCA9548A
   Wire.begin();
+  // setup RTC
+  rtc.begin();   //initializes the I2C to the RTC  
+
+  MUX0_CHANNEL = 0;
+  for(int i = 0; i < 4; i++){
+    digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
+  }
+  MUX1_CHANNEL = 0;
   tcaselect(MUX1_CHANNEL); // zero by default
 
   // setup IO
@@ -273,17 +280,14 @@ void setup() {
     digitalWrite(matrix_port_map[0][i], LOW);
   }
 
-  // setup RTC
-  rtc.begin();   //initializes the I2C to the RTC  
-
   Serial.println("starting...");
 }
 
 void SerialDisplayRTCDateTime() {
   // test dt
-  DateTime now = rtc.now();
+  DateTime dt_now = rtc.now();
   // display dt
-  Serial.println("[rtc] " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second()) + " " + String(now.day()) + "/" + String(now.month()) + "/" + String(now.year()));
+  Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -292,6 +296,8 @@ void SerialDisplayRTCDateTime() {
 /* please ensure checksum was validated properly before actually implementing this final function in the feild */
 
 void satIOPortController() {
+
+  Serial.println("[satIOPortController] ");
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
@@ -330,6 +336,8 @@ void processMatrixData() {
   SerialLink.validation = validateChecksum(SerialLink.BUFFER);
   
   if (SerialLink.validation==true) {
+
+    Serial.println("[processMatrixData] ");
 
     // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
     memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
@@ -398,41 +406,43 @@ void readRXD1() {
   // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
 
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-      if (SerialLink.nbytes > 1) {
-        
-        memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-        strcpy(SerialLink.TMP, SerialLink.BUFFER);
-        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-        SerialLink.TOKEN_i = 0;
+    Serial.println("[readRXD1] ");
 
-        // get tag token
-        SerialLink.token = strtok(SerialLink.TMP, ",");
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+    if (SerialLink.nbytes > 1) {
+      
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      strcpy(SerialLink.TMP, SerialLink.BUFFER);
+      // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+      SerialLink.TOKEN_i = 0;
 
-        // parse incoming analogu multiplexer instructions sentence
-        if (strcmp(SerialLink.token, "$MUX") == 0) {
-          SerialLink.validation = validateChecksum(SerialLink.BUFFER);
-          if (SerialLink.validation==true) {
+      // get tag token
+      SerialLink.token = strtok(SerialLink.TMP, ",");
 
-            // instruct analogu multiplexer
-            SerialLink.token = strtok(NULL, ",");
-            MUX0_CHANNEL = atoi(SerialLink.token);
-            for(int i = 0; i < 4; i++){
-              digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
-            }
+      // parse incoming analogu multiplexer instructions sentence
+      if (strcmp(SerialLink.token, "$MUX") == 0) {
+        SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+        if (SerialLink.validation==true) {
 
-            // instruct i2C multiplexer
-            SerialLink.token = strtok(NULL, ",");
-            MUX1_CHANNEL = atoi(SerialLink.token);
-            tcaselect(MUX1_CHANNEL);
+          // instruct analogu multiplexer
+          SerialLink.token = strtok(NULL, ",");
+          MUX0_CHANNEL = atoi(SerialLink.token);
+          for(int i = 0; i < 4; i++){
+            digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
           }
+
+          // instruct i2C multiplexer
+          SerialLink.token = strtok(NULL, ",");
+          MUX1_CHANNEL = atoi(SerialLink.token);
+          tcaselect(MUX1_CHANNEL);
         }
       }
+    }
 
-      // parse matrix sentence
-      if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-        processMatrixData();
+    // parse matrix sentence
+    if (strcmp(SerialLink.token, "$MATRIX") == 0) {
+      processMatrixData();
     }
   }
 }
@@ -440,39 +450,41 @@ void readRXD1() {
 void writeTXD1() {
   if (Serial1.availableForWrite() > 0) {
 
-    DateTime now = rtc.now();
+    Serial.println("[writeTXD1] ");
+
+    dt_now = rtc.now();
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
 
     strcpy(SerialLink.BUFFER, "$RTC,");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.year(), tmp_dt, 10);
+    itoa(dt_now.year(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.month(), tmp_dt, 10);
+    itoa(dt_now.month(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.day(), tmp_dt, 10);
+    itoa(dt_now.day(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.hour(), tmp_dt, 10);
+    itoa(dt_now.hour(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.minute(), tmp_dt, 10);
+    itoa(dt_now.minute(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
     memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(now.second(), tmp_dt, 10);
+    itoa(dt_now.second(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
 
@@ -502,15 +514,17 @@ void loop() {
   // read other serial
   // readRXD2();
 
-  // Serial.println("[SANITY] ");
+  Serial.println("[loop] ");
 
-  if (MUX0_CHANNEL==0) {writeTXD1();}
+  // if (MUX0_CHANNEL==0) {writeTXD1();}
 
   // read matrix data
   readRXD1();
 
+  writeTXD1();
+
   // run portcontroller
-  if (SerialLink.validation==true) {satIOPortController();}
+  // if (SerialLink.validation==true) {satIOPortController();}
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
