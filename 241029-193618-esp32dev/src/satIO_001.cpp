@@ -589,11 +589,11 @@ bool is_all_digits(char * data) {
   return validData.valid_b;
 }
 
-bool is_all_digits_plus_char(char * data, char * find_char) {
+bool is_all_digits_plus_char(char * data, char find_char) {
   /* designed to check all chars are digits except one period and is more general purpose than just accepting a period */
   if (sysDebugData.validation == true) {Serial.println("[connected] is_all_digits_plus_char: " + String(data));}
   validData.valid_b = true;
-  validData.find_char = strchr(data, * find_char);
+  validData.find_char = strchr(data, find_char);
   validData.index = (int)(validData.find_char - data);
   for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {if (i != validData.index) {validData.valid_b = false;}}}
   return validData.valid_b;
@@ -727,7 +727,7 @@ bool val_satellite_count(char * data) {
 bool val_hdop_precision_factor(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_hdop_precision_factor: " + String(data));}
   bool check_pass = false;
-  if (is_all_digits_plus_char(data, ".") == true) {
+  if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0){
       check_pass = true;
   }
@@ -819,7 +819,7 @@ bool val_ground_speed(char * data) {
 bool val_ground_heading(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_ground_heading: " + String(data));}
   bool check_pass = false;
-  if (is_all_digits_plus_char(data, ".") == true) {
+  if (is_all_digits_plus_char(data, '.') == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 360)) {
       check_pass = true;
     }
@@ -831,7 +831,7 @@ bool val_ground_heading(char * data) {
 bool val_installation_angle(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_installation_angle: " + String(data));}
   bool check_pass = false;
-  if (is_all_digits_plus_char(data, ".") == true) {
+  if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0) {
       check_pass = true;
     }
@@ -996,7 +996,7 @@ bool val_static_flag_gpatt(char * data) {
 bool val_user_code_gpatt(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_user_code_gpatt: " + String(data));}
   bool check_pass = false;
-  if (is_all_digits_plus_char(data, ".") == true) {
+  if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0) {check_pass = true;}
   }
   return check_pass;
@@ -1314,7 +1314,7 @@ bool val_yaw_angle(char * data) {
 bool val_car_speed(char * data) {
   if (sysDebugData.validation == true) {Serial.println("[connected] val_car_speed: " + String(data));}
   bool check_pass = false;
-  if (is_all_digits_plus_char(data, ".") == true) {
+  if (is_all_digits_plus_char(data, '.') == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 100)) {check_pass = true;}
   }
   return check_pass;
@@ -3675,7 +3675,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         // port
         sdcardData.token = strtok(NULL, ",");
         // check
-        if (is_all_digits_plus_char(sdcardData.data_7, "-") == true) {
+        if (is_all_digits_plus_char(sdcardData.data_7, '-') == true) {
           strcpy(sdcardData.data_7, sdcardData.token);
           matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
           if (sysDebugData.verbose_file==true) {Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));}
