@@ -8938,7 +8938,7 @@ void readPortController() {
 
             SerialLink.TOKEN_i = 0;
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
-            while (!SerialLink.token==NULL) {
+            while (SerialLink.token != NULL) {
 
               if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
               satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
