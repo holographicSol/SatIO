@@ -5742,9 +5742,10 @@ void matrixSwitch() {
     // strcat(matrixData.matrix_sentence, satData.lt_millisecond);
     // strcat(matrixData.matrix_sentence, ",");
 
-    // append satellite count > 0 indicator
-    if (atoi(gnggaData.satellite_count_gngga)>0) {strcat(matrixData.matrix_sentence, "1,");}
-    else {strcat(matrixData.matrix_sentence, "0,");}
+    // append satellite signal indicator. 0=zero satellites. 1 = > 0 satellites, > meter precision. 2 = > 1 satellites & <= 1 meter precision
+    if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(matrixData.matrix_sentence, "0,");}
+    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
+    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(matrixData.matrix_sentence, "2,");}
 
     // append checksum
     createChecksum(matrixData.matrix_sentence);

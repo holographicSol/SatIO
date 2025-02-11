@@ -19,7 +19,9 @@ TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
 
 Wiring Satellite Count > 0 Indicator:
-ATMEGA2560 12 -> LED
+ATMEGA2560 5 -> LEDR
+ATMEGA2560 6 -> LEDG
+ATMEGA2560 7 -> LEDB
 
 */
 
@@ -34,7 +36,9 @@ ATMEGA2560 12 -> LED
 #include <TimeLib.h>
 #include <CD74HC4067.h>
 
-#define LEDSATCOUNT 12
+#define LEDSATSIGNALR 5
+#define LEDSATSIGNALG 6
+#define LEDSATSIGNALB 7
 
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
@@ -284,8 +288,12 @@ void setup() {
     digitalWrite(matrix_port_map[0][i], LOW);
   }
 
-  pinMode(LEDSATCOUNT, OUTPUT);
-  digitalWrite(LEDSATCOUNT, LOW);
+  pinMode(LEDSATSIGNALR, OUTPUT);
+  pinMode(LEDSATSIGNALG, OUTPUT);
+  pinMode(LEDSATSIGNALB, OUTPUT);
+  digitalWrite(LEDSATSIGNALR, LOW);
+  digitalWrite(LEDSATSIGNALG, LOW);
+  digitalWrite(LEDSATSIGNALB, LOW);
 
   Serial.println("starting...");
 }
@@ -392,9 +400,20 @@ void processMatrixData() {
       // satellite count > 0 indicator
       if (SerialLink.i_token==46) {
         Serial.println("[satcount] " + String(SerialLink.token));
-        if ((atoi(SerialLink.token)==0) || (atoi(SerialLink.token)==1)) {
-          if (atoi(SerialLink.token)==1) {digitalWrite(LEDSATCOUNT, HIGH);} 
-          else {digitalWrite(LEDSATCOUNT, LOW);}
+        if (atoi(SerialLink.token)==0) {
+          digitalWrite(LEDSATSIGNALR, HIGH);
+          digitalWrite(LEDSATSIGNALG, LOW);
+          digitalWrite(LEDSATSIGNALB, LOW);
+        }
+        else if (atoi(SerialLink.token)==1) {
+          digitalWrite(LEDSATSIGNALR, LOW);
+          digitalWrite(LEDSATSIGNALG, HIGH);
+          digitalWrite(LEDSATSIGNALB, LOW);
+        }
+        else if (atoi(SerialLink.token)==2) {
+          digitalWrite(LEDSATSIGNALR, LOW);
+          digitalWrite(LEDSATSIGNALG, LOW);
+          digitalWrite(LEDSATSIGNALB, HIGH);
         }
       }
 
