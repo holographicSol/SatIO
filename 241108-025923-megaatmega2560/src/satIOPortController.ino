@@ -476,6 +476,7 @@ void readRXD1() {
       if (strcmp(SerialLink.token, "$MUX") == 0) {
         SerialLink.validation = validateChecksum(SerialLink.BUFFER);
         if (SerialLink.validation==true) {
+          Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
 
           // instruct analogu multiplexer
           SerialLink.token = strtok(NULL, ",");
