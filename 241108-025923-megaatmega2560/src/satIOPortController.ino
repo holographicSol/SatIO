@@ -514,7 +514,9 @@ void writeTXD1Data() {
     dht11_f_0 = dht.readTemperature(true); // fahreheit = true
     if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
       Serial.println(F("Failed to read from DHT sensor!"));
+      // append sensor bad '1' to sentence
     }
+    else {// append sensor bad '0' to sentence}
     dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
     dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
     // 1
