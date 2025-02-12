@@ -8954,9 +8954,9 @@ void readGPS() {
 
 void readPortController() {
 
-  // for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 8; i++) {
 
-    // if (Serial1.available() > 0) {
+    if (Serial1.available() > 0) {
 
       // Serial.println("[readPortController] ");
 
@@ -9022,12 +9022,12 @@ void readPortController() {
               SerialLink.token = strtok(NULL, ",");
               SerialLink.TOKEN_i++;
             }
-            // break;
+            break;
           }
         }
       }
-    // }
-  // }
+    }
+  }
 }
 
 void writeDataTXD1() {

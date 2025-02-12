@@ -484,7 +484,7 @@ void readRXD1() {
             // instruct analogu multiplexer
             SerialLink.token = strtok(NULL, ",");
             MUX0_CHANNEL = atoi(SerialLink.token);
-            Serial.println("[MUX0_CHANNEL] " + String(MUX0_CHANNEL));
+            // Serial.println("[MUX0_CHANNEL] " + String(MUX0_CHANNEL));
             for(int i = 0; i < 4; i++){
               digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
             }
@@ -493,7 +493,9 @@ void readRXD1() {
             SerialLink.token = strtok(NULL, ",");
             MUX1_CHANNEL = atoi(SerialLink.token);
             tcaselect(MUX1_CHANNEL);
-            Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
+            // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
+
+            Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
           }
         }
       }
@@ -525,7 +527,7 @@ String padDigitsZero(int digits) {
 
 void writeTXD1Data() {
 
-  // for (int i=0; i<8; i++) {
+  for (int i=0; i<8; i++) {
 
     if (Serial1.availableForWrite() > 0) {
 
@@ -604,13 +606,15 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD]" + String(SerialLink.BUFFER));
+      Serial.println("[TXD] " + String(SerialLink.BUFFER));
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
 
+      break;
       }
     }
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -618,11 +622,11 @@ void writeTXD1Data() {
 
 void loop() {
 
-  Serial.println("---------------------------------------");
+  // Serial.println("---------------------------------------");
   
-  Serial.println("[loop] ");
+  // Serial.println("[loop] ");
 
-  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+  // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
   // read matrix data
   readRXD1();
@@ -636,7 +640,7 @@ void loop() {
   }
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  // Serial.print("[looptime] "); Serial.println(timeDcata.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
   // delay(1);
 }
