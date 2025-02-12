@@ -8919,7 +8919,7 @@ void readGPS() {
   if (Serial1.available() > 0) {
     for (int i = 0; i < 8; i++) {
 
-      // Serial.println("[readGPS] ");
+      Serial.println("[readGPS] ");
       // MAX_GPS_RETIES++;
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
@@ -8964,7 +8964,7 @@ void readPortController() {
 
     for (int i = 0; i < 8; i++) {
 
-      // Serial.println("[readPortController] ");
+      Serial.println("[readPortController] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -9041,7 +9041,7 @@ void readPortController() {
 void writeDataTXD1() {
   if (Serial1.availableForWrite() > 0) {
 
-    // Serial.println("[writeDataTXD1] ");
+    Serial.println("[writeDataTXD1] ");
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     
@@ -9063,7 +9063,7 @@ void writeDataTXD1() {
 
 void loop() {
 
-  // Serial.println("[loop] ");
+  Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 

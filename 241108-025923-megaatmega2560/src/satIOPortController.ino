@@ -342,7 +342,7 @@ void SerialDisplayRTCDateTime() {
 
 void satIOPortController() {
 
-  // Serial.println("[satIOPortController] ");
+  Serial.println("[satIOPortController] ");
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
@@ -382,7 +382,7 @@ void processMatrixData() {
   
   if (SerialLink.validation==true) {
 
-    // Serial.println("[processMatrixData] ");
+    Serial.println("[processMatrixData] ");
 
     // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
     memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
@@ -460,7 +460,7 @@ void readRXD1() {
   // rcv_matrix_tag = false;
   if (Serial1.available() > 0) {
 
-    // Serial.println("[readRXD1] ");
+    Serial.println("[readRXD1] ");
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -520,7 +520,7 @@ String padDigitsZero(int digits) {
 void writeTXD1Data() {
   if (Serial1.availableForWrite() > 0) {
 
-    // Serial.println("[writeTXD1] ");
+    Serial.println("[writeTXD1] ");
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     strcpy(SerialLink.BUFFER, "$DATA,");
@@ -611,7 +611,7 @@ void loop() {
   // read other serial
   // readRXD2();
 
-  // Serial.println("[loop] ");
+  Serial.println("[loop] ");
 
   
   // read matrix data
