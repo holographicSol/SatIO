@@ -35,6 +35,11 @@ ATMEGA2560 A0 -> Photo resistor S
 Photo resistor VCC 5v
 Photo resistor GND
 
+Wiring Tracking Sensor:
+ATMEGA2560 A1 -> Tracking Sensor S
+Tracking Sensor VCC 5v
+Tracking Sensor GND
+
 */
 
 #include <stdio.h>
@@ -77,6 +82,7 @@ float dht11_hif_0;
 float dht11_hic_0;
 
 #define PHOTORESISTOR_0 A0
+#define TRACKING_0 A1
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -129,7 +135,6 @@ signed int tmp_matrix_port_map[1][20] = {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SERIAL LINK STRUCT
-char foo0[MAX_BUFF];
 
 struct SerialLinkStruct {
   signed int i_nbytes;
@@ -294,6 +299,7 @@ void setup() {
   digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0 (esp32 listens to port controller)
 
   pinMode(PHOTORESISTOR_0, INPUT);
+  pinMode(TRACKING_0, INPUT);
 
   Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
@@ -592,6 +598,14 @@ void writeTXD1Data() {
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       itoa(analogRead(PHOTORESISTOR_0), SerialLink.TMP, 10);
       // Serial.println("[photoresistor_0]      " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+
+      // TRACKING_0
+      // Serial.println("[TRACKING_0] " + String(analogRead(TRACKING_0)));
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      itoa(analogRead(TRACKING_0), SerialLink.TMP, 10);
+      // Serial.println("[TRACKING_0]      " + String(SerialLink.TMP));
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 

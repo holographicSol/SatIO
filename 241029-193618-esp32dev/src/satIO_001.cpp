@@ -1579,9 +1579,9 @@ struct MatrixStruct {
   };
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 219;
+  int max_matrix_function_names = 224;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[219][25] = 
+  char matrix_function_names[224][25] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1801,7 +1801,11 @@ struct MatrixStruct {
     "PhotoResistor_0_Under",
     "PhotoResistor_0_Over",
     "PhotoResistor_0_Equal",
-    "PhotoResistor_0_Range"
+    "PhotoResistor_0_Range",
+    "Tracking_0_Under",
+    "Tracking_0_Over",
+    "Tracking_0_Equal",
+    "Tracking_0_Range"
   };
 
   /* false if first or all functions $NONE. true if preceeding functions are populated. */
@@ -2101,6 +2105,11 @@ struct MatrixStruct {
   char PhotoResistor_0_Over[25] = "PhotoResistor_0_Over";
   char PhotoResistor_0_Equal[25] = "PhotoResistor_0_Equal";
   char PhotoResistor_0_Range[25] = "PhotoResistor_0_Range";
+
+  char Tracking_0_Under[25] = "Tracking_0_Under";
+  char Tracking_0_Over[25] = "Tracking_0_Over";
+  char Tracking_0_Equal[25] = "Tracking_0_Equal";
+  char Tracking_0_Range[25] = "Tracking_0_Range";
   
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                VALIDITY DATA
@@ -2561,6 +2570,7 @@ struct SensorDataStruct {
   float dht11_hic_0 = 0.0;
   bool dht11_0_display_hic = true;
   int photoresistor_0 = 0;
+  int tracking_0 = 0;
 };
 SensorDataStruct sensorData;
 
@@ -5843,6 +5853,30 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               TRACKING
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.tracking_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.tracking_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.tracking_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.tracking_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
@@ -6658,6 +6692,11 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString("PR0 "+String(sensorData.photoresistor_0)+"", 34, rdata_y+(18*6)+9);
 
+    // tracking_0
+    hud.drawRect(0, rdata_y+18*7, 68, 16, TFT_HUD2_RECT);
+    hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
+    hud.setTextDatum(MC_DATUM);
+    hud.drawString("TR0 "+String(sensorData.tracking_0)+"", 34, rdata_y+(18*7)+9);
 
     // current RTC time 
     hud.drawRect(0, rdata_y, 121, 16, TFT_HUD2_RECT);
@@ -9047,24 +9086,35 @@ void readPortController() {
                 sensorData.photoresistor_0 = atoi(SerialLink.token);
                 // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
               }
+              
+              if (SerialLink.TOKEN_i==7) {
+                sensorData.tracking_0 = atoi(SerialLink.token);
+                // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
+              }
 
-              if (SerialLink.TOKEN_i==7)  {
+              if (SerialLink.TOKEN_i==8)  {
               satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
+              // Serial.println("[rtc_year_int] " + String(satData.rtc_year_int));
               }
-              if (SerialLink.TOKEN_i==8) {
+              if (SerialLink.TOKEN_i==9) {
                 satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
+                // Serial.println("[rtc_month_int] " + String(satData.rtc_month_int));
               }
-              if (SerialLink.TOKEN_i==9)  {
+              if (SerialLink.TOKEN_i==10)  {
                 satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
-              }
-              if (SerialLink.TOKEN_i==10) {
-                satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
+                // Serial.println("[rtc_day_int] " + String(satData.rtc_day_int));
               }
               if (SerialLink.TOKEN_i==11) {
-                satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
+                satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
+                // Serial.println("[rtc_hour_int] " + String(satData.rtc_hour_int));
               }
               if (SerialLink.TOKEN_i==12) {
+                satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
+                // Serial.println("[rtc_minute_int] " + String(satData.rtc_minute_int));
+              }
+              if (SerialLink.TOKEN_i==13) {
                 satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
+                // Serial.println("[rtc_second_int] " + String(satData.rtc_second_int));
               }
               
               SerialLink.token = strtok(NULL, ",");
