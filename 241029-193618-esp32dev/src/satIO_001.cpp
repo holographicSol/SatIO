@@ -5824,12 +5824,12 @@ void matrixSwitch() {
         //                                                                                                        PHOTO RESISTORS
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Under) == 0) {
-          tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
+          tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Over) == 0) {
-          tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
+          tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
