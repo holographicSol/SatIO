@@ -380,7 +380,7 @@ void processMatrixData() {
   
   if (SerialLink.validation==true) {
 
-    Serial.println("[processMatrixData] ");
+    // Serial.println("[processMatrixData] ");
 
     // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
     memset(rcv_dt_0, 0, sizeof(rcv_dt_0));

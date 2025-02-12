@@ -4082,15 +4082,15 @@ bool check_equal_false(double n0, double n1) {
 }
 
 bool check_ge_and_le_true(double n0, double n1, double n2) {
-  // Serial.println(
-  //   "check_ge_and_le_true: n0 " +
-  //   String(n0) +
-  //   " >= n1 " +
-  //   String(n1) +
-  //   " && n0 " +
-  //   String(n0) +
-  //   " <= " +
-  //   String(n2));
+  Serial.println(
+    "check_ge_and_le_true: n0 " +
+    String(n0) +
+    " >= n1 " +
+    String(n1) +
+    " && n0 " +
+    String(n0) +
+    " <= " +
+    String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return true;}
   else {return false;}
 }
@@ -9114,6 +9114,26 @@ void readPortController() {
               if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
                 sensorData.dht11_h_0 = std::stof(SerialLink.token);
                 Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
+              }
+
+              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+                sensorData.dht11_c_0 = std::stof(SerialLink.token);
+                Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
+              }
+
+              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+                sensorData.dht11_f_0 = std::stof(SerialLink.token);
+                Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
+              }
+
+              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+                sensorData.dht11_hif_0 = std::stof(SerialLink.token);
+                Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
+              }
+
+              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+                sensorData.dht11_hic_0 = std::stof(SerialLink.token);
+                Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
               }
 
               if ((SerialLink.TOKEN_i==6) && (is_all_digits(SerialLink.token))) {
