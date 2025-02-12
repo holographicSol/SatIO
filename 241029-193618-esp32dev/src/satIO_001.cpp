@@ -8915,9 +8915,9 @@ void readGPS() {
   memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
   memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-  MAX_GPS_RETIES=0;
-  if (Serial1.available() > 0) {
-    for (int i = 0; i < 8; i++) {
+
+  for (int i = 0; i < 8; i++) {
+    if (Serial1.available() > 0) {
 
       Serial.println("[readGPS] ");
       // MAX_GPS_RETIES++;
@@ -8930,7 +8930,6 @@ void readGPS() {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        // if (MAX_GPS_RETIES>10) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
@@ -8954,15 +8953,11 @@ void readGPS() {
   }
 }
 
-int MAX_PORTCONTROLLER_RETIES = 0;
-
 void readPortController() {
-  MAX_PORTCONTROLLER_RETIES = 0;
-  serial1Data.rtc_bool = false;
 
-  if (Serial1.available() > 0) {
+  for (int i = 0; i < 8; i++) {
 
-    for (int i = 0; i < 8; i++) {
+    if (Serial1.available() > 0) {
 
       Serial.println("[readPortController] ");
 
@@ -8971,8 +8966,6 @@ void readPortController() {
 
       if (SerialLink.nbytes>0) {
         // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
-
-        if (serial1Data.rtc_bool==true) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
 
@@ -9030,7 +9023,7 @@ void readPortController() {
               SerialLink.token = strtok(NULL, ",");
               SerialLink.TOKEN_i++;
             }
-            serial1Data.rtc_bool=true;
+            break;
           }
         }
       }
@@ -9039,22 +9032,28 @@ void readPortController() {
 }
 
 void writeDataTXD1() {
-  if (Serial1.availableForWrite() > 0) {
 
-    Serial.println("[writeDataTXD1] ");
+  for (int i=0; i<8; i++) {
 
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    
-    strcpy(SerialLink.BUFFER, "$DATA,");
+    if (Serial1.availableForWrite() > 0) {
 
-    if (gnggaData.satellite_count_gngga>0) {strcat(SerialLink.BUFFER, "1,");}
-    else {strcat(SerialLink.BUFFER, "0,");}
+      Serial.println("[writeDataTXD1] ");
 
-    // append checksum
-    createChecksum(SerialLink.BUFFER);
-    strcat(SerialLink.BUFFER, "*");
-    strcat(SerialLink.BUFFER, SerialLink.checksum);
-    strcat(SerialLink.BUFFER, "\n");
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      
+      strcpy(SerialLink.BUFFER, "$DATA,");
+
+      if (gnggaData.satellite_count_gngga>0) {strcat(SerialLink.BUFFER, "1,");}
+      else {strcat(SerialLink.BUFFER, "0,");}
+
+      // append checksum
+      createChecksum(SerialLink.BUFFER);
+      strcat(SerialLink.BUFFER, "*");
+      strcat(SerialLink.BUFFER, SerialLink.checksum);
+      strcat(SerialLink.BUFFER, "\n");
+
+      break;
+    }
   }
 }
 

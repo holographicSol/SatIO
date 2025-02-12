@@ -457,47 +457,50 @@ void processMatrixData() {
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
 
-  // rcv_matrix_tag = false;
-  if (Serial1.available() > 0) {
+  for (int i=0; i<8; i++) {
 
-    Serial.println("[readRXD1] ");
+    if (Serial1.available() > 0) {
 
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-    if (SerialLink.nbytes > 1) {
-      
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      strcpy(SerialLink.TMP, SerialLink.BUFFER);
-      // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-      SerialLink.TOKEN_i = 0;
+      Serial.println("[readRXD1] ");
 
-      // get tag token
-      SerialLink.token = strtok(SerialLink.TMP, ",");
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      if (SerialLink.nbytes > 1) {
+        
+        memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+        strcpy(SerialLink.TMP, SerialLink.BUFFER);
+        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        SerialLink.TOKEN_i = 0;
 
-      // parse incoming analogu multiplexer instructions sentence
-      if (strcmp(SerialLink.token, "$MUX") == 0) {
-        SerialLink.validation = validateChecksum(SerialLink.BUFFER);
-        if (SerialLink.validation==true) {
+        // get tag token
+        SerialLink.token = strtok(SerialLink.TMP, ",");
 
-          // instruct analogu multiplexer
-          SerialLink.token = strtok(NULL, ",");
-          MUX0_CHANNEL = atoi(SerialLink.token);
-          for(int i = 0; i < 4; i++){
-            digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
+        // parse incoming analogu multiplexer instructions sentence
+        if (strcmp(SerialLink.token, "$MUX") == 0) {
+          SerialLink.validation = validateChecksum(SerialLink.BUFFER);
+          if (SerialLink.validation==true) {
+
+            // instruct analogu multiplexer
+            SerialLink.token = strtok(NULL, ",");
+            MUX0_CHANNEL = atoi(SerialLink.token);
+            for(int i = 0; i < 4; i++){
+              digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
+            }
+
+            // instruct i2C multiplexer
+            SerialLink.token = strtok(NULL, ",");
+            MUX1_CHANNEL = atoi(SerialLink.token);
+            tcaselect(MUX1_CHANNEL);
           }
-
-          // instruct i2C multiplexer
-          SerialLink.token = strtok(NULL, ",");
-          MUX1_CHANNEL = atoi(SerialLink.token);
-          tcaselect(MUX1_CHANNEL);
         }
       }
-    }
 
-    // parse matrix sentence
-    if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-      processMatrixData();
+      // parse matrix sentence
+      if (strcmp(SerialLink.token, "$MATRIX") == 0) {
+        processMatrixData();
+      }
     }
+    break;
   }
 }
 
