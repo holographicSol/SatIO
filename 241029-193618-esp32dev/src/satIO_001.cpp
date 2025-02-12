@@ -6725,7 +6725,7 @@ bool DisplayPage0() {
     hud.drawRect(252, rdata_y+18*3, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("A ") + String(atof(gnggaData.altitude))+String(""), 286, rdata_y+18*3+9);
+    hud.drawString(String("A ") + String(atoi(gnggaData.altitude))+String(""), 286, rdata_y+18*3+9);
 
     // Pitch:
     hud.drawRect(252, rdata_y+18*4, 68, 16, TFT_HUD2_RECT);
