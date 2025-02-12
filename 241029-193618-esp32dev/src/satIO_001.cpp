@@ -6601,14 +6601,14 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("SS ") + String(siderealPlanetData.sun_s), 34, rdata_y+(18*4)+9);
 
-    // Heat Index Celsius/Farenheit:
+    // DHT11_0 Heat Index Celsius/Farenheit:
     hud.drawRect(0, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     if (sensorData.dht11_0_display_hic==true) {hud.drawString(String(sensorData.dht11_hic_0)+" C", 34, rdata_y+(18*5)+9);}
     else {hud.drawString(String(sensorData.dht11_hif_0)+" F", 34, rdata_y+(18*5)+9);}
 
-    // DHT11 Humidity
+    // DHT11_0 Humidity
     hud.drawRect(0, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
