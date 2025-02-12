@@ -9030,32 +9030,6 @@ void readPortController() {
   }
 }
 
-void writeDataTXD1() {
-
-  for (int i=0; i<8; i++) {
-
-    if (Serial1.availableForWrite() > 0) {
-
-      // Serial.println("[writeDataTXD1] ");
-
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      
-      strcpy(SerialLink.BUFFER, "$DATA,");
-
-      if (gnggaData.satellite_count_gngga>0) {strcat(SerialLink.BUFFER, "1,");}
-      else {strcat(SerialLink.BUFFER, "0,");}
-
-      // append checksum
-      createChecksum(SerialLink.BUFFER);
-      strcat(SerialLink.BUFFER, "*");
-      strcat(SerialLink.BUFFER, SerialLink.checksum);
-      strcat(SerialLink.BUFFER, "\n");
-
-      break;
-    }
-  }
-}
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
