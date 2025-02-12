@@ -518,84 +518,89 @@ String padDigitsZero(int digits) {
 }
 
 void writeTXD1Data() {
-  if (Serial1.availableForWrite() > 0) {
 
-    Serial.println("[writeTXD1] ");
+  for (int i=0; i<8; i++) {
 
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    strcpy(SerialLink.BUFFER, "$DATA,");
+    if (Serial1.availableForWrite() > 0) {
 
-    // DHT11
-    dht11_h_0 = dht.readHumidity();
-    dht11_c_0 = dht.readTemperature(); // celsius default
-    dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-    if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
-      Serial.println(F("Failed to read from DHT sensor!"));
+      Serial.println("[writeTXD1] ");
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      strcpy(SerialLink.BUFFER, "$DATA,");
+
+      // DHT11
+      dht11_h_0 = dht.readHumidity();
+      dht11_c_0 = dht.readTemperature(); // celsius default
+      dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+      }
+      dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
+      dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
+      // 1
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
+      // Serial.println("[dht11_h_0]      " + String(dht11_h_0));
+      // Serial.println("[dht11_h_0 char] " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+      // 2
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      dtostrf(dht11_c_0, 2, 2, SerialLink.TMP);
+      // Serial.println("[dht11_c_0]      " + String(dht11_c_0));
+      // Serial.println("[dht11_c_0 char] " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+      // 3
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      dtostrf(dht11_f_0, 2, 2, SerialLink.TMP);
+      // Serial.println("[dht11_f_0]      " + String(dht11_f_0));
+      // Serial.println("[dht11_f_0 char] " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+      // 4
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      dtostrf(dht11_hif_0, 2, 2, SerialLink.TMP);
+      // Serial.println("[dht11_hif_0]      " + String(dht11_hif_0));
+      // Serial.println("[dht11_hif_0 char] " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+      // 5
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      dtostrf(dht11_hic_0, 2, 2, SerialLink.TMP);
+      // Serial.println("[dht11_hic_0]      " + String(dht11_hic_0));
+      // Serial.println("[dht11_hic_0 char] " + String(SerialLink.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+
+      // RTC
+      dt_now = rtc.now();
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.hour()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.minute()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+
+      // append checksum
+      createChecksum(SerialLink.BUFFER);
+      strcat(SerialLink.BUFFER, "*");
+      strcat(SerialLink.BUFFER, SerialLink.checksum);
+      strcat(SerialLink.BUFFER, "\n");
+
+      Serial.println(SerialLink.BUFFER);
+
+      Serial1.write(SerialLink.BUFFER);
+      Serial1.write(ETX);
+
+      break;
     }
-    dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
-    dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
-    // 1
-    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-    dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
-    // Serial.println("[dht11_h_0]      " + String(dht11_h_0));
-    // Serial.println("[dht11_h_0 char] " + String(SerialLink.TMP));
-    strcat(SerialLink.BUFFER, SerialLink.TMP);
-    strcat(SerialLink.BUFFER, ",");
-    // 2
-    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-    dtostrf(dht11_c_0, 2, 2, SerialLink.TMP);
-    // Serial.println("[dht11_c_0]      " + String(dht11_c_0));
-    // Serial.println("[dht11_c_0 char] " + String(SerialLink.TMP));
-    strcat(SerialLink.BUFFER, SerialLink.TMP);
-    strcat(SerialLink.BUFFER, ",");
-    // 3
-    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-    dtostrf(dht11_f_0, 2, 2, SerialLink.TMP);
-    // Serial.println("[dht11_f_0]      " + String(dht11_f_0));
-    // Serial.println("[dht11_f_0 char] " + String(SerialLink.TMP));
-    strcat(SerialLink.BUFFER, SerialLink.TMP);
-    strcat(SerialLink.BUFFER, ",");
-    // 4
-    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-    dtostrf(dht11_hif_0, 2, 2, SerialLink.TMP);
-    // Serial.println("[dht11_hif_0]      " + String(dht11_hif_0));
-    // Serial.println("[dht11_hif_0 char] " + String(SerialLink.TMP));
-    strcat(SerialLink.BUFFER, SerialLink.TMP);
-    strcat(SerialLink.BUFFER, ",");
-    // 5
-    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-    dtostrf(dht11_hic_0, 2, 2, SerialLink.TMP);
-    // Serial.println("[dht11_hic_0]      " + String(dht11_hic_0));
-    // Serial.println("[dht11_hic_0 char] " + String(SerialLink.TMP));
-    strcat(SerialLink.BUFFER, SerialLink.TMP);
-    strcat(SerialLink.BUFFER, ",");
-
-    // RTC
-    dt_now = rtc.now();
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.hour()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.minute()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
-    strcat(SerialLink.BUFFER, ",");
-
-    // append checksum
-    createChecksum(SerialLink.BUFFER);
-    strcat(SerialLink.BUFFER, "*");
-    strcat(SerialLink.BUFFER, SerialLink.checksum);
-    strcat(SerialLink.BUFFER, "\n");
-
-    Serial.println(SerialLink.BUFFER);
-
-    Serial1.write(SerialLink.BUFFER);
-    Serial1.write(ETX);
-
   }
 }
 
