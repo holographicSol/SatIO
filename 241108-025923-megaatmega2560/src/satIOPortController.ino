@@ -30,6 +30,9 @@ ATMEGA2560 2 -> DHT11 S
 DHT11 VCC 5v
 DHT11 GND
 
+Wiring Photoresistor:
+ATMEGA2560 A0 -> Photo resistor S
+
 */
 
 #include <stdio.h>
