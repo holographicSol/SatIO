@@ -9047,7 +9047,7 @@ void readGPS() {
   if (Serial1.available() > 0) {
     for (int i = 0; i < 8; i++) {
 
-      Serial.println("[readGPS] ");
+      // Serial.println("[readGPS] ");
       // MAX_GPS_RETIES++;
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
@@ -9092,7 +9092,7 @@ void readPortController() {
 
     for (int i = 0; i < 8; i++) {
 
-      Serial.println("[readPortController] ");
+      // Serial.println("[readPortController] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -9113,27 +9113,27 @@ void readPortController() {
 
               if ((SerialLink.TOKEN_i==1) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
                 sensorData.dht11_h_0 = std::stof(SerialLink.token);
-                Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
+                // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
               }
 
               if ((SerialLink.TOKEN_i==2) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
                 sensorData.dht11_c_0 = std::stof(SerialLink.token);
-                Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
+                // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
               }
 
               if ((SerialLink.TOKEN_i==3) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
                 sensorData.dht11_f_0 = std::stof(SerialLink.token);
-                Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
+                // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
               }
 
               if ((SerialLink.TOKEN_i==4) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
                 sensorData.dht11_hif_0 = std::stof(SerialLink.token);
-                Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
+                // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
               }
 
               if ((SerialLink.TOKEN_i==5) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
                 sensorData.dht11_hic_0 = std::stof(SerialLink.token);
-                Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+                // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
               }
 
               if ((SerialLink.TOKEN_i==6) && (is_all_digits(SerialLink.token))) {
@@ -9169,7 +9169,7 @@ void readPortController() {
 void writeDataTXD1() {
   if (Serial1.availableForWrite() > 0) {
 
-    Serial.println("[writeDataTXD1] ");
+    // Serial.println("[writeDataTXD1] ");
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     
@@ -9191,7 +9191,7 @@ void writeDataTXD1() {
 
 void loop() {
 
-  Serial.println("[loop] ");
+  // Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 
