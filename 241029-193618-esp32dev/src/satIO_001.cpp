@@ -9116,22 +9116,22 @@ void readPortController() {
                 Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
               }
 
-              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==2) && (is_all_digits(SerialLink.token))) {
                 sensorData.dht11_c_0 = std::stof(SerialLink.token);
                 Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
               }
 
-              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==3) && (is_all_digits(SerialLink.token))) {
                 sensorData.dht11_f_0 = std::stof(SerialLink.token);
                 Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
               }
 
-              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==4) && (is_all_digits(SerialLink.token))) {
                 sensorData.dht11_hif_0 = std::stof(SerialLink.token);
                 Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
               }
 
-              if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==5) && (is_all_digits(SerialLink.token))) {
                 sensorData.dht11_hic_0 = std::stof(SerialLink.token);
                 Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
               }
