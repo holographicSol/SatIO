@@ -9103,9 +9103,9 @@ void readPortController() {
         if (serial1Data.rtc_bool==true) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
-          Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
+            Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
             SerialLink.TOKEN_i = 0;
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
