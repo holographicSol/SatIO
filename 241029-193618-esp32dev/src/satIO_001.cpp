@@ -6496,7 +6496,7 @@ bool isTouchTitleBar(TouchPoint p) {
 //                                                                                                                 DISPLAY PAGE 0
 
 // Heading:
-int highlighted_heading_values[1][10] = {{0, 1, 2, 4, 6, 8, 10, 12, 14, 15}};
+float highlighted_heading_values[1][9] = {{0.0, 360.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0, 315.0}};
 char name_ground_heading[10];
 char ground_heading_names[16][10] = {
   "N",  "NNE",  "NE",  "ENE",
@@ -6745,11 +6745,6 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("Y ") + String(atof(gpattData.yaw))+String(""), 286, rdata_y+18*6+9);
 
-    // // null (lower right)
-    // hud.drawRect(252, rdata_y+18*9, 68, 16, TFT_HUD2_RECT);
-    // hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
-    // hud.setTextDatum(MC_DATUM);
-
     // Ground Speed:
     hud.drawRect(uiData.yaw_x+64-104, rdata_y+18*8, 49+18+22, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
@@ -6806,7 +6801,7 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawRect(123, rdata_y, 74, 16, TFT_HUD2_RECT); // display ground heading rect
     hud.setTextColor(TFT_GENERAL_TXT_FG_0, TFT_GENERAL_TXT_BG_0);
-    for (int i = 0; i < 10; i++) {if (i_mapped_ground_heading==highlighted_heading_values[0][i]) {hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);}}
+    for (int i = 0; i < 9; i++) {if (atof(gnrmcData.ground_heading)==highlighted_heading_values[0][i]) {hud.setTextColor(TFT_CYAN, TFT_GENERAL_TXT_BG_0);}}
     hud.drawString(String(name_ground_heading) + ":" + String(gnrmcData.ground_heading), (160), rdata_y+9);
 
     /* Yaw Scale */
