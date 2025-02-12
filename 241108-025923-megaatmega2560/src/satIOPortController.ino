@@ -32,6 +32,8 @@ DHT11 GND
 
 Wiring Photoresistor:
 ATMEGA2560 A0 -> Photo resistor S
+Photo resistor VCC 5v
+Photo resistor GND
 
 */
 
