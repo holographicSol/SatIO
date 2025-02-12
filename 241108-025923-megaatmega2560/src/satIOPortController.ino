@@ -340,7 +340,7 @@ void SerialDisplayRTCDateTime() {
 
 void satIOPortController() {
 
-  Serial.println("[satIOPortController] ");
+  // Serial.println("[satIOPortController] ");
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
