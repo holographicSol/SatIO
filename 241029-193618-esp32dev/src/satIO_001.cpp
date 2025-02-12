@@ -395,8 +395,8 @@ SDCardStruct sdcardData;
 //                                                                                                                     DATA: TIME
 
 struct TimeStruct {
-  double seconds;               // seconds accumulated since startup
-  double mainLoopTimeTaken;     // current main loop time
+  double seconds;                      // seconds accumulated since startup
+  unsigned long mainLoopTimeTaken;     // current main loop time
   unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
   unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
@@ -6704,14 +6704,14 @@ bool DisplayPage0() {
       hud.drawRect(252, rdata_y+18*1, 68, 16, TFT_HUD2_RECT);
       hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(" !"), 286, rdata_y+18*1+9);
+      hud.drawString(String(timeData.mainLoopTimeTaken)+String(" !"), 286, rdata_y+18*1+9);
     }
     // main loop time under threshold.
     else {
       hud.drawRect(252, rdata_y+18*1, 68, 16, TFT_HUD2_RECT);
       hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
       hud.setTextDatum(MC_DATUM);
-      hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 286, rdata_y+18*1+9);
+      hud.drawString(String(timeData.mainLoopTimeTaken)+String(""), 286, rdata_y+18*1+9);
       }
 
     // HDOP Precision Factor
@@ -8954,9 +8954,9 @@ void readGPS() {
 
 void readPortController() {
 
-  for (int i = 0; i < 8; i++) {
+  // for (int i = 0; i < 8; i++) {
 
-    if (Serial1.available() > 0) {
+    // if (Serial1.available() > 0) {
 
       // Serial.println("[readPortController] ");
 
@@ -8975,59 +8975,59 @@ void readPortController() {
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
             while (SerialLink.token != NULL) {
 
-              if ((SerialLink.TOKEN_i==1) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
+              if (SerialLink.TOKEN_i==1)  {
                 sensorData.dht11_h_0 = std::stof(SerialLink.token);
                 // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
               }
 
-              if ((SerialLink.TOKEN_i==2) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
+              if (SerialLink.TOKEN_i==2) {
                 sensorData.dht11_c_0 = std::stof(SerialLink.token);
                 // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
               }
 
-              if ((SerialLink.TOKEN_i==3) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
+              if (SerialLink.TOKEN_i==3) {
                 sensorData.dht11_f_0 = std::stof(SerialLink.token);
                 // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
               }
 
-              if ((SerialLink.TOKEN_i==4) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
+              if (SerialLink.TOKEN_i==4) {
                 sensorData.dht11_hif_0 = std::stof(SerialLink.token);
                 // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
               }
 
-              if ((SerialLink.TOKEN_i==5) && (is_all_digits_plus_char(SerialLink.token, '.'))) {
+              if (SerialLink.TOKEN_i==5) {
                 sensorData.dht11_hic_0 = std::stof(SerialLink.token);
                 // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
               }
 
-              if ((SerialLink.TOKEN_i==6) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==6)  {
               satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
               }
-              if ((SerialLink.TOKEN_i==7) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==7) {
                 satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
               }
-              if ((SerialLink.TOKEN_i==8) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==8)  {
                 satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
               }
-              if ((SerialLink.TOKEN_i==9) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==9) {
                 satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
               }
-              if ((SerialLink.TOKEN_i==10) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==10) {
                 satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
               }
-              if ((SerialLink.TOKEN_i==11) && (is_all_digits(SerialLink.token))) {
+              if (SerialLink.TOKEN_i==11) {
                 satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
               }
               
               SerialLink.token = strtok(NULL, ",");
               SerialLink.TOKEN_i++;
             }
-            break;
+            // break;
           }
         }
       }
-    }
-  }
+    // }
+  // }
 }
 
 void writeDataTXD1() {
@@ -9131,7 +9131,7 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
-  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;
+  timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);

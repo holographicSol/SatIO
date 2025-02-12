@@ -122,6 +122,7 @@ signed int tmp_matrix_port_map[1][20] = {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SERIAL LINK STRUCT
+char foo0[MAX_BUFF];
 
 struct SerialLinkStruct {
   signed int i_nbytes;
@@ -593,20 +594,23 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
       strcat(SerialLink.BUFFER, ",");
 
+      if (!strcmp(foo0, SerialLink.BUFFER)==0) {
+      memset(foo0, 0, sizeof(foo0));
+      strcpy(foo0, SerialLink.BUFFER);
+
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println(SerialLink.BUFFER);
+      Serial.println("[TXD]" + String(SerialLink.BUFFER));
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
 
-      // break;
+      }
     }
-  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -614,27 +618,25 @@ void writeTXD1Data() {
 
 void loop() {
 
-  // Serial.println("---------------------------------------");
-  // SerialDisplayRTCDateTime();
-  // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+  Serial.println("---------------------------------------");
+  
+  Serial.println("[loop] ");
 
-  // read other serial
-  // readRXD2();
-
-  // Serial.println("[loop] ");
+  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
   // read matrix data
   readRXD1();
-  // if (MUX0_CHANNEL==1) {readRXD1();}
   
+  // write sensor data to esp32
   if (!MUX0_CHANNEL==1) {writeTXD1Data();}
-  // writeTXD1Data();
 
-  // run portcontroller
+  // execute matrix switches
+  if (MUX0_CHANNEL==1) {
   if (SerialLink.validation==true) {satIOPortController();}
+  }
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeDcata.mainLoopTimeTaken);
 
-  delay(1);
+  // delay(1);
 }
