@@ -583,13 +583,12 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, ",");
 
       // PHOTO RESITOR 0
-      Serial.println("[PHOTORESISTOR_0] " + String(analogRead(PHOTORESISTOR_0)));
+      // Serial.println("[PHOTORESISTOR_0] " + String(analogRead(PHOTORESISTOR_0)));
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       itoa(analogRead(PHOTORESISTOR_0), SerialLink.TMP, 10);
-      // Serial.println("[photoresistor_0]      " + String(Serial,Link.TMP));
+      // Serial.println("[photoresistor_0]      " + String(SerialLink.TMP));
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
-
 
       // RTC
       dt_now = rtc.now();
@@ -612,7 +611,7 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      // Serial.println("[TXD] " + String(SerialLink.BUFFER));
+      Serial.println("[TXD] " + String(SerialLink.BUFFER));
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
