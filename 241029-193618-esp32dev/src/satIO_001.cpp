@@ -1578,9 +1578,9 @@ struct MatrixStruct {
   };
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 195;
+  int max_matrix_function_names = 215;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[195][25] = 
+  char matrix_function_names[215][25] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1776,160 +1776,180 @@ struct MatrixStruct {
     "NeptuneUp",
     "NeptuneDown",
     "NeptuneRise",
-    "NeptuneSet"
+    "NeptuneSet",
+    "DHT11_0_H_Under",
+    "DHT11_0_H_Over",
+    "DHT11_0_H_Equal",
+    "DHT11_0_H_Range",
+    "DHT11_0_C_Under",
+    "DHT11_0_C_Over",
+    "DHT11_0_C_Equal",
+    "DHT11_0_C_Range",
+    "DHT11_0_F_Under",
+    "DHT11_0_F_Over",
+    "DHT11_0_F_Equal",
+    "DHT11_0_F_Range",
+    "DHT11_0_HIC_Under",
+    "DHT11_0_HIC_Over",
+    "DHT11_0_HIC_Equal",
+    "DHT11_0_HIC_Range",
+    "DHT11_0_HIF_Under",
+    "DHT11_0_HIF_Over",
+    "DHT11_0_HIF_Equal",
+    "DHT11_0_HIF_Range",
   };
 
   /* false if first or all functions $NONE. true if preceeding functions are populated. */
-  char default_matrix_function[56]         = "$NONE";
+  char default_matrix_function[25]         = "$NONE";
 
-  char default_enable_matrix_function[56]  = "$ENABLED";  // always true.
+  char default_enable_matrix_function[25]  = "$ENABLED";  // always true.
 
   /* link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix. */
-  char SwitchLinkTrue[56]                 = "$SWITCHLINKTRUE";
+  char SwitchLinkTrue[25]                 = "$SWITCHLINKTRUE";
 
   /* link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix. */
-  char SwitchLinkFalse[56]                = "$SWITCHLINKFALSE";
+  char SwitchLinkFalse[25]                = "$SWITCHLINKFALSE";
   
-  char SecondsTimer[56] = "SecondsTimer";  // specify x (seconds) in matrix.
+  char SecondsTimer[25] = "SecondsTimer";  // specify x (seconds) in matrix.
 
-  char RTCTimeOver[56]            = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeUnder[56]      = "RTCTimeUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeEqual[56]      = "RTCTimeEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeRange[56]      = "RTCTimeRange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  char RTCTimeOver[25]            = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeUnder[25]      = "RTCTimeUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeEqual[25]      = "RTCTimeEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeRange[25]      = "RTCTimeRange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
-  char DaySunday[56]    = "DaySunday";     // true for day. takes not further arguments.
-  char DayMonday[56]    = "DayMonday";     // true for day. takes not further arguments.
-  char DayTuesday[56]   = "DayTuesday";    // true for day. takes not further arguments.
-  char DayWednesday[56] = "DayWednesday";  // true for day. takes not further arguments.
-  char DayThursday[56]  = "DayThursday";   // true for day. takes not further arguments.
-  char DayFriday[56]    = "DayFriday";     // true for day. takes not further arguments. 
-  char DaySaturday[56]  = "DaySaturday";   // true for day. takes not further arguments.
+  char DaySunday[25]    = "DaySunday";     // true for day. takes not further arguments.
+  char DayMonday[25]    = "DayMonday";     // true for day. takes not further arguments.
+  char DayTuesday[25]   = "DayTuesday";    // true for day. takes not further arguments.
+  char DayWednesday[25] = "DayWednesday";  // true for day. takes not further arguments.
+  char DayThursday[25]  = "DayThursday";   // true for day. takes not further arguments.
+  char DayFriday[25]    = "DayFriday";     // true for day. takes not further arguments. 
+  char DaySaturday[25]  = "DaySaturday";   // true for day. takes not further arguments.
 
-  char DateDayX[56]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
-  char DateMonthX[56]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
-  char DateYearX[56]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
+  char DateDayX[25]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
+  char DateMonthX[25]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
+  char DateYearX[25]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
 
   // do local time
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SATIO DATA
 
-  char DegreesLatGNGGAOver[56]   = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAUnder[56]  = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAEqual[56]  = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNGGAOver[56]   = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAUnder[56]  = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAEqual[56]  = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNGGARange[56]  = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNGGARange[56]  = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNGGARanges[56]    = "DegreesGNGGARanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesLatGNGGAOver[25]   = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAUnder[25]  = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNGGAEqual[25]  = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNGGAOver[25]   = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAUnder[25]  = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNGGAEqual[25]  = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNGGARange[25]  = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNGGARange[25]  = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNGGARanges[25]    = "DegreesGNGGARanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
-  char DegreesLatGNRMCOver[56]   = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCUnder[56]  = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCEqual[56]  = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNRMCOver[56]   = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCUnder[56]  = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCEqual[56]  = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNRMCRange[56]  = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNRMCRange[56]  = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNRMCRanges[56]    = "DegreesGNRMCRanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
+  char DegreesLatGNRMCOver[25]   = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCUnder[25]  = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
+  char DegreesLatGNRMCEqual[25]  = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
+  char DegreesLonGNRMCOver[25]   = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCUnder[25]  = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
+  char DegreesLonGNRMCEqual[25]  = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
+  char DegreesLatGNRMCRange[25]  = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
+  char DegreesLonGNRMCRange[25]  = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
+  char DegreesGNRMCRanges[25]    = "DegreesGNRMCRanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNGGA DATA
 
-  char UTCTimeGNGGAOver[56]       = "UTCTimeGNGGAOver";        // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAUnder[56]      = "UTCTimeGNGGAUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAEqual[56]      = "UTCTimeGNGGAEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGARange[56]      = "UTCTimeGNGGARange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  char UTCTimeGNGGAOver[25]       = "UTCTimeGNGGAOver";        // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAUnder[25]      = "UTCTimeGNGGAUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGAEqual[25]      = "UTCTimeGNGGAEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
+  char UTCTimeGNGGARange[25]      = "UTCTimeGNGGARange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
 
-  char LatGNGGAOver[56]           = "LatGNGGAOver";            // specify x (absolute lat) in matrix.
-  char LonGNGGAOver[56]           = "LonGNGGAOver";            // specify x (absolute lon) in matrix.
-  char LatGNGGAUnder[56]          = "LatGNGGAUnder";           // specify x (absolute lat) in matrix.
-  char LonGNGGAUnder[56]          = "LonGNGGAUnder";           // specify x (absolute lon) in matrix.
-  char LatGNGGAEqual[56]          = "LatGNGGAEqual";           // specify x (absolute lat) in matrix.
-  char LonGNGGAEqual[56]          = "LonGNGGAEqual";           // specify x (absolute lon) in matrix.
-  char LatGNGGARange[56]          = "LatGNGGARange";           // specify x (absolute lat) z (meters range) in matrix.
-  char LonGNGGARange[56]          = "LonGNGGARange";           // specify x (absolute lon) z (meters range) in matrix.
+  char LatGNGGAOver[25]           = "LatGNGGAOver";            // specify x (absolute lat) in matrix.
+  char LonGNGGAOver[25]           = "LonGNGGAOver";            // specify x (absolute lon) in matrix.
+  char LatGNGGAUnder[25]          = "LatGNGGAUnder";           // specify x (absolute lat) in matrix.
+  char LonGNGGAUnder[25]          = "LonGNGGAUnder";           // specify x (absolute lon) in matrix.
+  char LatGNGGAEqual[25]          = "LatGNGGAEqual";           // specify x (absolute lat) in matrix.
+  char LonGNGGAEqual[25]          = "LonGNGGAEqual";           // specify x (absolute lon) in matrix.
+  char LatGNGGARange[25]          = "LatGNGGARange";           // specify x (absolute lat) z (meters range) in matrix.
+  char LonGNGGARange[25]          = "LonGNGGARange";           // specify x (absolute lon) z (meters range) in matrix.
   
   /*
   specify x in matrix.
   0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
   */
-  char PositioningStatusGNGGA[56] = "PositioningStatusGNGGA";
+  char PositioningStatusGNGGA[25] = "PositioningStatusGNGGA";
   
-  char SatelliteCountOver[56]     = "SatelliteCountOver";      // specify x (satellite number 0+) in matrix.
-  char SatelliteCountUnder[56]    = "SatelliteCountUnder";     // specify x (satellite number 0+) in matrix.
-  char SatelliteCountEqual[56]    = "SatelliteCountEqual";     // specify x (satellite number 0+) in matrix.
-  char SatelliteCountRange[56]    = "SatelliteCountRange";     // specify x (satellite number 0+) in matrix.
+  char SatelliteCountOver[25]     = "SatelliteCountOver";      // specify x (satellite number 0+) in matrix.
+  char SatelliteCountUnder[25]    = "SatelliteCountUnder";     // specify x (satellite number 0+) in matrix.
+  char SatelliteCountEqual[25]    = "SatelliteCountEqual";     // specify x (satellite number 0+) in matrix.
+  char SatelliteCountRange[25]    = "SatelliteCountRange";     // specify x (satellite number 0+) in matrix.
 
-  char HemisphereGNGGANorth[56]   = "HemisphereGNGGANorth";    // takes no further arguments.
-  char HemisphereGNGGAEast[56]    = "HemisphereGNGGAEast";     // takes no further arguments.
-  char HemisphereGNGGASouth[56]   = "HemisphereGNGGASouth";    // takes no further arguments.
-  char HemisphereGNGGAWest[56]    = "HemisphereGNGGAWest";     // takes no further arguments.
+  char HemisphereGNGGANorth[25]   = "HemisphereGNGGANorth";    // takes no further arguments.
+  char HemisphereGNGGAEast[25]    = "HemisphereGNGGAEast";     // takes no further arguments.
+  char HemisphereGNGGASouth[25]   = "HemisphereGNGGASouth";    // takes no further arguments.
+  char HemisphereGNGGAWest[25]    = "HemisphereGNGGAWest";     // takes no further arguments.
 
-  char GPSPrecisionOver[56]       = "GPSPrecisionOver";        // specify x (meters) in matrix.
-  char GPSPrecisionUnder[56]      = "GPSPrecisionUnder";       // specify x (meters) in matrix.
-  char GPSPrecisionEqual[56]      = "GPSPrecisionEqual";       // specify x (meters) in matrix.
-  char GPSPrecisionRange[56]      = "GPSPrecisionRange";       // specify x (meters) y (meters) in matrix.
+  char GPSPrecisionOver[25]       = "GPSPrecisionOver";        // specify x (meters) in matrix.
+  char GPSPrecisionUnder[25]      = "GPSPrecisionUnder";       // specify x (meters) in matrix.
+  char GPSPrecisionEqual[25]      = "GPSPrecisionEqual";       // specify x (meters) in matrix.
+  char GPSPrecisionRange[25]      = "GPSPrecisionRange";       // specify x (meters) y (meters) in matrix.
 
-  char AltitudeGNGGAOver[56]      = "AltitudeGNGGAOver";       // specify x (meters) in matrix.
-  char AltitudeGNGGAUnder[56]     = "AltitudeGNGGAUnder";      // specify x (meters) in matrix.
-  char AltitudeGNGGAEqual[56]     = "AltitudeGNGGAEqual";      // specify x (meters) in matrix.
-  char AltitudeGNGGARange[56]     = "AltitudeGNGGARange";      // specify x (meters) y (meters) in matrix.
+  char AltitudeGNGGAOver[25]      = "AltitudeGNGGAOver";       // specify x (meters) in matrix.
+  char AltitudeGNGGAUnder[25]     = "AltitudeGNGGAUnder";      // specify x (meters) in matrix.
+  char AltitudeGNGGAEqual[25]     = "AltitudeGNGGAEqual";      // specify x (meters) in matrix.
+  char AltitudeGNGGARange[25]     = "AltitudeGNGGARange";      // specify x (meters) y (meters) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GNRMC DATA
 
-  char UTCTimeGNRMCOver[56]         = "UTCTimeGNRMCOver";         // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCUnder[56]        = "UTCTimeGNRMCUnder";        // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCEqual[56]        = "UTCTimeGNRMCEqual";        // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCRange[56]        = "UTCTimeGNRMCRange";        // specify x (hhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
+  char UTCTimeGNRMCOver[25]         = "UTCTimeGNRMCOver";         // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCUnder[25]        = "UTCTimeGNRMCUnder";        // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCEqual[25]        = "UTCTimeGNRMCEqual";        // specify x (hhmmss.ms) in matrix.
+  char UTCTimeGNRMCRange[25]        = "UTCTimeGNRMCRange";        // specify x (hhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
   
-  char PositioningStatusGNRMCA[56]  = "PositioningStatusGNRMCA";  // A = valid positioning. takes no further arguments.
-  char PositioningStatusGNRMCV[56]  = "PositioningStatusGNRMCV";  // V = invalid positioning. takes no further arguments.
+  char PositioningStatusGNRMCA[25]  = "PositioningStatusGNRMCA";  // A = valid positioning. takes no further arguments.
+  char PositioningStatusGNRMCV[25]  = "PositioningStatusGNRMCV";  // V = invalid positioning. takes no further arguments.
   
-  char ModeGNRMCA[56]               = "ModeGNRMCA";               // A = autonomous positioning. takes no further arguments.
-  char ModeGNRMCD[56]               = "ModeGNRMCD";               // D = differential. takes no further arguments.
-  char ModeGNRMCE[56]               = "ModeGNRMCE";               // E = estimation. takes no further arguments.
-  char ModeGNRMCN[56]               = "ModeGNRMCN";               // N = invalid data. takes no further arguments.
+  char ModeGNRMCA[25]               = "ModeGNRMCA";               // A = autonomous positioning. takes no further arguments.
+  char ModeGNRMCD[25]               = "ModeGNRMCD";               // D = differential. takes no further arguments.
+  char ModeGNRMCE[25]               = "ModeGNRMCE";               // E = estimation. takes no further arguments.
+  char ModeGNRMCN[25]               = "ModeGNRMCN";               // N = invalid data. takes no further arguments.
   
-  char LatGNRMCOver[56]             = "LatGNRMCOver";             // specify x (absolute lat) in matrix.
-  char LonGNRMCOver[56]             = "LonGNRMCOver";             // specify x (absolute lon) in matrix.
-  char LatGNRMCUnder[56]            = "LatGNRMCUnder";            // specify x (absolute lat) in matrix.
-  char LonGNRMCUnder[56]            = "LonGNRMCUnder";            // specify x (absolute lon) in matrix.
-  char LatGNRMCEqual[56]            = "LatGNRMCEqual";            // specify x (absolute lat) in matrix.
-  char LonGNRMCEqual[56]            = "LonGNRMCEqual";            // specify x (absolute lon) in matrix.
-  char LatGNRMCRange[56]            = "LatGNRMCRange";            // specify x (absolute lat) z (meters range) in matrix.
-  char LonGNRMCRange[56]            = "LonGNRMCRange";            // specify x (absolute lon) z (meters range) in matrix.
+  char LatGNRMCOver[25]             = "LatGNRMCOver";             // specify x (absolute lat) in matrix.
+  char LonGNRMCOver[25]             = "LonGNRMCOver";             // specify x (absolute lon) in matrix.
+  char LatGNRMCUnder[25]            = "LatGNRMCUnder";            // specify x (absolute lat) in matrix.
+  char LonGNRMCUnder[25]            = "LonGNRMCUnder";            // specify x (absolute lon) in matrix.
+  char LatGNRMCEqual[25]            = "LatGNRMCEqual";            // specify x (absolute lat) in matrix.
+  char LonGNRMCEqual[25]            = "LonGNRMCEqual";            // specify x (absolute lon) in matrix.
+  char LatGNRMCRange[25]            = "LatGNRMCRange";            // specify x (absolute lat) z (meters range) in matrix.
+  char LonGNRMCRange[25]            = "LonGNRMCRange";            // specify x (absolute lon) z (meters range) in matrix.
 
-  char HemisphereGNRMCNorth[56]     = "HemisphereGNRMCNorth";     // takes no further arguments.
-  char HemisphereGNRMCEast[56]      = "HemisphereGNRMCEast";      // takes no further arguments.
-  char HemisphereGNRMCSouth[56]     = "HemisphereGNRMCSouth";     // takes no further arguments.
-  char HemisphereGNRMCWest[56]      = "HemisphereGNRMCWest";      // takes no further arguments.
+  char HemisphereGNRMCNorth[25]     = "HemisphereGNRMCNorth";     // takes no further arguments.
+  char HemisphereGNRMCEast[25]      = "HemisphereGNRMCEast";      // takes no further arguments.
+  char HemisphereGNRMCSouth[25]     = "HemisphereGNRMCSouth";     // takes no further arguments.
+  char HemisphereGNRMCWest[25]      = "HemisphereGNRMCWest";      // takes no further arguments.
 
-  char GroundSpeedGNRMCOver[56]     = "GroundSpeedGNRMCOver";     // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCUnder[56]    = "GroundSpeedGNRMCUnder";    // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCEqual[56]    = "GroundSpeedGNRMCEqual";    // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCRange[56]    = "GroundSpeedGNRMCRange";    // specify x (kilometers/h) y (kilometers/h) in matrix.
+  char GroundSpeedGNRMCOver[25]     = "GroundSpeedGNRMCOver";     // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCUnder[25]    = "GroundSpeedGNRMCUnder";    // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCEqual[25]    = "GroundSpeedGNRMCEqual";    // specify x (kilometers/h) in matrix.
+  char GroundSpeedGNRMCRange[25]    = "GroundSpeedGNRMCRange";    // specify x (kilometers/h) y (kilometers/h) in matrix.
 
-  char HeadingGNRMCOver[56]         = "HeadingGNRMCOver";         // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCUnder[56]        = "HeadingGNRMCUnder";        // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCEqual[56]        = "HeadingGNRMCEqual";        // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCRange[56]        = "HeadingGNRMCRange";        // specify x (degrees: 0-360) y (degrees: 0-360) in matrix.
+  char HeadingGNRMCOver[25]         = "HeadingGNRMCOver";         // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCUnder[25]        = "HeadingGNRMCUnder";        // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCEqual[25]        = "HeadingGNRMCEqual";        // specify x (degrees: 0-360) in matrix.
+  char HeadingGNRMCRange[25]        = "HeadingGNRMCRange";        // specify x (degrees: 0-360) y (degrees: 0-360) in matrix.
 
-  char UTCDateGNRMCOver[56]         = "UTCDateGNRMCOver";         // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCUnder[56]        = "UTCDateGNRMCUnder";        // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCEqual[56]        = "UTCDateGNRMCEqual";        // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCRange[56]        = "UTCDateGNRMCRange";        // specify x (ddmmyy) y (ddmmyy) in matrix.
+  char UTCDateGNRMCOver[25]         = "UTCDateGNRMCOver";         // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCUnder[25]        = "UTCDateGNRMCUnder";        // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCEqual[25]        = "UTCDateGNRMCEqual";        // specify x (ddmmyy) in matrix.
+  char UTCDateGNRMCRange[25]        = "UTCDateGNRMCRange";        // specify x (ddmmyy) y (ddmmyy) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   GPATT DATA
 
   /* specify x (0-1) in matrix. 1 : straight driving, 0: turning driving */
-  char LineFlagGPATTEqual[56]     = "LineFlagGPATTEqual";
+  char LineFlagGPATTEqual[25]     = "LineFlagGPATTEqual";
 
   /* specify x (0-1) in matrix. 1 : static, 0 : dynamic */
-  char StaticFlagGPATTEqual[56]   = "StaticFlagGPATTEqual";
+  char StaticFlagGPATTEqual[25]   = "StaticFlagGPATTEqual";
 
   /*
   // specify x (flag) in matrix. 0: Prepare for initialization.
@@ -1938,115 +1958,139 @@ struct MatrixStruct {
                                  3: Inertial Navigation is converging. Inertial navigation can be started. flag: 03/04
                                  4. Inertial Navigation convergence complete. Inertial navigation can be started. flag: 03/04
   */
-  char RunStateFlagGPATTEqual[56] = "RunStateFlagGPATTEqual";
+  char RunStateFlagGPATTEqual[25] = "RunStateFlagGPATTEqual";
 
-  char INSGPATTEqual[56]          = "INSGPATTEqual";        // specify x (0-1) in matrix. 1 : On, 0 : Off
-
-  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTOver[56]      = "SpeedNumGPATTOver";
+  char INSGPATTEqual[25]          = "INSGPATTEqual";        // specify x (0-1) in matrix. 1 : On, 0 : Off
 
   /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTUnder[56]     = "SpeedNumGPATTUnder[";
+  char SpeedNumGPATTOver[25]      = "SpeedNumGPATTOver";
 
   /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTEqual[56]     = "SpeedNumGPATTEqual";
+  char SpeedNumGPATTUnder[25]     = "SpeedNumGPATTUnder[";
+
+  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
+  char SpeedNumGPATTEqual[25]     = "SpeedNumGPATTEqual";
 
   /* specify x (0-99) y (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTRange[56]     = "SpeedNumGPATTRange";
+  char SpeedNumGPATTRange[25]     = "SpeedNumGPATTRange";
 
-  char MileageGPATTOver[56]       = "MileageGPATTOver";     // specify x (mileage) in matrix.
-  char MileageGPATTUnder[56]      = "MileageGPATTUnder[";   // specify x (mileage) in matrix.
-  char MileageGPATTEqual[56]      = "MileageGPATTEqual";    // specify x (mileage) in matrix.
-  char MileageGPATTRange[56]      = "MileageGPATTRange";    // specify x (mileage) y (mileage) in matrix.
+  char MileageGPATTOver[25]       = "MileageGPATTOver";     // specify x (mileage) in matrix.
+  char MileageGPATTUnder[25]      = "MileageGPATTUnder[";   // specify x (mileage) in matrix.
+  char MileageGPATTEqual[25]      = "MileageGPATTEqual";    // specify x (mileage) in matrix.
+  char MileageGPATTRange[25]      = "MileageGPATTRange";    // specify x (mileage) y (mileage) in matrix.
 
-  char GSTDataGPATTOver[56]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix.
-  char GSTDataGPATTUnder[56]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix.
-  char GSTDataGPATTEqual[56]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix.
-  char GSTDataGPATTRange[56]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix.
+  char GSTDataGPATTOver[25]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix.
+  char GSTDataGPATTUnder[25]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix.
+  char GSTDataGPATTEqual[25]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix.
+  char GSTDataGPATTRange[25]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix.
 
-  char YawGPATTOver[56]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix.
-  char YawGPATTUnder[56]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix.
-  char YawGPATTEqual[56]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix.
-  char YawGPATTRange[56]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix.
+  char YawGPATTOver[25]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix.
+  char YawGPATTUnder[25]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix.
+  char YawGPATTEqual[25]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix.
+  char YawGPATTRange[25]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix.
 
-  char RollGPATTOver[56]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTUnder[56]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTEqual[56]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTRange[56]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix.
+  char RollGPATTOver[25]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTUnder[25]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTEqual[25]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix.
+  char RollGPATTRange[25]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix.
 
-  char PitchGPATTOver[56]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTUnder[56]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTEqual[56]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTRange[56]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix.
+  char PitchGPATTOver[25]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTUnder[25]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTEqual[25]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix.
+  char PitchGPATTRange[25]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix.
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                             SIDEREAL PLANETS
 
-  char SunAzimuthRange[56]  = "SunAzimuthRange";           // specify x (0-360) y (0-360) in matrix.
-  char SunAltitudeRange[56] = "SunAltitudeRange";          // specify x (0-90) y (0-90) in matrix.
-  char DayTime[56]   = "DayTime";                          // takes no further arguments.
-  char NightTime[56] = "NightTime";                        // takes no further arguments.
-  char Sunrise[56]   = "Sunrise";                          // takes no further arguments.
-  char Sunset[56]    = "Sunset";                           // takes no further arguments.
+  char SunAzimuthRange[25]  = "SunAzimuthRange";           // specify x (0-360) y (0-360) in matrix.
+  char SunAltitudeRange[25] = "SunAltitudeRange";          // specify x (0-90) y (0-90) in matrix.
+  char DayTime[25]   = "DayTime";                          // takes no further arguments.
+  char NightTime[25] = "NightTime";                        // takes no further arguments.
+  char Sunrise[25]   = "Sunrise";                          // takes no further arguments.
+  char Sunset[25]    = "Sunset";                           // takes no further arguments.
 
-  char MoonAzimuthRange[56]  = "MoonAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MoonAltitudeRange[56] = "MoonAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
-  char MoonUp[56]    = "MoonUp";                           // takes no further arguments.
-  char MoonDown[56]  = "MoonDown";                         // takes no further arguments.
-  char Moonrise[56]  = "Moonrise";                         // takes no further arguments.
-  char Moonset[56]   = "Moonset";                          // takes no further arguments.
-  char MoonPhase[56] = "MoonPhase";                        // takes no further arguments.
+  char MoonAzimuthRange[25]  = "MoonAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
+  char MoonAltitudeRange[25] = "MoonAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
+  char MoonUp[25]    = "MoonUp";                           // takes no further arguments.
+  char MoonDown[25]  = "MoonDown";                         // takes no further arguments.
+  char Moonrise[25]  = "Moonrise";                         // takes no further arguments.
+  char Moonset[25]   = "Moonset";                          // takes no further arguments.
+  char MoonPhase[25] = "MoonPhase";                        // takes no further arguments.
 
-  char MercuryAzimuthRange[56]  = "MercuryAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char MercuryAltitudeRange[56] = "MercuryAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char MercuryUp[56]    = "MercuryUp";                     // takes no further arguments.
-  char MercuryDown[56]  = "MercuryDown";                   // takes no further arguments.
-  char MercuryRise[56]  = "MercuryRise";                   // takes no further arguments.
-  char MercurySet[56]   = "MercurySet";                    // takes no further arguments.
+  char MercuryAzimuthRange[25]  = "MercuryAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char MercuryAltitudeRange[25] = "MercuryAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
+  char MercuryUp[25]    = "MercuryUp";                     // takes no further arguments.
+  char MercuryDown[25]  = "MercuryDown";                   // takes no further arguments.
+  char MercuryRise[25]  = "MercuryRise";                   // takes no further arguments.
+  char MercurySet[25]   = "MercurySet";                    // takes no further arguments.
 
-  char VenusAzimuthRange[56]  = "VenusAzimuthRange";       // specify x (0-360) y (0-360) in matrix.
-  char VenusAltitudeRange[56] = "VenusAltitudeRange";      // specify x (0-90) y (0-90) in matrix.
-  char VenusUp[56]    = "VenusUp";                         // takes no further arguments.
-  char VenusDown[56]  = "VenusDown";                       // takes no further arguments.
-  char VenusRise[56]  = "VenusRise";                       // takes no further arguments.
-  char VenusSet[56]   = "VenusSet";                        // takes no further arguments.
+  char VenusAzimuthRange[25]  = "VenusAzimuthRange";       // specify x (0-360) y (0-360) in matrix.
+  char VenusAltitudeRange[25] = "VenusAltitudeRange";      // specify x (0-90) y (0-90) in matrix.
+  char VenusUp[25]    = "VenusUp";                         // takes no further arguments.
+  char VenusDown[25]  = "VenusDown";                       // takes no further arguments.
+  char VenusRise[25]  = "VenusRise";                       // takes no further arguments.
+  char VenusSet[25]   = "VenusSet";                        // takes no further arguments.
 
-  char MarsAzimuthRange[56]  = "MarsAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MarsAltitudeRange[56] = "MarsAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
-  char MarsUp[56]    = "MarsUp";                           // takes no further arguments.
-  char MarsDown[56]  = "MarsDown";                         // takes no further arguments.
-  char MarsRise[56]  = "MarsRise";                         // takes no further arguments.       
-  char MarsSet[56]   = "MarsSet";                          // takes no further arguments.
+  char MarsAzimuthRange[25]  = "MarsAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
+  char MarsAltitudeRange[25] = "MarsAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
+  char MarsUp[25]    = "MarsUp";                           // takes no further arguments.
+  char MarsDown[25]  = "MarsDown";                         // takes no further arguments.
+  char MarsRise[25]  = "MarsRise";                         // takes no further arguments.       
+  char MarsSet[25]   = "MarsSet";                          // takes no further arguments.
 
-  char JupiterAzimuthRange[56]  = "JupiterAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char JupiterAltitudeRange[56] = "JupiterAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char JupiterUp[56]    = "JupiterUp";                     // takes no further arguments.
-  char JupiterDown[56]  = "JupiterDown";                   // takes no further arguments.
-  char JupiterRise[56]  = "JupiterRise";                   // takes no further arguments.
-  char JupiterSet[56]   = "JupiterSet";                    // takes no further arguments.
+  char JupiterAzimuthRange[25]  = "JupiterAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char JupiterAltitudeRange[25] = "JupiterAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
+  char JupiterUp[25]    = "JupiterUp";                     // takes no further arguments.
+  char JupiterDown[25]  = "JupiterDown";                   // takes no further arguments.
+  char JupiterRise[25]  = "JupiterRise";                   // takes no further arguments.
+  char JupiterSet[25]   = "JupiterSet";                    // takes no further arguments.
 
-  char SaturnAzimuthRange[56]  = "SaturnAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char SaturnAltitudeRange[56] = "SaturnAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
-  char SaturnUp[56]    = "SaturnUp";                       // takes no further arguments.
-  char SaturnDown[56]  = "SaturnDown";                     // takes no further arguments.
-  char SaturnRise[56]  = "SaturnRise";                     // takes no further arguments.
-  char SaturnSet[56]   = "SaturnSet";                      // takes no further arguments.
+  char SaturnAzimuthRange[25]  = "SaturnAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
+  char SaturnAltitudeRange[25] = "SaturnAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
+  char SaturnUp[25]    = "SaturnUp";                       // takes no further arguments.
+  char SaturnDown[25]  = "SaturnDown";                     // takes no further arguments.
+  char SaturnRise[25]  = "SaturnRise";                     // takes no further arguments.
+  char SaturnSet[25]   = "SaturnSet";                      // takes no further arguments.
 
-  char UranusAzimuthRange[56]  = "UranusAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char UranusAltitudeRange[56] = "UranusAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
-  char UranusUp[56]    = "UranusUp";                       // takes no further arguments.
-  char UranusDown[56]  = "UranusDown";                     // takes no further arguments.
-  char UranusRise[56]  = "UranusRise";                     // takes no further arguments.
-  char UranusSet[56]   = "UranusSet";                      // takes no further arguments.
+  char UranusAzimuthRange[25]  = "UranusAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
+  char UranusAltitudeRange[25] = "UranusAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
+  char UranusUp[25]    = "UranusUp";                       // takes no further arguments.
+  char UranusDown[25]  = "UranusDown";                     // takes no further arguments.
+  char UranusRise[25]  = "UranusRise";                     // takes no further arguments.
+  char UranusSet[25]   = "UranusSet";                      // takes no further arguments.
 
-  char NeptuneAzimuthRange[56]  = "NeptuneAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char NeptuneAltitudeRange[56] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char NeptuneUp[56]    = "NeptuneUp";                     // takes no further arguments.
-  char NeptuneDown[56]  = "NeptuneDown";                   // takes no further arguments.
-  char NeptuneRise[56]  = "NeptuneRise";                   // takes no further arguments.
-  char NeptuneSet[56]   = "NeptuneSet";                    // takes no further arguments.
+  char NeptuneAzimuthRange[25]  = "NeptuneAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
+  char NeptuneAltitudeRange[25] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
+  char NeptuneUp[25]    = "NeptuneUp";                     // takes no further arguments.
+  char NeptuneDown[25]  = "NeptuneDown";                   // takes no further arguments.
+  char NeptuneRise[25]  = "NeptuneRise";                   // takes no further arguments.
+  char NeptuneSet[25]   = "NeptuneSet";                    // takes no further arguments.
+
+  char DHT11_0_H_Under[25] = "DHT11_0_H_Under";
+  char DHT11_0_H_Over[25] = "DHT11_0_H_Over";
+  char DHT11_0_H_Equal[25] = "DHT11_0_H_Equal";
+  char DHT11_0_H_Range[25] = "DHT11_0_H_Range";
+
+  char DHT11_0_C_Under[25] = "DHT11_0_C_Under";
+  char DHT11_0_C_Over[25] = "DHT11_0_C_Over";
+  char DHT11_0_C_Equal[25] = "DHT11_0_C_Equal";
+  char DHT11_0_C_Range[25] = "DHT11_0_C_Range";
+
+  char DHT11_0_F_Under[25] = "DHT11_0_F_Under";
+  char DHT11_0_F_Over[25] = "DHT11_0_F_Over";
+  char DHT11_0_F_Equal[25] = "DHT11_0_F_Equal";
+  char DHT11_0_F_Range[25] = "DHT11_0_F_Range";
+
+  char DHT11_0_HIC_Under[25] = "DHT11_0_HIC_Under";
+  char DHT11_0_HIC_Over[25] = "DHT11_0_HIC_Over";
+  char DHT11_0_HIC_Equal[25] = "DHT11_0_HIC_Equal";
+  char DHT11_0_HIC_Range[25] = "DHT11_0_HIC_Range";
+
+  char DHT11_0_HIF_Under[25] = "DHT11_0_HIF_Under";
+  char DHT11_0_HIF_Over[25] = "DHT11_0_HIF_Over";
+  char DHT11_0_HIF_Equal[25] = "DHT11_0_HIF_Equal";
+  char DHT11_0_HIF_Range[25] = "DHT11_0_HIF_Range";
   
-
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                VALIDITY DATA
 
@@ -5646,6 +5690,121 @@ void matrixSwitch() {
           tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
           siderealPlanetData.neptune_r,
           siderealPlanetData.neptune_s);
+          }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                       DHT11_0 HUMIDITY
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.dht11_h_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.dht11_h_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_h_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                        DHT11_0 CELSIUS
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.dht11_c_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.dht11_c_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.dht11_c_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_c_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     DHT11_0 FAHRENHEIT
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.dht11_f_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.dht11_f_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.dht11_f_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_f_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                             DHT11_0 HEAT INDEX CELSIUS
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.dht11_hic_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.dht11_hic_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hic_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hic_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Over) == 0) {
+          tmp_matrix[Fi] = check_over_true(sensorData.dht11_hif_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Under) == 0) {
+          tmp_matrix[Fi] = check_under_true(sensorData.dht11_hif_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Equal) == 0) {
+          tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hif_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Range) == 0) {
+          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hif_0,
+          matrixData.matrix_function_xyz[Mi][Fi][0],
+          matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
         // ----------------------------------------------------------------------------------------------------------------------
