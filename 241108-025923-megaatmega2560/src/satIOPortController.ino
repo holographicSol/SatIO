@@ -23,6 +23,11 @@ ATMEGA2560 5 -> LEDR
 ATMEGA2560 6 -> LEDG
 ATMEGA2560 7 -> LEDB
 
+Wiring DHT11:
+ATMEGA2560 2 -> DHT11 S
+ATMEGA2560 3 -> DHT11 VCC
+ATMEGA2560 4 -> DHT11 GND
+
 */
 
 #include <stdio.h>
@@ -47,6 +52,22 @@ int MUX1_CHANNEL = 0;
 
 RTC_DS3231 rtc;
 DateTime dt_now;
+
+#include <DHT.h>
+#define DHTPIN 2     // Digital pin connected to the DHT sensor
+// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
+// Pin 15 can work but DHT must be disconnected during program upload.
+// Uncomment whatever type you're using!
+#define DHTTYPE DHT11   // DHT 11
+// #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+//#define DHTTYPE DHT21   // DHT 21 (AM2301)
+DHT dht(DHTPIN, DHTTYPE);
+
+float dht11_h_0;
+float dht11_c_0;
+float dht11_f_0;
+float dht11_hif_0;
+float dht11_hic_0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -295,6 +316,13 @@ void setup() {
   digitalWrite(LEDSATSIGNALG, LOW);
   digitalWrite(LEDSATSIGNALB, LOW);
 
+  // DHT11
+  pinMode(3, OUTPUT); digitalWrite(3, HIGH); // 5v to DHT11
+  pinMode(4, OUTPUT); digitalWrite(4, LOW);  // GND to DHT11
+  dht.begin();
+
+  Serial.println(F("------------------------------------"));
+
   Serial.println("starting...");
 }
 
@@ -471,42 +499,81 @@ void readRXD1() {
   }
 }
 
-void writeTXD1() {
+void writeTXD1Data() {
   if (Serial1.availableForWrite() > 0) {
 
     // Serial.println("[writeTXD1] ");
 
-    dt_now = rtc.now();
-
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    strcpy(SerialLink.BUFFER, "$DATA,");
 
-    strcpy(SerialLink.BUFFER, "$RTC,");
+    // DHT11
+    dht11_h_0 = dht.readHumidity();
+    dht11_c_0 = dht.readTemperature(); // celsius default
+    dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+    if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
+      Serial.println(F("Failed to read from DHT sensor!"));
+    }
+    dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
+    dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
+    // 1
+    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+    dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
+    // Serial.println("[dht11_h_0]      " + String(dht11_h_0));
+    // Serial.println("[dht11_h_0 char] " + String(SerialLink.TMP));
+    strcat(SerialLink.BUFFER, SerialLink.TMP);
+    strcat(SerialLink.BUFFER, ",");
+    // 2
+    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+    dtostrf(dht11_c_0, 2, 2, SerialLink.TMP);
+    // Serial.println("[dht11_c_0]      " + String(dht11_c_0));
+    // Serial.println("[dht11_c_0 char] " + String(SerialLink.TMP));
+    strcat(SerialLink.BUFFER, SerialLink.TMP);
+    strcat(SerialLink.BUFFER, ",");
+    // 3
+    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+    dtostrf(dht11_f_0, 2, 2, SerialLink.TMP);
+    // Serial.println("[dht11_f_0]      " + String(dht11_f_0));
+    // Serial.println("[dht11_f_0 char] " + String(SerialLink.TMP));
+    strcat(SerialLink.BUFFER, SerialLink.TMP);
+    strcat(SerialLink.BUFFER, ",");
+    // 4
+    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+    dtostrf(dht11_hif_0, 2, 2, SerialLink.TMP);
+    // Serial.println("[dht11_hif_0]      " + String(dht11_hif_0));
+    // Serial.println("[dht11_hif_0 char] " + String(SerialLink.TMP));
+    strcat(SerialLink.BUFFER, SerialLink.TMP);
+    strcat(SerialLink.BUFFER, ",");
+    // 5
+    memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+    dtostrf(dht11_hic_0, 2, 2, SerialLink.TMP);
+    // Serial.println("[dht11_hic_0]      " + String(dht11_hic_0));
+    // Serial.println("[dht11_hic_0 char] " + String(SerialLink.TMP));
+    strcat(SerialLink.BUFFER, SerialLink.TMP);
+    strcat(SerialLink.BUFFER, ",");
 
+    // RTC
+    dt_now = rtc.now();
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.year(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
-
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.month(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
-
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.day(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
-
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.hour(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
-
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.minute(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
     strcat(SerialLink.BUFFER, ",");
-
     memset(tmp_dt, 0, sizeof(tmp_dt));
     itoa(dt_now.second(), tmp_dt, 10);
     strcat(SerialLink.BUFFER, tmp_dt);
@@ -545,11 +612,11 @@ void loop() {
   readRXD1();
   // if (MUX0_CHANNEL==1) {readRXD1();}
   
-  if (MUX0_CHANNEL==0) {writeTXD1();}
-  // writeTXD1();
+  if (MUX0_CHANNEL==0) {writeTXD1Data();}
+  // writeTXD1Data();
 
   // run portcontroller
-  // if (SerialLink.validation==true) {satIOPortController();}
+  if (SerialLink.validation==true) {satIOPortController();}
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);

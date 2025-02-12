@@ -2498,6 +2498,15 @@ struct SatDatatruct {
 };
 SatDatatruct satData;
 
+struct SensorDataStruct {
+  float dht11_h_0 = 0.0;
+  float dht11_c_0 = 0.0;
+  float dht11_f_0 = 0.0;
+  float dht11_hif_0 = 0.0;
+  float dht11_hic_0 = 0.0;
+};
+SensorDataStruct sensorData;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         CONVERT COORDINTE DATA
 void calculateLocation(){
@@ -8934,7 +8943,7 @@ void readPortController() {
 
         if (serial1Data.rtc_bool==true) {break;}
 
-        if (strncmp(SerialLink.BUFFER, "$RTC", 4) == 0) {
+        if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
           Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
@@ -8944,21 +8953,26 @@ void readPortController() {
             while (SerialLink.token != NULL) {
 
               if ((SerialLink.TOKEN_i==1) && (is_all_digits(SerialLink.token))) {
+                sensorData.dht11_h_0 = std::stof(SerialLink.token);
+                Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
+              }
+
+              if ((SerialLink.TOKEN_i==6) && (is_all_digits(SerialLink.token))) {
               satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
               }
-              if ((SerialLink.TOKEN_i==2) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==7) && (is_all_digits(SerialLink.token))) {
                 satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
               }
-              if ((SerialLink.TOKEN_i==3) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==8) && (is_all_digits(SerialLink.token))) {
                 satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
               }
-              if ((SerialLink.TOKEN_i==4) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==9) && (is_all_digits(SerialLink.token))) {
                 satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
               }
-              if ((SerialLink.TOKEN_i==5) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==10) && (is_all_digits(SerialLink.token))) {
                 satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
               }
-              if ((SerialLink.TOKEN_i==6) && (is_all_digits(SerialLink.token))) {
+              if ((SerialLink.TOKEN_i==11) && (is_all_digits(SerialLink.token))) {
                 satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
               }
               
