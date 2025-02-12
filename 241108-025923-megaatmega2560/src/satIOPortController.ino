@@ -342,7 +342,7 @@ void SerialDisplayRTCDateTime() {
 
 void satIOPortController() {
 
-  Serial.println("[satIOPortController] ");
+  // Serial.println("[satIOPortController] ");
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
@@ -355,7 +355,7 @@ void satIOPortController() {
         digitalWrite(matrix_port_map[0][i], LOW);
         pinMode(matrix_port_map[0][i], INPUT);
 
-        Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
+        // Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
 
         // setup new port
         matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
@@ -382,7 +382,7 @@ void processMatrixData() {
   
   if (SerialLink.validation==true) {
 
-    Serial.println("[processMatrixData] ");
+    // Serial.println("[processMatrixData] ");
 
     // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
     memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
@@ -401,7 +401,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -429,7 +429,7 @@ void processMatrixData() {
 
       // satellite count > 0 indicator
       if (SerialLink.i_token==46) {
-        Serial.println("[satcount] " + String(SerialLink.token));
+        // Serial.println("[satcount] " + String(SerialLink.token));
         if (atoi(SerialLink.token)==0) {
           digitalWrite(LEDSATSIGNALR, HIGH);
           digitalWrite(LEDSATSIGNALG, LOW);
@@ -461,7 +461,7 @@ void readRXD1() {
 
     if (Serial1.available() > 0) {
 
-      Serial.println("[readRXD1] ");
+      // Serial.println("[readRXD1] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -483,6 +483,7 @@ void readRXD1() {
             // instruct analogu multiplexer
             SerialLink.token = strtok(NULL, ",");
             MUX0_CHANNEL = atoi(SerialLink.token);
+            Serial.println("[MUX0_CHANNEL] " + String(MUX0_CHANNEL));
             for(int i = 0; i < 4; i++){
               digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
             }
@@ -491,6 +492,7 @@ void readRXD1() {
             SerialLink.token = strtok(NULL, ",");
             MUX1_CHANNEL = atoi(SerialLink.token);
             tcaselect(MUX1_CHANNEL);
+            Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
           }
         }
       }
@@ -522,11 +524,11 @@ String padDigitsZero(int digits) {
 
 void writeTXD1Data() {
 
-  for (int i=0; i<8; i++) {
+  // for (int i=0; i<8; i++) {
 
     if (Serial1.availableForWrite() > 0) {
 
-      Serial.println("[writeTXD1] ");
+      // Serial.println("[writeTXD1] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, "$DATA,");
@@ -602,9 +604,9 @@ void writeTXD1Data() {
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
 
-      break;
+      // break;
     }
-  }
+  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -619,22 +621,20 @@ void loop() {
   // read other serial
   // readRXD2();
 
-  Serial.println("[loop] ");
-
+  // Serial.println("[loop] ");
   
   // read matrix data
   readRXD1();
   // if (MUX0_CHANNEL==1) {readRXD1();}
   
-  if (MUX0_CHANNEL==0) {writeTXD1Data();}
+  if (!MUX0_CHANNEL==1) {writeTXD1Data();}
   // writeTXD1Data();
 
   // run portcontroller
   if (SerialLink.validation==true) {satIOPortController();}
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeDcata.mainLoopTimeTaken);
 
-  // delay(1000);
-
+  delay(1);
 }

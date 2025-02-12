@@ -8916,40 +8916,39 @@ void readGPS() {
   memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
-  for (int i = 0; i < 8; i++) {
-    if (Serial1.available() > 0) {
+  // Serial.println("[readGPS] ");
 
-      Serial.println("[readGPS] ");
-      // MAX_GPS_RETIES++;
+  for (int i = 0; i < 8; i++) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
-      if (SerialLink.nbytes>31) {
+      // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+
+      if (SerialLink.nbytes>1) {
 
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
-        if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+        else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
           // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gnggaData.sentence, SerialLink.BUFFER);
           serial1Data.gngga_bool = true;
         }
 
-        if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+        else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
           // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gnrmcData.sentence, SerialLink.BUFFER);
           serial1Data.gnrmc_bool = true; 
         }
 
-        if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+        else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
           // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
           strcpy(gpattData.sentence, SerialLink.BUFFER);
           serial1Data.gpatt_bool = true;
         }
       }
-    }
   }
 }
 
@@ -8959,7 +8958,7 @@ void readPortController() {
 
     if (Serial1.available() > 0) {
 
-      Serial.println("[readPortController] ");
+      // Serial.println("[readPortController] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -8970,7 +8969,7 @@ void readPortController() {
         if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
-            Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
 
             SerialLink.TOKEN_i = 0;
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
@@ -9037,7 +9036,7 @@ void writeDataTXD1() {
 
     if (Serial1.availableForWrite() > 0) {
 
-      Serial.println("[writeDataTXD1] ");
+      // Serial.println("[writeDataTXD1] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       
@@ -9060,64 +9059,71 @@ void writeDataTXD1() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
+int t0 = millis(); 
+
 void loop() {
 
-  Serial.println("[loop] ");
+  Serial.println("---------------------------------------------------------------");
+  // Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 
   /* take a snapshot of sensory and calculated data */
 
+  t0 = millis();
   SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
+  Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
-  // writeDataTXD1();
-
+  t0 = millis();
   readPortController();
+  Serial.println("[readPortController] " + String(millis()-t0));
 
+  t0 = millis();
   SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
+  Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
-  // int t0 = millis(); 
+  // delay(1000);
+  t0 = millis();
   readGPS();
-  SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
-  // Serial.println("[gps] " + String(millis()-t0));
+  Serial.println("[gps] " + String(millis()-t0));
+  // delay(1000);
 
-  // t0 = millis();
+  t0 = millis();
   check_gngga();
-  // Serial.println("[gngga] " + String(millis()-t0));
+  Serial.println("[gngga] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   check_gnrmc();
-  // Serial.println("[gnrmc] " + String(millis()-t0));
+  Serial.println("[gnrmc] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   check_gpatt();
-  // Serial.println("[gpatt] " + String(millis()-t0));
+  Serial.println("[gpatt] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   satIOData();
-  // Serial.println("[satio] " + String(millis()-t0));
+  Serial.println("[satio] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   trackPlanets();
-  // Serial.println("[planet track] " + String(millis()-t0));
+  Serial.println("[planet track] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   // sdcardCheck();
-  // Serial.println("[sdcard] " + String(millis()-t0));
+  Serial.println("[sdcard] " + String(millis()-t0));
 
-  /* calculate switches */
-  // t0 = millis();
+  t0 = millis();
   MatrixSwitchTask();
-  // Serial.println("[matrix] " + String(millis()-t0));
+  Serial.println("[matrix] " + String(millis()-t0));
 
-  // t0 = millis();
+  t0 = millis();
   MatrixStatsCounter();
-  // Serial.println("[matrix counter] " + String(millis()-t0));
+  Serial.println("[matrix counter] " + String(millis()-t0));
 
   /* instruct the portcontroller */
-  // t0 = millis();
+  t0 = millis();
   SatIOPortController();
-  // Serial.println("[port controller] " + String(millis()-t0));
+  Serial.println("[port controller] " + String(millis()-t0));
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
@@ -9128,7 +9134,9 @@ void loop() {
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
+  // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
-  // delay(1000);
+  // delay(10);
 }
