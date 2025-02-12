@@ -17,6 +17,8 @@ WTGPS300               -> CD74HC4067 C1
 Wiring TCA9548A i2C Multiplexer:
 TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
+TCA9548A VCC 3.3v
+TCA9548A GND
 
 Wiring Satellite Count and HDOP Precision Factor Indicator:
 ATMEGA2560 5 -> LEDR
@@ -25,8 +27,8 @@ ATMEGA2560 7 -> LEDB
 
 Wiring DHT11:
 ATMEGA2560 2 -> DHT11 S
-ATMEGA2560 3 -> DHT11 VCC
-ATMEGA2560 4 -> DHT11 GND
+DHT11 VCC 5v
+DHT11 GND
 
 */
 
@@ -317,8 +319,8 @@ void setup() {
   digitalWrite(LEDSATSIGNALB, LOW);
 
   // DHT11
-  pinMode(3, OUTPUT); digitalWrite(3, HIGH); // 5v to DHT11
-  pinMode(4, OUTPUT); digitalWrite(4, LOW);  // GND to DHT11
+  // pinMode(3, OUTPUT); digitalWrite(3, HIGH); // 5v to DHT11
+  // pinMode(4, OUTPUT); digitalWrite(4, LOW);  // GND to DHT11
   dht.begin();
 
   Serial.println(F("------------------------------------"));
