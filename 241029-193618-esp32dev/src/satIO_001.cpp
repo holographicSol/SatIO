@@ -6714,11 +6714,12 @@ bool DisplayPage0() {
       hud.drawString(String(timeData.mainLoopTimeTaken/1000)+String(""), 286, rdata_y+18*1+9);
       }
 
-    // Precision Factor: 0.0 > 1.0
+    // HDOP Precision Factor
     hud.drawRect(252, rdata_y+18*2, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("PF ") + String(gnggaData.hdop_precision_factor), 286, rdata_y+18*2+9);
+    if (atoi(gnggaData.hdop_precision_factor) > 1000) {hud.drawString(String("PF >1000"), 286, rdata_y+18*2+9);}
+    else {hud.drawString(String("PF ") + String(gnggaData.hdop_precision_factor), 286, rdata_y+18*2+9);}
 
     // Altitude:
     hud.drawRect(252, rdata_y+18*3, 68, 16, TFT_HUD2_RECT);
