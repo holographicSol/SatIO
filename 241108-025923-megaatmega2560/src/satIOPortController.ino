@@ -596,10 +596,6 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
       strcat(SerialLink.BUFFER, ",");
 
-      if (!strcmp(foo0, SerialLink.BUFFER)==0) {
-      memset(foo0, 0, sizeof(foo0));
-      strcpy(foo0, SerialLink.BUFFER);
-
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
@@ -612,7 +608,6 @@ void writeTXD1Data() {
       Serial1.write(ETX);
 
       break;
-      }
     }
   }
 }
@@ -632,12 +627,10 @@ void loop() {
   readRXD1();
   
   // write sensor data to esp32
-  if (!MUX0_CHANNEL==1) {writeTXD1Data();}
+  if (MUX0_CHANNEL==0) {writeTXD1Data();}
 
   // execute matrix switches
-  if (MUX0_CHANNEL==1) {
   if (SerialLink.validation==true) {satIOPortController();}
-  }
 
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);

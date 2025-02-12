@@ -1,3 +1,4 @@
+
 /*
 
                                         SatIO - Written by Benjamin Jack Cullen.
@@ -9049,7 +9050,9 @@ void loop() {
   Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
   t0 = millis();
+  delay(1);
   readPortController();
+  delay(1);
   Serial.println("[readPortController] " + String(millis()-t0));
 
   t0 = millis();
@@ -9058,7 +9061,9 @@ void loop() {
   
   // delay(1000);
   t0 = millis();
+  delay(1);
   readGPS();
+  delay(1);
   Serial.println("[gps] " + String(millis()-t0));
   // delay(1000);
 
