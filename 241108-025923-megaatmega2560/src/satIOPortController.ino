@@ -222,13 +222,13 @@ void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer = getCheckSum(buffer);
 
   // uncomment to debug
-  Serial.print("checksum_of_buffer: "); Serial.println(SerialLink.checksum_of_buffer);
+  // Serial.print("checksum_of_buffer: "); Serial.println(SerialLink.checksum_of_buffer);
   // Serial.printf("Hexadecimal number is: %X", SerialLink.checksum_of_buffer); Serial.println();
 
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
   // uncomment to debug
-  Serial.print("checksum: "); Serial.println(SerialLink.checksum); Serial.println();
+  // Serial.print("checksum: "); Serial.println(SerialLink.checksum); Serial.println();
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -571,6 +571,7 @@ void writeTXD1Data() {
     // RTC
     dt_now = rtc.now();
     strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
+    strcat(SerialLink.BUFFER, ",");
     strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
     strcat(SerialLink.BUFFER, ",");
     strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
