@@ -222,13 +222,13 @@ void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer = getCheckSum(buffer);
 
   // uncomment to debug
-  // Serial.print("checksum_of_buffer: "); Serial.println(checksum_of_buffer);
-  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); Serial.println();
+  Serial.print("checksum_of_buffer: "); Serial.println(SerialLink.checksum_of_buffer);
+  // Serial.printf("Hexadecimal number is: %X", SerialLink.checksum_of_buffer); Serial.println();
 
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
   // uncomment to debug
-  // Serial.print("checksum: "); Serial.println(checksum); Serial.println();
+  Serial.print("checksum: "); Serial.println(SerialLink.checksum); Serial.println();
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -476,7 +476,6 @@ void readRXD1() {
       if (strcmp(SerialLink.token, "$MUX") == 0) {
         SerialLink.validation = validateChecksum(SerialLink.BUFFER);
         if (SerialLink.validation==true) {
-          // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
 
           // instruct analogu multiplexer
           SerialLink.token = strtok(NULL, ",");
@@ -500,6 +499,22 @@ void readRXD1() {
   }
 }
 
+// // ------------------------------------------------------------------------------------------------------------------------------
+// //                                                                                                                 SATIO SENTENCE
+
+char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
+char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
+
+String padDigitsZero(int digits) {
+  /* preappends char 0 to pad string of digits evenly */
+  memset(pad_digits_new, 0, sizeof(pad_digits_new));
+  memset(pad_current_digits, 0, sizeof(pad_current_digits));
+  if(digits < 10) {strcat(pad_digits_new, "0");}
+  itoa(digits, pad_current_digits, 10);
+  strcat(pad_digits_new, pad_current_digits);
+  return pad_digits_new;
+}
+
 void writeTXD1Data() {
   if (Serial1.availableForWrite() > 0) {
 
@@ -514,10 +529,7 @@ void writeTXD1Data() {
     dht11_f_0 = dht.readTemperature(true); // fahreheit = true
     if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
       Serial.println(F("Failed to read from DHT sensor!"));
-      // append sensor bad '1' to sentence
     }
-    else {// append sensor bad '0' to sentence
-      }
     dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
     dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
     // 1
@@ -558,29 +570,16 @@ void writeTXD1Data() {
 
     // RTC
     dt_now = rtc.now();
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.year(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
     strcat(SerialLink.BUFFER, ",");
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.month(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
     strcat(SerialLink.BUFFER, ",");
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.day(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.hour()).c_str());
     strcat(SerialLink.BUFFER, ",");
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.hour(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.minute()).c_str());
     strcat(SerialLink.BUFFER, ",");
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.minute(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
-    strcat(SerialLink.BUFFER, ",");
-    memset(tmp_dt, 0, sizeof(tmp_dt));
-    itoa(dt_now.second(), tmp_dt, 10);
-    strcat(SerialLink.BUFFER, tmp_dt);
+    strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
     strcat(SerialLink.BUFFER, ",");
 
     // append checksum
@@ -589,7 +588,7 @@ void writeTXD1Data() {
     strcat(SerialLink.BUFFER, SerialLink.checksum);
     strcat(SerialLink.BUFFER, "\n");
 
-    // Serial.println(SerialLink.BUFFER);
+    Serial.println(SerialLink.BUFFER);
 
     Serial1.write(SerialLink.BUFFER);
     Serial1.write(ETX);

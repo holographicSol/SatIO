@@ -9098,14 +9098,14 @@ void readPortController() {
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes>0) {
-        // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+        Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
         if (serial1Data.rtc_bool==true) {break;}
 
         if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
-            Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readPortController RXD] " + String(SerialLink.BUFFER)); // debug
 
             SerialLink.TOKEN_i = 0;
             SerialLink.token = strtok(SerialLink.BUFFER, ",");
