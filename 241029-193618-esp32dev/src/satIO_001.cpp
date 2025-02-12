@@ -2548,6 +2548,7 @@ struct SensorDataStruct {
   float dht11_f_0 = 0.0;
   float dht11_hif_0 = 0.0;
   float dht11_hic_0 = 0.0;
+  bool dht11_0_display_hic = true;
 };
 SensorDataStruct sensorData;
 
@@ -6600,17 +6601,19 @@ bool DisplayPage0() {
     hud.setTextDatum(MC_DATUM);
     hud.drawString(String("SS ") + String(siderealPlanetData.sun_s), 34, rdata_y+(18*4)+9);
 
-    // daylight hours
+    // Heat Index Celsius/Farenheit:
     hud.drawRect(0, rdata_y+18*5, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("DLH ") + String(abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*5)+9);
+    if (sensorData.dht11_0_display_hic==true) {hud.drawString(String(sensorData.dht11_hic_0)+" C", 34, rdata_y+(18*5)+9);}
+    else {hud.drawString(String(sensorData.dht11_hif_0)+" F", 34, rdata_y+(18*5)+9);}
 
-    // night time hours
+    // DHT11 Humidity
     hud.drawRect(0, rdata_y+18*6, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String("NTH ") + String(24-abs(siderealPlanetData.sun_r-siderealPlanetData.sun_s)), 34, rdata_y+(18*6)+9);
+    if (sensorData.dht11_0_display_hic==true) {hud.drawString(String(sensorData.dht11_h_0)+" %", 34, rdata_y+(18*6)+9);}
+    else {hud.drawString(String(sensorData.dht11_h_0)+" %", 34, rdata_y+(18*6)+9);}
 
     // current RTC time 
     hud.drawRect(0, rdata_y, 159, 16, TFT_HUD2_RECT);
