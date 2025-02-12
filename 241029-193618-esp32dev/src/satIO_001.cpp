@@ -4082,15 +4082,15 @@ bool check_equal_false(double n0, double n1) {
 }
 
 bool check_ge_and_le_true(double n0, double n1, double n2) {
-  Serial.println(
-    "check_ge_and_le_true: n0 " +
-    String(n0) +
-    " >= n1 " +
-    String(n1) +
-    " && n0 " +
-    String(n0) +
-    " <= " +
-    String(n2));
+  // Serial.println(
+  //   "check_ge_and_le_true: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+  //   String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return true;}
   else {return false;}
 }
