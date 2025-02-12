@@ -71,6 +71,8 @@ float dht11_f_0;
 float dht11_hif_0;
 float dht11_hic_0;
 
+#define PHOTORESISTOR_0 A0
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
@@ -286,6 +288,8 @@ void setup() {
   digitalWrite(controlPin[2], muxChannel[0][2]); // default channel 0 (esp32 listens to port controller)
   digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0 (esp32 listens to port controller)
 
+  pinMode(PHOTORESISTOR_0, INPUT);
+
   Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
   Serial2.begin(115200); while(!Serial2);
@@ -306,6 +310,8 @@ void setup() {
   MUX1_CHANNEL = 0;
   tcaselect(MUX1_CHANNEL); // zero by default
 
+  dht.begin();
+
   // setup IO
   for (int i=0; i<20; i++) {
     pinMode(matrix_port_map[0][i], OUTPUT);
@@ -318,11 +324,6 @@ void setup() {
   digitalWrite(LEDSATSIGNALR, LOW);
   digitalWrite(LEDSATSIGNALG, LOW);
   digitalWrite(LEDSATSIGNALB, LOW);
-
-  // DHT11
-  // pinMode(3, OUTPUT); digitalWrite(3, HIGH); // 5v to DHT11
-  // pinMode(4, OUTPUT); digitalWrite(4, LOW);  // GND to DHT11
-  dht.begin();
 
   Serial.println(F("------------------------------------"));
 
@@ -580,6 +581,15 @@ void writeTXD1Data() {
       // Serial.println("[dht11_hic_0 char] " + String(SerialLink.TMP));
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
+
+      // PHOTO RESITOR 0
+      Serial.println("[PHOTORESISTOR_0] " + String(analogRead(PHOTORESISTOR_0)));
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      itoa(analogRead(PHOTORESISTOR_0), SerialLink.TMP, 10);
+      // Serial.println("[photoresistor_0]      " + String(Serial,Link.TMP));
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+
 
       // RTC
       dt_now = rtc.now();
