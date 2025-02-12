@@ -495,7 +495,7 @@ void readRXD1() {
             tcaselect(MUX1_CHANNEL);
             // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
 
-            Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
+            // Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
           }
         }
       }
@@ -602,7 +602,7 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD] " + String(SerialLink.BUFFER));
+      // Serial.println("[TXD] " + String(SerialLink.BUFFER));
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -635,5 +635,5 @@ void loop() {
   // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
-  // delay(1);
+  delay(1);
 }
