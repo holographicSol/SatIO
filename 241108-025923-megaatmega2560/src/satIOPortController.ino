@@ -25,6 +25,10 @@ ATMEGA2560 5 -> LEDR
 ATMEGA2560 6 -> LEDG
 ATMEGA2560 7 -> LEDB
 
+Wiring Overload Indicator:
+ATMEGA2560 46 -> LEDR
+ATMEGA2560 47 -> LEDG
+
 Wiring DHT11:
 ATMEGA2560 2 -> DHT11 S
 DHT11 VCC 5v
@@ -56,6 +60,9 @@ Tracking Sensor GND
 #define LEDSATSIGNALR 5
 #define LEDSATSIGNALG 6
 #define LEDSATSIGNALB 7
+
+#define LEDOVERLOADR 46
+#define LEDOVERLOADG 47
 
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
@@ -339,6 +346,11 @@ void setup() {
   digitalWrite(LEDSATSIGNALG, LOW);
   digitalWrite(LEDSATSIGNALB, LOW);
 
+  pinMode(LEDOVERLOADR, OUTPUT);
+  pinMode(LEDOVERLOADG, OUTPUT);
+  digitalWrite(LEDOVERLOADR, LOW);
+  digitalWrite(LEDOVERLOADG, LOW);
+
   Serial.println(F("------------------------------------"));
 
   Serial.println("starting...");
@@ -408,7 +420,7 @@ void processMatrixData() {
     while(SerialLink.token != NULL) {
 
       // uncomment to debug
-      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // check eack token for portmap
       if (SerialLink.i_token<20) { 
@@ -417,7 +429,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -462,6 +474,13 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, HIGH);
         }
       }
+
+      if (SerialLink.i_token==47) {
+        Serial.println("[LEDOVERLOADR] " + String(SerialLink.token));
+        if (atoi(SerialLink.token)==0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
+        else {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
+      }
+
 
       // iterate counters and snap off used token
       SerialLink.i_token++;
@@ -517,6 +536,7 @@ void readRXD1() {
 
       // parse matrix sentence
       if (strcmp(SerialLink.token, "$MATRIX") == 0) {
+        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         processMatrixData();
       }
     }

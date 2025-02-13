@@ -190,6 +190,7 @@ SPIClass sdspi = SPIClass(VSPI);
 //                                                                                                                   DATA: SYSTEM
 
 struct systemStruct {
+  bool overload = false;
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
   bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
   bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
@@ -5986,6 +5987,10 @@ void matrixSwitch() {
     else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
     else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(matrixData.matrix_sentence, "2,");}
 
+    // Overload Indicator
+    if (systemData.overload==false) {strcat(matrixData.matrix_sentence, "0,");}
+    else {strcat(matrixData.matrix_sentence, "1,");}
+
     // append checksum
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
@@ -6782,7 +6787,7 @@ bool DisplayPage0() {
     hud.drawString(String("INS"), 287+16, rdata_y+18*9+9);
 
     // main loop time over threshold: possible overload
-    if (timeData.mainLoopTimeTaken>=500) {
+    if (systemData.overload==true) {
       hud.drawRect(252, rdata_y+18*1, 68, 16, TFT_HUD2_RECT);
       hud.setTextColor(TFT_YELLOW, TFT_HUD2_TXT_BG);
       hud.setTextDatum(MC_DATUM);
@@ -9231,6 +9236,8 @@ void loop() {
   }
 
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
+  if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
+  else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
