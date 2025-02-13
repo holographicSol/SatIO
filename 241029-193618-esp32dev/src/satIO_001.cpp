@@ -9016,11 +9016,11 @@ void readGPS() {
   for (int i = 0; i < 8; i++) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
       // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
-      if (SerialLink.nbytes>1) {
+      if (SerialLink.nbytes>0) {
 
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
@@ -9062,7 +9062,7 @@ void readPortController() {
     if (Serial1.available() > 0) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
       if (SerialLink.nbytes>0) {
         // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
