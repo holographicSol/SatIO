@@ -401,7 +401,7 @@ void satIOPortController() {
 
 void processMatrixData() {
 
-  Serial.println("[processMatrixData] ");
+  // Serial.println("[processMatrixData] ");
 
   // reset values
   update_portmap_bool=false;
@@ -420,7 +420,7 @@ void processMatrixData() {
     while(SerialLink.token != NULL) {
 
       // uncomment to debug
-      Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // check eack token for portmap
       if (SerialLink.i_token<20) { 
@@ -429,7 +429,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -492,7 +492,7 @@ void processMatrixData() {
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
 
-  Serial.println("[readRXD1] ");
+  // Serial.println("[readRXD1] ");
 
   for (int i=0; i<8; i++) {
 
@@ -536,7 +536,7 @@ void readRXD1() {
 
       // parse matrix sentence
       if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         processMatrixData();
       }
     }
@@ -580,7 +580,7 @@ String padDigitZero(int digits) {
 
 void writeTXD1Data0() {
 
-  Serial.println("[writeTXD1Data0] ");
+  // Serial.println("[writeTXD1Data0] ");
 
   for (int i=0; i<8; i++) {
 
@@ -658,7 +658,7 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
+      // Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -701,7 +701,7 @@ void writeTXD1Data1() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
+      // Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -718,7 +718,7 @@ void loop() {
 
   // Serial.println("---------------------------------------");
   
-  Serial.println("[loop] ");
+  // Serial.println("[loop] ");
 
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
@@ -727,8 +727,8 @@ void loop() {
   
   // write sensor data to esp32
   if (MUX0_CHANNEL==0) {
+    writeTXD1Data1(); // send RTC data first
     writeTXD1Data0();
-    writeTXD1Data1();
   }
 
   // execute matrix switches
