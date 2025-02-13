@@ -8961,9 +8961,6 @@ void MatrixSwitchTask() {
 //                                                                                                                     SATIO DATA
 
 void satIOData() {
-  if (satData.convert_coordinates == true) {calculateLocation();}
-  convertUTCToLocal();
-  setLastSatelliteTime();
   if (systemData.satio_enabled == true) {buildSatIOSentence();}
 }
 
@@ -9211,7 +9208,9 @@ void loop() {
   // t0 = millis();
   delay(1);
   if (isGPSEnabled()==true) {
+
     readGPS();
+
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gngga();}
     // Serial.println("[gngga] " + String(millis()-t0));
@@ -9223,6 +9222,17 @@ void loop() {
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gpatt();}
     // Serial.println("[gpatt] " + String(millis()-t0));
+
+    // t0 = millis();
+    if (satData.convert_coordinates == true) {calculateLocation();}
+    // Serial.println("[gpatt] " + String(millis()-t0));
+
+    convertUTCToLocal();
+    setLastSatelliteTime();
+
+    // t0 = millis();
+    trackPlanets();
+    // Serial.println("[planet track] " + String(millis()-t0));
   }
   delay(1);
   // Serial.println("[gps] " + String(millis()-t0));
@@ -9231,10 +9241,6 @@ void loop() {
   // t0 = millis();
   satIOData();
   // Serial.println("[satio] " + String(millis()-t0));
-
-  // t0 = millis();
-  trackPlanets();
-  // Serial.println("[planet track] " + String(millis()-t0));
 
   // t0 = millis();
   // sdcardCheck();
