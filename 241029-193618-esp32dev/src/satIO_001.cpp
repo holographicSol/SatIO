@@ -9050,6 +9050,11 @@ void readGPS() {
   }
 }
 
+bool isGPSEnabled() {
+  if ((systemData.gngga_enabled==true) || (systemData.gnrmc_enabled==true) || (systemData.gpatt_enabled==true)) {return true;}
+  return false;
+}
+
 void readPortController() {
 
   Serial.println("[readPortController] ");
@@ -9205,22 +9210,23 @@ void loop() {
   // delay(1000);
   // t0 = millis();
   delay(1);
-  readGPS();
+  if (isGPSEnabled()==true) {
+    readGPS();
+    // t0 = millis();
+    check_gngga();
+    // Serial.println("[gngga] " + String(millis()-t0));
+
+    // t0 = millis();
+    check_gnrmc();
+    // Serial.println("[gnrmc] " + String(millis()-t0));
+
+    // t0 = millis();
+    check_gpatt();
+    // Serial.println("[gpatt] " + String(millis()-t0));
+  }
   delay(1);
   // Serial.println("[gps] " + String(millis()-t0));
   // delay(1000);
-
-  // t0 = millis();
-  check_gngga();
-  // Serial.println("[gngga] " + String(millis()-t0));
-
-  // t0 = millis();
-  check_gnrmc();
-  // Serial.println("[gnrmc] " + String(millis()-t0));
-
-  // t0 = millis();
-  check_gpatt();
-  // Serial.println("[gpatt] " + String(millis()-t0));
 
   // t0 = millis();
   satIOData();

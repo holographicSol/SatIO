@@ -325,30 +325,11 @@ void setup() {
   Serial1.flush();
   Serial2.flush();
 
-  MUX0_CHANNEL = 0;
-  for(int i = 0; i < 4; i++){
-    digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
-  }
-  MUX1_CHANNEL = 0;
-  tcaselect(MUX1_CHANNEL); // zero by default
+  MUXATMEGA2560(0, 0);
 
   // setp TCA9548A
-  Wire.begin();
-  // setup RTC
-  if (! rtc.begin()) {
-    Serial.println("Couldn't find RTC");
-    Serial.flush();
-    while (1) delay(10);
-  }
-  Wire.begin();  //sets up the I2C  
-  rtc.begin();   //initializes the I2C to the RTC
-
-  // SerialDisplayRTCDateTime();
-  //  Set the RTC Time to 5:10:30 Nov 3 2020  
-  // rtc.adjust(DateTime(2020,11,3,5,10,30));  
-  // Set Arduino Time Library different than RTC time 9:27:05 so see how sync works  
-  // setTime(9, 27, 05, 4, 07, 2015);  
-  // rtc.adjust(DateTime(2021,11,3,5,10,30));  
+  Wire.begin();  // sets up the I2C  
+  rtc.begin();   // initializes the I2C
 
   dht.begin();
 
@@ -389,7 +370,7 @@ void SerialDisplayRTCDateTime() {
 
 void satIOPortController() {
 
-  // Serial.println("[satIOPortController] ");
+  Serial.println("[satIOPortController] ");
 
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
@@ -420,7 +401,7 @@ void satIOPortController() {
 
 void processMatrixData() {
 
-  // Serial.println("[processMatrixData] ");
+  Serial.println("[processMatrixData] ");
 
   // reset values
   update_portmap_bool=false;
@@ -522,7 +503,7 @@ void processMatrixData() {
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
 
-  // Serial.println("[readRXD1] ");
+  Serial.println("[readRXD1] ");
 
   for (int i=0; i<8; i++) {
 
@@ -610,7 +591,7 @@ String padDigitZero(int digits) {
 
 void writeTXD1Data0() {
 
-  // Serial.println("[writeTXD1Data0] ");
+  Serial.println("[writeTXD1Data0] ");
 
   for (int i=0; i<8; i++) {
 
@@ -701,7 +682,7 @@ void writeTXD1Data0() {
 
 void writeTXD1Data1() {
 
-  // Serial.println("[writeTXD1Data1] ");
+  Serial.println("[writeTXD1Data1] ");
 
   for (int i=0; i<8; i++) {
 
@@ -748,7 +729,7 @@ void loop() {
 
   // Serial.println("---------------------------------------");
   
-  // Serial.println("[loop] ");
+  Serial.println("[loop] ");
 
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
