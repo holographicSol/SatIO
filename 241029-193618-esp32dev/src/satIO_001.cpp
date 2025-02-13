@@ -9217,16 +9217,6 @@ void loop() {
   // Serial.println("[satio] " + String(millis()-t0));
 
   // t0 = millis();
-  SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
-  // Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
-  
-  // t0 = millis();
-  delay(1);
-  readPortController();
-  delay(1);
-  // Serial.println("[readPortController] " + String(millis()-t0));
-
-  // t0 = millis();
   trackPlanets();
   // Serial.println("[planet track] " + String(millis()-t0));
 
