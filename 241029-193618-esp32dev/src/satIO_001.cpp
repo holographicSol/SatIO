@@ -9048,7 +9048,7 @@ void readPortController() {
       if (SerialLink.nbytes>0) {
         // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
 
-        if (strncmp(SerialLink.BUFFER, "$D0", 4) == 0) {
+        if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
             // Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
