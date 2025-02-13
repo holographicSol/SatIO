@@ -590,7 +590,7 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD] " + String(SerialLink.BUFFER));
+      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -680,7 +680,7 @@ void writeTXD1Data1() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      Serial.println("[TXD] " + String(SerialLink.BUFFER));
+      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
