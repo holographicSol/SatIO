@@ -558,16 +558,58 @@ String padDigitZero(int digits) {
   return pad_digits_new;
 }
 
-void writeTXD1Data() {
+void writeTXD1Data0() {
 
   for (int i=0; i<8; i++) {
 
     if (Serial1.availableForWrite() > 0) {
 
-      // Serial.println("[writeTXD1] ");
+      // Serial.println("[writeTXD1Data0] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, "$D0,");
+
+      // RTC
+      dt_now = rtc.now();
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+
+      // append checksum
+      createChecksum(SerialLink.BUFFER);
+      strcat(SerialLink.BUFFER, "*");
+      strcat(SerialLink.BUFFER, SerialLink.checksum);
+      strcat(SerialLink.BUFFER, "\n");
+
+      Serial.println("[TXD] " + String(SerialLink.BUFFER));
+
+      Serial1.write(SerialLink.BUFFER);
+      Serial1.write(ETX);
+
+      break;
+    }
+  }
+}
+
+void writeTXD1Data1() {
+
+  for (int i=0; i<8; i++) {
+
+    if (Serial1.availableForWrite() > 0) {
+
+      // Serial.println("[writeTXD1Data1] ");
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      strcpy(SerialLink.BUFFER, "$D1,");
 
       // DHT11
       dht11_h_0 = dht.readHumidity();
@@ -632,21 +674,6 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
-      // RTC
-      dt_now = rtc.now();
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
@@ -678,7 +705,10 @@ void loop() {
   readRXD1();
   
   // write sensor data to esp32
-  if (MUX0_CHANNEL==0) {writeTXD1Data();}
+  if (MUX0_CHANNEL==0) {
+    writeTXD1Data0();
+    writeTXD1Data1();
+  }
 
   // execute matrix switches
   if (SerialLink.validation==true) {satIOPortController();}
