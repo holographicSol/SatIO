@@ -199,7 +199,7 @@ int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
 
   // uncomment to debug
-  if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
+  // if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
   for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
     // Serial.println(SerialLink.c_XOR);
@@ -208,7 +208,7 @@ int getCheckSum(char * string) {
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
   // uncomment to debug
-  Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
+  // Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 

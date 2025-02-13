@@ -9089,7 +9089,7 @@ void readPortController() {
               
               if (SerialLink.TOKEN_i==7) {
                 sensorData.tracking_0 = atoi(SerialLink.token);
-                Serial.println("[tracking_0] " + String(sensorData.tracking_0));
+                // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
               }
 
               if (SerialLink.TOKEN_i==8)  {

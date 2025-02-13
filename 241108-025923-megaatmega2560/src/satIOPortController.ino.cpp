@@ -1,7 +1,7 @@
-# 1 "C:\\Users\\Benjamin\\AppData\\Local\\Temp\\tmpzpdbjtbt"
+# 1 "C:\\Users\\Benjamin\\AppData\\Local\\Temp\\tmpis_37cc0"
 #include <Arduino.h>
 # 1 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
-# 35 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
+# 45 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
 #include <stdio.h>
 #include <string.h>
 #include <Arduino.h>
@@ -20,7 +20,7 @@
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
 
-#define MAX_BUFF 1000
+#define MAX_BUFF 2048
 
 RTC_DS3231 rtc;
 DateTime dt_now;
@@ -42,6 +42,10 @@ float dht11_hif_0;
 float dht11_hic_0;
 
 #define PHOTORESISTOR_0 A0
+int photoresistor_0;
+
+#define TRACKING_0 A1
+int tracking_0;
 
 
 
@@ -94,7 +98,6 @@ signed int tmp_matrix_port_map[1][20] = {
 
 
 
-char foo0[MAX_BUFF];
 
 struct SerialLinkStruct {
   signed int i_nbytes;
@@ -159,10 +162,11 @@ void SerialDisplayRTCDateTime();
 void satIOPortController();
 void processMatrixData();
 void readRXD1();
-String padDigitsZero(int digits);
+String pad3DigitsZero(int digits);
+String padDigitZero(int digits);
 void writeTXD1Data();
 void loop();
-#line 185 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
+#line 198 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
 int getCheckSum(char * string) {
 
 
@@ -270,6 +274,7 @@ void setup() {
   digitalWrite(controlPin[3], muxChannel[0][3]);
 
   pinMode(PHOTORESISTOR_0, INPUT);
+  pinMode(TRACKING_0, INPUT);
 
   Serial.begin(115200); while(!Serial);
   Serial1.begin(115200); while(!Serial1);
@@ -497,13 +502,31 @@ void readRXD1() {
 char pad_digits_new[56];
 char pad_current_digits[56];
 
-String padDigitsZero(int digits) {
+String pad3DigitsZero(int digits) {
 
   memset(pad_digits_new, 0, sizeof(pad_digits_new));
   memset(pad_current_digits, 0, sizeof(pad_current_digits));
-  if(digits < 10) {strcat(pad_digits_new, "0");}
+
+  if ((digits < 1000) && (digits > 100)) {strcat(pad_digits_new, "0");}
+
+  else if ((digits < 100) && (digits > 10)) {strcat(pad_digits_new, "00");}
+
+  else if (digits < 10) {strcat(pad_digits_new, "000");}
+
   itoa(digits, pad_current_digits, 10);
   strcat(pad_digits_new, pad_current_digits);
+
+  return pad_digits_new;
+}
+
+String padDigitZero(int digits) {
+
+  memset(pad_digits_new, 0, sizeof(pad_digits_new));
+  memset(pad_current_digits, 0, sizeof(pad_current_digits));
+  if (digits < 10) {strcat(pad_digits_new, "0");}
+  itoa(digits, pad_current_digits, 10);
+  strcat(pad_digits_new, pad_current_digits);
+
   return pad_digits_new;
 }
 
@@ -516,7 +539,7 @@ void writeTXD1Data() {
 
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      strcpy(SerialLink.BUFFER, "$DATA,");
+      strcpy(SerialLink.BUFFER, "$D0,");
 
 
       dht11_h_0 = dht.readHumidity();
@@ -564,26 +587,36 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, ",");
 
 
+      photoresistor_0 = analogRead(PHOTORESISTOR_0);
 
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      itoa(analogRead(PHOTORESISTOR_0), SerialLink.TMP, 10);
+      itoa(photoresistor_0, SerialLink.TMP, 10);
+
+      strcat(SerialLink.BUFFER, SerialLink.TMP);
+      strcat(SerialLink.BUFFER, ",");
+
+
+      tracking_0 = analogRead(TRACKING_0);
+
+      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
+      itoa(tracking_0, SerialLink.TMP, 10);
 
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
 
       dt_now = rtc.now();
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.hour()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.minute()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
       strcat(SerialLink.BUFFER, ",");
 
 
@@ -606,7 +639,7 @@ void writeTXD1Data() {
 
 
 void loop() {
-# 636 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
+# 678 "C:/Users/Benjamin/Documents/PlatformIO/Projects/241108-025923-megaatmega2560/src/satIOPortController.ino"
   readRXD1();
 
 
