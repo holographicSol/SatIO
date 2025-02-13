@@ -98,18 +98,15 @@ int tracking_0;
 //                                                                                                                    MATRIX DATA
 
 // last satellite time placeholders
-int rcv_year        = 2000;
-int rcv_month       = 01;
-int rcv_day         = 01;
-int rcv_hour        = 00;
-int rcv_minute      = 00;
-int rcv_second      = 00;
-int rcv_millisecond = 00;
-char rcv_dt_0[56];
-char rcv_dt_1[56];
-char tmp_dt[56];
-
-
+uint16_t rcv_year        = 2000;
+uint16_t rcv_month       = 01;
+uint16_t rcv_day         = 01;
+uint16_t rcv_hour        = 00;
+uint16_t rcv_minute      = 00;
+uint16_t rcv_second      = 00;
+uint16_t rcv_millisecond = 00;
+DateTime rcv_dt_0;
+DateTime rcv_dt_1;
 
 signed int tmp_port;
 bool update_portmap_bool = false;
@@ -294,6 +291,15 @@ void tcaselect(uint8_t channel) {
   Wire.endTransmission();
 }
 
+void MUXATMEGA2560(int mux0, int mux1) {
+
+  for(int i = 0; i < 4; i++){
+    digitalWrite(controlPin[i], muxChannel[mux0][i]);
+  }
+
+  tcaselect(mux1);
+}
+
 void setup() {
   pinMode(s0, OUTPUT); 
   pinMode(s1, OUTPUT); 
@@ -319,17 +325,30 @@ void setup() {
   Serial1.flush();
   Serial2.flush();
 
-  // setp TCA9548A
-  Wire.begin();
-  // setup RTC
-  rtc.begin();   //initializes the I2C to the RTC  
-
   MUX0_CHANNEL = 0;
   for(int i = 0; i < 4; i++){
     digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
   }
   MUX1_CHANNEL = 0;
   tcaselect(MUX1_CHANNEL); // zero by default
+
+  // setp TCA9548A
+  Wire.begin();
+  // setup RTC
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    Serial.flush();
+    while (1) delay(10);
+  }
+  Wire.begin();  //sets up the I2C  
+  rtc.begin();   //initializes the I2C to the RTC
+
+  // SerialDisplayRTCDateTime();
+  //  Set the RTC Time to 5:10:30 Nov 3 2020  
+  // rtc.adjust(DateTime(2020,11,3,5,10,30));  
+  // Set Arduino Time Library different than RTC time 9:27:05 so see how sync works  
+  // setTime(9, 27, 05, 4, 07, 2015);  
+  // rtc.adjust(DateTime(2021,11,3,5,10,30));  
 
   dht.begin();
 
@@ -358,7 +377,7 @@ void setup() {
 
 void SerialDisplayRTCDateTime() {
   // test dt
-  DateTime dt_now = rtc.now();
+  dt_now = rtc.now();
   // display dt
   Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
 }
@@ -412,9 +431,6 @@ void processMatrixData() {
   
   if (SerialLink.validation==true) {
 
-    // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
-    memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
-
     // snap off the first token and then keep breaking off a token in loop
     SerialLink.token = strtok(NULL, ",");
     while(SerialLink.token != NULL) {
@@ -447,7 +463,6 @@ void processMatrixData() {
       }
 
       // reconstruct temporary datetime char array with token each iteration
-      strcat(rcv_dt_0, SerialLink.token);
       if (SerialLink.i_token==40) {rcv_year = atoi(SerialLink.token);}
       if (SerialLink.i_token==41) {rcv_month = atoi(SerialLink.token);}
       if (SerialLink.i_token==42) {rcv_day = atoi(SerialLink.token);}
@@ -469,9 +484,12 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALG, HIGH);
           digitalWrite(LEDSATSIGNALB, LOW);
           // adjust rtc while we appear to have a downlink
-          DateTime dt0 (rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          rtc.adjust(dt0);
-
+          rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          if (rcv_dt_1!=rcv_dt_0) {
+            rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
+            rcv_dt_0 = rcv_dt_1;
+          }
+          
         }
         else if (atoi(SerialLink.token)==2) {
           // set indicator led 
@@ -479,8 +497,11 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
           // adjust rtc while we appear to have a downlink
-          DateTime dt0 (rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          rtc.adjust(dt0);
+          rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          if (rcv_dt_1!=rcv_dt_0) {
+            rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
+            rcv_dt_0 = rcv_dt_1;
+          }
         }
       }
 

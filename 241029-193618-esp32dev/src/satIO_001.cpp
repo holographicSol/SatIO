@@ -2911,27 +2911,27 @@ void setLastSatelliteTime() {
     strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
     // update char elements
     memset(satData.lt_year, 0, 56);
-    strcat(satData.lt_year, padDigitsZero(satData.rtc_year_int).c_str());
+    strcat(satData.lt_year, satData.year);
     memset(satData.lt_month, 0, 56);
-    strcat(satData.lt_month, padDigitsZero(satData.rtc_month_int).c_str());
+    strcat(satData.lt_month, satData.month);
     memset(satData.lt_day, 0, 56);
-    strcat(satData.lt_day, padDigitsZero(satData.rtc_day_int).c_str());
+    strcat(satData.lt_day, satData.day);
     memset(satData.lt_hour, 0, 56);
-    strcat(satData.lt_hour, padDigitsZero(satData.rtc_hour_int).c_str());
+    strcat(satData.lt_hour, satData.hour);
     memset(satData.lt_minute, 0, 56);
-    strcat(satData.lt_minute, padDigitsZero(satData.rtc_minute_int).c_str());
+    strcat(satData.lt_minute, satData.minute);
     memset(satData.lt_second, 0, 56);
-    strcat(satData.lt_second, padDigitsZero(satData.rtc_second_int).c_str());
+    strcat(satData.lt_second, satData.second);
     memset(satData.lt_millisecond, 0, 56);
-    strcat(satData.lt_millisecond, padDigitsZero(satData.rtc_millisecond_int).c_str());
+    strcat(satData.lt_millisecond, satData.millisecond);
     // update int elements
-    satData.lt_year_int = satData.rtc_year_int;
-    satData.lt_month_int = satData.rtc_month_int;
-    satData.lt_day_int = satData.rtc_day_int;
-    satData.lt_hour_int = satData.rtc_hour_int;
-    satData.lt_minute_int = satData.rtc_minute_int;
-    satData.lt_second_int = satData.rtc_second_int;
-    satData.lt_millisecond_int = satData.rtc_millisecond_int;
+    satData.lt_year_int = satData.year_int;
+    satData.lt_month_int = satData.month_int;
+    satData.lt_day_int = satData.day_int;
+    satData.lt_hour_int = satData.hour_int;
+    satData.lt_minute_int = satData.minute_int;
+    satData.lt_second_int = satData.second_int;
+    satData.lt_millisecond_int = satData.millisecond_int;
   }
 }
 
