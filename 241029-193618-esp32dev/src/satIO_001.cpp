@@ -9014,7 +9014,7 @@ void readGPS() {
   memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
   memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
-  // Serial.println("[readGPS] ");
+  Serial.println("[readGPS] ");
 
   for (int i = 0; i < 8; i++) {
 
@@ -9054,15 +9054,17 @@ int i_port_controller_collect = 0;
 
 void readPortController() {
 
+  Serial.println("[readPortController] ");
+
   i_port_controller_collect = 0;
 
   while (i_port_controller_collect<2) {
 
+    Serial.println("[readPortController loop] ");
+
     for (int i = 0; i < 8; i++) {
 
       if (Serial1.available() > 0) {
-
-        // Serial.println("[readPortController] ");
 
         memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
         SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -9164,6 +9166,7 @@ void readPortController() {
         }
       }
     }
+    break;
   }
 }
 
@@ -9175,7 +9178,7 @@ int t0 = millis();
 void loop() {
 
   // Serial.println("---------------------------------------------------------------");
-  // Serial.println("[loop] ");
+  Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 
