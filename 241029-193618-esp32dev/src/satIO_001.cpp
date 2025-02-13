@@ -9226,17 +9226,17 @@ void loop() {
     // t0 = millis();
     if (satData.convert_coordinates == true) {calculateLocation();}
     // Serial.println("[gpatt] " + String(millis()-t0));
-
-    convertUTCToLocal();
-    setLastSatelliteTime();
-
-    // t0 = millis();
-    trackPlanets();
-    // Serial.println("[planet track] " + String(millis()-t0));
   }
   delay(1);
   // Serial.println("[gps] " + String(millis()-t0));
   // delay(1000);
+
+  convertUTCToLocal();
+  setLastSatelliteTime();
+
+  // t0 = millis();
+  trackPlanets();
+  // Serial.println("[planet track] " + String(millis()-t0));
 
   // t0 = millis();
   satIOData();
