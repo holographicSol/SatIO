@@ -1580,12 +1580,14 @@ struct MatrixStruct {
   };
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 224;
+  int max_matrix_function_names = 226;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[224][25] = 
+  char matrix_function_names[226][25] = 
   {
     "$NONE",
     "$ENABLED",
+    "$OVERLOAD_TRUE",
+    "$OVERLOAD_FALSE",
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
     "SecondsTimer",
@@ -1813,6 +1815,9 @@ struct MatrixStruct {
   char default_matrix_function[25]         = "$NONE";
 
   char default_enable_matrix_function[25]  = "$ENABLED";  // always true.
+
+  char OVERLOAD_TRUE[25] = "OVERLOAD_TRUE";
+  char OVERLOAD_FALSE[25] = "OVERLOAD_FALSE";
 
   /* link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix. */
   char SwitchLinkTrue[25]                 = "$SWITCHLINKTRUE";
@@ -4717,6 +4722,12 @@ void matrixSwitch() {
         function name $ENABLED will always return true.
         */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_enable_matrix_function) == 0) {tmp_matrix[Fi] = 1;}
+
+        /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.OVERLOAD_TRUE) == 0) {
+          tmp_matrix[Fi] = check_bool_true(systemData.overload);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.OVERLOAD_FALSE) == 0) {
+          tmp_matrix[Fi] = check_bool_false(systemData.overload);}
 
         /*
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
