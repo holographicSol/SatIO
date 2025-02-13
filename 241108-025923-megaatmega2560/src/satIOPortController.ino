@@ -464,14 +464,23 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
         }
         else if (atoi(SerialLink.token)==1) {
+          // set indicator led 
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, HIGH);
           digitalWrite(LEDSATSIGNALB, LOW);
+          // adjust rtc while we appear to have a downlink
+          DateTime dt0 (rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          rtc.adjust(dt0);
+
         }
         else if (atoi(SerialLink.token)==2) {
+          // set indicator led 
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
+          // adjust rtc while we appear to have a downlink
+          DateTime dt0 (rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          rtc.adjust(dt0);
         }
       }
 
