@@ -9048,7 +9048,7 @@ void readPortController() {
       if (SerialLink.nbytes>0) {
         // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
 
-        if (strncmp(SerialLink.BUFFER, "$DATA", 4) == 0) {
+        if (strncmp(SerialLink.BUFFER, "$D0", 4) == 0) {
 
           if (validateChecksum(SerialLink.BUFFER)==true) {
             // Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
@@ -9089,7 +9089,7 @@ void readPortController() {
               
               if (SerialLink.TOKEN_i==7) {
                 sensorData.tracking_0 = atoi(SerialLink.token);
-                // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
+                Serial.println("[tracking_0] " + String(sensorData.tracking_0));
               }
 
               if (SerialLink.TOKEN_i==8)  {

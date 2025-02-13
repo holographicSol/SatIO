@@ -60,7 +60,7 @@ Tracking Sensor GND
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
 
-#define MAX_BUFF 1000
+#define MAX_BUFF 2048
 
 RTC_DS3231 rtc;
 DateTime dt_now;
@@ -82,7 +82,10 @@ float dht11_hif_0;
 float dht11_hic_0;
 
 #define PHOTORESISTOR_0 A0
+int photoresistor_0;
+
 #define TRACKING_0 A1
+int tracking_0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
@@ -196,7 +199,7 @@ int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
 
   // uncomment to debug
-  // if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
+  if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
   for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
     // Serial.println(SerialLink.c_XOR);
@@ -205,7 +208,7 @@ int getCheckSum(char * string) {
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
   // uncomment to debug
-  // Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
+  Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 
@@ -527,13 +530,31 @@ void readRXD1() {
 char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
 char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
 
-String padDigitsZero(int digits) {
+String pad3DigitsZero(int digits) {
   /* preappends char 0 to pad string of digits evenly */
   memset(pad_digits_new, 0, sizeof(pad_digits_new));
   memset(pad_current_digits, 0, sizeof(pad_current_digits));
-  if(digits < 10) {strcat(pad_digits_new, "0");}
+
+  if ((digits < 1000) && (digits > 100)) {strcat(pad_digits_new, "0");}
+
+  else if ((digits < 100) && (digits > 10)) {strcat(pad_digits_new, "00");}
+
+  else if (digits < 10) {strcat(pad_digits_new, "000");}
+
   itoa(digits, pad_current_digits, 10);
   strcat(pad_digits_new, pad_current_digits);
+
+  return pad_digits_new;
+}
+
+String padDigitZero(int digits) {
+  /* preappends char 0 to pad string of digits evenly */
+  memset(pad_digits_new, 0, sizeof(pad_digits_new));
+  memset(pad_current_digits, 0, sizeof(pad_current_digits));
+  if (digits < 10) {strcat(pad_digits_new, "0");}
+  itoa(digits, pad_current_digits, 10);
+  strcat(pad_digits_new, pad_current_digits);
+
   return pad_digits_new;
 }
 
@@ -546,7 +567,7 @@ void writeTXD1Data() {
       // Serial.println("[writeTXD1] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      strcpy(SerialLink.BUFFER, "$DATA,");
+      strcpy(SerialLink.BUFFER, "$D0,");
 
       // DHT11
       dht11_h_0 = dht.readHumidity();
@@ -594,34 +615,36 @@ void writeTXD1Data() {
       strcat(SerialLink.BUFFER, ",");
 
       // PHOTO RESITOR 0
+      photoresistor_0 = analogRead(PHOTORESISTOR_0);
       // Serial.println("[PHOTORESISTOR_0] " + String(analogRead(PHOTORESISTOR_0)));
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      itoa(analogRead(PHOTORESISTOR_0), SerialLink.TMP, 10);
+      itoa(photoresistor_0, SerialLink.TMP, 10);
       // Serial.println("[photoresistor_0]      " + String(SerialLink.TMP));
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
       // TRACKING_0
+      tracking_0 = analogRead(TRACKING_0);
       // Serial.println("[TRACKING_0] " + String(analogRead(TRACKING_0)));
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      itoa(analogRead(TRACKING_0), SerialLink.TMP, 10);
+      itoa(tracking_0, SerialLink.TMP, 10);
       // Serial.println("[TRACKING_0]      " + String(SerialLink.TMP));
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
       // RTC
       dt_now = rtc.now();
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.year()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.month()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.day()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.hour()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.minute()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
       strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitsZero(dt_now.second()).c_str());
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
       strcat(SerialLink.BUFFER, ",");
 
       // append checksum
