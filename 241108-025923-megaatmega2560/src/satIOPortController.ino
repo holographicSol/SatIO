@@ -401,6 +401,8 @@ void satIOPortController() {
 
 void processMatrixData() {
 
+  Serial.println("[processMatrixData] ");
+
   // reset values
   update_portmap_bool=false;
   SerialLink.validation = false;
@@ -409,8 +411,6 @@ void processMatrixData() {
   SerialLink.validation = validateChecksum(SerialLink.BUFFER);
   
   if (SerialLink.validation==true) {
-
-    // Serial.println("[processMatrixData] ");
 
     // clear temporary datetime char array ready to reconstruct and compare to previous datetime char array
     memset(rcv_dt_0, 0, sizeof(rcv_dt_0));
@@ -492,11 +492,11 @@ void processMatrixData() {
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
 
+  Serial.println("[readRXD1] ");
+
   for (int i=0; i<8; i++) {
 
     if (Serial1.available() > 0) {
-
-      // Serial.println("[readRXD1] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -580,56 +580,14 @@ String padDigitZero(int digits) {
 
 void writeTXD1Data0() {
 
+  Serial.println("[writeTXD1Data0] ");
+
   for (int i=0; i<8; i++) {
 
     if (Serial1.availableForWrite() > 0) {
-
-      // Serial.println("[writeTXD1Data0] ");
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, "$D0,");
-
-      // RTC
-      dt_now = rtc.now();
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-
-      // append checksum
-      createChecksum(SerialLink.BUFFER);
-      strcat(SerialLink.BUFFER, "*");
-      strcat(SerialLink.BUFFER, SerialLink.checksum);
-      strcat(SerialLink.BUFFER, "\n");
-
-      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
-
-      Serial1.write(SerialLink.BUFFER);
-      Serial1.write(ETX);
-
-      break;
-    }
-  }
-}
-
-void writeTXD1Data1() {
-
-  for (int i=0; i<8; i++) {
-
-    if (Serial1.availableForWrite() > 0) {
-
-      // Serial.println("[writeTXD1Data1] ");
-
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      strcpy(SerialLink.BUFFER, "$D1,");
 
       // DHT11
       dht11_h_0 = dht.readHumidity();
@@ -710,6 +668,49 @@ void writeTXD1Data1() {
   }
 }
 
+
+void writeTXD1Data1() {
+
+  // Serial.println("[writeTXD1Data1] ");
+
+  for (int i=0; i<8; i++) {
+
+    if (Serial1.availableForWrite() > 0) {
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      strcpy(SerialLink.BUFFER, "$D1,");
+
+      // RTC
+      dt_now = rtc.now();
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
+      strcat(SerialLink.BUFFER, ",");
+
+      // append checksum
+      createChecksum(SerialLink.BUFFER);
+      strcat(SerialLink.BUFFER, "*");
+      strcat(SerialLink.BUFFER, SerialLink.checksum);
+      strcat(SerialLink.BUFFER, "\n");
+
+      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
+
+      Serial1.write(SerialLink.BUFFER);
+      Serial1.write(ETX);
+
+      break;
+    }
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                         MAIN LOOP
 
@@ -717,7 +718,7 @@ void loop() {
 
   // Serial.println("---------------------------------------");
   
-  // Serial.println("[loop] ");
+  Serial.println("[loop] ");
 
   // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
