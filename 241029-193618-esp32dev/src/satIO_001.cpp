@@ -9213,15 +9213,15 @@ void loop() {
   if (isGPSEnabled()==true) {
     readGPS();
     // t0 = millis();
-    check_gngga();
+    if (systemData.gngga_enabled) {check_gngga();}
     // Serial.println("[gngga] " + String(millis()-t0));
 
     // t0 = millis();
-    check_gnrmc();
+    if (systemData.gngga_enabled) {check_gnrmc();}
     // Serial.println("[gnrmc] " + String(millis()-t0));
 
     // t0 = millis();
-    check_gpatt();
+    if (systemData.gngga_enabled) {check_gpatt();}
     // Serial.println("[gpatt] " + String(millis()-t0));
   }
   delay(1);
