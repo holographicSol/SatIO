@@ -476,7 +476,7 @@ void processMatrixData() {
       }
 
       if (SerialLink.i_token==47) {
-        Serial.println("[LEDOVERLOADR] " + String(SerialLink.token));
+        // Serial.println("[LEDOVERLOADR] " + String(SerialLink.token));
         if (atoi(SerialLink.token)==0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
         else {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
       }
