@@ -9044,13 +9044,13 @@ void readGPS() {
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     while(!Serial1.available()) {delay(1);}
-    SerialLink.nbytes = Serial1.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
     Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
     // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
-    if (SerialLink.nbytes>0) {
+    if (SerialLink.nbytes>1) {
 
       // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
@@ -9085,6 +9085,8 @@ bool isGPSEnabled() {
   return false;
 }
 
+int tpc;
+
 void readPortController() {
 
   Serial.println("[readPortController] ");
@@ -9092,16 +9094,20 @@ void readPortController() {
   // D1 (read RTC first)
   for (int i = 0; i < 20; i++) {
 
+    tpc = millis();
+
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    while(!Serial1.available()) {delay(1);}
+
     SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-    if (SerialLink.nbytes>0) {
-      // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
+    Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+
+    if (SerialLink.nbytes>1) {
+      // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
       if (strncmp(SerialLink.BUFFER, "$D1", 3) == 0) {
 
         if (validateChecksum(SerialLink.BUFFER)==true) {
-          // Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
+          // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
 
           SerialLink.TOKEN_i = 0;
           SerialLink.token = strtok(SerialLink.BUFFER, ",");
@@ -9142,65 +9148,63 @@ void readPortController() {
   }
 
   // D0
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 20; i++) {
 
-    if (Serial1.available() > 0) {
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
 
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+    SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
-      if (SerialLink.nbytes>0) {
-        // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
+    if (SerialLink.nbytes>1) {
+      // Serial.println("[readPortController RXD (all)] " + String(SerialLink.BUFFER)); // debug
 
-        if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
+      if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
 
-          if (validateChecksum(SerialLink.BUFFER)==true) {
-            // Serial.println("[readPortController RXD (validated)] " + String(SerialLink.BUFFER)); // debug
+        if (validateChecksum(SerialLink.BUFFER)==true) {
+          // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
 
-            SerialLink.TOKEN_i = 0;
-            SerialLink.token = strtok(SerialLink.BUFFER, ",");
-            while (SerialLink.token != NULL) {
+          SerialLink.TOKEN_i = 0;
+          SerialLink.token = strtok(SerialLink.BUFFER, ",");
+          while (SerialLink.token != NULL) {
 
-              if (SerialLink.TOKEN_i==1)  {
-                sensorData.dht11_h_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
-              }
-
-              if (SerialLink.TOKEN_i==2) {
-                sensorData.dht11_c_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
-              }
-
-              if (SerialLink.TOKEN_i==3) {
-                sensorData.dht11_f_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
-              }
-
-              if (SerialLink.TOKEN_i==4) {
-                sensorData.dht11_hif_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
-              }
-
-              if (SerialLink.TOKEN_i==5) {
-                sensorData.dht11_hic_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-              }
-
-              if (SerialLink.TOKEN_i==6) {
-                sensorData.photoresistor_0 = atoi(SerialLink.token);
-                // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
-              }
-              
-              if (SerialLink.TOKEN_i==7) {
-                sensorData.tracking_0 = atoi(SerialLink.token);
-                // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
-              }
-              
-              SerialLink.token = strtok(NULL, ",");
-              SerialLink.TOKEN_i++;
+            if (SerialLink.TOKEN_i==1)  {
+              sensorData.dht11_h_0 = std::stof(SerialLink.token);
+              // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
             }
-            break;
+
+            if (SerialLink.TOKEN_i==2) {
+              sensorData.dht11_c_0 = std::stof(SerialLink.token);
+              // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
+            }
+
+            if (SerialLink.TOKEN_i==3) {
+              sensorData.dht11_f_0 = std::stof(SerialLink.token);
+              // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
+            }
+
+            if (SerialLink.TOKEN_i==4) {
+              sensorData.dht11_hif_0 = std::stof(SerialLink.token);
+              // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
+            }
+
+            if (SerialLink.TOKEN_i==5) {
+              sensorData.dht11_hic_0 = std::stof(SerialLink.token);
+              // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+            }
+
+            if (SerialLink.TOKEN_i==6) {
+              sensorData.photoresistor_0 = atoi(SerialLink.token);
+              // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+            }
+            
+            if (SerialLink.TOKEN_i==7) {
+              sensorData.tracking_0 = atoi(SerialLink.token);
+              // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
+            }
+            
+            SerialLink.token = strtok(NULL, ",");
+            SerialLink.TOKEN_i++;
           }
+          break;
         }
       }
     }
@@ -9225,11 +9229,11 @@ void loop() {
   SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
   // Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
-  // t0 = millis();
+  t0 = millis();
   delay(1);
   readPortController();
   delay(1);
-  // Serial.println("[readPortController] " + String(millis()-t0));
+  Serial.println("[readPortController] " + String(millis()-t0));
 
   // t0 = millis();
   SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
@@ -9241,9 +9245,9 @@ void loop() {
   if (isGPSEnabled()==true) {
 
     // delay(1000);
-    // t0 = millis();
+    t0 = millis();
     readGPS();
-    // Serial.println("[gps] " + String(millis()-t0));
+    Serial.println("[gps] " + String(millis()-t0));
     // delay(1000);
 
     // t0 = millis();

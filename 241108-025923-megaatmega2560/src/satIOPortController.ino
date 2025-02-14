@@ -669,7 +669,7 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      // Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
+      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -712,7 +712,7 @@ void writeTXD1Data1() {
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
 
-      // Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
+      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
 
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
@@ -741,6 +741,7 @@ void loop() {
     writeTXD1Data1(); // send RTC data first
     writeTXD1Data0();
   }
+  Serial1.flush();
 
   // execute matrix switches
   if (SerialLink.validation==true) {satIOPortController();}
