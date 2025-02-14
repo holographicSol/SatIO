@@ -9026,7 +9026,7 @@ void check_gpatt() {
   }
 }
 
-int tgps;
+// int tgps;
 
 void readGPS() {
   serial1Data.gngga_bool = false;
@@ -9038,15 +9038,16 @@ void readGPS() {
 
   Serial.println("[readGPS] ");
 
+  while(!Serial1.available()) //{delay(1);}
   for (int i = 0; i < 20; i++) {
 
-    tgps = millis();
+    // tgps = millis();
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    while(!Serial1.available()) {delay(1);}
+    
     SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-    Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+    // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
     // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
@@ -9085,22 +9086,23 @@ bool isGPSEnabled() {
   return false;
 }
 
-int tpc;
+// int tpc;
 
 void readPortController() {
 
   Serial.println("[readPortController] ");
 
   // D1 (read RTC first)
+  while(!Serial1.available())// {delay(1);}
   for (int i = 0; i < 20; i++) {
 
-    tpc = millis();
+    // tpc = millis();
 
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
 
     SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-    Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+    // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
     if (SerialLink.nbytes>1) {
       // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
