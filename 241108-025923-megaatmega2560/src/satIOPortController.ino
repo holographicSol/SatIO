@@ -503,6 +503,8 @@ void readRXD1() {
 
   Serial.println("[readRXD1] ");
 
+  int collected = 0;
+
   for (int i=0; i<8; i++) {
 
     if (Serial1.available()) {
@@ -539,25 +541,17 @@ void readRXD1() {
             // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
 
             // Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
-            break;
+            collected++;
+            if (collected>=2) {break;}
           }
         }
-      }
-    }
-  }
 
-  for (int i=0; i<8; i++) {
-
-    if (Serial1.available()) {
-
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
-      if (SerialLink.nbytes > 1) {
         // parse matrix sentence
         if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-          // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+          Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
           processMatrixData();
-          break;
+          collected++;
+          if (collected>=2) {break;}
         }
       }
     }
