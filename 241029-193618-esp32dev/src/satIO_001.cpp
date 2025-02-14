@@ -9038,7 +9038,7 @@ void readGPS() {
 
   Serial.println("[readGPS] ");
 
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 20; i++) {
 
     tgps = millis();
 
@@ -9059,18 +9059,21 @@ void readGPS() {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
         strcpy(gnggaData.sentence, SerialLink.BUFFER);
         serial1Data.gngga_bool = true;
+        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
       }
 
       else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
         strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-        serial1Data.gnrmc_bool = true; 
+        serial1Data.gnrmc_bool = true;
+        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
       }
 
       else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
         strcpy(gpattData.sentence, SerialLink.BUFFER);
         serial1Data.gpatt_bool = true;
+        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
       }
     }
   }
