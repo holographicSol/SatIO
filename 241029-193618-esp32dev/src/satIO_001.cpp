@@ -8903,8 +8903,9 @@ bool isGPSEnabled() {
 
 int tgps;
 
-void readGPS(void * pvParameters) {
-    while (1) {
+// void readGPS(void * pvParameters) {
+void readGPS() {
+    // while (1) {
     serial1Data.gngga_bool = false;
     serial1Data.gnrmc_bool = false;
     serial1Data.gpatt_bool = false;
@@ -8955,16 +8956,16 @@ void readGPS(void * pvParameters) {
           }
         }
       }
-    }
-    delay(1);
+    // }
+    // delay(1);
   }
 }
 
 int tpc;
 
-void readPortController(void * pvParameters) {
-
-  while(1) {
+// void readPortController(void * pvParameters) {
+void readPortController() {
+  // while(1) {
     // Serial.println("[readPortController] ");
 
     // D0 (read RTC first)
@@ -9058,8 +9059,8 @@ void readPortController(void * pvParameters) {
           }
         }
       }
-    }
-    delay(1);
+    // }
+    // delay(1);
   }
 }
 
@@ -9192,26 +9193,26 @@ void setup() {
   //     &UpdateDisplayTask,          /* Task handle. */
   //     0);               /* Core where the task should run */
 
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-      readGPS, /* Function to implement the task */
-      "Task0",         /* Name of the task */
-      10000,            /* Stack size in words */
-      NULL,             /* Task input parameter */
-      2,                /* Priority of the task */
-      &Task0,          /* Task handle. */
-      0);               /* Core where the task should run */
+  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // xTaskCreatePinnedToCore(
+  //     readGPS, /* Function to implement the task */
+  //     "Task0",         /* Name of the task */
+  //     10000,            /* Stack size in words */
+  //     NULL,             /* Task input parameter */
+  //     2,                /* Priority of the task */
+  //     &Task0,          /* Task handle. */
+  //     0);               /* Core where the task should run */
     
       
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-    readPortController, /* Function to implement the task */
-    "Task1",         /* Name of the task */
-    10000,            /* Stack size in words */
-    NULL,             /* Task input parameter */
-    2,                /* Priority of the task */
-    &Task1,          /* Task handle. */
-    0);               /* Core where the task should run */
+  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // xTaskCreatePinnedToCore(
+  //   readPortController, /* Function to implement the task */
+  //   "Task1",         /* Name of the task */
+  //   10000,            /* Stack size in words */
+  //   NULL,             /* Task input parameter */
+  //   2,                /* Priority of the task */
+  //   &Task1,          /* Task handle. */
+  //   0);               /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -9230,7 +9231,7 @@ void setup() {
 //                                                                                                                      MAIN LOOP
 
 int t0a = millis(); 
-int t0 = millis(); 
+int t0 = millis();
 
 void loop() {
 
@@ -9244,15 +9245,15 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  // t0 = millis();
-  // readPortController();
-  // Serial.println("[readPortController] " + String(millis()-t0));
+  t0 = millis();
+  readPortController();
+  Serial.println("[readPortController] " + String(millis()-t0));
 
-  // t0a = millis();
-  // if (isGPSEnabled()==true) {
-  //   t0 = millis();
-  //   readGPS();
-  //   Serial.println("[gps] " + String(millis()-t0));
+  t0a = millis();
+  if (isGPSEnabled()==true) {
+    t0 = millis();
+    readGPS();
+    Serial.println("[gps] " + String(millis()-t0));
 
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gngga();}
@@ -9269,9 +9270,9 @@ void loop() {
     // t0 = millis();
     if (satData.convert_coordinates == true) {calculateLocation();}
     // Serial.println("[gpatt] " + String(millis()-t0));
-  // }
+  }
   // delay(1);
-  // Serial.println("[gps total] " + String(millis()-t0a));
+  Serial.println("[gps total] " + String(millis()-t0a));
 
   convertUTCToLocal();
   setLastSatelliteTime();
