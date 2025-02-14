@@ -315,8 +315,8 @@ struct SerialLinkStruct {
   char char_i_sync[56];
   bool syn = false;
   bool data = false;
-  char BUFFER[2000];           // read incoming bytes into this buffer
-  char BUFFER1[2000];               // buffer refined using ETX
+  char BUFFER[150];           // read incoming bytes into this buffer
+  char BUFFER1[150];               // buffer refined using ETX
   // char TMP[2000];               // buffer refined using ETX
   unsigned long nbytes;
   unsigned long TOKEN_i;
@@ -2141,7 +2141,7 @@ MatrixStruct matrixData;
 //                                                                                                                    DATA: GNGGA
 
 struct GNGGAStruct {
-  char sentence[2000];
+  char sentence[150];
   char tag[56];                                                                                                            // <0> Log header
   char utc_time[56];                    unsigned long bad_utc_time_i;              bool bad_utc_time = true;               // <1> UTC time, the format is hhmmss.sss
   char latitude[56];                    unsigned long bad_latitude_i;              bool bad_latitude = true;               // <2> Latitude, the format is  ddmm.mmmmmmm
@@ -2223,7 +2223,7 @@ void GNGGA() {
 //                                                                                                                    DATA: GNRMC
 
 struct GNRMCStruct {
-  char sentence[2000];
+  char sentence[150];
   char tag[56];                                                                                                                             // <0> Log header
   char utc_time[56];                       unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                      // <1> UTC time, the format is hhmmss.sss
   char positioning_status[56];             unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;            // <2> Positioning status, A=effective positioning, V=invalid positioning
@@ -2298,7 +2298,7 @@ void GNRMC() {
 //                                                                                                                    DATA: GPATT
 
 struct GPATTStruct {
-  char sentence[2048];
+  char sentence[150];
   char tag[56];                                                                                       // <0> Log header
   char pitch[56];            unsigned long bad_pitch_i;            bool bad_pitch = true;             // <1> pitch angle
   char angle_channel_0[56];  unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;   // <2> P
@@ -8900,10 +8900,6 @@ void setup() {
 
   Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
   Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
-  Serial.println("[APB_CLK_FREQ] " + String());
-
-  
-  delay(5000);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                               SETUP: DISPLAY
@@ -9030,6 +9026,8 @@ void check_gpatt() {
   }
 }
 
+int tgps;
+
 void readGPS() {
   serial1Data.gngga_bool = false;
   serial1Data.gnrmc_bool = false;
@@ -9042,35 +9040,39 @@ void readGPS() {
 
   for (int i = 0; i < 8; i++) {
 
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    tgps = millis();
+
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+
+    Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+
+    // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+
+    if (SerialLink.nbytes>0) {
 
       // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
-      if (SerialLink.nbytes>0) {
+      if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
+      else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
         // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-
-        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-
-        else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gnggaData.sentence, SerialLink.BUFFER);
-          serial1Data.gngga_bool = true;
-        }
-
-        else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-          serial1Data.gnrmc_bool = true; 
-        }
-
-        else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gpattData.sentence, SerialLink.BUFFER);
-          serial1Data.gpatt_bool = true;
-        }
+        strcpy(gnggaData.sentence, SerialLink.BUFFER);
+        serial1Data.gngga_bool = true;
       }
+
+      else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+        strcpy(gnrmcData.sentence, SerialLink.BUFFER);
+        serial1Data.gnrmc_bool = true; 
+      }
+
+      else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+        strcpy(gpattData.sentence, SerialLink.BUFFER);
+        serial1Data.gpatt_bool = true;
+      }
+    }
   }
 }
 
