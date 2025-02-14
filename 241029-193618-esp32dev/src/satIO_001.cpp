@@ -17,13 +17,18 @@
                                               (((10^15 * 3) * 10) * 20) ^ 190
 
         Currently there are over 200 different checks that can be performed using just several small primitive functions and
-          currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
+currently each matrix activation/deactivaion can occur based on up to 10 different checks per 20 switches resulting true or false per switch. 
 
                                   
-                                        Wiring For ESP32-2432S028 development board (CYD)
+                                Wiring For ESP32 keystudio dev module (with keystudio 1.3 sheild)
 
-                                          ESP32 io27 (TXD) -> ATMEGA2560 Serial1 (RXD)
-                                          ESP32 io22 (RXD) -> WTGPS300P (TXD)
+                                          ESP32 io25 (TXD) -> ATMEGA2560 Serial1 (RXD)
+                                          ESP32 io26 (RXD) -> ATMEGA2560 Serial1 (TXD)
+                                          ESP32 io27 (RXD) -> WTGPS300P (TXD) (5v)
+                                          ESP32 io27 (TXD) -> WTGPS300P (RXD) (5v)
+                                          ESP32 i2C        -> RTC DS3231 SDA, SCL (5v)
+                                          ESP32 i2C        -> i2c Multiplexer TCA9548A: SDA, SCL (3.3v)
+
                                           
 
                                                         SENTENCE $SATIO
@@ -48,29 +53,6 @@
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
-                     ToDo: RTC + IO expansion + black rubber case with waterproof IO ports, and potentially a server hosting
-                                                          an RSS Feed.
-                                            
-            NOTICE: the system is still being tuned for perfromance and efficiency. Precision may not always be within a second.
-                    also the system is currently almost entirely dependent on GPS data being received in order to server any real
-                    purpose except the second timer which runs off one of the ESP32 clocks. 
-
-            Future: I hope to finnish up here and move on to the Octa M7 for a premium high performance version of this programmable
-                    switch, with a superior GPS module and higher quality panel, 18650's with power for at least a week and being
-                    able to power/charge other devices. This is a switch, a utility for in the feild, in flight,
-                    desktop, dashboard, handheld or wall mounted.
-                    
-                    The setup has been designed for general computation, so that possibilities for purpose are drastically increased
-                    by implementing and increasing combinations of often simple functions currently for GPS and INS data, but does not
-                    have to be and is not limited to such data. Easily scalable and adaptable.
-                    
-                    Each matrix switch can be mapped to a unique IO port or share the same IO port as another matrix switch.
-                    'Switch linking' allows for matrix switches (therefore IO ports) to be made high or low symmetrically and or
-                    asymetrically to another matrix switch, allowing for stacking conditions/functions/logic accross multiple matrix
-                    switches and or different wiring/hardware configurations on the Physical Layer.
-
-                    The UI provides various high and low level access to the microcontroller, allowing for configuratoin and setup.
-
                     Use case from a syncronized clock to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
                     expected drift, if GPS data is stale or unavailable.
 */
@@ -78,15 +60,16 @@
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      LIBRARIES
 
-#include <limits.h>
+#include <Arduino.h>
 #include <stdio.h>
+#include <limits.h>
+#include <string.h>
+#include <iostream>
 #include "FS.h"
 #include "SD.h"
 #include <SPI.h>
-#include <string.h>
-#include <iostream>
-#include <Arduino.h>
 #include <SoftwareSerial.h>
+#include <Wire.h>
 #include <RTClib.h>
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
@@ -95,9 +78,23 @@
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 #include <JPEGDecoder.h>
-#include <Wire.h>
 #include "esp_pm.h"
 #include "esp_attr.h"
+
+#define TCAADDR   0x70
+
+void tcaselect(uint8_t channel) {
+  if (channel > 7) return;
+  Wire.beginTransmission(TCAADDR);
+  Wire.write(1 << channel);
+  Wire.endTransmission();
+}
+
+RTC_DS3231 rtc;
+DateTime dt_now;
+
+DateTime rcv_dt_0;
+DateTime rcv_dt_1;
 
 int MAX_GPS_RETIES = 0;
 
@@ -105,8 +102,8 @@ int MAX_GPS_RETIES = 0;
 //                                                                                                                           PINS
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte txd_to_atmega = 27;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
-const byte rxd_from_gps = 22;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
+const byte txd_to_atmega = 25;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
+const byte rxd_from_gps = 26;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
 
 #define CYD_LED_BLUE 17
 #define CYD_LED_RED 4
@@ -170,6 +167,8 @@ uint16_t TFT_HUD2_TXT_BG = TFT_BLACK;  // emhpasize
 
 TaskHandle_t TSTask;    // touchscreen task
 TaskHandle_t UpdateDisplayTask;  // time task
+TaskHandle_t Task0;  // time task
+TaskHandle_t Task1;  // time task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
@@ -315,24 +314,24 @@ struct SerialLinkStruct {
   char char_i_sync[56];
   bool syn = false;
   bool data = false;
-  char BUFFER[150];           // read incoming bytes into this buffer
-  char BUFFER1[150];               // buffer refined using ETX
+  char BUFFER[2000];           // read incoming bytes into this buffer
+  char BUFFER1[2000];               // buffer refined using ETX
   // char TMP[2000];               // buffer refined using ETX
   unsigned long nbytes;
   unsigned long TOKEN_i;
-  unsigned long T0_RXD_1 = 0;   // hard throttle current time
-  unsigned long T1_RXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_RXD_1 = 0;   // hard throttle interval
-  unsigned long T0_TXD_1 = 0;   // hard throttle current time
-  unsigned long T1_TXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_TXD_1 = 10;  // hard throttle interval
+  // unsigned long T0_RXD_1 = 0;   // hard throttle current time
+  // unsigned long T1_RXD_1 = 0;   // hard throttle previous time
+  // unsigned long TT_RXD_1 = 0;   // hard throttle interval
+  // unsigned long T0_TXD_1 = 0;   // hard throttle current time
+  // unsigned long T1_TXD_1 = 0;   // hard throttle previous time
+  // unsigned long TT_TXD_1 = 10;  // hard throttle interval
   int i_token = 0;
   char * token;
   bool validation = false;
   char checksum[56];
   uint8_t checksum_of_buffer;
   uint8_t checksum_in_buffer;
-  char gotSum[2];
+  char gotSum[4];
   int i_XOR;
   int XOR;
   int c_XOR;
@@ -490,6 +489,13 @@ void ledWhite() {
   analogWrite(CYD_LED_RED, CYD_LED_ON);
   analogWrite(CYD_LED_GREEN, CYD_LED_ON);
   analogWrite(CYD_LED_BLUE, CYD_LED_ON);
+}
+
+void SerialDisplayRTCDateTime() {
+  // test dt
+  dt_now = rtc.now();
+  // display dt
+  Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -1402,8 +1408,8 @@ struct MatrixStruct {
   int matrix_active_i = 0;        // count how many matrx switches are active
   int matrix_inactive_i = 0;      // count how many matrx switches are inactive
 
-  char temp[2048];                     // a general place to store temporary chars relative to MatrixStruct
-  char matrix_sentence[2048];  // an NMEA inspired sentence reflecting matrix switch states  
+  char temp[2000];                     // a general place to store temporary chars relative to MatrixStruct
+  char matrix_sentence[2000];  // an NMEA inspired sentence reflecting matrix switch states  
   char checksum_str[56];               // placeholder for char checksum relative to MatrixStruct
   char checksum[56];                      // placeholder for int checksum relative to MatrixStruct
 
@@ -2141,7 +2147,7 @@ MatrixStruct matrixData;
 //                                                                                                                    DATA: GNGGA
 
 struct GNGGAStruct {
-  char sentence[150];
+  char sentence[2000];
   char tag[56];                                                                                                            // <0> Log header
   char utc_time[56];                    unsigned long bad_utc_time_i;              bool bad_utc_time = true;               // <1> UTC time, the format is hhmmss.sss
   char latitude[56];                    unsigned long bad_latitude_i;              bool bad_latitude = true;               // <2> Latitude, the format is  ddmm.mmmmmmm
@@ -2223,7 +2229,7 @@ void GNGGA() {
 //                                                                                                                    DATA: GNRMC
 
 struct GNRMCStruct {
-  char sentence[150];
+  char sentence[2000];
   char tag[56];                                                                                                                             // <0> Log header
   char utc_time[56];                       unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                      // <1> UTC time, the format is hhmmss.sss
   char positioning_status[56];             unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;            // <2> Positioning status, A=effective positioning, V=invalid positioning
@@ -2298,7 +2304,7 @@ void GNRMC() {
 //                                                                                                                    DATA: GPATT
 
 struct GPATTStruct {
-  char sentence[150];
+  char sentence[2000];
   char tag[56];                                                                                       // <0> Log header
   char pitch[56];            unsigned long bad_pitch_i;            bool bad_pitch = true;             // <1> pitch angle
   char angle_channel_0[56];  unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;   // <2> P
@@ -2493,13 +2499,13 @@ struct SatDatatruct {
   signed int utc_offset = 0;          // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
   bool utc_offset_flag = 0;           // 0: add hours to time; 1: deduct hours from time
 
-  int year_int;                       // current year
-  int month_int;                      // current month
-  int day_int;                        // current day
-  int hour_int;                       // current hour
-  int minute_int;                     // current minute
-  int second_int;                     // current second
-  int millisecond_int;                // current millisecond
+  signed int year_int;                       // current year
+  signed int month_int;                      // current month
+  signed int day_int;                        // current day
+  signed int hour_int;                       // current hour
+  signed int minute_int;                     // current minute
+  signed int second_int;                     // current second
+  signed int millisecond_int;                // current millisecond
   
   char year[56];                      // current year
   char month[56];                     // current month
@@ -2509,13 +2515,13 @@ struct SatDatatruct {
   char second[56];                    // current second
   char millisecond[56];               // current millisecond
 
-  int tmp_year_int;                   // temp current year
-  int tmp_month_int;                  // temp current month
-  int tmp_day_int;                    // temp current day
-  int tmp_hour_int;                   // temp current hour
-  int tmp_minute_int;                 // temp current minute
-  int tmp_second_int;                 // temp current second
-  int tmp_millisecond_int;            // temp current millisecond
+  signed int tmp_year_int;                   // temp current year
+  signed int tmp_month_int;                  // temp current month
+  signed int tmp_day_int;                    // temp current day
+  signed int tmp_hour_int;                   // temp current hour
+  signed int tmp_minute_int;                 // temp current minute
+  signed int tmp_second_int;                 // temp current second
+  signed int tmp_millisecond_int;            // temp current millisecond
 
   char tmp_year[56];                  // temp current year
   char tmp_month[56];                 // temp current month
@@ -2525,13 +2531,13 @@ struct SatDatatruct {
   char tmp_second[56];                // temp current second
   char tmp_millisecond[56];           // temp current millisecond
 
-  int lt_year_int = 0;                    // last year satellite count > zero
-  int lt_month_int = 0;                   // last month satellite count > zero
-  int lt_day_int = 0;                     // last day satellite count > zero
-  int lt_hour_int = 0;                    // last hour satellite count > zero
-  int lt_minute_int = 0;                  // last minute satellite count > zero
-  int lt_second_int = 0;                  // last second satellite count > zero
-  int lt_millisecond_int = 0;             // last millisecond satellite count > zero
+  signed int lt_year_int = 0;                    // last year satellite count > zero
+  signed int lt_month_int = 0;                   // last month satellite count > zero
+  signed int lt_day_int = 0;                     // last day satellite count > zero
+  signed int lt_hour_int = 0;                    // last hour satellite count > zero
+  signed int lt_minute_int = 0;                  // last minute satellite count > zero
+  signed int lt_second_int = 0;                  // last second satellite count > zero
+  signed int lt_millisecond_int = 0;             // last millisecond satellite count > zero
 
   char lt_year[56] = "0";                   // last year satellite count > zero
   char lt_month[56] = "0";                  // last month satellite count > zero
@@ -2541,12 +2547,12 @@ struct SatDatatruct {
   char lt_second[56] = "0";                 // last second satellite count > zero
   char lt_millisecond[56] = "0";            // last millisecond satellite count > zero
 
-  int rtc_year_int = 0;                    // last year satellite count > zero
-  int rtc_month_int = 0;                   // last month satellite count > zero
-  int rtc_day_int = 0;                     // last day satellite count > zero
-  int rtc_hour_int = 0;                    // last hour satellite count > zero
-  int rtc_minute_int = 0;                  // last minute satellite count > zero
-  int rtc_second_int = 0;                  // last second satellite count > zero
+  signed int rtc_year_int = 0;                    // last year satellite count > zero
+  signed int rtc_month_int = 0;                   // last month satellite count > zero
+  signed int rtc_day_int = 0;                     // last day satellite count > zero
+  signed int rtc_hour_int = 0;                    // last hour satellite count > zero
+  signed int rtc_minute_int = 0;                  // last minute satellite count > zero
+  signed int rtc_second_int = 0;                  // last second satellite count > zero
   char rtc_millisecond_int = 0;             // last millisecond satellite count > zero
   long rtc_time_int;
 
@@ -2727,11 +2733,13 @@ String padDigitsZero(int digits) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           CONVERT UTC TO LOCAL
 
-void convertUTCToLocal() {
+// temporary char time values so that we do not disturb the primary values while converting.
+char temp_sat_time_stamp_string[128];
 
-  // temporary char time values so that we do not disturb the primary values while converting.
-  char temp_sat_time_stamp_string[56];
-  memset(temp_sat_time_stamp_string, 0, 56);
+void convertUTCToLocal() {
+  
+  // Serial.println("[gnrmcData.utc_time] " + String(gnrmcData.utc_time));  // debug
+  memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
   strcat(temp_sat_time_stamp_string, gnrmcData.utc_date);
   strcat(temp_sat_time_stamp_string, gnrmcData.utc_time);
   memset(satData.tmp_day, 0, 56);
@@ -2760,15 +2768,16 @@ void convertUTCToLocal() {
   // Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
 
   // temporary int time values so that we do not disturb the primary values while converting.
-  satData.tmp_day_int = atoi(satData.tmp_day);
-  satData.tmp_month_int = atoi(satData.tmp_month);
-  satData.tmp_year_int = atoi(satData.tmp_year);
-  satData.tmp_hour_int = atoi(satData.tmp_hour);
-  satData.tmp_minute_int = atoi(satData.tmp_minute);
-  satData.tmp_second_int = atoi(satData.tmp_second);
-  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
+  satData.tmp_day_int = atoi(satData.tmp_day); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_month_int = atoi(satData.tmp_month); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_year_int = atoi(satData.tmp_year); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_hour_int = atoi(satData.tmp_hour); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_minute_int = atoi(satData.tmp_minute); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_second_int = atoi(satData.tmp_second);  // if(!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
 
   // uncomment to debug before conversion
+  
   // Serial.print("utc int:              ");
   // Serial.print(satData.tmp_hour_int);
   // Serial.print(":"); Serial.print(satData.tmp_minute_int);
@@ -2777,7 +2786,7 @@ void convertUTCToLocal() {
   // Serial.print(" "); Serial.print(satData.tmp_day_int);
   // Serial.print("."); Serial.print(satData.tmp_month_int);
   // Serial.print("."); Serial.print(satData.tmp_year_int);
-  // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")"); 
+  // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")");
 
   // set time using time elements with 2 digit year
   setTime(
@@ -2933,6 +2942,14 @@ void setLastSatelliteTime() {
     satData.lt_minute_int = satData.minute_int;
     satData.lt_second_int = satData.second_int;
     satData.lt_millisecond_int = satData.millisecond_int;
+
+    // adjust rtc while we appear to have a downlink
+    rcv_dt_1 = DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int);
+    if (rcv_dt_1!=rcv_dt_0) {
+      rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+      rcv_dt_0 = rcv_dt_1;
+    }
+    // SerialDisplayRTCDateTime();
   }
 }
 
@@ -2944,7 +2961,7 @@ void buildSatIOSentence() {
   /* create a comma delimited sentence of new data, to print over serial that can be parsed by other systems */
 
   // start building satio sentence
-  memset(satData.satio_sentence, 0, 2000);
+  memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
   strcat(satData.satio_sentence, satData.sat_time_stamp_string);
@@ -5978,22 +5995,6 @@ void matrixSwitch() {
       else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
     }
 
-    // append last_sat_dt for atmega2560 to set on RTC
-    strcat(matrixData.matrix_sentence, satData.lt_year);
-    strcat(matrixData.matrix_sentence, ",");
-    strcat(matrixData.matrix_sentence, satData.lt_month);
-    strcat(matrixData.matrix_sentence, ",");
-    strcat(matrixData.matrix_sentence, satData.lt_day);
-    strcat(matrixData.matrix_sentence, ",");
-    strcat(matrixData.matrix_sentence, satData.lt_hour);
-    strcat(matrixData.matrix_sentence, ",");
-    strcat(matrixData.matrix_sentence, satData.lt_minute);
-    strcat(matrixData.matrix_sentence, ",");
-    strcat(matrixData.matrix_sentence, satData.lt_second);
-    strcat(matrixData.matrix_sentence, ",");
-    // strcat(matrixData.matrix_sentence, satData.lt_millisecond);
-    // strcat(matrixData.matrix_sentence, ",");
-
     // Satellite Count and HDOP Precision Factor Indicator
     if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(matrixData.matrix_sentence, "0,");}
     else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
@@ -8843,137 +8844,6 @@ void sdcardCheck() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                          SETUP
-
-void setup() {
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SETUP: PINS
-  pinMode(CYD_LED_RED, OUTPUT);
-  pinMode(CYD_LED_GREEN, OUTPUT);
-  pinMode(CYD_LED_BLUE, OUTPUT);
-  ledGreen();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                          SETUP: SECOND TIMER
-  second_timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(second_timer, &isr_second_timer, true);
-  timerAlarmWrite(second_timer, 1000000, true);
-  timerAlarmEnable(second_timer);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                SETUP: SERIAL
-
-  Serial.begin(115200);
-  while(!Serial);
-  // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
-  Serial1.setPins(rxd_from_gps, txd_to_atmega, ctsPin, rtsPin);
-  Serial1.begin(115200);
-  Serial.setTimeout(10);
-  Serial1.setTimeout(10);
-  Serial1.flush();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                           SETUP: SYSTEM INFO
-
-  delay(1000);
-  Serial.println("[xPortGetCoreID] " + String(xPortGetCoreID()));
-
-  Serial.println("[ESP_PM_CPU_FREQ_MAX] " + String(ESP_PM_CPU_FREQ_MAX));
-  Serial.println("[ESP_PM_APB_FREQ_MAX] " + String(ESP_PM_APB_FREQ_MAX));
-  Serial.println("[ESP_PM_NO_LIGHT_SLEEP] " + String(ESP_PM_NO_LIGHT_SLEEP));
-   
-  Serial.println("[CONFIG_ESPTOOLPY_FLASHFREQ] " + String(CONFIG_ESPTOOLPY_FLASHFREQ));
-  Serial.println("[CONFIG_ESPTOOLPY_FLASHMODE] " + String(CONFIG_ESPTOOLPY_FLASHMODE));
-   
-  // Serial.println("[CONFIG_COMPILER_OPTIMIZATION] " + String(CONFIG_COMPILER_OPTIMIZATION));
-  Serial.println("[CONFIG_ESP32_REV_MIN] " + String(CONFIG_ESP32_REV_MIN));
-
-  Serial.println("[CONFIG_LOG_DEFAULT_LEVEL] " + String(CONFIG_LOG_DEFAULT_LEVEL));
-  Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
-  Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
-  // Serial.println("[ CONFIG_LOG_DYNAMIC_LEVEL_CONTROL] " + String(CONFIG_LOG_DYNAMIC_LEVEL_CONTROL));
-  // Serial.println("[  CONFIG_LOG_TAG_LEVEL_IMPL] " + String( CONFIG_LOG_TAG_LEVEL_IMPL));
-  Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
-  // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
-
-
-  Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
-  Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                               SETUP: DISPLAY
-
-  ts.begin();  // start the SPI for the touch screen and init the TS library
-  tft.init();  // start the tft display and set it to black
-  
-  #if ESP_IDF_VERSION_MAJOR == 5  // setup up LEDC, configuring backlight pin. NOTE: this needs to be done after tft.init()
-    ledcAttach(LCD_BACK_LIGHT_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
-  #else
-    ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
-    ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
-  #endif
-
-  tft.setRotation(1);         // landscape
-  tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
-  tft.setFreeFont(FONT5X7_H);
-  ledcAnalogWrite(LEDC_CHANNEL_0, 255);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                SETUP: SDCARD
-
-  setupSDCard();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                          DSETUP: SPLASHSCREEN
-
-  // Unidentified Studios
-  drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
-  delay(2000);
-  tft.fillScreen(TFT_BLACK);
-
-  // Product Name
-  // drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
-  // delay(2000);
-  // tft.fillScreen(TFT_BLACK);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                            SETUP: CORE TASKS
-
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-      TouchScreenInput, /* Function to implement the task */
-      "TSTask",         /* Name of the task */
-      10000,            /* Stack size in words */
-      NULL,             /* Task input parameter */
-      2,                /* Priority of the task */
-      &TSTask,          /* Task handle. */
-      0);               /* Core where the task should run */
-  
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-      UpdateDisplay, /* Function to implement the task */
-      "UpdateDisplayTask",         /* Name of the task */
-      10000,            /* Stack size in words */
-      NULL,             /* Task input parameter */
-      2,                /* Priority of the task */
-      &UpdateDisplayTask,          /* Task handle. */
-      0);               /* Core where the task should run */
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                      SETUP: SIDEREAL PLANETS
-
-  myAstro.begin();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                         SETUP: SET HOME PAGE
-
-  menuData.page=0;
-
-  ledBlue();
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MATRIX SWITCH
 
 void MatrixSwitchTask() {
@@ -9026,173 +8896,346 @@ void check_gpatt() {
   }
 }
 
-// int tgps;
-
-void readGPS() {
-  serial1Data.gngga_bool = false;
-  serial1Data.gnrmc_bool = false;
-  serial1Data.gpatt_bool = false;
-  memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
-  memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
-  memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-
-  Serial.println("[readGPS] ");
-
-  if (Serial1.available()) {
-    for (int i = 0; i < 20; i++) {
-
-      // tgps = millis();
-
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      
-      SerialLink.nbytes = Serial1.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-
-      // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
-
-      // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-
-      if (SerialLink.nbytes>1) {
-
-        // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-
-        if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-
-        else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gnggaData.sentence, SerialLink.BUFFER);
-          serial1Data.gngga_bool = true;
-          if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        }
-
-        else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-          serial1Data.gnrmc_bool = true;
-          if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        }
-
-        else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-          strcpy(gpattData.sentence, SerialLink.BUFFER);
-          serial1Data.gpatt_bool = true;
-          if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-        }
-      }
-    }
-  }
-}
-
 bool isGPSEnabled() {
   if ((systemData.gngga_enabled==true) || (systemData.gnrmc_enabled==true) || (systemData.gpatt_enabled==true)) {return true;}
   return false;
 }
 
-// int tpc;
+int tgps;
 
-void readPortController() {
+void readGPS(void * pvParameters) {
+    while (1) {
+    serial1Data.gngga_bool = false;
+    serial1Data.gnrmc_bool = false;
+    serial1Data.gpatt_bool = false;
+    memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
+    memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
+    memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
-  Serial.println("[readPortController] ");
+    // Serial.println("[readGPS] ");
 
-  // D0 (read RTC first)
-  if (Serial1.available()) {
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
+      if (Serial2.available()) {
 
-      // tpc = millis();
+        tgps = millis();
 
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+        memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+        
+        SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, 150);
 
-      SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+        // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
-      // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+        // Serial.println("[readGPS] " + String(SerialLink.BUFFER)); // debug
 
-      if (SerialLink.nbytes>1) {
-        // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
-        if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
+        if (SerialLink.nbytes>10) {
 
-          if (validateChecksum(SerialLink.BUFFER)==true) {
-            // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
+          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
 
-            SerialLink.TOKEN_i = 0;
-            SerialLink.token = strtok(SerialLink.BUFFER, ",");
-            while (SerialLink.token != NULL) {
+          if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
-              if (SerialLink.TOKEN_i==8)  {
-              satData.rtc_year_int = atoi(SerialLink.token); memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
-              // Serial.println("[rtc_year_int] " + String(satData.rtc_year_int));
-              }
-              if (SerialLink.TOKEN_i==9) {
-                satData.rtc_month_int = atoi(SerialLink.token); memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
-                // Serial.println("[rtc_month_int] " + String(satData.rtc_month_int));
-              }
-              if (SerialLink.TOKEN_i==10)  {
-                satData.rtc_day_int = atoi(SerialLink.token); memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
-                // Serial.println("[rtc_day_int] " + String(satData.rtc_day_int));
-              }
-              if (SerialLink.TOKEN_i==11) {
-                satData.rtc_hour_int = atoi(SerialLink.token); memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
-                // Serial.println("[rtc_hour_int] " + String(satData.rtc_hour_int));
-              }
-              if (SerialLink.TOKEN_i==12) {
-                satData.rtc_minute_int = atoi(SerialLink.token); memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
-                // Serial.println("[rtc_minute_int] " + String(satData.rtc_minute_int));
-              }
-              if (SerialLink.TOKEN_i==13) {
-                satData.rtc_second_int = atoi(SerialLink.token); memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
-                // Serial.println("[rtc_second_int] " + String(satData.rtc_second_int));
-              }
+          else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            strcpy(gnggaData.sentence, SerialLink.BUFFER);
+            serial1Data.gngga_bool = true;
+            if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+          }
 
-              if (SerialLink.TOKEN_i==1)  {
-                sensorData.dht11_h_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
-              }
+          else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            strcpy(gnrmcData.sentence, SerialLink.BUFFER);
+            serial1Data.gnrmc_bool = true;
+            if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+          }
 
-              if (SerialLink.TOKEN_i==2) {
-                sensorData.dht11_c_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
-              }
-
-              if (SerialLink.TOKEN_i==3) {
-                sensorData.dht11_f_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
-              }
-
-              if (SerialLink.TOKEN_i==4) {
-                sensorData.dht11_hif_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
-              }
-
-              if (SerialLink.TOKEN_i==5) {
-                sensorData.dht11_hic_0 = std::stof(SerialLink.token);
-                // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-              }
-
-              if (SerialLink.TOKEN_i==6) {
-                sensorData.photoresistor_0 = atoi(SerialLink.token);
-                // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
-              }
-              
-              if (SerialLink.TOKEN_i==7) {
-                sensorData.tracking_0 = atoi(SerialLink.token);
-                // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
-              }
-              
-              SerialLink.token = strtok(NULL, ",");
-              SerialLink.TOKEN_i++;
-            }
-            break;
+          else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            strcpy(gpattData.sentence, SerialLink.BUFFER);
+            serial1Data.gpatt_bool = true;
+            if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
           }
         }
       }
     }
+    delay(1);
   }
+}
+
+int tpc;
+
+void readPortController(void * pvParameters) {
+
+  while(1) {
+    // Serial.println("[readPortController] ");
+
+    // D0 (read RTC first)
+    // Serial.println("[readPortController 1] ");
+    for (int i = 0; i < 10; i++) {
+
+        // Serial.println("[readPortController 2] ");
+
+        if (Serial1.available()) {
+        // Serial.println("[readPortController 3] ");
+
+        tpc = millis();
+        // Serial.println("[readPortController 4] ");
+        memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+        // Serial.println("[readPortController 5] ");
+
+        SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 150);
+
+        // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+
+        if (SerialLink.nbytes>10) {
+          // Serial.println("[readPortController 6] ");
+          // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
+          if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
+            // Serial.println("[readPortController cs] ");
+
+            if (validateChecksum(SerialLink.BUFFER)==true) {
+              // Serial.println("[readPortController 7] ");
+              // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
+
+              SerialLink.TOKEN_i = 0;
+              SerialLink.token = strtok(SerialLink.BUFFER, ",");
+              // Serial.println("[readPortController 8] ");
+              while (SerialLink.token != NULL) {
+                // Serial.println("[readPortController 9] ");
+
+                if (SerialLink.TOKEN_i==1)  {
+                  // Serial.println("[readPortController 10] ");
+                  // sensorData.dht11_h_0 = std::stof(SerialLink.token);
+                  // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
+                  // Serial.println("[readPortController 11] ");
+                }
+
+                if (SerialLink.TOKEN_i==2) {
+                  // sensorData.dht11_c_0 = std::stof(SerialLink.token);
+                  // Serial.println("[readPortController 12] ");
+                  // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
+                  // Serial.println("[readPortController 13] ");
+                }
+
+                if (SerialLink.TOKEN_i==3) {
+                  // sensorData.dht11_f_0 = std::stof(SerialLink.token);
+                  // Serial.println("[readPortController 14] ");
+                  // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
+                  // Serial.println("[readPortController 15] ");
+                }
+
+                if (SerialLink.TOKEN_i==4) {
+                  // sensorData.dht11_hif_0 = std::stof(SerialLink.token);
+                  // Serial.println("[readPortController 16] ");
+                  // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
+                  // Serial.println("[readPortController 17] ");
+                }
+
+                if (SerialLink.TOKEN_i==5) {
+                  // sensorData.dht11_hic_0 = std::stof(SerialLink.token);
+                  // Serial.println("[readPortController 18] ");
+                  // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+                  // Serial.println("[readPortController 19] ");
+                }
+
+                if (SerialLink.TOKEN_i==6) {
+                  // Serial.println("[readPortController 20] ");
+                  // sensorData.photoresistor_0 = atoi(SerialLink.token);
+                  // Serial.println("[readPortController 21] ");
+                  // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+                }
+                
+                if (SerialLink.TOKEN_i==7) {
+                  // Serial.println("[readPortController 22] ");
+                  // sensorData.tracking_0 = atoi(SerialLink.token);
+                  // Serial.println("[readPortController 23] ");
+                  // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
+                }
+                
+                SerialLink.token = strtok(NULL, ",");
+                SerialLink.TOKEN_i++;
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
+    delay(1);
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          SETUP
+
+void setup() {
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SETUP: PINS
+  pinMode(CYD_LED_RED, OUTPUT);
+  pinMode(CYD_LED_GREEN, OUTPUT);
+  pinMode(CYD_LED_BLUE, OUTPUT);
+  ledGreen();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                          SETUP: SECOND TIMER
+  second_timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(second_timer, &isr_second_timer, true);
+  timerAlarmWrite(second_timer, 1000000, true);
+  timerAlarmEnable(second_timer);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                SETUP: SERIAL
+
+  Serial.begin(115200); while(!Serial);
+  Serial.setTimeout(10);
+  
+  // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
+  Serial1.setPins(26, 25, ctsPin, rtsPin);
+  Serial1.begin(115200);
+  Serial1.setTimeout(100);
+  Serial1.flush();
+
+  Serial2.setPins(27, 14, ctsPin, rtsPin);
+  Serial2.begin(115200);
+  Serial2.setTimeout(100);
+  Serial2.flush();
+
+  // setp TCA9548A
+  Wire.begin();  // sets up the I2C  
+  rtc.begin();   // initializes the I2C device
+
+  tcaselect(0);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                           SETUP: SYSTEM INFO
+
+  delay(1000);
+  Serial.println("[xPortGetCoreID] " + String(xPortGetCoreID()));
+
+  Serial.println("[ESP_PM_CPU_FREQ_MAX] " + String(ESP_PM_CPU_FREQ_MAX));
+  Serial.println("[ESP_PM_APB_FREQ_MAX] " + String(ESP_PM_APB_FREQ_MAX));
+  Serial.println("[ESP_PM_NO_LIGHT_SLEEP] " + String(ESP_PM_NO_LIGHT_SLEEP));
+   
+  Serial.println("[CONFIG_ESPTOOLPY_FLASHFREQ] " + String(CONFIG_ESPTOOLPY_FLASHFREQ));
+  Serial.println("[CONFIG_ESPTOOLPY_FLASHMODE] " + String(CONFIG_ESPTOOLPY_FLASHMODE));
+   
+  // Serial.println("[CONFIG_COMPILER_OPTIMIZATION] " + String(CONFIG_COMPILER_OPTIMIZATION));
+  Serial.println("[CONFIG_ESP32_REV_MIN] " + String(CONFIG_ESP32_REV_MIN));
+
+  Serial.println("[CONFIG_LOG_DEFAULT_LEVEL] " + String(CONFIG_LOG_DEFAULT_LEVEL));
+  Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
+  Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
+  // Serial.println("[ CONFIG_LOG_DYNAMIC_LEVEL_CONTROL] " + String(CONFIG_LOG_DYNAMIC_LEVEL_CONTROL));
+  // Serial.println("[  CONFIG_LOG_TAG_LEVEL_IMPL] " + String( CONFIG_LOG_TAG_LEVEL_IMPL));
+  Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
+  // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
+
+
+  Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
+  Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                               SETUP: DISPLAY
+
+  // ts.begin();  // start the SPI for the touch screen and init the TS library
+  // tft.init();  // start the tft display and set it to black
+  
+  // #if ESP_IDF_VERSION_MAJOR == 5  // setup up LEDC, configuring backlight pin. NOTE: this needs to be done after tft.init()
+  //   ledcAttach(LCD_BACK_LIGHT_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+  // #else
+  //   ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+  //   ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
+  // #endif
+
+  // tft.setRotation(1);         // landscape
+  // tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
+  // tft.setFreeFont(FONT5X7_H);
+  // ledcAnalogWrite(LEDC_CHANNEL_0, 255);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                SETUP: SDCARD
+
+  // setupSDCard();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                          DSETUP: SPLASHSCREEN
+
+  // Unidentified Studios
+  // drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
+  // delay(2000);
+  // tft.fillScreen(TFT_BLACK);
+
+  // Product Name
+  // drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
+  // delay(2000);
+  // tft.fillScreen(TFT_BLACK);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                            SETUP: CORE TASKS
+
+  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // xTaskCreatePinnedToCore(
+  //     TouchScreenInput, /* Function to implement the task */
+  //     "TSTask",         /* Name of the task */
+  //     10000,            /* Stack size in words */
+  //     NULL,             /* Task input parameter */
+  //     2,                /* Priority of the task */
+  //     &TSTask,          /* Task handle. */
+  //     0);               /* Core where the task should run */
+  
+  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // xTaskCreatePinnedToCore(
+  //     UpdateDisplay, /* Function to implement the task */
+  //     "UpdateDisplayTask",         /* Name of the task */
+  //     10000,            /* Stack size in words */
+  //     NULL,             /* Task input parameter */
+  //     2,                /* Priority of the task */
+  //     &UpdateDisplayTask,          /* Task handle. */
+  //     0);               /* Core where the task should run */
+
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+      readGPS, /* Function to implement the task */
+      "Task0",         /* Name of the task */
+      10000,            /* Stack size in words */
+      NULL,             /* Task input parameter */
+      2,                /* Priority of the task */
+      &Task0,          /* Task handle. */
+      0);               /* Core where the task should run */
+    
+      
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+    readPortController, /* Function to implement the task */
+    "Task1",         /* Name of the task */
+    10000,            /* Stack size in words */
+    NULL,             /* Task input parameter */
+    2,                /* Priority of the task */
+    &Task1,          /* Task handle. */
+    0);               /* Core where the task should run */
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                      SETUP: SIDEREAL PLANETS
+
+  myAstro.begin();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                         SETUP: SET HOME PAGE
+
+  menuData.page=0;
+
+  ledBlue();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
+int t0a = millis(); 
 int t0 = millis(); 
 
 void loop() {
+
+  systemData.matrix_enabled = true;
+  systemData.run_on_startup = true;
 
   // Serial.println("---------------------------------------------------------------");
   Serial.println("[loop] ");
@@ -9201,27 +9244,15 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  // mux rx to portcontroller
-  SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
-
-  t0 = millis();
-  delay(1);
-  readPortController();
-  delay(1);
-  Serial.println("[readPortController] " + String(millis()-t0));
-  
-  // mux rx to gps
-  SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
+  // t0 = millis();
+  // readPortController();
+  // Serial.println("[readPortController] " + String(millis()-t0));
 
   // t0a = millis();
-  delay(1);
-  if (isGPSEnabled()==true) {
-
-    // delay(1000);
-    t0 = millis();
-    readGPS();
-    Serial.println("[gps] " + String(millis()-t0));
-    // delay(1000);
+  // if (isGPSEnabled()==true) {
+  //   t0 = millis();
+  //   readGPS();
+  //   Serial.println("[gps] " + String(millis()-t0));
 
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gngga();}
@@ -9238,8 +9269,8 @@ void loop() {
     // t0 = millis();
     if (satData.convert_coordinates == true) {calculateLocation();}
     // Serial.println("[gpatt] " + String(millis()-t0));
-  }
-  delay(1);
+  // }
+  // delay(1);
   // Serial.println("[gps total] " + String(millis()-t0a));
 
   convertUTCToLocal();
@@ -9281,9 +9312,12 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
-  // Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
+  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
+  // value checking (multitask migration): note that the first few loops may return null values and is expected
+  // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
+  // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }
