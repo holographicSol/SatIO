@@ -10,13 +10,9 @@ CD74HC4067 S0          -> ATMEGA2560 8
 CD74HC4067 S1          -> ATMEGA2560 9
 CD74HC4067 S2          -> ATMEGA2560 10
 CD74HC4067 S3          -> ATMEGA2560 11
-ESP32 io22 (RXD)       -> CD74HC4067 SIG (output selected channel to ESP32)
-ATMEGA2560 Serial1 RXD -> CD74HC4067 C0
-WTGPS300               -> CD74HC4067 C1 
 
 Wiring TCA9548A i2C Multiplexer:
-TCA9548A: SDA, SCL -> ATMEGA2560: SDA 20, SCL 21
-TCA9548A: SDA0, SCL1 -> DS3231 Precision RTC: D (Data), C (Clock)
+TCA9548A: SDA, SCL   -> ATMEGA2560: SDA 20, SCL 21
 TCA9548A VCC 3.3v
 TCA9548A GND
 
@@ -51,7 +47,7 @@ Tracking Sensor GND
 #include <Arduino.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <RTClib.h>
+// #include <RTClib.h>
 #include <SPI.h>
 #include <Wire.h>  
 #include <TimeLib.h>
@@ -69,8 +65,8 @@ int MUX1_CHANNEL = 0;
 
 #define MAX_BUFF 256
 
-RTC_DS3231 rtc;
-DateTime dt_now;
+// RTC_DS3231 rtc;
+// DateTime dt_now;
 
 #include <DHT.h>
 #define DHTPIN 2     // Digital pin connected to the DHT sensor
@@ -97,16 +93,16 @@ int tracking_0;
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
 
-// last satellite time placeholders
-uint16_t rcv_year        = 2000;
-uint16_t rcv_month       = 01;
-uint16_t rcv_day         = 01;
-uint16_t rcv_hour        = 00;
-uint16_t rcv_minute      = 00;
-uint16_t rcv_second      = 00;
-uint16_t rcv_millisecond = 00;
-DateTime rcv_dt_0;
-DateTime rcv_dt_1;
+// // last satellite time placeholders
+// uint16_t rcv_year        = 2000;
+// uint16_t rcv_month       = 01;
+// uint16_t rcv_day         = 01;
+// uint16_t rcv_hour        = 00;
+// uint16_t rcv_minute      = 00;
+// uint16_t rcv_second      = 00;
+// uint16_t rcv_millisecond = 00;
+// DateTime rcv_dt_0;
+// DateTime rcv_dt_1;
 
 signed int tmp_port;
 bool update_portmap_bool = false;
@@ -316,8 +312,8 @@ void setup() {
   MUXATMEGA2560(0, 0);
 
   // setp TCA9548A
-  Wire.begin();  // sets up the I2C  
-  rtc.begin();   // initializes the I2C
+  // Wire.begin();  // sets up the I2C  
+  // rtc.begin();   // initializes the I2C
 
   dht.begin();
 
@@ -344,12 +340,12 @@ void setup() {
   Serial.println("starting...");
 }
 
-void SerialDisplayRTCDateTime() {
-  // test dt
-  dt_now = rtc.now();
-  // display dt
-  Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
-}
+// void SerialDisplayRTCDateTime() {
+//   // test dt
+//   dt_now = rtc.now();
+//   // display dt
+//   Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
+// }
 
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                    PORT CONTROLLER
@@ -405,7 +401,7 @@ void processMatrixData() {
     while(SerialLink.token != NULL) {
 
       // uncomment to debug
-      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // check eack token for portmap
       if (SerialLink.i_token<20) { 
@@ -431,16 +427,16 @@ void processMatrixData() {
         }
       }
 
-      // reconstruct temporary datetime char array with token each iteration
-      if (SerialLink.i_token==40) {rcv_year = atoi(SerialLink.token);}
-      if (SerialLink.i_token==41) {rcv_month = atoi(SerialLink.token);}
-      if (SerialLink.i_token==42) {rcv_day = atoi(SerialLink.token);}
-      if (SerialLink.i_token==43) {rcv_hour = atoi(SerialLink.token);}
-      if (SerialLink.i_token==44) {rcv_minute = atoi(SerialLink.token);}
-      if (SerialLink.i_token==45) {rcv_second = atoi(SerialLink.token);}
+      // // reconstruct temporary datetime char array with token each iteration
+      // if (SerialLink.i_token==40) {rcv_year = atoi(SerialLink.token);}
+      // if (SerialLink.i_token==41) {rcv_month = atoi(SerialLink.token);}
+      // if (SerialLink.i_token==42) {rcv_day = atoi(SerialLink.token);}
+      // if (SerialLink.i_token==43) {rcv_hour = atoi(SerialLink.token);}
+      // if (SerialLink.i_token==44) {rcv_minute = atoi(SerialLink.token);}
+      // if (SerialLink.i_token==45) {rcv_second = atoi(SerialLink.token);}
 
       // satellite count > 0 indicator
-      if (SerialLink.i_token==46) {
+      if (SerialLink.i_token==40) {
         // Serial.println("[satcount] " + String(SerialLink.token));
         if (atoi(SerialLink.token)==0) {
           digitalWrite(LEDSATSIGNALR, HIGH);
@@ -452,12 +448,12 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, HIGH);
           digitalWrite(LEDSATSIGNALB, LOW);
-          // adjust rtc while we appear to have a downlink
-          rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          if (rcv_dt_1!=rcv_dt_0) {
-            rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
-            rcv_dt_0 = rcv_dt_1;
-          }
+          // // adjust rtc while we appear to have a downlink
+          // rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          // if (rcv_dt_1!=rcv_dt_0) {
+          //   rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
+          //   rcv_dt_0 = rcv_dt_1;
+          // }
           
         }
         else if (atoi(SerialLink.token)==2) {
@@ -465,16 +461,16 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
-          // adjust rtc while we appear to have a downlink
-          rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          if (rcv_dt_1!=rcv_dt_0) {
-            rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
-            rcv_dt_0 = rcv_dt_1;
-          }
+          // // adjust rtc while we appear to have a downlink
+          // rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
+          // if (rcv_dt_1!=rcv_dt_0) {
+          //   rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
+          //   rcv_dt_0 = rcv_dt_1;
+          // }
         }
       }
 
-      if (SerialLink.i_token==47) {
+      if (SerialLink.i_token==41) {
         // Serial.println("[LEDOVERLOADR] " + String(SerialLink.token));
         if (atoi(SerialLink.token)==0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
         else {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
@@ -505,7 +501,7 @@ void readRXD1() {
         
         memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
         strcpy(SerialLink.TMP, SerialLink.BUFFER);
-        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         SerialLink.TOKEN_i = 0;
 
         // get tag token
@@ -656,31 +652,30 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
-      // RTC
-      dt_now = rtc.now();
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
-      strcat(SerialLink.BUFFER, ",");
-      strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
-      strcat(SerialLink.BUFFER, ",");
+      // // RTC
+      // dt_now = rtc.now();
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
+      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
+      // strcat(SerialLink.BUFFER, ",");
 
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
       strcat(SerialLink.BUFFER, SerialLink.checksum);
       strcat(SerialLink.BUFFER, "\n");
-
-      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
-
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
+
+      // Serial.println("[TXD] " + String(SeSrialLink.BUFFER)); // debug (at a perfromance decrease)
 
       break;
     }
@@ -696,22 +691,23 @@ void loop() {
   
   Serial.println("[loop] ");
 
-  // timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+  timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
   
   // read matrix data
   readRXD1();
   
   // write sensor data to esp32
+  MUX0_CHANNEL=0;
   if (MUX0_CHANNEL==0) {
     writeTXD1Data0();
+    Serial1.flush();
   }
-  // Serial1.flush();
 
   // execute matrix switches
-  if (SerialLink.validation==true) {satIOPortController();}
+  if ((MUX0_CHANNEL==0) && (SerialLink.validation==true)) {satIOPortController();}
 
-  // timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
+  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
   delay(1);
 }
