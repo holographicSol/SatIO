@@ -9316,6 +9316,7 @@ void loop() {
   Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
+  // this loop is down to between 50 and 60 milliseconds per iteration. thats on the way to 1000 instructions to the port controller a second.
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
