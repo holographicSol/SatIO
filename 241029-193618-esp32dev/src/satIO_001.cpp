@@ -9201,21 +9201,18 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
-  // t0 = millis();
+  // mux rx to portcontroller
   SatIOPortControllerAnalogMux("0", "0"); // analogue multiplexer channel=port controller, i2C multiplexer channel=RTC (default)
-  // Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
-  
+
   t0 = millis();
   delay(1);
   readPortController();
   delay(1);
   Serial.println("[readPortController] " + String(millis()-t0));
-
-  // t0 = millis();
-  SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
-  // Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
-  // delay(1000);
+  // mux rx to gps
+  SatIOPortControllerAnalogMux("1", "0"); // analogue multiplexer channel=GPS, i2C multiplexer channel=RTC
+
   // t0a = millis();
   delay(1);
   if (isGPSEnabled()==true) {
@@ -9244,7 +9241,6 @@ void loop() {
   }
   delay(1);
   // Serial.println("[gps total] " + String(millis()-t0a));
-  // delay(1000);
 
   convertUTCToLocal();
   setLastSatelliteTime();
