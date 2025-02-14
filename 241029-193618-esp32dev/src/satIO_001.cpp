@@ -96,7 +96,8 @@
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 #include <JPEGDecoder.h>
 #include <Wire.h>
-
+#include "esp_pm.h"
+#include "esp_attr.h"
 
 int MAX_GPS_RETIES = 0;
 
@@ -415,7 +416,7 @@ volatile int interrupt_second_counter;  //for counting interrupt
 hw_timer_t * second_timer = NULL;      //H/W timer defining (Pointer to the Structure)
 portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
 
-void IRAM_ATTR isr_second_timer() {      //Defining Inerrupt function with IRAM_ATTR for faster access
+void isr_second_timer() {      //Defining Inerrupt function with for faster access
   portENTER_CRITICAL_ISR(&second_timer_mux);
   interrupt_second_counter++;
   timeData.seconds++;
@@ -8871,12 +8872,38 @@ void setup() {
   Serial.setTimeout(10);
   Serial1.setTimeout(10);
   Serial1.flush();
-              
+
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                             SETUP: CORE INFO
+  //                                                                                                           SETUP: SYSTEM INFO
 
   delay(1000);
-  Serial.println("Running on Core: " + String(xPortGetCoreID()));
+  Serial.println("[xPortGetCoreID] " + String(xPortGetCoreID()));
+
+  Serial.println("[ESP_PM_CPU_FREQ_MAX] " + String(ESP_PM_CPU_FREQ_MAX));
+  Serial.println("[ESP_PM_APB_FREQ_MAX] " + String(ESP_PM_APB_FREQ_MAX));
+  Serial.println("[ESP_PM_NO_LIGHT_SLEEP] " + String(ESP_PM_NO_LIGHT_SLEEP));
+   
+  Serial.println("[CONFIG_ESPTOOLPY_FLASHFREQ] " + String(CONFIG_ESPTOOLPY_FLASHFREQ));
+  Serial.println("[CONFIG_ESPTOOLPY_FLASHMODE] " + String(CONFIG_ESPTOOLPY_FLASHMODE));
+   
+  // Serial.println("[CONFIG_COMPILER_OPTIMIZATION] " + String(CONFIG_COMPILER_OPTIMIZATION));
+  Serial.println("[CONFIG_ESP32_REV_MIN] " + String(CONFIG_ESP32_REV_MIN));
+
+  Serial.println("[CONFIG_LOG_DEFAULT_LEVEL] " + String(CONFIG_LOG_DEFAULT_LEVEL));
+  Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
+  Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
+  // Serial.println("[ CONFIG_LOG_DYNAMIC_LEVEL_CONTROL] " + String(CONFIG_LOG_DYNAMIC_LEVEL_CONTROL));
+  // Serial.println("[  CONFIG_LOG_TAG_LEVEL_IMPL] " + String( CONFIG_LOG_TAG_LEVEL_IMPL));
+  Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
+  // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
+
+
+  Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
+  Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
+  Serial.println("[APB_CLK_FREQ] " + String());
+
+  
+  delay(5000);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                               SETUP: DISPLAY
@@ -9205,11 +9232,15 @@ void loop() {
   // Serial.println("[SatIOPortControllerAnalogMux] " + String(millis()-t0));
   
   // delay(1000);
-  // t0 = millis();
+  // t0a = millis();
   delay(1);
   if (isGPSEnabled()==true) {
 
+    // delay(1000);
+    // t0 = millis();
     readGPS();
+    // Serial.println("[gps] " + String(millis()-t0));
+    // delay(1000);
 
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gngga();}
@@ -9228,7 +9259,7 @@ void loop() {
     // Serial.println("[gpatt] " + String(millis()-t0));
   }
   delay(1);
-  // Serial.println("[gps] " + String(millis()-t0));
+  // Serial.println("[gps total] " + String(millis()-t0a));
   // delay(1000);
 
   convertUTCToLocal();
