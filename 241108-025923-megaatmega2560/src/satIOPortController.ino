@@ -317,13 +317,11 @@ void setup() {
   pinMode(PHOTORESISTOR_0, INPUT);
   pinMode(TRACKING_0, INPUT);
 
+
   Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
-  Serial2.begin(115200); while(!Serial2);
   Serial1.setTimeout(100);
-  Serial2.setTimeout(100);
   Serial1.flush();
-  Serial2.flush();
 
   MUXATMEGA2560(0, 0);
 
@@ -507,7 +505,7 @@ void readRXD1() {
 
   for (int i=0; i<8; i++) {
 
-    if (Serial1.available() > 0) {
+    if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
@@ -541,17 +539,28 @@ void readRXD1() {
             // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
 
             // Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
+            break;
           }
         }
       }
+    }
+  }
 
-      // parse matrix sentence
-      if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-        processMatrixData();
+  for (int i=0; i<8; i++) {
+
+    if (Serial1.available()) {
+
+      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      if (SerialLink.nbytes > 1) {
+        // parse matrix sentence
+        if (strcmp(SerialLink.token, "$MATRIX") == 0) {
+          // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+          processMatrixData();
+          break;
+        }
       }
     }
-    break;
   }
 }
 
@@ -593,9 +602,9 @@ void writeTXD1Data0() {
 
   Serial.println("[writeTXD1Data0] ");
 
-  for (int i=0; i<8; i++) {
+  for (int i=0; i<20; i++) {
 
-    if (Serial1.availableForWrite() > 0) {
+    if (Serial1.availableForWrite()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, "$D0,");
@@ -663,34 +672,6 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
-      // append checksum
-      createChecksum(SerialLink.BUFFER);
-      strcat(SerialLink.BUFFER, "*");
-      strcat(SerialLink.BUFFER, SerialLink.checksum);
-      strcat(SerialLink.BUFFER, "\n");
-
-      Serial.println("[TXD] " + String(SerialLink.BUFFER)); // debug (at a perfromance decrease)
-
-      Serial1.write(SerialLink.BUFFER);
-      Serial1.write(ETX);
-
-      break;
-    }
-  }
-}
-
-
-void writeTXD1Data1() {
-
-  Serial.println("[writeTXD1Data1] ");
-
-  for (int i=0; i<8; i++) {
-
-    if (Serial1.availableForWrite() > 0) {
-
-      memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      strcpy(SerialLink.BUFFER, "$D1,");
-
       // RTC
       dt_now = rtc.now();
       strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
@@ -738,10 +719,9 @@ void loop() {
   
   // write sensor data to esp32
   if (MUX0_CHANNEL==0) {
-    writeTXD1Data1(); // send RTC data first
     writeTXD1Data0();
   }
-  Serial1.flush();
+  // Serial1.flush();
 
   // execute matrix switches
   if (SerialLink.validation==true) {satIOPortController();}
