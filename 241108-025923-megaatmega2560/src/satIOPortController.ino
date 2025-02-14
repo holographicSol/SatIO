@@ -67,7 +67,7 @@ Tracking Sensor GND
 int MUX0_CHANNEL = 0;
 int MUX1_CHANNEL = 0;
 
-#define MAX_BUFF 2048
+#define MAX_BUFF 256
 
 RTC_DS3231 rtc;
 DateTime dt_now;
@@ -185,16 +185,6 @@ struct TimeStruct {
   long main_seconds_0;
 };
 TimeStruct timeData;
-
-bool gngga_bool = false;
-bool gnrmc_bool = false;
-bool gpatt_bool = false;
-char gngga_sentence[MAX_BUFF];
-char gnrmc_sentence[MAX_BUFF];
-char gpatt_sentence[MAX_BUFF];
-bool gngga_valid_checksum = false;
-bool gnrmc_valid_checksum = false;
-bool gpatt_valid_checksum = false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           VALIDATION: CHECKSUM
