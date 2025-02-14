@@ -9093,7 +9093,7 @@ void readPortController() {
   Serial.println("[readPortController] ");
 
   // D1 (read RTC first)
-  while(!Serial1.available())// {delay(1);}
+  // while(!Serial1.available())// {delay(1);}
   for (int i = 0; i < 20; i++) {
 
     // tpc = millis();
