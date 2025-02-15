@@ -421,7 +421,7 @@ void processMatrixData() {
     while(SerialLink.token != NULL) {
 
       // uncomment to debug
-      Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // check eack token for portmap
       if (SerialLink.i_token<20) { 
@@ -430,7 +430,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -446,15 +446,6 @@ void processMatrixData() {
           SerialLink.token = strtok(NULL, ",");
         }
       }
-
-      // // reconstruct temporary datetime char array with token each iteration
-      // if (SerialLink.i_token==40) {rcv_year = atoi(SerialLink.token);}
-      // if (SerialLink.i_token==41) {rcv_month = atoi(SerialLink.token);}
-      // if (SerialLink.i_token==42) {rcv_day = atoi(SerialLink.token);}
-      // if (SerialLink.i_token==43) {rcv_hour = atoi(SerialLink.token);}
-      // if (SerialLink.i_token==44) {rcv_minute = atoi(SerialLink.token);}
-      // if (SerialLink.i_token==45) {rcv_second = atoi(SerialLink.token);}
-
       // satellite count > 0 indicator
       if (SerialLink.i_token==40) {
         // Serial.println("[satcount] " + String(SerialLink.token));
@@ -467,26 +458,13 @@ void processMatrixData() {
           // set indicator led 
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, HIGH);
-          digitalWrite(LEDSATSIGNALB, LOW);
-          // // adjust rtc while we appear to have a downlink
-          // rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          // if (rcv_dt_1!=rcv_dt_0) {
-          //   rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
-          //   rcv_dt_0 = rcv_dt_1;
-          // }
-          
+          digitalWrite(LEDSATSIGNALB, LOW);          
         }
         else if (atoi(SerialLink.token)==2) {
           // set indicator led 
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
-          // // adjust rtc while we appear to have a downlink
-          // rcv_dt_1 = DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second);
-          // if (rcv_dt_1!=rcv_dt_0) {
-          //   rtc.adjust(DateTime(rcv_year, rcv_month, rcv_day, rcv_hour, rcv_minute, rcv_second));
-          //   rcv_dt_0 = rcv_dt_1;
-          // }
         }
       }
 

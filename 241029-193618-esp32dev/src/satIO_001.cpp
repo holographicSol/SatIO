@@ -1449,7 +1449,7 @@ struct MatrixStruct {
     }
   };
 
-  // // a placeholder for matrix switch ports (default ATMEGA2560 digital)
+  // a placeholder for matrix switch ports (default ATMEGA2560 digital)
   // signed int matrix_port_map[1][20] = {
   //   {
   //     23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -1459,7 +1459,7 @@ struct MatrixStruct {
 
   // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
   char matrix_function[20][10][100] = {
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
+    {"$SecondsTimer", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
      },
@@ -1509,7 +1509,7 @@ struct MatrixStruct {
   */
   double matrix_function_xyz[20][10][3] = {
     {
-      {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
+      {2.0, 1.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
     },
     {
