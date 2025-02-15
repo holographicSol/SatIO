@@ -8972,64 +8972,56 @@ int tpc;
 // void readPortController(void * pvParameters) {
 void readPortController() {
   // while(1) {
+
     // Serial.println("[readPortController] ");
 
-    // D0 (read RTC first)
-    // Serial.println("[readPortController 1] ");
     for (int i = 0; i < 10; i++) {
 
-        // Serial.println("[readPortController 2] ");
-
         if (Serial1.available()) {
-        // Serial.println("[readPortController 3] ");
 
         tpc = millis();
-        // Serial.println("[readPortController 4] ");
         memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-        // Serial.println("[readPortController 5] ");
-
         SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 150);
 
         // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
         if (SerialLink.nbytes>10) {
-          // Serial.println("[readPortController 6] ");
           if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
             // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
-            // Serial.println("[readPortController cs] ");
 
             if (validateChecksum(SerialLink.BUFFER)==true) {
-              // Serial.println("[readPortController 7] ");
               // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
 
               SerialLink.TOKEN_i = 0;
               SerialLink.token = strtok(SerialLink.BUFFER, ",");
-              // Serial.println("[readPortController 8] ");
+
               while (SerialLink.token != NULL) {
-                // Serial.println("[readPortController 9] ");
 
                 if (SerialLink.TOKEN_i==1)  {
-                  sensorData.dht11_h_0 = std::stof(SerialLink.token);
+
+                  // some float values here are currently made int but are intended to be float soon 
+
+                  sensorData.dht11_h_0 = atoi(SerialLink.token);
                   // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
                 }
 
                 if (SerialLink.TOKEN_i==2) {
-                  sensorData.dht11_c_0 = std::stof(SerialLink.token);
+                  sensorData.dht11_c_0 = atoi(SerialLink.token);
                   // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
                 }
 
                 if (SerialLink.TOKEN_i==3) {
-                  sensorData.dht11_f_0 = std::stof(SerialLink.token);
+                  sensorData.dht11_f_0 = atoi(SerialLink.token);
                   // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
                 }
 
                 if (SerialLink.TOKEN_i==4) {
-                  sensorData.dht11_hif_0 = std::stof(SerialLink.token);
+                  sensorData.dht11_hif_0 = atoi(SerialLink.token);
                   // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
                 }
 
                 if (SerialLink.TOKEN_i==5) {
-                  sensorData.dht11_hic_0 = std::stof(SerialLink.token);
+                  sensorData.dht11_hic_0 = atoi(SerialLink.token);
                   // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
                 }
 
@@ -9090,12 +9082,12 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(26, 25, ctsPin, rtsPin);
   Serial1.begin(115200);
-  Serial1.setTimeout(100);
+  Serial1.setTimeout(10);
   Serial1.flush();
 
   Serial2.setPins(27, 14, ctsPin, rtsPin);
   Serial2.begin(115200);
-  Serial2.setTimeout(100);
+  Serial2.setTimeout(10);
   Serial2.flush();
 
   // setp TCA9548A
@@ -9332,14 +9324,14 @@ void loop() {
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
   Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
-  Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
+  // Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
-  Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
-  Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
+  // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
+  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }

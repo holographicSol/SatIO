@@ -330,7 +330,7 @@ void setup() {
 
   Serial.begin(115200);  while(!Serial);
   Serial1.begin(115200); while(!Serial1);
-  Serial1.setTimeout(100);
+  Serial1.setTimeout(10);
   Serial1.flush();
 
   // MUXATMEGA2560(0, 0);
