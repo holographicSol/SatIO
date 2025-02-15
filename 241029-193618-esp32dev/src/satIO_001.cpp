@@ -8603,7 +8603,7 @@ void SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
-    Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
 
     // igonore a switch message if its the same as previous switch message
     // if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
@@ -8939,21 +8939,21 @@ void readGPS() {
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
           else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
             strcpy(gnggaData.sentence, SerialLink.BUFFER);
             serial1Data.gngga_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
           }
 
           else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
             strcpy(gnrmcData.sentence, SerialLink.BUFFER);
             serial1Data.gnrmc_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
           }
 
           else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readGPS RXD] " + StriSng(SerialLink.BUFFER)); // debug
             strcpy(gpattData.sentence, SerialLink.BUFFER);
             serial1Data.gpatt_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -8993,7 +8993,7 @@ void readPortController() {
         if (SerialLink.nbytes>10) {
           // Serial.println("[readPortController 6] ");
           if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
-            Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
+            // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
             // Serial.println("[readPortController cs] ");
 
             if (validateChecksum(SerialLink.BUFFER)==true) {

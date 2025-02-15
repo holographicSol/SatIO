@@ -430,7 +430,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -499,7 +499,7 @@ void readRXD1() {
         
         memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
         strcpy(SerialLink.TMP, SerialLink.BUFFER);
-        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         SerialLink.TOKEN_i = 0;
 
         // get tag token
@@ -532,7 +532,7 @@ void readRXD1() {
 
         // parse matrix sentence
         if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-          Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+          // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
           processMatrixData();
           collected++;
           if (collected>=2) {break;}
