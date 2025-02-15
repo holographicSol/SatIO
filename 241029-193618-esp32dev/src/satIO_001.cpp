@@ -9009,51 +9009,37 @@ void readPortController() {
                 // Serial.println("[readPortController 9] ");
 
                 if (SerialLink.TOKEN_i==1)  {
-                  // Serial.println("[readPortController 10] ");
-                  // sensorData.dht11_h_0 = std::stof(SerialLink.token);
+                  sensorData.dht11_h_0 = std::stof(SerialLink.token);
                   // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
-                  // Serial.println("[readPortController 11] ");
                 }
 
                 if (SerialLink.TOKEN_i==2) {
-                  // sensorData.dht11_c_0 = std::stof(SerialLink.token);
-                  // Serial.println("[readPortController 12] ");
+                  sensorData.dht11_c_0 = std::stof(SerialLink.token);
                   // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
-                  // Serial.println("[readPortController 13] ");
                 }
 
                 if (SerialLink.TOKEN_i==3) {
-                  // sensorData.dht11_f_0 = std::stof(SerialLink.token);
-                  // Serial.println("[readPortController 14] ");
+                  sensorData.dht11_f_0 = std::stof(SerialLink.token);
                   // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
-                  // Serial.println("[readPortController 15] ");
                 }
 
                 if (SerialLink.TOKEN_i==4) {
-                  // sensorData.dht11_hif_0 = std::stof(SerialLink.token);
-                  // Serial.println("[readPortController 16] ");
+                  sensorData.dht11_hif_0 = std::stof(SerialLink.token);
                   // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
-                  // Serial.println("[readPortController 17] ");
                 }
 
                 if (SerialLink.TOKEN_i==5) {
-                  // sensorData.dht11_hic_0 = std::stof(SerialLink.token);
-                  // Serial.println("[readPortController 18] ");
+                  sensorData.dht11_hic_0 = std::stof(SerialLink.token);
                   // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-                  // Serial.println("[readPortController 19] ");
                 }
 
                 if (SerialLink.TOKEN_i==6) {
-                  // Serial.println("[readPortController 20] ");
-                  // sensorData.photoresistor_0 = atoi(SerialLink.token);
-                  // Serial.println("[readPortController 21] ");
+                  sensorData.photoresistor_0 = atoi(SerialLink.token);
                   // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
                 }
                 
                 if (SerialLink.TOKEN_i==7) {
-                  // Serial.println("[readPortController 22] ");
-                  // sensorData.tracking_0 = atoi(SerialLink.token);
-                  // Serial.println("[readPortController 23] ");
+                  sensorData.tracking_0 = atoi(SerialLink.token);
                   // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
                 }
                 
@@ -9352,6 +9338,8 @@ void loop() {
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
   Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }

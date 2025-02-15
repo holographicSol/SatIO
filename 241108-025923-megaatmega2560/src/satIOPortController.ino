@@ -291,11 +291,15 @@ int controlPin[] = {s0, s1, s2, s3};
 int ATMEGA_RW = 0;
 
 void ISR_ATMEGA_0() {
+  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
+  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
   ATMEGA_RW = 0;
   Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
 
 void ISR_ATMEGA_1() {
+  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
+  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
   ATMEGA_RW = 1;
   Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
@@ -335,7 +339,7 @@ void setup() {
   // Wire.begin();  // sets up the I2C  
   // rtc.begin();   // initializes the I2C
 
-  // dht.begin();
+  dht.begin();
 
   // setup IO
   for (int i=0; i<20; i++) {
@@ -563,14 +567,14 @@ void writeTXD1Data0() {
       strcpy(SerialLink.BUFFER, "$D0,");
 
       // DHT11
-      // dht11_h_0 = dht.readHumidity();
-      // dht11_c_0 = dht.readTemperature(); // celsius default
-      // dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-      // if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
-      //   Serial.println(F("Failed to read from DHT sensor!"));
-      // }
-      // dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
-      // dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
+      dht11_h_0 = dht.readHumidity();
+      dht11_c_0 = dht.readTemperature(); // celsius default
+      dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+      }
+      dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
+      dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
       // 1
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
@@ -651,9 +655,22 @@ void loop() {
 
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
 
-  if (ATMEGA_RW==0) {readRXD1(); satIOPortController();}
+  if (ATMEGA_RW==0) {
+    detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
+    detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
+    readRXD1();
+    satIOPortController();
+    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
+    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_0, CHANGE);
+  }
 
-  if (ATMEGA_RW==1) {writeTXD1Data0();}
+  if (ATMEGA_RW==1) {
+    detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
+    detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
+    writeTXD1Data0();
+    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
+    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_0, CHANGE);
+  }
   
   // read matrix data
   // readRXD1();
@@ -672,4 +689,8 @@ void loop() {
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
   delay(1);
+
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_1, CHANGE);
+
 }
