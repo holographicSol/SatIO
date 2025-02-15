@@ -2867,11 +2867,27 @@ void convertUTCToLocal() {
   satData.second_int = atoi(satData.second);
   satData.millisecond_int = atoi(satData.millisecond);
 
+  // RTC ints
+  satData.rtc_year_int = rtc.now().year();
+  satData.rtc_month_int = rtc.now().month();
+  satData.rtc_day_int = rtc.now().day();
+  satData.rtc_hour_int = rtc.now().hour();
+  satData.rtc_minute_int = rtc.now().minute();
+  satData.rtc_second_int = rtc.now().second();
+
+  // RTC chars
+  memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
+  memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
+  memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
+  memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
+  memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
+  memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
+
   // build rtc time 000000 -> 235959
   memset(satData.rtc_time, 0, 56);
-  strcat(satData.rtc_time, padDigitsZero(satData.rtc_hour_int).c_str());
-  strcat(satData.rtc_time, padDigitsZero(satData.rtc_minute_int).c_str());
-  strcat(satData.rtc_time, padDigitsZero(satData.rtc_second_int).c_str());
+  strcat(satData.rtc_time, padDigitsZero(rtc.now().hour()).c_str());
+  strcat(satData.rtc_time, padDigitsZero(rtc.now().minute()).c_str());
+  strcat(satData.rtc_time, padDigitsZero(rtc.now().second()).c_str());
   // strcat(satData.rtc_time, satData.rtc_millisecond); // potentially append millisecnds 
   satData.rtc_time_int = atoi(satData.rtc_time);
 
@@ -2948,12 +2964,8 @@ void setLastSatelliteTime() {
     satData.lt_millisecond_int = satData.millisecond_int;
 
     // adjust rtc while we appear to have a downlink
-    rcv_dt_1 = DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int);
-    if (rcv_dt_1!=rcv_dt_0) {
-      rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-      rcv_dt_0 = rcv_dt_1;
-    }
-    // SerialDisplayRTCDateTime();
+    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+    SerialDisplayRTCDateTime();
   }
 }
 
@@ -8970,7 +8982,7 @@ void readGPS() {
 int tpc;
 
 // void readPortController(void * pvParameters) {
-void readPortController() {
+void  readPortController() {
   // while(1) {
 
     // Serial.println("[readPortController] ");
@@ -9082,12 +9094,12 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
   Serial1.setPins(26, 25, ctsPin, rtsPin);
   Serial1.begin(115200);
-  Serial1.setTimeout(10);
+  Serial1.setTimeout(1);
   Serial1.flush();
 
   Serial2.setPins(27, 14, ctsPin, rtsPin);
   Serial2.begin(115200);
-  Serial2.setTimeout(10);
+  Serial2.setTimeout(1);
   Serial2.flush();
 
   // setp TCA9548A
@@ -9329,9 +9341,11 @@ void loop() {
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
-  // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
+  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
+  Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
+  Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }
