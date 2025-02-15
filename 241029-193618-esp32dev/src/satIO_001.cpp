@@ -8600,20 +8600,22 @@ void TouchScreenInput( void * pvParameters ) {
 //                                                                                                                PORT CONTROLLER
 
 void SatIOPortController() {
-  if (Serial1.availableForWrite()) {
 
-    /* uncomment to see what will be sent to the port controller */
-    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+  for (int i=0; i<10; i++) {
 
-    // igonore a switch message if its the same as previous switch message
-    // if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
-      memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-      strcpy(SerialLink.BUFFER1, matrixData.matrix_sentence);
+    if (Serial1.availableForWrite()) {
 
-      /* write matrix switch states to the port controller */
-      Serial1.write(matrixData.matrix_sentence);
-      Serial1.write(ETX);
-    // }
+      /* uncomment to see what will be sent to the port controller */
+      // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+
+        memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
+        strcpy(SerialLink.BUFFER1, matrixData.matrix_sentence);
+
+        /* write matrix switch states to the port controller */
+        Serial1.write(matrixData.matrix_sentence);
+        Serial1.write(ETX);
+        break;
+    }
   }
 }
 
@@ -9348,7 +9350,8 @@ void loop() {
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
-  // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
+  Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
+  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }

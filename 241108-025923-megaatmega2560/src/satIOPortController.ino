@@ -430,7 +430,7 @@ void processMatrixData() {
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          // Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -487,9 +487,9 @@ void readRXD1() {
 
   Serial.println("[readRXD1] ");
 
-  int collected = 0;
+  // int collected = 0;
 
-  for (int i=0; i<50; i++) {
+  for (int i=0; i<10; i++) {
 
     if (Serial1.available()) {
 
@@ -505,37 +505,12 @@ void readRXD1() {
         // get tag token
         SerialLink.token = strtok(SerialLink.TMP, ",");
 
-        // parse incoming analogu multiplexer instructions sentence
-        if (strcmp(SerialLink.token, "$MUX") == 0) {
-          SerialLink.validation = validateChecksum(SerialLink.BUFFER);
-          if (SerialLink.validation==true) {
-
-            // instruct analogu multiplexer
-            SerialLink.token = strtok(NULL, ",");
-            MUX0_CHANNEL = atoi(SerialLink.token);
-            // Serial.println("[MUX0_CHANNEL] " + String(MUX0_CHANNEL));
-            for(int i = 0; i < 4; i++){
-              digitalWrite(controlPin[i], muxChannel[MUX0_CHANNEL][i]);
-            }
-
-            // instruct i2C multiplexer
-            SerialLink.token = strtok(NULL, ",");
-            MUX1_CHANNEL = atoi(SerialLink.token);
-            // tcaselect(MUX1_CHANNEL);
-            // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
-
-            // Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
-            collected++;
-            if (collected>=2) {break;}
-          }
-        }
-
         // parse matrix sentence
         if (strcmp(SerialLink.token, "$MATRIX") == 0) {
           // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
           processMatrixData();
-          collected++;
-          if (collected>=2) {break;}
+          // collected++;
+          break;
         }
       }
     }
