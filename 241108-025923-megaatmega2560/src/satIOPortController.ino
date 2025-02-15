@@ -48,10 +48,12 @@ Tracking Sensor GND
 #include <limits.h>
 #include <stdlib.h>
 // #include <RTClib.h>
-#include <SPI.h>
-#include <Wire.h>  
+// #include <SPI.h> 
 #include <TimeLib.h>
 #include <CD74HC4067.h>
+
+#define INTERRUPT_ATMEGA_0 20
+#define INTERRUPT_ATMEGA_1 21
 
 #define LEDSATSIGNALR 5
 #define LEDSATSIGNALG 6
@@ -268,22 +270,34 @@ int s2 = 10;
 int s3 = 11;
 int controlPin[] = {s0, s1, s2, s3};
 
-#define TCAADDR   0x70
+// #define TCAADDR   0x70
 
-void tcaselect(uint8_t channel) {
-  if (channel > 7) return;
-  Wire.beginTransmission(TCAADDR);
-  Wire.write(1 << channel);
-  Wire.endTransmission();
+// void tcaselect(uint8_t channel) {
+//   if (channel > 7) return;
+//   Wire.beginTransmission(TCAADDR);
+//   Wire.write(1 << channel);
+//   Wire.endTransmission();
+// }
+
+// void MUXATMEGA2560(int mux0, int mux1) {
+
+//   for(int i = 0; i < 4; i++){
+//     digitalWrite(controlPin[i], muxChannel[mux0][i]);
+//   }
+
+//   tcaselect(mux1);
+// }
+
+int ATMEGA_RW = 0;
+
+void ISR_ATMEGA_0() {
+  ATMEGA_RW = 0;
+  Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
 
-void MUXATMEGA2560(int mux0, int mux1) {
-
-  for(int i = 0; i < 4; i++){
-    digitalWrite(controlPin[i], muxChannel[mux0][i]);
-  }
-
-  tcaselect(mux1);
+void ISR_ATMEGA_1() {
+  ATMEGA_RW = 1;
+  Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
 
 void setup() {
@@ -300,6 +314,12 @@ void setup() {
   digitalWrite(controlPin[2], muxChannel[0][2]); // default channel 0 (esp32 listens to port controller)
   digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0 (esp32 listens to port controller)
 
+  pinMode(INTERRUPT_ATMEGA_0, INPUT_PULLUP);
+  pinMode(INTERRUPT_ATMEGA_1, INPUT_PULLUP);
+  digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_1, CHANGE);
+
   pinMode(PHOTORESISTOR_0, INPUT);
   pinMode(TRACKING_0, INPUT);
 
@@ -309,13 +329,13 @@ void setup() {
   Serial1.setTimeout(100);
   Serial1.flush();
 
-  MUXATMEGA2560(0, 0);
+  // MUXATMEGA2560(0, 0);
 
   // setp TCA9548A
   // Wire.begin();  // sets up the I2C  
   // rtc.begin();   // initializes the I2C
 
-  dht.begin();
+  // dht.begin();
 
   // setup IO
   for (int i=0; i<20; i++) {
@@ -491,7 +511,7 @@ void readRXD1() {
 
   int collected = 0;
 
-  for (int i=0; i<8; i++) {
+  for (int i=0; i<50; i++) {
 
     if (Serial1.available()) {
 
@@ -523,7 +543,7 @@ void readRXD1() {
             // instruct i2C multiplexer
             SerialLink.token = strtok(NULL, ",");
             MUX1_CHANNEL = atoi(SerialLink.token);
-            tcaselect(MUX1_CHANNEL);
+            // tcaselect(MUX1_CHANNEL);
             // Serial.println("[MUX1_CHANNEL] " + String(MUX1_CHANNEL));
 
             // Serial.println("[MUX] " + String(MUX0_CHANNEL) + "," +String(MUX1_CHANNEL));
@@ -590,14 +610,14 @@ void writeTXD1Data0() {
       strcpy(SerialLink.BUFFER, "$D0,");
 
       // DHT11
-      dht11_h_0 = dht.readHumidity();
-      dht11_c_0 = dht.readTemperature(); // celsius default
-      dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-      if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
-      }
-      dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
-      dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
+      // dht11_h_0 = dht.readHumidity();
+      // dht11_c_0 = dht.readTemperature(); // celsius default
+      // dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      // if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
+      //   Serial.println(F("Failed to read from DHT sensor!"));
+      // }
+      // dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
+      // dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
       // 1
       memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
       dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
@@ -652,21 +672,6 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, SerialLink.TMP);
       strcat(SerialLink.BUFFER, ",");
 
-      // // RTC
-      // dt_now = rtc.now();
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.year()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.month()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.day()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.hour()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.minute()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-      // strcat(SerialLink.BUFFER, padDigitZero(dt_now.second()).c_str());
-      // strcat(SerialLink.BUFFER, ",");
-
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
@@ -692,22 +697,26 @@ void loop() {
   Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();  // store current time to measure this loop time
+
+  if (ATMEGA_RW==0) {readRXD1(); satIOPortController();}
+
+  if (ATMEGA_RW==1) {writeTXD1Data0();}
   
   // read matrix data
-  readRXD1();
+  // readRXD1();
   
-  // write sensor data to esp32
-  MUX0_CHANNEL=0;
-  if (MUX0_CHANNEL==0) {
-    writeTXD1Data0();
-    Serial1.flush();
-  }
+  // // write sensor data to esp32
+  // MUX0_CHANNEL=0;
+  // if (MUX0_CHANNEL==0) {
+  //   // writeTXD1Data0();
+  //   Serial1.flush();
+  // }
 
   // execute matrix switches
-  if ((MUX0_CHANNEL==0) && (SerialLink.validation==true)) {satIOPortController();}
+  // if ((MUX0_CHANNEL==0) && (SerialLink.validation==true)) {satIOPortController();}
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
   delay(1);
 }

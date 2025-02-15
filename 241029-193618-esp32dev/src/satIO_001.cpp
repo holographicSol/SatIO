@@ -1,4 +1,5 @@
 
+
 /*
 
                                         SatIO - Written by Benjamin Jack Cullen.
@@ -82,6 +83,9 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
 #include "esp_attr.h"
 
 #define TCAADDR   0x70
+
+#define INTERRUPT_ATMEGA_0 12
+#define INTERRUPT_ATMEGA_1 5
 
 void tcaselect(uint8_t channel) {
   if (channel > 7) return;
@@ -8599,17 +8603,17 @@ void SatIOPortController() {
   if (Serial1.availableForWrite()) {
 
     /* uncomment to see what will be sent to the port controller */
-    // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+    Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
 
     // igonore a switch message if its the same as previous switch message
-    if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
+    // if (!strcmp(matrixData.matrix_sentence, SerialLink.BUFFER1)==0) {
       memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
       strcpy(SerialLink.BUFFER1, matrixData.matrix_sentence);
 
       /* write matrix switch states to the port controller */
       Serial1.write(matrixData.matrix_sentence);
       Serial1.write(ETX);
-    }
+    // }
   }
 }
 
@@ -8935,21 +8939,21 @@ void readGPS() {
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
           else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
             strcpy(gnggaData.sentence, SerialLink.BUFFER);
             serial1Data.gngga_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
           }
 
           else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
             strcpy(gnrmcData.sentence, SerialLink.BUFFER);
             serial1Data.gnrmc_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
           }
 
           else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+            Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
             strcpy(gpattData.sentence, SerialLink.BUFFER);
             serial1Data.gpatt_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -8988,8 +8992,8 @@ void readPortController() {
 
         if (SerialLink.nbytes>10) {
           // Serial.println("[readPortController 6] ");
-          // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
           if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
+            Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
             // Serial.println("[readPortController cs] ");
 
             if (validateChecksum(SerialLink.BUFFER)==true) {
@@ -9075,6 +9079,12 @@ void setup() {
   pinMode(CYD_LED_GREEN, OUTPUT);
   pinMode(CYD_LED_BLUE, OUTPUT);
   ledGreen();
+
+  pinMode(INTERRUPT_ATMEGA_0, OUTPUT);
+  pinMode(INTERRUPT_ATMEGA_1, OUTPUT);
+  digitalWrite(INTERRUPT_ATMEGA_0, LOW);
+  digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SETUP: SECOND TIMER
@@ -9235,6 +9245,14 @@ int t0 = millis();
 
 void loop() {
 
+  // digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
+  // delay(1);
+  // digitalWrite(INTERRUPT_ATMEGA_0, LOW);
+  // delay(1);
+  // digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
+  // delay(1);
+  // digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+
   systemData.matrix_enabled = true;
   systemData.run_on_startup = true;
 
@@ -9245,9 +9263,17 @@ void loop() {
 
   /* take a snapshot of sensory and calculated data */
 
+  digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
+  delay(1);
+  digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+
   t0 = millis();
   readPortController();
   Serial.println("[readPortController] " + String(millis()-t0));
+
+  digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
+  delay(1);
+  digitalWrite(INTERRUPT_ATMEGA_0, LOW);
 
   t0a = millis();
   if (isGPSEnabled()==true) {
@@ -9302,11 +9328,15 @@ void loop() {
   SatIOPortController();
   // Serial.println("[port controller] " + String(millis()-t0));
 
+  // delay(1000);
+
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
     portEXIT_CRITICAL(&second_timer_mux);
   }
+
+  // delay(1000); // debug test overload: increase loop time
 
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
