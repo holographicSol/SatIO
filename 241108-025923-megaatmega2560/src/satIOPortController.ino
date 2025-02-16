@@ -17,28 +17,17 @@ TCA9548A VCC 3.3v
 TCA9548A GND
 
 Wiring Satellite Count and HDOP Precision Factor Indicator:
-ATMEGA2560 5 -> LEDR
-ATMEGA2560 6 -> LEDG
-ATMEGA2560 7 -> LEDB
+ATMEGA2560 51 -> LEDR
+ATMEGA2560 52 -> LEDG
+ATMEGA2560 53 -> LEDB
 
 Wiring Overload Indicator:
 ATMEGA2560 46 -> LEDR
-ATMEGA2560 47 -> LEDG
+ATMEGA2560 47 -> LEDGW
 
-Wiring DHT11:
-ATMEGA2560 2 -> DHT11 S
-DHT11 VCC 5v
-DHT11 GND
-
-Wiring Photoresistor:
-ATMEGA2560 A0 -> Photo resistor S
-Photo resistor VCC 5v
-Photo resistor GND
-
-Wiring Tracking Sensor:
-ATMEGA2560 A1 -> Tracking Sensor S
-Tracking Sensor VCC 5v
-Tracking Sensor GND
+Wiring Read/Write Interrupt indicator:
+ATMEGA2560 SDA 20 -> ESP32 12
+ATMEGA2560 SCL 21 -> ESP32 5
 
 */
 
@@ -47,64 +36,29 @@ Tracking Sensor GND
 #include <Arduino.h>
 #include <limits.h>
 #include <stdlib.h>
-// #include <RTClib.h>
-// #include <SPI.h> 
 #include <TimeLib.h>
 #include <CD74HC4067.h>
 
 #define INTERRUPT_ATMEGA_0 20
 #define INTERRUPT_ATMEGA_1 21
 
-#define LEDSATSIGNALR 5
-#define LEDSATSIGNALG 6
-#define LEDSATSIGNALB 7
+#define LEDSATSIGNALR 51
+#define LEDSATSIGNALG 52
+#define LEDSATSIGNALB 53
 
 #define LEDOVERLOADR 46
 #define LEDOVERLOADG 47
 
-int MUX0_CHANNEL = 0;
-int MUX1_CHANNEL = 0;
+#define LEDRWPINR 48
+#define LEDRWPINW 49
 
 #define MAX_BUFF 256
 
-// RTC_DS3231 rtc;
-// DateTime dt_now;
-
-#include <DHT.h>
-#define DHTPIN 2     // Digital pin connected to the DHT sensor
-// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
-// Pin 15 can work but DHT must be disconnected during program upload.
-// Uncomment whatever type you're using!
-#define DHTTYPE DHT11   // DHT 11
-// #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
-//#define DHTTYPE DHT21   // DHT 21 (AM2301)
-DHT dht(DHTPIN, DHTTYPE);
-
-float dht11_h_0;
-float dht11_c_0;
-float dht11_f_0;
-float dht11_hif_0;
-float dht11_hic_0;
-
-#define PHOTORESISTOR_0 A0
-int photoresistor_0;
-
-#define TRACKING_0 A1
-int tracking_0;
+// read write mode (0 read mode, 1 write mode)
+int ATMEGA_RW = 0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MATRIX DATA
-
-// // last satellite time placeholders
-// uint16_t rcv_year        = 2000;
-// uint16_t rcv_month       = 01;
-// uint16_t rcv_day         = 01;
-// uint16_t rcv_hour        = 00;
-// uint16_t rcv_minute      = 00;
-// uint16_t rcv_second      = 00;
-// uint16_t rcv_millisecond = 00;
-// DateTime rcv_dt_0;
-// DateTime rcv_dt_1;
 
 signed int tmp_port;
 bool update_portmap_bool = false;
@@ -244,109 +198,41 @@ void createChecksum(char * buffer) {
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SETUP 
 
-int muxChannel[16][4]={
-    {0,0,0,0}, //channel 0 port controller
-    {1,0,0,0}, //channel 1 GPS
-    {0,1,0,0}, //channel 2
-    {1,1,0,0}, //channel 3
-    {0,0,1,0}, //channel 4
-    {1,0,1,0}, //channel 5
-    {0,1,1,0}, //channel 6
-    {1,1,1,0}, //channel 7
-    {0,0,0,1}, //channel 8
-    {1,0,0,1}, //channel 9
-    {0,1,0,1}, //channel 10
-    {1,1,0,1}, //channel 11
-    {0,0,1,1}, //channel 12
-    {1,0,1,1}, //channel 13
-    {0,1,1,1}, //channel 14
-    {1,1,1,1}  //channel 15
-  };
-
-//Mux control pins
-int s0 = 8;
-int s1 = 9;
-int s2 = 10;
-int s3 = 11;
-int controlPin[] = {s0, s1, s2, s3};
-
-// #define TCAADDR   0x70
-
-// void tcaselect(uint8_t channel) {
-//   if (channel > 7) return;
-//   Wire.beginTransmission(TCAADDR);
-//   Wire.write(1 << channel);
-//   Wire.endTransmission();
-// }
-
-// void MUXATMEGA2560(int mux0, int mux1) {
-
-//   for(int i = 0; i < 4; i++){
-//     digitalWrite(controlPin[i], muxChannel[mux0][i]);
-//   }
-
-//   tcaselect(mux1);
-// }
-
-int ATMEGA_RW = 0;
-
 void ISR_ATMEGA_0() {
-  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
-  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
+  // enter read mode
+  digitalWrite(LEDRWPINR, HIGH);
+  digitalWrite(LEDRWPINW, LOW);
   ATMEGA_RW = 0;
-  Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
 
 void ISR_ATMEGA_1() {
-  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
-  // detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
+  // enter write mode 
+  digitalWrite(LEDRWPINR, LOW);
+  digitalWrite(LEDRWPINW, HIGH);
   ATMEGA_RW = 1;
-  Serial.println("[ISR_ATMEGA_RW] " + String(ATMEGA_RW));
 }
 
 void setup() {
-  pinMode(s0, OUTPUT); 
-  pinMode(s1, OUTPUT); 
-  pinMode(s2, OUTPUT); 
-  pinMode(s3, OUTPUT); 
-  digitalWrite(s0, LOW);
-  digitalWrite(s1, LOW);
-  digitalWrite(s2, LOW);
-  digitalWrite(s3, LOW);
-  digitalWrite(controlPin[0], muxChannel[0][0]); // default channel 0 (esp32 listens to port controller)
-  digitalWrite(controlPin[1], muxChannel[0][1]); // default channel 0 (esp32 listens to port controller)
-  digitalWrite(controlPin[2], muxChannel[0][2]); // default channel 0 (esp32 listens to port controller)
-  digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0 (esp32 listens to port controller)
+  // serial
+  Serial.begin(115200);  while(!Serial);
+  Serial1.begin(115200); while(!Serial1);
+  Serial1.setTimeout(10);
+  Serial1.flush();
 
+  // matrix switches
+  for (int i=0; i<20; i++) {
+    pinMode(matrix_port_map[0][i], OUTPUT);
+    digitalWrite(matrix_port_map[0][i], LOW);
+  }
+
+  // interrupts
   pinMode(INTERRUPT_ATMEGA_0, INPUT_PULLUP);
   pinMode(INTERRUPT_ATMEGA_1, INPUT_PULLUP);
   digitalWrite(INTERRUPT_ATMEGA_1, LOW);
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_1, CHANGE);
 
-  pinMode(PHOTORESISTOR_0, INPUT);
-  pinMode(TRACKING_0, INPUT);
-
-
-  Serial.begin(115200);  while(!Serial);
-  Serial1.begin(115200); while(!Serial1);
-  Serial1.setTimeout(10);
-  Serial1.flush();
-
-  // MUXATMEGA2560(0, 0);
-
-  // setp TCA9548A
-  // Wire.begin();  // sets up the I2C  
-  // rtc.begin();   // initializes the I2C
-
-  dht.begin();
-
-  // setup IO
-  for (int i=0; i<20; i++) {
-    pinMode(matrix_port_map[0][i], OUTPUT);
-    digitalWrite(matrix_port_map[0][i], LOW);
-  }
-
+  // satellite signal indicator
   pinMode(LEDSATSIGNALR, OUTPUT);
   pinMode(LEDSATSIGNALG, OUTPUT);
   pinMode(LEDSATSIGNALB, OUTPUT);
@@ -354,22 +240,20 @@ void setup() {
   digitalWrite(LEDSATSIGNALG, LOW);
   digitalWrite(LEDSATSIGNALB, LOW);
 
+  // overload indicator
   pinMode(LEDOVERLOADR, OUTPUT);
   pinMode(LEDOVERLOADG, OUTPUT);
   digitalWrite(LEDOVERLOADR, LOW);
   digitalWrite(LEDOVERLOADG, LOW);
 
-  Serial.println(F("------------------------------------"));
+  // read/write indicator
+  pinMode(LEDRWPINR, OUTPUT);
+  pinMode(LEDRWPINW, OUTPUT);
+  digitalWrite(LEDRWPINR, LOW);
+  digitalWrite(LEDRWPINW, LOW);
 
   Serial.println("starting...");
 }
-
-// void SerialDisplayRTCDateTime() {
-//   // test dt
-//   dt_now = rtc.now();
-//   // display dt
-//   Serial.println("[rtc] " + String(dt_now.hour()) + ":" + String(dt_now.minute()) + ":" + String(dt_now.second()) + " " + String(dt_now.day()) + "/" + String(dt_now.month()) + "/" + String(dt_now.year()));
-// }
 
 // ------------------------------------------------------------------------------------------------------------------
 //                                                                                                    PORT CONTROLLER
@@ -377,15 +261,11 @@ void setup() {
 /* please ensure checksum was validated properly before actually implementing this final function in the feild */
 
 void satIOPortController() {
-
   Serial.println("[satIOPortController] ");
-
   // Serial.println("[processing] " + String(SerialLink.BUFFER));
 
-  // make ports high or low according to validated data
+  // write switch state to pins in port map!
   for (int i=0; i<20; i++) {
-
-    // handle current port configuration
     if (update_portmap_bool==true) {
       if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
         digitalWrite(matrix_port_map[0][i], LOW);
@@ -408,27 +288,26 @@ void satIOPortController() {
 }
 
 void processMatrixData() {
-
   Serial.println("[processMatrixData] ");
 
   // reset values
-  update_portmap_bool=false;
-  SerialLink.validation = false;
   SerialLink.i_token = 0;
-
-  SerialLink.validation = validateChecksum(SerialLink.BUFFER);
   
+  // checksum
+  SerialLink.validation = false;
+  SerialLink.validation = validateChecksum(SerialLink.BUFFER);
   if (SerialLink.validation==true) {
-
-    // snap off the first token and then keep breaking off a token in loop
+    
+    // snap off the tag token
     SerialLink.token = strtok(NULL, ",");
     while(SerialLink.token != NULL) {
-
+      
       // uncomment to debug
       // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
-      // check eack token for portmap
-      if (SerialLink.i_token<20) { 
+      // port map
+      if (SerialLink.i_token<20) {
+        update_portmap_bool=false;
         for (int i=0; i<20; i++) {
           tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
           if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
@@ -441,7 +320,7 @@ void processMatrixData() {
         }
       }
 
-      // check eack token for exactly 1 or 0 for matrix switch state
+      // matrix switch states
       if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
         for (int i=0; i<20; i++) {
           if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
@@ -450,34 +329,37 @@ void processMatrixData() {
           SerialLink.token = strtok(NULL, ",");
         }
       }
-      // satellite count > 0 indicator
+
+      // signal indicator
       if (SerialLink.i_token==40) {
-        // Serial.println("[satcount] " + String(SerialLink.token));
-        if (atoi(SerialLink.token)==0) {
+        if (atoi(SerialLink.token)==0)
+        // red
+        {
           digitalWrite(LEDSATSIGNALR, HIGH);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, LOW);
         }
-        else if (atoi(SerialLink.token)==1) {
-          // set indicator led 
+        // green
+        else if (atoi(SerialLink.token)==1)
+        {
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, HIGH);
           digitalWrite(LEDSATSIGNALB, LOW);          
         }
-        else if (atoi(SerialLink.token)==2) {
-          // set indicator led 
+        // blue
+        else if (atoi(SerialLink.token)==2)
+        {
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
         }
       }
 
+      // overload indicator
       if (SerialLink.i_token==41) {
-        // Serial.println("[LEDOVERLOADR] " + String(SerialLink.token));
         if (atoi(SerialLink.token)==0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
         else {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
       }
-
 
       // iterate counters and snap off used token
       SerialLink.i_token++;
@@ -488,21 +370,19 @@ void processMatrixData() {
 
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
-
   Serial.println("[readRXD1] ");
 
-  // int collected = 0;
-
   for (int i=0; i<10; i++) {
-
     if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
       if (SerialLink.nbytes > 1) {
-        
+
+        // store a copy that will not be tokenized (remains intact)
         memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
         strcpy(SerialLink.TMP, SerialLink.BUFFER);
+
         // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         SerialLink.TOKEN_i = 0;
 
@@ -513,7 +393,6 @@ void readRXD1() {
         if (strcmp(SerialLink.token, "$MATRIX") == 0) {
           // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
           processMatrixData();
-          // collected++;
           break;
         }
       }
@@ -521,8 +400,8 @@ void readRXD1() {
   }
 }
 
-// // ------------------------------------------------------------------------------------------------------------------------------
-// //                                                                                                                 SATIO SENTENCE
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        PADDING
 
 char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
 char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
@@ -531,16 +410,11 @@ String pad3DigitsZero(int digits) {
   /* preappends char 0 to pad string of digits evenly */
   memset(pad_digits_new, 0, sizeof(pad_digits_new));
   memset(pad_current_digits, 0, sizeof(pad_current_digits));
-
   if ((digits < 1000) && (digits > 100)) {strcat(pad_digits_new, "0");}
-
   else if ((digits < 100) && (digits > 10)) {strcat(pad_digits_new, "00");}
-
   else if (digits < 10) {strcat(pad_digits_new, "000");}
-
   itoa(digits, pad_current_digits, 10);
   strcat(pad_digits_new, pad_current_digits);
-
   return pad_digits_new;
 }
 
@@ -551,84 +425,16 @@ String padDigitZero(int digits) {
   if (digits < 10) {strcat(pad_digits_new, "0");}
   itoa(digits, pad_current_digits, 10);
   strcat(pad_digits_new, pad_current_digits);
-
   return pad_digits_new;
 }
 
 void writeTXD1Data0() {
-
   Serial.println("[writeTXD1Data0] ");
-
   for (int i=0; i<20; i++) {
-
     if (Serial1.availableForWrite()) {
-
+      // data
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
       strcpy(SerialLink.BUFFER, "$D0,");
-
-      // DHT11
-      dht11_h_0 = dht.readHumidity();
-      dht11_c_0 = dht.readTemperature(); // celsius default
-      dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-      if (isnan(dht11_h_0) || isnan(dht11_c_0) || isnan(dht11_f_0)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
-      }
-      dht11_hif_0 = dht.computeHeatIndex(dht11_f_0, dht11_h_0); // fahreheit default
-      dht11_hic_0 = dht.computeHeatIndex(dht11_c_0, dht11_h_0, false); // fahreheit = false
-      // 1
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      dtostrf(dht11_h_0, 2, 2, SerialLink.TMP);
-      // Serial.println("[dht11_h_0]      " + String(dht11_h_0));
-      // Serial.println("[dht11_h_0 char] " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-      // 2
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      dtostrf(dht11_c_0, 2, 2, SerialLink.TMP);
-      // Serial.println("[dht11_c_0]      " + String(dht11_c_0));
-      // Serial.println("[dht11_c_0 char] " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-      // 3
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      dtostrf(dht11_f_0, 2, 2, SerialLink.TMP);
-      // Serial.println("[dht11_f_0]      " + String(dht11_f_0));
-      // Serial.println("[dht11_f_0 char] " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-      // 4
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      dtostrf(dht11_hif_0, 2, 2, SerialLink.TMP);
-      // Serial.println("[dht11_hif_0]      " + String(dht11_hif_0));
-      // Serial.println("[dht11_hif_0 char] " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-      // 5
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      dtostrf(dht11_hic_0, 2, 2, SerialLink.TMP);
-      // Serial.println("[dht11_hic_0]      " + String(dht11_hic_0));
-      // Serial.println("[dht11_hic_0 char] " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-
-      // PHOTO RESITOR 0
-      photoresistor_0 = analogRead(PHOTORESISTOR_0);
-      // Serial.println("[PHOTORESISTOR_0] " + String(analogRead(PHOTORESISTOR_0)));
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      itoa(photoresistor_0, SerialLink.TMP, 10);
-      // Serial.println("[photoresistor_0]      " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-
-      // TRACKING_0
-      tracking_0 = analogRead(TRACKING_0);
-      // Serial.println("[TRACKING_0] " + String(analogRead(TRACKING_0)));
-      memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
-      itoa(tracking_0, SerialLink.TMP, 10);
-      // Serial.println("[TRACKING_0]      " + String(SerialLink.TMP));
-      strcat(SerialLink.BUFFER, SerialLink.TMP);
-      strcat(SerialLink.BUFFER, ",");
-
       // append checksum
       createChecksum(SerialLink.BUFFER);
       strcat(SerialLink.BUFFER, "*");
@@ -636,9 +442,7 @@ void writeTXD1Data0() {
       strcat(SerialLink.BUFFER, "\n");
       Serial1.write(SerialLink.BUFFER);
       Serial1.write(ETX);
-
-      // Serial.println("[TXD] " + String(SeSrialLink.BUFFER)); // debug (at a perfromance decrease)
-
+      // Serial.println("[TXD] " + String(SeSrialLink.BUFFER)); // debug (at a perfromance cost)
       break;
     }
   }
@@ -659,38 +463,22 @@ void loop() {
     detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
     detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
     readRXD1();
+    digitalWrite(LEDRWPINR, LOW);
     satIOPortController();
-    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
-    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_0, CHANGE);
   }
 
   if (ATMEGA_RW==1) {
     detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0));
     detachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1));
     writeTXD1Data0();
-    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
-    // attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_0, CHANGE);
+    digitalWrite(LEDRWPINW, LOW);
   }
-  
-  // read matrix data
-  // readRXD1();
-  
-  // // write sensor data to esp32
-  // MUX0_CHANNEL=0;
-  // if (MUX0_CHANNEL==0) {
-  //   // writeTXD1Data0();
-  //   Serial1.flush();
-  // }
-
-  // execute matrix switches
-  // if ((MUX0_CHANNEL==0) && (SerialLink.validation==true)) {satIOPortController();}
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
   // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
-  delay(1);
-
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_0), ISR_ATMEGA_0, CHANGE);
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_ATMEGA_1), ISR_ATMEGA_1, CHANGE);
 
+  delay(10);
 }

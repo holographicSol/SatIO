@@ -26,9 +26,12 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
                                           ESP32 io25 (TXD) -> ATMEGA2560 Serial1 (RXD)
                                           ESP32 io26 (RXD) -> ATMEGA2560 Serial1 (TXD)
                                           ESP32 io27 (RXD) -> WTGPS300P (TXD) (5v)
-                                          ESP32 io27 (TXD) -> WTGPS300P (RXD) (5v)
                                           ESP32 i2C        -> RTC DS3231 SDA, SCL (5v)
                                           ESP32 i2C        -> i2c Multiplexer TCA9548A: SDA, SCL (3.3v)
+                                          ESP32 io2        -> DHT11
+                                          ESP32 io4        -> Photo Resistor
+                                          ATMEGA2560 SDA 20 -> ESP32 12
+                                          ATMEGA2560 SCL 21 -> ESP32 5
 
                                           
 
@@ -81,11 +84,31 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
 #include <JPEGDecoder.h>
 #include "esp_pm.h"
 #include "esp_attr.h"
+#include <DHT.h>
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                            RTC
+RTC_DS3231 rtc;
+DateTime dt_now;
+DateTime rcv_dt_0;
+DateTime rcv_dt_1;
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        SENSORS
+#define DHTPIN 2 // Digital pin connected to the DHT sensor
+// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
+// Pin 15 can work but DHT must be disconnected during program upload.
+// Uncomment whatever type you're using!
+#define DHTTYPE DHT11 // DHT 11
+// #define DHTTYPE DHT22 // DHT 22  (AM2302), AM2321
+//#define DHTTYPE DHT21 // DHT 21 (AM2301)
+DHT dht(DHTPIN, DHTTYPE);
+
+#define PHOTORESISTOR_0 4
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              MULTIPLEXERS: I2C
 #define TCAADDR   0x70
-
-#define INTERRUPT_ATMEGA_0 12
-#define INTERRUPT_ATMEGA_1 5
 
 void tcaselect(uint8_t channel) {
   if (channel > 7) return;
@@ -94,26 +117,14 @@ void tcaselect(uint8_t channel) {
   Wire.endTransmission();
 }
 
-RTC_DS3231 rtc;
-DateTime dt_now;
-
-DateTime rcv_dt_0;
-DateTime rcv_dt_1;
-
-int MAX_GPS_RETIES = 0;
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
+#define INTERRUPT_ATMEGA_0 12
+#define INTERRUPT_ATMEGA_1 5
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
 const byte rxd_from_gps = 26;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
-
-#define CYD_LED_BLUE 17
-#define CYD_LED_RED 4
-#define CYD_LED_GREEN 16
-#define CYD_LED_ON 0
-#define CYD_LED_OFF 1023
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TOUCHSCREEN
@@ -448,51 +459,6 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
   uint32_t duty = (4095 / valueMax) * min(value, valueMax);
   // write duty to LEDC
   ledcWrite(channel, duty);
-}
-
-void ledRed() {
-  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
-  analogWrite(CYD_LED_RED, CYD_LED_ON);
-  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
-  
-}
-
-void ledYellow() {
-  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
-  analogWrite(CYD_LED_RED, CYD_LED_ON);
-  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
-
-}
-
-void ledGreen() {
-  analogWrite(CYD_LED_RED, CYD_LED_OFF);
-  analogWrite(CYD_LED_BLUE, CYD_LED_OFF);
-  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
-
-}
-
-void ledBlue() {
-  analogWrite(CYD_LED_RED, CYD_LED_OFF);
-  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
-  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
-}
-
-void ledLightBlue() {
-  analogWrite(CYD_LED_RED, CYD_LED_OFF);
-  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
-  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
-}
-
-void ledPurple() {
-  analogWrite(CYD_LED_GREEN, CYD_LED_OFF);
-  analogWrite(CYD_LED_RED, CYD_LED_ON);
-  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
-}
-
-void ledWhite() {
-  analogWrite(CYD_LED_RED, CYD_LED_ON);
-  analogWrite(CYD_LED_GREEN, CYD_LED_ON);
-  analogWrite(CYD_LED_BLUE, CYD_LED_ON);
 }
 
 void SerialDisplayRTCDateTime() {
@@ -2965,7 +2931,7 @@ void setLastSatelliteTime() {
 
     // adjust rtc while we appear to have a downlink
     rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-    SerialDisplayRTCDateTime();
+    // SerialDisplayRTCDateTime();
   }
 }
 
@@ -7040,7 +7006,7 @@ bool isTouchPage0(TouchPoint p) {
     if (p.y >= tss.main_page_y[0][0] && p.y <= tss.main_page_y[0][1]) {
       for (int i=0; i<sData.max_main_titlebar_values; i++) {
         if (p.x >= tss.main_titlebar_x[i][0] && p.x <= tss.main_titlebar_x[i][1]) {
-          Serial.print("[titlebar] item "); Serial.println(sData.main_titlebar_values[i]);
+          // Serial.print("[titlebar] item "); Serial.println(sData.main_titlebar_values[i]);
           if (i==0) {menuData.page=3;}       // go to settings main
           else if (i==1) {menuData.page=5;}  // go to matrix settings
           else if (i==3) {menuData.page=10;}  // go to display settings
@@ -7501,7 +7467,7 @@ bool isDisplaySettingsSystem(TouchPoint p) {
     if (p.x >= tss.system_menu_x[0][0] && p.x <= tss.system_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsystemvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] system item " + String(i) + ": "); Serial.println(sData.settingsystemvalues[i]);
+          // Serial.print("[settings] system item " + String(i) + ": "); Serial.println(sData.settingsystemvalues[i]);
           if (i==0) {systemData.run_on_startup ^= 1;}
           break;
         }
@@ -7613,7 +7579,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i;
-          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          // Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           matrixData.matrix_switch_enabled[0][i] ^= true;
           break;
         }
@@ -7624,7 +7590,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
+          // Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
           menuData.page=1;
           break;
         }
@@ -7635,7 +7601,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i;
-          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
+          // Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
           matrixData.matrix_switch_state[0][i] = false;
           break;
         }
@@ -7648,7 +7614,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
 
           // enable all (enables all switches to turn on)
           if (i==0) {
-            Serial.print("[matrix switch enable all]");
+            // Serial.print("[matrix switch enable all]");
             matrix_enable_all();
           }
           /*
@@ -7656,12 +7622,12 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
           switches will remain on/ off according to their current state.)
           */
           if (i==1) {
-            Serial.print("[matrix switch disable all]");
+            // Serial.print("[matrix switch disable all]");
             matrix_disable_all();
           }
           // all off (on is set automatically by the matrix switch providing given matrix switch is enabled)
           if (i==2) {
-            Serial.print("[matrix switch all off]");
+            // Serial.print("[matrix switch all off]");
             matrix_deactivate_all();
           }
           break;
@@ -7676,7 +7642,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i+10;
-          Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
+          // Serial.print("[settings] matrix item "); Serial.println(sData.settingsmatrixvalues_c0[i]);
           matrixData.matrix_switch_enabled[0][i+10] ^= true;
           break;
         }
@@ -7687,7 +7653,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i+10;
-          Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
+          // Serial.print("[matrix switch setup] matrix "); Serial.println(menuData.matrix_select);
           menuData.page=1;
           break;
         }
@@ -7698,7 +7664,7 @@ bool isDisplaySettingsMatrix(TouchPoint p) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
           menuData.matrix_select=i+10;
-          Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
+          // Serial.print("[matrix switch off] matrix "); Serial.println(menuData.matrix_select);
           matrixData.matrix_switch_state[0][i+10] = false;
           break;
         }
@@ -7743,7 +7709,7 @@ bool isDisplaySettingsGPS(TouchPoint p) {
     if (p.x >= tss.gps_menu_x[0][0] && p.x <= tss.gps_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsgpsvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
+          // Serial.print("[settings] gps item "); Serial.println(sData.settingsgpsvalues[i]);
           if      (i==0) {systemData.satio_enabled ^= true;}
           else if (i==1) {systemData.gngga_enabled ^= true;}
           else if (i==2) {systemData.gnrmc_enabled ^= true;}
@@ -7792,7 +7758,7 @@ bool isDisplaySettingsSerial(TouchPoint p) {
     if (p.x >= tss.serial_menu_x[0][0] && p.x <= tss.serial_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsserialvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
+          // Serial.print("[settings] serial item "); Serial.println(sData.settingsserialvalues[i]);
           if      (i==0) {systemData.output_satio_enabled ^= true;}
           else if (i==1) {systemData.output_gngga_enabled ^= true;}
           else if (i==2) {systemData.output_gnrmc_enabled ^= true;}
@@ -7856,7 +7822,7 @@ bool isDisplaySettingsFile(TouchPoint p) {
     if (p.x >= tss.file_menu_x[0][0] && p.x <= tss.file_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingsfilevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
+          // Serial.print("[settings] file item "); Serial.println(sData.settingsfilevalues[i]);
           // values
           if      (i==1) {menuData.page=403; sdcard_save_system_configuration(SD, sdcardData.sysconf, 0); delay(1000); menuData.page=8;}
           // zero the matrix and clear current matrix file path
@@ -8186,7 +8152,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
     if (p.x >= tss.time_menu_x[1][0] && p.x <= tss.time_menu_x[1][1]) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
+          // Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if (i==0) {satData.utc_offset--; if (satData.utc_offset<0) {satData.utc_offset=24;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
           }
@@ -8196,7 +8162,7 @@ bool isDisplaySettingsTime(TouchPoint p) {
     if (p.x >= tss.time_menu_x[2][0] && p.x <= tss.time_menu_x[2][1]) {
       for (int i=0; i<sData.max_settingstimevalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
+          // Serial.print("[settings] time item "); Serial.println(sData.settingstimevalues[i]);
           if (i==0) {satData.utc_offset++; if (satData.utc_offset>24) {satData.utc_offset=0;}}
           if (i==1) {satData.utc_offset_flag ^= true;}
           }
@@ -8258,7 +8224,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     if (p.x >= tss.display_menu_x[0][0] && p.x <= tss.display_menu_x[0][1]) {
       for (int i=0; i<10; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
+          // Serial.println("[settings] display item " + String(sData.settingsdisplayvalues[i]));
           // auto dime enabled
           if      (i==1) {systemData.display_auto_dim ^= true;}
           // auto off enabled
@@ -8270,7 +8236,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     if (p.x >= tss.display_menu_x[1][0] && p.x <= tss.display_menu_x[1][1]) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
+          // Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
           // brightness reduce
           if      (i==0) {if (systemData.display_brightness>5) {
             systemData.display_brightness=systemData.display_brightness-5;
@@ -8297,7 +8263,7 @@ bool isDisplaySettingsDisplay(TouchPoint p) {
     if (p.x >= tss.display_menu_x[2][0] && p.x <= tss.display_menu_x[2][1]) {
       for (int i=0; i<sData.max_settingsdisplayvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
+          // Serial.print("[settings] display item "); Serial.println(sData.settingsdisplayvalues[i]);
           // brightness level increase
           if      (i==0) {if (systemData.display_brightness<255) {
             systemData.display_brightness=systemData.display_brightness+5;
@@ -8364,7 +8330,7 @@ bool isSiderealPlanetsSettings(TouchPoint p) {
     if (p.x >= tss.sp_menu_x[0][0] && p.x <= tss.sp_menu_x[0][1]) {
       for (int i=0; i<sData.max_settingssiderealplanetsvalues; i++) {
         if (p.y >= tss.general_page_y[i][0] && p.y <= tss.general_page_y[i][1]) {
-          Serial.print("[settings] sidereal planets item "); Serial.println(sData.settingssiderealplanetsvalues[i]);
+          // Serial.print("[settings] sidereal planets item "); Serial.println(sData.settingssiderealplanetsvalues[i]);
           if      (i==0) {systemData.sidereal_track_sun ^= true;}
           else if (i==1) {systemData.sidereal_track_moon ^= true;}
           else if (i==2) {systemData.sidereal_track_mercury ^= true;}
@@ -8556,12 +8522,12 @@ void TouchScreenInput( void * pvParameters ) {
         tss.ts_t0 = millis();
         tss.ts_t1=millis();
         tss.ts_t2=millis();
-        Serial.print("[ts debug] x:");
-        Serial.print(p.x);
-        Serial.print(" y:");
-        Serial.print(p.y);
-        Serial.print(" z:");
-        Serial.println(p.zRaw);
+        // Serial.print("[ts debug] x:");
+        // Serial.print(p.x);
+        // Serial.print(" y:");
+        // Serial.print(p.y);
+        // Serial.print(" z:");
+        // Serial.println(p.zRaw);
         bool display_handled_wakeup = false;
         // autodim: increase brightness
         if (systemData.display_auto_dim==true) {
@@ -8663,32 +8629,32 @@ void SatIOPortControllerAnalogMux(const char * mux0_channel, const char * mux1_c
 //                                                                                                        DISPLAY JPG FROM SDCARD
 
 void jpegInfo() {
-  Serial.println("JPEG image info");
-  Serial.println("===============");
-  Serial.print("Width      :");
-  Serial.println(JpegDec.width);
-  Serial.print("Height     :");
-  Serial.println(JpegDec.height);
-  Serial.print("Components :");
-  Serial.println(JpegDec.comps);
-  Serial.print("MCU / row  :");
-  Serial.println(JpegDec.MCUSPerRow);
-  Serial.print("MCU / col  :");
-  Serial.println(JpegDec.MCUSPerCol);
-  Serial.print("Scan type  :");
-  Serial.println(JpegDec.scanType);
-  Serial.print("MCU width  :");
-  Serial.println(JpegDec.MCUWidth);
-  Serial.print("MCU height :");
-  Serial.println(JpegDec.MCUHeight);
-  Serial.println("===============");
-  Serial.println("");
+  // Serial.println("JPEG image info");
+  // Serial.println("===============");
+  // Serial.print("Width      :");
+  // Serial.println(JpegDec.width);
+  // Serial.print("Height     :");
+  // Serial.println(JpegDec.height);
+  // Serial.print("Components :");
+  // Serial.println(JpegDec.comps);
+  // Serial.print("MCU / row  :");
+  // Serial.println(JpegDec.MCUSPerRow);
+  // Serial.print("MCU / col  :");
+  // Serial.println(JpegDec.MCUSPerCol);
+  // Serial.print("Scan type  :");
+  // Serial.println(JpegDec.scanType);
+  // Serial.print("MCU width  :");
+  // Serial.println(JpegDec.MCUWidth);
+  // Serial.print("MCU height :");
+  // Serial.println(JpegDec.MCUHeight);
+  // Serial.println("===============");
+  // Serial.println("");
 }
 
 void showTime(uint32_t msTime) {
-  Serial.print(F(" JPEG drawn in "));
-  Serial.print(msTime);
-  Serial.println(F(" ms "));
+  // Serial.print(F(" JPEG drawn in "));
+  // Serial.print(msTime);
+  // Serial.println(F(" ms "));
 }
 
 
@@ -8764,12 +8730,12 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
   // Open the named file (the Jpeg decoder library will close it)
   File jpegFile = SD.open( filename, FILE_READ);  // or, file handle reference for SD library
   if ( !jpegFile ) {
-    Serial.print("ERROR: File \""); Serial.print(filename); Serial.println ("\" not found!");
+    // Serial.print("ERROR: File \""); Serial.print(filename); Serial.println ("\" not found!");
     return;
   }
-  Serial.println("===========================");
-  Serial.print("Drawing file: "); Serial.println(filename);
-  Serial.println("===========================");
+  // Serial.println("===========================");
+  // Serial.print("Drawing file: "); Serial.println(filename);
+  // Serial.println("===========================");
   // Use one of the following methods to initialise the decoder:
   bool decoded = JpegDec.decodeSdFile(jpegFile);  // Pass the SD file handle to the decoder,
   //bool decoded = JpegDec.decodeSdFile(filename);  // or pass the filename (String or character array)
@@ -8780,7 +8746,7 @@ void drawSdJpeg(const char *filename, int xpos, int ypos) {
     jpegRender(xpos, ypos);
   }
   else {
-    Serial.println("Jpeg file format not supported!");
+    // Serial.println("Jpeg file format not supported!");
   }
 }
 
@@ -8883,7 +8849,8 @@ void check_gngga() {
   if (systemData.gngga_enabled == true){
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    // Serial.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+    // output.println("[gnggaData.sentence] " + String(gnggaData.sentence));
+    // output.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
     if (gnggaData.valid_checksum == true) {GNGGA();}
     else {gnggaData.bad_checksum_validity++;}
     // GNGGA();
@@ -8895,7 +8862,8 @@ void check_gnrmc() {
   if (systemData.gnrmc_enabled == true) {
     if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    // Serial.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+    // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+    // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
     if (gnrmcData.valid_checksum == true) {GNRMC();}
     else {gnrmcData.bad_checksum_validity++;}
     // GNRMC();
@@ -8907,7 +8875,8 @@ void check_gpatt() {
   if (systemData.gpatt_enabled == true) {
     if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    // Serial.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+    // output.println("[gpattData.sentence] " + String(gpattData.sentence));
+    // output.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
     if (gpattData.valid_checksum == true) {GPATT();}
     else {gpattData.bad_checksum_validity++;}
     // GPATT();
@@ -8923,7 +8892,7 @@ int tgps;
 
 // void readGPS(void * pvParameters) {
 void readGPS() {
-    // while (1) {
+    // while (1) {`
     serial1Data.gngga_bool = false;
     serial1Data.gnrmc_bool = false;
     serial1Data.gpatt_bool = false;
@@ -8940,7 +8909,7 @@ void readGPS() {
 
         memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
         
-        SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, 150);
+        SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, 256);
 
         // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
@@ -8992,7 +8961,9 @@ void  readPortController() {
         if (Serial1.available()) {
 
         tpc = millis();
+        
         memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+
         SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 150);
 
         // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
@@ -9010,41 +8981,6 @@ void  readPortController() {
               while (SerialLink.token != NULL) {
 
                 if (SerialLink.TOKEN_i==1)  {
-
-                  // some float values here are currently made int but are intended to be float soon 
-
-                  sensorData.dht11_h_0 = atoi(SerialLink.token);
-                  // Serial.println("[dht11_h_0] " + String(sensorData.dht11_h_0));
-                }
-
-                if (SerialLink.TOKEN_i==2) {
-                  sensorData.dht11_c_0 = atoi(SerialLink.token);
-                  // Serial.println("[dht11_c_0] " + String(sensorData.dht11_c_0));
-                }
-
-                if (SerialLink.TOKEN_i==3) {
-                  sensorData.dht11_f_0 = atoi(SerialLink.token);
-                  // Serial.println("[dht11_f_0] " + String(sensorData.dht11_f_0));
-                }
-
-                if (SerialLink.TOKEN_i==4) {
-                  sensorData.dht11_hif_0 = atoi(SerialLink.token);
-                  // Serial.println("[dht11_hif_0] " + String(sensorData.dht11_hif_0));
-                }
-
-                if (SerialLink.TOKEN_i==5) {
-                  sensorData.dht11_hic_0 = atoi(SerialLink.token);
-                  // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-                }
-
-                if (SerialLink.TOKEN_i==6) {
-                  sensorData.photoresistor_0 = atoi(SerialLink.token);
-                  // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
-                }
-                
-                if (SerialLink.TOKEN_i==7) {
-                  sensorData.tracking_0 = atoi(SerialLink.token);
-                  // Serial.println("[tracking_0] " + String(sensorData.tracking_0));
                 }
                 
                 SerialLink.token = strtok(NULL, ",");
@@ -9066,17 +9002,12 @@ void  readPortController() {
 void setup() {
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SETUP: PINS
-  pinMode(CYD_LED_RED, OUTPUT);
-  pinMode(CYD_LED_GREEN, OUTPUT);
-  pinMode(CYD_LED_BLUE, OUTPUT);
-  ledGreen();
+  //                                                                                                                  SETUP: PIN
 
   pinMode(INTERRUPT_ATMEGA_0, OUTPUT);
   pinMode(INTERRUPT_ATMEGA_1, OUTPUT);
   digitalWrite(INTERRUPT_ATMEGA_0, LOW);
   digitalWrite(INTERRUPT_ATMEGA_1, LOW);
-
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SETUP: SECOND TIMER
@@ -9090,21 +9021,24 @@ void setup() {
 
   Serial.begin(115200); while(!Serial);
   Serial.setTimeout(10);
-  
+
   // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
+  Serial1.setRxBufferSize(256);
   Serial1.setPins(26, 25, ctsPin, rtsPin);
   Serial1.begin(115200);
   Serial1.setTimeout(1);
   Serial1.flush();
-
+  Serial2.setRxBufferSize(256);
   Serial2.setPins(27, 14, ctsPin, rtsPin);
   Serial2.begin(115200);
   Serial2.setTimeout(1);
   Serial2.flush();
 
+
   // setp TCA9548A
   Wire.begin();  // sets up the I2C  
   rtc.begin();   // initializes the I2C device
+  dht.begin();
 
   tcaselect(0);
 
@@ -9225,53 +9159,66 @@ void setup() {
   //                                                                                                         SETUP: SET HOME PAGE
 
   menuData.page=0;
-
-  ledBlue();
 }
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      SENSORS
+
+void computeDHT11() {
+  sensorData.dht11_h_0 = dht.readHumidity();
+  sensorData.dht11_c_0 = dht.readTemperature(); // celsius default
+  sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+  if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+  }
+  sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0); // fahreheit default
+  sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
+  Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+}
+
+void computePhotoResistor() {
+  sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
+  Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+}
+
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
-int t0a = millis(); 
 int t0 = millis();
 
 void loop() {
 
-  // digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
-  // delay(1);
-  // digitalWrite(INTERRUPT_ATMEGA_0, LOW);
-  // delay(1);
+  systemData.matrix_enabled = true;
+  systemData.run_on_startup = true;
+
+  // Serial.println("---");
+  // Serial.println("[loop] ");
+
+  timeData.mainLoopTimeStart = millis();
+
+  computeDHT11();
+  computePhotoResistor();
+
+  /* take a snapshot of sensory and calculated data */
+
   // digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
   // delay(1);
   // digitalWrite(INTERRUPT_ATMEGA_1, LOW);
 
-  systemData.matrix_enabled = true;
-  systemData.run_on_startup = true;
-
-  // Serial.println("---------------------------------------------------------------");
-  Serial.println("[loop] ");
-
-  timeData.mainLoopTimeStart = millis();
-
-  /* take a snapshot of sensory and calculated data */
-
-  digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
-  delay(1);
-  digitalWrite(INTERRUPT_ATMEGA_1, LOW);
-
-  t0 = millis();
-  readPortController();
-  Serial.println("[readPortController] " + String(millis()-t0));
+  // t0 = millis();
+  // readPortController();
+  // Serial.println("[readPortController] " + String(millis()-t0));
 
   digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
   delay(1);
   digitalWrite(INTERRUPT_ATMEGA_0, LOW);
 
-  t0a = millis();
   if (isGPSEnabled()==true) {
-    t0 = millis();
+    // t0 = millis();
     readGPS();
-    Serial.println("[gps] " + String(millis()-t0));
+    // Serial.println("[gps] " + String(millis()-t0));
 
     // t0 = millis();
     if (systemData.gngga_enabled) {check_gngga();}
@@ -9289,19 +9236,23 @@ void loop() {
     if (satData.convert_coordinates == true) {calculateLocation();}
     // Serial.println("[gpatt] " + String(millis()-t0));
   }
-  // delay(1);
-  Serial.println("[gps total] " + String(millis()-t0a));
 
-  convertUTCToLocal();
-  setLastSatelliteTime();
+  if (interrupt_second_counter==0) {
+    // t0 = millis();
+    convertUTCToLocal();
+    // Serial.println("[convertUTCToLocal] " + String(millis()-t0));
+    // t0 = millis();
+    setLastSatelliteTime();
+    // Serial.println("[setLastSatelliteTime] " + String(millis()-t0));
+  }
+
+  // t0 = millis();
+  satIOData();
+  // Serial.println("[satIOData] " + String(millis()-t0));
 
   // t0 = millis();
   trackPlanets();
   // Serial.println("[planet track] " + String(millis()-t0));
-
-  // t0 = millis();
-  satIOData();
-  // Serial.println("[satio] " + String(millis()-t0));
 
   // t0 = millis();
   // sdcardCheck();
@@ -9318,7 +9269,7 @@ void loop() {
   /* instruct the portcontroller */
   // t0 = millis();
   SatIOPortController();
-  // Serial.println("[port controller] " + String(millis()-t0));
+  // Serial.println("[writePortController] " + String(millis()-t0));
 
   // delay(1000);
 
@@ -9341,11 +9292,11 @@ void loop() {
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
-  Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
-  Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
-  Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
+  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
+  // Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
+  // Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
   delay(1);
 }
