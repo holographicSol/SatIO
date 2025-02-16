@@ -21,7 +21,8 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
           currently each matrix activation/deactivaion can occur based on up to 10 different checks resulting true or false. 
           
 
-                                                        SENTENCE $SATIO
+                                                        $SATIO SENTENCE
+                                                    
                                                                                 
                         START Tag                Last Sat Time                    Converted Longitude        
                           |                   |               |                   |               |                  
@@ -39,24 +40,19 @@ This version is for the CYD (Cheap Yellow Display) Written by Benjamin Jack Cull
                                         Robots and flying machines and automation.
 
                             The IO is virtualized as well as physical (requires SatIO Port Controller)
-
-            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
-
-                                ToDo: RTC + IO expansion + black rubber case with waterproof IO ports.       
   
 
 ---
 
-![plot](./images/vlcsnap-2024-11-08-11h00m47s505.png)
+![plot](./Extras/images/vlcsnap-2024-11-08-11h00m47s505.png)
 
 ---
 
-![plot](./images/vlcsnap-2024-11-08-10h58m42s127.png)
+![plot](./Extras/images/vlcsnap-2024-11-08-10h58m42s127.png)
 
 ---
 
-![plot](./images/DSC_0004_BURST20241108194742300_COVER.JPG)
+![plot](./Extras/images/DSC_0004_BURST20241108194742300_COVER.JPG)
 
 ---
   
