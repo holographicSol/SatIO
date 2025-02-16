@@ -123,8 +123,9 @@ void tcaselect(uint8_t channel) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
-#define INTERRUPT_ATMEGA_0 12
-#define INTERRUPT_ATMEGA_1 5
+#define INTERRUPT_ATMEGA_0 12 // pin to instruct atmega2560 to go into read mode
+#define INTERRUPT_ATMEGA_1 5  // pin to instruct atmega2560 to go into write mode
+const signed int portcontroller_mode[1][2] {{INTERRUPT_ATMEGA_0, INTERRUPT_ATMEGA_1}} ;
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
@@ -9040,12 +9041,8 @@ void  readPortController() {
 void setup() {
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SETUP: PIN
-
-  pinMode(INTERRUPT_ATMEGA_0, OUTPUT);
-  // pinMode(INTERRUPT_ATMEGA_1, OUTPUT);
-  digitalWrite(INTERRUPT_ATMEGA_0, LOW);
-  // digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+  //                                                                                                       SETUP: PORT CONTROLLER
+  setPortControllerReadMode(0); // put port controller in read mode
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SETUP: SECOND TIMER
@@ -9065,37 +9062,33 @@ void setup() {
   Serial1.setPins(26, 25, ctsPin, rtsPin);
   Serial1.begin(115200);
   Serial1.setTimeout(1);
-  Serial1.flush();
+
   Serial2.setRxBufferSize(256);
   Serial2.setPins(27, 14, ctsPin, rtsPin);
   Serial2.begin(115200);
   Serial2.setTimeout(1);
-  Serial2.flush();
 
-
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                          SETUP: MULTIPLEXERS
   // setp TCA9548A
-  Wire.begin();  // sets up the I2C  
-  rtc.begin();   // initializes the I2C device
-  dht.begin();
+  // Wire.begin();  // sets up the I2C  
+  // rtc.begin();   // initializes the I2C device
+  // dht.begin();
 
-  tcaselect(0);
+  // tcaselect(0);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           SETUP: SYSTEM INFO
 
   delay(1000);
   Serial.println("[xPortGetCoreID] " + String(xPortGetCoreID()));
-
   Serial.println("[ESP_PM_CPU_FREQ_MAX] " + String(ESP_PM_CPU_FREQ_MAX));
   Serial.println("[ESP_PM_APB_FREQ_MAX] " + String(ESP_PM_APB_FREQ_MAX));
   Serial.println("[ESP_PM_NO_LIGHT_SLEEP] " + String(ESP_PM_NO_LIGHT_SLEEP));
-   
   Serial.println("[CONFIG_ESPTOOLPY_FLASHFREQ] " + String(CONFIG_ESPTOOLPY_FLASHFREQ));
   Serial.println("[CONFIG_ESPTOOLPY_FLASHMODE] " + String(CONFIG_ESPTOOLPY_FLASHMODE));
-   
   // Serial.println("[CONFIG_COMPILER_OPTIMIZATION] " + String(CONFIG_COMPILER_OPTIMIZATION));
   Serial.println("[CONFIG_ESP32_REV_MIN] " + String(CONFIG_ESP32_REV_MIN));
-
   Serial.println("[CONFIG_LOG_DEFAULT_LEVEL] " + String(CONFIG_LOG_DEFAULT_LEVEL));
   Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
   Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
@@ -9103,8 +9096,6 @@ void setup() {
   // Serial.println("[  CONFIG_LOG_TAG_LEVEL_IMPL] " + String( CONFIG_LOG_TAG_LEVEL_IMPL));
   Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
   // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
-
-
   Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
   Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
 
@@ -9113,14 +9104,12 @@ void setup() {
 
   // ts.begin();  // start the SPI for the touch screen and init the TS library
   // tft.init();  // start the tft display and set it to black
-  
   // #if ESP_IDF_VERSION_MAJOR == 5  // setup up LEDC, configuring backlight pin. NOTE: this needs to be done after tft.init()
   //   ledcAttach(LCD_BACK_LIGHT_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
   // #else
   //   ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
   //   ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
   // #endif
-
   // tft.setRotation(1);         // landscape
   // tft.fillScreen(TFT_BLACK);  // clear screen before writing to it
   // tft.setFreeFont(FONT5X7_H);
@@ -9138,11 +9127,11 @@ void setup() {
   // drawSdJpeg("/DATA/UnidentifiedStudios.jpg", (tft.width()/2)-120, 0);
   // delay(2000);
   // tft.fillScreen(TFT_BLACK);
-
   // Product Name
   // drawSdJpeg("/DATA/SatIO.jpg", 0, 0);
   // delay(2000);
   // tft.fillScreen(TFT_BLACK);
+  // menuData.page=0;
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS
@@ -9192,11 +9181,6 @@ void setup() {
   //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                         SETUP: SET HOME PAGE
-
-  menuData.page=0;
 }
 
 
@@ -9220,6 +9204,12 @@ void computePhotoResistor() {
   // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
 }
 
+void setPortControllerReadMode(int mode) {
+  digitalWrite(portcontroller_mode[0][mode], HIGH);
+  delay(1);
+  digitalWrite(portcontroller_mode[0][mode], LOW);
+}
+
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
@@ -9228,8 +9218,9 @@ int t0 = millis();
 
 void loop() {
 
-  systemData.matrix_enabled = true;
-  systemData.run_on_startup = true;
+  // uncomment to override default values
+  // systemData.matrix_enabled = true;
+  // systemData.run_on_startup = true;
 
   // Serial.println("---");
   // Serial.println("[loop] ");
@@ -9241,18 +9232,14 @@ void loop() {
   computeDHT11();
   computePhotoResistor();
 
-  // uncomment to put port controller in read write mode
-  // digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
-  // delay(1);
-  // digitalWrite(INTERRUPT_ATMEGA_1, LOW);
+  // uncomment to put port controller into write mode
+  // setPortControllerReadMode(1);
   // t0 = millis();
   // readPortController();
   // Serial.println("[readPortController] " + String(millis()-t0));
 
-  // put port controller in read mode
-  digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
-  delay(1);
-  digitalWrite(INTERRUPT_ATMEGA_0, LOW);
+  // put port controller into read mode
+  setPortControllerReadMode(0);
 
   if (isGPSEnabled()==true) {
     // t0 = millis();
@@ -9337,5 +9324,6 @@ void loop() {
   // Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
   // Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
+
   delay(1);
 }
