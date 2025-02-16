@@ -89,6 +89,7 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
 #include "esp_pm.h"
 #include "esp_attr.h"
 #include <DHT.h>
+#include <CD74HC4067.h>
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -121,6 +122,42 @@ void tcaselect(uint8_t channel) {
   Wire.endTransmission();
 }
 
+int muxChannel[16][4]={
+  {0,0,0,0}, //channel 0 port controller
+  {1,0,0,0}, //channel 1 GPS
+  {0,1,0,0}, //channel 2
+  {1,1,0,0}, //channel 3
+  {0,0,1,0}, //channel 4
+  {1,0,1,0}, //channel 5
+  {0,1,1,0}, //channel 6
+  {1,1,1,0}, //channel 7
+  {0,0,0,1}, //channel 8
+  {1,0,0,1}, //channel 9
+  {0,1,0,1}, //channel 10
+  {1,1,0,1}, //channel 11
+  {0,0,1,1}, //channel 12
+  {1,0,1,1}, //channel 13
+  {0,1,1,1}, //channel 14
+  {1,1,1,1}  //channel 15
+};
+
+//Mux control pins
+int s0 = 16;
+int s1 = 17;
+int s2 = 25;
+int s3 = 26;
+int sig = 27;
+int controlPin[] = {s0, s1, s2, s3};
+
+// void setMultiplexChannels(int ch0, int ch1) {
+//   // analogu + digital multiplexer
+//   for(int i = 0; i < 4; i++){
+//     digitalWrite(controlPin[i], muxChannel[ch0][i]);
+//   }
+//   // i2C multiplexer
+//   // tcaselect(ch1);
+// }
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
 #define INTERRUPT_ATMEGA_0 12 // pin to instruct atmega2560 to go into read mode
@@ -128,8 +165,8 @@ void tcaselect(uint8_t channel) {
 const signed int portcontroller_mode[1][2] {{INTERRUPT_ATMEGA_0, INTERRUPT_ATMEGA_1}} ;
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte txd_to_atmega = 25;  // CYD TXD (remapped TXD pin 27) --> to ATMEGA2560 RXD1 (pin 19)
-const byte rxd_from_gps = 26;   // GPS TXD to --> CYD RXD (remapped RXD pin 22)
+const byte txd_to_atmega = 25;  // 
+const byte rxd_from_gps = 26;   // 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TOUCHSCREEN
@@ -5964,6 +6001,8 @@ void matrixSwitch() {
         // if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
         // else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
 
+        /* a short call to the port controller each iteration may be made here */
+
         if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
         else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
       }
@@ -8874,13 +8913,6 @@ void MatrixSwitchTask() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     SATIO DATA
-
-void satIOData() {
-  if (systemData.satio_enabled == true) {buildSatIOSentence();}
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
 void check_gngga() {
@@ -8928,62 +8960,113 @@ bool isGPSEnabled() {
 }
 
 int tgps;
+bool gps_done = false;
 
-// void readGPS(void * pvParameters) {
-void readGPS() {
-    // while (1) {`
-    serial1Data.gngga_bool = false;
-    serial1Data.gnrmc_bool = false;
-    serial1Data.gpatt_bool = false;
-    memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
-    memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
-    memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
+void readGPS(void * pvParameters) {
+// void readGPS() {
+  // Serial.println("[readGPS] ");
 
-    // Serial.println("[readGPS] ");
+  while (1) {
 
-    for (int i = 0; i < 10; i++) {
-      if (Serial2.available()) {
+    if (gps_done==false) {
 
-        tgps = millis();
+      serial1Data.gngga_bool = false;
+      serial1Data.gnrmc_bool = false;
+      serial1Data.gpatt_bool = false;
+      memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
+      memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
+      memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
-        memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-        
-        SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, 256);
+      for (int i = 0; i < 10; i++) {
+        if (Serial2.available()) {
 
-        // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+          tgps = millis();
 
-        // Serial.println("[readGPS] " + String(SerialLink.BUFFER)); // debug
+          memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+          
+          SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, 256);
 
-        if (SerialLink.nbytes>10) {
+          // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
-          // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+          // Serial.println("[readGPS] " + String(SerialLink.BUFFER)); // debug
 
-          if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+          if (SerialLink.nbytes>10) {
 
-          else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
             // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-            strcpy(gnggaData.sentence, SerialLink.BUFFER);
-            serial1Data.gngga_bool = true;
-            if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-          }
 
-          else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
-            strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-            serial1Data.gnrmc_bool = true;
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-          }
 
-          else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-            // Serial.println("[readGPS RXD] " + StriSng(SerialLink.BUFFER)); // debug
-            strcpy(gpattData.sentence, SerialLink.BUFFER);
-            serial1Data.gpatt_bool = true;
-            if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+            else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+              if (systemData.gngga_enabled == true){
+                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                strcpy(gnggaData.sentence, SerialLink.BUFFER);
+                serial1Data.gngga_bool = true;
+                if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+              } else {serial1Data.gngga_bool = true;}
+            }
+
+            else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+              if (systemData.gnrmc_enabled == true){
+                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                strcpy(gnrmcData.sentence, SerialLink.BUFFER);
+                serial1Data.gnrmc_bool = true;
+                if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+              } else {serial1Data.gnrmc_bool = true;}
+            }
+
+            else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+              if (systemData.gpatt_enabled == true){
+                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                strcpy(gpattData.sentence, SerialLink.BUFFER);
+                serial1Data.gpatt_bool = true;
+                if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+              } else {serial1Data.gpatt_bool = true;}
+            }
           }
         }
       }
-    // }
-    // delay(1);
+    
+      if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
+
+        if (systemData.gngga_enabled == true){
+          // Serial.println("[check_gngga]");
+          if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+          gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
+          // output.println("[gnggaData.sentence] " + String(gnggaData.sentence));
+          // output.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+          if (gnggaData.valid_checksum == true) {GNGGA();}
+          else {gnggaData.bad_checksum_validity++;}
+          // GNGGA();
+        }
+        
+        if (systemData.gnrmc_enabled == true) {
+          // Serial.println("[check_gnrmc]");
+          if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+          gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
+          // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+          // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+          if (gnrmcData.valid_checksum == true) {GNRMC();}
+          else {gnrmcData.bad_checksum_validity++;}
+          // GNRMC();
+        }
+
+        if (systemData.gpatt_enabled == true) {
+          // Serial.println("[check_gpatt]");
+          if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
+          gpattData.valid_checksum = validateChecksum(gpattData.sentence);
+          // output.println("[gpattData.sentence] " + String(gpattData.sentence));
+          // output.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+          if (gpattData.valid_checksum == true) {GPATT();}
+          else {gpattData.bad_checksum_validity++;}
+          // GPATT();
+        }
+
+        if ((gnggaData.valid_checksum=true) && (gnggaData.valid_checksum=true) && (gnggaData.valid_checksum=true)) {
+          gps_done=true;
+        }
+      }
+    }
+    delay(1);
   }
 }
 
@@ -8991,37 +9074,24 @@ int tpc;
 
 // void readPortController(void * pvParameters) {
 void  readPortController() {
+  // Serial.println("[readPortController] ");
   // while(1) {
-
-    // Serial.println("[readPortController] ");
-
     for (int i = 0; i < 10; i++) {
-
         if (Serial1.available()) {
-
         tpc = millis();
-        
         memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-
         SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 150);
-
         // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
-
         if (SerialLink.nbytes>10) {
           if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
             // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
-
             if (validateChecksum(SerialLink.BUFFER)==true) {
               // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
-
               SerialLink.TOKEN_i = 0;
               SerialLink.token = strtok(SerialLink.BUFFER, ",");
-
               while (SerialLink.token != NULL) {
-
                 if (SerialLink.TOKEN_i==1)  {
                 }
-                
                 SerialLink.token = strtok(NULL, ",");
                 SerialLink.TOKEN_i++;
               }
@@ -9038,6 +9108,7 @@ void  readPortController() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 void setPortControllerReadMode(int mode) {
+  // tcaselect(1);
   digitalWrite(portcontroller_mode[0][mode], HIGH);
   delay(1);
   digitalWrite(portcontroller_mode[0][mode], LOW);
@@ -9047,6 +9118,19 @@ void setPortControllerReadMode(int mode) {
 //                                                                                                                          SETUP
 
 void setup() {
+
+  // pinMode(s0, OUTPUT); 
+  // pinMode(s1, OUTPUT); 
+  // pinMode(s2, OUTPUT); 
+  // pinMode(s3, OUTPUT); 
+  // digitalWrite(s0, LOW);
+  // digitalWrite(s1, LOW);
+  // digitalWrite(s2, LOW);
+  // digitalWrite(s3, LOW);
+  // digitalWrite(controlPin[0], muxChannel[0][0]); // default channel 0
+  // digitalWrite(controlPin[1], muxChannel[0][1]); // default channel 0
+  // digitalWrite(controlPin[2], muxChannel[0][2]); // default channel 0
+  // digitalWrite(controlPin[3], muxChannel[0][3]); // default channel 0
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                       SETUP: PORT CONTROLLER
@@ -9065,14 +9149,13 @@ void setup() {
   Serial.begin(115200); while(!Serial);
   Serial.setTimeout(10);
 
-  // ESP32 can map hardware serial to alternative pins. Map Serial1 for GPS module to the following, we will need this on CYD
+  // ESP32 can map hardware serial to alternative pins.
   Serial1.setRxBufferSize(256);
-  Serial1.setPins(26, 25, ctsPin, rtsPin);
+  Serial1.setPins(26, 25, ctsPin, rtsPin); // for port controller module
   Serial1.begin(115200);
   Serial1.setTimeout(1);
-
   Serial2.setRxBufferSize(256);
-  Serial2.setPins(27, 14, ctsPin, rtsPin);
+  Serial2.setPins(27, 14, ctsPin, rtsPin); // for gps module
   Serial2.begin(115200);
   Serial2.setTimeout(1);
 
@@ -9083,7 +9166,8 @@ void setup() {
   rtc.begin();   // initializes the I2C device
   dht.begin();
 
-  // tcaselect(0);
+  // setMultiplexChannels(0, 0);
+  tcaselect(0);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           SETUP: SYSTEM INFO
@@ -9164,15 +9248,15 @@ void setup() {
   //     &UpdateDisplayTask,          /* Task handle. */
   //     0);               /* Core where the task should run */
 
-  // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  // xTaskCreatePinnedToCore(
-  //     readGPS, /* Function to implement the task */
-  //     "Task0",         /* Name of the task */
-  //     10000,            /* Stack size in words */
-  //     NULL,             /* Task input parameter */
-  //     2,                /* Priority of the task */
-  //     &Task0,          /* Task handle. */
-  //     0);               /* Core where the task should run */
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+      readGPS, /* Function to implement the task */
+      "Task0",         /* Name of the task */
+      10000,            /* Stack size in words */
+      NULL,             /* Task input parameter */
+      2,                /* Priority of the task */
+      &Task0,          /* Task handle. */
+      0);               /* Core where the task should run */
     
       
   // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
@@ -9195,21 +9279,33 @@ void setup() {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      SENSORS
 
-void computeDHT11() {
-  sensorData.dht11_h_0 = dht.readHumidity();
-  sensorData.dht11_c_0 = dht.readTemperature(); // celsius default
-  sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-  if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
-  }
-  sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0); // fahreheit default
-  sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-  // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-}
+bool sensors_done = false;
 
-void computePhotoResistor() {
-  sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
-  // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+void getSensorData(void * pvParameters) {
+
+  while (1) {
+
+    if (sensors_done==false) {
+
+      // sensor
+      sensorData.dht11_h_0 = dht.readHumidity();
+      sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
+      sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+      }
+      sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
+      sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
+      Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+
+      // sensor
+      sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
+      Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+
+      sensors_done=true;
+    }
+    delay(1);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9223,80 +9319,51 @@ void loop() {
   systemData.matrix_enabled = true;
   systemData.run_on_startup = true;
 
-  // Serial.println("---");
+  // Serial.println("--------------------------------------------------");
   // Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
 
   /* take a snapshot of sensory and calculated data */
 
-  computeDHT11();
-  computePhotoResistor();
+  // ---------------------------------------------------------------------
+  // theoretical xTask(s) group 1: compute sensors while also reading gps
 
-  // uncomment to put port controller into write mode
+  // sdcardCheck(); // put on a task
+
+  if (sensors_done==true) {sensors_done=false;}
+
+  if (gps_done==true) {
+    gps_done = false;
+    calculateLocation();
+    convertUTCToLocal();
+    setLastSatelliteTime();
+    trackPlanets();
+
+    if (systemData.satio_enabled == true) {buildSatIOSentence();}
+    if (systemData.matrix_enabled == true) {matrixSwitch();}
+
+    MatrixStatsCounter();
+  }
+
   // setPortControllerReadMode(1);
-  // t0 = millis();
   // readPortController();
-  // Serial.println("[readPortController] " + String(millis()-t0));
+
+  // ---------------------------------------------------------------------
+
+  /* ensure safe execution each loop. final matrix values for port controller
+  must not be altered while instructing port controller. this must be true
+  while also instructing port controller every loop and while not blocking
+  the loop */
 
   // put port controller into read mode
-  // setPortControllerReadMode(0);
+  setPortControllerReadMode(0);
 
-  if (isGPSEnabled()==true) {
-    // t0 = millis();
-    readGPS();
-    // Serial.println("[gps] " + String(millis()-t0));
-
-    // t0 = millis();
-    if (systemData.gngga_enabled) {check_gngga();}
-    // Serial.println("[gngga] " + String(millis()-t0));
-
-    // t0 = millis();
-    if (systemData.gngga_enabled) {check_gnrmc();}
-    // Serial.println("[gnrmc] " + String(millis()-t0));
-
-    // t0 = millis();
-    if (systemData.gngga_enabled) {check_gpatt();}
-    // Serial.println("[gpatt] " + String(millis()-t0));
-
-    // t0 = millis();
-    if (satData.convert_coordinates == true) {calculateLocation();}
-    // Serial.println("[gpatt] " + String(millis()-t0));
-  }
-
-  if (interrupt_second_counter==0) {
-    // t0 = millis();
-    convertUTCToLocal();
-    // Serial.println("[convertUTCToLocal] " + String(millis()-t0));
-    // t0 = millis();
-    setLastSatelliteTime();
-    // Serial.println("[setLastSatelliteTime] " + String(millis()-t0));
-  }
-
-  // t0 = millis();
-  satIOData();
-  // Serial.println("[satIOData] " + String(millis()-t0));
-
-  // t0 = millis();
-  trackPlanets();
-  // Serial.println("[planet track] " + String(millis()-t0));
-
-  // t0 = millis();
-  // sdcardCheck();
-  // Serial.println("[sdcard] " + String(millis()-t0));
-
-  // t0 = millis();
-  MatrixSwitchTask();
-  // Serial.println("[matrix] " + String(millis()-t0));
-
-  // t0 = millis();
-  MatrixStatsCounter();
-  // Serial.println("[matrix counter] " + String(millis()-t0));
-
-  /* instruct the portcontroller */
   // t0 = millis();
   SatIOPortController();
   // Serial.println("[writePortController] " + String(millis()-t0));
+
+  // ---------------------------------------------------------------------
 
   // delay(1000);
 
@@ -9319,11 +9386,11 @@ void loop() {
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
-  // Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
-  // Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
+  Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
+  Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
 
   delay(1);
