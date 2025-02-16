@@ -9366,7 +9366,7 @@ void loop() {
   while also instructing port controller every loop and while not blocking
   the loop so that we can utilize the port controller for other instructions
   and do other things if needed until gps data is ready. the wtgps300 outputs
-  a each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
+  each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
   milliseconds. */
 
   // put port controller into read mode
