@@ -33,7 +33,6 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
                                           ATMEGA2560 SDA 20 -> ESP32 12
                                           ATMEGA2560 SCL 21 -> ESP32 5
 
-                                          
 
                                                         SENTENCE $SATIO
                                                                                 
@@ -9198,19 +9197,20 @@ void loop() {
 
   timeData.mainLoopTimeStart = millis();
 
+  /* take a snapshot of sensory and calculated data */
+
   computeDHT11();
   computePhotoResistor();
 
-  /* take a snapshot of sensory and calculated data */
-
+  // uncomment to put port controller in read write mode
   // digitalWrite(INTERRUPT_ATMEGA_1, HIGH);
   // delay(1);
   // digitalWrite(INTERRUPT_ATMEGA_1, LOW);
-
   // t0 = millis();
   // readPortController();
   // Serial.println("[readPortController] " + String(millis()-t0));
 
+  // put port controller in read mode
   digitalWrite(INTERRUPT_ATMEGA_0, HIGH);
   delay(1);
   digitalWrite(INTERRUPT_ATMEGA_0, LOW);
