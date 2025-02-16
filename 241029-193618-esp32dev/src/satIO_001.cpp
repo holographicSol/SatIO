@@ -9174,12 +9174,12 @@ void computeDHT11() {
   }
   sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0); // fahreheit default
   sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-  Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+  // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
 }
 
 void computePhotoResistor() {
   sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
-  Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+  // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
 }
 
 
