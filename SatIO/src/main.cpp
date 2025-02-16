@@ -9114,6 +9114,38 @@ void setPortControllerReadMode(int mode) {
   digitalWrite(portcontroller_mode[0][mode], LOW);
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      SENSORS
+
+bool sensors_done = false;
+
+void getSensorData(void * pvParameters) {
+
+  while (1) {
+
+    if (sensors_done==false) {
+
+      // sensor
+      sensorData.dht11_h_0 = dht.readHumidity();
+      sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
+      sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+      }
+      sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
+      sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
+      Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+
+      // sensor
+      sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
+      Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+
+      sensors_done=true;
+    }
+    delay(1);
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
@@ -9251,14 +9283,24 @@ void setup() {
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
-      "Task0",         /* Name of the task */
-      10000,            /* Stack size in words */
-      NULL,             /* Task input parameter */
-      2,                /* Priority of the task */
-      &Task0,          /* Task handle. */
-      0);               /* Core where the task should run */
+      "Task0", /* Name of the task */
+      10000,   /* Stack size in words */
+      NULL,    /* Task input parameter */
+      2,       /* Priority of the task */
+      &Task0,  /* Task handle. */
+      0);      /* Core where the task should run */
     
-      
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+    getSensorData, /* Function to implement the task */
+    "Task1",       /* Name of the task */
+    10000,         /* Stack size in words */
+    NULL,          /* Task input parameter */
+    2,             /* Priority of the task */
+    &Task1,        /* Task handle. */
+    0);            /* Core where the task should run */
+  
+  // replace read portcontroller with i2C master/slave setup between port controller and esp32
   // // Create touchscreen task to increase performance (core 0 also found to be best for this task)
   // xTaskCreatePinnedToCore(
   //   readPortController, /* Function to implement the task */
@@ -9273,39 +9315,6 @@ void setup() {
   //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
-}
-
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      SENSORS
-
-bool sensors_done = false;
-
-void getSensorData(void * pvParameters) {
-
-  while (1) {
-
-    if (sensors_done==false) {
-
-      // sensor
-      sensorData.dht11_h_0 = dht.readHumidity();
-      sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
-      sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-      if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
-      }
-      sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
-      sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-      Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
-
-      // sensor
-      sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
-      Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
-
-      sensors_done=true;
-    }
-    delay(1);
-  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9331,18 +9340,20 @@ void loop() {
 
   // sdcardCheck(); // put on a task
 
-  if (sensors_done==true) {sensors_done=false;}
-
+  // dont block if gps data not ready
   if (gps_done==true) {
     gps_done = false;
     calculateLocation();
     convertUTCToLocal();
     setLastSatelliteTime();
     trackPlanets();
-
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    if (systemData.matrix_enabled == true) {matrixSwitch();}
 
+    // dont block other data with a combined wait for gps data and sensor data
+    if (sensors_done==true) {
+      sensors_done=false;
+      if (systemData.matrix_enabled == true) {matrixSwitch();}
+    }
     MatrixStatsCounter();
   }
 
@@ -9357,7 +9368,7 @@ void loop() {
   the loop */
 
   // put port controller into read mode
-  setPortControllerReadMode(0);
+  // setPortControllerReadMode(0);
 
   // t0 = millis();
   SatIOPortController();
