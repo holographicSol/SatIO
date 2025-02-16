@@ -9036,6 +9036,14 @@ void  readPortController() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                PORT CONTROLLER
+void setPortControllerReadMode(int mode) {
+  digitalWrite(portcontroller_mode[0][mode], HIGH);
+  delay(1);
+  digitalWrite(portcontroller_mode[0][mode], LOW);
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
 void setup() {
@@ -9069,11 +9077,11 @@ void setup() {
   Serial2.setTimeout(1);
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                          SETUP: MULTIPLEXERS
-  // setp TCA9548A
-  // Wire.begin();  // sets up the I2C  
-  // rtc.begin();   // initializes the I2C device
-  // dht.begin();
+  //                                                                                                                  SETUP: WIRE 
+
+  Wire.begin();  // sets up the I2C  
+  rtc.begin();   // initializes the I2C device
+  dht.begin();
 
   // tcaselect(0);
 
@@ -9118,7 +9126,7 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SDCARD
 
-  setupSDCard();
+  // setupSDCard();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          DSETUP: SPLASHSCREEN
@@ -9204,13 +9212,6 @@ void computePhotoResistor() {
   // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
 }
 
-void setPortControllerReadMode(int mode) {
-  digitalWrite(portcontroller_mode[0][mode], HIGH);
-  delay(1);
-  digitalWrite(portcontroller_mode[0][mode], LOW);
-}
-
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 
@@ -9219,8 +9220,8 @@ int t0 = millis();
 void loop() {
 
   // uncomment to override default values
-  // systemData.matrix_enabled = true;
-  // systemData.run_on_startup = true;
+  systemData.matrix_enabled = true;
+  systemData.run_on_startup = true;
 
   // Serial.println("---");
   // Serial.println("[loop] ");
@@ -9239,7 +9240,7 @@ void loop() {
   // Serial.println("[readPortController] " + String(millis()-t0));
 
   // put port controller into read mode
-  setPortControllerReadMode(0);
+  // setPortControllerReadMode(0);
 
   if (isGPSEnabled()==true) {
     // t0 = millis();
