@@ -1,1 +1,0 @@
-These files and directories should be copied to the root of SatIO SD card.
