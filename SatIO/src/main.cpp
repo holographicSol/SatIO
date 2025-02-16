@@ -38,7 +38,6 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
                                           ESP32 io18        -> HW-125 Micro SD Card Module SCK (SCLK)
 
 
-
                                                         SENTENCE $SATIO
                                                                                 
                         START Tag                Last Sat Time                    Converted Longitude        
@@ -9365,7 +9364,10 @@ void loop() {
   /* ensure safe execution each loop. final matrix values for port controller
   must not be altered while instructing port controller. this must be true
   while also instructing port controller every loop and while not blocking
-  the loop */
+  the loop so that we can utilize the port controller for other instructions
+  and do other things if needed until gps data is ready. the wtgps300 outputs
+  a each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
+  milliseconds. */
 
   // put port controller into read mode
   // setPortControllerReadMode(0);
