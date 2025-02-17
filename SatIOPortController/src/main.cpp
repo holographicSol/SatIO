@@ -158,7 +158,6 @@ bool validateChecksum(char * buffer) {
 
   // uncomment to debug
   // if (SerialLink.validation == true) {Serial.println("[connected] validateChecksum: " + String(buffer));}
-  SerialLink.gotSum[2];
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
   // Serial.print("[gotSum[0] "); Serial.println(SerialLink.gotSum[0]);
@@ -190,9 +189,11 @@ void ISR_ATMEGA_0() {
 
 void setup() {
   // serial
+
+  Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200);  while(!Serial);
+  Serial1.setTimeout(50); // ensure this is set before begin()
   Serial1.begin(115200); while(!Serial1);
-  Serial1.setTimeout(10);
   Serial1.flush();
 
   // matrix switches
@@ -349,7 +350,7 @@ void readRXD1() {
     if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 200));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
 
       if (SerialLink.nbytes > 1) {
 
