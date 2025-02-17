@@ -2921,7 +2921,7 @@ void convertUTCToLocal() {
   setLastSatelliteTime();
   
   Serial.println("[RTC time]                "
-  + String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second()) + ":"
+  + String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second())
   + " " + String(rtc.now().day()) + "." + String(rtc.now().month()) + "." + String(rtc.now().year()));
 
   /*    now we can do things with time (using rtc time)     */
