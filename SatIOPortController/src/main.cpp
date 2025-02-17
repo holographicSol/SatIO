@@ -271,7 +271,7 @@ void processMatrixData() {
     while(SerialLink.token != NULL) {
       
       // uncomment to debug
-      // Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
+      Serial.print("[" + String(matrix_port_map[0][SerialLink.i_token]) + "] [RXD TOKEN] "); Serial.println(SerialLink.token);
       
       // port map
       if (SerialLink.i_token<20) {
@@ -307,7 +307,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALR, HIGH);
-          // delay(3000);
+          delay(3000);
         }
         // green
         else if (strcmp(SerialLink.token, "1") == 0)
@@ -316,7 +316,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);   
           digitalWrite(LEDSATSIGNALG, HIGH);
-          // delay(3000);
+          delay(3000);
         }
         // blue
         else if (strcmp(SerialLink.token, "2") == 0)
@@ -349,22 +349,22 @@ void readRXD1() {
     if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, sizeof(SerialLink.BUFFER)));
+      SerialLink.nbytes = (Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 200));
+
       if (SerialLink.nbytes > 1) {
 
         // store a copy that will not be tokenized (remains intact)
         memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
         strcpy(SerialLink.TMP, SerialLink.BUFFER);
 
-        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-        SerialLink.TOKEN_i = 0;
+        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
 
-        // get tag token
-        SerialLink.token = strtok(SerialLink.TMP, ",");
-
-        // parse matrix sentence
-        if (strcmp(SerialLink.token, "$MATRIX") == 0) {
-          // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        if (strncmp(SerialLink.BUFFER, "$MATRIX", 7) == 0) {
+          SerialLink.TOKEN_i = 0;
+          // get tag token
+          SerialLink.token = strtok(SerialLink.TMP, ",");
+          // parse matrix sentence
+          Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
           processMatrixData();
           break;
         }
