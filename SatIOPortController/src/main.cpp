@@ -307,7 +307,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALR, HIGH);
-          delay(3000);
+          // delay(3000);
         }
         // green
         else if (strcmp(SerialLink.token, "1") == 0)
@@ -316,7 +316,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);   
           digitalWrite(LEDSATSIGNALG, HIGH);
-          delay(3000);
+          // delay(3000);
         }
         // blue
         else if (strcmp(SerialLink.token, "2") == 0)
