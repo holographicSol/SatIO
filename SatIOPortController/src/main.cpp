@@ -360,13 +360,16 @@ void readRXD1() {
         // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
 
         if (strncmp(SerialLink.BUFFER, "$MATRIX", 7) == 0) {
-          SerialLink.TOKEN_i = 0;
-          // get tag token
-          SerialLink.token = strtok(SerialLink.TMP, ",");
-          // parse matrix sentence
-          Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
-          processMatrixData();
-          break;
+          // Serial.println(SerialLink.nbytes);
+          if (SerialLink.nbytes == 116) {
+            SerialLink.TOKEN_i = 0;
+            // get tag token
+            SerialLink.token = strtok(SerialLink.TMP, ",");
+            // parse matrix sentence
+            Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+            processMatrixData();
+            break;
+          }
         }
       }
     }
