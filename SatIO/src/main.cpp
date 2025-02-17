@@ -2735,7 +2735,7 @@ void adjustRTC() {
 void setLastSatelliteTime() {
 
   // update last time satellite count > zero
-  if (atoi(gnggaData.satellite_count_gngga) > 0) {
+  if (atoi(gnggaData.satellite_count_gngga) > 3) {
 
     // update sentence
     memset(satData.last_sat_time_stamp_str, 0, 56);
@@ -8924,7 +8924,7 @@ bool isGPSEnabled() {
   return false;
 }
 
-// int gps_read_t;
+int gps_read_t;
 bool gps_done = false;
 int gps_done_t = millis();
 void readGPS(void * pvParameters) {
@@ -8943,38 +8943,40 @@ void readGPS(void * pvParameters) {
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
+      // serial1Data.gngga_bool = true;
+      // serial1Data.gnrmc_bool = true;
+      // serial1Data.gpatt_bool = true; // test
+
+      /* 
+      note that a sync may reduce read time by a minimum of 100ms and allow for a read of the WTGPS300 every 100ms precisely.
+       */
+
       for (int i = 0; i < 10; i++) {
         if (Serial2.available()) {
 
-          // gps_read_t = millis();
+          gps_read_t = millis();
 
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           
-          SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, 256);
+          SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, 2048);
 
           // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
-          // Serial.println("[readGPS] " + String(SerialLink.BUFFER)); // debug
-
-          if (SerialLink.nbytes>10) {
-
-            // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+          if (SerialLink.nbytes>50) {
 
             if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
-            else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
+            if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
               if (systemData.gngga_enabled == true){
-                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
                 // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gnggaData.sentence, SerialLink.BUFFER);
                 serial1Data.gngga_bool = true;
                 if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-              } else {serial1Data.gngga_bool = true;}
+              }
             }
 
-            else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
+            if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
               if (systemData.gnrmc_enabled == true){
-                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
                 // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gnrmcData.sentence, SerialLink.BUFFER);
                 serial1Data.gnrmc_bool = true;
@@ -8983,7 +8985,6 @@ void readGPS(void * pvParameters) {
                   // Serial.println("[check_gnrmc]");
                   if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
                   gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-                  // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
                   // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
                   if (gnrmcData.valid_checksum == true) {
                     GNRMC();
@@ -8991,27 +8992,26 @@ void readGPS(void * pvParameters) {
                     calculateLocation();
                     setLastSatelliteTime();
                     trackPlanets();
+                    serial1Data.gnrmc_bool = true;
+                    if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                   }
                   else {gnrmcData.bad_checksum_validity++;}
                   // GNRMC();
                 }
-                
-                if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-              } else {serial1Data.gnrmc_bool = true;}
+              }
             }
 
-            else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
+            if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
               if (systemData.gpatt_enabled == true){
-                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
                 // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gpattData.sentence, SerialLink.BUFFER);
                 serial1Data.gpatt_bool = true;
                 if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-              } else {serial1Data.gpatt_bool = true;}
+              }
             }
           }
         }
-        delay(1);
+        // delay(1);
       }
     
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
@@ -9020,7 +9020,6 @@ void readGPS(void * pvParameters) {
           // Serial.println("[check_gngga]");
           if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-          // output.println("[gnggaData.sentence] " + String(gnggaData.sentence));
           // output.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
@@ -9031,7 +9030,6 @@ void readGPS(void * pvParameters) {
           // Serial.println("[check_gnrmc]");
           if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-          // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
           // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
@@ -9042,7 +9040,6 @@ void readGPS(void * pvParameters) {
           // Serial.println("[check_gpatt]");
           if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-          // output.println("[gpattData.sentence] " + String(gpattData.sentence));
           // output.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
@@ -9358,8 +9355,7 @@ void loop() {
   the loop so that we can utilize the port controller for other instructions
   and do other things if needed until gps data is ready. the wtgps300 outputs
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
-  milliseconds. we will catch approximately half of those if using
-  Serial.readBytesUnil to parse the gps data. */
+  milliseconds. */
 
   // put port controller into read mode
   // setPortControllerReadMode(0);
