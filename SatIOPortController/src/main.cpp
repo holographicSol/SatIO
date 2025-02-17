@@ -307,7 +307,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALR, HIGH);
-          delay(3000);
+          // delay(3000);
         }
         // green
         else if (strcmp(SerialLink.token, "1") == 0)
@@ -316,7 +316,7 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);   
           digitalWrite(LEDSATSIGNALG, HIGH);
-          delay(3000);
+          // delay(3000);
         }
         // blue
         else if (strcmp(SerialLink.token, "2") == 0)
@@ -327,11 +327,6 @@ void processMatrixData() {
           digitalWrite(LEDSATSIGNALB, HIGH);
         }
       }
-
-      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
-      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
-      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
-      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
 
       // overload indicator
       if (SerialLink.i_token==41) {
