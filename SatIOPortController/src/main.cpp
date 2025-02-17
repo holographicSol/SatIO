@@ -335,10 +335,12 @@ void processMatrixData() {
   }
 }
 
+int i=0;
+
 // READ RXD1 --------------------------------------------------------------------------------------------------------
 void readRXD1() {
   Serial.println("[readRXD1] ");
-  for (int i=0; i<10; i++) {
+  for (i=0; i<10; i++) {
     if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
@@ -349,7 +351,7 @@ void readRXD1() {
         memset(SerialLink.TMP, 0, sizeof(SerialLink.TMP));
         strcpy(SerialLink.TMP, SerialLink.BUFFER);
 
-        // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
+        Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
         SerialLink.TOKEN_i = 0;
 
         // get tag token
