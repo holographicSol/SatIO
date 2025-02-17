@@ -8930,6 +8930,7 @@ bool gps_done = false;
 int gps_done_t = millis();
 int i_gps = 0;
 bool cs = false;
+
 void gpstest() {
   if (Serial2.available()) {
 
@@ -8957,7 +8958,7 @@ void readGPS(void * pvParameters) {
 
     if (gps_done==false) {
 
-      gps_done_t = millis();
+      // gps_done_t = millis();
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
       serial1Data.gpatt_bool = false;
@@ -8979,7 +8980,7 @@ void readGPS(void * pvParameters) {
 
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
-          gps_read_t = millis();
+          // gps_read_t = millis();
 
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           
@@ -9197,18 +9198,19 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
 
+  Serial.setRxBufferSize(2000); // ensure this is set before begin()
+  Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200); while(!Serial);
-  Serial.setTimeout(10);
 
   // ESP32 can map hardware serial to alternative pins.
-  Serial1.setPins(26, 25, ctsPin, rtsPin); // for port controller module
-  Serial1.setRxBufferSize(2000);
-  Serial1.setTimeout(50);
+  Serial1.setPins(26, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
+  Serial1.setRxBufferSize(2000); // ensure this is set before begin()
+  Serial1.setTimeout(50); // ensure this is set before begin()
   Serial1.begin(115200);
 
-  Serial2.setPins(27, 14, ctsPin, rtsPin); // for gps module
-  Serial2.setRxBufferSize(2000);
-  Serial2.setTimeout(50);
+  Serial2.setPins(27, 14, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
+  Serial2.setRxBufferSize(2000); // ensure this is set before begin()
+  Serial2.setTimeout(50); // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
