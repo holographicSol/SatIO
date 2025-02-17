@@ -254,6 +254,7 @@ void satIOPortController() {
   }
 }
 
+int i_pmd = 0;
 void processMatrixData() {
   Serial.println("[processMatrixData] ");
 
@@ -275,12 +276,12 @@ void processMatrixData() {
       // port map
       if (SerialLink.i_token<20) {
         update_portmap_bool=false;
-        for (int i=0; i<20; i++) {
-          tmp_matrix_port_map[0][i] = atoi(SerialLink.token);
-          if (atoi(SerialLink.token) != matrix_port_map[0][i]) {update_portmap_bool=true;}
+        for (i_pmd=0; i_pmd<20; i_pmd++) {
+          tmp_matrix_port_map[0][i_pmd] = atoi(SerialLink.token);
+          if (atoi(SerialLink.token) != matrix_port_map[0][i_pmd]) {update_portmap_bool=true;}
 
           // uncomment to debug
-          Serial.println("[switch: " + String(i) + "] [port: " + String(matrix_port_map[0][i]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i])) + "]");
+          Serial.println("[switch: " + String(i_pmd) + "] [port: " + String(matrix_port_map[0][i_pmd]) + "] [state: " + String(digitalRead(tmp_matrix_port_map[0][i_pmd])) + "]");
           
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
@@ -289,9 +290,9 @@ void processMatrixData() {
 
       // matrix switch states
       if ((SerialLink.i_token>=20) && (SerialLink.i_token<40)) { 
-        for (int i=0; i<20; i++) {
-          if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i] = 0;}
-          else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i] = 1;}
+        for (i_pmd=0; i_pmd<20; i_pmd++) {
+          if      (strcmp(SerialLink.token, "0") == 0) { matrix_switch_state[0][i_pmd] = 0;}
+          else if (strcmp(SerialLink.token, "1") == 0) { matrix_switch_state[0][i_pmd] = 1;}
           SerialLink.i_token++;
           SerialLink.token = strtok(NULL, ",");
         }
@@ -335,12 +336,11 @@ void processMatrixData() {
   }
 }
 
-int i=0;
-
 // READ RXD1 --------------------------------------------------------------------------------------------------------
+int i_rx = 0;
 void readRXD1() {
   Serial.println("[readRXD1] ");
-  for (i=0; i<10; i++) {
+  for (i_rx=0; i_rx<10; i_rx++) {
     if (Serial1.available()) {
 
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
@@ -396,9 +396,10 @@ String padDigitZero(int digits) {
   return pad_digits_new;
 }
 
+int i_tx = 0;
 void writeTXD1Data0() {
   Serial.println("[writeTXD1Data0] ");
-  for (int i=0; i<20; i++) {
+  for (i_tx=0; i_tx<20; i_tx++) {
     if (Serial1.availableForWrite()) {
       // data
       memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
