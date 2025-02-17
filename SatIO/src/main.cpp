@@ -8971,7 +8971,7 @@ void readGPS(void * pvParameters) {
       // serial1Data.gpatt_bool = true; // test
 
       /* 
-      note that a sync may reduce read time by a minimum of 100ms and allow for a read of the WTGPS300 every 100ms precisely.
+      this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300 once every 100ms.
        */
 
       for (i_gps = 0; i_gps < 10; i_gps++) {
