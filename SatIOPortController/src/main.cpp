@@ -300,33 +300,43 @@ void processMatrixData() {
 
       // signal indicator
       if (SerialLink.i_token==40) {
-        if (atoi(SerialLink.token)==0)
+        if (strcmp(SerialLink.token, "0") == 0)
         // red
         {
-          digitalWrite(LEDSATSIGNALR, HIGH);
           digitalWrite(LEDSATSIGNALG, LOW);
           digitalWrite(LEDSATSIGNALB, LOW);
+          digitalWrite(LEDSATSIGNALR, LOW);
+          digitalWrite(LEDSATSIGNALR, HIGH);
+          delay(3000);
         }
         // green
-        else if (atoi(SerialLink.token)==1)
+        else if (strcmp(SerialLink.token, "1") == 0)
         {
           digitalWrite(LEDSATSIGNALR, LOW);
+          digitalWrite(LEDSATSIGNALB, LOW);
+          digitalWrite(LEDSATSIGNALG, LOW);   
           digitalWrite(LEDSATSIGNALG, HIGH);
-          digitalWrite(LEDSATSIGNALB, LOW);          
+          delay(3000);
         }
         // blue
-        else if (atoi(SerialLink.token)==2)
+        else if (strcmp(SerialLink.token, "2") == 0)
         {
           digitalWrite(LEDSATSIGNALR, LOW);
           digitalWrite(LEDSATSIGNALG, LOW);
+          digitalWrite(LEDSATSIGNALB, LOW);
           digitalWrite(LEDSATSIGNALB, HIGH);
         }
       }
 
+      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
+      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
+      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
+      // $MATRIX,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,*35
+
       // overload indicator
       if (SerialLink.i_token==41) {
-        if (atoi(SerialLink.token)==0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
-        else {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
+        if (strcmp(SerialLink.token, "0") == 0) {digitalWrite(LEDOVERLOADR, LOW); digitalWrite(LEDOVERLOADG, LOW);}
+        else if (strcmp(SerialLink.token, "1") == 1) {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
       }
 
       // iterate counters and snap off used token
