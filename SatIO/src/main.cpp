@@ -2754,15 +2754,17 @@ void setLastSatelliteTime() {
     strcat(satData.lt_millisecond, satData.millisecond);
 
     // update int elements
-    satData.lt_year_int = satData.year_int;
-    satData.lt_month_int = satData.month_int;
-    satData.lt_day_int = satData.day_int;
-    satData.lt_hour_int = satData.hour_int;
-    satData.lt_minute_int = satData.minute_int;
-    satData.lt_second_int = satData.second_int;
-    satData.lt_millisecond_int = satData.millisecond_int;
+    satData.lt_year_int = atoi(satData.lt_year);
+    satData.lt_month_int = atoi(satData.month);
+    satData.lt_day_int = atoi(satData.day);
+    satData.lt_hour_int = atoi(satData.hour);
+    satData.lt_minute_int = atoi(satData.minute);
+    satData.lt_second_int = atoi(satData.second);
+    satData.lt_millisecond_int = atoi(satData.millisecond);
 
     // adjust rtc while we appear to have a downlink
+    // if (DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int) ==
+    // DateTime(rtc.now().year(), rtc.now().month(), rtc.now().day(), rtc.now().hour(), rtc.now().minute(), rtc.now().second()))
     rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
 
     // SerialDisplayRTCDateTime();
@@ -2913,10 +2915,15 @@ void convertUTCToLocal() {
   Serial.print("."); Serial.print(satData.month);
   Serial.print("."); Serial.print(satData.year);
   Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
-
+  
   /*                        RTC TIME                        */
   /* store current local time on RTC if we have a downlink  */
   setLastSatelliteTime();
+  
+  Serial.println("[RTC time]                "
+  + String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second()) + ":"
+  + " " + String(rtc.now().day()) + "." + String(rtc.now().month()) + "." + String(rtc.now().year()));
+
   /*    now we can do things with time (using rtc time)     */
 
 }
