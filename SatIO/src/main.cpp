@@ -2517,6 +2517,10 @@ struct SatDatatruct {
   signed int utc_offset = 0;          // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
   bool utc_offset_flag = 0;           // 0: add hours to time; 1: deduct hours from time
 
+  char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
+  char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
+
+  /* TEMPORARY TIME VALUES */
   signed int year_int;                       // current year
   signed int month_int;                      // current month
   signed int day_int;                        // current day
@@ -2524,15 +2528,6 @@ struct SatDatatruct {
   signed int minute_int;                     // current minute
   signed int second_int;                     // current second
   signed int millisecond_int;                // current millisecond
-  
-  char year[56];                      // current year
-  char month[56];                     // current month
-  char day[56];                       // current day
-  char hour[56];                      // current hour
-  char minute[56];                    // current minute
-  char second[56];                    // current second
-  char millisecond[56];               // current millisecond
-
   signed int tmp_year_int;                   // temp current year
   signed int tmp_month_int;                  // temp current month
   signed int tmp_day_int;                    // temp current day
@@ -2540,7 +2535,13 @@ struct SatDatatruct {
   signed int tmp_minute_int;                 // temp current minute
   signed int tmp_second_int;                 // temp current second
   signed int tmp_millisecond_int;            // temp current millisecond
-
+  char year[56];                      // current year
+  char month[56];                     // current month
+  char day[56];                       // current day
+  char hour[56];                      // current hour
+  char minute[56];                    // current minute
+  char second[56];                    // current second
+  char millisecond[56];               // current millisecond
   char tmp_year[56];                  // temp current year
   char tmp_month[56];                 // temp current month
   char tmp_day[56];                   // temp current day
@@ -2549,6 +2550,7 @@ struct SatDatatruct {
   char tmp_second[56];                // temp current second
   char tmp_millisecond[56];           // temp current millisecond
 
+  /* TIME VALUES FOR RTC AND OTHER USE */
   signed int lt_year_int = 0;                    // last year satellite count > zero
   signed int lt_month_int = 0;                   // last month satellite count > zero
   signed int lt_day_int = 0;                     // last day satellite count > zero
@@ -2556,7 +2558,6 @@ struct SatDatatruct {
   signed int lt_minute_int = 0;                  // last minute satellite count > zero
   signed int lt_second_int = 0;                  // last second satellite count > zero
   signed int lt_millisecond_int = 0;             // last millisecond satellite count > zero
-
   char lt_year[56] = "0";                   // last year satellite count > zero
   char lt_month[56] = "0";                  // last month satellite count > zero
   char lt_day[56] = "0";                    // last day satellite count > zero
@@ -2565,31 +2566,7 @@ struct SatDatatruct {
   char lt_second[56] = "0";                 // last second satellite count > zero
   char lt_millisecond[56] = "0";            // last millisecond satellite count > zero
 
-  signed int rtc_year_int = 0;                    // last year satellite count > zero
-  signed int rtc_month_int = 0;                   // last month satellite count > zero
-  signed int rtc_day_int = 0;                     // last day satellite count > zero
-  signed int rtc_hour_int = 0;                    // last hour satellite count > zero
-  signed int rtc_minute_int = 0;                  // last minute satellite count > zero
-  signed int rtc_second_int = 0;                  // last second satellite count > zero
-  char rtc_millisecond_int = 0;             // last millisecond satellite count > zero
-  long rtc_time_int;
-
-  char rtc_year[56] = "0";                   // last year satellite count > zero
-  char rtc_month[56] = "0";                  // last month satellite count > zero
-  char rtc_day[56] = "0";                    // last day satellite count > zero
-  char rtc_hour[56] = "0";                   // last hour satellite count > zero
-  char rtc_minute[56] = "0";                 // last minute satellite count > zero
-  char rtc_second[56] = "0";                 // last second satellite count > zero
-  char rtc_millisecond[56] = "0";            // last millisecond satellite count > zero
-  char rtc_time[56] = "0";
-
-  char hours_minutes[56];             // current hours.minutes in format hh.mm
-  char day_of_the_week_name[56];      // current weekday name
-
-  char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
-  char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
-
-  long current_unixtime;
+  // long current_unixtime;
 };
 SatDatatruct satData;
 
@@ -2749,62 +2726,128 @@ String padDigitsZero(int digits) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        SET LAST SATELLITE TIME
+
+void setLastSatelliteTime() {
+
+  // update last time satellite count > zero
+  if (atoi(gnggaData.satellite_count_gngga) > 0) {
+
+    // update sentence
+    memset(satData.last_sat_time_stamp_str, 0, 56);
+    strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
+
+    // update char elements
+    memset(satData.lt_year, 0, 56);
+    strcat(satData.lt_year, satData.year);
+    memset(satData.lt_month, 0, 56);
+    strcat(satData.lt_month, satData.month);
+    memset(satData.lt_day, 0, 56);
+    strcat(satData.lt_day, satData.day);
+    memset(satData.lt_hour, 0, 56);
+    strcat(satData.lt_hour, satData.hour);
+    memset(satData.lt_minute, 0, 56);
+    strcat(satData.lt_minute, satData.minute);
+    memset(satData.lt_second, 0, 56);
+    strcat(satData.lt_second, satData.second);
+    memset(satData.lt_millisecond, 0, 56);
+    strcat(satData.lt_millisecond, satData.millisecond);
+
+    // update int elements
+    satData.lt_year_int = satData.year_int;
+    satData.lt_month_int = satData.month_int;
+    satData.lt_day_int = satData.day_int;
+    satData.lt_hour_int = satData.hour_int;
+    satData.lt_minute_int = satData.minute_int;
+    satData.lt_second_int = satData.second_int;
+    satData.lt_millisecond_int = satData.millisecond_int;
+
+    // adjust rtc while we appear to have a downlink
+    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+
+    // SerialDisplayRTCDateTime();
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           CONVERT UTC TO LOCAL
+
+char hours_minutes_seconds[6];
+char tmp_hours_minutes_seconds[4];
+int hoursMinutesSecondsToInt(int hours, int minutes, int seconds) {
+  itoa(hours, tmp_hours_minutes_seconds, 10);
+  hours_minutes_seconds[0] = tmp_hours_minutes_seconds[0];
+  hours_minutes_seconds[1] = tmp_hours_minutes_seconds[1];
+  itoa(minutes, tmp_hours_minutes_seconds, 10);
+  hours_minutes_seconds[2] = tmp_hours_minutes_seconds[0];
+  hours_minutes_seconds[3] = tmp_hours_minutes_seconds[1];
+  itoa(seconds, tmp_hours_minutes_seconds, 10);
+  hours_minutes_seconds[4] = tmp_hours_minutes_seconds[0];
+  hours_minutes_seconds[5] = tmp_hours_minutes_seconds[1];
+  return atoi(hours_minutes_seconds);
+}
+int hoursMinutesToInt(int hours, int minutes) {
+  itoa(hours, tmp_hours_minutes_seconds, 10);
+  hours_minutes_seconds[0] = tmp_hours_minutes_seconds[0];
+  hours_minutes_seconds[1] = tmp_hours_minutes_seconds[1];
+  itoa(minutes, tmp_hours_minutes_seconds, 10);
+  hours_minutes_seconds[2] = tmp_hours_minutes_seconds[0];
+  hours_minutes_seconds[3] = tmp_hours_minutes_seconds[1];
+  return atoi(hours_minutes_seconds);
+}
 
 // temporary char time values so that we do not disturb the primary values while converting.
 char temp_sat_time_stamp_string[128];
 
 void convertUTCToLocal() {
-  
-  // Serial.println("[gnrmcData.utc_time] " + String(gnrmcData.utc_time));  // debug
-  memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
-  strcat(temp_sat_time_stamp_string, gnrmcData.utc_date);
-  strcat(temp_sat_time_stamp_string, gnrmcData.utc_time);
-  memset(satData.tmp_day, 0, 56);
-  strncat(satData.tmp_day, &temp_sat_time_stamp_string[0], 1);
-  strncat(satData.tmp_day, &temp_sat_time_stamp_string[1], 1);
-  memset(satData.tmp_month, 0, 56);
-  strncat(satData.tmp_month, &temp_sat_time_stamp_string[2], 1);
-  strncat(satData.tmp_month, &temp_sat_time_stamp_string[3], 1);
-  memset(satData.tmp_year, 0, 56);
-  strncat(satData.tmp_year, &temp_sat_time_stamp_string[4], 1);
-  strncat(satData.tmp_year, &temp_sat_time_stamp_string[5], 1);
-  memset(satData.tmp_hour, 0, 56);
-  strncat(satData.tmp_hour, &temp_sat_time_stamp_string[6], 1);
-  strncat(satData.tmp_hour, &temp_sat_time_stamp_string[7], 1);
-  memset(satData.tmp_minute, 0, 56);
-  strncat(satData.tmp_minute, &temp_sat_time_stamp_string[8], 1);
-  strncat(satData.tmp_minute, &temp_sat_time_stamp_string[9], 1);
-  memset(satData.tmp_second, 0, 56);
-  strncat(satData.tmp_second, &temp_sat_time_stamp_string[10], 1);
-  strncat(satData.tmp_second, &temp_sat_time_stamp_string[11], 1);
-  memset(satData.tmp_millisecond, 0, 56);
-  strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[13], 1);
-  strncat(satData.tmp_millisecond, &temp_sat_time_stamp_string[14], 1);
 
-  // uncomment to debug
-  // Serial.print("utc_datetime:         "); Serial.println(temp_sat_time_stamp_string);
+  // live data from satellites
+  Serial.println("-------------");
+  Serial.print("[gnrmcData.utc_time]      "); Serial.println(gnrmcData.utc_time);
+  Serial.print("[gnrmcData.utc_date]      "); Serial.println(gnrmcData.utc_date);
+
+  /*                                     TEMPORARY TIME                                        */
+  /* make temporary values that will not disturb final values untiil values whole and complete */
+
+  // temp store date
+  satData.tmp_day[0] = gnrmcData.utc_date[0];
+  satData.tmp_day[1] = gnrmcData.utc_date[1];
+  // Serial.print("[tmp_day] "); Serial.println(satData.tmp_day);
+  satData.tmp_month[0] = gnrmcData.utc_date[2];
+  satData.tmp_month[1] = gnrmcData.utc_date[3];
+  // Serial.print("[tmp_month] "); Serial.println(satData.tmp_month);
+  satData.tmp_year[0] = gnrmcData.utc_date[4];
+  satData.tmp_year[1] = gnrmcData.utc_date[5];
+  // Serial.print("[tmp_year] "); Serial.println(satData.tmp_year);
+
+  // temp store time
+  satData.tmp_hour[0] = gnrmcData.utc_time[0];
+  satData.tmp_hour[1] = gnrmcData.utc_time[1];
+  // Serial.print("[tmp_hour] "); Serial.println(satData.tmp_hour);
+  satData.tmp_minute[0] = gnrmcData.utc_time[2];
+  satData.tmp_minute[1] = gnrmcData.utc_time[3];
+  // Serial.print("[tmp_minute] "); Serial.println(satData.tmp_minute);
+  satData.tmp_second[0] = gnrmcData.utc_time[4];
+  satData.tmp_second[1] = gnrmcData.utc_time[5];
+  // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
 
   // temporary int time values so that we do not disturb the primary values while converting.
-  satData.tmp_day_int = atoi(satData.tmp_day); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_month_int = atoi(satData.tmp_month); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_year_int = atoi(satData.tmp_year); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_hour_int = atoi(satData.tmp_hour); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_minute_int = atoi(satData.tmp_minute); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_second_int = atoi(satData.tmp_second);  // if(!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
-  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond); // if (!satData.tmp_day_int>=0) {Serial.println("[protected] negative datetime value"); delay(0); return;}
+  satData.tmp_day_int = atoi(satData.tmp_day);
+  satData.tmp_month_int = atoi(satData.tmp_month);
+  satData.tmp_year_int = atoi(satData.tmp_year);
+  satData.tmp_hour_int = atoi(satData.tmp_hour);
+  satData.tmp_minute_int = atoi(satData.tmp_minute);
+  satData.tmp_second_int = atoi(satData.tmp_second);
 
   // uncomment to debug before conversion
-  
-  // Serial.print("utc int:              ");
-  // Serial.print(satData.tmp_hour_int);
-  // Serial.print(":"); Serial.print(satData.tmp_minute_int);
-  // Serial.print(":"); Serial.print(satData.tmp_second_int);
-  // Serial.print("."); Serial.print(satData.tmp_millisecond_int);
-  // Serial.print(" "); Serial.print(satData.tmp_day_int);
-  // Serial.print("."); Serial.print(satData.tmp_month_int);
-  // Serial.print("."); Serial.print(satData.tmp_year_int);
-  // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")");
+  Serial.print("[temp datetime]           ");
+  Serial.print(satData.tmp_hour_int);
+  Serial.print(":"); Serial.print(satData.tmp_minute_int);
+  Serial.print(":"); Serial.print(satData.tmp_second_int);
+  Serial.print(" "); Serial.print(satData.tmp_day_int);
+  Serial.print("."); Serial.print(satData.tmp_month_int);
+  Serial.print("."); Serial.print(satData.tmp_year_int);
+  Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")");
 
   // set time using time elements with 2 digit year
   setTime(
@@ -2819,11 +2862,23 @@ void convertUTCToLocal() {
   tmElements_t tm_return = {second(), minute(), hour(), weekday(), day(), month(), year()};
 
   // return time
-  time_t current_local_time = makeTime(tm_return);
+  time_t tmp_makeTime = makeTime(tm_return);
+  Serial.print("[tmp_makeTime]            "); Serial.println(tmp_makeTime);
 
-  // adjust UTC time according to UTC offset
+  // adjust tmp_makeTime back/forward according to UTC offset
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   else if (satData.utc_offset_flag==1) {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
+
+    // uncomment to debug before conversion
+    Serial.print("[temp datetime +- offset] ");
+    Serial.print(hour());
+    Serial.print(":"); Serial.print(minute());
+    Serial.print(":"); Serial.print(second());
+    Serial.print(" "); Serial.print(day());
+    Serial.print("."); Serial.print(month());
+    Serial.print("."); Serial.println(year());
+  
+  /* populate actual (yet potentially unstable due to signal, power etc..) time now that we have a time from satellites */
 
   // update year
   memset(satData.year, 0, sizeof(satData.year));
@@ -2849,143 +2904,25 @@ void convertUTCToLocal() {
   memset(satData.second, 0, sizeof(satData.second));
   strcat(satData.second, padDigitsZero(second()).c_str());
 
-  // update millisecond
-  memset(satData.millisecond, 0, sizeof(satData.millisecond));
-  strcat(satData.millisecond, satData.tmp_millisecond);
-
-  // store period delimited hours and minutes
-  memset(satData.hours_minutes, 0, 56);
-  strcat(satData.hours_minutes, satData.hour);
-  strcat(satData.hours_minutes, ".");
-  strcat(satData.hours_minutes, satData.minute);
-
   // uncomment to debug after conversion
-  // Serial.print("converted time (raw): "); Serial.println(current_local_time);
-  // Serial.print("converted time:       ");
-  // Serial.print(satData.hour);
-  // Serial.print(":"); Serial.print(satData.minute);
-  // Serial.print(":"); Serial.print(satData.second);
-  // Serial.print(".");  Serial.print(satData.millisecond);
-  // Serial.print(" "); Serial.print(satData.year); 
-  // Serial.print("."); Serial.print(satData.month);
-  // Serial.print("."); Serial.print(satData.day);
-  // Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
-  // Serial.println("\n-------------");
+  Serial.print("[current local time]      ");
+  Serial.print(satData.hour);
+  Serial.print(":"); Serial.print(satData.minute);
+  Serial.print(":"); Serial.print(satData.second);
+  Serial.print(" "); Serial.print(satData.day);
+  Serial.print("."); Serial.print(satData.month);
+  Serial.print("."); Serial.print(satData.year);
+  Serial.print(" (UTC offset: "); Serial.print(satData.utc_offset); Serial.println(")");
 
-  // update local int time
-  satData.year_int = atoi(satData.year);
-  satData.month_int = atoi(satData.month);
-  satData.day_int = atoi(satData.day);
-  satData.hour_int = atoi(satData.hour);
-  satData.minute_int = atoi(satData.minute);
-  satData.second_int = atoi(satData.second);
-  satData.millisecond_int = atoi(satData.millisecond);
+  /*                        RTC TIME                        */
+  /* store current local time on RTC if we have a downlink  */
+  setLastSatelliteTime();
+  /*    now we can do things with time (using rtc time)     */
 
-  // RTC ints
-  satData.rtc_year_int = rtc.now().year();
-  satData.rtc_month_int = rtc.now().month();
-  satData.rtc_day_int = rtc.now().day();
-  satData.rtc_hour_int = rtc.now().hour();
-  satData.rtc_minute_int = rtc.now().minute();
-  satData.rtc_second_int = rtc.now().second();
-
-  // RTC chars
-  memset(satData.rtc_year, 0, sizeof(satData.rtc_year)); itoa(satData.rtc_year_int, satData.rtc_year, 10);
-  memset(satData.rtc_month, 0, sizeof(satData.rtc_month)); itoa(satData.rtc_month_int, satData.rtc_month, 10);
-  memset(satData.rtc_day, 0, sizeof(satData.rtc_day)); itoa(satData.rtc_day_int, satData.rtc_day, 10);
-  memset(satData.rtc_hour, 0, sizeof(satData.rtc_hour)); itoa(satData.rtc_hour_int, satData.rtc_hour, 10);
-  memset(satData.rtc_minute, 0, sizeof(satData.rtc_minute)); itoa(satData.rtc_minute_int, satData.rtc_minute, 10);
-  memset(satData.rtc_second, 0, sizeof(satData.rtc_second)); itoa(satData.rtc_second_int, satData.rtc_second, 10);
-
-  // build rtc time 000000 -> 235959
-  memset(satData.rtc_time, 0, 56);
-  strcat(satData.rtc_time, padDigitsZero(rtc.now().hour()).c_str());
-  strcat(satData.rtc_time, padDigitsZero(rtc.now().minute()).c_str());
-  strcat(satData.rtc_time, padDigitsZero(rtc.now().second()).c_str());
-  // strcat(satData.rtc_time, satData.rtc_millisecond); // potentially append millisecnds 
-  satData.rtc_time_int = atoi(satData.rtc_time);
-
-  // get day of the week name
-  memset(satData.day_of_the_week_name, 0, sizeof(satData.day_of_the_week_name));
-  strcpy(satData.day_of_the_week_name, myAstro.HumanDayOfTheWeek(
-    satData.rtc_year_int,
-    satData.rtc_month_int,
-    satData.rtc_day_int).c_str());
-
-  // clear satio sentence
-  memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
-
-  // build temporary time stamp string
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_year_int).c_str());
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_month_int).c_str());
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_day_int).c_str());
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_hour_int).c_str());
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_minute_int).c_str());
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_second_int).c_str());
-  strcat(temp_sat_time_stamp_string, ".");
-  strcat(temp_sat_time_stamp_string, padDigitsZero(satData.rtc_millisecond_int).c_str());
-
-  // copy temporary time stamp string to actual time stamp string
-  memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
-  strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
-
-  // make unix second time
-  DateTime dt0 (
-    satData.year_int,
-    satData.month_int,
-    satData.day_int,
-    satData.hour_int,
-    satData.minute_int,
-    satData.second_int);
-  satData.current_unixtime = dt0.unixtime();
-
-  // uncomment to debug
-  // Serial.println(dt0.unixtime());
-
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        SET LAST SATELLITE TIME
-
-void setLastSatelliteTime() {
-  // update last time satellite count > zero
-  if (atoi(gnggaData.satellite_count_gngga) > 0) {
-    // update sentence
-    memset(satData.last_sat_time_stamp_str, 0, 56);
-    strcpy(satData.last_sat_time_stamp_str, satData.sat_time_stamp_string);
-    // update char elements
-    memset(satData.lt_year, 0, 56);
-    strcat(satData.lt_year, satData.year);
-    memset(satData.lt_month, 0, 56);
-    strcat(satData.lt_month, satData.month);
-    memset(satData.lt_day, 0, 56);
-    strcat(satData.lt_day, satData.day);
-    memset(satData.lt_hour, 0, 56);
-    strcat(satData.lt_hour, satData.hour);
-    memset(satData.lt_minute, 0, 56);
-    strcat(satData.lt_minute, satData.minute);
-    memset(satData.lt_second, 0, 56);
-    strcat(satData.lt_second, satData.second);
-    memset(satData.lt_millisecond, 0, 56);
-    strcat(satData.lt_millisecond, satData.millisecond);
-    // update int elements
-    satData.lt_year_int = satData.year_int;
-    satData.lt_month_int = satData.month_int;
-    satData.lt_day_int = satData.day_int;
-    satData.lt_hour_int = satData.hour_int;
-    satData.lt_minute_int = satData.minute_int;
-    satData.lt_second_int = satData.second_int;
-    satData.lt_millisecond_int = satData.millisecond_int;
-
-    // adjust rtc while we appear to have a downlink
-    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-    // SerialDisplayRTCDateTime();
-  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           BUILD SATIO SENTENCE
-
 void buildSatIOSentence() {
 
   /* create a comma delimited sentence of new data, to print over serial that can be parsed by other systems */
@@ -2994,11 +2931,28 @@ void buildSatIOSentence() {
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
+
+    // make unix second time
+    // Serial.println("[unix time]               " + String(rtc.now().unixtime()));
+    // Serial.println("-------------");
+
+  // create timestamp for satio sentence 
+  memset(temp_sat_time_stamp_string, 0, sizeof(temp_sat_time_stamp_string));
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().year()).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().month()).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().day()).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().hour()).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().minute()).c_str());
+  strcat(temp_sat_time_stamp_string, padDigitsZero(rtc.now().second()).c_str());
+  memset(satData.sat_time_stamp_string, 0, sizeof(satData.sat_time_stamp_string));
+  strcpy(satData.sat_time_stamp_string, temp_sat_time_stamp_string);
   strcat(satData.satio_sentence, satData.sat_time_stamp_string);
   strcat(satData.satio_sentence, ",");
+
   // append to satio sentence
   strcat(satData.satio_sentence, satData.last_sat_time_stamp_str);
   strcat(satData.satio_sentence, ",");
+
   // coordinate conversion mode
   if (satData.convert_coordinates == true) {
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
@@ -4797,56 +4751,56 @@ void matrixSwitch() {
         
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeOver) == 0) {
-          tmp_matrix[Fi] = check_over_true(satData.rtc_time_int,
+          tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeUnder) == 0) {
-          tmp_matrix[Fi] = check_under_true(satData.rtc_time_int,
+          tmp_matrix[Fi] = check_under_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeEqual) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.rtc_time_int,
+          tmp_matrix[Fi] = check_equal_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeRange) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(satData.rtc_time_int,
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Sunday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayMonday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Monday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTuesday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayWednesday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayThursday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Thursday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayFriday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Friday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {
-          if (strcmp(satData.day_of_the_week_name, "Saturday")==0) {tmp_matrix[Fi] = 1;}}
+          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}}
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.rtc_day_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(rtc.now().day(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.rtc_month_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(rtc.now().month(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {
-          tmp_matrix[Fi] = check_equal_true(satData.rtc_year_int, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          tmp_matrix[Fi] = check_equal_true(rtc.now().year(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // ----------------------------------------------------------------------------------------------------------------------
@@ -5451,27 +5405,25 @@ void matrixSwitch() {
 
         // daytime: current time in range of sunrise and sunset
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTime) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
 
         // nighttime: current time not in range of sunrise and sunset
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NightTime) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.sun_r,
           siderealPlanetData.sun_s);
           }
 
         // sunrise time less than current time: true after sunrise until midnight
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunrise) == 0) {
-          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r,
-          atof(satData.hours_minutes));
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         // sunset time less than current time: true after sunset until midnight                                                                  
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunset) == 0) {
-          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s,
-          atof(satData.hours_minutes));
+          tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         // // -------------------------------------------------------------------------------------------------------------------
@@ -5491,22 +5443,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonrise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonset) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.moon_r,
           siderealPlanetData.moon_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.moon_r,
           siderealPlanetData.moon_s);
           }
@@ -5533,22 +5485,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercurySet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mercury_r,
           siderealPlanetData.mercury_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mercury_r,
           siderealPlanetData.mercury_s);
           }
@@ -5570,22 +5522,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.venus_r, 
           siderealPlanetData.venus_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.venus_r,
           siderealPlanetData.venus_s);
           }
@@ -5607,22 +5559,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mars_r,
           siderealPlanetData.mars_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mars_r,
           siderealPlanetData.mars_s);
           }
@@ -5644,22 +5596,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.jupiter_r,
           siderealPlanetData.jupiter_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.jupiter_r,
           siderealPlanetData.jupiter_s);
           }
@@ -5681,22 +5633,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.saturn_r,
           siderealPlanetData.saturn_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.saturn_r,
           siderealPlanetData.saturn_s);
           }
@@ -5718,22 +5670,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.uranus_r,
           siderealPlanetData.uranus_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.uranus_r,
           siderealPlanetData.uranus_s);
           }
@@ -5755,22 +5707,22 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneRise) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneSet) == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s,
-          atof(satData.hours_minutes));
+            hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneUp) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.neptune_r,
           siderealPlanetData.neptune_s);
           }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneDown) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_false(atof(satData.hours_minutes),
+          tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.neptune_r,
           siderealPlanetData.neptune_s);
           }
@@ -6708,7 +6660,7 @@ bool DisplayPage0() {
     hud.drawRect(0, rdata_y+18*1, 68, 16, TFT_HUD2_RECT);
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
-    hud.drawString(String(satData.day_of_the_week_name), 34, rdata_y+(18*1)+9);
+    hud.drawString(String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str()), 34, rdata_y+(18*1)+9);
 
     // sunrise
     hud.drawRect(0, rdata_y+18*2, 68, 16, TFT_HUD2_RECT);
@@ -6753,12 +6705,12 @@ bool DisplayPage0() {
     hud.setTextColor(TFT_HUD2_TXT, TFT_HUD2_TXT_BG);
     hud.setTextDatum(MC_DATUM);
     hud.drawString(
-      String(padDigitsZero(satData.rtc_year_int).c_str())+"."+
-      String(padDigitsZero(satData.rtc_month_int).c_str())+"."+
-      String(padDigitsZero(satData.rtc_day_int).c_str())+" "+
-      String(padDigitsZero(satData.rtc_hour_int).c_str())+":"+
-      String(padDigitsZero(satData.rtc_minute_int).c_str())+":"+
-      String(padDigitsZero(satData.rtc_second_int).c_str()), 61, rdata_y+9);
+      String(padDigitsZero(rtc.now().year()).c_str())+"."+
+      String(padDigitsZero(rtc.now().month()).c_str())+"."+
+      String(padDigitsZero(rtc.now().day()).c_str())+" "+
+      String(padDigitsZero(rtc.now().year()).c_str())+":"+
+      String(padDigitsZero(rtc.now().minute()).c_str())+":"+
+      String(padDigitsZero(rtc.now().second()).c_str()), 61, rdata_y+9);
     
     // last time satellite count > 0
     hud.drawRect(197, rdata_y, 121, 16, TFT_HUD2_RECT);
@@ -8958,9 +8910,9 @@ bool isGPSEnabled() {
   return false;
 }
 
-int tgps;
+// int gps_read_t;
 bool gps_done = false;
-
+int gps_done_t = millis();
 void readGPS(void * pvParameters) {
 // void readGPS() {
   // Serial.println("[readGPS] ");
@@ -8969,6 +8921,7 @@ void readGPS(void * pvParameters) {
 
     if (gps_done==false) {
 
+      gps_done_t = millis();
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
       serial1Data.gpatt_bool = false;
@@ -8979,13 +8932,13 @@ void readGPS(void * pvParameters) {
       for (int i = 0; i < 10; i++) {
         if (Serial2.available()) {
 
-          tgps = millis();
+          // gps_read_t = millis();
 
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           
           SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, 256);
 
-          // Serial.println("[readGPS RXD] [t=" + String(millis()-tgps) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+          // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
           // Serial.println("[readGPS] " + String(SerialLink.BUFFER)); // debug
 
@@ -8997,7 +8950,8 @@ void readGPS(void * pvParameters) {
 
             else if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
               if (systemData.gngga_enabled == true){
-                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gnggaData.sentence, SerialLink.BUFFER);
                 serial1Data.gngga_bool = true;
                 if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -9006,16 +8960,36 @@ void readGPS(void * pvParameters) {
 
             else if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
               if (systemData.gnrmc_enabled == true){
-                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gnrmcData.sentence, SerialLink.BUFFER);
                 serial1Data.gnrmc_bool = true;
+                
+                if (systemData.gnrmc_enabled == true) {
+                  // Serial.println("[check_gnrmc]");
+                  if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+                  gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
+                  // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+                  // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+                  if (gnrmcData.valid_checksum == true) {
+                    GNRMC();
+                    convertUTCToLocal();
+                    calculateLocation();
+                    setLastSatelliteTime();
+                    trackPlanets();
+                  }
+                  else {gnrmcData.bad_checksum_validity++;}
+                  // GNRMC();
+                }
+                
                 if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
               } else {serial1Data.gnrmc_bool = true;}
             }
 
             else if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
               if (systemData.gpatt_enabled == true){
-                Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] " + String(SerialLink.BUFFER)); // debug
+                // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                 strcpy(gpattData.sentence, SerialLink.BUFFER);
                 serial1Data.gpatt_bool = true;
                 if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -9023,6 +8997,7 @@ void readGPS(void * pvParameters) {
             }
           }
         }
+        delay(1);
       }
     
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
@@ -9061,6 +9036,8 @@ void readGPS(void * pvParameters) {
         }
 
         if ((gnggaData.valid_checksum=true) && (gnggaData.valid_checksum=true) && (gnggaData.valid_checksum=true)) {
+          // Serial.println("[gps_done_t] " + String(millis()-gps_done_t));
+          gps_done_t = millis();
           gps_done=true;
         }
       }
@@ -9129,15 +9106,15 @@ void getSensorData(void * pvParameters) {
       sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
       sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
+        // Serial.println(F("Failed to read from DHT sensor!"));
       }
       sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
       sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-      Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+      // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
 
       // sensor
       sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
-      Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
+      // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
 
       sensors_done=true;
     }
@@ -9342,10 +9319,10 @@ void loop() {
   // dont block if gps data not ready
   if (gps_done==true) {
     gps_done = false;
-    calculateLocation();
-    convertUTCToLocal();
-    setLastSatelliteTime();
-    trackPlanets();
+    // calculateLocation();
+    // convertUTCToLocal();
+    // setLastSatelliteTime();
+    // trackPlanets();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
 
     // dont block other data with a combined wait for gps data and sensor data
@@ -9367,7 +9344,8 @@ void loop() {
   the loop so that we can utilize the port controller for other instructions
   and do other things if needed until gps data is ready. the wtgps300 outputs
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
-  milliseconds. */
+  milliseconds. we will catch approximately half of those if using
+  Serial.readBytesUnil to parse the gps data. */
 
   // put port controller into read mode
   // setPortControllerReadMode(0);
@@ -9377,8 +9355,6 @@ void loop() {
   // Serial.println("[writePortController] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
-
-  // delay(1000);
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
@@ -9393,18 +9369,18 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
   // Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
 
   // value checking (multitask migration): note that the first few loops may return null values and is expected
   // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
-  Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
-  Serial.println("[testing value: rtc_second] " + String(satData.rtc_second));
+  // Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
+  // Serial.println("[testing value: sat_time_stamp_string] " + String(satData.sat_time_stamp_string));
   // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
 
-  delay(1);
+  // delay(1000);
 }
