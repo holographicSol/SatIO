@@ -8958,9 +8958,9 @@ void readGPS(void * pvParameters) {
 
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           
-          SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, 2048);
+          SerialLink.nbytes = Serial2.readBytesUntil(' \r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-          // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+          Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
           if (SerialLink.nbytes>50) {
 
