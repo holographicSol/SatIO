@@ -2728,6 +2728,10 @@ String padDigitsZero(int digits) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        SET LAST SATELLITE TIME
 
+void adjustRTC() {
+  Serial.println("[downlink adjusting RTC]");
+  rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+}
 void setLastSatelliteTime() {
 
   // update last time satellite count > zero
@@ -2763,9 +2767,12 @@ void setLastSatelliteTime() {
     satData.lt_millisecond_int = atoi(satData.millisecond);
 
     // adjust rtc while we appear to have a downlink
-    // if (DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int) ==
-    // DateTime(rtc.now().year(), rtc.now().month(), rtc.now().day(), rtc.now().hour(), rtc.now().minute(), rtc.now().second()))
-    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+    if (! rtc.now().year() == satData.lt_year_int) {adjustRTC();}
+    if (! rtc.now().month() == satData.lt_month_int) {adjustRTC();}
+    if (! rtc.now().day() == satData.lt_day_int) {adjustRTC();}
+    if (! rtc.now().hour() == satData.lt_hour_int) {adjustRTC();}
+    if (! rtc.now().minute() == satData.lt_minute_int) {adjustRTC();}
+    if (! rtc.now().second() == satData.lt_second_int) {adjustRTC();}
 
     // SerialDisplayRTCDateTime();
   }
