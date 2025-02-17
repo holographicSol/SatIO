@@ -360,7 +360,7 @@ void readRXD1() {
         // Serial.print("[RXD] "); Serial.println(SerialLink.BUFFER);
 
         if (strncmp(SerialLink.BUFFER, "$MATRIX", 7) == 0) {
-          // Serial.println(SerialLink.nbytes);
+          // Note: if adding/removing tokens from the sending side then change the value below compared to nbytes
           if (SerialLink.nbytes == 116) {
             SerialLink.TOKEN_i = 0;
             // get tag token
