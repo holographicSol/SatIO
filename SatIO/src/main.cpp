@@ -2838,8 +2838,8 @@ void convertUTCToLocal() {
 
     // adjust rtc while we appear to have a downlink
     // Serial.println("[comparing] rtc: " + String(rtc.now().second()) + " -> lt: " + String(satData.lt_second_int));
-    if      (rtc.now().second() >= satData.lt_second_int+1) {syncRTCOnDownlink();} // allow for drift
-    else if (rtc.now().second() <= satData.lt_second_int-1) {syncRTCOnDownlink();} // allow for drift
+    if      (rtc.now().second() >= satData.lt_second_int+2) {syncRTCOnDownlink();} // allow for drift
+    else if (rtc.now().second() <= abs(satData.lt_second_int-2)) {syncRTCOnDownlink();} // allow for drift
     else if (rtc.now().minute() != satData.lt_minute_int) {syncRTCOnDownlink();}
     else if (rtc.now().hour()   != satData.lt_hour_int)   {syncRTCOnDownlink();}
     else if (rtc.now().day()    != satData.lt_day_int)    {syncRTCOnDownlink();}
