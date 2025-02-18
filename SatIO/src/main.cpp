@@ -2740,6 +2740,9 @@ int hoursMinutesToInt(int hours, int minutes) {
 // temporary char time values so that we do not disturb the primary values while converting.
 char temp_sat_time_stamp_string[128];
 
+bool isTwoSecondsDiff(int a, int b) {
+  return abs(a - b) <= 2;
+}
 void convertUTCToLocal() {
 
   // // live data from satellites
@@ -2843,15 +2846,12 @@ void convertUTCToLocal() {
     downlink which would defeat the point of having an RTC and depending on certain conditions may not be suitable at all
     for steady timings.
     */
-    // Serial.println("[comparing] is rtc: " + String(rtc.now().second()) + " > lt: " + String(satData.lt_second_int+2));
-    // Serial.println("[comparing] is rtc: " + String(rtc.now().second()+4) + " < lt: " + String(satData.lt_second_int+4-2));
-    if      (rtc.now().second() > satData.lt_second_int+2) {syncRTCOnDownlink();} // allow for drift
-    else if (rtc.now().second()+4-2 < satData.lt_second_int+4-2) {syncRTCOnDownlink();} // allow for drift
-    else if (rtc.now().minute() != satData.lt_minute_int) {syncRTCOnDownlink();}
-    else if (rtc.now().hour()   != satData.lt_hour_int)   {syncRTCOnDownlink();}
-    else if (rtc.now().day()    != satData.lt_day_int)    {syncRTCOnDownlink();}
-    else if (rtc.now().month()  != satData.lt_month_int)  {syncRTCOnDownlink();}
-    else if (rtc.now().year()   != satData.lt_year_int)   {syncRTCOnDownlink();}
+    if      (isTwoSecondsDiff(rtc.now().second(), satData.lt_second_int)==false) {syncRTCOnDownlink();}
+    else if (isTwoSecondsDiff(rtc.now().minute(), satData.lt_minute_int)==false) {syncRTCOnDownlink();}
+    else if (isTwoSecondsDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {syncRTCOnDownlink();}
+    else if (isTwoSecondsDiff(rtc.now().day(),    satData.lt_day_int)==false)    {syncRTCOnDownlink();}
+    else if (isTwoSecondsDiff(rtc.now().month(),  satData.lt_month_int)==false)  {syncRTCOnDownlink();}
+    else if (isTwoSecondsDiff(rtc.now().year(),   satData.lt_year_int)==false)   {syncRTCOnDownlink();}
   }
 
   // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
