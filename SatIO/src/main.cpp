@@ -9141,44 +9141,44 @@ void loop() {
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
   milliseconds. */
   if (gps_done==true) {
-    Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
-    Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
+    // Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
+    // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
-    t0 = millis();
+    // t0 = millis();
     convertUTCToLocal();
-    Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
+    // Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
 
-    t0 = millis();
+    // t0 = millis();
     calculateLocation();
-    Serial.println("[calculateLocation]   " + String(millis()-t0));
+    // Serial.println("[calculateLocation]   " + String(millis()-t0));
 
-    t0 = millis();
+    // t0 = millis();
     setTrackPlanets();
-    Serial.println("[setTrackPlanets]     " + String(millis()-t0));
+    // Serial.println("[setTrackPlanets]     " + String(millis()-t0));
 
-    t0 = millis();
+    // t0 = millis();
     trackPlanets();
-    Serial.println("[trackPlanets]        " + String(millis()-t0));
+    // Serial.println("[trackPlanets]        " + String(millis()-t0));
 
-    t0 = millis();
+    // t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    Serial.println("[buildSatIOSentence]  " + String(millis()-t0));
+    // Serial.println("[buildSatIOSentence]  " + String(millis()-t0));
     
-    t0 = millis();
+    // t0 = millis();
     if (sensors_done==true) {
       sensors_done=false;
       if (systemData.matrix_enabled == true) {matrixSwitch();}
     }
-    Serial.println("[matrixSwitch]        " + String(millis()-t0));
+    // Serial.println("[matrixSwitch]        " + String(millis()-t0));
 
     MatrixStatsCounter();
 
     // instruct port controller: matrix
     // setPortControllerReadMode(0);
-    t0 = millis();
+    // t0 = millis();
     SatIOPortController(matrixData.matrix_sentence);
-    Serial.println("[writePortController] " + String(millis()-t0));
+    // Serial.println("[writePortController] " + String(millis()-t0));
     gps_done = false;
   }
 
