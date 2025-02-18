@@ -2856,10 +2856,10 @@ void convertUTCToLocal() {
       if (satData.tmp_millisecond_int==50) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
     }
     else {
-      // sync according to RTC time
-      if ((rtc.now().second() == 0) && (rtc.now().minute() == 0)) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
-      // sync according to downlinked time
-      // if ((satData.lt_second_int == 0) && (satData.lt_minute_int == 0)) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
+      // sync every minute according to RTC time. 
+      if (rtc.now().minute() == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
+      // sync every minute according to downlinked time
+      // if (satData.lt_minute_int == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
     }
   }
 
