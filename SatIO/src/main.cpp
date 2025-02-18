@@ -2857,7 +2857,7 @@ void convertUTCToLocal() {
     }
     else if ((isOneDiff(rtc.now().second(), 59)==false) && (isOneDiff(rtc.now().second(), 0)==false) && (isOneDiff(satData.lt_second_int, 59)==false) && (isOneDiff(satData.lt_second_int, 0)==false)) {
       // currently the gps module (wtgps300) only knows 10ths of a second which means milliseconds from wtgps300 are 0 for 100 milliseconds. 
-      if (satData.tmp_millisecond_int==10) {
+      if (satData.tmp_millisecond_int==50) {
         if      (isOneDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().minute(), satData.lt_minute_int)==false) {Serial.println("[sync] reason: minute"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {Serial.println("[sync] reason: hour"); syncRTCOnDownlink();}
