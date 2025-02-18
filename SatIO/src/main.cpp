@@ -268,14 +268,14 @@ struct systemStruct {
   bool port_controller_enabled = true; // may be false by default but is default true for now.
 
   bool sidereal_track_sun = true;       // enables/disables celestial body tracking
-  bool sidereal_track_moon = false;     // enables/disables celestial body tracking
-  bool sidereal_track_mercury = false;  // enables/disables celestial body tracking
-  bool sidereal_track_venus = false;    // enables/disables celestial body tracking
-  bool sidereal_track_mars = false;     // enables/disables celestial body tracking
-  bool sidereal_track_jupiter = false;  // enables/disables celestial body tracking
-  bool sidereal_track_saturn = false;   // enables/disables celestial body tracking
-  bool sidereal_track_uranus = false;   // enables/disables celestial body tracking
-  bool sidereal_track_neptune = false;  // enables/disables celestial body tracking
+  bool sidereal_track_moon = true;     // enables/disables celestial body tracking
+  bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
+  bool sidereal_track_venus = true;    // enables/disables celestial body tracking
+  bool sidereal_track_mars = true;     // enables/disables celestial body tracking
+  bool sidereal_track_jupiter = true;  // enables/disables celestial body tracking
+  bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
+  bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
+  bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
   
   bool display_auto_dim = true;               // enables/disables screen brightness to be automatically reduced
   int           display_auto_dim_p0 = 5000;   // time after last interaction screen brightness should be reduced
@@ -509,9 +509,9 @@ void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255) {
   ledcWrite(channel, duty);
 }
 
-void SerialDisplayRTCDateTime() {
-  Serial.println("" + String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second()) +
-                      " " + String(rtc.now().day()) + "." + String(rtc.now().month()) + "." + String(rtc.now().year()));
+String SerialDisplayRTCDateTime() {
+  return String(String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second()) +
+  " " + String(rtc.now().day()) + "." + String(rtc.now().month()) + "." + String(rtc.now().year()));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2705,9 +2705,11 @@ String padDigitsZero(int digits) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        SET LAST SATELLITE TIME
 
-void adjustRTC() {
-  Serial.println("[downlink adjusting RTC]");
+void syncRTCOnDownlink() {
+  Serial.println("[syncronizing] RTC");
+  Serial.println("[RTC] before sync: " + SerialDisplayRTCDateTime());
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+  Serial.println("[RTC] after sync:" + SerialDisplayRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2742,10 +2744,10 @@ char temp_sat_time_stamp_string[128];
 
 void convertUTCToLocal() {
 
-  // live data from satellites
-  Serial.println("---------------------");
-  Serial.print("[utc_time] "); Serial.println(gnrmcData.utc_time);
-  Serial.print("[utc_date] "); Serial.println(gnrmcData.utc_date);
+  // // live data from satellites
+  // Serial.println("---------------------"); // debug
+  // Serial.print("[utc_time] "); Serial.println(gnrmcData.utc_time); // debug
+  // Serial.print("[utc_date] "); Serial.println(gnrmcData.utc_date); // debug
 
   /*                                     TEMPORARY TIME                                        */
   /* make temporary values that will not disturb final values untiil values whole and complete */
@@ -2833,15 +2835,15 @@ void convertUTCToLocal() {
     // satData.lt_millisecond_int = millis();
 
     // adjust rtc while we appear to have a downlink
-    if (! rtc.now().year()   == satData.lt_year_int)   {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
-    if (! rtc.now().month()  == satData.lt_month_int)  {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
-    if (! rtc.now().day()    == satData.lt_day_int)    {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
-    if (! rtc.now().hour()   == satData.lt_hour_int)   {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
-    if (! rtc.now().minute() == satData.lt_minute_int) {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
-    if (! rtc.now().second() == satData.lt_second_int) {Serial.println("[RTC] before sync: "); SerialDisplayRTCDateTime(); adjustRTC(); Serial.println("[RTC] after sync:"); SerialDisplayRTCDateTime();}
+    if (! rtc.now().year()   == satData.lt_year_int)   {syncRTCOnDownlink();}
+    if (! rtc.now().month()  == satData.lt_month_int)  {syncRTCOnDownlink();}
+    if (! rtc.now().day()    == satData.lt_day_int)    {syncRTCOnDownlink();}
+    if (! rtc.now().hour()   == satData.lt_hour_int)   {syncRTCOnDownlink();}
+    if (! rtc.now().minute() == satData.lt_minute_int) {syncRTCOnDownlink();}
+    if (! rtc.now().second() == satData.lt_second_int) {syncRTCOnDownlink();}
   }
-  
-  Serial.print("[rtc time] "); SerialDisplayRTCDateTime(); // debug
+
+  // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
 
   /*    now we can do things with time (using rtc time)     */
 
@@ -4324,12 +4326,9 @@ void IdentifyObject(double object_ra, double object_dec) {
   }
 }
 
-void trackSun(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+
+void trackSun() {
+  
   myAstro.doSun();
   siderealPlanetData.sun_ra  = myAstro.getRAdec();
   siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
@@ -4341,12 +4340,8 @@ void trackSun(double latitude, double longitude, int year, int month, int day, i
   siderealPlanetData.sun_s  = myAstro.getSunsetTime();
 }
 
-void trackMoon(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackMoon() {
+  
   myAstro.doSun();
   siderealPlanetData.moon_ra  = myAstro.getRAdec();
   siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
@@ -4359,12 +4354,8 @@ void trackMoon(double latitude, double longitude, int year, int month, int day, 
   siderealPlanetData.moon_p  = myAstro.getMoonPhase();
 }
 
-void trackMercury(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackMercury() {
+  
   myAstro.doMercury();
   siderealPlanetData.mercury_ra  = myAstro.getRAdec();
   siderealPlanetData.mercury_dec = myAstro.getDeclinationDec();
@@ -4382,12 +4373,8 @@ void trackMercury(double latitude, double longitude, int year, int month, int da
   siderealPlanetData.mercury_s = myAstro.getSetTime();
 }
 
-void trackVenus(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackVenus() {
+  
   myAstro.doVenus();
   siderealPlanetData.venus_ra  = myAstro.getRAdec();
   siderealPlanetData.venus_dec = myAstro.getDeclinationDec();
@@ -4405,12 +4392,8 @@ void trackVenus(double latitude, double longitude, int year, int month, int day,
   siderealPlanetData.venus_s = myAstro.getSetTime();
 }
 
-void trackMars(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackMars() {
+  
   myAstro.doMars();
   siderealPlanetData.mars_ra  = myAstro.getRAdec();
   siderealPlanetData.mars_dec = myAstro.getDeclinationDec();
@@ -4428,12 +4411,8 @@ void trackMars(double latitude, double longitude, int year, int month, int day, 
   siderealPlanetData.mars_s = myAstro.getSetTime();
 }
 
-void trackJupiter(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackJupiter() {
+  
   myAstro.doJupiter();
   siderealPlanetData.jupiter_ra  = myAstro.getRAdec();
   siderealPlanetData.jupiter_dec = myAstro.getDeclinationDec();
@@ -4451,12 +4430,8 @@ void trackJupiter(double latitude, double longitude, int year, int month, int da
   siderealPlanetData.jupiter_s = myAstro.getSetTime();
 }
 
-void trackSaturn(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackSaturn() {
+  
   myAstro.doSaturn();
   siderealPlanetData.saturn_ra  = myAstro.getRAdec();
   siderealPlanetData.saturn_dec = myAstro.getDeclinationDec();
@@ -4474,12 +4449,8 @@ void trackSaturn(double latitude, double longitude, int year, int month, int day
   siderealPlanetData.saturn_s = myAstro.getSetTime();
 }
 
-void trackUranus(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackUranus() {
+  
   myAstro.doUranus();
   siderealPlanetData.uranus_ra  = myAstro.getRAdec();
   siderealPlanetData.uranus_dec = myAstro.getDeclinationDec();
@@ -4497,12 +4468,8 @@ void trackUranus(double latitude, double longitude, int year, int month, int day
   siderealPlanetData.uranus_s = myAstro.getSetTime();
 }
 
-void trackNeptune(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second) {
-  myAstro.setLatLong(latitude, longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(year, month, day);
-  myAstro.setLocalTime(hour, minute, second);
-  myAstro.setGMTtime(hour, minute, second);
+void trackNeptune() {
+  
   myAstro.doNeptune();
   siderealPlanetData.neptune_ra  = myAstro.getRAdec();
   siderealPlanetData.neptune_dec = myAstro.getDeclinationDec();
@@ -4523,79 +4490,27 @@ void trackNeptune(double latitude, double longitude, int year, int month, int da
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   TASK: PLANETARY CALCULATIONS
 
+// just sun: 10 ms
+// before: 45 milliseconds
+// after:  
 void trackPlanets() {
-  if (systemData.sidereal_track_sun == true) {trackSun(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_moon == true) {trackMoon(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_mercury == true) {trackMercury(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_venus == true) {trackVenus(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_mars == true) {trackMars(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_jupiter == true) {trackJupiter(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_saturn == true) {trackSaturn(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_uranus == true) {trackUranus(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
-  if (systemData.sidereal_track_neptune == true) {trackNeptune(satData.location_latitude_gngga,
-                                                        satData.location_longitude_gngga,
-                                                        rtc.now().year(),
-                                                        rtc.now().month(),
-                                                        rtc.now().day(),
-                                                        rtc.now().hour(),
-                                                        rtc.now().minute(),
-                                                        rtc.now().second());}
+  if (systemData.sidereal_track_sun == true) {trackSun();}
+  if (systemData.sidereal_track_moon == true) {trackMoon();}
+  if (systemData.sidereal_track_mercury == true) {trackMercury();}
+  if (systemData.sidereal_track_venus == true) {trackVenus();}
+  if (systemData.sidereal_track_mars == true) {trackMars();}
+  if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
+  if (systemData.sidereal_track_saturn == true) {trackSaturn();}
+  if (systemData.sidereal_track_uranus == true) {trackUranus();}
+  if (systemData.sidereal_track_neptune == true) {trackNeptune();}
+}
+
+void setTrackPlanets() {
+  myAstro.setLatLong(satData.location_latitude_gngga, satData.location_longitude_gngga);
+  myAstro.rejectDST();
+  myAstro.setGMTdate(rtc.now().year(), rtc.now().month(), rtc.now().day());
+  myAstro.setLocalTime(rtc.now().hour(), rtc.now().minute(), rtc.now().second());
+  myAstro.setGMTtime(rtc.now().hour(), rtc.now().minute(), rtc.now().second());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -8497,7 +8412,7 @@ void TouchScreenInput( void * pvParameters ) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
-void SatIOPortController() {
+void SatIOPortController(char * data) {
 
   for (int i=0; i<10; i++) {
 
@@ -8507,7 +8422,7 @@ void SatIOPortController() {
       // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
 
         /* write matrix switch states to the port controller */
-        Serial1.write(matrixData.matrix_sentence);
+        Serial1.write(data);
         Serial1.write(ETX);
         break;
     }
@@ -8772,13 +8687,6 @@ void sdcardCheck() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  MATRIX SWITCH
-
-void MatrixSwitchTask() {
-  if (systemData.matrix_enabled == true) {matrixSwitch();}
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
 void check_gngga() {
@@ -8956,7 +8864,7 @@ void readGPS(void * pvParameters) {
         }
 
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
-          Serial.println("[gps_done_t] " + String(millis()-gps_done_t));
+          // Serial.println("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t = millis();
           gps_done=true;
         }
@@ -9220,61 +9128,63 @@ void setup() {
 
 int t0 = millis();
 long i_loops_between_gps_reads = 0;
+
 void loop() {
 
+  Serial.println("-----------------------------------------------------");
+  // Serial.println("[loop] ");
+
+  timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
 
   // uncomment to override default values
   systemData.matrix_enabled = true;
   systemData.run_on_startup = true;
 
-  // Serial.println("--------------------------------------------------");
-  // Serial.println("[loop] ");
-
-  timeData.mainLoopTimeStart = millis();
-
-  /* take a snapshot of sensory and calculated data */
-
   // ---------------------------------------------------------------------
-  // theoretical xTask(s) group 1: compute sensors while also reading gps
+  //                                                                   GPS
 
-  // sdcardCheck(); // put on a task
-
-  // dont block if gps data not ready
+  // non-blocking functions waiting for new gps data
   if (gps_done==true) {
-    // Serial.println("[loops between gps read] " + String(i_loops_between_gps_reads));
+    Serial.println("[gps_done_t] " + String(millis()-gps_done_t));
+    Serial.println("[loops between gps read] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
     t0 = millis();
     convertUTCToLocal();
-    // Serial.println("[convertUTCToLocal] " + String(millis()-t0));
+    Serial.println("[convertUTCToLocal] " + String(millis()-t0));
 
     t0 = millis();
     calculateLocation();
-    // Serial.println("[calculateLocation] " + String(millis()-t0));
+    Serial.println("[calculateLocation] " + String(millis()-t0));
+
+    t0 = millis();
+    setTrackPlanets();
+    Serial.println("[setTrackPlanets] " + String(millis()-t0));
 
     t0 = millis();
     trackPlanets();
-    // Serial.println("[trackPlanets] " + String(millis()-t0));
+    Serial.println("[trackPlanets] " + String(millis()-t0));
 
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    // Serial.println("[buildSatIOSentence] " + String(millis()-t0));
+    Serial.println("[buildSatIOSentence] " + String(millis()-t0));
     
     t0 = millis();
-    // dont block other data with a combined wait for gps data and sensor data
     if (sensors_done==true) {
       sensors_done=false;
       if (systemData.matrix_enabled == true) {matrixSwitch();}
     }
-    // Serial.println("[matrixSwitch] " + String(millis()-t0));
+    Serial.println("[matrixSwitch] " + String(millis()-t0));
 
     MatrixStatsCounter();
+
+    // instruct the port controller
+    t0 = millis();
+    SatIOPortController(matrixData.matrix_sentence);
+    Serial.println("[writePortController] " + String(millis()-t0));
     gps_done = false;
   }
-
-  // setPortControllerReadMode(1);
-  // readPortController();
 
   // ---------------------------------------------------------------------
 
@@ -9289,8 +9199,9 @@ void loop() {
   // put port controller into read mode
   // setPortControllerReadMode(0);
 
-  t0 = millis();
-  SatIOPortController();
+  // instruct the port controller the rest of the time (data other than matrix)
+  // t0 = millis();
+  // SatIOPortController(otherdata);
   // Serial.println("[writePortController] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
@@ -9303,23 +9214,20 @@ void loop() {
 
   // delay(1000); // debug test overload: increase loop time
 
+  // some data while running headless
+  Serial.println("[UTC_Datetime] " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date)));
+  Serial.println("[RTC Datetime] " + SerialDisplayRTCDateTime());
+  Serial.println("[Satellite Count] " + String(gnggaData.satellite_count_gngga));
+  Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
+
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.println("[looptime] " + String(timeData.mainLoopTimeTaken));
   // Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
   // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
-
-  // value checking (multitask migration): note that the first few loops may return null values and is expected
-  // Serial.println("[testing value: latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));
-  // Serial.println("[testing value: satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-  // Serial.println("[testing value: hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
-  // Serial.println("[testing value: dht11_hic_0] " + String(sensorData.dht11_hic_0));
-  // Serial.println("[testing value: rtc.now().second()] " + String(rtc.now().second()));
-  // Serial.println("[testing value: sat_time_stamp_string] " + String(satData.sat_time_stamp_string));
-  // if (!strcmp(gnggaData.latitude_hemisphere, "N")==0) {Serial.println("[possible race condition met]"); delay(5000);}
 
   // delay(1000);
 }
