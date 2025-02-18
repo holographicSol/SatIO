@@ -269,13 +269,13 @@ struct systemStruct {
 
   bool sidereal_track_sun = true;       // enables/disables celestial body tracking
   bool sidereal_track_moon = true;      // enables/disables celestial body tracking
-  bool sidereal_track_mercury = false;  // enables/disables celestial body tracking
-  bool sidereal_track_venus = false;    // enables/disables celestial body tracking
-  bool sidereal_track_mars = false;     // enables/disables celestial body tracking
-  bool sidereal_track_jupiter = false;  // enables/disables celestial body tracking
-  bool sidereal_track_saturn = false;   // enables/disables celestial body tracking
-  bool sidereal_track_uranus = false;   // enables/disables celestial body tracking
-  bool sidereal_track_neptune = false;  // enables/disables celestial body tracking
+  bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
+  bool sidereal_track_venus = true;    // enables/disables celestial body tracking
+  bool sidereal_track_mars = true;     // enables/disables celestial body tracking
+  bool sidereal_track_jupiter = true;  // enables/disables celestial body tracking
+  bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
+  bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
+  bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
   
   bool display_auto_dim = true;               // enables/disables screen brightness to be automatically reduced
   int           display_auto_dim_p0 = 5000;   // time after last interaction screen brightness should be reduced
@@ -2853,11 +2853,11 @@ void convertUTCToLocal() {
     to do: when synchronizing RTC, only synchronize RTC within a 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
     if ((first_gps_pass==true) ) {
-      if (satData.tmp_millisecond_int==50) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
+      if (satData.tmp_millisecond_int==00) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
     }
     else {
       // sync every minute according to downlinked time. 
-      if (satData.lt_second_int == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
+      if (satData.lt_second_int == 0) {if (satData.tmp_millisecond_int==00) {syncRTCOnDownlink();}}
     }
   }
 
@@ -9159,8 +9159,8 @@ void loop() {
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
   milliseconds. */
   if (gps_done==true) {
-    // Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
-    // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
+    Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
+    Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
     t0 = millis();
@@ -9230,7 +9230,7 @@ void loop() {
   // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
-  Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date)));
+  Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); 
   Serial.println("[RTC Datetime]          " + SerialDisplayRTCDateTime());
   Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
