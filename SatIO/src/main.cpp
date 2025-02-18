@@ -2843,9 +2843,10 @@ void convertUTCToLocal() {
     downlink which would defeat the point of having an RTC and depending on certain conditions may not be suitable at all
     for steady timings.
     */
-    // Serial.println("[comparing] rtc: " + String(rtc.now().second()) + " -> lt: " + String(satData.lt_second_int));
+    // Serial.println("[comparing] is rtc: " + String(rtc.now().second()) + " > lt: " + String(satData.lt_second_int+2));
+    // Serial.println("[comparing] is rtc: " + String(rtc.now().second()+4) + " < lt: " + String(satData.lt_second_int+4-2));
     if      (rtc.now().second() > satData.lt_second_int+2) {syncRTCOnDownlink();} // allow for drift
-    else if (rtc.now().second() < satData.lt_second_int-2) {syncRTCOnDownlink();} // allow for drift
+    else if (rtc.now().second()+4-2 < satData.lt_second_int+4-2) {syncRTCOnDownlink();} // allow for drift
     else if (rtc.now().minute() != satData.lt_minute_int) {syncRTCOnDownlink();}
     else if (rtc.now().hour()   != satData.lt_hour_int)   {syncRTCOnDownlink();}
     else if (rtc.now().day()    != satData.lt_day_int)    {syncRTCOnDownlink();}
