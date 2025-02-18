@@ -2741,7 +2741,7 @@ int hoursMinutesToInt(int hours, int minutes) {
 char temp_sat_time_stamp_string[128];
 
 bool isTwoDiff(int a, int b) {
-  return abs(a - b) <= 1;
+  return abs(a - b) <= 2;
 }
 bool isOneDiff(int a, int b) {
   return abs(a - b) <= 1;
@@ -2851,9 +2851,9 @@ void convertUTCToLocal() {
     for steady timings.
     to do: when synchro0nizing RTC, only syncronize RTC within the first 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
-    if ((isTwoDiff(rtc.now().second(), 59)==false) && (isTwoDiff(rtc.now().second(), 0)==false) && (isTwoDiff(satData.lt_second_int, 59)==false) && (isTwoDiff(satData.lt_second_int, 0)==false)) {
+    if ((isOneDiff(rtc.now().second(), 59)==false) && (isOneDiff(rtc.now().second(), 0)==false) && (isOneDiff(satData.lt_second_int, 59)==false) && (isOneDiff(satData.lt_second_int, 0)==false)) {
       if (satData.tmp_millisecond_int==0) {
-        if      (isTwoDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
+        if      (isOneDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().minute(), satData.lt_minute_int)==false) {Serial.println("[sync] reason: minute"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {Serial.println("[sync] reason: hour"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().day(),    satData.lt_day_int)==false)    {Serial.println("[sync] reason: day"); syncRTCOnDownlink();}
