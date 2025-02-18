@@ -2837,7 +2837,7 @@ void convertUTCToLocal() {
     satData.lt_millisecond_int = satData.tmp_millisecond_int;
 
     // adjust rtc while we appear to have a downlink
-    Serial.println("[comparing] rtc: " + String(rtc.now().second()) + " -> lt: " + String(satData.lt_second_int));
+    // Serial.println("[comparing] rtc: " + String(rtc.now().second()) + " -> lt: " + String(satData.lt_second_int));
     if      (rtc.now().second() > satData.lt_second_int+2) {syncRTCOnDownlink();} // allow for drift
     else if (rtc.now().second() < satData.lt_second_int-2) {syncRTCOnDownlink();} // allow for drift
     else if (rtc.now().minute() != satData.lt_minute_int) {syncRTCOnDownlink();}
