@@ -2857,9 +2857,9 @@ void convertUTCToLocal() {
     }
     else {
       // sync every minute according to RTC time. 
-      if (rtc.now().minute() == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
+      if (rtc.now().second() == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
       // sync every minute according to downlinked time
-      // if (satData.lt_minute_int == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
+      // if (satData.lt_second_int == 0) {if (satData.tmp_millisecond_int==50) {syncRTCOnDownlink();}}
     }
   }
 
