@@ -2739,6 +2739,7 @@ int hoursMinutesToInt(int hours, int minutes) {
 
 // temporary char time values so that we do not disturb the primary values while converting.
 char temp_sat_time_stamp_string[128];
+bool first_gps_pass = true;
 
 bool isTwoDiff(int a, int b) {
   return abs(a - b) <= 2;
@@ -2851,9 +2852,12 @@ void convertUTCToLocal() {
     for steady timings.
     to do: when synchronizing RTC, only synchronize RTC within the first 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
-    if ((isOneDiff(rtc.now().second(), 59)==false) && (isOneDiff(rtc.now().second(), 0)==false) && (isOneDiff(satData.lt_second_int, 59)==false) && (isOneDiff(satData.lt_second_int, 0)==false)) {
+    if ((first_gps_pass==true) ) {
+      if (satData.tmp_millisecond_int==10) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
+    }
+    else if ((isOneDiff(rtc.now().second(), 59)==false) && (isOneDiff(rtc.now().second(), 0)==false) && (isOneDiff(satData.lt_second_int, 59)==false) && (isOneDiff(satData.lt_second_int, 0)==false)) {
       // currently the gps module (wtgps300) only knows 10ths of a second which means milliseconds from wtgps300 are 0 for 100 milliseconds. 
-      if (satData.tmp_millisecond_int==0) {
+      if (satData.tmp_millisecond_int==10) {
         if      (isOneDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().minute(), satData.lt_minute_int)==false) {Serial.println("[sync] reason: minute"); syncRTCOnDownlink();}
         else if (isOneDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {Serial.println("[sync] reason: hour"); syncRTCOnDownlink();}
@@ -9144,7 +9148,6 @@ void setup() {
 int t0 = millis();
 long i_loops_between_gps_reads = 0;
 int t_gps_all = millis();
-
 void loop() {
 
   Serial.println("----------------------------------------");
