@@ -2740,9 +2740,13 @@ int hoursMinutesToInt(int hours, int minutes) {
 // temporary char time values so that we do not disturb the primary values while converting.
 char temp_sat_time_stamp_string[128];
 
-bool isTwoSecondsDiff(int a, int b) {
-  return abs(a - b) <= 2;
+bool isTwoDiff(int a, int b) {
+  return abs(a - b) <= 1;
 }
+bool isOneDiff(int a, int b) {
+  return abs(a - b) <= 1;
+}
+
 void convertUTCToLocal() {
 
   // // live data from satellites
@@ -2844,20 +2848,25 @@ void convertUTCToLocal() {
     to avoid setting the RTC too often so that we should have a stable, steady and predictable RTC time where
     otherwise time from the RTC if set too often would be as useful (and equal to) any time calculated live from the
     downlink which would defeat the point of having an RTC and depending on certain conditions may not be suitable at all
-    for steady timings. 
+    for steady timings.
+    to do: when synchro0nizing RTC, only syncronize RTC within the first 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
-    if      (isTwoSecondsDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
-    else if (isTwoSecondsDiff(rtc.now().minute(), satData.lt_minute_int)==false) {Serial.println("[sync] reason: minute"); syncRTCOnDownlink();}
-    else if (isTwoSecondsDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {Serial.println("[sync] reason: hour"); syncRTCOnDownlink();}
-    else if (isTwoSecondsDiff(rtc.now().day(),    satData.lt_day_int)==false)    {Serial.println("[sync] reason: day"); syncRTCOnDownlink();}
-    else if (isTwoSecondsDiff(rtc.now().month(),  satData.lt_month_int)==false)  {Serial.println("[sync] reason: month"); syncRTCOnDownlink();}
-    else if (isTwoSecondsDiff(rtc.now().year(),   satData.lt_year_int)==false)   {Serial.println("[sync] reason: year"); syncRTCOnDownlink();}
-    // if      (isTwoSecondsDiff(rtc.now().second(), satData.lt_second_int)==false) {syncRTCOnDownlink();}
-    // else if (isTwoSecondsDiff(rtc.now().minute(), satData.lt_minute_int)==false) {syncRTCOnDownlink();}
-    // else if (isTwoSecondsDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {syncRTCOnDownlink();}
-    // else if (isTwoSecondsDiff(rtc.now().day(),    satData.lt_day_int)==false)    {syncRTCOnDownlink();}
-    // else if (isTwoSecondsDiff(rtc.now().month(),  satData.lt_month_int)==false)  {syncRTCOnDownlink();}
-    // else if (isTwoSecondsDiff(rtc.now().year(),   satData.lt_year_int)==false)   {syncRTCOnDownlink();}
+    if ((isTwoDiff(rtc.now().second(), 59)==false) && (isTwoDiff(rtc.now().second(), 0)==false) && (isTwoDiff(satData.lt_second_int, 59)==false) && (isTwoDiff(satData.lt_second_int, 0)==false)) {
+      if (satData.tmp_millisecond_int==0) {
+        if      (isTwoDiff(rtc.now().second(), satData.lt_second_int)==false) {Serial.println("[sync] reason: second"); syncRTCOnDownlink();}
+        else if (isOneDiff(rtc.now().minute(), satData.lt_minute_int)==false) {Serial.println("[sync] reason: minute"); syncRTCOnDownlink();}
+        else if (isOneDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {Serial.println("[sync] reason: hour"); syncRTCOnDownlink();}
+        else if (isOneDiff(rtc.now().day(),    satData.lt_day_int)==false)    {Serial.println("[sync] reason: day"); syncRTCOnDownlink();}
+        else if (isOneDiff(rtc.now().month(),  satData.lt_month_int)==false)  {Serial.println("[sync] reason: month"); syncRTCOnDownlink();}
+        else if (isOneDiff(rtc.now().year(),   satData.lt_year_int)==false)   {Serial.println("[sync] reason: year"); syncRTCOnDownlink();}
+      }
+    }
+    // if      (isTwoDiff(rtc.now().second(), satData.lt_second_int)==false) {syncRTCOnDownlink();}
+    // else if (isTwoDiff(rtc.now().minute(), satData.lt_minute_int)==false) {syncRTCOnDownlink();}
+    // else if (isTwoDiff(rtc.now().hour(),   satData.lt_hour_int)==false)   {syncRTCOnDownlink();}
+    // else if (isTwoDiff(rtc.now().day(),    satData.lt_day_int)==false)    {syncRTCOnDownlink();}
+    // else if (isTwoDiff(rtc.now().month(),  satData.lt_month_int)==false)  {syncRTCOnDownlink();}
+    // else if (isTwoDiff(rtc.now().year(),   satData.lt_year_int)==false)   {syncRTCOnDownlink();}
   }
 
   // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
