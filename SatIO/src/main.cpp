@@ -2706,10 +2706,10 @@ String padDigitsZero(int digits) {
 //                                                                                                        SET LAST SATELLITE TIME
 
 void syncRTCOnDownlink() {
-  Serial.println("[syncronizing] RTC");
-  Serial.println("[RTC] before sync: " + SerialDisplayRTCDateTime());
-  rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  Serial.println("[RTC] after sync:  " + SerialDisplayRTCDateTime());
+  if (satData.tmp_millisecond_int==0) {
+    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+    Serial.println("[synchronized] " + SerialDisplayRTCDateTime());
+  } else {Serial.println("[synchronizing] waiting to sync");}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2773,6 +2773,9 @@ void convertUTCToLocal() {
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
   // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
+  satData.tmp_millisecond[0] = gnrmcData.utc_time[6];
+  satData.tmp_millisecond[1] = gnrmcData.utc_time[7];
+  // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
 
   // temporary int time values so that we do not disturb the primary values while converting.
   satData.tmp_day_int = atoi(satData.tmp_day);
@@ -2781,6 +2784,7 @@ void convertUTCToLocal() {
   satData.tmp_hour_int = atoi(satData.tmp_hour);
   satData.tmp_minute_int = atoi(satData.tmp_minute);
   satData.tmp_second_int = atoi(satData.tmp_second);
+  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
   // uncomment to debug before conversion
   // Serial.print("[temp datetime]           ");
@@ -6529,7 +6533,7 @@ bool DisplayPage0() {
       String(padDigitsZero(rtc.now().year()).c_str())+"."+
       String(padDigitsZero(rtc.now().month()).c_str())+"."+
       String(padDigitsZero(rtc.now().day()).c_str())+" "+
-      String(padDigitsZero(rtc.now().year()).c_str())+":"+
+      String(padDigitsZero(rtc.now().hour()).c_str())+":"+
       String(padDigitsZero(rtc.now().minute()).c_str())+":"+
       String(padDigitsZero(rtc.now().second()).c_str()), 61, rdata_y+9);
     
