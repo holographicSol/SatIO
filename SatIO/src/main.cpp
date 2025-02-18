@@ -268,14 +268,14 @@ struct systemStruct {
   bool port_controller_enabled = true; // may be false by default but is default true for now.
 
   bool sidereal_track_sun = true;       // enables/disables celestial body tracking
-  bool sidereal_track_moon = true;     // enables/disables celestial body tracking
-  bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
-  bool sidereal_track_venus = true;    // enables/disables celestial body tracking
-  bool sidereal_track_mars = true;     // enables/disables celestial body tracking
-  bool sidereal_track_jupiter = true;  // enables/disables celestial body tracking
-  bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
-  bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
-  bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
+  bool sidereal_track_moon = true;      // enables/disables celestial body tracking
+  bool sidereal_track_mercury = false;  // enables/disables celestial body tracking
+  bool sidereal_track_venus = false;    // enables/disables celestial body tracking
+  bool sidereal_track_mars = false;     // enables/disables celestial body tracking
+  bool sidereal_track_jupiter = false;  // enables/disables celestial body tracking
+  bool sidereal_track_saturn = false;   // enables/disables celestial body tracking
+  bool sidereal_track_uranus = false;   // enables/disables celestial body tracking
+  bool sidereal_track_neptune = false;  // enables/disables celestial body tracking
   
   bool display_auto_dim = true;               // enables/disables screen brightness to be automatically reduced
   int           display_auto_dim_p0 = 5000;   // time after last interaction screen brightness should be reduced
@@ -9135,6 +9135,7 @@ void setup() {
 int t0 = millis();
 long i_loops_between_gps_reads = 0;
 int t_gps_all = millis();
+bool track_planets_period = false;
 void loop() {
 
   Serial.println("----------------------------------------");
@@ -9166,36 +9167,40 @@ void loop() {
     convertUTCToLocal();
     Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
 
-    // t0 = millis();
+    t0 = millis();
     calculateLocation();
-    // Serial.println("[calculateLocation]   " + String(millis()-t0));
+    Serial.println("[calculateLocation]   " + String(millis()-t0));
 
-    // t0 = millis();
-    setTrackPlanets();
-    // Serial.println("[setTrackPlanets]     " + String(millis()-t0));
+    /* uncomment to limit planet tracking to once per second. */
+    // if (track_planets_period == true) {
+      track_planets_period = false;
+      t0 = millis();
+      setTrackPlanets();
+      Serial.println("[setTrackPlanets]     " + String(millis()-t0));
 
-    // t0 = millis();
-    trackPlanets();
-    // Serial.println("[trackPlanets]        " + String(millis()-t0));
+      t0 = millis();
+      trackPlanets();
+      Serial.println("[trackPlanets]        " + String(millis()-t0));
+    // }
 
-    // t0 = millis();
+    t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    // Serial.println("[buildSatIOSentence]  " + String(millis()-t0));
+    Serial.println("[buildSatIOSentence]  " + String(millis()-t0));
     
-    // t0 = millis();
+    t0 = millis();
     if (sensors_done==true) {
       sensors_done=false;
       if (systemData.matrix_enabled == true) {matrixSwitch();}
     }
-    // Serial.println("[matrixSwitch]        " + String(millis()-t0));
+    Serial.println("[matrixSwitch]        " + String(millis()-t0));
 
     MatrixStatsCounter();
 
     // instruct port controller: matrix
     // setPortControllerReadMode(0);
-    // t0 = millis();
+    t0 = millis();
     SatIOPortController(matrixData.matrix_sentence);
-    // Serial.println("[writePortController] " + String(millis()-t0));
+    Serial.println("[writePortController] " + String(millis()-t0));
     gps_done = false;
   }
 
@@ -9213,6 +9218,7 @@ void loop() {
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
+    track_planets_period = true;
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
