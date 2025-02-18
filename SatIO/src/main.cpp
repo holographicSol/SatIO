@@ -9230,8 +9230,8 @@ void loop() {
   // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
-  Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); 
-  Serial.println("[RTC Datetime]          " + SerialDisplayRTCDateTime());
+  Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
+  Serial.println("[RTC Datetime]          " + SerialDisplayRTCDateTime()); // fresh from RTC
   Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
