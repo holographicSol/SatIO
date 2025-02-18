@@ -2709,7 +2709,7 @@ void syncRTCOnDownlink() {
   Serial.println("[syncronizing] RTC");
   Serial.println("[RTC] before sync: " + SerialDisplayRTCDateTime());
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  Serial.println("[RTC] after sync:" + SerialDisplayRTCDateTime());
+  Serial.println("[RTC] after sync:  " + SerialDisplayRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2835,12 +2835,12 @@ void convertUTCToLocal() {
     // satData.lt_millisecond_int = millis();
 
     // adjust rtc while we appear to have a downlink
-    if (! rtc.now().year()   == satData.lt_year_int)   {syncRTCOnDownlink();}
-    if (! rtc.now().month()  == satData.lt_month_int)  {syncRTCOnDownlink();}
-    if (! rtc.now().day()    == satData.lt_day_int)    {syncRTCOnDownlink();}
-    if (! rtc.now().hour()   == satData.lt_hour_int)   {syncRTCOnDownlink();}
-    if (! rtc.now().minute() == satData.lt_minute_int) {syncRTCOnDownlink();}
-    if (! rtc.now().second() == satData.lt_second_int) {syncRTCOnDownlink();}
+    if      (! rtc.now().second() == satData.lt_second_int) {syncRTCOnDownlink();}
+    else if (! rtc.now().minute() == satData.lt_minute_int) {syncRTCOnDownlink();}
+    else if (! rtc.now().hour()   == satData.lt_hour_int)   {syncRTCOnDownlink();}
+    else if (! rtc.now().day()    == satData.lt_day_int)    {syncRTCOnDownlink();}
+    else if (! rtc.now().month()  == satData.lt_month_int)  {syncRTCOnDownlink();}
+    else if (! rtc.now().year()   == satData.lt_year_int)   {syncRTCOnDownlink();}
   }
 
   // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
