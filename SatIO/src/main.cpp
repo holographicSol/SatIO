@@ -2706,10 +2706,8 @@ String padDigitsZero(int digits) {
 //                                                                                                        SET LAST SATELLITE TIME
 
 void syncRTCOnDownlink() {
-  if (satData.tmp_millisecond_int==0) {
-    rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-    Serial.println("[synchronized] " + SerialDisplayRTCDateTime());
-  } else {Serial.println("[synchronizing] waiting to sync");}
+  rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+  Serial.println("[synchronized] " + SerialDisplayRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2773,8 +2771,8 @@ void convertUTCToLocal() {
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
   // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
-  satData.tmp_millisecond[0] = gnrmcData.utc_time[6];
-  satData.tmp_millisecond[1] = gnrmcData.utc_time[7];
+  satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
+  satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
   // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
 
   // temporary int time values so that we do not disturb the primary values while converting.
@@ -2836,15 +2834,17 @@ void convertUTCToLocal() {
     satData.lt_hour_int = hour();
     satData.lt_minute_int = minute();
     satData.lt_second_int = second();
-    // satData.lt_millisecond_int = millis();
+    satData.lt_millisecond_int = satData.tmp_millisecond_int;
 
     // adjust rtc while we appear to have a downlink
-    if      (! rtc.now().second() == satData.lt_second_int) {syncRTCOnDownlink();}
-    else if (! rtc.now().minute() == satData.lt_minute_int) {syncRTCOnDownlink();}
-    else if (! rtc.now().hour()   == satData.lt_hour_int)   {syncRTCOnDownlink();}
-    else if (! rtc.now().day()    == satData.lt_day_int)    {syncRTCOnDownlink();}
-    else if (! rtc.now().month()  == satData.lt_month_int)  {syncRTCOnDownlink();}
-    else if (! rtc.now().year()   == satData.lt_year_int)   {syncRTCOnDownlink();}
+    // Serial.println("[comparing] rtc: " + String(rtc.now().second()) + " -> lt: " + String(satData.lt_second_int));
+    if      (rtc.now().second() >= satData.lt_second_int+1) {syncRTCOnDownlink();} // allow for drift
+    else if (rtc.now().second() <= satData.lt_second_int-1) {syncRTCOnDownlink();} // allow for drift
+    else if (rtc.now().minute() != satData.lt_minute_int) {syncRTCOnDownlink();}
+    else if (rtc.now().hour()   != satData.lt_hour_int)   {syncRTCOnDownlink();}
+    else if (rtc.now().day()    != satData.lt_day_int)    {syncRTCOnDownlink();}
+    else if (rtc.now().month()  != satData.lt_month_int)  {syncRTCOnDownlink();}
+    else if (rtc.now().year()   != satData.lt_year_int)   {syncRTCOnDownlink();}
   }
 
   // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
@@ -9149,9 +9149,9 @@ void loop() {
     // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
-    // t0 = millis();
+    t0 = millis();
     convertUTCToLocal();
-    // Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
+    Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
 
     // t0 = millis();
     calculateLocation();
