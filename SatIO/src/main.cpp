@@ -2850,10 +2850,10 @@ void convertUTCToLocal() {
     otherwise time from the RTC if set too often would be as useful (and equal to) any time calculated live from the
     downlink which would defeat the point of having an RTC and depending on certain conditions may not be suitable at all
     for steady timings.
-    to do: when synchronizing RTC, only synchronize RTC within the first 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
+    to do: when synchronizing RTC, only synchronize RTC within a 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
     if ((first_gps_pass==true) ) {
-      if (satData.tmp_millisecond_int==10) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
+      if (satData.tmp_millisecond_int==50) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
     }
     else if ((isOneDiff(rtc.now().second(), 59)==false) && (isOneDiff(rtc.now().second(), 0)==false) && (isOneDiff(satData.lt_second_int, 59)==false) && (isOneDiff(satData.lt_second_int, 0)==false)) {
       // currently the gps module (wtgps300) only knows 10ths of a second which means milliseconds from wtgps300 are 0 for 100 milliseconds. 
