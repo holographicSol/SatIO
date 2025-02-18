@@ -9211,21 +9211,20 @@ void loop() {
   }
 
   // delay(1000); // debug test overload: increase loop time
+  timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
+  if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
+  else {systemData.overload=false;}
+  // if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
+  // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
   Serial.println("[UTC_Datetime] " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date)));
   Serial.println("[RTC Datetime] " + SerialDisplayRTCDateTime());
   Serial.println("[Satellite Count] " + String(gnggaData.satellite_count_gngga));
   Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
-
-  timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
-  else {systemData.overload=false;}
-  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-  Serial.println("[looptime] " + String(timeData.mainLoopTimeTaken));
-  // Serial.print("[mainLoopTimeTakenMax] "); Serial.println(timeData.mainLoopTimeTakenMax);
-  // Serial.print("[mainLoopTimeTakenMin] "); Serial.println(timeData.mainLoopTimeTakenMin);
+  Serial.println("[Looptime] " + String(timeData.mainLoopTimeTaken));
+  // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
+  // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
   // delay(1000);
 }
