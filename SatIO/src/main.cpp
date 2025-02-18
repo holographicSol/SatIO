@@ -9144,7 +9144,13 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                                   GPS
 
-  // non-blocking functions waiting for new gps data
+  /* ensure safe execution each loop. final matrix values for port controller
+  must not be altered while instructing port controller. this must be true
+  while also instructing port controller every loop and while not blocking
+  the loop so that we can utilize the port controller for other instructions
+  and do other things if needed until gps data is ready. the wtgps300 outputs
+  each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
+  milliseconds. */
   if (gps_done==true) {
     Serial.println("[gps_done_t] " + String(millis()-gps_done_t));
     Serial.println("[loops between gps read] " + String(i_loops_between_gps_reads));
@@ -9179,7 +9185,8 @@ void loop() {
 
     MatrixStatsCounter();
 
-    // instruct the port controller
+    // instruct port controller: matrix
+    // setPortControllerReadMode(0);
     t0 = millis();
     SatIOPortController(matrixData.matrix_sentence);
     Serial.println("[writePortController] " + String(millis()-t0));
@@ -9188,18 +9195,9 @@ void loop() {
 
   // ---------------------------------------------------------------------
 
-  /* ensure safe execution each loop. final matrix values for port controller
-  must not be altered while instructing port controller. this must be true
-  while also instructing port controller every loop and while not blocking
-  the loop so that we can utilize the port controller for other instructions
-  and do other things if needed until gps data is ready. the wtgps300 outputs
-  each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
-  milliseconds. */
 
-  // put port controller into read mode
+  // instruct port controller the rest of the time: (data other than matrix)
   // setPortControllerReadMode(0);
-
-  // instruct the port controller the rest of the time (data other than matrix)
   // t0 = millis();
   // SatIOPortController(otherdata);
   // Serial.println("[writePortController] " + String(millis()-t0));
