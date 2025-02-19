@@ -23,23 +23,27 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
                                   
                                 Wiring For ESP32 keystudio dev module (with keystudio sheild V1.3)
 
+                                      Serial Communication Between ESP32 & ATMEGA2560:
                                       ESP32 io25 (TXD) -> ATMEGA2560 Serial1 (RXD)
                                       ESP32 io26 (RXD) -> ATMEGA2560 Serial1 (TXD)
 
+                                      Serial Communication Between ESP32 & WTGPS300P:
                                       ESP32 io27 (RXD) -> WTGPS300P (TXD) (5v)
 
+                                      ESP32 i2C Multiplexing:
                                       ESP32 i2C          -> TCA9548A i2c Multiplexer: SDA, SCL (3.3v)
                                       TCA9548A SDA0 SCL0 -> RTC DS3231 SDA, SCL (5v)
 
+                                      ESP32 Analog+Digital Multiplexing:
                                       ESP32 io4  -> CD74HC4067 Analog/Digital Multiplexer: SIG
                                       ESP32 io32 -> CD74HC4067 Analog/Digital Multiplexer: C0
                                       ESP32 io33 -> CD74HC4067 Analog/Digital Multiplexer: C1
                                       ESP32 io12 -> CD74HC4067 Analog/Digital Multiplexer: C2
                                       ESP32 io13 -> CD74HC4067 Analog/Digital Multiplexer: C3
-
                                       CD74HC4067 C0 -> Photo Resistor SIG
                                       CD74HC4067 C1 -> DHT11 SIG
 
+                                      ESP32 SDCARD:
                                       ESP32 io5  -> HW-125 Micro SD Card Module CS (SS)
                                       ESP32 io23 -> HW-125 Micro SD Card Module DI (MOSI)
                                       ESP32 io19 -> HW-125 Micro SD Card Module DO (MISO)
