@@ -6264,8 +6264,8 @@ void setMultiplexChannel_TCAADDR(uint8_t channel) {
 /* analog/digital multiplexer */
 
 int muxChannel[16][4]={
-  {0,0,0,0}, //channel 0 port controller
-  {1,0,0,0}, //channel 1 GPS
+  {0,0,0,0}, //channel 0 
+  {1,0,0,0}, //channel 1 
   {0,1,0,0}, //channel 2
   {1,1,0,0}, //channel 3
   {0,0,1,0}, //channel 4
