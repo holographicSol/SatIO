@@ -36,10 +36,10 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
 
                                       ESP32 Analog+Digital Multiplexing:
                                       ESP32 io4  -> CD74HC4067 Analog/Digital Multiplexer: SIG
-                                      ESP32 io32 -> CD74HC4067 Analog/Digital Multiplexer: C0
-                                      ESP32 io33 -> CD74HC4067 Analog/Digital Multiplexer: C1
-                                      ESP32 io12 -> CD74HC4067 Analog/Digital Multiplexer: C2
-                                      ESP32 io13 -> CD74HC4067 Analog/Digital Multiplexer: C3
+                                      ESP32 io32 -> CD74HC4067 Analog/Digital Multiplexer: S0
+                                      ESP32 io33 -> CD74HC4067 Analog/Digital Multiplexer: S1
+                                      ESP32 io12 -> CD74HC4067 Analog/Digital Multiplexer: S2
+                                      ESP32 io13 -> CD74HC4067 Analog/Digital Multiplexer: S3
                                       CD74HC4067 C0 -> Photo Resistor SIG
                                       CD74HC4067 C1 -> DHT11 SIG
 
