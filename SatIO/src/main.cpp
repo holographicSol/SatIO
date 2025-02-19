@@ -6568,7 +6568,7 @@ void loop() {
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
-  delay(500);
+  // delay(500);
   
   // ---------------------------------------------------------------------
 }
