@@ -88,49 +88,84 @@
 #include "FS.h"
 #include "SD.h"
 #include <SPI.h>
-// #include <SoftwareSerial.h>
 #include <Wire.h>
 #include <RTClib.h>
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
-// #include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
-// #include <XPT2046_Bitbang.h>  // https://github.com/ddxfish/XPT2046_Bitbang_Arduino_Library/
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
-// #include <JPEGDecoder.h>
 #include "esp_pm.h"
 #include "esp_attr.h"
 #include <DHT.h>
 #include <CD74HC4067.h>
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                            RTC
-RTC_DS3231 rtc;
-DateTime dt_now;
-DateTime rcv_dt_0;
-DateTime rcv_dt_1;
+//                                                                                                                           PINS
+
+const int8_t ctsPin = -1;  // remap hardware serial TXD
+const int8_t rtsPin = -1;  // remap hardware serial RXD
+const byte txd_to_atmega = 25; // 
+const byte rxd_from_gps = 26;  // 
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   MULTIPLEXERS
+
+/* i2c multiplexer */
+
+#define TCA9548AADDR 0x70 // i2c address of TCA9548A i2c multiplexer 
+
+void setMultiplexChannel_TCA9548A(uint8_t channel) {
+  if (channel > 7) return;
+  Wire.beginTransmission(TCA9548AADDR);
+  Wire.write(1 << channel); // change channel of i2c multiplexer
+  Wire.endTransmission();
+}
+
+/* analog/digital multiplexer */
+
+int CD74HC4067_Mux_Channel[16][4]={
+  {0,0,0,0}, //channel 0 
+  {1,0,0,0}, //channel 1 
+  {0,1,0,0}, //channel 2
+  {1,1,0,0}, //channel 3
+  {0,0,1,0}, //channel 4
+  {1,0,1,0}, //channel 5
+  {0,1,1,0}, //channel 6
+  {1,1,1,0}, //channel 7
+  {0,0,0,1}, //channel 8
+  {1,0,0,1}, //channel 9
+  {0,1,0,1}, //channel 10
+  {1,1,0,1}, //channel 11
+  {0,0,1,1}, //channel 12
+  {1,0,1,1}, //channel 13
+  {0,1,1,1}, //channel 14
+  {1,1,1,1}  //channel 15
+};
+
+const int CD74HC4067_S0 = 32; // control pin
+const int CD74HC4067_S1 = 33; // control pin
+const int CD74HC4067_S2 = 12; // control pin
+const int CD74HC4067_S3 = 13; // control pin
+const int CD74HC4067_SIG = 4; // signal pin
+const int CD74HC4067_ControlPin[] = {CD74HC4067_S0, CD74HC4067_S1, CD74HC4067_S2, CD74HC4067_S3};
+
+void setMultiplexChannel_CD74HC4067(int channel) {
+  for(int i = 0; i < 4; i++){
+    digitalWrite(CD74HC4067_ControlPin[i], CD74HC4067_Mux_Channel[channel][i]); // change channel of analog/digital multiplexer
+  }
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
-#define DHTPIN 4 // Digital pin connected to the DHT sensor
-// Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
-// Pin 15 can work but DHT must be disconnected during program upload.
-// Uncomment whatever type you're using!
+
+/*
+Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
+Uncomment whatever type you're using!
+*/
 #define DHTTYPE DHT11 // DHT 11
 // #define DHTTYPE DHT22 // DHT 22  (AM2302), AM2321
-//#define DHTTYPE DHT21 // DHT 21 (AM2301)
-DHT dht(DHTPIN, DHTTYPE);
-#define PHOTORESISTOR_0 4
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                           PINS
-// #define INTERRUPT_ATMEGA_0 12 // pin to instruct atmega2560 to go into read mode
-// #define INTERRUPT_ATMEGA_1 5  // pin to instruct atmega2560 to go into write mode
-// const signed int portcontroller_mode[1][2] {{INTERRUPT_ATMEGA_0, INTERRUPT_ATMEGA_1}} ;
-const int8_t ctsPin = -1;  // remap hardware serial TXD
-const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte txd_to_atmega = 25;  // 
-const byte rxd_from_gps = 26;   // 
+// #define DHTTYPE DHT21 // DHT 21 (AM2301)
+DHT dht(CD74HC4067_SIG, DHTTYPE);
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
@@ -139,6 +174,14 @@ TaskHandle_t TSTask;    // touchscreen task
 TaskHandle_t UpdateDisplayTask;  // time task
 TaskHandle_t Task0;  // time task
 TaskHandle_t Task1;  // time task
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                            RTC
+
+RTC_DS3231 rtc;
+DateTime dt_now;
+DateTime rcv_dt_0;
+DateTime rcv_dt_1;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
@@ -293,15 +336,8 @@ struct SerialLinkStruct {
   bool data = false;
   char BUFFER[2000];           // read incoming bytes into this buffer
   char BUFFER1[2000];               // buffer refined using ETX
-  // char TMP[2000];               // buffer refined using ETX
   unsigned long nbytes;
   unsigned long TOKEN_i;
-  // unsigned long T0_RXD_1 = 0;   // hard throttle current time
-  // unsigned long T1_RXD_1 = 0;   // hard throttle previous time
-  // unsigned long TT_RXD_1 = 0;   // hard throttle interval
-  // unsigned long T0_TXD_1 = 0;   // hard throttle current time
-  // unsigned long T1_TXD_1 = 0;   // hard throttle previous time
-  // unsigned long TT_TXD_1 = 10;  // hard throttle interval
   int i_token = 0;
   char * token;
   bool validation = false;
@@ -6247,54 +6283,6 @@ void  readPortController() {
   }
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                   MULTIPLEXERS
-
-/* i2c multiplexer */
-
-#define TCAADDR 0x70 // i2c address of TCA9548A i2c multiplexer 
-
-void setMultiplexChannel_TCA9548A(uint8_t channel) {
-  if (channel > 7) return;
-  Wire.beginTransmission(TCAADDR);
-  Wire.write(1 << channel); // change channel of i2c multiplexer
-  Wire.endTransmission();
-}
-
-/* analog/digital multiplexer */
-
-int muxChannel[16][4]={
-  {0,0,0,0}, //channel 0 
-  {1,0,0,0}, //channel 1 
-  {0,1,0,0}, //channel 2
-  {1,1,0,0}, //channel 3
-  {0,0,1,0}, //channel 4
-  {1,0,1,0}, //channel 5
-  {0,1,1,0}, //channel 6
-  {1,1,1,0}, //channel 7
-  {0,0,0,1}, //channel 8
-  {1,0,0,1}, //channel 9
-  {0,1,0,1}, //channel 10
-  {1,1,0,1}, //channel 11
-  {0,0,1,1}, //channel 12
-  {1,0,1,1}, //channel 13
-  {0,1,1,1}, //channel 14
-  {1,1,1,1}  //channel 15
-};
-
-int s0 = 32; // control pin
-int s1 = 33; // control pin
-int s2 = 12; // control pin
-int s3 = 13; // control pin
-int sig = 4; // signal pin
-int controlPin[] = {s0, s1, s2, s3};
-
-void setMultiplexChannel_CD74HC4067(int ch0) {
-  for(int i = 0; i < 4; i++){
-    digitalWrite(controlPin[i], muxChannel[ch0][i]); // change channel of analog/digital multiplexer
-  }
-}
-
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      SENSORS
 
@@ -6311,7 +6299,7 @@ void getSensorData(void * pvParameters) {
       // photo resistor
       setMultiplexChannel_CD74HC4067(0);
       delay(10);
-      sensorData.photoresistor_0 = analogRead(PHOTORESISTOR_0);
+      sensorData.photoresistor_0 = analogRead(CD74HC4067_SIG);
       // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
 
       // dht11
@@ -6361,15 +6349,15 @@ void setup() {
 
   Serial.println("[setup] pins");
 
-  pinMode(s0, OUTPUT); 
-  pinMode(s1, OUTPUT); 
-  pinMode(s2, OUTPUT); 
-  pinMode(s3, OUTPUT); 
-  pinMode(sig, INPUT); 
-  digitalWrite(s0, LOW);
-  digitalWrite(s1, LOW);
-  digitalWrite(s2, LOW);
-  digitalWrite(s3, LOW);
+  pinMode(CD74HC4067_S0, OUTPUT); 
+  pinMode(CD74HC4067_S1, OUTPUT); 
+  pinMode(CD74HC4067_S2, OUTPUT); 
+  pinMode(CD74HC4067_S3, OUTPUT); 
+  pinMode(CD74HC4067_SIG, INPUT); 
+  digitalWrite(CD74HC4067_S0, LOW);
+  digitalWrite(CD74HC4067_S1, LOW);
+  digitalWrite(CD74HC4067_S2, LOW);
+  digitalWrite(CD74HC4067_S3, LOW);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                       SETUP: PORT CONTROLLER
@@ -6413,13 +6401,10 @@ void setup() {
   Serial.println("[ESP_PM_NO_LIGHT_SLEEP] " + String(ESP_PM_NO_LIGHT_SLEEP));
   Serial.println("[CONFIG_ESPTOOLPY_FLASHFREQ] " + String(CONFIG_ESPTOOLPY_FLASHFREQ));
   Serial.println("[CONFIG_ESPTOOLPY_FLASHMODE] " + String(CONFIG_ESPTOOLPY_FLASHMODE));
-  // Serial.println("[CONFIG_COMPILER_OPTIMIZATION] " + String(CONFIG_COMPILER_OPTIMIZATION));
   Serial.println("[CONFIG_ESP32_REV_MIN] " + String(CONFIG_ESP32_REV_MIN));
   Serial.println("[CONFIG_LOG_DEFAULT_LEVEL] " + String(CONFIG_LOG_DEFAULT_LEVEL));
   Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
   Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
-  // Serial.println("[ CONFIG_LOG_DYNAMIC_LEVEL_CONTROL] " + String(CONFIG_LOG_DYNAMIC_LEVEL_CONTROL));
-  // Serial.println("[  CONFIG_LOG_TAG_LEVEL_IMPL] " + String( CONFIG_LOG_TAG_LEVEL_IMPL));
   Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
   // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
   Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
@@ -6481,13 +6466,16 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                                   GPS
 
-  /* ensure safe execution each loop. final matrix values for port controller
+  /*
+  ensure safe execution each loop. final matrix values for port controller
   must not be altered while instructing port controller. this must be true
   while also instructing port controller every loop and while not blocking
   the loop so that we can utilize the port controller for other instructions
   and do other things if needed until gps data is ready. the wtgps300 outputs
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
-  milliseconds. */
+  milliseconds.
+  */
+
   if (gps_done==true) {
     // Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
     // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
