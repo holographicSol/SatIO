@@ -6252,12 +6252,12 @@ void  readPortController() {
 
 /* i2c multiplexer */
 
-#define TCAADDR 0x70 // i2c address of TCAADDR i2c multiplexer 
+#define TCAADDR 0x70 // i2c address of TCA9548A i2c multiplexer 
 
-void setMultiplexChannel_TCAADDR(uint8_t channel) {
+void setMultiplexChannel_TCA9548A(uint8_t channel) {
   if (channel > 7) return;
   Wire.beginTransmission(TCAADDR);
-  Wire.write(1 << channel);  // change channel of i2c multiplexer
+  Wire.write(1 << channel); // change channel of i2c multiplexer
   Wire.endTransmission();
 }
 
@@ -6396,7 +6396,7 @@ void setup() {
   Wire.begin();  // sets up the I2C  
 
   Serial.println("[setup] selecting i2C channel: 0");
-  setMultiplexChannel_TCAADDR(0);  // set i2c multiplexer channel
+  setMultiplexChannel_TCA9548A(0);  // set i2c multiplexer channel
 
   Serial.println("[setup] rtc");
   rtc.begin();   // initializes the I2C device
