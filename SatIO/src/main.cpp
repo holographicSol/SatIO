@@ -233,25 +233,6 @@ struct systemStruct {
   bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
-  
-  bool display_auto_dim = true;               // enables/disables screen brightness to be automatically reduced
-  int           display_auto_dim_p0 = 5000;   // time after last interaction screen brightness should be reduced
-  unsigned long display_auto_dim_t0;          // value set and used by the system)
-  unsigned long display_auto_dim_t1;          // value set and used by the system
-  bool          display_dim_bool = false;     // value set and used by the system
-  bool display_auto_off = false;              // enables/disables screen backlight turning off automatically
-  int           display_auto_off_p0 = 10000;  // time after last interaction creen backlight should be turned off
-  unsigned long display_auto_off_t0;          // value set and used by the system
-  unsigned long display_auto_off_t1;          // value set and used by the system
-  bool          display_off_bool = false;     // value set and used by the system
-  uint32_t display_brightness = 255;          // value of current screen brightness (0-255)
-  uint32_t display_autodim_brightness = 50;   // value of automatically reduced screen brightness (0-255)
-  int index_display_autodim_times = 1;        // index of currently used time 
-  int max_display_autodim_times = 6;          // max available times 
-  int display_autodim_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};  // available times
-  int index_display_autooff_times = 2;                                          // index of currently used time 
-  int max_display_autooff_times = 6;                                            // max available times 
-  int display_autooff_times[6][56] = {3000, 5000, 10000, 15000, 30000, 60000};  // available times
 
   char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
   char translate_plus_minus[2][56]  = {"+", "-"};              // bool used as index selects bool translation
@@ -2972,66 +2953,6 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println("");
 
     memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_BRIGHTNESS,");
-    itoa(systemData.display_brightness, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_AUTO_DIM,");
-    itoa(systemData.display_auto_dim, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_AUTO_DIM_BRIGHTNESS,");
-    itoa(systemData.display_autodim_brightness, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_AUTO_DIM_TIMEOUT,");
-    itoa(systemData.display_auto_dim_p0, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_AUTO_OFF,");
-    itoa(systemData.display_auto_off, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
-    strcat(sdcardData.file_data, "DISPLAY_AUTO_OFF_TIMEOUT,");
-    itoa(systemData.display_auto_off_p0, sdcardData.tmp, 10);
-    strcat(sdcardData.file_data, sdcardData.tmp);
-    strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
-
-    memset(sdcardData.file_data, 0, 256);
     strcat(sdcardData.file_data, "OUTPUT_SATIO_SENTENCE,");
     itoa(systemData.output_satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3276,61 +3197,6 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.gpatt_enabled = false;} else {systemData.gpatt_enabled = true;}
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_BRIGHTNESS", strlen("DISPLAY_BRIGHTNESS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            systemData.display_brightness = atoi(sdcardData.token);
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_BRIGHTNESS", strlen("DISPLAY_AUTO_DIM_BRIGHTNESS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            systemData.display_autodim_brightness = atoi(sdcardData.token);
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM_TIMEOUT", strlen("DISPLAY_AUTO_DIM_TIMEOUT")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            systemData.display_auto_dim_p0 = atoi(sdcardData.token);
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_DIM", strlen("DISPLAY_AUTO_DIM")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.display_auto_dim = false;} else {systemData.display_auto_dim = true;}
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF_TIMEOUT", strlen("DISPLAY_AUTO_OFF_TIMEOUT")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            systemData.display_auto_off_p0 = atoi(sdcardData.token);
-          }
-        }
-        else if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
-            PrintFileToken();
           }
         }
         else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
@@ -6034,30 +5900,6 @@ void setupSDCardLight() {
 //                                                                                                                  SDCARD: CHECK
 
 void sdcardCheck() {
-
-  /* basic sdcard initialization. todo: make some bool of initialization results */
-
-  // if (satData.current_unixtime > sdcardData.last_sdcard_check_time+sdcardData.sdcard_check_interval) {
-  //   sdcardData.last_sdcard_check_time = satData.current_unixtime;
-  //   Serial.println("[checking] sdcard");
-    
-    // note that information will be displayed if sdcard not present.
-    if (SD.exists("/")==true) {
-      // sdcardData.card_type = SD.cardType();
-      // sdcardData.card_size = SD.cardSize() / (1024 * 1024);
-      
-      // uncomment to debug
-      // Serial.print("[sdcard] card type: " + String(sdcardData.sdcard_types[0][sdcardData.card_type]));
-      // Serial.printf("SD Card Size: %lluMB\n", sdcardData.card_size);
-    }
-    else {
-      Serial.println("[sdcard] resetting values");
-      // sdcardData.card_type=CARD_NONE; sdcardData.card_size=0;
-      SD.end();
-      setupSDCardLight();
-    }
-  // }
-  // else {Serial.println("[pending] sdcard check");}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
