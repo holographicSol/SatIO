@@ -37,14 +37,13 @@ currently each matrix activation/deactivaion can occur based on up to 10 differe
                                       ESP32 io12 -> CD74HC4067 Analog/Digital Multiplexer: C2
                                       ESP32 io13 -> CD74HC4067 Analog/Digital Multiplexer: C3
 
-                                      ESP32 io4 (CD74HC4067 SIG) -> DHT11 SIG
-                                      ESP32 io4 (CD74HC4067 SIG) -> Photo Resistor SIG
+                                      CD74HC4067 C0 -> Photo Resistor SIG
+                                      CD74HC4067 C1 -> DHT11 SIG
 
                                       ESP32 io5  -> HW-125 Micro SD Card Module CS (SS)
                                       ESP32 io23 -> HW-125 Micro SD Card Module DI (MOSI)
                                       ESP32 io19 -> HW-125 Micro SD Card Module DO (MISO)
                                       ESP32 io18 -> HW-125 Micro SD Card Module SCK (SCLK)
-
 
                                                         SENTENCE $SATIO
                                                                                 
