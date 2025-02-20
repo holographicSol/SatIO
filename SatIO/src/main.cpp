@@ -159,11 +159,12 @@ void setMultiplexChannel_CD74HC4067(int channel) {
 //                                                                                                                           VSPI
 
 void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
-  //added begin/end vspi device functions for switching between SPI devices on the same bus.
   /*
   ESP32 default VSPI pins: SCLK=18, MISO=19, MOSI=23, SS=26
   ESP32 default HSPI pins: SCLK=14, MISO=12, MOSI=13, SS=15
   Devices sharing a bus require seperate CS/SS pin and may require seperate MISO pin.
+  Note that this is a preliminary begin to be called before a 'library specific begin' like SD.begin() for example when stacking
+  multiple SPI devices on the same SPI bus.
   */
   SPI.begin(SCLK, MISO, MOSI, SS);
   digitalWrite(SS, LOW);
