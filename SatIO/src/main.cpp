@@ -156,7 +156,7 @@ void setMultiplexChannel_CD74HC4067(int channel) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                           VSPI
+//                                                                                                                            SPI
 
 void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
   /*
