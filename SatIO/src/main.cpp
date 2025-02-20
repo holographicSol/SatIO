@@ -166,13 +166,13 @@ void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
   Note that this is a preliminary begin to be called before a 'library specific begin' like SD.begin() for example when stacking
   multiple SPI devices on the same SPI bus.
   */
-  SPI.begin(SCLK, MISO, MOSI, SS);
-  digitalWrite(SS, LOW);
+  SPI.begin(SCLK, MISO, MOSI, SS); // set pins
+  digitalWrite(SS, LOW); // set control pin low to begin transmission
 }
 
 void endVSPIDevice(int SS) {
   SPI.end();
-  digitalWrite(SS, HIGH);
+  digitalWrite(SS, HIGH); // set control pin high to end transmission
 }
 
 
