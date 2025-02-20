@@ -1715,6 +1715,11 @@ struct MatrixStruct {
     "Tracking_0_Range"
   };
 
+  /*
+  Below are variables in the list above. once the array above has a satisfactory content and order, the variables below will be removed and access to below variables
+  will be replaced by index access to above array.
+  */
+
   /* false if first or all functions $NONE. true if preceeding functions are populated. */
   char default_matrix_function[25]         = "$NONE";
 
