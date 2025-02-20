@@ -245,8 +245,8 @@ struct systemStruct {
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
   bool port_controller_enabled = true; // may be false by default but is default true for now.
 
-  bool sidereal_track_sun = true;       // enables/disables celestial body tracking
-  bool sidereal_track_moon = true;      // enables/disables celestial body tracking
+  bool sidereal_track_sun = true;      // enables/disables celestial body tracking
+  bool sidereal_track_moon = true;     // enables/disables celestial body tracking
   bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
   bool sidereal_track_venus = true;    // enables/disables celestial body tracking
   bool sidereal_track_mars = true;     // enables/disables celestial body tracking
