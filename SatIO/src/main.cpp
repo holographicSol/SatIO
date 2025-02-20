@@ -470,8 +470,7 @@ void createChecksum(char * buffer) {
 /*
 checks can be tuned and ellaborated upon individually.
 each sentence has a checksum that is for checking if the payload is more or less intact, while in contrast checks below are for
-sanitizing each element of a sentence. thorough testing is required to ensure no false negatives are encountered but its worth
-the extra work, rather than assuming all elements will be what we expect every time.
+sanitizing each element of a sentence. thorough testing is required to ensure no false negatives/positives.
 */
 
 
