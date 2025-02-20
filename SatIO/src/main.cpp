@@ -260,57 +260,19 @@ struct systemStruct {
 };
 systemStruct systemData;
 
-
-signed int yaw_min = 0;     signed int yaw_max = 360;
-signed int pitch_min = -90; signed int pitch_max = 90;
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: DEBUG
 
 struct sysDebugStruct {
-  bool gngga_sentence = false;    // enables/disables itemized sentence value output after processing
-  bool gnrmc_sentence = false;    // enables/disables itemized sentence value output after processing
-  bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
-  bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
+  bool gngga_sentence = false;   // enables/disables itemized sentence value output after processing
+  bool gnrmc_sentence = false;   // enables/disables itemized sentence value output after processing
+  bool gpatt_sentence = false;   // enables/disables itemized sentence value output after processing
+  bool serial_0_sentence = true; // enables/disables itemized command values output after processing
   
-  bool validation = false;        // enables/disables data validation such as checksum, length and type checking
-  bool verbose_file = true;       // provide more information about files being loaded/saved/etc.
+  bool validation = false;  // enables/disables data validation such as checksum, length and type checking
+  bool verbose_file = true; // provide more information about files being loaded/saved/etc.
 };
 sysDebugStruct sysDebugData;
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     DATA: MENU
-
-struct menuStruct {
-  char input[100];                 // char array input by user
-  signed int numpad_key = -1;      // allows numpad to differentiate between values
-  int page = 0;                    // currently displayed page
-  int backpage = 0;                // page we would like to return to after current page
-  int previous_page = 0;           // a page different from backpage, as should be distintly previous page
-  int matrix_select = 0;           // index matrix switch
-  int matrix_function_select = 0;  // index available functions for matrix switch
-  int function_index = 0;          // index function for matrix switch
-  int matrix_filenames_index = 0;  // index available matrix files
-};
-menuStruct menuData;
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DATA: SERIAL 0
-
-struct Serial0Struct {
-  unsigned long nbytes;                // number of bytes read by serial
-  unsigned long iter_token;            // count token iterations
-  char BUFFER[2000];                   // serial buffer
-  char * token = strtok(BUFFER, ",");  // token pointer 
-  char data_0[56];                     // value placeholder
-  char data_1[56];                     // value placeholder
-  char data_2[56];                     // value placeholder
-  char data_3[56];                     // value placeholder
-  char data_4[56];                     // value placeholder
-  char data_5[56];                     // value placeholder
-  char data_6[56];                     // value placeholder
-};
-Serial0Struct serial0Data;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DATA: SERIAL 1
@@ -324,7 +286,6 @@ struct Serial1Struct {
   bool gngga_bool = false;             // has sentence been collected
   bool gnrmc_bool = false;             // has sentence been collected
   bool gpatt_bool = false;             // has sentence been collected
-  bool rtc_bool = false;
 };
 Serial1Struct serial1Data;
 
@@ -337,8 +298,8 @@ struct SerialLinkStruct {
   char char_i_sync[56];
   bool syn = false;
   bool data = false;
-  char BUFFER[2000];           // read incoming bytes into this buffer
-  char BUFFER1[2000];               // buffer refined using ETX
+  char BUFFER[2000];
+  char BUFFER1[2000];
   unsigned long nbytes;
   unsigned long TOKEN_i;
   int i_token = 0;
@@ -3668,131 +3629,6 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              MATRIX: SET ENTRY
-
-/*
-updates a matrix entry over serial.
-example test command: $MATRIX_SET_ENTRY,0,0,SatelliteCountOver,1,0,0
-*/
-
-void matrix_object_set_entry() {
-  Serial.println("[matrix_object_set_entry] connected");
-  memset(serial0Data.data_0, 0, 56);
-  memset(serial0Data.data_1, 0, 56);
-  memset(serial0Data.data_2, 0, 56);
-  memset(serial0Data.data_3, 0, 56);
-  memset(serial0Data.data_4, 0, 56);
-  memset(serial0Data.data_5, 0, 56);
-  serial0Data.iter_token = 0;
-  serial0Data.token = strtok(serial0Data.BUFFER, ",");
-  while( serial0Data.token != NULL ) {
-    if      (serial0Data.iter_token == 0) {}
-    else if (serial0Data.iter_token == 1) {strcpy(serial0Data.data_0, serial0Data.token);} // rn
-    else if (serial0Data.iter_token == 2) {strcpy(serial0Data.data_1, serial0Data.token);} // fn
-    else if (serial0Data.iter_token == 3) {strcpy(serial0Data.data_2, serial0Data.token);} // function
-    else if (serial0Data.iter_token == 4) {strcpy(serial0Data.data_3, serial0Data.token);} // x
-    else if (serial0Data.iter_token == 5) {strcpy(serial0Data.data_4, serial0Data.token);} // y
-    else if (serial0Data.iter_token == 6) {strcpy(serial0Data.data_5, serial0Data.token);} // z
-    serial0Data.token = strtok(NULL, ",");
-    serial0Data.iter_token++;
-  }
-  if (sysDebugData.serial_0_sentence == true) {
-    Serial.println("[serial0Data.data_0] "         + String(serial0Data.data_0));
-    Serial.println("[serial0Data.data_1] "         + String(serial0Data.data_1));
-    Serial.println("[serial0Data.data_2] "         + String(serial0Data.data_2));
-    Serial.println("[serial0Data.data_3] "         + String(serial0Data.data_3));
-    Serial.println("[serial0Data.data_4] "         + String(serial0Data.data_4));
-    Serial.println("[serial0Data.data_5] "         + String(serial0Data.data_5));
-  }
-  char *ptr;
-  // set function
-  strcpy(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)], serial0Data.data_2);
-  // set function value x
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]=strtod(serial0Data.data_3, &ptr);
-  // set function value x
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]=strtod(serial0Data.data_4, &ptr);
-  // set function value z
-  matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]=strtod(serial0Data.data_5, &ptr);
-  Serial.println("[Mi] " +String(serial0Data.data_0));
-  Serial.println("[Fi] " +String(serial0Data.data_1));
-  Serial.println("[Fn] " +String(matrixData.matrix_function[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)]));
-  Serial.println("[X] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][0]));
-  Serial.println("[Y] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][1]));
-  Serial.println("[Z] " +String(matrixData.matrix_function_xyz[atoi(serial0Data.data_0)][atoi(serial0Data.data_1)][2]));
-}
-
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   MATRIX: ENABLE/DISABLE ENTRY
-
-/*
-updates a matrix entry over serial.
-*/
-
-void matriobject_set_enabled(bool b) {
-  Serial.println("[matriobject_set_enabled] connected");
-  memset(serial0Data.data_0, 0, 56);
-  serial0Data.iter_token = 0;
-  serial0Data.token = strtok(serial0Data.BUFFER, ",");
-  while( serial0Data.token != NULL ) {
-    if      (serial0Data.iter_token == 0) {}
-    else if (serial0Data.iter_token == 1) {strcpy(serial0Data.data_0, serial0Data.token);} // 0/1
-    serial0Data.token = strtok(NULL, ",");
-    serial0Data.iter_token++;
-  }
-  if (sysDebugData.serial_0_sentence == true) {
-    Serial.println("[serial0Data.data_0] "         + String(serial0Data.data_0));
-  }
-  matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)] = b; // set enable/disable
-  Serial.println(
-    "[R] " +
-    String(serial0Data.data_0) +
-    " [E] " +
-    String(matrixData.matrix_switch_enabled[0][atoi(serial0Data.data_0)]));
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            MATRIX: DISABLE ALL
-
-/*
-disable all matrix entries. does not turn matrices off. this allows for overriding a matrix switch without deactivating.
-automatically deactivating a matrix when a matrix is made disabled should be carefully added as a feature and is differnt from
-automatically/manually enabling/disabling. 
-this is explicitly disable matrix switch from automatically activating/deactivating.
-*/
-void matrix_disable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=0;}}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             MATRIX: ENABLE ALL
-
-
-/*
-enable all matrix entries. does not directly turn matrix switches on, instead enables matrix switch to automatically
-activate/deactivate.
-*/
-void matrix_enable_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_enabled[0][Mi]=1;}}
-
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                         MATRIX: ALL MATRIX OFF
-
-// turn all matrix switches off. recommended to first disable matrix switches from being automatically activated/deactivated.
-void matrix_deactivate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=0;}}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          MATRIX: ALL MATRIX ON
-
-// turn all matrix switches on. recommended to first disable matrix switches from being automatically activated/deactivated.
-void matrix_activate_all() {for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {matrixData.matrix_switch_state[0][Mi]=1;}}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                     SATIO: CONVERT COORDINATES
-
-// enable/disable coordinate conversion. performance/efficiency as required.
-void satio_convert_coordinates_on()  {satData.convert_coordinates = true;}
-void satio_convert_coordinates_off() {satData.convert_coordinates = false;}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   MATRIX FUNCTIONS: PRIMITIVES
 
 /*
@@ -5674,103 +5510,6 @@ void matrixSwitch() {
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {
       Serial.println(matrixData.matrix_sentence);
-    }
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     READ RXD 0
-
-void readSerialCommands() {
-    
-  if (Serial.available() > 0) {
-    
-    memset(serial0Data.BUFFER, 0, 2000);
-    serial0Data.nbytes = (Serial.readBytesUntil('\n', serial0Data.BUFFER, sizeof(serial0Data.BUFFER)));
-    // Serial.println(serial0Data.nbytes); // debug
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                          MATRIX: SET ENTRY
-
-    if (strncmp(serial0Data.BUFFER, "$MATRIX_SET_ENTRY", 17) == 0) {
-      matrix_object_set_entry();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               MATRIX: ENABLE/DISABLE ENTRY
-
-    else if (strncmp(serial0Data.BUFFER, "$MATRIX_ENABLE_ENTRY", 19) == 0) {
-      matriobject_set_enabled(true);
-    }
-
-    else if (strncmp(serial0Data.BUFFER, "$MATRIX_DISABLE_ENTRY", 21) == 0) {
-      matriobject_set_enabled(false);
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                        MATRIX: DISABLE ALL
-
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_DISABLE_ALL") == 0) {
-      matrix_disable_all();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                         MATRIX: ENABLE ALL
-
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_ENABLE_ALL") == 0) {
-      matrix_enable_all();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                 MATRIX: TURN ALL matrix ON
-
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_ON") == 0) {
-      matrix_activate_all();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                MATRIX: TURN ALL matrix OFF
-
-    else if (strcmp(serial0Data.BUFFER, "$MATRIX_matrix_ALL_OFF") == 0) {
-      matrix_deactivate_all();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                           SDCARD: SERIAL PRINT MATRIX FILE
-
-    else if (strcmp(serial0Data.BUFFER, "$SDCARD_READ_MATRIX") == 0) {
-      sdcard_read_to_serial(SD, sdcardData.matrix_filepath);
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                              SDCARD: SAVE MATRIX TO SDCARD
-
-    else if (strcmp(serial0Data.BUFFER, "$SDCARD_SAVE_MATRIX") == 0) {
-      sdcard_save_matrix(SD, sdcardData.matrix_filepath);
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                            SDCARD: LOAD MATRIX FROM SDCARD
-
-    else if (strcmp(serial0Data.BUFFER, "$SDCARD_LOAD_MATRIX") == 0) {
-      sdcard_load_matrix(SD, sdcardData.matrix_filepath);
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                 SATIO: CONVERT COORDINATES
-
-    else if (strcmp(serial0Data.BUFFER, "$SATIO_CONVERT_COORDINATES_ON") == 0) {
-      satio_convert_coordinates_on();
-    }
-    else if (strcmp(serial0Data.BUFFER, "$SATIO_CONVERT_COORDINATES_OFF") == 0) {
-      satio_convert_coordinates_off();
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                            UNKNOWN COMMAND
-
-    else {
-      Serial.println("[unknown] " + String(serial0Data.BUFFER));
     }
   }
 }
