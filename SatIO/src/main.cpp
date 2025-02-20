@@ -156,6 +156,26 @@ void setMultiplexChannel_CD74HC4067(int channel) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                           VSPI
+
+void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
+  //added begin/end vspi device functions for switching between SPI devices on the same bus.
+  /*
+  ESP32 default VSPI pins: SCLK=18, MISO=19, MOSI=23, SS=26
+  ESP32 default HSPI pins: SCLK=14, MISO=12, MOSI=13, SS=15
+  Devices sharing a bus require seperate CS/SS pin and may require seperate MISO pin.
+  */
+  SPI.begin(SCLK, MISO, MOSI, SS);
+  digitalWrite(SS, LOW);
+}
+
+void endVSPIDevice(int SS) {
+  SPI.end();
+  digitalWrite(SS, HIGH);
+}
+
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
 
 /*
@@ -211,12 +231,14 @@ SPIClass sdspi = SPIClass(VSPI);
 
 struct systemStruct {
   bool overload = false;
+  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
+
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
   bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
   bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
   bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
   bool matrix_enabled = false;         // enables/disables matrix switch
-  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
+
   bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
   bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
@@ -251,6 +273,7 @@ struct sysDebugStruct {
   bool gnrmc_sentence = false;    // enables/disables itemized sentence value output after processing
   bool gpatt_sentence = false;    // enables/disables itemized sentence value output after processing
   bool serial_0_sentence = true;  // enables/disables itemized command values output after processing
+  
   bool validation = false;        // enables/disables data validation such as checksum, length and type checking
   bool verbose_file = true;       // provide more information about files being loaded/saved/etc.
 };
