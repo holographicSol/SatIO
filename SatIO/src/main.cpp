@@ -229,7 +229,7 @@ SPIClass sdspi = SPIClass(VSPI);
 //                                                                                                                   DATA: SYSTEM
 
 struct systemStruct {
-  bool overload = false;
+  bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
 
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
