@@ -6014,7 +6014,7 @@ void readGPS(void * pvParameters) {
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
       /* 
-      this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300 once every 100ms.
+      this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms.
        */
 
       for (i_gps = 0; i_gps < 10; i_gps++) {
@@ -6337,7 +6337,7 @@ void loop() {
   must not be altered while instructing port controller. this must be true
   while also instructing port controller every loop and while not blocking
   the loop so that we can utilize the port controller for other instructions
-  and do other things if needed until gps data is ready. the wtgps300 outputs
+  and do other things if needed until gps data is ready. the WTGPSs300P outputs
   each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
   milliseconds.
   */
