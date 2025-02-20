@@ -293,11 +293,6 @@ Serial1Struct serial1Data;
 //                                                                                                             SERIAL LINK STRUCT
 
 struct SerialLinkStruct {
-  int i_nbytes;
-  long i_sync;
-  char char_i_sync[56];
-  bool syn = false;
-  bool data = false;
   char BUFFER[2000];
   char BUFFER1[2000];
   unsigned long nbytes;
@@ -321,16 +316,6 @@ SerialLinkStruct SerialLink;
 struct SDCardStruct {
   bool is_writing = false;
   bool is_reading = false;
-  bool sdcard_mount_bool = false;
-  bool sdcard_attached_bool = false;
-  uint8_t card_type = CARD_NONE;
-  char sdcard_types[1][4][56] = {
-    "NONE",
-    "MMC",
-    "SD",
-    "SDHC"
-  };
-  uint64_t card_size = 0;
   int max_matrix_filenames = 20;                               // max matrix file names available 
   char matrix_filenames[20][56] = {  
     "", "", "", "", "",
@@ -343,7 +328,6 @@ struct SDCardStruct {
   char matrix_filepath[56] = "";                               // current matrix filepath
   char tempmatrixfilepath[56];                                 // used for laoding filepaths
   char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};            // root dirs
-  unsigned long nbytes;                                        // number of bytes read
   unsigned long iter_token;                                    // count token iterations
   char BUFFER[2048];                                           // buffer
   String SBUFFER;                                              // String buffer
@@ -362,11 +346,6 @@ struct SDCardStruct {
   char tag_0[56] = "r";                                        // file line tag
   char tag_1[56] = "e";                                        // file line tag
   File current_file;                                           // file currently handled
-  int initialization_interval = 5000;
-  int sdcard_check_interval = 5000;
-  long last_initialization_time = 0;
-  long last_sdcard_check_time = 0;
-  bool initialization_flag = false;
 };
 SDCardStruct sdcardData;
 
@@ -381,9 +360,6 @@ struct TimeStruct {
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
-  int i_accumukate_time_taken;
-  int accumukate_time_taken;
-  long main_seconds_0;
 };
 TimeStruct timeData;
 
