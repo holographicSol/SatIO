@@ -1352,7 +1352,7 @@ struct MatrixStruct {
 
   // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
   char matrix_function[20][10][100] = {
-    {"$SecondsTimer", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
+    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
      },
