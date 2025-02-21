@@ -1481,10 +1481,8 @@ struct MatrixStruct {
     },
   };
 
-  /*
-  the following list is for function selection in user interface. the values in this list should be exactly equal to the values below this list and
-  in the intention soon is to only use this list for function name values. 
-  */
+  /* function names for function name matrix */
+
   // number of available function names that can be used to program a matrix switch
   int max_matrix_function_names = 222;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
