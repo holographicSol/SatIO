@@ -1482,16 +1482,9 @@ struct MatrixStruct {
   };
 
   /*
-  before migrating to pure array of char arrays (migrating to array of char arrays should require a array of char arraays who's order will not change, to prevent the need to reorder/refactor index access(s)).
-  this array of char arrays is populated and programmatically unused until programmable functions and order of programmable functions are satisfactory.
-  before ready:
-  RAM:   [==        ]  20.9% (used 68404 bytes from 327680 bytes)
-  Flash: [======    ]  55.9% (used 732641 bytes from 1310720 bytes)#
-  after ready:
-  RAM:   [==        ]  19.2% (used 62852 bytes from 327680 bytes)
-  Flash: [======    ]  55.5% (used 727145 bytes from 1310720 bytes)
+  the following list is for function selection in user interface. the values in this list should be exactly equal to the values below this list and
+  in the intention soon is to only use this list for function name values. 
   */
-
   // number of available function names that can be used to program a matrix switch
   int max_matrix_function_names = 222;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
@@ -1777,329 +1770,6 @@ struct MatrixStruct {
     "PhotoResistor_0_Equal",
     "PhotoResistor_0_Range",
   };
-
-  /*
-  Below are variables in the list above. once the array above has a satisfactory content and order, the variables below will be removed and access to below variables
-  will be replaced by index access to above array.
-  */
-
-  /* false if first or all functions $NONE. true if preceeding functions are populated. */
-  char default_matrix_function[25]         = "$NONE";
-
-  char default_enable_matrix_function[25]  = "$ENABLED";  // always true.
-
-  char OVERLOAD_TRUE[25] = "OVERLOAD_TRUE";
-  char OVERLOAD_FALSE[25] = "OVERLOAD_FALSE";
-
-  /* link matrix switch to another matrix switch (standard). specify x (matrix switch number 0-19) in matrix. */
-  char SwitchLinkTrue[25]                 = "$SWITCHLINKTRUE";
-
-  /* link matrix switch to another matrix switch (inverted). specify x (matrix switch number 0-19) in matrix. */
-  char SwitchLinkFalse[25]                = "$SWITCHLINKFALSE";
-  
-  char SecondsTimer[25] = "SecondsTimer";  // specify x (seconds) in matrix.
-
-  char RTCTimeOver[25]       = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeUnder[25]      = "RTCTimeUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeEqual[25]      = "RTCTimeEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char RTCTimeRange[25]      = "RTCTimeRange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
-
-  char DaySunday[25]    = "DaySunday";     // true for day. takes not further arguments.
-  char DayMonday[25]    = "DayMonday";     // true for day. takes not further arguments.
-  char DayTuesday[25]   = "DayTuesday";    // true for day. takes not further arguments.
-  char DayWednesday[25] = "DayWednesday";  // true for day. takes not further arguments.
-  char DayThursday[25]  = "DayThursday";   // true for day. takes not further arguments.
-  char DayFriday[25]    = "DayFriday";     // true for day. takes not further arguments. 
-  char DaySaturday[25]  = "DaySaturday";   // true for day. takes not further arguments.
-
-  char DateDayX[25]     = "DateDayX";      // specify x in matrix. example: 1 for 1st of the month
-  char DateMonthX[25]   = "DateMonthX";    // specify x in matrix. example: 1 for 1st month of the year
-  char DateYearX[25]    = "DateYearX";     // specify x in matrix. example: 2030 for year 2030.
-
-  // do local time
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                   SATIO DATA
-
-  char DegreesLatGNGGAOver[25]   = "DegreesLatGNGGAOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAUnder[25]  = "DegreesLatGNGGAUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNGGAEqual[25]  = "DegreesLatGNGGAEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNGGAOver[25]   = "DegreesLonGNGGAOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAUnder[25]  = "DegreesLonGNGGAUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNGGAEqual[25]  = "DegreesLonGNGGAEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNGGARange[25]  = "DegreesLatGNGGARange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNGGARange[25]  = "DegreesLonGNGGARange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNGGARanges[25]    = "DegreesGNGGARanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
-
-  char DegreesLatGNRMCOver[25]   = "DegreesLatGNRMCOver";   // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCUnder[25]  = "DegreesLatGNRMCUnder";  // specify x (degrees lat) in matrix.
-  char DegreesLatGNRMCEqual[25]  = "DegreesLatGNRMCEqual";  // specify x (degrees lat) in matrix.
-  char DegreesLonGNRMCOver[25]   = "DegreesLonGNRMCOver";   // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCUnder[25]  = "DegreesLonGNRMCUnder";  // specify x (degrees lon) in matrix.
-  char DegreesLonGNRMCEqual[25]  = "DegreesLonGNRMCEqual";  // specify x (degrees lon) in matrix.
-  char DegreesLatGNRMCRange[25]  = "DegreesLatGNRMCRange";  // specify x (degrees lat) z (meters range) in matrix.
-  char DegreesLonGNRMCRange[25]  = "DegreesLonGNRMCRange";  // specify x (degrees lon) z (meters range) in matrix.
-  char DegreesGNRMCRanges[25]    = "DegreesGNRMCRanges";    // specify x (degrees lat) y (degrees lon) z (meters range) in matrix.
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                   GNGGA DATA
-
-  char UTCTimeGNGGAOver[25]       = "UTCTimeGNGGAOver";        // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAUnder[25]      = "UTCTimeGNGGAUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGAEqual[25]      = "UTCTimeGNGGAEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
-  char UTCTimeGNGGARange[25]      = "UTCTimeGNGGARange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
-
-  char LatGNGGAOver[25]           = "LatGNGGAOver";            // specify x (absolute lat) in matrix.
-  char LonGNGGAOver[25]           = "LonGNGGAOver";            // specify x (absolute lon) in matrix.
-  char LatGNGGAUnder[25]          = "LatGNGGAUnder";           // specify x (absolute lat) in matrix.
-  char LonGNGGAUnder[25]          = "LonGNGGAUnder";           // specify x (absolute lon) in matrix.
-  char LatGNGGAEqual[25]          = "LatGNGGAEqual";           // specify x (absolute lat) in matrix.
-  char LonGNGGAEqual[25]          = "LonGNGGAEqual";           // specify x (absolute lon) in matrix.
-  char LatGNGGARange[25]          = "LatGNGGARange";           // specify x (absolute lat) z (meters range) in matrix.
-  char LonGNGGARange[25]          = "LonGNGGARange";           // specify x (absolute lon) z (meters range) in matrix.
-  
-  /*
-  specify x in matrix.
-  0 : invalid solution; 1 : Single point positioning solution; 2 : Pseudorange difference; 6: Pure inertial navigation solution
-  */
-  char PositioningStatusGNGGA[25] = "PositioningStatusGNGGA";
-  
-  char SatelliteCountOver[25]     = "SatelliteCountOver";      // specify x (satellite number 0+) in matrix.
-  char SatelliteCountUnder[25]    = "SatelliteCountUnder";     // specify x (satellite number 0+) in matrix.
-  char SatelliteCountEqual[25]    = "SatelliteCountEqual";     // specify x (satellite number 0+) in matrix.
-  char SatelliteCountRange[25]    = "SatelliteCountRange";     // specify x (satellite number 0+) in matrix.
-
-  char HemisphereGNGGANorth[25]   = "HemisphereGNGGANorth";    // takes no further arguments.
-  char HemisphereGNGGAEast[25]    = "HemisphereGNGGAEast";     // takes no further arguments.
-  char HemisphereGNGGASouth[25]   = "HemisphereGNGGASouth";    // takes no further arguments.
-  char HemisphereGNGGAWest[25]    = "HemisphereGNGGAWest";     // takes no further arguments.
-
-  char GPSPrecisionOver[25]       = "GPSPrecisionOver";        // specify x (meters) in matrix.
-  char GPSPrecisionUnder[25]      = "GPSPrecisionUnder";       // specify x (meters) in matrix.
-  char GPSPrecisionEqual[25]      = "GPSPrecisionEqual";       // specify x (meters) in matrix.
-  char GPSPrecisionRange[25]      = "GPSPrecisionRange";       // specify x (meters) y (meters) in matrix.
-
-  char AltitudeGNGGAOver[25]      = "AltitudeGNGGAOver";       // specify x (meters) in matrix.
-  char AltitudeGNGGAUnder[25]     = "AltitudeGNGGAUnder";      // specify x (meters) in matrix.
-  char AltitudeGNGGAEqual[25]     = "AltitudeGNGGAEqual";      // specify x (meters) in matrix.
-  char AltitudeGNGGARange[25]     = "AltitudeGNGGARange";      // specify x (meters) y (meters) in matrix.
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                   GNRMC DATA
-
-  char UTCTimeGNRMCOver[25]         = "UTCTimeGNRMCOver";         // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCUnder[25]        = "UTCTimeGNRMCUnder";        // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCEqual[25]        = "UTCTimeGNRMCEqual";        // specify x (hhmmss.ms) in matrix.
-  char UTCTimeGNRMCRange[25]        = "UTCTimeGNRMCRange";        // specify x (hhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
-  
-  char PositioningStatusGNRMCA[25]  = "PositioningStatusGNRMCA";  // A = valid positioning. takes no further arguments.
-  char PositioningStatusGNRMCV[25]  = "PositioningStatusGNRMCV";  // V = invalid positioning. takes no further arguments.
-  
-  char ModeGNRMCA[25]               = "ModeGNRMCA";               // A = autonomous positioning. takes no further arguments.
-  char ModeGNRMCD[25]               = "ModeGNRMCD";               // D = differential. takes no further arguments.
-  char ModeGNRMCE[25]               = "ModeGNRMCE";               // E = estimation. takes no further arguments.
-  char ModeGNRMCN[25]               = "ModeGNRMCN";               // N = invalid data. takes no further arguments.
-  
-  char LatGNRMCOver[25]             = "LatGNRMCOver";             // specify x (absolute lat) in matrix.
-  char LonGNRMCOver[25]             = "LonGNRMCOver";             // specify x (absolute lon) in matrix.
-  char LatGNRMCUnder[25]            = "LatGNRMCUnder";            // specify x (absolute lat) in matrix.
-  char LonGNRMCUnder[25]            = "LonGNRMCUnder";            // specify x (absolute lon) in matrix.
-  char LatGNRMCEqual[25]            = "LatGNRMCEqual";            // specify x (absolute lat) in matrix.
-  char LonGNRMCEqual[25]            = "LonGNRMCEqual";            // specify x (absolute lon) in matrix.
-  char LatGNRMCRange[25]            = "LatGNRMCRange";            // specify x (absolute lat) z (meters range) in matrix.
-  char LonGNRMCRange[25]            = "LonGNRMCRange";            // specify x (absolute lon) z (meters range) in matrix.
-
-  char HemisphereGNRMCNorth[25]     = "HemisphereGNRMCNorth";     // takes no further arguments.
-  char HemisphereGNRMCEast[25]      = "HemisphereGNRMCEast";      // takes no further arguments.
-  char HemisphereGNRMCSouth[25]     = "HemisphereGNRMCSouth";     // takes no further arguments.
-  char HemisphereGNRMCWest[25]      = "HemisphereGNRMCWest";      // takes no further arguments.
-
-  char GroundSpeedGNRMCOver[25]     = "GroundSpeedGNRMCOver";     // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCUnder[25]    = "GroundSpeedGNRMCUnder";    // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCEqual[25]    = "GroundSpeedGNRMCEqual";    // specify x (kilometers/h) in matrix.
-  char GroundSpeedGNRMCRange[25]    = "GroundSpeedGNRMCRange";    // specify x (kilometers/h) y (kilometers/h) in matrix.
-
-  char HeadingGNRMCOver[25]         = "HeadingGNRMCOver";         // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCUnder[25]        = "HeadingGNRMCUnder";        // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCEqual[25]        = "HeadingGNRMCEqual";        // specify x (degrees: 0-360) in matrix.
-  char HeadingGNRMCRange[25]        = "HeadingGNRMCRange";        // specify x (degrees: 0-360) y (degrees: 0-360) in matrix.
-
-  char UTCDateGNRMCOver[25]         = "UTCDateGNRMCOver";         // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCUnder[25]        = "UTCDateGNRMCUnder";        // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCEqual[25]        = "UTCDateGNRMCEqual";        // specify x (ddmmyy) in matrix.
-  char UTCDateGNRMCRange[25]        = "UTCDateGNRMCRange";        // specify x (ddmmyy) y (ddmmyy) in matrix.
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                   GPATT DATA
-
-  /* specify x (0-1) in matrix. 1 : straight driving, 0: turning driving */
-  char LineFlagGPATTEqual[25]     = "LineFlagGPATTEqual";
-
-  /* specify x (0-1) in matrix. 1 : static, 0 : dynamic */
-  char StaticFlagGPATTEqual[25]   = "StaticFlagGPATTEqual";
-
-  /*
-  // specify x (flag) in matrix. 0: Prepare for initialization.
-                                 1: INS converged. Inertial navigation can be started. flag: 01/02
-                                 2: Initial convergence of Inertial Navigation. Inertial navigation can be started. flag: 03/04
-                                 3: Inertial Navigation is converging. Inertial navigation can be started. flag: 03/04
-                                 4. Inertial Navigation convergence complete. Inertial navigation can be started. flag: 03/04
-  */
-  char RunStateFlagGPATTEqual[25] = "RunStateFlagGPATTEqual";
-
-  char INSGPATTEqual[25]          = "INSGPATTEqual";        // specify x (0-1) in matrix. 1 : On, 0 : Off
-
-  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTOver[25]      = "SpeedNumGPATTOver";
-
-  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTUnder[25]     = "SpeedNumGPATTUnder[";
-
-  /* specify x (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTEqual[25]     = "SpeedNumGPATTEqual";
-
-  /* specify x (0-99) y (0-99) in matrix. add one each time, return to zero after reaching 99 */
-  char SpeedNumGPATTRange[25]     = "SpeedNumGPATTRange";
-
-  char MileageGPATTOver[25]       = "MileageGPATTOver";     // specify x (mileage) in matrix.
-  char MileageGPATTUnder[25]      = "MileageGPATTUnder[";   // specify x (mileage) in matrix.
-  char MileageGPATTEqual[25]      = "MileageGPATTEqual";    // specify x (mileage) in matrix.
-  char MileageGPATTRange[25]      = "MileageGPATTRange";    // specify x (mileage) y (mileage) in matrix.
-
-  char GSTDataGPATTOver[25]       = "GSTDataGPATTOver";     // specify x (GST data) in matrix.
-  char GSTDataGPATTUnder[25]      = "GSTDataGPATTUnder[";   // specify x (GST data) in matrix.
-  char GSTDataGPATTEqual[25]      = "GSTDataGPATTEqual";    // specify x (GST data) in matrix.
-  char GSTDataGPATTRange[25]      = "GSTDataGPATTRange";    // specify x (GST data) y (GST data) in matrix.
-
-  char YawGPATTOver[25]           = "YawGPATTOver";         // specify x (yaw -90 -> 90)) in matrix.
-  char YawGPATTUnder[25]          = "YawGPATTUnder[";       // specify x (yaw -90 -> 90) in matrix.
-  char YawGPATTEqual[25]          = "YawGPATTEqual";        // specify x (yaw -90 -> 90) in matrix.
-  char YawGPATTRange[25]          = "YawGPATTRange";        // specify x (yaw -90 -> 90) y (yaw 0-180) in matrix.
-
-  char RollGPATTOver[25]          = "RollGPATTOver";        // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTUnder[25]         = "RollGPATTUnder[";      // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTEqual[25]         = "RollGPATTEqual";       // specify x (roll -90 -> 90) in matrix.
-  char RollGPATTRange[25]         = "RollGPATTRange";       // specify x (roll -90 -> 90) y (roll -90 -> 90) in matrix.
-
-  char PitchGPATTOver[25]         = "PitchGPATTOver";       // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTUnder[25]        = "PitchGPATTUnder[";     // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTEqual[25]        = "PitchGPATTEqual";      // specify x (pitch -90 -> 90) in matrix.
-  char PitchGPATTRange[25]        = "PitchGPATTRange";      // specify x (pitch -90 -> 90) y (pitch -90 -> 90) in matrix.
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                             SIDEREAL PLANETS
-
-  char SunAzimuthRange[25]  = "SunAzimuthRange";           // specify x (0-360) y (0-360) in matrix.
-  char SunAltitudeRange[25] = "SunAltitudeRange";          // specify x (0-90) y (0-90) in matrix.
-  char DayTime[25]   = "DayTime";                          // takes no further arguments.
-  char NightTime[25] = "NightTime";                        // takes no further arguments.
-  char Sunrise[25]   = "Sunrise";                          // takes no further arguments.
-  char Sunset[25]    = "Sunset";                           // takes no further arguments.
-
-  char MoonAzimuthRange[25]  = "MoonAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MoonAltitudeRange[25] = "MoonAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
-  char MoonUp[25]    = "MoonUp";                           // takes no further arguments.
-  char MoonDown[25]  = "MoonDown";                         // takes no further arguments.
-  char Moonrise[25]  = "Moonrise";                         // takes no further arguments.
-  char Moonset[25]   = "Moonset";                          // takes no further arguments.
-  char MoonPhase[25] = "MoonPhase";                        // takes no further arguments.
-
-  char MercuryAzimuthRange[25]  = "MercuryAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char MercuryAltitudeRange[25] = "MercuryAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char MercuryUp[25]    = "MercuryUp";                     // takes no further arguments.
-  char MercuryDown[25]  = "MercuryDown";                   // takes no further arguments.
-  char MercuryRise[25]  = "MercuryRise";                   // takes no further arguments.
-  char MercurySet[25]   = "MercurySet";                    // takes no further arguments.
-
-  char VenusAzimuthRange[25]  = "VenusAzimuthRange";       // specify x (0-360) y (0-360) in matrix.
-  char VenusAltitudeRange[25] = "VenusAltitudeRange";      // specify x (0-90) y (0-90) in matrix.
-  char VenusUp[25]    = "VenusUp";                         // takes no further arguments.
-  char VenusDown[25]  = "VenusDown";                       // takes no further arguments.
-  char VenusRise[25]  = "VenusRise";                       // takes no further arguments.
-  char VenusSet[25]   = "VenusSet";                        // takes no further arguments.
-
-  char MarsAzimuthRange[25]  = "MarsAzimuthRange";         // specify x (0-360) y (0-360) in matrix.
-  char MarsAltitudeRange[25] = "MarsAltitudeRange";        // specify x (0-90) y (0-90) in matrix.
-  char MarsUp[25]    = "MarsUp";                           // takes no further arguments.
-  char MarsDown[25]  = "MarsDown";                         // takes no further arguments.
-  char MarsRise[25]  = "MarsRise";                         // takes no further arguments.       
-  char MarsSet[25]   = "MarsSet";                          // takes no further arguments.
-
-  char JupiterAzimuthRange[25]  = "JupiterAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char JupiterAltitudeRange[25] = "JupiterAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char JupiterUp[25]    = "JupiterUp";                     // takes no further arguments.
-  char JupiterDown[25]  = "JupiterDown";                   // takes no further arguments.
-  char JupiterRise[25]  = "JupiterRise";                   // takes no further arguments.
-  char JupiterSet[25]   = "JupiterSet";                    // takes no further arguments.
-
-  char SaturnAzimuthRange[25]  = "SaturnAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char SaturnAltitudeRange[25] = "SaturnAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
-  char SaturnUp[25]    = "SaturnUp";                       // takes no further arguments.
-  char SaturnDown[25]  = "SaturnDown";                     // takes no further arguments.
-  char SaturnRise[25]  = "SaturnRise";                     // takes no further arguments.
-  char SaturnSet[25]   = "SaturnSet";                      // takes no further arguments.
-
-  char UranusAzimuthRange[25]  = "UranusAzimuthRange";     // specify x (0-360) y (0-360) in matrix.
-  char UranusAltitudeRange[25] = "UranusAltitudeRange";    // specify x (0-90) y (0-90) in matrix.
-  char UranusUp[25]    = "UranusUp";                       // takes no further arguments.
-  char UranusDown[25]  = "UranusDown";                     // takes no further arguments.
-  char UranusRise[25]  = "UranusRise";                     // takes no further arguments.
-  char UranusSet[25]   = "UranusSet";                      // takes no further arguments.
-
-  char NeptuneAzimuthRange[25]  = "NeptuneAzimuthRange";   // specify x (0-360) y (0-360) in matrix.
-  char NeptuneAltitudeRange[25] = "NeptuneAltitudeRange";  // specify x (0-90) y (0-90) in matrix.
-  char NeptuneUp[25]    = "NeptuneUp";                     // takes no further arguments.
-  char NeptuneDown[25]  = "NeptuneDown";                   // takes no further arguments.
-  char NeptuneRise[25]  = "NeptuneRise";                   // takes no further arguments.
-  char NeptuneSet[25]   = "NeptuneSet";                    // takes no further arguments.
-
-  char DHT11_0_H_Under[25] = "DHT11_0_H_Under";
-  char DHT11_0_H_Over[25] = "DHT11_0_H_Over";
-  char DHT11_0_H_Equal[25] = "DHT11_0_H_Equal";
-  char DHT11_0_H_Range[25] = "DHT11_0_H_Range";
-
-  char DHT11_0_C_Under[25] = "DHT11_0_C_Under";
-  char DHT11_0_C_Over[25] = "DHT11_0_C_Over";
-  char DHT11_0_C_Equal[25] = "DHT11_0_C_Equal";
-  char DHT11_0_C_Range[25] = "DHT11_0_C_Range";
-
-  char DHT11_0_F_Under[25] = "DHT11_0_F_Under";
-  char DHT11_0_F_Over[25] = "DHT11_0_F_Over";
-  char DHT11_0_F_Equal[25] = "DHT11_0_F_Equal";
-  char DHT11_0_F_Range[25] = "DHT11_0_F_Range";
-
-  char DHT11_0_HIC_Under[25] = "DHT11_0_HIC_Under";
-  char DHT11_0_HIC_Over[25] = "DHT11_0_HIC_Over";
-  char DHT11_0_HIC_Equal[25] = "DHT11_0_HIC_Equal";
-  char DHT11_0_HIC_Range[25] = "DHT11_0_HIC_Range";
-
-  char DHT11_0_HIF_Under[25] = "DHT11_0_HIF_Under";
-  char DHT11_0_HIF_Over[25] = "DHT11_0_HIF_Over";
-  char DHT11_0_HIF_Equal[25] = "DHT11_0_HIF_Equal";
-  char DHT11_0_HIF_Range[25] = "DHT11_0_HIF_Range";
-
-  
-  char PhotoResistor_0_Under[25] = "PhotoResistor_0_Under";
-  char PhotoResistor_0_Over[25] = "PhotoResistor_0_Over";
-  char PhotoResistor_0_Equal[25] = "PhotoResistor_0_Equal";
-  char PhotoResistor_0_Range[25] = "PhotoResistor_0_Range";
-  
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                VALIDITY DATA
-
-  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";       // returns true or false. takes no further arguments.
-  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";       // returns true or false. takes no further arguments.
-  char GPATTValidChecksum[56] = "GPATTValidChecksum";       // returns true or false. takes no further arguments.
-  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";   // returns true or false. takes no further arguments.
-  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";   // returns true or false. takes no further arguments.
-  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";   // returns true or false. takes no further arguments.
-
-  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";     // returns true or false. takes no further arguments.
-  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";     // returns true or false. takes no further arguments.
-  char GPATTValidCheckData[56] = "GPATTValidCheckData";     // returns true or false. takes no further arguments.
-  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData"; // returns true or false. takes no further arguments.
-  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData"; // returns true or false. takes no further arguments.
-  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData"; // returns true or false. takes no further arguments.
 };
 MatrixStruct matrixData;
 
@@ -4222,95 +3892,95 @@ void matrixSwitch() {
         /*
         perfromance and logic prefers adding functions from position zero else if position zero $NONE then break.
         */
-        if ((strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) && (Fi == 0)) {break;}
+        if ((strcmp(matrixData.matrix_function[Mi][Fi], "$NONE") == 0) && (Fi == 0)) {break;}
 
         /*
         put true in temporary matrix for functions after position zero that are set to $NONE. allows for 1-10 functions to be set.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_matrix_function) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "$NONE") == 0) {
           tmp_matrix[Fi] = 1; count_none_function++;}
 
         /*
         put true in temporary matrix if switch is $ENABLED (different from enabling disabling) regardless of data. if used,
         function name $ENABLED will always return true.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.default_enable_matrix_function) == 0) {tmp_matrix[Fi] = 1;}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "$ENABLED") == 0) {tmp_matrix[Fi] = 1;}
 
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.OVERLOAD_TRUE) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD_TRUE") == 0) {
           tmp_matrix[Fi] = check_bool_true(systemData.overload);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.OVERLOAD_FALSE) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD_FALSE") == 0) {
           tmp_matrix[Fi] = check_bool_false(systemData.overload);}
 
         /*
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
          gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkTrue) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLinkTrue") == 0) {
           tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
           
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SwitchLinkFalse) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLinkFalse") == 0) {
           tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                              TIME DATA
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SecondsTimer) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SecondsTimer") == 0) {
           tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
           }
         
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RTCTimeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySunday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayMonday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTuesday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
           
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayWednesday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayThursday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayFriday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DaySaturday) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday") == 0) {
           if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}}
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateDayX) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX") == 0) {
           tmp_matrix[Fi] = check_equal_true(rtc.now().day(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateMonthX) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateMonthX") == 0) {
           tmp_matrix[Fi] = check_equal_true(rtc.now().month(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DateYearX) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateYearX") == 0) {
           tmp_matrix[Fi] = check_equal_true(rtc.now().year(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
@@ -4320,52 +3990,52 @@ void matrixSwitch() {
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
 
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           
           }
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNGGARanges) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesGNGGARanges") == 0) {
           tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           satData.location_longitude_gngga,
@@ -4376,53 +4046,53 @@ void matrixSwitch() {
         // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
 
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLatGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesLonGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DegreesGNRMCRanges) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesGNRMCRanges") == 0) {
           tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           satData.location_longitude_gnrmc,
@@ -4433,147 +4103,147 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGARange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNGGA) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNGGA") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.solution_status),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SatelliteCountRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGANorth) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGANorth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAEast) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGAEast") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGASouth) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGASouth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNGGAWest) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGAWest") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPSPrecisionRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGAEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.AltitudeGNGGARange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGARange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -4582,317 +4252,317 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNRMC
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCTimeGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LatGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LonGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCNorth) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCNorth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCEast) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCEast") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCSouth) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCSouth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HemisphereGNRMCWest) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCWest") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GroundSpeedGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.HeadingGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UTCDateGNRMCRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PositioningStatusGNRMCA) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNRMCA") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi],matrixData.PositioningStatusGNRMCV) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNRMCV") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCA) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCA") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCD) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCD") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCE) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCE") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.ModeGNRMCN) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCN") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);
           }
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GPATT
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PitchGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.roll),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.roll),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RollGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.YawGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GSTDataGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MileageGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTOver) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTUnder) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }  
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SpeedNumGPATTRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.LineFlagGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LineFlagGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.INSGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.RunStateFlagGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RunStateFlagGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.StaticFlagGPATTEqual) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "StaticFlagGPATTEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
@@ -4901,80 +4571,80 @@ void matrixSwitch() {
         //                                                                                                     SIDEREAL TIME: SUN
 
         // sun azimuth:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
         // sun altitude:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SunAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
         // daytime: current time in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DayTime) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTime") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
 
         // nighttime: current time not in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NightTime) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NightTime") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.sun_r,
           siderealPlanetData.sun_s);
           }
 
         // sunrise time less than current time: true after sunrise until midnight
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunrise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunrise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         // sunset time less than current time: true after sunset until midnight                                                                  
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Sunset) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunset") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                 SIDEREAL TIME: MOON
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonrise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonrise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Moonset) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonset") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.moon_r,
           siderealPlanetData.moon_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.moon_r,
           siderealPlanetData.moon_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MoonPhase) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhase") == 0) {
           tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
@@ -4982,35 +4652,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: MERCURY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercurySet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercurySet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mercury_r,
           siderealPlanetData.mercury_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MercuryDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mercury_r,
           siderealPlanetData.mercury_s);
@@ -5019,35 +4689,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                SIDEREAL TIME: VENUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.venus_r, 
           siderealPlanetData.venus_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.VenusDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.venus_r,
           siderealPlanetData.venus_s);
@@ -5056,35 +4726,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                 SIDEREAL TIME: MARS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mars_r,
           siderealPlanetData.mars_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.MarsDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.mars_r,
           siderealPlanetData.mars_s);
@@ -5093,35 +4763,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: JUPITER
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.jupiter_r,
           siderealPlanetData.jupiter_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.JupiterDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.jupiter_r,
           siderealPlanetData.jupiter_s);
@@ -5130,35 +4800,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                               SIDEREAL TIME: SATURN
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.saturn_r,
           siderealPlanetData.saturn_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.SaturnDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.saturn_r,
           siderealPlanetData.saturn_s);
@@ -5167,35 +4837,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                               SIDEREAL TIME: URANUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.uranus_r,
           siderealPlanetData.uranus_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.UranusDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.uranus_r,
           siderealPlanetData.uranus_s);
@@ -5204,35 +4874,35 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: NEPTUNE
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAzimuthRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzimuthRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneAltitudeRange) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAltitudeRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneRise) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneRise") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneSet) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneSet") == 0) {
           tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s,
             hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()));
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneUp) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneUp") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.neptune_r,
           siderealPlanetData.neptune_s);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.NeptuneDown) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneDown") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
           siderealPlanetData.neptune_r,
           siderealPlanetData.neptune_s);
@@ -5240,22 +4910,22 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.dht11_h_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.dht11_h_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_H_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_h_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5263,22 +4933,22 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        DHT11_0 CELSIUS
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.dht11_c_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.dht11_c_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.dht11_c_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_C_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_c_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5286,22 +4956,22 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     DHT11_0 FAHRENHEIT
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.dht11_f_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.dht11_f_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.dht11_f_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_F_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_f_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5309,22 +4979,22 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                             DHT11_0 HEAT INDEX CELSIUS
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.dht11_hic_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.dht11_hic_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hic_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIC_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hic_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5332,22 +5002,22 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.dht11_hif_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.dht11_hif_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hif_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.DHT11_0_HIF_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hif_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5356,22 +5026,22 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        PHOTO RESISTORS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Under) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Over) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Equal) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.PhotoResistor_0_Range) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5380,29 +5050,29 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidChecksum) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidChecksum") == 0) {
           tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAInvalidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCValidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNRMCInvalidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTValidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GPATTInvalidCheckData) == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCheckData") == 0) {
           tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
 
