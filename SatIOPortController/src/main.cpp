@@ -31,9 +31,6 @@ ATMEGA2560 SCL 21 -> ESP32 5
 #include <TimeLib.h>
 #include <CD74HC4067.h>
 
-#define INTERRUPT_ATMEGA_0 20 // SDA (ready for i2C communication between atmega2560 and esp32 because i2c com will trigger interrupt events)
-#define INTERRUPT_ATMEGA_1 21 // SCL (ready for i2C communication between atmega2560 and esp32 because i2c com will trigger interrupt events)
-
 #define LEDSATSIGNALR 51
 #define LEDSATSIGNALG 52
 #define LEDSATSIGNALB 53
@@ -82,21 +79,9 @@ signed int tmp_matrix_port_map[1][20] = {
 //                                                                                                             SERIAL LINK STRUCT
 
 struct SerialLinkStruct {
-  signed int i_nbytes;
-  long i_sync;
-  char char_i_sync[56];
-  bool syn = false;
-  bool data = false;
   char BUFFER[MAX_BUFF];        // read incoming bytes into this buffer
   char TMP[MAX_BUFF];           // buffer refined using ETX
   signed int nbytes;
-  unsigned long T0_RXD_1 = 0;   // hard throttle current time
-  unsigned long T1_RXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_RXD_1 = 0;   // hard throttle interval
-  unsigned long T0_TXD_1 = 0;   // hard throttle current time
-  unsigned long T1_TXD_1 = 0;   // hard throttle previous time
-  unsigned long TT_TXD_1 = 10;  // hard throttle interval
-  unsigned long TOKEN_i;
   int i_token = 0;
   char * token;
   bool validation = false;
@@ -111,16 +96,8 @@ struct SerialLinkStruct {
 SerialLinkStruct SerialLink;
 
 struct TimeStruct {
-  double seconds;                      // seconds accumulated since startup
   double mainLoopTimeTaken;            // current main loop time
   unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
-  unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
-  unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
-  unsigned long t0;                    // micros time 0
-  unsigned long t1;                    // micros time 1
-  int i_accumukate_time_taken;
-  int accumukate_time_taken;
-  long main_seconds_0;
 };
 TimeStruct timeData;
 
@@ -201,10 +178,6 @@ void setup() {
     pinMode(matrix_port_map[0][i], OUTPUT);
     digitalWrite(matrix_port_map[0][i], LOW);
   }
-
-  // interrupts
-  pinMode(INTERRUPT_ATMEGA_0, INPUT_PULLUP);
-  pinMode(INTERRUPT_ATMEGA_1, INPUT_PULLUP);
 
   // satellite signal indicator
   pinMode(LEDSATSIGNALR, OUTPUT);
@@ -363,7 +336,7 @@ void readRXD1() {
         if (strncmp(SerialLink.BUFFER, "$MATRIX", 7) == 0) {
           // Note: if adding/removing tokens from the sending side then change the value below compared to nbytes
           if (SerialLink.nbytes == 116) {
-            SerialLink.TOKEN_i = 0;
+            SerialLink.i_token = 0;
             // get tag token
             SerialLink.token = strtok(SerialLink.TMP, ",");
             // parse matrix sentence
@@ -441,7 +414,7 @@ void loop() {
   if (SerialLink.validation==true) {satIOPortController();}
 
   timeData.mainLoopTimeTaken = millis() - timeData.mainLoopTimeStart;  // store time taken to complete
-  // Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
+  Serial.print("[looptime] "); Serial.println(timeData.mainLoopTimeTaken);
 
   delay(10);
 }

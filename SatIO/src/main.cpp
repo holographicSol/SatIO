@@ -255,8 +255,8 @@ struct systemStruct {
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
 
-  char translate_enable_bool[2][56] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
-  char translate_plus_minus[2][56]  = {"+", "-"};              // bool used as index selects bool translation
+  char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
+  char translate_plus_minus[2][2]  = {"+", "-"};              // bool used as index selects bool translation
 };
 systemStruct systemData;
 
@@ -340,11 +340,11 @@ struct SDCardStruct {
   char data_5[56];                                             // value placeholder
   char data_6[56];                                             // value placeholder
   char data_7[56];                                             // value placeholder
-  char file_data[256];                                         // buffer
+  char file_data[56];                                          // buffer
   char delim[2] = ",";                                         // delimiter char
-  char tmp[256];                                               // buffer
-  char tag_0[56] = "r";                                        // file line tag
-  char tag_1[56] = "e";                                        // file line tag
+  char tmp[4];                                                 // buffer
+  char tag_0[4] = "r";                                         // file line tag
+  char tag_1[4] = "e";                                         // file line tag
   File current_file;                                           // file currently handled
 };
 SDCardStruct sdcardData;
@@ -1305,10 +1305,8 @@ struct MatrixStruct {
   int matrix_active_i = 0;        // count how many matrx switches are active
   int matrix_inactive_i = 0;      // count how many matrx switches are inactive
 
-  char temp[2000];                     // a general place to store temporary chars relative to MatrixStruct
-  char matrix_sentence[2000];  // an NMEA inspired sentence reflecting matrix switch states  
-  char checksum_str[56];               // placeholder for char checksum relative to MatrixStruct
-  char checksum[56];                      // placeholder for int checksum relative to MatrixStruct
+  char temp[256];                 // a general place to store temporary chars relative to MatrixStruct
+  char matrix_sentence[256];      // an NMEA inspired sentence reflecting matrix switch states  
 
   // reflects matrix switch active/inactive states each loop of matrix switch function
   bool matrix_switch_state[1][20] = {
@@ -1351,7 +1349,7 @@ struct MatrixStruct {
   // };
 
   // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
-  char matrix_function[20][10][100] = {
+  char matrix_function[20][10][25] = {
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
      },
     {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
@@ -1483,22 +1481,38 @@ struct MatrixStruct {
     },
   };
 
+  /*
+  before migrating to pure array of char arrays (migrating to array of char arrays should require a array of char arraays who's order will not change, to prevent the need to reorder/refactor index access(s)).
+  this array of char arrays is populated and programmatically unused until programmable functions and order of programmable functions are satisfactory.
+  before ready:
+  RAM:   [==        ]  20.9% (used 68404 bytes from 327680 bytes)
+  Flash: [======    ]  55.9% (used 732641 bytes from 1310720 bytes)#
+  after ready:
+  RAM:   [==        ]  19.2% (used 62852 bytes from 327680 bytes)
+  Flash: [======    ]  55.5% (used 727145 bytes from 1310720 bytes)
+  */
+
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 226;
+  int max_matrix_function_names = 222;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[226][25] = 
+  char matrix_function_names[222][25] = 
   {
     "$NONE",
     "$ENABLED",
+
     "$OVERLOAD_TRUE",
     "$OVERLOAD_FALSE",
+
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
+
     "SecondsTimer",
+
     "RTCTimeOver",
     "RTCTimeUnder",
     "RTCTimeEqual",
     "RTCTimeRange",
+
     "DaySunday",
     "DayMonday",
     "DayTuesday",
@@ -1506,136 +1520,176 @@ struct MatrixStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
+
     "DateDayX",
     "DateMonthX",
     "DateYearX",
+    
     "DegreesLatGNGGAOver",
-    "DegreesLonGNGGAOver",
     "DegreesLatGNGGAUnder",
-    "DegreesLonGNGGAUnder",
     "DegreesLatGNGGAEqual",
+    "DegreesLatGNGGARange",
+
+    "DegreesLonGNGGAOver",
+    "DegreesLonGNGGAUnder",
     "DegreesLonGNGGAEqual",
     "DegreesLonGNGGARange",
-    "DegreesLatGNGGARange",
     "DegreesGNGGARanges",
+
     "DegreesLatGNRMCOver",
-    "DegreesLonGNRMCOver",
     "DegreesLatGNRMCUnder",
-    "DegreesLonGNRMCUnder",
-    "DegreesLatGNRMCEqual",
-    "DegreesLonGNRMCEqual",
     "DegreesLatGNRMCRange",
+    "DegreesLatGNRMCEqual",
+    
+    "DegreesLonGNRMCOver",
+    "DegreesLonGNRMCUnder",
+    "DegreesLonGNRMCEqual",
     "DegreesLonGNRMCRange",
     "DegreesGNRMCRanges",
+
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
+
     "LatGNGGAOver",
-    "LonGNGGAOver",
     "LatGNGGAUnder",
-    "LonGNGGAUnder",
     "LatGNGGAEqual",
-    "LonGNGGAEqual",
     "LatGNGGARange",
+
+    "LonGNGGAOver",
+    "LonGNGGAUnder",
+    "LonGNGGAEqual",
     "LonGNGGARange",
+
     "PositioningStatusGNGGA",
+
     "SatelliteCountOver",
     "SatelliteCountUnder",
     "SatelliteCountEqual",
     "SatelliteCountRange",
+
     "HemisphereGNGGANorth",
     "HemisphereGNGGASouth",
     "HemisphereGNGGAEast",
     "HemisphereGNGGAWest",
+
     "GPSPrecisionOver",
     "GPSPrecisionUnder",
     "GPSPrecisionEqual",
     "GPSPrecisionRange",
+
     "AltitudeGNGGAOver",
     "AltitudeGNGGAUnder",
     "AltitudeGNGGAEqual",
     "AltitudeGNGGARange",
+
     "UTCTimeGNRMCOver",
     "UTCTimeGNRMCUnder",
     "UTCTimeGNRMCEqual",
     "UTCTimeGNRMCRange",
+
     "PositioningStatusGNRMCA",
     "PositioningStatusGNRMCV",
+
     "ModeGNRMCA",
     "ModeGNRMCD",
     "ModeGNRMCE",
     "ModeGNRMCN",
+
     "LatGNRMCOver",
-    "LonGNRMCOver",
     "LatGNRMCUnder",
-    "LonGNRMCUnder",
-    "LonGNRMCEqual",
     "LatGNRMCEqual",
     "LatGNRMCRange",
+
+    "LonGNRMCOver",
+    "LonGNRMCUnder",
+    "LonGNRMCEqual",
     "LonGNRMCRange",
+
     "HemisphereGNRMCNorth",
     "HemisphereGNRMCSouth",
     "HemisphereGNRMCEast",
     "HemisphereGNRMCWest",
+
     "GroundSpeedGNRMCOver",
     "GroundSpeedGNRMCUnder",
     "GroundSpeedGNRMCEqual",
     "GroundSpeedGNRMCRange",
+
     "HeadingGNRMCOver",
     "HeadingGNRMCUnder",
     "HeadingGNRMCEqual",
     "HeadingGNRMCRange",
+
     "UTCDateGNRMCOver",
     "UTCDateGNRMCUnder",
     "UTCDateGNRMCEqual",
     "UTCDateGNRMCRange",
+    
     "LineFlagGPATTEqual",
+
     "StaticFlagGPATTEqual",
+
     "RunStateFlagGPATTEqual",
+
     "INSGPATTEqual",
+
     "SpeedNumGPATTOver",
     "SpeedNumGPATTUnder",
     "SpeedNumGPATTEqual",
     "SpeedNumGPATTRange",
+
     "MileageGPATTOver",
     "MileageGPATTUnder",
     "MileageGPATTEqual",
     "MileageGPATTRange",
+
     "GSTDataGPATTOver",
     "GSTDataGPATTUnder",
     "GSTDataGPATTEqual",
     "GSTDataGPATTRange",
+
     "YawGPATTOver",
     "YawGPATTUnder",
     "YawGPATTEqual",
     "YawGPATTRange",
+
     "RollGPATTOver",
     "RollGPATTUnder",
     "RollGPATTEqual",
     "RollGPATTRange",
+
     "PitchGPATTOver",
     "PitchGPATTUnder",
     "PitchGPATTEqual",
     "PitchGPATTRange",
+
     "GNGGAValidChecksum",
     "GNRMCValidChecksum",
     "GPATTValidChecksum",
+
     "GNGGAInvalidChecksum",
     "GNRMCInvalidChecksum",
     "GPATTInvalidChecksum",
+
     "GNGGAValidCheckData",
     "GNRMCValidCheckData",
     "GPATTValidCheckData",
+
     "GNGGAInvalidCheckData",
     "GNRMCInvalidCheckData",
     "GPATTInvalidCheckData",
+
     "SunAzimuthRange",
     "SunAltitudeRange",
+
     "DayTime",
     "NightTime",
+
     "Sunrise",
     "Sunset",
+
     "MoonAzimuthRange",
     "MoonAltitudeRange",
     "MoonUp",
@@ -1643,76 +1697,85 @@ struct MatrixStruct {
     "Moonrise",
     "Moonset",
     "MoonPhase",
+
     "MercuryAzimuthRange",
     "MercuryAltitudeRange",
     "MercuryUp",
     "MercuryDown",
     "MercuryRise",
     "MercurySet",
+
     "VenusAzimuthRange",
     "VenusAltitudeRange",
     "VenusUp",
     "VenusDown",
     "VenusRise",
     "VenusSet",
+
     "MarsAzimuthRange",
     "MarsAltitudeRange",
     "MarsUp",
     "MarsDown",
     "MarsRise",
     "MarsSet",
+
     "JupiterAzimuthRange",
     "JupiterAltitudeRange",
     "JupiterUp",
     "JupiterDown",
     "JupiterRise",
     "JupiterSet",
+
     "SaturnAzimuthRange",
     "SaturnAltitudeRange",
     "SaturnUp",
     "SaturnDown",
     "SaturnRise",
     "SaturnSet",
+
     "UranusAzimuthRange",
     "UranusAltitudeRange",
     "UranusUp",
     "UranusDown",
     "UranusRise",
     "UranusSet",
+
     "NeptuneAzimuthRange",
     "NeptuneAltitudeRange",
     "NeptuneUp",
     "NeptuneDown",
     "NeptuneRise",
     "NeptuneSet",
+
     "DHT11_0_H_Under",
     "DHT11_0_H_Over",
     "DHT11_0_H_Equal",
     "DHT11_0_H_Range",
+
     "DHT11_0_C_Under",
     "DHT11_0_C_Over",
     "DHT11_0_C_Equal",
     "DHT11_0_C_Range",
+
     "DHT11_0_F_Under",
     "DHT11_0_F_Over",
     "DHT11_0_F_Equal",
     "DHT11_0_F_Range",
+
     "DHT11_0_HIC_Under",
     "DHT11_0_HIC_Over",
     "DHT11_0_HIC_Equal",
     "DHT11_0_HIC_Range",
+
     "DHT11_0_HIF_Under",
     "DHT11_0_HIF_Over",
     "DHT11_0_HIF_Equal",
     "DHT11_0_HIF_Range",
+
     "PhotoResistor_0_Under",
     "PhotoResistor_0_Over",
     "PhotoResistor_0_Equal",
     "PhotoResistor_0_Range",
-    "Tracking_0_Under",
-    "Tracking_0_Over",
-    "Tracking_0_Equal",
-    "Tracking_0_Range"
   };
 
   /*
@@ -1736,7 +1799,7 @@ struct MatrixStruct {
   
   char SecondsTimer[25] = "SecondsTimer";  // specify x (seconds) in matrix.
 
-  char RTCTimeOver[25]            = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
+  char RTCTimeOver[25]       = "RTCTimeOver";             // specify x (ddmmyyhhmmss.ms) in matrix.
   char RTCTimeUnder[25]      = "RTCTimeUnder";       // specify x (ddmmyyhhmmss.ms) in matrix.
   char RTCTimeEqual[25]      = "RTCTimeEqual";       // specify x (ddmmyyhhmmss.ms) in matrix.
   char RTCTimeRange[25]      = "RTCTimeRange";       // specify x (ddmmyyhhmmss.ms) y (ddmmyyhhmmss.ms in matrix.
@@ -2020,28 +2083,23 @@ struct MatrixStruct {
   char PhotoResistor_0_Over[25] = "PhotoResistor_0_Over";
   char PhotoResistor_0_Equal[25] = "PhotoResistor_0_Equal";
   char PhotoResistor_0_Range[25] = "PhotoResistor_0_Range";
-
-  char Tracking_0_Under[25] = "Tracking_0_Under";
-  char Tracking_0_Over[25] = "Tracking_0_Over";
-  char Tracking_0_Equal[25] = "Tracking_0_Equal";
-  char Tracking_0_Range[25] = "Tracking_0_Range";
   
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                VALIDITY DATA
 
-  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";        // returns true or false. takes no further arguments.
-  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";        // returns true or false. takes no further arguments.
-  char GPATTValidChecksum[56] = "GPATTValidChecksum";        // returns true or false. takes no further arguments.
-  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";    // returns true or false. takes no further arguments.
-  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";    // returns true or false. takes no further arguments.
-  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";    // returns true or false. takes no further arguments.
+  char GNGGAValidChecksum[56] = "GNGGAValidChecksum";       // returns true or false. takes no further arguments.
+  char GNRMCValidChecksum[56] = "GNRMCValidChecksum";       // returns true or false. takes no further arguments.
+  char GPATTValidChecksum[56] = "GPATTValidChecksum";       // returns true or false. takes no further arguments.
+  char GNGGAInvalidChecksum[56] = "GNGGAInvalidChecksum";   // returns true or false. takes no further arguments.
+  char GNRMCInvalidChecksum[56] = "GNRMCInvalidChecksum";   // returns true or false. takes no further arguments.
+  char GPATTInvalidChecksum[56] = "GPATTInvalidChecksum";   // returns true or false. takes no further arguments.
 
-  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";      // returns true or false. takes no further arguments.
-  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";      // returns true or false. takes no further arguments.
-  char GPATTValidCheckData[56] = "GPATTValidCheckData";      // returns true or false. takes no further arguments.
-  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData";  // returns true or false. takes no further arguments.
-  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData";  // returns true or false. takes no further arguments.
-  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData";  // returns true or false. takes no further arguments.
+  char GNGGAValidCheckData[56] = "GNGGAValidCheckData";     // returns true or false. takes no further arguments.
+  char GNRMCValidCheckData[56] = "GNRMCValidCheckData";     // returns true or false. takes no further arguments.
+  char GPATTValidCheckData[56] = "GPATTValidCheckData";     // returns true or false. takes no further arguments.
+  char GNGGAInvalidCheckData[56] = "GNGGAInvalidCheckData"; // returns true or false. takes no further arguments.
+  char GNRMCInvalidCheckData[56] = "GNRMCInvalidCheckData"; // returns true or false. takes no further arguments.
+  char GPATTInvalidCheckData[56] = "GPATTInvalidCheckData"; // returns true or false. takes no further arguments.
 };
 MatrixStruct matrixData;
 
@@ -2049,26 +2107,24 @@ MatrixStruct matrixData;
 //                                                                                                                    DATA: GNGGA
 
 struct GNGGAStruct {
-  char sentence[2000];
-  char tag[56];                                                                                                            // <0> Log header
-  char utc_time[56];                    unsigned long bad_utc_time_i;              bool bad_utc_time = true;               // <1> UTC time, the format is hhmmss.sss
-  char latitude[56];                    unsigned long bad_latitude_i;              bool bad_latitude = true;               // <2> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];         unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;    // <3> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                   unsigned long bad_longitude_i;             bool bad_longitude = true;              // <4> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];        unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;   // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char solution_status[56];             unsigned long bad_solution_status_i;       bool bad_solution_status = true;            // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
-  char satellite_count_gngga[56] = "0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga = true;  // <7> Number of satellites used
-  char hdop_precision_factor[56];       unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor = true;  // <8> HDOP level precision factor
-  char altitude[56];                    unsigned long bad_altitude_i;              bool bad_altitude = true;               // <9> Altitude
-  char altitude_units[56];              unsigned long bad_altitude_units_i;        bool bad_altitude_units = true;         // <10> 
-  char geoidal[56];                     unsigned long bad_geoidal_i;               bool bad_geoidal = true;                // <11> The height of the earth ellipsoid relative to the geoid 
-  char geoidal_units[56];               unsigned long bad_geoidal_units_i;         bool bad_geoidal_units = true;          // <12> 
-  char differential_delay[56];          unsigned long bad_differential_delay_i;    bool bad_differential_delay = true;     // <13>
-  char id[56];                          unsigned long bad_id_i;                    bool bad_id = true;                     // <14> base station ID
-  char check_sum[56];                   unsigned long bad_check_sum_i;             bool bad_check_sum = true;              // <15> XOR check value of all bytes starting from $ to *
-  int check_data = 0;                   unsigned long bad_checksum_validity;       bool valid_checksum = false;            // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
-  char temporary_data[56];
-  char temporary_data_1[56];
+  char sentence[200];
+  char tag[8];                                                                                                            // <0> Log header
+  char utc_time[8];                     unsigned long bad_utc_time_i;              bool bad_utc_time = true;              // <1> UTC time, the format is hhmmss.sss
+  char latitude[20];                    unsigned long bad_latitude_i;              bool bad_latitude = true;              // <2> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[4];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[20];                   unsigned long bad_longitude_i;             bool bad_longitude = true;             // <4> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[4];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
+  char solution_status[4];              unsigned long bad_solution_status_i;       bool bad_solution_status = true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char satellite_count_gngga[56] = "0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga = true; // <7> Number of satellites used
+  char hdop_precision_factor[56];       unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor = true; // <8> HDOP level precision factor
+  char altitude[56];                    unsigned long bad_altitude_i;              bool bad_altitude = true;              // <9> Altitude
+  char altitude_units[4];               unsigned long bad_altitude_units_i;        bool bad_altitude_units = true;        // <10> 
+  char geoidal[56];                     unsigned long bad_geoidal_i;               bool bad_geoidal = true;               // <11> The height of the earth ellipsoid relative to the geoid 
+  char geoidal_units[4];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units = true;         // <12> 
+  char differential_delay[56];          unsigned long bad_differential_delay_i;    bool bad_differential_delay = true;    // <13>
+  char id[56];                          unsigned long bad_id_i;                    bool bad_id = true;                    // <14> base station ID
+  char check_sum[4];                    unsigned long bad_check_sum_i;             bool bad_check_sum = true;             // <15> XOR check value of all bytes starting from $ to *
+  int check_data = 0;                   unsigned long bad_checksum_validity;       bool valid_checksum = false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
 };
 GNGGAStruct gnggaData;
 
@@ -2095,14 +2151,6 @@ void GNGGA() {
     else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token) == true)                  {memset(gnggaData.geoidal, 0, 56);               strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal = false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal = true;}}
     else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token) == true)            {memset(gnggaData.geoidal_units, 0, 56);         strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units = false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units = true;}}
     else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token) == true)       {memset(gnggaData.differential_delay, 0, 56);    strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay = false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay = true;}}
-    // else if (serial1Data.iter_token ==14) {
-    //   memset(gnggaData.temporary_data, 0, 56);
-    //   strcpy(gnggaData.temporary_data, strtok(serial1Data.token, "*"));
-    //   if (val_basestation_id(gnggaData.temporary_data) == true) {memset(gnggaData.id, 0, 56); strcpy(gnggaData.id, gnggaData.temporary_data); gnggaData.check_data++; gnggaData.bad_id = false;} else {gnggaData.bad_id_i++; gnggaData.bad_id = true;}
-    //   serial1Data.token = strtok(NULL, "*");
-    //   memset(gnggaData.temporary_data_1, 0, 56);
-    //   strcpy(gnggaData.temporary_data_1, strtok(serial1Data.token, "*"));
-    //   if (val_checksum(gnggaData.temporary_data_1) == true) {memset(gnggaData.check_sum, 0, 56); strcpy(gnggaData.check_sum, gnggaData.temporary_data_1); gnggaData.check_data++; gnggaData.bad_check_sum = false;} else {gnggaData.bad_check_sum_i++; gnggaData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -2131,24 +2179,22 @@ void GNGGA() {
 //                                                                                                                    DATA: GNRMC
 
 struct GNRMCStruct {
-  char sentence[2000];
-  char tag[56];                                                                                                                             // <0> Log header
-  char utc_time[56];                       unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                      // <1> UTC time, the format is hhmmss.sss
-  char positioning_status[56];             unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;            // <2> Positioning status, A=effective positioning, V=invalid positioning
-  char latitude[56];                       unsigned long bad_latitude_i;                     bool bad_latitude = true;                      // <3> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];            unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere = true;           // <4> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                      unsigned long bad_longitude_i;                    bool bad_longitude = true;                     // <5> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];           unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere = true;          // <6> Longitude hemisphere, E or W (east longitude or west longitude)
-  char ground_speed[56];                   unsigned long bad_ground_speed_i;                 bool bad_ground_speed = true;                  // <7> Ground speed
-  char ground_heading[56];                 unsigned long bad_ground_heading_i;               bool bad_ground_heading = true;                // <8> Ground heading (take true north as the reference datum)
-  char utc_date[56];                       unsigned long bad_utc_date_i;                     bool bad_utc_date = true;                      // <9> UTC date, the format is ddmmyy (day, month, year)
-  char installation_angle[56];             unsigned long bad_installation_angle_i;           bool bad_installation_angle = true;            // <10> Magnetic declination (000.0~180.0 degrees)
-  char installation_angle_direction[56];   unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction = true;  // <11> Magnetic declination direction, E (east) or W (west)
-  char mode_indication[56];                unsigned long bad_mode_indication_i;              bool bad_mode_indication = true;               // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
-  char check_sum[56];                      unsigned long bad_check_sum_i;                    bool bad_check_sum = true;                     // <13> XOR check value of all bytes starting from $ to *
-  int check_data = 0;                      unsigned long bad_checksum_validity;              bool valid_checksum = false;                   // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
-  char temporary_data[56];
-  char temporary_data_1[56];
+  char sentence[200];
+  char tag[8];                                                                                                                          // <0> Log header
+  char utc_time[8];                     unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                     // <1> UTC time, the format is hhmmss.sss
+  char positioning_status[4];           unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
+  char latitude[20];                    unsigned long bad_latitude_i;                     bool bad_latitude = true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[4];          unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere = true;          // <4> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[20];                   unsigned long bad_longitude_i;                    bool bad_longitude = true;                    // <5> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[4];         unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere = true;         // <6> Longitude hemisphere, E or W (east longitude or west longitude)
+  char ground_speed[56];                unsigned long bad_ground_speed_i;                 bool bad_ground_speed = true;                 // <7> Ground speed
+  char ground_heading[10];              unsigned long bad_ground_heading_i;               bool bad_ground_heading = true;               // <8> Ground heading (take true north as the reference datum)
+  char utc_date[8];                     unsigned long bad_utc_date_i;                     bool bad_utc_date = true;                     // <9> UTC date, the format is ddmmyy (day, month, year)
+  char installation_angle[8];           unsigned long bad_installation_angle_i;           bool bad_installation_angle = true;           // <10> Magnetic declination (000.0~180.0 degrees)
+  char installation_angle_direction[4]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction = true; // <11> Magnetic declination direction, E (east) or W (west)
+  char mode_indication[4];              unsigned long bad_mode_indication_i;              bool bad_mode_indication = true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
+  char check_sum[4];                    unsigned long bad_check_sum_i;                    bool bad_check_sum = true;                    // <13> XOR check value of all bytes starting from $ to *
+  int check_data = 0;                   unsigned long bad_checksum_validity;              bool valid_checksum = false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
 };
 GNRMCStruct gnrmcData;
 
@@ -2172,14 +2218,6 @@ void GNRMC() {
     else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token) == true)                     {memset(gnrmcData.utc_date, 0, 56);                     strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date = false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date = true;}}
     else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token) == true)           {memset(gnrmcData.installation_angle, 0, 56);           strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle = false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle = true;}}
     else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token) == true) {memset(gnrmcData.installation_angle_direction, 0, 56); strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction = false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction = true;}}
-    // else if (serial1Data.iter_token ==12) {
-    //   memset(gnggaData.temporary_data, 0, 56);
-    //   strcpy(gnrmcData.temporary_data, strtok(serial1Data.token, "*"));
-    //   if (val_mode_indication(gnrmcData.temporary_data) == true) {memset(gnrmcData.mode_indication, 0, 56); strcpy(gnrmcData.mode_indication, gnrmcData.temporary_data); gnrmcData.check_data++; gnrmcData.bad_mode_indication = false;} else {gnrmcData.bad_mode_indication_i++; gnrmcData.bad_mode_indication = true;}
-    //   serial1Data.token = strtok(NULL, "*");
-    //   memset(gnggaData.temporary_data_1, 0, 56);
-    //   strcpy(gnrmcData.temporary_data_1, strtok(serial1Data.token, "*"));
-    //   if (val_checksum(gnrmcData.temporary_data_1) == true) {memset(gnrmcData.check_sum, 0, 56); strcpy(gnrmcData.check_sum, gnrmcData.temporary_data_1); gnrmcData.check_data++; gnrmcData.bad_check_sum = false;} else {gnrmcData.bad_check_sum_i++; gnrmcData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -2206,51 +2244,49 @@ void GNRMC() {
 //                                                                                                                    DATA: GPATT
 
 struct GPATTStruct {
-  char sentence[2000];
-  char tag[56];                                                                                       // <0> Log header
-  char pitch[56];            unsigned long bad_pitch_i;            bool bad_pitch = true;             // <1> pitch angle
-  char angle_channel_0[56];  unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;   // <2> P
-  char roll[56];             unsigned long bad_roll_i;             bool bad_roll = true;              // <3> Roll angle
-  char angle_channel_1[56];  unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1 = true;   // <4> R
-  char yaw[56];              unsigned long bad_yaw_i;              bool bad_yaw = true;               // <5> Yaw angle
-  char angle_channel_2[56];  unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2 = true;   // <6> Y
-  char software_version[56]; unsigned long bad_software_version_i; bool bad_software_version = true;  // <7> software verion
-  char version_channel[56];  unsigned long bad_version_channel_i;  bool bad_version_channel = true;   // <8> S
-  char product_id[56];       unsigned long bad_product_id_i;       bool bad_product_id = true;        // <9> Product ID: 96 bit unique ID
-  char id_channel[56];       unsigned long bad_id_channel_i;       bool bad_id_channel = true;        // <10> ID 
-  char ins[56];              unsigned long bad_ins_i;              bool bad_ins = true;               // <11> INS Default open inertial navigation system
-  char ins_channel[56];      unsigned long bad_ins_channel_i;      bool bad_ins_channel = true;       // <12> whether inertial navigation open
-  char hardware_version[56]; unsigned long bad_hardware_version_i; bool bad_hardware_version = true;  // <13> Named after master chip
-  char run_state_flag[56];   unsigned long bad_run_state_flag_i;   bool bad_run_state_flag = true;    // <14> Algorithm status flag: 1->3
-  char mis_angle_num[56];    unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num = true;     // <15> number of Installation
-  char custom_logo_0[56];    unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0 = true;     // <16>
-  char custom_logo_1[56];    unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1 = true;     // <17>
-  char custom_logo_2[56];    unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2 = true;     // <18>
-  char static_flag[56];      unsigned long bad_static_flag_i;      bool bad_static_flag = true;       // <19> 1:Static 0：dynamic
-  char user_code[56];        unsigned long bad_user_code_i;        bool bad_user_code = true;         // <20> 1：Normal user X：Customuser
-  char gst_data[56];         unsigned long bad_gst_data_i;         bool bad_gst_data = true;          // <21> User satellite accuracy
-  char line_flag[56];        unsigned long bad_line_flag_i;        bool bad_line_flag = true;         // <22> 1：straight driving，0：curve driving
-  char custom_logo_3[56];    unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3 = true;     // <23>
-  char mis_att_flag[56];     unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag = true;      // <24> 
-  char imu_kind[56];         unsigned long bad_imu_kind_i;         bool bad_imu_kind = true;          // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
-  char ubi_car_kind[56];     unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind = true;      // <26> 1: small car, 2: big car
-  char mileage[56];          unsigned long bad_mileage_i;          bool bad_mileage = true;           // <27> kilometers: max 9999 kilometers
-  char custom_logo_4[56];    unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4 = true;     // <28>
-  char custom_logo_5[56];    unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5 = true;     // <29>
-  char run_inetial_flag[56]; unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag = true;  // <30> 1->4
-  char custom_logo_6[56];    unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6 = true;     // <31>
-  char custom_logo_7[56];    unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7 = true;     // <32>
-  char custom_logo_8[56];    unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8 = true;     // <33>
-  char custom_logo_9[56];    unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9 = true;     // <34>
-  char speed_enable[56];     unsigned long bad_speed_enable_i;     bool bad_speed_enable = true;      // <35> 
-  char custom_logo_10[56];   unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10 = true;    // <36>
-  char custom_logo_11[56];   unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11 = true;    // <37>
-  char speed_num[56];        unsigned long bad_speed_num_i;        bool bad_speed_num = true;         // <38> 1：fixed setting，0：Self adaptive installation
-  char scalable[56];         unsigned long bad_scalable_i;         bool bad_scalable = true;          // <39> 
-  char check_sum[56];        unsigned long bad_check_sum_i;        bool bad_check_sum = true;         // <40> XOR check value of all bytes starting from $ to *
-  int check_data = 0;        unsigned long bad_checksum_validity;  bool valid_checksum = false;       // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
-  char temporary_data[56];
-  char temporary_data_1[56];
+  char sentence[200];
+  char tag[8];                                                                                       // <0> Log header
+  char pitch[8];             unsigned long bad_pitch_i;            bool bad_pitch = true;            // <1> pitch angle
+  char angle_channel_0[4];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;  // <2> P
+  char roll[8];              unsigned long bad_roll_i;             bool bad_roll = true;             // <3> Roll angle
+  char angle_channel_1[4];   unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1 = true;  // <4> R
+  char yaw[8];               unsigned long bad_yaw_i;              bool bad_yaw = true;              // <5> Yaw angle
+  char angle_channel_2[4];   unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2 = true;  // <6> Y
+  char software_version[10]; unsigned long bad_software_version_i; bool bad_software_version = true; // <7> software verion
+  char version_channel[4];   unsigned long bad_version_channel_i;  bool bad_version_channel = true;  // <8> S
+  char product_id[28];       unsigned long bad_product_id_i;       bool bad_product_id = true;       // <9> Product ID: 96 bit unique ID
+  char id_channel[28];       unsigned long bad_id_channel_i;       bool bad_id_channel = true;       // <10> ID 
+  char ins[4];               unsigned long bad_ins_i;              bool bad_ins = true;              // <11> INS Default open inertial navigation system
+  char ins_channel[4];       unsigned long bad_ins_channel_i;      bool bad_ins_channel = true;      // <12> whether inertial navigation open
+  char hardware_version[28]; unsigned long bad_hardware_version_i; bool bad_hardware_version = true; // <13> Named after master chip
+  char run_state_flag[4];    unsigned long bad_run_state_flag_i;   bool bad_run_state_flag = true;   // <14> Algorithm status flag: 1->3
+  char mis_angle_num[28];    unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num = true;    // <15> number of Installation
+  char custom_logo_0[28];    unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0 = true;    // <16>
+  char custom_logo_1[28];    unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1 = true;    // <17>
+  char custom_logo_2[28];    unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2 = true;    // <18>
+  char static_flag[4];       unsigned long bad_static_flag_i;      bool bad_static_flag = true;      // <19> 1:Static 0：dynamic
+  char user_code[4];         unsigned long bad_user_code_i;        bool bad_user_code = true;        // <20> 1：Normal user X：Customuser
+  char gst_data[8];          unsigned long bad_gst_data_i;         bool bad_gst_data = true;         // <21> User satellite accuracy
+  char line_flag[4];         unsigned long bad_line_flag_i;        bool bad_line_flag = true;        // <22> 1：straight driving，0：curve driving
+  char custom_logo_3[28];    unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3 = true;    // <23>
+  char mis_att_flag[4];      unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag = true;     // <24> 
+  char imu_kind[4];          unsigned long bad_imu_kind_i;         bool bad_imu_kind = true;         // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
+  char ubi_car_kind[4];      unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind = true;     // <26> 1: small car, 2: big car
+  char mileage[56];          unsigned long bad_mileage_i;          bool bad_mileage = true;          // <27> kilometers: max 9999 kilometers
+  char custom_logo_4[28];    unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4 = true;    // <28>
+  char custom_logo_5[28];    unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5 = true;    // <29>
+  char run_inetial_flag[4];  unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag = true; // <30> 1->4
+  char custom_logo_6[28];    unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6 = true;    // <31>
+  char custom_logo_7[28];    unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7 = true;    // <32>
+  char custom_logo_8[28];    unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8 = true;    // <33>
+  char custom_logo_9[28];    unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9 = true;    // <34>
+  char speed_enable[4];      unsigned long bad_speed_enable_i;     bool bad_speed_enable = true;     // <35> 
+  char custom_logo_10[28];   unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10 = true;   // <36>
+  char custom_logo_11[28];   unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11 = true;   // <37>
+  char speed_num[4];         unsigned long bad_speed_num_i;        bool bad_speed_num = true;        // <38> 1：fixed setting，0：Self adaptive installation
+  char scalable[28];         unsigned long bad_scalable_i;         bool bad_scalable = true;         // <39> 
+  char check_sum[4];         unsigned long bad_check_sum_i;        bool bad_check_sum = true;        // <40> XOR check value of all bytes starting from $ to *
+  int check_data = 0;        unsigned long bad_checksum_validity;  bool valid_checksum = false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
 };
 GPATTStruct gpattData;
 
@@ -2301,14 +2337,6 @@ void GPATT() {
     else if (serial1Data.iter_token == 36) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_10, 0, 56); strcpy(gpattData.custom_logo_10, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_10 = false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10 = true;}}
     else if (serial1Data.iter_token == 37) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_11, 0, 56); strcpy(gpattData.custom_logo_11, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_11 = false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11 = true;}}
     else if (serial1Data.iter_token == 38) {if (val_speed_num_gpatt(serial1Data.token) == true)        {memset(gpattData.speed_num, 0, 56); strcpy(gpattData.speed_num, serial1Data.token);               gpattData.check_data++; gpattData.bad_speed_num = false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num = true;}}
-    // else if (serial1Data.iter_token == 39) {
-    //   memset(gnggaData.temporary_data, 0, 56);
-    //   strcpy(gpattData.temporary_data, strtok(serial1Data.token, "*"));
-    //   if (val_scalable(gpattData.temporary_data) == true) {memset(gpattData.scalable, 0, 56); strcpy(gpattData.scalable, gpattData.temporary_data); gpattData.check_data++; gpattData.bad_scalable = false;} else {gpattData.bad_scalable_i++; gpattData.bad_scalable = true;}
-    //   serial1Data.token = strtok(NULL, "*");
-    //   memset(gnggaData.temporary_data_1, 0, 56);
-    //   strcpy(gpattData.temporary_data_1, strtok(serial1Data.token, "*"));
-    //   if (val_checksum(gpattData.temporary_data_1) == true) {memset(gpattData.check_sum, 0, 56); strcpy(gpattData.check_sum, gpattData.temporary_data_1); gpattData.check_data++; gpattData.bad_check_sum = false;} else {gpattData.bad_check_sum_i++; gpattData.bad_check_sum = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -2361,73 +2389,71 @@ void GPATT() {
 //                                                                                                                    DATA: SATIO
 
 struct SatDatatruct {
-  char checksum_str[56];                                            // checksum string
-  int checksum_i;                                                   // checksum int
-  char satio_sentence[2000];                                        // buffer
-  char sat_time_stamp_string[56];                                   // datetime timestamp from satellite
-  char satDataTag[10]                 = "$SATIO";                   // satio sentence tag
-  char last_sat_time_stamp_str[56]    = "0000000000000000";         // record last time satellites were seen yyyymmddhhmmssmm
-  bool convert_coordinates            = true;                       // enables/disables coordinate conversion to degrees
-  char coordinate_conversion_mode[10] = "GNGGA";                    // sentence coordinates degrees created from
-  double latitude_meter               = 0.0000100;                  // one meter (tune)
-  double longitude_meter              = 0.0000100;                  // one meter (tune)
-  double latitude_mile                = latitude_meter  * 1609.34;  // one mile
-  double longitude_mile               = longitude_meter * 1609.34;  // one mile
-  double abs_latitude_gngga_0         = 0.0;                        // absolute latitude from $ sentence
-  double abs_longitude_gngga_0        = 0.0;                        // absolute longditude from $ sentence
-  double abs_latitude_gnrmc_0         = 0.0;                        // absolute latitude from $ sentence
-  double abs_longitude_gnrmc_0        = 0.0;                        // absolute longditude from $ sentence
-  double temp_latitude_gngga;                                       // degrees converted from absolute
-  double temp_longitude_gngga;                                      // degrees converted from absolute
-  double temp_latitude_gnrmc;                                       // degrees converted from absolute
-  double temp_longitude_gnrmc;                                      // degrees converted from absolute
-  double location_latitude_gngga;                                   // degrees converted from absolute
-  double location_longitude_gngga;                                  // degrees converted from absolute
-  double location_latitude_gnrmc;                                   // degrees converted from absolute
-  double location_longitude_gnrmc;                                  // degrees converted from absolute
-  char location_latitude_gngga_str[56];                             // degrees converted from absolute
-  char location_longitude_gngga_str[56];                            // degrees converted from absolute
-  char location_latitude_gnrmc_str[56];                             // degrees converted from absolute
-  char location_longitude_gnrmc_str[56];                            // degrees converted from absolute
-  double minutesLat;                                                // used for converting absolute latitude and longitude
-  double minutesLong;                                               // used for converting absolute latitude and longitude
-  double degreesLat;                                                // used for converting absolute latitude and longitude
-  double degreesLong;                                               // used for converting absolute latitude and longitude
-  double secondsLat;                                                // used for converting absolute latitude and longitude
-  double secondsLong;                                               // used for converting absolute latitude and longitude
-  double millisecondsLat;                                           // used for converting absolute latitude and longitude
-  double millisecondsLong;                                          // used for converting absolute latitude and longitude
+  int checksum_i;                                                  // checksum int
+  char satio_sentence[200];                                        // buffer
+  char satDataTag[8]                  = "$SATIO";                  // satio sentence tag
+  char last_sat_time_stamp_str[18]    = "0000000000000000";        // record last time satellites were seen yyyymmddhhmmssmm
+  bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
+  char coordinate_conversion_mode[8]  = "GNGGA";                   // sentence coordinates degrees created from
+  double latitude_meter               = 0.0000100;                 // one meter (tune)
+  double longitude_meter              = 0.0000100;                 // one meter (tune)
+  double latitude_mile                = latitude_meter  * 1609.34; // one mile
+  double longitude_mile               = longitude_meter * 1609.34; // one mile
+  double abs_latitude_gngga_0         = 0.0;                       // absolute latitude from $ sentence
+  double abs_longitude_gngga_0        = 0.0;                       // absolute longditude from $ sentence
+  double abs_latitude_gnrmc_0         = 0.0;                       // absolute latitude from $ sentence
+  double abs_longitude_gnrmc_0        = 0.0;                       // absolute longditude from $ sentence
+  double temp_latitude_gngga;                                      // degrees converted from absolute
+  double temp_longitude_gngga;                                     // degrees converted from absolute
+  double temp_latitude_gnrmc;                                      // degrees converted from absolute
+  double temp_longitude_gnrmc;                                     // degrees converted from absolute
+  double location_latitude_gngga;                                  // degrees converted from absolute
+  double location_longitude_gngga;                                 // degrees converted from absolute
+  double location_latitude_gnrmc;                                  // degrees converted from absolute
+  double location_longitude_gnrmc;                                 // degrees converted from absolute
+  char location_latitude_gngga_str[20];                            // degrees converted from absolute
+  char location_longitude_gngga_str[20];                           // degrees converted from absolute
+  char location_latitude_gnrmc_str[20];                            // degrees converted from absolute
+  char location_longitude_gnrmc_str[20];                           // degrees converted from absolute
+  double minutesLat;                                               // used for converting absolute latitude and longitude
+  double minutesLong;                                              // used for converting absolute latitude and longitude
+  double degreesLat;                                               // used for converting absolute latitude and longitude
+  double degreesLong;                                              // used for converting absolute latitude and longitude
+  double secondsLat;                                               // used for converting absolute latitude and longitude
+  double secondsLong;                                              // used for converting absolute latitude and longitude
+  double millisecondsLat;                                          // used for converting absolute latitude and longitude
+  double millisecondsLong;                                         // used for converting absolute latitude and longitude
 
-  signed int utc_offset = 0;          // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
-  bool utc_offset_flag = 0;           // 0: add hours to time; 1: deduct hours from time
+  signed int utc_offset = 0; // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
+  bool utc_offset_flag = 0;  // 0: add hours to time; 1: deduct hours from time
 
-  char pad_digits_new[56];            // a placeholder for digits preappended with zero's.
-  char pad_current_digits[56];        // a placeholder for digits to be preappended with zero's.
+  char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
+  char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
 
   /* TEMPORARY TIME VALUES */
-  signed int tmp_year_int;                   // temp current year
-  signed int tmp_month_int;                  // temp current month
-  signed int tmp_day_int;                    // temp current day
-  signed int tmp_hour_int;                   // temp current hour
-  signed int tmp_minute_int;                 // temp current minute
-  signed int tmp_second_int;                 // temp current second
-  signed int tmp_millisecond_int;            // temp current millisecond
-  char tmp_year[56];                  // temp current year
-  char tmp_month[56];                 // temp current month
-  char tmp_day[56];                   // temp current day
-  char tmp_hour[56];                  // temp current hour
-  char tmp_minute[56];                // temp current minute
-  char tmp_second[56];                // temp current second
-  char tmp_millisecond[56];           // temp current millisecond
+  signed int tmp_year_int;        // temp current year
+  signed int tmp_month_int;       // temp current month
+  signed int tmp_day_int;         // temp current day
+  signed int tmp_hour_int;        // temp current hour
+  signed int tmp_minute_int;      // temp current minute
+  signed int tmp_second_int;      // temp current second
+  signed int tmp_millisecond_int; // temp current millisecond
+  char tmp_year[8];               // temp current year
+  char tmp_month[8];              // temp current month
+  char tmp_day[8];                // temp current day
+  char tmp_hour[8];               // temp current hour
+  char tmp_minute[8];             // temp current minute
+  char tmp_second[8];             // temp current second
+  char tmp_millisecond[8];        // temp current millisecond
 
   /* TIME VALUES FOR RTC AND OTHER USE */
-  signed int lt_year_int = 0;                    // last year satellite count > zero
-  signed int lt_month_int = 0;                   // last month satellite count > zero
-  signed int lt_day_int = 0;                     // last day satellite count > zero
-  signed int lt_hour_int = 0;                    // last hour satellite count > zero
-  signed int lt_minute_int = 0;                  // last minute satellite count > zero
-  signed int lt_second_int = 0;                  // last second satellite count > zero
-  signed int lt_millisecond_int = 0;             // last millisecond satellite count > zero
+  signed int lt_year_int = 0;        // last year satellite count > zero
+  signed int lt_month_int = 0;       // last month satellite count > zero
+  signed int lt_day_int = 0;         // last day satellite count > zero
+  signed int lt_hour_int = 0;        // last hour satellite count > zero
+  signed int lt_minute_int = 0;      // last minute satellite count > zero
+  signed int lt_second_int = 0;      // last second satellite count > zero
+  signed int lt_millisecond_int = 0; // last millisecond satellite count > zero
 
   // long current_unixtime;
 };
@@ -2837,7 +2863,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   sdcardData.current_file = fs.open(file, FILE_WRITE);
   if (sdcardData.current_file) {
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
     if (!sdcardData.matrix_filepath) {strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);}
     else {strcat(sdcardData.file_data, sdcardData.matrix_filepath);}
@@ -2847,7 +2873,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "AUTO_RESUME,");
     itoa(systemData.run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2857,7 +2883,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2867,7 +2893,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "SATIO_ENABLED,");
     itoa(systemData.satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2877,7 +2903,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GNGGA_ENABLED,");
     itoa(systemData.gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2887,7 +2913,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GNRMC_ENABLED,");
     itoa(systemData.gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2897,7 +2923,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GPATT_ENABLED,");
     itoa(systemData.gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2907,7 +2933,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_SATIO_SENTENCE,");
     itoa(systemData.output_satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2917,7 +2943,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GNGGA_SENTENCE,");
     itoa(systemData.output_gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2927,7 +2953,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GNRMC_SENTENCE,");
     itoa(systemData.output_gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2937,7 +2963,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GPATT_SENTENCE,");
     itoa(systemData.output_gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2947,7 +2973,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "UTC_OFFSET,");
     itoa(satData.utc_offset, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2957,7 +2983,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "UTC_OFFSET_FLAG,");
     itoa(satData.utc_offset_flag, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2967,7 +2993,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_SUN,");
     itoa(systemData.sidereal_track_sun, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2977,7 +3003,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MOON,");
     itoa(systemData.sidereal_track_moon, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2987,7 +3013,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MERCURY,");
     itoa(systemData.sidereal_track_mercury, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -2997,7 +3023,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_VENUS,");
     itoa(systemData.sidereal_track_venus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3007,7 +3033,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MARS,");
     itoa(systemData.sidereal_track_mars, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3017,7 +3043,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
     
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_JUPITER,");
     itoa(systemData.sidereal_track_jupiter, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3027,7 +3053,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_SATURN,");
     itoa(systemData.sidereal_track_saturn, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3037,7 +3063,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_URANUS,");
     itoa(systemData.sidereal_track_uranus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3047,7 +3073,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println(sdcardData.file_data);
     sdcardData.current_file.println("");
 
-    memset(sdcardData.file_data, 0, 256);
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_NEPTUNE,");
     itoa(systemData.sidereal_track_neptune, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3082,7 +3108,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
     while (sdcardData.current_file.available()) {
       // read line
       sdcardData.SBUFFER = "";
-      memset(sdcardData.BUFFER, 0, 2048);
+      memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       if (sysDebugData.verbose_file==true) {
@@ -3391,16 +3417,16 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     while (sdcardData.current_file.available()) {
       // read line
       sdcardData.SBUFFER = "";
-      memset(sdcardData.BUFFER, 0, 2048);
+      memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));}
       // tag: r
-      if (strncmp(sdcardData.BUFFER, "r", 1) == 0) {
+      if (strncmp(sdcardData.BUFFER, sdcardData.tag_0, 1) == 0) {
         // ensure cleared
-        memset(sdcardData.data_0, 0, 56); memset(sdcardData.data_1, 0, 56); memset(sdcardData.data_2, 0, 56);
-        memset(sdcardData.data_3, 0, 56); memset(sdcardData.data_4, 0, 56); memset(sdcardData.data_5, 0, 56);
-        memset(sdcardData.data_6, 0, 56); memset(sdcardData.data_7, 0, 56);
+        memset(sdcardData.data_0, 0, sizeof(sdcardData.data_0)); memset(sdcardData.data_1, 0, sizeof(sdcardData.data_1)); memset(sdcardData.data_2, 0, sizeof(sdcardData.data_2));
+        memset(sdcardData.data_3, 0, sizeof(sdcardData.data_3)); memset(sdcardData.data_4, 0, sizeof(sdcardData.data_4)); memset(sdcardData.data_5, 0, sizeof(sdcardData.data_5));
+        memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7));
         validData.bool_data_0 = false;
         validData.bool_data_1 = false;
         // split line on delimiter
@@ -3424,7 +3450,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
           // matrix function name
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_2, sdcardData.token);
-          memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, 56);
+          memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, sizeof(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
           if (sysDebugData.verbose_file==true) {Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));}
           // matrix function data: x
@@ -3454,7 +3480,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         }
       }
       // tag: e
-      else if (strncmp(sdcardData.BUFFER, "e", 1) == 0) {
+      else if (strncmp(sdcardData.BUFFER, sdcardData.tag_1, 1) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         sdcardData.token = strtok(NULL, ",");
         sdcardData.token = strtok(NULL, ",");
@@ -3512,48 +3538,48 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
   if (sdcardData.current_file) {
     for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
-        memset(sdcardData.file_data, 0 , 256);
+        memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
         // tag: matrix (r)
         strcat(sdcardData.file_data, sdcardData.tag_0); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix index
-        memset(sdcardData.tmp, 0 , 256);
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
         sprintf(sdcardData.tmp, "%d", Mi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix function index
-        memset(sdcardData.tmp, 0 , 256);
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
         sprintf(sdcardData.tmp, "%d", Fi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function name
         strcat(sdcardData.file_data, matrixData.matrix_function[Mi][Fi]); strcat(sdcardData.file_data, sdcardData.delim);
         // function value x
-        memset(sdcardData.tmp, 0 , 256);
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][0]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value y
-        memset(sdcardData.tmp, 0 , 256);
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][1]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value z
-        memset(sdcardData.tmp, 0 , 256);
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
         if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
         sdcardData.current_file.println(sdcardData.file_data);
       }
-      memset(sdcardData.file_data, 0 , 256);
+      memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
       // tag: enable (e)
       strcat(sdcardData.file_data, sdcardData.tag_1); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix index
-      memset(sdcardData.tmp, 0 , 256);
+      memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       sprintf(sdcardData.tmp, "%d", Mi);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix enabled 0/1
-      memset(sdcardData.tmp, 0 , 256);
+      memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       itoa(matrixData.matrix_switch_enabled[0][Mi], sdcardData.tmp, 10);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // matrix switch port
-      memset(sdcardData.tmp, 0 , 256);
+      memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
       if (sysDebugData.verbose_file==true) {Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));}
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
@@ -5352,30 +5378,6 @@ void matrixSwitch() {
           }
         
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               TRACKING
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Under) == 0) {
-          tmp_matrix[Fi] = check_under_true(sensorData.tracking_0,
-          matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Over) == 0) {
-          tmp_matrix[Fi] = check_over_true(sensorData.tracking_0,
-          matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Equal) == 0) {
-          tmp_matrix[Fi] = check_equal_true(sensorData.tracking_0,
-          matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.Tracking_0_Range) == 0) {
-          tmp_matrix[Fi] = check_ge_and_le_true(sensorData.tracking_0,
-          matrixData.matrix_function_xyz[Mi][Fi][0],
-          matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-
-        // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], matrixData.GNGGAValidChecksum) == 0) {
@@ -6127,6 +6129,8 @@ void loop() {
   Serial.println("[RTC Datetime]          " + SerialDisplayRTCDateTime()); // fresh from RTC
   Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
+  Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
+  Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
   Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
