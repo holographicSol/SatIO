@@ -59,25 +59,28 @@
       using SatIO as a standalone system and or integrating SatIO into other systems as a 'part'.
                                               Extended I2C
                                               Extended Analogue/Digital.
-                                              Extended VSPI and HSPI.
+                                              Supports Extended VSPI and HSPI.
                                               Extended IO (using an ATMEGA2560).
+      The ESP32 in this setup should be thought of as the 'central MCU', that the platform can be built around, like computer architecture.
       
       Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
       including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read.
 
       Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
-      according to results from the calculations.
+      according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
 
       UI: The matrix has been programmable via the UI however the UI has only just been reinstated, after focusing on performance and architecture. The
       feature of programming the matrix through switches and UI will be reimplemented. Until then, the matrix can be hardcoded for testing purposes.
 
-              Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-                  of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
-                  
-                  ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
-                  the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
+            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
-                  ToDo: Latitude and longitude terrain elevation dictionary.
+        ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
+        the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
+
+        ToDo: Latitude and longitude terrain elevation dictionary.
+
+        ToDo: AI peripheral that performs object detection and returns object name.
 
 ---
 
