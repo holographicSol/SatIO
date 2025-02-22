@@ -79,15 +79,15 @@
 
 ---
 
-![plot](./Extras/images/vlcsnap-2024-11-08-11h00m47s505.png)
+![plot](./Extras/images/DSC_0001_BURST20250222043232540_COVER.JPG)
 
 ---
 
-![plot](./Extras/images/vlcsnap-2024-11-08-10h58m42s127.png)
+![plot](./Extras/images/DSC_0000_BURST20250222043340010.JPG)
 
 ---
 
-![plot](./Extras/images/DSC_0004_BURST20241108194742300_COVER.JPG)
+![plot](./Extras/images/DSC_0000_BURST20250222043428235.JPG)
 
 ---
   
