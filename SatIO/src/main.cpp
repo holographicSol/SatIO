@@ -65,6 +65,9 @@
                                               Extended Analogue/Digital.
                                               Extended VSPI and HSPI.
                                               Extended IO (using an ATMEGA2560).
+      
+      Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
+      including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read.
 
       Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
       according to results from the calculations.
