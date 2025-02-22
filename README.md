@@ -80,7 +80,10 @@
 
         ToDo: Latitude and longitude terrain elevation dictionary.
 
-        ToDo: AI peripheral that performs object detection and returns object name.
+        ToDo: AI peripherals.
+
+        ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
+        including indicators and such can be configurable/customizable.
 
 ---
 
