@@ -83,7 +83,7 @@
         ToDo: AI peripherals.
 
         ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
-        including indicators and such can be configurable/customizable.
+        including indicators and such can be configurable/customizably placed.
 
 ---
 
