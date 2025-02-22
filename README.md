@@ -77,6 +77,8 @@
                   ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
                   the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
 
+                  ToDo: Latitude and longitude terrain elevation dictionary.
+
 ---
 
 ![plot](./Extras/images/DSC_0001_BURST20250222043232540_COVER.JPG)
