@@ -5746,16 +5746,9 @@ void setup() {
   display.setColor(RGB_COLOR16(0,255,0));
   display.clear();
   canvas.clear();
-  canvas.fillRect(10, 3, 80, 5);
-  display.drawCanvas((display.width()-64)/2, 1, canvas);
-  lcd_delay(500);
-  canvas.fillRect(50, 1, 60, 15);
-  display.drawCanvas((display.width()-64)/2, 1, canvas);
-  lcd_delay(1500);
   canvas.setFixedFont(ssd1306xled_font6x8);
-  canvas.printFixed(20, 1, " DEMO ", STYLE_BOLD );
-  display.drawCanvas((display.width()-64)/2, 1, canvas);
-  lcd_delay(3000);
+  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
+  display.drawCanvas(1, 1, canvas);
   display.end();
   endSPIDevice(SSD1351_CS);
 
