@@ -5715,30 +5715,31 @@ void setup() {
   Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                        SETUP: SDCARD ON VSPI
+  //                                                                                                                   SETUP: SPI
 
+  // VSPI: SDCARD
   // SD_SCLK = 18;  // default esp32 VSPI
   // SD_MISO = 19;  // default esp32 VSPI
   // SD_MOSI = 23;  // default esp32 VSPI
   // SD_CS   = 5;   // default esp32 VSPI
-  pinMode(SD_CS, OUTPUT);
-  digitalWrite(SD_CS, HIGH);
+  // pinMode(SD_CS, OUTPUT);
+  // digitalWrite(SD_CS, HIGH);
 
+  // VSPI: SSD1351 OLED DISPLAY
   // SSD1351_SCLK = 14; // (SCL) default esp32 HSPI
   // SSD1351_MISO = 12; // (DC)  default esp32 HSPI
   // SSD1351_MOSI = 13; // (SDA) default esp32 HSPI
   // SSD1351_CS   = 26; // (CS)   custom esp32 HSPI
-  pinMode(SSD1351_CS, OUTPUT);
-  digitalWrite(SSD1351_CS, HIGH);
+  // pinMode(SSD1351_CS, OUTPUT);
+  // digitalWrite(SSD1351_CS, HIGH);
 
+  // VSPI: SDCARD
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
   setupSDCard();
   SD.end();
   endSPIDevice(SD_CS);
 
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                       SETUP: DISPLAY ON HSPI
-
+  // HSPI: SSD1351 OLED DISPLAY
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
   display.fill( 0x0000 );
@@ -5747,7 +5748,7 @@ void setup() {
   display.clear();
   canvas.clear();
   canvas.setFixedFont(ssd1306xled_font6x8);
-  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
+  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
   display.drawCanvas(1, 1, canvas);
   display.end();
   endSPIDevice(SSD1351_CS);
