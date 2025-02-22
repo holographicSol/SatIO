@@ -73,7 +73,9 @@
 
               Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                   of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
-  
+                  
+                  ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
+                  the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
 
 ---
 
