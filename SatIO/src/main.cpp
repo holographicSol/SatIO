@@ -38,8 +38,8 @@
                                         ESP32 io4  -> CD74HC4067 Analog/Digital Multiplexer: SIG
                                         ESP32 io32 -> CD74HC4067 Analog/Digital Multiplexer: S0
                                         ESP32 io33 -> CD74HC4067 Analog/Digital Multiplexer: S1
-                                        ESP32 io12 -> CD74HC4067 Analog/Digital Multiplexer: S2
-                                        ESP32 io13 -> CD74HC4067 Analog/Digital Multiplexer: S3
+                                        ESP32 io16 -> CD74HC4067 Analog/Digital Multiplexer: S2
+                                        ESP32 io17 -> CD74HC4067 Analog/Digital Multiplexer: S3
                                         CD74HC4067 C0 -> Photo Resistor SIG
                                         CD74HC4067 C1 -> DHT11 SIG
 
