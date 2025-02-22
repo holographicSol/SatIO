@@ -25,7 +25,7 @@
 
                                         Serial Communication Between ESP32 & ATMEGA2560:
                                         ESP32 io25 (TXD) -> ATMEGA2560 Serial1 (RXD)
-                                        ESP32 io26 (RXD) -> ATMEGA2560 Serial1 (TXD)
+                                        ESP32 null (RXD) -> ATMEGA2560 Serial1 (TXD)
 
                                         Serial Communication Between ESP32 & WTGPS300P:
                                         ESP32 io27 (RXD) -> WTGPS300P (TXD) (5v)
@@ -63,10 +63,9 @@
               making a foundation for other creative projects that may make use of such satellite and or inertial data.
                   The idea is that each matrix is a compound of logic (limited by memory), and the logic itself
               is programmable before and after flashing. Allowing for a reusable and general purpose system for any future
-                                              projects requiring use of GPS data. 
+                                              projects requiring use of GPS data.
+  SatIO is also chainable, in that another SatIO can be turned on and run its own logic when a pin turns high/low according to its compound logic.
                                           Robots and flying machines and automation.
-
-                                          The IO is virtualized as well as physical! 
 
               Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                   of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
@@ -99,13 +98,16 @@
 #include <DHT.h>
 #include <CD74HC4067.h>
 
+#include "lcdgfx.h"
+#include "lcdgfx_gui.h"
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
 
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25; // 
-const byte rxd_from_gps = 26;  // 
+const byte rxd_from_gps = 26;  //
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
@@ -144,8 +146,8 @@ int CD74HC4067_Mux_Channel[16][4]={
 
 const int CD74HC4067_S0 = 32; // control pin
 const int CD74HC4067_S1 = 33; // control pin
-const int CD74HC4067_S2 = 12; // control pin
-const int CD74HC4067_S3 = 13; // control pin
+const int CD74HC4067_S2 = 16; // control pin
+const int CD74HC4067_S3 = 17; // control pin
 const int CD74HC4067_SIG = 4; // signal pin
 const int CD74HC4067_ControlPin[] = {CD74HC4067_S0, CD74HC4067_S1, CD74HC4067_S2, CD74HC4067_S3};
 
@@ -170,11 +172,23 @@ void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
   digitalWrite(SS, LOW); // set control pin low to begin transmission
 }
 
-void endVSPIDevice(int SS) {
+void endSPIDevice(int SS) {
   SPI.end();
   digitalWrite(SS, HIGH); // set control pin high to end transmission
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        DISPLAY
+
+// SSD1351 HSPI pins on esp32 with custom CS
+int SSD1351_SCLK = 14; // (SCL)
+int SSD1351_MISO = 12; // (DC)
+int SSD1351_MOSI = 13; // (SDA)
+int SSD1351_CS   = 26; // (CS)
+
+DisplaySSD1351_128x128x16_SPI display(SSD1351_MISO,{  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1, -1 });
+NanoPoint sprite;
+NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -211,14 +225,15 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         SDCARD
 
+// SSD1351 VSPI pins on esp32
+int SD_SCLK = 18;  // default esp32 VSPI
+int SD_MISO = 19;  // default esp32 VSPI
+int SD_MOSI = 23;  // default esp32 VSPI
+int SD_CS   = 5;   // default esp32 VSPI
 SPIClass sdspi = SPIClass(VSPI);
-
-// Uncomment and set up if you want to use custom pins for the SPI communication
-// #define REASSIGN_PINS
-// int sck = 5;
-// int miso = 12;
-// int mosi = 13;
-// int cs = 23;
+#if !defined(CONFIG_IDF_TARGET_ESP32)
+#define VSPI FSPI
+#endif
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            ETX
@@ -1503,6 +1518,7 @@ struct MatrixStruct {
     "RTCTimeUnder",
     "RTCTimeEqual",
     "RTCTimeRange",
+    // RTCTimeRangeFalse
 
     "DaySunday",
     "DayMonday",
@@ -1511,74 +1527,104 @@ struct MatrixStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
+    // "DaySundayFalse",
+    // "DayMondayFalse",
+    // "DayTuesdayFalse",
+    // "DayWednesdayFalse",
+    // "DayThursdayFalse",
+    // "DayFridayFalse",
+    // "DaySaturdayFalse",
 
     "DateDayX",
     "DateMonthX",
     "DateYearX",
+    // "DateDayXFalse",
+    // "DateMonthXFalse",
+    // "DateYearXFalse",
     
     "DegreesLatGNGGAOver",
     "DegreesLatGNGGAUnder",
     "DegreesLatGNGGAEqual",
     "DegreesLatGNGGARange",
+    // "DegreesLatGNGGARangeFalse",
 
     "DegreesLonGNGGAOver",
     "DegreesLonGNGGAUnder",
     "DegreesLonGNGGAEqual",
     "DegreesLonGNGGARange",
     "DegreesGNGGARanges",
+    // "DegreesGNGGARangesFalse",
+
 
     "DegreesLatGNRMCOver",
     "DegreesLatGNRMCUnder",
-    "DegreesLatGNRMCRange",
     "DegreesLatGNRMCEqual",
+    "DegreesLatGNRMCRange",
+    // "DegreesLatGNRMCRangeFalse",
     
     "DegreesLonGNRMCOver",
     "DegreesLonGNRMCUnder",
     "DegreesLonGNRMCEqual",
     "DegreesLonGNRMCRange",
+    // "DegreesLonGNRMCRangeFalse",
+
     "DegreesGNRMCRanges",
+    // "DegreesGNRMCRangesFalse",
 
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
+    // "UTCTimeGNGGARangeFalse",
 
     "LatGNGGAOver",
     "LatGNGGAUnder",
     "LatGNGGAEqual",
     "LatGNGGARange",
+    // "LatGNGGARangeFalse",
 
     "LonGNGGAOver",
     "LonGNGGAUnder",
     "LonGNGGAEqual",
     "LonGNGGARange",
+    // "LonGNGGARangeFalse",
 
     "PositioningStatusGNGGA",
+    // "PositioningStatusGNGGAFalse",
 
     "SatelliteCountOver",
     "SatelliteCountUnder",
     "SatelliteCountEqual",
     "SatelliteCountRange",
+    // "SatelliteCountRangeFalse",
 
     "HemisphereGNGGANorth",
     "HemisphereGNGGASouth",
     "HemisphereGNGGAEast",
     "HemisphereGNGGAWest",
 
+    // "HemisphereGNGGANorthFalse",
+    // "HemisphereGNGGASouthFalse",
+    // "HemisphereGNGGAEastFalse",
+    // "HemisphereGNGGAWestFalse",
+
     "GPSPrecisionOver",
     "GPSPrecisionUnder",
     "GPSPrecisionEqual",
     "GPSPrecisionRange",
+    // "GPSPrecisionRangeFalse",
 
     "AltitudeGNGGAOver",
     "AltitudeGNGGAUnder",
     "AltitudeGNGGAEqual",
     "AltitudeGNGGARange",
+    // "AltitudeGNGGARangeFalse",
 
     "UTCTimeGNRMCOver",
     "UTCTimeGNRMCUnder",
     "UTCTimeGNRMCEqual",
     "UTCTimeGNRMCRange",
+    // "UTCTimeGNRMCRangeFalse",
 
     "PositioningStatusGNRMCA",
     "PositioningStatusGNRMCV",
@@ -1592,69 +1638,89 @@ struct MatrixStruct {
     "LatGNRMCUnder",
     "LatGNRMCEqual",
     "LatGNRMCRange",
+    // "LatGNRMCRangeFalse",
 
     "LonGNRMCOver",
     "LonGNRMCUnder",
     "LonGNRMCEqual",
     "LonGNRMCRange",
+    // "LonGNRMCRangeFalse",
 
     "HemisphereGNRMCNorth",
     "HemisphereGNRMCSouth",
     "HemisphereGNRMCEast",
     "HemisphereGNRMCWest",
 
+    // "HemisphereGNRMCNorthFalse",
+    // "HemisphereGNRMCSouthFalse",
+    // "HemisphereGNRMCEastFalse",
+    // "HemisphereGNRMCWestFalse",
+
     "GroundSpeedGNRMCOver",
     "GroundSpeedGNRMCUnder",
     "GroundSpeedGNRMCEqual",
     "GroundSpeedGNRMCRange",
+    // "GroundSpeedGNRMCRangeFalse",
 
     "HeadingGNRMCOver",
     "HeadingGNRMCUnder",
     "HeadingGNRMCEqual",
     "HeadingGNRMCRange",
+    // "HeadingGNRMCRangeFalse",
 
     "UTCDateGNRMCOver",
     "UTCDateGNRMCUnder",
     "UTCDateGNRMCEqual",
     "UTCDateGNRMCRange",
+    // "UTCDateGNRMCRangeFalse",
     
     "LineFlagGPATTEqual",
+    // "LineFlagGPATTEqualFalse",
 
     "StaticFlagGPATTEqual",
+    // "StaticFlagGPATTEqualFalse",
 
     "RunStateFlagGPATTEqual",
+    // "RunStateFlagGPATTEqualFalse",
 
     "INSGPATTEqual",
+    // "INSGPATTEqualFalse",
 
     "SpeedNumGPATTOver",
     "SpeedNumGPATTUnder",
     "SpeedNumGPATTEqual",
     "SpeedNumGPATTRange",
+    // "SpeedNumGPATTRangeFalse",
 
     "MileageGPATTOver",
     "MileageGPATTUnder",
     "MileageGPATTEqual",
     "MileageGPATTRange",
+    // "MileageGPATTRangeFalse",
 
     "GSTDataGPATTOver",
     "GSTDataGPATTUnder",
     "GSTDataGPATTEqual",
     "GSTDataGPATTRange",
+    // "GSTDataGPATTRangeFalse",
 
     "YawGPATTOver",
     "YawGPATTUnder",
     "YawGPATTEqual",
     "YawGPATTRange",
+    // "YawGPATTRangeFalse",
 
     "RollGPATTOver",
     "RollGPATTUnder",
     "RollGPATTEqual",
     "RollGPATTRange",
+    // "RollGPATTRangeFalse",
 
     "PitchGPATTOver",
     "PitchGPATTUnder",
     "PitchGPATTEqual",
     "PitchGPATTRange",
+    // "PitchGPATTRangeFalse",
 
     "GNGGAValidChecksum",
     "GNRMCValidChecksum",
@@ -1675,6 +1741,9 @@ struct MatrixStruct {
     "SunAzimuthRange",
     "SunAltitudeRange",
 
+    // "SunAzimuthRangeFalse",
+    // "SunAltitudeRangeFalse",
+
     "DayTime",
     "NightTime",
 
@@ -1683,14 +1752,19 @@ struct MatrixStruct {
 
     "MoonAzimuthRange",
     "MoonAltitudeRange",
+    // "MoonAzimuthRangeFalse",
+    // "MoonAltitudeRangeFalse",
     "MoonUp",
     "MoonDown",
     "Moonrise",
     "Moonset",
     "MoonPhase",
+    // "MoonPhaseFalse",
 
     "MercuryAzimuthRange",
     "MercuryAltitudeRange",
+    // "MercuryAzimuthRangeFalse",
+    // "MercuryAltitudeRangeFalse",
     "MercuryUp",
     "MercuryDown",
     "MercuryRise",
@@ -1698,6 +1772,8 @@ struct MatrixStruct {
 
     "VenusAzimuthRange",
     "VenusAltitudeRange",
+    // "VenusAzimuthRangeFalse",
+    // "VenusAltitudeRangeFalse",
     "VenusUp",
     "VenusDown",
     "VenusRise",
@@ -1705,6 +1781,8 @@ struct MatrixStruct {
 
     "MarsAzimuthRange",
     "MarsAltitudeRange",
+    // "MarsAzimuthRangeFalse",
+    // "MarsAltitudeRangeFalse",
     "MarsUp",
     "MarsDown",
     "MarsRise",
@@ -1712,6 +1790,8 @@ struct MatrixStruct {
 
     "JupiterAzimuthRange",
     "JupiterAltitudeRange",
+    // "JupiterAzimuthRangeFalse",
+    // "JupiterAltitudeRangeFalse",
     "JupiterUp",
     "JupiterDown",
     "JupiterRise",
@@ -1719,6 +1799,8 @@ struct MatrixStruct {
 
     "SaturnAzimuthRange",
     "SaturnAltitudeRange",
+    // "SaturnAzimuthRangeFalse",
+    // "SaturnAltitudeRangeFalse",
     "SaturnUp",
     "SaturnDown",
     "SaturnRise",
@@ -1726,6 +1808,8 @@ struct MatrixStruct {
 
     "UranusAzimuthRange",
     "UranusAltitudeRange",
+    // "UranusAzimuthRangeFalse",
+    // "UranusAltitudeRangeFalse",
     "UranusUp",
     "UranusDown",
     "UranusRise",
@@ -1733,6 +1817,8 @@ struct MatrixStruct {
 
     "NeptuneAzimuthRange",
     "NeptuneAltitudeRange",
+    // "NeptuneAzimuthRangeFalse",
+    // "NeptuneAltitudeRangeFalse",
     "NeptuneUp",
     "NeptuneDown",
     "NeptuneRise",
@@ -1742,31 +1828,37 @@ struct MatrixStruct {
     "DHT11_0_H_Over",
     "DHT11_0_H_Equal",
     "DHT11_0_H_Range",
+    // "DHT11_0_H_RangeFalse",
 
     "DHT11_0_C_Under",
     "DHT11_0_C_Over",
     "DHT11_0_C_Equal",
     "DHT11_0_C_Range",
+    // "DHT11_0_C_RangeFalse",
 
     "DHT11_0_F_Under",
     "DHT11_0_F_Over",
     "DHT11_0_F_Equal",
     "DHT11_0_F_Range",
+    // "DHT11_0_F_RangeFalse",
 
     "DHT11_0_HIC_Under",
     "DHT11_0_HIC_Over",
     "DHT11_0_HIC_Equal",
     "DHT11_0_HIC_Range",
+    // "DHT11_0_HIC_RangeFalse",
 
     "DHT11_0_HIF_Under",
     "DHT11_0_HIF_Over",
     "DHT11_0_HIF_Equal",
     "DHT11_0_HIF_Range",
+    // "DHT11_0_HIF_RangeFalse",
 
     "PhotoResistor_0_Under",
     "PhotoResistor_0_Over",
     "PhotoResistor_0_Equal",
     "PhotoResistor_0_Range",
+    // "PhotoResistor_0_RangeFalse",
   };
 };
 MatrixStruct matrixData;
@@ -5234,34 +5326,17 @@ void setupSDCard() {
   and matrix file if not exists.
   */
 
-  // check pin reassignment
-  #ifdef REASSIGN_PINS
-  SPI.begin(sck, miso, mosi, cs);
-  if (!SD.begin(cs)) {
-#else
-  if (!SD.begin()) {
-#endif
-    Serial.println("Card Mount Failed");
-    return;
+ uint8_t cardType;
+  if (SD.begin(SD_CS, sdspi)) {
+    cardType = SD.cardType();
+    Serial.println("[SDCARD] Initialized.");
+    Serial.print("[SDCARD] Type: ");
+    if (cardType == CARD_MMC) {Serial.println("MMC");}
+    else if (cardType == CARD_SD) {Serial.println("SDSC.");}
+    else if (cardType == CARD_SDHC) {Serial.println("SDHC.");}
+    else {Serial.println("UNKNOWN.");}
   }
-  uint8_t cardType = SD.cardType();
-
-  if (cardType == CARD_NONE) {
-    Serial.println("No SD card attached");
-    return;
-  }
-
-  // basic checks
-  Serial.print("SD Card Type: ");
-  if (cardType == CARD_MMC) {
-    Serial.println("MMC");
-  } else if (cardType == CARD_SD) {
-    Serial.println("SDSC");
-  } else if (cardType == CARD_SDHC) {
-    Serial.println("SDHC");
-  } else {
-    Serial.println("UNKNOWN");
-  }
+  else {Serial.println("[SDCARD] Failed to initialize.");}
 
   // create/load system files
   if (!(cardType == CARD_NONE)) {
@@ -5282,22 +5357,6 @@ void setupSDCard() {
   }
   else {Serial.println("[sdcard] failed to initialize.");}
   }
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       SDCARD: LIGHT INITIALIZE
-
-void setupSDCardLight() {
-  /*
-  attempt to initialize sdcard.
-  */
-  Serial.println("[sdcard] initializing");
-  if (SD.begin(SS, sdspi, 80000000)) {
-    // sdcard_mkdirs();
-    Serial.println("[sdcard] initialized");
-  }
-  else {Serial.println("[sdcard] failed to initialize.");
-  }
-}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SDCARD: CHECK
@@ -5579,12 +5638,12 @@ void setup() {
   Serial.begin(115200); while(!Serial);
 
   // ESP32 can map hardware serial to alternative pins.
-  Serial1.setPins(26, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
+  Serial1.setPins(-1, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
   Serial1.setRxBufferSize(2000); // ensure this is set before begin()
   Serial1.setTimeout(50); // ensure this is set before begin()
   Serial1.begin(115200);
 
-  Serial2.setPins(27, 14, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
+  Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
   Serial2.setTimeout(50); // ensure this is set before begin()
   Serial2.begin(115200);
@@ -5656,9 +5715,49 @@ void setup() {
   Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                SETUP: SDCARD
+  //                                                                                                        SETUP: SDCARD ON VSPI
 
-  // setupSDCard();
+  // SD_SCLK = 18;  // default esp32 VSPI
+  // SD_MISO = 19;  // default esp32 VSPI
+  // SD_MOSI = 23;  // default esp32 VSPI
+  // SD_CS   = 5;   // default esp32 VSPI
+  pinMode(SD_CS, OUTPUT);
+  digitalWrite(SD_CS, HIGH);
+
+  // SSD1351_SCLK = 14; // (SCL) default esp32 HSPI
+  // SSD1351_MISO = 12; // (DC)  default esp32 HSPI
+  // SSD1351_MOSI = 13; // (SDA) default esp32 HSPI
+  // SSD1351_CS   = 26; // (CS)   custom esp32 HSPI
+  pinMode(SSD1351_CS, OUTPUT);
+  digitalWrite(SSD1351_CS, HIGH);
+
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  setupSDCard();
+  SD.end();
+  endSPIDevice(SD_CS);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                       SETUP: DISPLAY ON HSPI
+
+  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+  display.begin();
+  display.fill( 0x0000 );
+  NanoCanvas<64,16,1> canvas;
+  display.setColor(RGB_COLOR16(0,255,0));
+  display.clear();
+  canvas.clear();
+  canvas.fillRect(10, 3, 80, 5);
+  display.drawCanvas((display.width()-64)/2, 1, canvas);
+  lcd_delay(500);
+  canvas.fillRect(50, 1, 60, 15);
+  display.drawCanvas((display.width()-64)/2, 1, canvas);
+  lcd_delay(1500);
+  canvas.setFixedFont(ssd1306xled_font6x8);
+  canvas.printFixed(20, 1, " DEMO ", STYLE_BOLD );
+  display.drawCanvas((display.width()-64)/2, 1, canvas);
+  lcd_delay(3000);
+  display.end();
+  endSPIDevice(SSD1351_CS);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS

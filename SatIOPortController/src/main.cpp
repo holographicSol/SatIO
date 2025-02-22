@@ -6,7 +6,7 @@ SatIOPortController - Receives messages from SatIO over serial and manipulates I
                       This file should be flashed to ATMEGA2560.
 
 ESP32 io25 (TXD) -> ATMEGA2560 Serial1 (RXD)
-ESP32 io26 (RXD) -> ATMEGA2560 Serial1 (TXD)
+ESP32 null (RXD) -> ATMEGA2560 Serial1 (TXD)
 
 Wiring Satellite Count and HDOP Precision Factor Indicator:
 ATMEGA2560 51 -> LEDR
