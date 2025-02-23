@@ -5711,11 +5711,11 @@ void setup() {
   Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200); while(!Serial);
 
-  // ESP32 can map hardware serial to alternative pins.
-  Serial1.setPins(-1, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
-  Serial1.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial1.setTimeout(50); // ensure this is set before begin()
-  Serial1.begin(115200);
+  // // ESP32 can map hardware serial to alternative pins.
+  // Serial1.setPins(-1, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
+  // Serial1.setRxBufferSize(2000); // ensure this is set before begin()
+  // Serial1.setTimeout(50); // ensure this is set before begin()
+  // Serial1.begin(115200);
 
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
@@ -5822,7 +5822,7 @@ void setup() {
   display.clear();
   canvas.clear();
   canvas.setFixedFont(ssd1306xled_font6x8);
-  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
+  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
   display.drawCanvas(1, 1, canvas);
   display.end();
   endSPIDevice(SSD1351_CS);
