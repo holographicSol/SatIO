@@ -5305,10 +5305,10 @@ void MatrixStatsCounter() {
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[10];
-  char INPUT_BUFFER[10];
-  char TMP_BUFFER_0[10];
-  char TMP_BUFFER_1[10];
+  byte OUTPUT_BUFFER[10]; // bytes to be sent
+  char INPUT_BUFFER[10];  // chars received
+  char TMP_BUFFER_0[10];  // chars of bytes to be sent
+  char TMP_BUFFER_1[10];  // some space for type conversions
 };
 I2CLinkStruct I2CLink;
 
@@ -5338,7 +5338,7 @@ void writeToPortController() {
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
       matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
-      
+
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
