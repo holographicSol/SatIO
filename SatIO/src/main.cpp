@@ -5640,7 +5640,7 @@ void getSensorData(void * pvParameters) {
       sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
       sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
+        Serial.println("Failed to read from DHT sensor!");
       }
       sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
       sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
@@ -5771,10 +5771,12 @@ void setup() {
   display.clear();
   canvas.clear();
   canvas.setFixedFont(ssd1306xled_font6x8);
-  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
+  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
   display.drawCanvas(1, 1, canvas);
-  display.end();
-  endSPIDevice(SSD1351_CS);
+  // display.end();
+  // endSPIDevice(SSD1351_CS);
+
+  // delay(2000);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS
@@ -5803,6 +5805,30 @@ void setup() {
   //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              SIMPLE DEBUG UI
+
+NanoCanvas<128,16,1> canvas;
+void UpdateUI() {
+  // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+  // display.begin();
+
+  canvas.setFixedFont(ssd1306xled_font6x8);
+  
+  canvas.clear();
+  display.setColor(RGB_COLOR16(0,0,255));
+  canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
+  display.drawCanvas(0, 0, canvas);
+
+  canvas.clear();
+  display.setColor(RGB_COLOR16(0,255,0));
+  canvas.printFixed(0, 0, SerialDisplayRTCDateTime().c_str(), STYLE_BOLD );
+  display.drawCanvas(0, 16, canvas);
+
+  // display.end();
+  // endSPIDevice(SSD1351_CS);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5912,6 +5938,8 @@ void loop() {
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
+
+  UpdateUI();
 
   // delay(500);
   
