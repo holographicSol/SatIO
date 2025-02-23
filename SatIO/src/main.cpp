@@ -1342,6 +1342,14 @@ struct MatrixStruct {
     }
   };
 
+  // reflects matrix switch active/inactive states each loop of matrix switch function
+  bool tmp_matrix_switch_state[1][20] = {
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    }
+  };
+
   // reflects matrix switch enabled/disabled
   int matrix_switch_enabled[1][20] = {
     {
@@ -1360,6 +1368,14 @@ struct MatrixStruct {
 
   // a placeholder for matrix switch ports (default no port)
   signed int matrix_port_map[1][20] = {
+    {
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    }
+  };
+
+  // a placeholder for matrix switch ports (default no port)
+  signed int tmp_matrix_port_map[1][20] = {
     {
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -5299,60 +5315,75 @@ I2CLinkStruct I2CLink;
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
-void SatIOPortController(char * data) {
+void writeToPortController() {
 
-  // Serial.println("[SatIOPortController]");
+  // Serial.println("[writeToPortController]");
 
   // Port Map: $P,X,Y
-  // Serial.println("[master] write data");
   for (int i=0; i < 20; i++) {
-    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-    // tag
-    strcpy(I2CLink.TMP_BUFFER_0, "$P,");
-    // index
-    itoa(i, I2CLink.TMP_BUFFER_1, 10);
-    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-    strcat(I2CLink.TMP_BUFFER_0, ",");
-    // port number
-    itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
-    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-    // compile bytes array
-    memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-    for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-    // begin
-    Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-    // write bytes array
-    Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-    // end
-    Wire.endTransmission();
+
+    // Serial.println("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
+
+    // check for change
+    if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
+      // update
+      matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
+
+      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+      // tag
+      strcpy(I2CLink.TMP_BUFFER_0, "$P,");
+      // index
+      itoa(i, I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      strcat(I2CLink.TMP_BUFFER_0, ",");
+      // port number
+      itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      // compile bytes array
+      memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+      // begin
+      Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
+      // write bytes array
+      Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+      // end
+      Wire.endTransmission();
+    }
   }
 
   // Matrix Switch True/False: $M,X,Y
-  // Serial.println("[master] write data");
   for (int i=0; i < 20; i++) {
-    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-    // tag
-    strcpy(I2CLink.TMP_BUFFER_0, "$M,");
-    // index
-    itoa(i, I2CLink.TMP_BUFFER_1, 10);
-    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-    strcat(I2CLink.TMP_BUFFER_0, ",");
-    // true/false
-    itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
-    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-    // compile bytes array
-    memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-    for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-    // begin
-    Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-    // write bytes array
-    Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-    // end
-    Wire.endTransmission();
+
+    // Serial.println("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
+
+    // check for change
+    if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
+      // update
+      matrixData.tmp_matrix_switch_state[0][i] = matrixData.matrix_switch_state[0][i];
+
+      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+      // tag
+      strcpy(I2CLink.TMP_BUFFER_0, "$M,");
+      // index
+      itoa(i, I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      strcat(I2CLink.TMP_BUFFER_0, ",");
+      // true/false
+      itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      // compile bytes array
+      memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+      // begin
+      Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
+      // write bytes array
+      Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+      // end
+      Wire.endTransmission();
+    }
   }
 
   // Satellite Count and HDOP Precision Factor Indicator
-  // Serial.println("[master] write data");
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
   strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
@@ -5371,7 +5402,6 @@ void SatIOPortController(char * data) {
   Wire.endTransmission();
 
   // Overload Indicator
-  // Serial.println("[master] write data");
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
   strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
@@ -5779,7 +5809,7 @@ void setup() {
 
   // VSPI: SDCARD
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  // setupSDCard();
+  setupSDCard();
   SD.end();
   endSPIDevice(SD_CS);
 
@@ -5898,21 +5928,12 @@ void loop() {
     // instruct port controller: matrix
     // setPortControllerReadMode(0);
     // t0 = millis();
-    SatIOPortController(matrixData.matrix_sentence);
+    writeToPortController();
     // Serial.println("[writePortController] " + String(millis()-t0));
 
     gps_done = false;
     sensors_done=false;
   }
-
-  // ---------------------------------------------------------------------
-
-
-  // instruct port controller the rest of the time: (data other than matrix)
-  // setPortControllerReadMode(0);
-  // t0 = millis();
-  // SatIOPortController(otherdata);
-  // Serial.println("[writePortController] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
 
