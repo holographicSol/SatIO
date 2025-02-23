@@ -10,8 +10,8 @@
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
                                           ESP32: ATMEGA2560:
-                                          ESP32: io25 TXD -> ATMEGA2560: Serial1 RXD
-                                          ESP32: null RXD -> ATMEGA2560: Serial1 TXD
+                                          ESP32: I2C SDA -> ATMEGA2560: I2C SDA
+                                          ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
                                           ESP32: WTGPS300P (5v):
                                           ESP32: io27 RXD -> WTGPS300P: TXD
@@ -61,7 +61,6 @@
                                               Extended Analogue/Digital.
                                               Supports Extended VSPI and HSPI.
                                               Extended IO (using an ATMEGA2560).
-      The ESP32 in this setup should be thought of as the 'central MCU', that the platform can be built around, like computer architecture.
       
       Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
       including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read.
@@ -75,12 +74,9 @@
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
-        ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
-        the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
-
         ToDo: Latitude and longitude terrain elevation dictionary.
 
-        ToDo: AI peripherals.
+        ToDo: AI peripheral that performs object detection and returns object name.
 
         ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
         including indicators and such can be configurable/customizably placed.
