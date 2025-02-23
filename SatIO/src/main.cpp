@@ -5810,6 +5810,9 @@ void setup() {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SIMPLE DEBUG UI
 
+/* IMPORTANT: beware of image retention and other ways of damaging OLED displays. this function is not intended to run permenantly,
+it is currently up to the creator to save the panel. if not in use, disable this function in main loop! */
+
 NanoCanvas<128,16,1> canvas;
 void UpdateUI() {
   // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
@@ -5939,7 +5942,8 @@ void loop() {
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
-  UpdateUI();
+  // uncomment to test UI
+  // UpdateUI();
 
   // delay(500);
   
