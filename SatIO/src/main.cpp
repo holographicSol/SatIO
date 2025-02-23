@@ -14,8 +14,8 @@
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
                                           ESP32: ATMEGA2560:
-                                          ESP32: io25 TXD -> ATMEGA2560: Serial1 RXD
-                                          ESP32: null RXD -> ATMEGA2560: Serial1 TXD
+                                          ESP32: I2C SDA -> ATMEGA2560: I2C SDA
+                                          ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
                                           ESP32: WTGPS300P (5v):
                                           ESP32: io27 RXD -> WTGPS300P: TXD
@@ -63,23 +63,27 @@
       using SatIO as a standalone system and or integrating SatIO into other systems as a 'part'.
                                               Extended I2C
                                               Extended Analogue/Digital.
-                                              Extended VSPI and HSPI.
+                                              Supports Extended VSPI and HSPI.
                                               Extended IO (using an ATMEGA2560).
       
       Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
       including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read.
 
       Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
-      according to results from the calculations.
+      according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
 
       UI: The matrix has been programmable via the UI however the UI has only just been reinstated, after focusing on performance and architecture. The
       feature of programming the matrix through switches and UI will be reimplemented. Until then, the matrix can be hardcoded for testing purposes.
 
-              Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-                  of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
+            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
-                  ToDo: Migrate inter-microcontroller communication to i2C so that peripheral devices (like the port controller) can be put straight on
-                  the i2C bus and be addressable, allowing for at least as many peripheral devices as there are i2C addresses (x i2C multiplexer channels).
+        ToDo: Latitude and longitude terrain elevation dictionary.
+
+        ToDo: AI peripheral that performs object detection and returns object name.
+
+        ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
+        including indicators and such can be configurable/customizably placed.
 
   */
 
@@ -5280,48 +5284,128 @@ void MatrixStatsCounter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
+// void SatIOPortController(char * data) {
+
+//   for (int i=0; i<10; i++) {
+
+//     if (Serial1.availableForWrite()) {
+
+//       /* uncomment to see what will be sent to the port controller */
+//       // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
+
+//         /* write matrix switch states to the port controller */
+//         Serial1.write(data);
+//         Serial1.write(ETX);
+//         break;
+//     }
+//   }
+// }
+
+
+// Define Slave I2C Address
+#define SLAVE_ADDR 9
+
+// Define string with response to Master
+byte output_buffer[10];
+char input_buffer[10];
+char datasim[10] = "bar\n";
+char tmp[10];
+
 void SatIOPortController(char * data) {
 
-  for (int i=0; i<10; i++) {
+  Serial.println("[SatIOPortController]");
 
-    if (Serial1.availableForWrite()) {
-
-      /* uncomment to see what will be sent to the port controller */
-      // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
-
-        /* write matrix switch states to the port controller */
-        Serial1.write(data);
-        Serial1.write(ETX);
-        break;
-    }
+  // Port Map: $P,X,Y
+  Serial.println("[master] write data");
+  for (int i=0; i < 20; i++) {
+    memset(datasim, 0, sizeof(datasim));
+    // tag
+    strcpy(datasim, "$P,");
+    // index
+    itoa(i, tmp, 10);
+    strcat(datasim, tmp);
+    strcat(datasim, ",");
+    // port number
+    itoa(matrixData.matrix_port_map[0][i], tmp, 10);
+    strcat(datasim, tmp);
+    // compile bytes array
+    memset(output_buffer, 0, sizeof(output_buffer));
+    for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+    // begin
+    Wire.beginTransmission(SLAVE_ADDR);
+    // write bytes array
+    Wire.write(output_buffer, sizeof(output_buffer));
+    // end
+    Wire.endTransmission();
   }
-}
 
-void SatIOPortControllerAnalogMux(const char * mux0_channel, const char * mux1_channel) {
-  if (Serial1.availableForWrite()) {
-
-    // create sentence tag and set channel token(s)
-    memset(SerialLink.BUFFER1, 0, sizeof(SerialLink.BUFFER1));
-    strcpy(SerialLink.BUFFER1, "$MUX,");
-    strcat(SerialLink.BUFFER1, mux0_channel);
-    strcat(SerialLink.BUFFER1, ",");
-    strcat(SerialLink.BUFFER1, mux1_channel);
-    strcat(SerialLink.BUFFER1, ",");
-    
-
-    // append checksum
-    createChecksum(SerialLink.BUFFER1);
-    strcat(SerialLink.BUFFER1, "*");
-    strcat(SerialLink.BUFFER1, SerialLink.checksum);
-    strcat(SerialLink.BUFFER1, "\n");
-
-    /* uncomment to see what will be sent to the port controller */
-    // Serial.print("[TXD] "); Serial.println(SerialLink.BUFFER1);
-
-    /* write matrix switch states to the port controller */
-    Serial1.write(SerialLink.BUFFER1);
-    Serial1.write(ETX);
+  // Matrix Switch True/False: $M,X,Y
+  Serial.println("[master] write data");
+  for (int i=0; i < 20; i++) {
+    memset(datasim, 0, sizeof(datasim));
+    // tag
+    strcpy(datasim, "$M,");
+    // index
+    itoa(i, tmp, 10);
+    strcat(datasim, tmp);
+    strcat(datasim, ",");
+    // true/false
+    itoa(matrixData.matrix_switch_state[0][i], tmp, 10);
+    strcat(datasim, tmp);
+    // compile bytes array
+    memset(output_buffer, 0, sizeof(output_buffer));
+    for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+    // begin
+    Wire.beginTransmission(SLAVE_ADDR);
+    // write bytes array
+    Wire.write(output_buffer, sizeof(output_buffer));
+    // end
+    Wire.endTransmission();
   }
+
+  // Satellite Count and HDOP Precision Factor Indicator
+  Serial.println("[master] write data");
+  memset(datasim, 0, sizeof(datasim));
+  // tag
+  strcpy(datasim, "$GPSSIG,");
+  // data
+  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(datasim, "0");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(datasim, "1");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(datasim, "2");}
+  // compile bytes array
+  memset(output_buffer, 0, sizeof(output_buffer));
+  for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+  // begin
+  Wire.beginTransmission(SLAVE_ADDR);
+  // write bytes array
+  Wire.write(output_buffer, sizeof(output_buffer));
+  // end
+  Wire.endTransmission();
+
+  // Overload Indicator
+  Serial.println("[master] write data");
+  memset(datasim, 0, sizeof(datasim));
+  // tag
+  strcpy(datasim, "$OLOAD,");
+  // data
+  if (systemData.overload==false) {strcat(datasim, "0");}
+  else {strcat(datasim, "1");}
+  // compile bytes array
+  memset(output_buffer, 0, sizeof(output_buffer));
+  for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+  // begin
+  Wire.beginTransmission(SLAVE_ADDR);
+  // write bytes array
+  Wire.write(output_buffer, sizeof(output_buffer));
+  // end
+  Wire.endTransmission();
+
+  // Read Chars of Bytes
+  Serial.println("[master] read data");
+  Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
+  memset(input_buffer, 0, sizeof(input_buffer));
+  Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
+  Serial.println("[received] " + String(input_buffer));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5559,41 +5643,6 @@ void readGPS(void * pvParameters) {
   }
 }
 
-int tpc;
-
-// void readPortController(void * pvParameters) {
-void  readPortController() {
-  // Serial.println("[readPortController] ");
-  // while(1) {
-    for (int i = 0; i < 10; i++) {
-        if (Serial1.available()) {
-        tpc = millis();
-        memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-        SerialLink.nbytes = Serial1.readBytesUntil(ETX, SerialLink.BUFFER, 150);
-        // Serial.println("[readPC RXD 0] [t=" + String(millis()-tpc) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
-        if (SerialLink.nbytes>10) {
-          if (strncmp(SerialLink.BUFFER, "$D0", 3) == 0) {
-            // Serial.println("[readPC RXD 1] " + String(SerialLink.BUFFER)); // debug
-            if (validateChecksum(SerialLink.BUFFER)==true) {
-              // Serial.println("[validated] " + String(SerialLink.BUFFER)); // debug
-              SerialLink.TOKEN_i = 0;
-              SerialLink.token = strtok(SerialLink.BUFFER, ",");
-              while (SerialLink.token != NULL) {
-                if (SerialLink.TOKEN_i==1)  {
-                }
-                SerialLink.token = strtok(NULL, ",");
-                SerialLink.TOKEN_i++;
-              }
-              break;
-            }
-          }
-        }
-      }
-    // }
-    // delay(1);
-  }
-}
-
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      SENSORS
 
@@ -5742,7 +5791,7 @@ void setup() {
 
   // VSPI: SDCARD
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  setupSDCard();
+  // setupSDCard();
   SD.end();
   endSPIDevice(SD_CS);
 
@@ -5863,6 +5912,26 @@ void loop() {
     // t0 = millis();
     SatIOPortController(matrixData.matrix_sentence);
     // Serial.println("[writePortController] " + String(millis()-t0));
+
+    
+    // Serial.println("-----------");
+    // strcpy(datasim, "bar");
+
+    // // Write Bytes of Chars (Master begins and ends transmission)
+    // Serial.println("[master] write data");
+    // Wire.beginTransmission(SLAVE_ADDR);
+    // memset(output_buffer, 0, sizeof(output_buffer));
+    // for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+    // Wire.write(output_buffer, sizeof(output_buffer));
+    // Wire.endTransmission();
+
+    // // Read Chars of Bytes
+    // Serial.println("[master] read data");
+    // Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
+    // memset(input_buffer, 0, sizeof(input_buffer));
+    // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
+    // Serial.println("[received] " + String(input_buffer));
+
     gps_done = false;
     sensors_done=false;
   }
