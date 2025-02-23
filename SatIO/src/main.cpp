@@ -5711,12 +5711,7 @@ void setup() {
   Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200); while(!Serial);
 
-  // // ESP32 can map hardware serial to alternative pins.
-  // Serial1.setPins(-1, 25, ctsPin, rtsPin); // serial to port controller module . ensure this is set before begin()
-  // Serial1.setRxBufferSize(2000); // ensure this is set before begin()
-  // Serial1.setTimeout(50); // ensure this is set before begin()
-  // Serial1.begin(115200);
-
+  // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
   Serial2.setTimeout(50); // ensure this is set before begin()
