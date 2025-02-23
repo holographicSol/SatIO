@@ -5284,8 +5284,8 @@ void MatrixStatsCounter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      I2C DATA
 
-// Define Slave I2C Address
-#define SLAVE_ADDR 9
+// Define Slave I2C Address For Port Controller
+#define I2C_ADDR_PORTCONTROLLER 9
 
 struct I2CLinkStruct {
   char * token;
@@ -5320,7 +5320,7 @@ void SatIOPortController(char * data) {
     memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
     for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
     // begin
-    Wire.beginTransmission(SLAVE_ADDR);
+    Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
     // write bytes array
     Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
     // end
@@ -5344,7 +5344,7 @@ void SatIOPortController(char * data) {
     memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
     for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
     // begin
-    Wire.beginTransmission(SLAVE_ADDR);
+    Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
     // write bytes array
     Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
     // end
@@ -5364,7 +5364,7 @@ void SatIOPortController(char * data) {
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
   // begin
-  Wire.beginTransmission(SLAVE_ADDR);
+  Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
   // write bytes array
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
   // end
@@ -5382,15 +5382,15 @@ void SatIOPortController(char * data) {
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
   // begin
-  Wire.beginTransmission(SLAVE_ADDR);
+  Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
   // write bytes array
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
   // end
   Wire.endTransmission();
 
-  // Read Chars of Bytes
+  // Uncomment if and when hearing back from the peripheral is required
   // Serial.println("[master] read data");
-  // Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
+  // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER,sizeof(input_buffer));
   // memset(input_buffer, 0, sizeof(input_buffer));
   // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
   // Serial.println("[received] " + String(input_buffer));
@@ -5900,25 +5900,6 @@ void loop() {
     // t0 = millis();
     SatIOPortController(matrixData.matrix_sentence);
     // Serial.println("[writePortController] " + String(millis()-t0));
-
-    
-    // Serial.println("-----------");
-    // strcpy(datasim, "bar");
-
-    // // Write Bytes of Chars (Master begins and ends transmission)
-    // Serial.println("[master] write data");
-    // Wire.beginTransmission(SLAVE_ADDR);
-    // memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-    // for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)datasim[i];}
-    // Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-    // Wire.endTransmission();
-
-    // // Read Chars of Bytes
-    // Serial.println("[master] read data");
-    // Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
-    // memset(input_buffer, 0, sizeof(input_buffer));
-    // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
-    // Serial.println("[received] " + String(input_buffer));
 
     gps_done = false;
     sensors_done=false;
