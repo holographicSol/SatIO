@@ -5312,6 +5312,18 @@ struct I2CLinkStruct {
 };
 I2CLinkStruct I2CLink;
 
+void writeI2C(int I2C_Address) {
+  // compile bytes array
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+  // begin
+  Wire.beginTransmission(I2C_Address);
+  // write bytes array
+  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+  // end
+  Wire.endTransmission();
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
 
@@ -5321,14 +5333,12 @@ void writeToPortController() {
 
   // Port Map: $P,X,Y
   for (int i=0; i < 20; i++) {
-
     // Serial.println("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
-
     // check for change
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
       matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
-
+      
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
@@ -5339,23 +5349,14 @@ void writeToPortController() {
       // port number
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-      // compile bytes array
-      memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-      // begin
-      Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-      // write bytes array
-      Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-      // end
-      Wire.endTransmission();
+
+      writeI2C(I2C_ADDR_PORTCONTROLLER);
     }
   }
 
   // Matrix Switch True/False: $M,X,Y
   for (int i=0; i < 20; i++) {
-
     // Serial.println("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
-
     // check for change
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
@@ -5371,15 +5372,8 @@ void writeToPortController() {
       // true/false
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-      // compile bytes array
-      memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-      // begin
-      Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-      // write bytes array
-      Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-      // end
-      Wire.endTransmission();
+
+      writeI2C(I2C_ADDR_PORTCONTROLLER);
     }
   }
 
@@ -5391,15 +5385,7 @@ void writeToPortController() {
   if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
-  // compile bytes array
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-  // begin
-  Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-  // write bytes array
-  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-  // end
-  Wire.endTransmission();
+  writeI2C(I2C_ADDR_PORTCONTROLLER);
 
   // Overload Indicator
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
@@ -5408,15 +5394,7 @@ void writeToPortController() {
   // data
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-  // compile bytes array
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-  // begin
-  Wire.beginTransmission(I2C_ADDR_PORTCONTROLLER);
-  // write bytes array
-  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-  // end
-  Wire.endTransmission();
+  writeI2C(I2C_ADDR_PORTCONTROLLER);
 
   // Uncomment if and when hearing back from the peripheral is required
   // Serial.println("[master] read data");
@@ -5515,40 +5493,16 @@ void check_gpatt() {
   }
 }
 
-bool isGPSEnabled() {
-  if ((systemData.gngga_enabled==true) || (systemData.gnrmc_enabled==true) || (systemData.gpatt_enabled==true)) {return true;}
-  return false;
-}
-
-
 int gps_read_t;
 bool gps_done = false;
 int gps_done_t = millis();
 int i_gps = 0;
 bool cs = false;
 
-void gpstest() {
-  if (Serial2.available()) {
-
-    gps_read_t = millis();
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-
-    SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
-
-    cs = false;
-    cs = validateChecksum(SerialLink.BUFFER);
-    Serial.println("[check] " + String(cs));
-
-  }
-}
-
 void readGPS(void * pvParameters) {
   // Serial.println("[readGPS] ");
 
   while (1) {
-
-    // gpstest();
 
     if (gps_done==false) {
 
@@ -5817,7 +5771,7 @@ void setup() {
   display.clear();
   canvas.clear();
   canvas.setFixedFont(ssd1306xled_font6x8);
-  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
+  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
   display.drawCanvas(1, 1, canvas);
   display.end();
   endSPIDevice(SSD1351_CS);
