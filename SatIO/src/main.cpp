@@ -5282,130 +5282,118 @@ void MatrixStatsCounter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                PORT CONTROLLER
-
-// void SatIOPortController(char * data) {
-
-//   for (int i=0; i<10; i++) {
-
-//     if (Serial1.availableForWrite()) {
-
-//       /* uncomment to see what will be sent to the port controller */
-//       // Serial.print("[TXD] "); Serial.println(matrixData.matrix_sentence);
-
-//         /* write matrix switch states to the port controller */
-//         Serial1.write(data);
-//         Serial1.write(ETX);
-//         break;
-//     }
-//   }
-// }
-
+//                                                                                                                      I2C DATA
 
 // Define Slave I2C Address
 #define SLAVE_ADDR 9
 
-// Define string with response to Master
-byte output_buffer[10];
-char input_buffer[10];
-char datasim[10] = "bar\n";
-char tmp[10];
+struct I2CLinkStruct {
+  char * token;
+  byte OUTPUT_BUFFER[10];
+  char INPUT_BUFFER[10];
+  char TMP_BUFFER_0[10];
+  char TMP_BUFFER_1[10];
+};
+I2CLinkStruct I2CLink;
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                PORT CONTROLLER
 
 void SatIOPortController(char * data) {
 
-  Serial.println("[SatIOPortController]");
+  // Serial.println("[SatIOPortController]");
 
   // Port Map: $P,X,Y
-  Serial.println("[master] write data");
+  // Serial.println("[master] write data");
   for (int i=0; i < 20; i++) {
-    memset(datasim, 0, sizeof(datasim));
+    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
     // tag
-    strcpy(datasim, "$P,");
+    strcpy(I2CLink.TMP_BUFFER_0, "$P,");
     // index
-    itoa(i, tmp, 10);
-    strcat(datasim, tmp);
-    strcat(datasim, ",");
+    itoa(i, I2CLink.TMP_BUFFER_1, 10);
+    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+    strcat(I2CLink.TMP_BUFFER_0, ",");
     // port number
-    itoa(matrixData.matrix_port_map[0][i], tmp, 10);
-    strcat(datasim, tmp);
+    itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
+    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
     // compile bytes array
-    memset(output_buffer, 0, sizeof(output_buffer));
-    for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+    memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+    for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
     // begin
     Wire.beginTransmission(SLAVE_ADDR);
     // write bytes array
-    Wire.write(output_buffer, sizeof(output_buffer));
+    Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
     // end
     Wire.endTransmission();
   }
 
   // Matrix Switch True/False: $M,X,Y
-  Serial.println("[master] write data");
+  // Serial.println("[master] write data");
   for (int i=0; i < 20; i++) {
-    memset(datasim, 0, sizeof(datasim));
+    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
     // tag
-    strcpy(datasim, "$M,");
+    strcpy(I2CLink.TMP_BUFFER_0, "$M,");
     // index
-    itoa(i, tmp, 10);
-    strcat(datasim, tmp);
-    strcat(datasim, ",");
+    itoa(i, I2CLink.TMP_BUFFER_1, 10);
+    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+    strcat(I2CLink.TMP_BUFFER_0, ",");
     // true/false
-    itoa(matrixData.matrix_switch_state[0][i], tmp, 10);
-    strcat(datasim, tmp);
+    itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
+    strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
     // compile bytes array
-    memset(output_buffer, 0, sizeof(output_buffer));
-    for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+    memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+    for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
     // begin
     Wire.beginTransmission(SLAVE_ADDR);
     // write bytes array
-    Wire.write(output_buffer, sizeof(output_buffer));
+    Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
     // end
     Wire.endTransmission();
   }
 
   // Satellite Count and HDOP Precision Factor Indicator
-  Serial.println("[master] write data");
-  memset(datasim, 0, sizeof(datasim));
+  // Serial.println("[master] write data");
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
-  strcpy(datasim, "$GPSSIG,");
+  strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
   // data
-  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(datasim, "0");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(datasim, "1");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(datasim, "2");}
+  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
   // compile bytes array
-  memset(output_buffer, 0, sizeof(output_buffer));
-  for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
   // begin
   Wire.beginTransmission(SLAVE_ADDR);
   // write bytes array
-  Wire.write(output_buffer, sizeof(output_buffer));
+  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
   // end
   Wire.endTransmission();
 
   // Overload Indicator
-  Serial.println("[master] write data");
-  memset(datasim, 0, sizeof(datasim));
+  // Serial.println("[master] write data");
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
-  strcpy(datasim, "$OLOAD,");
+  strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
   // data
-  if (systemData.overload==false) {strcat(datasim, "0");}
-  else {strcat(datasim, "1");}
+  if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+  else {strcat(I2CLink.TMP_BUFFER_0, "1");}
   // compile bytes array
-  memset(output_buffer, 0, sizeof(output_buffer));
-  for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
   // begin
   Wire.beginTransmission(SLAVE_ADDR);
   // write bytes array
-  Wire.write(output_buffer, sizeof(output_buffer));
+  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
   // end
   Wire.endTransmission();
 
   // Read Chars of Bytes
-  Serial.println("[master] read data");
-  Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
-  memset(input_buffer, 0, sizeof(input_buffer));
-  Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
-  Serial.println("[received] " + String(input_buffer));
+  // Serial.println("[master] read data");
+  // Wire.requestFrom(SLAVE_ADDR,sizeof(input_buffer));
+  // memset(input_buffer, 0, sizeof(input_buffer));
+  // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
+  // Serial.println("[received] " + String(input_buffer));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5920,9 +5908,9 @@ void loop() {
     // // Write Bytes of Chars (Master begins and ends transmission)
     // Serial.println("[master] write data");
     // Wire.beginTransmission(SLAVE_ADDR);
-    // memset(output_buffer, 0, sizeof(output_buffer));
-    // for (byte i=0;i<sizeof(output_buffer);i++) {output_buffer[i] = (byte)datasim[i];}
-    // Wire.write(output_buffer, sizeof(output_buffer));
+    // memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+    // for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)datasim[i];}
+    // Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
     // Wire.endTransmission();
 
     // // Read Chars of Bytes
