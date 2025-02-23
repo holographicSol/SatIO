@@ -5771,7 +5771,7 @@ void setup() {
   display.clear();
   canvas.clear();
   canvas.setFixedFont(ssd1306xled_font6x8);
-  canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
+  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
   display.drawCanvas(1, 1, canvas);
   // display.end();
   // endSPIDevice(SSD1351_CS);
