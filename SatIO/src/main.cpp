@@ -5748,7 +5748,7 @@ void setup() {
   timerAlarmEnable(second_timer);
 
   /*
-  Interrupt line: connects to keypad. (change KEYPAD_INTERRUPT to 'GENERAL_INTERRUPT' and ISR_HID to 'ISR_GENERAL_I2C_REQUEST',
+  Interrupt line: connects to keypad. (change KEYPAD_INTERRUPT to 'GENERAL_PERIPHERAL_INTERRUPT' and ISR_HID to 'ISR_GENERAL_I2C_REQUEST',
   for requesting from each peripheral if any one periphal tweets on a single interrupt pin on ESP32).
   */
   pinMode(KEYPAD_INTERRUPT, INPUT_PULLDOWN);
