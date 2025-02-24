@@ -11,11 +11,11 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller peripheral (for large creative potential out):
+                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller custom peripheral (for large creative potential out):
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Keypad peripheral (for large creative potential in):
+                                          ESP32: 2nd ATMEGA2560 with sheild as Keypad custom peripheral (for large creative potential in):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
@@ -49,7 +49,7 @@
                                           ESP32: io13 -> SSD1351: SDA
                                           ESP32: io26 -> SSD1351: CS
 
-                                          Upcoming: MCP23017 I2C Expansion board
+                                          Upcoming: MCP23017 I2C Expansion board (for more custom peripherals)
 
 
                                                   SENTENCE $SATIO
