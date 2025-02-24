@@ -66,6 +66,7 @@ void requestEvent() {
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (int i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER[i];}
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+  memset(I2CLink.TMP_BUFFER, 0, sizeof(I2CLink.TMP_BUFFER));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -104,7 +105,6 @@ void loop() {
   if (btn0_pressed==true) {
     btn0_pressed=false;
     Serial.println("[button] 0 pressed");
-    memset(I2CLink.TMP_BUFFER, 0, sizeof(I2CLink.TMP_BUFFER));
     strcpy(I2CLink.TMP_BUFFER, "$B,0");
     digitalWrite(INTERRUPT_ESP32_PIN, HIGH);
     digitalWrite(INTERRUPT_ESP32_PIN, LOW);
