@@ -9,7 +9,12 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: ATMEGA2560:
+                                          ESP32: 1st ATMEGA2560 with sheild as PORT CONTROLLER:
+                                          ESP32: I2C SDA -> ATMEGA2560: I2C SDA
+                                          ESP32: I2C SCL -> ATMEGA2560: I2C SCL
+
+                                          ESP32: 2nd ATMEGA2560 with sheild as KEYPAD:
+                                          ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
