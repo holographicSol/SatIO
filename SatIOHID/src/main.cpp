@@ -105,6 +105,7 @@ void loop() {
   if (btn0_pressed==true) {
     btn0_pressed=false;
     Serial.println("[button] 0 pressed");
+    memset(I2CLink.TMP_BUFFER, 0, sizeof(I2CLink.TMP_BUFFER));
     strcpy(I2CLink.TMP_BUFFER, "$B,0");
     digitalWrite(INTERRUPT_ESP32_PIN, HIGH);
     digitalWrite(INTERRUPT_ESP32_PIN, LOW);
