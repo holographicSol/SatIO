@@ -6,14 +6,15 @@
 
                                      SatIO is the system, a matrix is the program.
 
-                                    
+            Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU
+            
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: 1st ATMEGA2560 with sheild as PORT CONTROLLER:
+                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller peripheral:
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as KEYPAD:
+                                          ESP32: 2nd ATMEGA2560 with sheild as Keypad peripheral:
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
@@ -22,11 +23,11 @@
                                           ESP32: io27 RXD -> WTGPS300P: TXD
                                           ESP32: null TXD -> WTGPS300P: RXD
 
-                                          ESP32 i2C: i2C Multiplexing (3.3v):
+                                          ESP32 i2C: i2C Multiplexing (3.3v) for peripherals:
                                           ESP32: i2C          -> TCA9548A: SDA, SCL
                                           TCA9548A: SDA0 SCL0 -> DS3231: SDA, SCL (5v)
 
-                                          ESP32: Analog/Digital Multiplexing (3.3v):
+                                          ESP32: Analog/Digital Multiplexing (3.3v) for peripherals:
                                           ESP32: io4  -> CD74HC4067: SIG
                                           ESP32: io32 -> CD74HC4067: S0
                                           ESP32: io33 -> CD74HC4067: S1
