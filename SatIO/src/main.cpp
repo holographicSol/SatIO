@@ -13,7 +13,12 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: ATMEGA2560:
+                                          ESP32: 1st ATMEGA2560 with sheild as PORT CONTROLLER:
+                                          ESP32: I2C SDA -> ATMEGA2560: I2C SDA
+                                          ESP32: I2C SCL -> ATMEGA2560: I2C SCL
+
+                                          ESP32: 2nd ATMEGA2560 with sheild as KEYPAD:
+                                          ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
@@ -90,6 +95,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      LIBRARIES
 
+#include "soc/rtc_wdt.h"
 #include <Arduino.h>
 #include <stdio.h>
 #include <limits.h>
@@ -119,6 +125,8 @@ const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25; // 
 const byte rxd_from_gps = 26;  //
+
+#define KEYPAD_INTERRUPT 25 // allows the keypad to interrupt us
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
@@ -5300,7 +5308,7 @@ void MatrixStatsCounter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      I2C DATA
 
-// Define Slave I2C Address For Port Controller
+#define I2C_ADDR_HID 8
 #define I2C_ADDR_PORTCONTROLLER 9
 
 struct I2CLinkStruct {
@@ -5322,6 +5330,37 @@ void writeI2C(int I2C_Address) {
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
   // end
   Wire.endTransmission();
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                            HID
+
+/*
+
+HID: ATMEGA2560 with Sheild as a large keypad platform (not the port controller, this is a seperate ATMEGA2560 and sheild).
+
+Keypad: Button press on keypad triggers ISR on keypad which then populates a char buffer with key pressed data and sets a pin
+        high that is connected to ESP32.
+
+ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the keypad.
+
+*/
+
+bool request_hid = false;
+void ISR_HID() {
+  // Serial.println("[ISR] ISR_HID");
+  request_hid = true;
+}
+
+void readHID() {
+  if (request_hid == true) {
+    request_hid = false;
+    Serial.println("[master] read data");
+    Wire.requestFrom(I2C_ADDR_HID,sizeof(I2CLink.INPUT_BUFFER));
+    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+    Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5656,6 +5695,9 @@ void getSensorData(void * pvParameters) {
 //                                                                                                                          SETUP
 
 void setup() {
+  // rtc_wdt_protect_off();
+  // rtc_wdt_disable();
+
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                SETUP: SERIAL
 
@@ -5700,6 +5742,10 @@ void setup() {
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
   timerAlarmEnable(second_timer);
+
+  // Interrupt line: connects to keypad.
+  pinMode(KEYPAD_INTERRUPT, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(KEYPAD_INTERRUPT), ISR_HID, FALLING);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SETUP: WIRE 
@@ -5810,8 +5856,16 @@ void setup() {
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SIMPLE DEBUG UI
 
-/* IMPORTANT: beware of image retention and other ways of damaging OLED displays. this function is not intended to run permenantly,
-it is currently up to the creator to save the panel. if not in use, disable this function in main loop! */
+/*
+
+IMPORTANT: beware of image retention and other ways of damaging OLED displays. this function is not intended to run permenantly,
+it is currently up to the creator to save the panel. if not in use, disable this function in main loop!
+
+With the panel in place, input controls will now be developed before developing the UI. This is so that we can automatically turn
+off the panel after N amount of time after input, to save the OLED from any potential damage that would otherwise be caused if it
+is always displaying the same/similar frame.
+
+*/
 
 NanoCanvas<128,16,1> canvas;
 void UpdateUI() {
@@ -5944,6 +5998,8 @@ void loop() {
 
   // uncomment to test UI
   // UpdateUI();
+
+  readHID();
 
   // delay(500);
   
