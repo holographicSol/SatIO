@@ -5342,8 +5342,8 @@ void writeI2C(int I2C_Address) {
 
 HID: ATMEGA2560 with Sheild as a large Control Panel platform (not the port controller, this is a seperate ATMEGA2560 and sheild).
 
-Control Panel: Button press on Control Panel triggers ISR on Control Panel which then populates a char buffer with key pressed data and sets a pin
-        high that is connected to ESP32.
+Control Panel: Button press on Control Panel triggers ISR on Control Panel which then populates a char buffer with key pressed data
+               and sets a pin high that is connected to ESP32.
 
 ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the Control Panel.
 
@@ -5370,8 +5370,43 @@ void readHID() {
     unixtime_control_panel_request = rtc.now().unixtime();
     Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
-    // 2: hand over to input parser
-    
+    // 2: parse input
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==10) {Serial.println("[button] 10");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==11) {Serial.println("[button] 11");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==12) {Serial.println("[button] 12");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==13) {Serial.println("[button] 13");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==14) {Serial.println("[button] 14");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==15) {Serial.println("[button] 15");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==16) {Serial.println("[button] 16");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==17) {Serial.println("[button] 17");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==18) {Serial.println("[button] 18");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==19) {Serial.println("[button] 19");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==20) {Serial.println("[button] 20");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==21) {Serial.println("[button] 21");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==22) {Serial.println("[button] 22");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==23) {Serial.println("[button] 23");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==24) {Serial.println("[button] 24");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==25) {Serial.println("[button] 25");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==26) {Serial.println("[button] 26");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==27) {Serial.println("[button] 27");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==28) {Serial.println("[button] 28");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==29) {Serial.println("[button] 29");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==30) {Serial.println("[button] 30");}
+    if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==31) {Serial.println("[button] 31");}
   }
 }
 
@@ -5713,7 +5748,7 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 */
 
 bool update_ui = true;
-int update_ui_period = 60;
+int update_ui_period = 20;
 bool ui_cleared = false;
 NanoCanvas<126,16,1> canvas0;
 
