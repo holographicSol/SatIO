@@ -8,12 +8,10 @@ Wiring For Keystudio ATMEGA2560 R3 Development Board with Sheild v1.3:
 
 Interrupt the ESP32 on input:
 ESP32: io25    -> ATMEGA2560: io22
+
 Data transmission:
 ESP32: I2C SDA -> ATMEGA2560: I2C SDA
 ESP32: I2C SCL -> ATMEGA2560: I2C SCL
-
-Button 0:
-ATMEGA2560: io2 -> Button: SIG
 
 */
 
@@ -24,24 +22,28 @@ ATMEGA2560: io2 -> Button: SIG
 
 #define INTERRUPT_ESP32_PIN 22
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          CONTROL PANEL BUTTONS
+
 /*
+
 digital pins usable for interrupts:	2, 3, 18, 19, 20, 21
 if all this microcontroller does is register input then we should get away with polling any buttons that will not fit on digital
 interrupt pins.
+
 */
+
+// interrupt buttons
 #define ISRBTN0_PIN 2
 #define ISRBTN1_PIN 3
 #define ISRBTN2_PIN 18
 #define ISRBTN3_PIN 19
-// #define ISRBTN4_PIN 20
-// #define ISRBTN5_PIN 21
 bool btnISR0_pressed = false;
 bool btnISR1_pressed = false;
 bool btnISR2_pressed = false;
 bool btnISR3_pressed = false;
-// bool btnISR4_pressed = false;
-// bool btnISR5_pressed = false;
 
+// polled buttons
 #define BTN23_PIN 23
 #define BTN24_PIN 24
 #define BTN25_PIN 25
@@ -142,7 +144,6 @@ int BTNMATRIX[] = {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C DATA
 
-// Define Slave I2C Address
 #define SLAVE_ADDR 8
 
 struct I2CLinkStruct {
@@ -159,25 +160,24 @@ I2CLinkStruct I2CLink;
 
 void receiveEvent(int) {
 
-  Serial.println("[slave] read data");
+  // read incoming data
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   // Serial.println("[received] " + String(INPUT_BUFFER));
 
-  // get tag token
+  // parse incoming data
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-
   if (strcmp(I2CLink.token, "$NULL")==0) {}
 }
 
 void requestEvent() {
+
   // write bytes of chars
-  Serial.println("[slave] write data");
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  for (int i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
 
-  // clear buffers ready for masters request sweep
+  // clear buffers ready for masters request sweep if multiple i2c devices interrupt on the same masters pin
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
 }
@@ -189,29 +189,27 @@ void ISR_ISRBTN0() {btnISR0_pressed = true;}
 void ISR_ISRBTN1() {btnISR1_pressed = true;}
 void ISR_ISRBTN2() {btnISR2_pressed = true;}
 void ISR_ISRBTN3() {btnISR3_pressed = true;}
-// void ISR_ISRBTN4() {btnISR4_pressed = true;}
-// void ISR_ISRBTN5() {btnISR5_pressed = true;}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
 void setup() {
-  Serial.setTimeout(50); // ensure this is set before begin()
+
+  // serial
+  Serial.setTimeout(50);
   Serial.begin(115200); while(!Serial);
 
+  // interrupt buttons
   pinMode(ISRBTN0_PIN, INPUT_PULLUP);
   pinMode(ISRBTN1_PIN, INPUT_PULLUP);
   pinMode(ISRBTN2_PIN, INPUT_PULLUP);
   pinMode(ISRBTN3_PIN, INPUT_PULLUP);
-  // pinMode(ISRBTN4_PIN, INPUT_PULLUP);
-  // pinMode(ISRBTN5_PIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(ISRBTN0_PIN), ISR_ISRBTN0, RISING);
   attachInterrupt(digitalPinToInterrupt(ISRBTN1_PIN), ISR_ISRBTN1, RISING);
   attachInterrupt(digitalPinToInterrupt(ISRBTN2_PIN), ISR_ISRBTN2, RISING);
   attachInterrupt(digitalPinToInterrupt(ISRBTN3_PIN), ISR_ISRBTN3, RISING);
-  // attachInterrupt(digitalPinToInterrupt(ISRBTN4_PIN), ISR_ISRBTN4, RISING);
-  // attachInterrupt(digitalPinToInterrupt(ISRBTN5_PIN), ISR_ISRBTN5, RISING);
 
+  // polled buttons
   pinMode(BTN23_PIN, INPUT_PULLUP);
   pinMode(BTN24_PIN, INPUT_PULLUP);
   pinMode(BTN25_PIN, INPUT_PULLUP);
@@ -244,13 +242,13 @@ void setup() {
   pinMode(BTN52_PIN, INPUT_PULLUP);
   pinMode(BTN53_PIN, INPUT_PULLUP);
 
-  // Initialize I2C communications as Slave
+  // initialize I2C communications as slave
   Wire.begin(SLAVE_ADDR);
 
-  // Function to run when data requested from master
+  // function to run when data requested from master
   Wire.onRequest(requestEvent);
 
-  // Function to run when data received from master
+  // function to run when data received from master
   Wire.onReceive(receiveEvent);
 
   Serial.println("starting...");
@@ -271,6 +269,9 @@ void clearTMPBuffer() {
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      DE-BOUNCE
+
 void deBounce() {
   delay(200);
 }
@@ -280,7 +281,7 @@ void deBounce() {
 
 void loop() {
 
-  // check button pressed interrupt flags
+  /* check button pressed interrupt flags */
 
   if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR0"); interruptMaster();
     Serial.println("[button] ISR0 pressed");
@@ -294,14 +295,9 @@ void loop() {
   if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR3"); interruptMaster();
     Serial.println("[button] ISR3 pressed");
   }
-  // if (btnISR4_pressed==true) {btnISR4_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR4"); interruptMaster();
-  //   Serial.println("[button] ISR4 pressed");
-  // }
-  // if (btnISR5_pressed==true) {btnISR5_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR5"); interruptMaster();
-  //   Serial.println("[button] ISR5 pressed");
-  // }
 
-  // poll button presses
+  /* poll button presses */
+
   for (int i=0; i<31; i++) {
     if (digitalRead(BTNMATRIX[i])==LOW) {
       Serial.println("[button] " + String(i) + " pressed");

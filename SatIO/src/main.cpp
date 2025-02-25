@@ -130,7 +130,7 @@ const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25; // 
 const byte rxd_from_gps = 26;  //
 
-#define ControlPanel_INTERRUPT 25 // allows the Control Panel to interrupt us
+#define ISR_I2C_PERIPHERAL_PIN 25 // allows the Control Panel to interrupt us
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
@@ -5311,8 +5311,13 @@ void MatrixStatsCounter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      I2C DATA
 
-#define I2C_ADDR_HID 8
-#define I2C_ADDR_PORTCONTROLLER 9
+#define I2C_ADDR_CONTROL_PANEL_0 8
+#define I2C_ADDR_PORTCONTROLLER_0 9
+
+int I2C_ADDRESSES[] = {
+  I2C_ADDR_CONTROL_PANEL_0,
+  I2C_ADDR_PORTCONTROLLER_0
+};
 
 struct I2CLinkStruct {
   char * token;
@@ -5349,24 +5354,30 @@ ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the Con
 
 */
 
-bool request_hid = false;
-void ISR_HID() {
-  // Serial.println("[ISR] ISR_HID");
-  request_hid = true;
-}
-
+bool make_i2c_request = false;
 int unixtime_control_panel_request;
 
+void ISR_I2C_PERIPHERAL() {
+  // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
+  make_i2c_request = true;
+}
+
 void readHID() {
-  if (request_hid == true) {
-    request_hid = false;
-    Serial.println("[master] read data");
-    Wire.requestFrom(I2C_ADDR_HID,sizeof(I2CLink.INPUT_BUFFER));
+
+  // make i2c request if interrupt flag true 
+  if (make_i2c_request == true) {
+    make_i2c_request = false;
+
+    // request
+    Serial.println("[master] making request");
+    Wire.requestFrom(I2C_ADDR_CONTROL_PANEL_0,sizeof(I2CLink.INPUT_BUFFER));
+
+    // receive
     memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
     Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
     Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
-    // 1: record time of any activity from the Control Panel.
+    // 1: record time of any activity from the i2c control panel.
     unixtime_control_panel_request = rtc.now().unixtime();
     Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
@@ -5436,7 +5447,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      writeI2C(I2C_ADDR_PORTCONTROLLER);
+      writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
 
@@ -5459,7 +5470,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      writeI2C(I2C_ADDR_PORTCONTROLLER);
+      writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
 
@@ -5471,7 +5482,7 @@ void writeToPortController() {
   if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
-  writeI2C(I2C_ADDR_PORTCONTROLLER);
+  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
   // Overload Indicator
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
@@ -5480,11 +5491,11 @@ void writeToPortController() {
   // data
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-  writeI2C(I2C_ADDR_PORTCONTROLLER);
+  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
   // Uncomment if and when hearing back from the peripheral is required
   // Serial.println("[master] read data");
-  // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER,sizeof(input_buffer));
+  // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER_0,sizeof(input_buffer));
   // memset(input_buffer, 0, sizeof(input_buffer));
   // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
   // Serial.println("[received] " + String(input_buffer));
@@ -5840,11 +5851,13 @@ void setup() {
   timerAlarmEnable(second_timer);
 
   /*
-  Interrupt line: connects to Control Panel. (change ControlPanel_INTERRUPT to 'GENERAL_I2C_PERIPHERAL_INTERRUPT' and ISR_HID to 'ISR_GENERAL_I2C_REQUEST',
-  for requesting from each peripheral if any one periphal tweets on a single interrupt pin on ESP32).
+
+  Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
+
   */
-  pinMode(ControlPanel_INTERRUPT, INPUT_PULLDOWN);
-  attachInterrupt(digitalPinToInterrupt(ControlPanel_INTERRUPT), ISR_HID, FALLING);
+
+  pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SETUP: WIRE 
