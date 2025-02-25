@@ -5717,12 +5717,12 @@ bool update_ui = true; // should we update the ui (recommended to protect the ol
 bool hard_update_ui = false; // ignore update ui bool and update anyway (not recommended unless you know what you are doing)
 int update_ui_period = 10;
 
-// void UpdateUI(void * pvParameters) {
-void UpdateUI() {
-  // while (1) {
+void UpdateUI(void * pvParameters) {
+// void UpdateUI() {
+  while (1) {
 
     // oled protection: update ui for aproximately specified time after last control panel interaction
-    if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}
+    if (update_ui=true) {if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}}
     else {update_ui=true;}
 
     if (update_ui==true) {
@@ -5744,8 +5744,8 @@ void UpdateUI() {
       // display.end();
       // endSPIDevice(SSD1351_CS);
     }
-    // delay(500);
-  // }
+    delay(500);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5908,14 +5908,14 @@ void setup() {
     0);            /* Core where the task should run */
   
   // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  // xTaskCreatePinnedToCore(
-  //   UpdateUI, /* Function to implement the task */
-  //   "Task2",       /* Name of the task */
-  //   10000,         /* Stack size in words */
-  //   NULL,          /* Task input parameter */
-  //   2,             /* Priority of the task */
-  //   &Task2,        /* Task handle. */
-  //   0);            /* Core where the task should run */
+  xTaskCreatePinnedToCore(
+    UpdateUI, /* Function to implement the task */
+    "Task2",       /* Name of the task */
+    10000,         /* Stack size in words */
+    NULL,          /* Task input parameter */
+    2,             /* Priority of the task */
+    &Task2,        /* Task handle. */
+    1);            /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -6033,7 +6033,7 @@ void loop() {
 
   readHID();
 
-  UpdateUI();
+  // UpdateUI();
 
   // delay(500);
   
