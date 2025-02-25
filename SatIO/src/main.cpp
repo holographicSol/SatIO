@@ -5341,16 +5341,13 @@ void writeI2C(int I2C_Address) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                            HID
+//                                                                                                                I2C PERIPHERALS
 
 /*
 
-HID: ATMEGA2560 with Sheild as a large Control Panel platform (not the port controller, this is a seperate ATMEGA2560 and sheild).
+I2C peripheral: interrupts us to let us know it has something we need.
 
-Control Panel: Button press on Control Panel triggers ISR on Control Panel which then populates a char buffer with key pressed data
-               and sets a pin high that is connected to ESP32.
-
-ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the Control Panel.
+SatIO: makes i2c requests (possibly with an address sweep for scalability).
 
 */
 
