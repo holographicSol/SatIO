@@ -19,7 +19,7 @@
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Keypad custom peripheral (for large creative potential in):
+                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel custom peripheral (for large creative potential in):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
@@ -130,7 +130,7 @@ const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25; // 
 const byte rxd_from_gps = 26;  //
 
-#define KEYPAD_INTERRUPT 25 // allows the keypad to interrupt us
+#define ControlPanel_INTERRUPT 25 // allows the Control Panel to interrupt us
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
@@ -5341,12 +5341,12 @@ void writeI2C(int I2C_Address) {
 
 /*
 
-HID: ATMEGA2560 with Sheild as a large keypad platform (not the port controller, this is a seperate ATMEGA2560 and sheild).
+HID: ATMEGA2560 with Sheild as a large Control Panel platform (not the port controller, this is a seperate ATMEGA2560 and sheild).
 
-Keypad: Button press on keypad triggers ISR on keypad which then populates a char buffer with key pressed data and sets a pin
+Control Panel: Button press on Control Panel triggers ISR on Control Panel which then populates a char buffer with key pressed data and sets a pin
         high that is connected to ESP32.
 
-ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the keypad.
+ESP32: Triggers ISR (below) on pin high and then makes an I2C request to the Control Panel.
 
 */
 
@@ -5356,6 +5356,8 @@ void ISR_HID() {
   request_hid = true;
 }
 
+int unixtime_control_panel_request;
+
 void readHID() {
   if (request_hid == true) {
     request_hid = false;
@@ -5364,6 +5366,13 @@ void readHID() {
     memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
     Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
     Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+
+    // 1: record time of any activity from the Control Panel.
+    unixtime_control_panel_request = rtc.now().unixtime();
+    Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
+
+    // 2: hand over to input parser
+    
   }
 }
 
@@ -5748,11 +5757,11 @@ void setup() {
   timerAlarmEnable(second_timer);
 
   /*
-  Interrupt line: connects to keypad. (change KEYPAD_INTERRUPT to 'GENERAL_I2C_PERIPHERAL_INTERRUPT' and ISR_HID to 'ISR_GENERAL_I2C_REQUEST',
+  Interrupt line: connects to Control Panel. (change ControlPanel_INTERRUPT to 'GENERAL_I2C_PERIPHERAL_INTERRUPT' and ISR_HID to 'ISR_GENERAL_I2C_REQUEST',
   for requesting from each peripheral if any one periphal tweets on a single interrupt pin on ESP32).
   */
-  pinMode(KEYPAD_INTERRUPT, INPUT_PULLDOWN);
-  attachInterrupt(digitalPinToInterrupt(KEYPAD_INTERRUPT), ISR_HID, FALLING);
+  pinMode(ControlPanel_INTERRUPT, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(ControlPanel_INTERRUPT), ISR_HID, FALLING);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SETUP: WIRE 
@@ -5865,34 +5874,40 @@ void setup() {
 
 /*
 
-IMPORTANT: beware of image retention and other ways of damaging OLED displays. this function is not intended to run permenantly,
-it is currently up to the creator to save the panel. if not in use, disable this function in main loop!
-
-With the panel in place, input controls will now be developed before developing the UI. This is so that we can automatically turn
-off the panel after N amount of time after input, to save the OLED from any potential damage that would otherwise be caused if it
-is always displaying the same/similar frame.
+IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
 
 */
 
 NanoCanvas<128,16,1> canvas;
+bool update_ui = true; // should we update the ui (recommended to protect the oled)
+bool hard_update_ui = false; // ignore update ui bool and update anyway (not recommended unless you know what you are doing)
+int update_ui_period = 10;
+
 void UpdateUI() {
-  // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-  // display.begin();
 
-  canvas.setFixedFont(ssd1306xled_font6x8);
-  
-  canvas.clear();
-  display.setColor(RGB_COLOR16(0,0,255));
-  canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
-  display.drawCanvas(0, 0, canvas);
+  // oled protection: update ui for aproximately specified time after last control panel interaction
+  if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui=true)) {update_ui=false; display.clear();}
+  else {update_ui=true;}
 
-  canvas.clear();
-  display.setColor(RGB_COLOR16(0,255,0));
-  canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
-  display.drawCanvas(0, 16, canvas);
+  if (update_ui==true) {
+    // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    // display.begin();
 
-  // display.end();
-  // endSPIDevice(SSD1351_CS);
+    canvas.setFixedFont(ssd1306xled_font6x8);
+    
+    canvas.clear();
+    display.setColor(RGB_COLOR16(0,0,255));
+    canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
+    display.drawCanvas(0, 0, canvas);
+
+    canvas.clear();
+    display.setColor(RGB_COLOR16(0,255,0));
+    canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
+    display.drawCanvas(0, 16, canvas);
+
+    // display.end();
+    // endSPIDevice(SSD1351_CS);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6004,7 +6019,7 @@ void loop() {
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
   // uncomment to test UI
-  // UpdateUI();
+  UpdateUI();
 
   readHID();
 
