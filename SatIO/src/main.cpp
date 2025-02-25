@@ -5729,7 +5729,7 @@ void UpdateUI() {
 
     if (update_ui==true) {
       ui_cleared = false;
-      // Serial.println("[oled protection] allowing ui update");
+      Serial.println("[oled protection] allowing ui update");
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
 
@@ -5754,8 +5754,7 @@ void UpdateUI() {
     }
 
     else {
-        // Serial.println("[oled protection] clearing ui");
-        if (ui_cleared == false) {display.clear();}
+        if ((ui_cleared == false) && (update_ui == false)) {Serial.println("[oled protection] clearing ui"); display.clear();}
     }
 
   //   delay(500);
