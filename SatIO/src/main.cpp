@@ -5754,7 +5754,11 @@ void UpdateUI() {
     }
 
     else {
-        if ((ui_cleared == false) && (update_ui == false)) {Serial.println("[oled protection] clearing ui"); display.clear();}
+        if ((ui_cleared == false) && (update_ui == false)) {
+          Serial.println("[oled protection] clearing ui");
+          display.clear();
+          ui_cleared=true;
+        }
     }
 
   //   delay(500);
