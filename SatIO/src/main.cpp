@@ -5721,8 +5721,6 @@ NanoCanvas<126,16,1> canvas0;
 // void UpdateUI(void * pvParameters) {
 void UpdateUI() {
 
-  canvas0.setFixedFont(ssd1306xled_font6x8);
-
   // while (1) {
 
     // oled protection: update ui for aproximately specified time after last control panel interaction
@@ -5732,6 +5730,8 @@ void UpdateUI() {
     if (update_ui==true) {
       ui_cleared = false;
       // Serial.println("[oled protection] allowing ui update");
+
+      canvas0.setFixedFont(ssd1306xled_font6x8);
 
       // static test data
       // canvas0.clear();
@@ -6018,6 +6018,10 @@ void loop() {
     sensors_done=false;
   }
 
+  t0 = millis();
+  UpdateUI();
+  Serial.println("[UpdateUI] " + String(millis()-t0));
+
   // ---------------------------------------------------------------------
 
   if (interrupt_second_counter > 0) {
@@ -6046,8 +6050,6 @@ void loop() {
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
-
-  UpdateUI();
 
   // delay(500);
   
