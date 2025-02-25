@@ -5712,16 +5712,16 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 
 */
 
-bool update_ui = true; // should we update the ui (recommended to protect the oled)
-int update_ui_period = 10;
+bool update_ui = true;
+int update_ui_period = 60;
 bool ui_cleared = false;
+
+NanoCanvas<126,16,1> canvas0;
 
 // void UpdateUI(void * pvParameters) {
 void UpdateUI() {
-  NanoCanvas<126,16,1> canvas;
 
-  canvas.setFixedFont(ssd1306xled_font6x8);
-  display.setColor(RGB_COLOR16(0,255,0));
+  canvas0.setFixedFont(ssd1306xled_font6x8);
 
   // while (1) {
 
@@ -5734,19 +5734,23 @@ void UpdateUI() {
       // Serial.println("[oled protection] allowing ui update");
 
       // static test data
-      // canvas.clear();
-      // canvas.printFixed(1, 1, "00:11:22 33.44.5555", STYLE_BOLD );
-      // display.drawCanvas(1, 16, canvas);
+      // canvas0.clear();
+      // display.setColor(RGB_COLOR16(0,255,0));
+      // canvas0.printFixed(0, 0, "00:11:22 33.44.5555", STYLE_BOLD );
+      // display.drawCanvas(0, 20, canvas0);
 
-      canvas.clear();
+      canvas0.clear();
       display.setColor(RGB_COLOR16(0,0,255));
-      canvas.printFixed(110, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
-      display.drawCanvas(1, 1, canvas);
+      canvas0.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
+      display.drawCanvas(1, 1, canvas0);
 
-      canvas.clear();
-      display.setColor(RGB_COLOR16(0,255,0));
-      canvas.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
-      display.drawCanvas(1, 16, canvas);
+      canvas0.clear();
+      canvas0.printFixed(1, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
+      display.drawCanvas(1, 16, canvas0);
+
+      canvas0.clear();
+      canvas0.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+      display.drawCanvas(1, 32, canvas0);
     }
 
     else {
@@ -5754,7 +5758,7 @@ void UpdateUI() {
         if (ui_cleared == false) {display.clear();}
     }
 
-  //   delay(200);
+  //   delay(500);
   // }
 }
 
@@ -5882,13 +5886,13 @@ void setup() {
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
   display.fill( 0x0000 );
-  NanoCanvas<64,16,1> canvas;
-  display.setColor(RGB_COLOR16(0,255,0));
-  display.clear();
-  canvas.clear();
-  canvas.setFixedFont(ssd1306xled_font6x8);
+  // NanoCanvas<64,16,1> canvas;
+  // display.setColor(RGB_COLOR16(0,255,0));
+  // display.clear();
+  // canvas.clear();
+  // canvas.setFixedFont(ssd1306xled_font6x8);
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
-  display.drawCanvas(1, 1, canvas);
+  // display.drawCanvas(1, 1, canvas);
   // display.end();
   // endSPIDevice(SSD1351_CS);
 
@@ -5901,7 +5905,7 @@ void setup() {
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
-      10000,   /* Stack size in words */
+      4096,   /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &Task0,  /* Task handle. */
@@ -5911,7 +5915,7 @@ void setup() {
   xTaskCreatePinnedToCore(
     getSensorData, /* Function to implement the task */
     "Task1",       /* Name of the task */
-    10000,         /* Stack size in words */
+    4096,         /* Stack size in words */
     NULL,          /* Task input parameter */
     2,             /* Priority of the task */
     &Task1,        /* Task handle. */
@@ -5921,7 +5925,7 @@ void setup() {
   // xTaskCreatePinnedToCore(
   //   UpdateUI, /* Function to implement the task */
   //   "Task2",       /* Name of the task */
-  //   10000,         /* Stack size in words */
+  //   4096,         /* Stack size in words */
   //   NULL,          /* Task input parameter */
   //   1,             /* Priority of the task */
   //   &Task2,        /* Task handle. */
@@ -6032,7 +6036,7 @@ void loop() {
 
   // some data while running headless
   Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  // Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
+  Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
   // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
