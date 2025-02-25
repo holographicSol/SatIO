@@ -5712,40 +5712,50 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 
 */
 
-NanoCanvas<128,16,1> canvas;
 bool update_ui = true; // should we update the ui (recommended to protect the oled)
-bool hard_update_ui = false; // ignore update ui bool and update anyway (not recommended unless you know what you are doing)
 int update_ui_period = 10;
+bool ui_cleared = false;
 
-void UpdateUI(void * pvParameters) {
-// void UpdateUI() {
-  while (1) {
+// void UpdateUI(void * pvParameters) {
+void UpdateUI() {
+  NanoCanvas<126,16,1> canvas;
+
+  canvas.setFixedFont(ssd1306xled_font6x8);
+  display.setColor(RGB_COLOR16(0,255,0));
+
+  // while (1) {
 
     // oled protection: update ui for aproximately specified time after last control panel interaction
-    // if (update_ui==true) {if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}}
-    // else {update_ui=true;}
+    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+    else {update_ui=true;}
 
     if (update_ui==true) {
-      // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      // display.begin();
+      ui_cleared = false;
+      // Serial.println("[oled protection] allowing ui update");
 
-      canvas.setFixedFont(ssd1306xled_font6x8);
-      
+      // static test data
+      // canvas.clear();
+      // canvas.printFixed(1, 1, "00:11:22 33.44.5555", STYLE_BOLD );
+      // display.drawCanvas(1, 16, canvas);
+
       canvas.clear();
       display.setColor(RGB_COLOR16(0,0,255));
-      canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
-      display.drawCanvas(0, 0, canvas);
+      canvas.printFixed(110, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
+      display.drawCanvas(1, 1, canvas);
 
       canvas.clear();
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
-      display.drawCanvas(0, 16, canvas);
-
-      // display.end();
-      // endSPIDevice(SSD1351_CS);
+      canvas.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
+      display.drawCanvas(1, 16, canvas);
     }
-    delay(10);
-  }
+
+    else {
+        // Serial.println("[oled protection] clearing ui");
+        if (ui_cleared == false) {display.clear();}
+    }
+
+  //   delay(200);
+  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5887,7 +5897,7 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS
 
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // Create task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
@@ -5897,7 +5907,7 @@ void setup() {
       &Task0,  /* Task handle. */
       0);      /* Core where the task should run */
     
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  // Create task to increase performance (core 0 also found to be best for this task)
   xTaskCreatePinnedToCore(
     getSensorData, /* Function to implement the task */
     "Task1",       /* Name of the task */
@@ -5907,15 +5917,15 @@ void setup() {
     &Task1,        /* Task handle. */
     0);            /* Core where the task should run */
   
-  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
-  xTaskCreatePinnedToCore(
-    UpdateUI, /* Function to implement the task */
-    "Task2",       /* Name of the task */
-    10000,         /* Stack size in words */
-    NULL,          /* Task input parameter */
-    2,             /* Priority of the task */
-    &Task2,        /* Task handle. */
-    0);            /* Core where the task should run */
+  // Create task to increase performance (core 0 also found to be best for this task)
+  // xTaskCreatePinnedToCore(
+  //   UpdateUI, /* Function to implement the task */
+  //   "Task2",       /* Name of the task */
+  //   10000,         /* Stack size in words */
+  //   NULL,          /* Task input parameter */
+  //   1,             /* Priority of the task */
+  //   &Task2,        /* Task handle. */
+  //   0);            /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -6033,7 +6043,7 @@ void loop() {
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
-  // UpdateUI();
+  UpdateUI();
 
   // delay(500);
   
