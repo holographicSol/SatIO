@@ -427,14 +427,6 @@ struct validationStruct {
 validationStruct validData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                       RTC TIME
-
-String SerialDisplayRTCDateTime() {
-  return String(String(rtc.now().hour()) + ":" + String(rtc.now().minute()) + ":" + String(rtc.now().second()) +
-  " " + String(rtc.now().day()) + "." + String(rtc.now().month()) + "." + String(rtc.now().year()));
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           VALIDATION: CHECKSUM
 
 
@@ -2271,6 +2263,27 @@ struct SensorDataStruct {
 SensorDataStruct sensorData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 SATIO SENTENCE
+
+String padDigitsZero(int digits) {
+  /* preappends char 0 to pad string of digits evenly */
+  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
+  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
+  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
+  itoa(digits, satData.pad_current_digits, 10);
+  strcat(satData.pad_digits_new, satData.pad_current_digits);
+  return satData.pad_digits_new;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       RTC TIME
+
+String formatRTCTime() {
+  return String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())) +
+  " " + String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year())));
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         CONVERT COORDINTE DATA
 void calculateLocation(){
 
@@ -2401,24 +2414,11 @@ void calculateLocation(){
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 SATIO SENTENCE
-
-String padDigitsZero(int digits) {
-  /* preappends char 0 to pad string of digits evenly */
-  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
-  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
-  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
-  itoa(digits, satData.pad_current_digits, 10);
-  strcat(satData.pad_digits_new, satData.pad_current_digits);
-  return satData.pad_digits_new;
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        SET LAST SATELLITE TIME
 
 void syncRTCOnDownlink() {
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  Serial.println("[synchronized] " + SerialDisplayRTCDateTime());
+  Serial.println("[synchronized] " + formatRTCTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2572,7 +2572,7 @@ void convertUTCToLocal() {
     }
   }
 
-  // Serial.println("[rtc time] " + SerialDisplayRTCDateTime()); // debug
+  // Serial.println("[rtc time] " + formatRTCTime()); // debug
 
   /*    now we can do things with time (using rtc time)     */
 
@@ -5888,7 +5888,7 @@ void UpdateUI() {
 
   canvas.clear();
   display.setColor(RGB_COLOR16(0,255,0));
-  canvas.printFixed(0, 0, SerialDisplayRTCDateTime().c_str(), STYLE_BOLD );
+  canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
   display.drawCanvas(0, 16, canvas);
 
   // display.end();
@@ -5992,7 +5992,7 @@ void loop() {
 
   // some data while running headless
   Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  Serial.println("[RTC Datetime]          " + SerialDisplayRTCDateTime()); // fresh from RTC
+  Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
   Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
