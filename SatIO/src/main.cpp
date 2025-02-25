@@ -5915,7 +5915,7 @@ void setup() {
     NULL,          /* Task input parameter */
     2,             /* Priority of the task */
     &Task2,        /* Task handle. */
-    1);            /* Core where the task should run */
+    0);            /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -5932,15 +5932,17 @@ int t_gps_all = millis();
 bool track_planets_period = false;
 void loop() {
 
-  Serial.println("----------------------------------------");
+  // Serial.println("----------------------------------------");
   // Serial.println("[loop] ");
 
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
 
   // uncomment to override default values
-  systemData.matrix_enabled = true;
-  systemData.run_on_startup = true;
+  // systemData.matrix_enabled = true;
+  // systemData.run_on_startup = true;
+
+  readHID();
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
@@ -6013,25 +6015,23 @@ void loop() {
 
   // delay(1000); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=500) {systemData.overload=true;}
+  if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
   else {systemData.overload=false;}
   // if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
   Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
-  Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
-  Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
-  Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
-  Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
-  Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
-  Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
+  // Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
+  // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
+  // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
+  // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
+  // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
+  // Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
+  // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
-
-  readHID();
 
   // UpdateUI();
 
