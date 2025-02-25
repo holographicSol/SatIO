@@ -5744,7 +5744,7 @@ void UpdateUI(void * pvParameters) {
       // display.end();
       // endSPIDevice(SSD1351_CS);
     }
-    delay(1);
+    delay(500);
   }
 }
 
