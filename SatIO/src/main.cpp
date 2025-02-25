@@ -6019,7 +6019,7 @@ void loop() {
   }
 
   t0 = millis();
-  UpdateUI();
+  UpdateUI(); // put on a task
   Serial.println("[UpdateUI] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
