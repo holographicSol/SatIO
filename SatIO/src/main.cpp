@@ -5715,29 +5715,20 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 bool update_ui = true;
 int update_ui_period = 60;
 bool ui_cleared = false;
-
 NanoCanvas<126,16,1> canvas0;
 
-// void UpdateUI(void * pvParameters) {
 void UpdateUI() {
 
-  // while (1) {
-
-    // oled protection: update ui for aproximately specified time after last control panel interaction
+    // oled protection: enable/disable ui updates
     if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
     else {update_ui=true;}
 
+    // update ui
     if (update_ui==true) {
       ui_cleared = false;
-      Serial.println("[oled protection] allowing ui update");
+      // Serial.println("[oled protection] allowing ui update");
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
-
-      // static test data
-      // canvas0.clear();
-      // display.setColor(RGB_COLOR16(0,255,0));
-      // canvas0.printFixed(0, 0, "00:11:22 33.44.5555", STYLE_BOLD );
-      // display.drawCanvas(0, 20, canvas0);
 
       canvas0.clear();
       display.setColor(RGB_COLOR16(0,0,255));
@@ -5753,16 +5744,14 @@ void UpdateUI() {
       display.drawCanvas(1, 32, canvas0);
     }
 
+    // oled protection: clear ui once if ui updates disabled
     else {
         if ((ui_cleared == false) && (update_ui == false)) {
-          Serial.println("[oled protection] clearing ui");
+          // Serial.println("[oled protection] clearing ui");
           display.clear();
           ui_cleared=true;
         }
     }
-
-  //   delay(500);
-  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
