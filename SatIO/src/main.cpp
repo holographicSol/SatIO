@@ -5722,7 +5722,7 @@ void UpdateUI(void * pvParameters) {
   while (1) {
 
     // oled protection: update ui for aproximately specified time after last control panel interaction
-    if (update_ui=true) {if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}}
+    if (update_ui==true) {if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}}
     else {update_ui=true;}
 
     if (update_ui==true) {
@@ -5744,7 +5744,7 @@ void UpdateUI(void * pvParameters) {
       // display.end();
       // endSPIDevice(SSD1351_CS);
     }
-    delay(500);
+    delay(10);
   }
 }
 
