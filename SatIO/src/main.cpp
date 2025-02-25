@@ -229,10 +229,9 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 //                                                                                                                          TASKS
 
 /* ESP32 has 2 cores. initiate task handles */
-TaskHandle_t TSTask; // touchscreen task
-TaskHandle_t UpdateDisplayTask; // time task
-TaskHandle_t Task0; // time task
-TaskHandle_t Task1; // time task
+TaskHandle_t Task0;
+TaskHandle_t Task1;
+TaskHandle_t Task2;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -5704,6 +5703,51 @@ void getSensorData(void * pvParameters) {
   }
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              SIMPLE DEBUG UI
+
+/*
+
+IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
+
+*/
+
+NanoCanvas<128,16,1> canvas;
+bool update_ui = true; // should we update the ui (recommended to protect the oled)
+bool hard_update_ui = false; // ignore update ui bool and update anyway (not recommended unless you know what you are doing)
+int update_ui_period = 10;
+
+void UpdateUI(void * pvParameters) {
+
+  while (1) {
+
+    // oled protection: update ui for aproximately specified time after last control panel interaction
+    if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui==true)) {update_ui=false; display.clear();}
+    else {update_ui=true;}
+
+    if (update_ui==true) {
+      // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      // display.begin();
+
+      canvas.setFixedFont(ssd1306xled_font6x8);
+      
+      canvas.clear();
+      display.setColor(RGB_COLOR16(0,0,255));
+      canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
+      display.drawCanvas(0, 0, canvas);
+
+      canvas.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
+      display.drawCanvas(0, 16, canvas);
+
+      // display.end();
+      // endSPIDevice(SSD1351_CS);
+    }
+    delay(1);
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
@@ -5862,52 +5906,21 @@ void setup() {
     2,             /* Priority of the task */
     &Task1,        /* Task handle. */
     0);            /* Core where the task should run */
+  
+  // Create touchscreen task to increase performance (core 0 also found to be best for this task)
+  xTaskCreatePinnedToCore(
+    UpdateUI, /* Function to implement the task */
+    "Task2",       /* Name of the task */
+    10000,         /* Stack size in words */
+    NULL,          /* Task input parameter */
+    2,             /* Priority of the task */
+    &Task2,        /* Task handle. */
+    0);            /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              SIMPLE DEBUG UI
-
-/*
-
-IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
-
-*/
-
-NanoCanvas<128,16,1> canvas;
-bool update_ui = true; // should we update the ui (recommended to protect the oled)
-bool hard_update_ui = false; // ignore update ui bool and update anyway (not recommended unless you know what you are doing)
-int update_ui_period = 10;
-
-void UpdateUI() {
-
-  // oled protection: update ui for aproximately specified time after last control panel interaction
-  if ((rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) || (hard_update_ui=true)) {update_ui=false; display.clear();}
-  else {update_ui=true;}
-
-  if (update_ui==true) {
-    // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-    // display.begin();
-
-    canvas.setFixedFont(ssd1306xled_font6x8);
-    
-    canvas.clear();
-    display.setColor(RGB_COLOR16(0,0,255));
-    canvas.printFixed(110, 0, gnggaData.satellite_count_gngga, STYLE_BOLD );
-    display.drawCanvas(0, 0, canvas);
-
-    canvas.clear();
-    display.setColor(RGB_COLOR16(0,255,0));
-    canvas.printFixed(0, 0, formatRTCTime().c_str(), STYLE_BOLD );
-    display.drawCanvas(0, 16, canvas);
-
-    // display.end();
-    // endSPIDevice(SSD1351_CS);
-  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6017,9 +6030,6 @@ void loop() {
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
-
-  // uncomment to test UI
-  UpdateUI();
 
   readHID();
 
