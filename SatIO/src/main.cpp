@@ -212,6 +212,7 @@ int SSD1351_CS   = 26; // (CS)
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
 NanoCanvas<120,16,1> canvas0;
+NanoCanvas<60,16,1> canvashalfwidth;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -5908,9 +5909,9 @@ void UpdateUI() {
     // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
-    // menu_page=3; // uncomment to debug
-    // matrix_switch_selected=0; // uncomment to debug
-    // matrix_function_selected=0; // uncomment to debug
+    menu_page=3; // uncomment to debug
+    matrix_switch_selected=4; // uncomment to debug
+    matrix_function_selected=0; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
 
     // home page items
@@ -5939,35 +5940,54 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
+      canvashalfwidth.setFixedFont(ssd1306xled_font6x8);
 
       // default border
-      // display.setColor(RGB_COLOR16(255,255,255));
-      // display.drawRect(1, 1, 126, 126);
-
-      // temporary way to ephasize switch is on/off
-      display.setColor(RGB_COLOR16(255,0,0));
-      if (matrixData.matrix_switch_state[0][matrix_switch_selected]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      display.drawRect(1, 1, 126, 126);
-
-      // set default color
       display.setColor(RGB_COLOR16(255,255,255));
+      display.drawRect(1, 1, 126, 126);
       
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
+      strcpy(TMP_UI_DATA_0, "MATRIX: ");
       strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
-      canvas0.clear();
-      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 6, canvas0);
+      canvashalfwidth.clear();
+      canvashalfwidth.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 6, canvashalfwidth);
 
       // port number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "PORT: ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
-      canvas0.clear();
-      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 22, canvas0);
+      canvashalfwidth.clear();
+      canvashalfwidth.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 22, canvashalfwidth);
 
+      // enabled/disabled
+      canvashalfwidth.clear();
+      display.setColor(RGB_COLOR16(255,0,0));
+      if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==true) {
+        display.setColor(RGB_COLOR16(0,255,0));
+        canvashalfwidth.printFixed(1, 1, " ENABLED", STYLE_BOLD );
+      }
+      else if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==false) {
+        canvashalfwidth.printFixed(1, 1, " DISABLED", STYLE_BOLD );
+      }
+      display.drawCanvas(64, 6, canvashalfwidth);
+
+      // state on/off
+      canvashalfwidth.clear();
+      display.setColor(RGB_COLOR16(255,0,0));
+      if (matrixData.matrix_switch_state[0][matrix_switch_selected]==true) {
+        display.setColor(RGB_COLOR16(0,255,0));
+        canvashalfwidth.printFixed(1, 1, " ON", STYLE_BOLD );
+      }
+      else if (matrixData.matrix_switch_state[0][matrix_switch_selected]==false) {
+        canvashalfwidth.printFixed(1, 1, " OFF", STYLE_BOLD );
+      }
+      display.drawCanvas(64, 22, canvashalfwidth);
+
+      // display function specific data
+      display.setColor(RGB_COLOR16(255,255,255));
       if (menuMatrixFunctionSelect.selection()>=3) {
 
         // function name
@@ -6011,8 +6031,7 @@ void UpdateUI() {
       }
 
       // show the menu
-      display.setColor(RGB_COLOR16(255,0,0)); // temporary way to ephasize switch disabled
-      if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==true) {display.setColor(RGB_COLOR16(0,255,0));} // temporary way to ephasize switch enabled
+      display.setColor(RGB_COLOR16(255,255,255));
       menuMatrixFunctionSelect.show( display );
     }
 
