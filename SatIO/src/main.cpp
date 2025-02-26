@@ -5723,9 +5723,9 @@ void UpdateUI() {
         else {
           canvas0.clear();
           display.drawCanvas(1, 60, canvas0);
-          display.drawCanvas(1, 70, canvas0);
-          display.drawCanvas(1, 80, canvas0);
-          display.drawCanvas(1, 90, canvas0);
+          display.drawCanvas(1, 76, canvas0);
+          display.drawCanvas(1, 92, canvas0);
+          display.drawCanvas(1, 108, canvas0);
         }
         // show the menu
         menuMatrixFunctionSelect.show( display );
