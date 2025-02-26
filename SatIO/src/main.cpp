@@ -5908,9 +5908,9 @@ void UpdateUI() {
     // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
-    menu_page=3; // uncomment to debug
-    matrix_switch_selected=0; // uncomment to debug
-    matrix_function_selected=0; // uncomment to debug
+    // menu_page=3; // uncomment to debug
+    // matrix_switch_selected=0; // uncomment to debug
+    // matrix_function_selected=0; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
 
     // home page items
