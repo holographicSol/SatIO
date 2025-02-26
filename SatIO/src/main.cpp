@@ -5568,7 +5568,7 @@ void readHID() {
     unixtime_control_panel_request = rtc.now().unixtime();
     Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
-    // blind button press protection (some buttons may be moved out of this block)
+    // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
     if (update_ui==true) {
 
       // parse special interrupt buttons
