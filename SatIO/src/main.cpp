@@ -5737,13 +5737,13 @@ void menuEnter() {
     }
 
     // enable matrix switch: also turns switch off
-    if (menuMatrixFunctionSelect.selection()==1) {
+    else if (menuMatrixFunctionSelect.selection()==1) {
       matrixData.matrix_switch_enabled[0][matrix_switch_selected]=true;
       matrixData.matrix_switch_state[0][matrix_switch_selected]=false;
     }
 
     // go to set port page
-    if (menuMatrixFunctionSelect.selection()==2) {
+    else if (menuMatrixFunctionSelect.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 1;
@@ -5751,7 +5751,7 @@ void menuEnter() {
     }
 
     // go to function name selection
-    if (menuMatrixFunctionSelect.selection()>=3) {
+    else if (menuMatrixFunctionSelect.selection()>=3) {
       matrix_function_selected=menuMatrixFunctionSelect.selection()-3;
       menu_page=5;
     }
@@ -5761,9 +5761,9 @@ void menuEnter() {
   else if (menu_page==4) {
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][matrix_switch_selected]=atoi(input_data); menu_page=3;}
-    if (enter_digits_key==2) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]=atoi(input_data); menu_page=3;}
-    if (enter_digits_key==3) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]=atoi(input_data); menu_page=3;}
-    if (enter_digits_key==4) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]=atoi(input_data); menu_page=3;}
     enter_digits_key = NULL;
   }
 
@@ -5779,14 +5779,14 @@ void menuEnter() {
       menu_page=4;
     }
     // go to set function value y page
-    if (menuMatrixConfigureFunction.selection()==2) {
+    else if (menuMatrixConfigureFunction.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 3;
       menu_page=4;
     }
     // go to set function value z page
-    if (menuMatrixConfigureFunction.selection()==3) {
+    else if (menuMatrixConfigureFunction.selection()==3) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 4;
