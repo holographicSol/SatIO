@@ -257,9 +257,10 @@ const char *menuMatrixSwitchSelectItems[22] =
 };
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
 
-const char *menuMatrixFunctionSelectItems[12] =
+const char *menuMatrixFunctionSelectItems[13] =
 {
     "  SELECT FUNCTION  ",
+    "", // reserved to display which matrix switch number is selected
     "",
     "FUNCTION 1",
     "FUNCTION 2",
@@ -272,7 +273,19 @@ const char *menuMatrixFunctionSelectItems[12] =
     "FUNCTION 9",
     "FUNCTION 10",
 };
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 12 );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13 );
+
+const char *menuMatrixConfigureFunctionItems[7] =
+{
+    "CONFIGURE FUNCTION",
+    "", // reserved to display which matrix switch number and function number is selected
+    "",
+    "FUNCTION NAME",
+    "FUNCTION X",
+    "FUNCTION Y",
+    "FUNCTION Z",
+};
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 7 );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
