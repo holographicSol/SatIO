@@ -2,7 +2,7 @@
 
 SatIO HID (Human Interface Device) Written by Benjamin Jack Cullen
 
-A large platform for sending user input to SatIO over I2C.
+A large platform allowing for plenty of creative potential for sending user input to SatIO over I2C.
 
 Wiring For Keystudio ATMEGA2560 R3 Development Board with Sheild v1.3:
 

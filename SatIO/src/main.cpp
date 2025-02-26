@@ -220,8 +220,18 @@ int update_ui_period = 60;
 bool ui_cleared = false;
 int menu_page = 0;
 
-const char *menu0Items[6] =
+const char *menuHomeItems[2] =
 {
+  "C",
+  "",
+};
+LcdGfxMenu menuHome( menuHomeItems, 2 );
+
+
+const char *menuMainItems[8] =
+{
+    "   MAIN MENU   ",
+    "",
     "MATRIX", // allows matrix configuration
     "GPS", // enable/disable parsing of sentences from the gps module
     "SERIAL", // enable/disable output of various comma delimited sentences
@@ -229,7 +239,7 @@ const char *menu0Items[6] =
     "SYSTEM",
     "UNIVERSE", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
-LcdGfxMenu menu0( menu0Items, 6 );
+LcdGfxMenu menuMain( menuMainItems, 8 );
 
 const char *menuMatrixSwitchSelectItems[22] =
 {
@@ -5486,32 +5496,32 @@ void readHID() {
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7");}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8");}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==10) {Serial.println("[button] 10: .");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==11) {Serial.println("[button] 11: -");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: .");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -");}
 
     // parse navigation buttons
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==12) {Serial.println("[button] 12: home");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==13) {Serial.println("[button] 13: back");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==14) {Serial.println("[button] 14: enter");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==15) {Serial.println("[button] 15: delete");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==16) {Serial.println("[button] 16: up");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==17) {Serial.println("[button] 17: right");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==18) {Serial.println("[button] 18: down");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==19) {Serial.println("[button] 19: left");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
 
     // parse currently spare creative potential buttons
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==20) {Serial.println("[button] 20");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==21) {Serial.println("[button] 21");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==22) {Serial.println("[button] 22");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==23) {Serial.println("[button] 23");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==24) {Serial.println("[button] 24");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==25) {Serial.println("[button] 25");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==26) {Serial.println("[button] 26");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==27) {Serial.println("[button] 27");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==28) {Serial.println("[button] 28");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==29) {Serial.println("[button] 29");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==30) {Serial.println("[button] 30");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==31) {Serial.println("[button] 31");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {Serial.println("[button] 23");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {Serial.println("[button] 24");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {Serial.println("[button] 25");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {Serial.println("[button] 26");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {Serial.println("[button] 27");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {Serial.println("[button] 28");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {Serial.println("[button] 29");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {Serial.println("[button] 30");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {Serial.println("[button] 31");}
   }
 }
 
@@ -5537,17 +5547,36 @@ void UpdateUI() {
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
 
-      if (menu_page==0) {
+      // menu_page=0; // uncomment to debug
 
-        // test menu (automated)
-        Serial.println("[menu.selection] " + String(menuMatrixSwitchSelect.selection()));
-        Serial.println("[menu.size] " + String(menuMatrixSwitchSelect.size()));
-        menuMatrixSwitchSelect.down();
+      // home page items
+      if (menu_page==0) {
         display.setColor(RGB_COLOR16(255,255,255));
+        Serial.println("[menu.selection] " + String(menuHome.selection())); // uncomment to debug
+        Serial.println("[menu.size] " + String(menuHome.size())); // uncomment to debug
+        // menuHome.down(); // uncomment to debug
+        menuHome.show( display );
+      }
+
+      // main menu items
+      if (menu_page==1) {
+        display.setColor(RGB_COLOR16(255,255,255));
+        Serial.println("[menu.selection] " + String(menuMain.selection())); // uncomment to debug
+        Serial.println("[menu.size] " + String(menuMain.size())); // uncomment to debug
+        // menuMain.down(); // uncomment to debug
+        menuMain.show( display );
+      }
+
+      // matrix switch items
+      if (menu_page==2) {
+        display.setColor(RGB_COLOR16(255,255,255));
+        Serial.println("[menu.selection] " + String(menuMatrixSwitchSelect.selection())); // uncomment to debug
+        Serial.println("[menu.size] " + String(menuMatrixSwitchSelect.size())); // uncomment to debug
+        // menuMatrixSwitchSelect.down(); // uncomment to debug
         menuMatrixSwitchSelect.show( display );
       }
       
-      if (menu_page==1) {
+      // if (menu_page==6) {
 
         // test canvas (use some gps data)
         // canvas0.clear();
@@ -5562,7 +5591,7 @@ void UpdateUI() {
         // canvas0.clear();
         // canvas0.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
         // display.drawCanvas(1, 32, canvas0);
-      }
+      // }
     }
 
     // oled protection: clear ui once if ui updates disabled
@@ -6028,6 +6057,8 @@ void setup() {
   display.begin();
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
+  menu_page=0;
+  menuHome.down();
   // NanoCanvas<64,16,1> canvas;
   // display.setColor(RGB_COLOR16(0,255,0));
   // display.clear();
