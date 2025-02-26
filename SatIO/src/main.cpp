@@ -212,6 +212,7 @@ int SSD1351_CS   = 26; // (CS)
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
 NanoCanvas<126,16,1> canvas0;
+NanoCanvas<48,16,1> canvas48x16;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -268,12 +269,10 @@ const char *menuMatrixSwitchSelectItems[22] =
 };
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
 
-const char *menuMatrixFunctionSelectItems[14] =
+
+const char *menuMatrixFunctionSelectItems[11] =
 {
-    "  MATRIX SWITCH N  ", // n is programmatically modified to reflect matrix switch selected
-    "", 
-    "PORT N", // n is programmatically modified to reflect configred port number
-    "",
+    "PORT",
     "FUNCTION 1",
     "FUNCTION 2",
     "FUNCTION 3",
@@ -285,7 +284,8 @@ const char *menuMatrixFunctionSelectItems[14] =
     "FUNCTION 9",
     "FUNCTION 10",
 };
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 14 );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 11, {{0, 28}, {128, 128}} );
+
 
 const char *menuMatrixConfigureFunctionItems[7] =
 {
@@ -5594,9 +5594,8 @@ void UpdateUI() {
       // Serial.println("[oled protection] allowing ui update");
       ui_cleared = false;
 
-      canvas0.setFixedFont(ssd1306xled_font6x8);
-
-      // menu_page=0; // uncomment to debug
+      menu_page=3; // uncomment to debug
+      matrix_switch_selected=0; // uncomment to debug
       Serial.println("[menu page] " + String(menu_page));
 
       // home page items
@@ -5625,32 +5624,28 @@ void UpdateUI() {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
 
-        // create variable menu title
+        canvas0.setFixedFont(ssd1306xled_font6x8);
+        display.setColor(RGB_COLOR16(255,255,255));
+        
+        // matrix switch number 
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "MATRIX SWITCH ");
-        memset(TMP_UI_DATA_1, 0, sizeof(TMP_UI_DATA_1));
-        itoa(matrix_switch_selected+1, TMP_UI_DATA_1, 10); // display human matrix switch selected number
-        strcat(TMP_UI_DATA_0, TMP_UI_DATA_1);
-        menuMatrixFunctionSelectItems[0] = TMP_UI_DATA_0;
+        strcat(TMP_UI_DATA_0, String(matrix_switch_selected).c_str());
+        canvas0.clear();
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(1, 1, canvas0);
+
+        // port number
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "PORT: ");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(1, 16, canvas0);
+
+        // show the menu
         menuMatrixFunctionSelect.show( display );
       }
-      
-      // if (menu_page==6) {
-
-        // test canvas (use some gps data)
-        // canvas0.clear();
-        // display.setColor(RGB_COLOR16(0,0,255));
-        // canvas0.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
-        // display.drawCanvas(1, 1, canvas0);
-
-        // canvas0.clear();
-        // canvas0.printFixed(1, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
-        // display.drawCanvas(1, 16, canvas0);
-
-        // canvas0.clear();
-        // canvas0.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
-        // display.drawCanvas(1, 32, canvas0);
-      // }
     }
 
     // oled protection: clear ui once if ui updates disabled
