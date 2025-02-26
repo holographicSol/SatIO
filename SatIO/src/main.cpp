@@ -209,9 +209,27 @@ int SSD1351_MISO = 12; // (DC)
 int SSD1351_MOSI = 13; // (SDA)
 int SSD1351_CS   = 26; // (CS)
 
-DisplaySSD1351_128x128x16_SPI display(SSD1351_MISO,{  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1, -1 });
+// The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
+DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
+NanoCanvas<126,16,1> canvas0;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
+
+bool update_ui = true;
+int update_ui_period = 60;
+bool ui_cleared = false;
+int menu_page = 0;
+
+const char *menu0Items[5] =
+{
+    "settings 0",
+    "settings 1",
+    "settings 2",
+    "settings 3",
+    "settings 4",
+};
+
+LcdGfxMenu menu0( menu0Items, 5 );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -5347,12 +5365,13 @@ void writeI2C(int I2C_Address) {
 
 I2C peripheral: interrupts us to let us know it has something we need.
 
-SatIO: makes i2c requests (possibly with an address sweep for scalability).
+SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
 
 */
 
 bool make_i2c_request = false;
 int unixtime_control_panel_request;
+int button_pressed;
 
 void ISR_I2C_PERIPHERAL() {
   // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
@@ -5378,44 +5397,108 @@ void readHID() {
     unixtime_control_panel_request = rtc.now().unixtime();
     Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
-    // 2: parse input
+    // parse special interrupt buttons
     if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==10) {Serial.println("[button] 10");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==11) {Serial.println("[button] 11");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==12) {Serial.println("[button] 12");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==13) {Serial.println("[button] 13");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==14) {Serial.println("[button] 14");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==15) {Serial.println("[button] 15");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==16) {Serial.println("[button] 16");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==17) {Serial.println("[button] 17");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==18) {Serial.println("[button] 18");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==19) {Serial.println("[button] 19");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==20) {Serial.println("[button] 20");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==21) {Serial.println("[button] 21");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==22) {Serial.println("[button] 22");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==23) {Serial.println("[button] 23");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==24) {Serial.println("[button] 24");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==25) {Serial.println("[button] 25");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==26) {Serial.println("[button] 26");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==27) {Serial.println("[button] 27");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==28) {Serial.println("[button] 28");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==29) {Serial.println("[button] 29");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==30) {Serial.println("[button] 30");}
-    if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==31) {Serial.println("[button] 31");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
+
+    // parse numpad buttons
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==10) {Serial.println("[button] 10: .");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==11) {Serial.println("[button] 11: -");}
+
+    // parse navigation buttons
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==12) {Serial.println("[button] 12: home");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==13) {Serial.println("[button] 13: back");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==14) {Serial.println("[button] 14: enter");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==15) {Serial.println("[button] 15: delete");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==16) {Serial.println("[button] 16: up");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==17) {Serial.println("[button] 17: right");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==18) {Serial.println("[button] 18: down");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==19) {Serial.println("[button] 19: left");}
+
+    // parse currently spare creative potential buttons
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==20) {Serial.println("[button] 20");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==21) {Serial.println("[button] 21");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==22) {Serial.println("[button] 22");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==23) {Serial.println("[button] 23");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==24) {Serial.println("[button] 24");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==25) {Serial.println("[button] 25");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==26) {Serial.println("[button] 26");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==27) {Serial.println("[button] 27");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==28) {Serial.println("[button] 28");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==29) {Serial.println("[button] 29");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==30) {Serial.println("[button] 30");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==31) {Serial.println("[button] 31");}
   }
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              SIMPLE DEBUG UI
+
+/*
+
+IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
+
+*/
+
+void UpdateUI() {
+
+    // oled protection: enable/disable ui updates
+    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+    else {update_ui=true;}
+
+    // update ui
+    if (update_ui==true) {
+      // Serial.println("[oled protection] allowing ui update");
+      ui_cleared = false;
+
+      canvas0.setFixedFont(ssd1306xled_font6x8);
+
+      if (menu_page==0) {
+
+        // test menu (automated)
+        Serial.println("[menu.selection] " + String(menu0.selection()));
+        Serial.println("[menu.size] " + String(menu0.size()));
+        menu0.down();
+        display.setColor(RGB_COLOR16(255,255,255));
+        menu0.show( display );
+      }
+      
+      if (menu_page==1) {
+
+        // test canvas (use some gps data)
+        // canvas0.clear();
+        // display.setColor(RGB_COLOR16(0,0,255));
+        // canvas0.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
+        // display.drawCanvas(1, 1, canvas0);
+
+        // canvas0.clear();
+        // canvas0.printFixed(1, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
+        // display.drawCanvas(1, 16, canvas0);
+
+        // canvas0.clear();
+        // canvas0.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+        // display.drawCanvas(1, 32, canvas0);
+      }
+    }
+
+    // oled protection: clear ui once if ui updates disabled
+    else if ((ui_cleared == false) && (update_ui == false)) {
+      // Serial.println("[oled protection] clearing ui");
+      display.clear();
+      ui_cleared=true;
+    }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5746,55 +5829,6 @@ void getSensorData(void * pvParameters) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              SIMPLE DEBUG UI
-
-/*
-
-IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
-
-*/
-
-bool update_ui = true;
-int update_ui_period = 20;
-bool ui_cleared = false;
-NanoCanvas<126,16,1> canvas0;
-
-void UpdateUI() {
-
-    // oled protection: enable/disable ui updates
-    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
-    else {update_ui=true;}
-
-    // update ui
-    if (update_ui==true) {
-      // Serial.println("[oled protection] allowing ui update");
-      ui_cleared = false;
-
-      canvas0.setFixedFont(ssd1306xled_font6x8);
-
-      canvas0.clear();
-      display.setColor(RGB_COLOR16(0,0,255));
-      canvas0.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
-      display.drawCanvas(1, 1, canvas0);
-
-      canvas0.clear();
-      canvas0.printFixed(1, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
-      display.drawCanvas(1, 16, canvas0);
-
-      canvas0.clear();
-      canvas0.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
-      display.drawCanvas(1, 32, canvas0);
-    }
-
-    // oled protection: clear ui once if ui updates disabled
-    else if ((ui_cleared == false) && (update_ui == false)) {
-      // Serial.println("[oled protection] clearing ui");
-      display.clear();
-      ui_cleared=true;
-    }
-}
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 
@@ -5912,14 +5946,15 @@ void setup() {
   // digitalWrite(SSD1351_CS, HIGH);
 
   // VSPI: SDCARD
-  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  setupSDCard();
-  SD.end();
-  endSPIDevice(SD_CS);
+  // beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  // setupSDCard();
+  // SD.end();
+  // endSPIDevice(SD_CS);
 
   // HSPI: SSD1351 OLED DISPLAY
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
+  display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
   // NanoCanvas<64,16,1> canvas;
   // display.setColor(RGB_COLOR16(0,255,0));
