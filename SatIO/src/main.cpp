@@ -268,10 +268,11 @@ const char *menuMatrixSwitchSelectItems[22] =
 };
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
 
-const char *menuMatrixFunctionSelectItems[13] =
+const char *menuMatrixFunctionSelectItems[14] =
 {
-    "  SELECT FUNCTION  ",
-    "", // reserved to display which matrix switch number is selected
+    "  MATRIX SWITCH N  ", // n is programmatically modified to reflect matrix switch selected
+    "", 
+    "PORT N", // n is programmatically modified to reflect configred port number
     "",
     "FUNCTION 1",
     "FUNCTION 2",
@@ -284,9 +285,9 @@ const char *menuMatrixFunctionSelectItems[13] =
     "FUNCTION 9",
     "FUNCTION 10",
 };
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13 );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 14 );
 
-const char *menuMatrixConfigureFunctionItems[8] =
+const char *menuMatrixConfigureFunctionItems[7] =
 {
     "CONFIGURE FUNCTION",
     "", // reserved to display which matrix switch number and function number is selected
@@ -295,9 +296,8 @@ const char *menuMatrixConfigureFunctionItems[8] =
     "FUNCTION X",
     "FUNCTION Y",
     "FUNCTION Z",
-    "PORT NUMBER",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 8 );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 7 );
 
 const char *menuMatrixSetFunctionNameItems[] =
 {
@@ -5454,6 +5454,52 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
 bool make_i2c_request = false;
 int unixtime_control_panel_request;
 int button_pressed;
+int previous_menu_page;
+int matrix_switch_selected;
+int matrix_function_selected;
+
+void menuUp() {
+  if (menu_page==0) {menuHome.up();}
+  else if (menu_page==1) {menuMain.up();}
+  else if (menu_page==2) {menuMatrixSwitchSelect.up();}
+  else if (menu_page==3) {menuMatrixFunctionSelect.up();}
+  else if (menu_page==4) {menuMatrixConfigureFunction.up();}
+  else if (menu_page==5) {menuMatrixSetFunctionName.up();}
+}
+
+void menuDown() {
+  if (menu_page==0) {menuHome.down();}
+  else if (menu_page==1) {menuMain.down();}
+  else if (menu_page==2) {menuMatrixSwitchSelect.down();}
+  else if (menu_page==3) {menuMatrixFunctionSelect.down();}
+  else if (menu_page==4) {menuMatrixConfigureFunction.down();}
+  else if (menu_page==5) {menuMatrixSetFunctionName.down();}
+}
+
+void menuEnter() {
+  if (menu_page==0) {
+    if (menuHome.selection()==0) {menu_page=1;}
+  }
+  else if (menu_page==1) {
+    if (menuMain.selection()==2) {
+      menu_page=2;
+      Serial.println("[enter] matrix configuration");
+    }
+  }
+  else if (menu_page==2) {
+    if (menuMain.selection()>=2) {
+      matrix_switch_selected=menuMatrixSwitchSelect.selection()-2; // offset menu selection for matrix index access
+      menu_page=3;
+      Serial.println("[matrix switch selected] " + String(matrix_switch_selected));
+    }
+  }
+  else if (menu_page==2) {
+    if (menuMain.selection()==3) {menu_page=3;}
+  }
+  else if (menu_page==3) {}
+  else if (menu_page==4) {}
+  else if (menu_page==5) {}
+}
 
 void ISR_I2C_PERIPHERAL() {
   // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
@@ -5500,12 +5546,12 @@ void readHID() {
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -");}
 
     // parse navigation buttons
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
 
@@ -5534,6 +5580,9 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 
 */
 
+char TMP_UI_DATA_0[56];
+char TMP_UI_DATA_1[56];
+
 void UpdateUI() {
 
     // oled protection: enable/disable ui updates
@@ -5548,32 +5597,55 @@ void UpdateUI() {
       canvas0.setFixedFont(ssd1306xled_font6x8);
 
       // menu_page=0; // uncomment to debug
+      Serial.println("[menu page] " + String(menu_page));
 
       // home page items
       if (menu_page==0) {
+        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        Serial.println("[menu.selection] " + String(menuHome.selection())); // uncomment to debug
-        Serial.println("[menu.size] " + String(menuHome.size())); // uncomment to debug
-        // menuHome.down(); // uncomment to debug
+        // uncomment to debug
+        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
+        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuHome.show( display );
       }
 
       // main menu items
       if (menu_page==1) {
+        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        Serial.println("[menu.selection] " + String(menuMain.selection())); // uncomment to debug
-        Serial.println("[menu.size] " + String(menuMain.size())); // uncomment to debug
-        // menuMain.down(); // uncomment to debug
+        // uncomment to debug
+        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
+        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuMain.show( display );
       }
 
-      // matrix switch items
+      // matrix switch select items
       if (menu_page==2) {
+        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        Serial.println("[menu.selection] " + String(menuMatrixSwitchSelect.selection())); // uncomment to debug
-        Serial.println("[menu.size] " + String(menuMatrixSwitchSelect.size())); // uncomment to debug
-        // menuMatrixSwitchSelect.down(); // uncomment to debug
+        // uncomment to debug
+        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
+        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuMatrixSwitchSelect.show( display );
+      }
+
+      // matrix switch function items
+      if (menu_page==3) {
+        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+        display.setColor(RGB_COLOR16(255,255,255));
+
+        // uncomment to debug
+        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
+        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
+
+        // create variable menu title
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "MATRIX SWITCH ");
+        memset(TMP_UI_DATA_1, 0, sizeof(TMP_UI_DATA_1));
+        itoa(matrix_switch_selected+1, TMP_UI_DATA_1, 10); // display human matrix switch selected number
+        strcat(TMP_UI_DATA_0, TMP_UI_DATA_1);
+        menuMatrixFunctionSelectItems[0] = TMP_UI_DATA_0;
+        menuMatrixFunctionSelect.show( display );
       }
       
       // if (menu_page==6) {
