@@ -6055,8 +6055,8 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
       2: if you hear back then you have a device address and the device can tell you:
           1: name. what the device is? so that 'what it is' is not ambiguous.
           2: tags. what have you got and how to parse it (the human name(s) of the data its giving you).
-          3: append primitives (over, under, equal, inrange) to the human data names.
-          4: put new name(s) in matrix function names.
+          3: append primitives (over, under, equal, inrange) to the human names.
+          4: put new concatinated name(s) in matrix function names.
           ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need (in this case for satio and systems going forward).
 
 */
