@@ -5939,8 +5939,18 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
-      display.setColor(RGB_COLOR16(255,255,255));
+
+      // default border
+      // display.setColor(RGB_COLOR16(255,255,255));
+      // display.drawRect(1, 1, 126, 126);
+
+      // temporary way to ephasize switch is on/off
+      display.setColor(RGB_COLOR16(255,0,0));
+      if (matrixData.matrix_switch_state[0][matrix_switch_selected]==true) {display.setColor(RGB_COLOR16(0,255,0));}
       display.drawRect(1, 1, 126, 126);
+
+      // set default color
+      display.setColor(RGB_COLOR16(255,255,255));
       
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -5999,9 +6009,10 @@ void UpdateUI() {
         display.drawCanvas(3, 94, canvas0);
         display.drawCanvas(3, 110, canvas0);
       }
+
       // show the menu
-      display.setColor(RGB_COLOR16(255,0,0));
-      if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+      display.setColor(RGB_COLOR16(255,0,0)); // temporary way to ephasize switch disabled
+      if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==true) {display.setColor(RGB_COLOR16(0,255,0));} // temporary way to ephasize switch enabled
       menuMatrixFunctionSelect.show( display );
     }
 
@@ -6512,10 +6523,10 @@ void setup() {
   // digitalWrite(SSD1351_CS, HIGH);
 
   // VSPI: SDCARD
-  // beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  // setupSDCard();
-  // SD.end();
-  // endSPIDevice(SD_CS);
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  setupSDCard();
+  SD.end();
+  endSPIDevice(SD_CS);
 
   // HSPI: SSD1351 OLED DISPLAY
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
@@ -6592,6 +6603,7 @@ void loop() {
 
   // uncomment to override default values
   // systemData.matrix_enabled = true;
+  // systemData.output_matrix_enabled = true;
   // systemData.run_on_startup = true;
 
   readHID();
@@ -6684,7 +6696,7 @@ void loop() {
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   // Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
-  // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
+  Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
