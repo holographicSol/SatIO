@@ -5637,8 +5637,9 @@ void UpdateUI() {
     // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
-    // menu_page=3; // uncomment to debug
+    // menu_page=4; // uncomment to debug
     // matrix_switch_selected=0; // uncomment to debug
+    // matrix_function_selected=0; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
 
     // home page items
@@ -5735,15 +5736,18 @@ void UpdateUI() {
     if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
-      canvas0.clear();
       display.setColor(RGB_COLOR16(255,0,0));
-      canvas0.printFixed(1, 1, "  ENTER PORT NUMBER  ", STYLE_BOLD );
-      display.drawCanvas(1, 1, canvas0);
+      display.drawRect(1, 1, 126, 126);
 
       canvas0.clear();
       display.setColor(RGB_COLOR16(255,0,0));
-      canvas0.printFixed(1, 1, String(input_data).c_str(), STYLE_BOLD );
-      display.drawCanvas(1, 56, canvas0);
+      canvas0.printFixed(3, 1, " ENTER PORT NUMBER ", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas0);
+
+      canvas0.clear();
+      display.setColor(RGB_COLOR16(255,0,0));
+      canvas0.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
+      display.drawCanvas(3, 56, canvas0);
     }
 
   }
