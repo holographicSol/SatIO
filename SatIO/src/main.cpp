@@ -220,15 +220,16 @@ int update_ui_period = 60;
 bool ui_cleared = false;
 int menu_page = 0;
 
-const char *menu0Items[5] =
+const char *menu0Items[6] =
 {
-    "settings 0",
-    "settings 1",
-    "settings 2",
-    "settings 3",
-    "settings 4",
+    "MATRIX", // allows matrix configuration
+    "GPS", // enable/disable parsing of sentences from the gps module
+    "SERIAL", // enable/disable output of various comma delimited sentences
+    "SENSORS", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
+    "SYSTEM",
+    "UNIVERSE", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
-LcdGfxMenu menu0( menu0Items, 5 );
+LcdGfxMenu menu0( menu0Items, 6 );
 
 const char *menuMatrixSwitchSelectItems[22] =
 {
@@ -275,7 +276,7 @@ const char *menuMatrixFunctionSelectItems[13] =
 };
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13 );
 
-const char *menuMatrixConfigureFunctionItems[7] =
+const char *menuMatrixConfigureFunctionItems[8] =
 {
     "CONFIGURE FUNCTION",
     "", // reserved to display which matrix switch number and function number is selected
@@ -284,8 +285,9 @@ const char *menuMatrixConfigureFunctionItems[7] =
     "FUNCTION X",
     "FUNCTION Y",
     "FUNCTION Z",
+    "PORT NUMBER",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 7 );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 8 );
 
 const char *menuMatrixSetFunctionNameItems[] =
 {
