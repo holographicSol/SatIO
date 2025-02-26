@@ -6053,10 +6053,11 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
       Or auto:
       1: make an i2 address sweep within a certain address range.
       2: if you hear back then you have a device address and the device can tell you:
-          1: what its name is so its not some ambiguous device.
-          2: and how to parse it (the human name of the data its giving you).
-          3: then you automatically have a new name for a matrix function and a value every period in which the device gives you a value.
-          4: so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.
+          1: name. what the device is? so that 'what it is' is not ambiguous.
+          2: tags. what have you got and how to parse it (the human name(s) of the data its giving you).
+          3: append primitives (over, under, equal, inrange) to the human data names.
+          4: put new name(s) in matrix function names.
+          ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need (in this case for satio).
 
 */
 
