@@ -5729,11 +5729,17 @@ void menuEnter() {
   // matrix switch configuration
   else if (menu_page==3) {
 
-    // disable matrix switch
-    if (menuMatrixFunctionSelect.selection()==0) {matrixData.matrix_switch_enabled[0][matrix_switch_selected]=false;}
+    // disable matrix switch: also turns switch off
+    if (menuMatrixFunctionSelect.selection()==0) {
+      matrixData.matrix_switch_enabled[0][matrix_switch_selected]=false;
+      matrixData.matrix_switch_state[0][matrix_switch_selected]=false;
+    }
 
-    // enable matrix switch
-    if (menuMatrixFunctionSelect.selection()==1) {matrixData.matrix_switch_enabled[0][matrix_switch_selected]=true;}
+    // enable matrix switch: also turns switch off
+    if (menuMatrixFunctionSelect.selection()==1) {
+      matrixData.matrix_switch_enabled[0][matrix_switch_selected]=true;
+      matrixData.matrix_switch_state[0][matrix_switch_selected]=false;
+    }
 
     // go to set port page
     if (menuMatrixFunctionSelect.selection()==2) {
