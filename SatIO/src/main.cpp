@@ -287,6 +287,14 @@ const char *menuMatrixConfigureFunctionItems[7] =
 };
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 7 );
 
+const char *menuMatrixSetFunctionNameItems[] =
+{
+    "   SET FUNCTION   ",
+    "", // reserved to display which matrix switch number and function number is selected
+    "",
+};
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, sizeof(menuMatrixSetFunctionNameItems) / sizeof(char *) );
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
 
@@ -5422,6 +5430,12 @@ void writeI2C(int I2C_Address) {
 I2C peripheral: interrupts us to let us know it has something we need.
 
 SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
+
+Note: In the future, you should be able to add new I2C devices after flashing, through the ui and control panel:
+      1: add address
+      2: add $tag
+      3: add custom function name.
+      This will make it even simpler than already to build a new I2C peripheral and add it to the system.
 
 */
 
