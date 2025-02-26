@@ -6060,7 +6060,7 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
           ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.A0
           extra note: the custom i2c peripherals should be designed to think within the realms of 'primitives', so that being
           the ones who created the custom i2c device, we are also the ones who know what a simple integer means if and when we check
-          for that simple integer in the matrix.
+          for that simple integer in the matrix in regards to each and any given custom i2c device.
 */
 
 void ISR_I2C_PERIPHERAL() {
