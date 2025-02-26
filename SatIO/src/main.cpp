@@ -283,28 +283,17 @@ const char *menuMatrixFunctionSelectItems[11] =
     "FUNCTION 9",
     "FUNCTION 10",
 };
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 11, {{3, 34}, {122, 57}} );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 11, {{3, 34}, {124, 57}} );
 
 
-const char *menuMatrixConfigureFunctionItems[7] =
+const char *menuMatrixConfigureFunctionItems[4] =
 {
-    "CONFIGURE FUNCTION",
-    "", // reserved to display which matrix switch number and function number is selected
-    "",
     "FUNCTION NAME",
-    "FUNCTION X",
-    "FUNCTION Y",
-    "FUNCTION Z",
+    "VALUE X",
+    "VALUE Y",
+    "VALUE Z",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 7 );
-
-const char *menuMatrixSetFunctionNameItems[] =
-{
-    "   SET FUNCTION   ",
-    "", // reserved to display which matrix switch number and function number is selected
-    "",
-};
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, sizeof(menuMatrixSetFunctionNameItems) / sizeof(char *) );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 34}, {124, 84}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -1622,9 +1611,9 @@ struct MatrixStruct {
   /* function names for function name matrix */
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 222;
+  int max_matrix_function_names = 221;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[222][25] = 
+  char matrix_function_names[221][25] = 
   {
     "$NONE",
     "$ENABLED",
@@ -1665,34 +1654,34 @@ struct MatrixStruct {
     // "DateMonthXFalse",
     // "DateYearXFalse",
     
-    "DegreesLatGNGGAOver",
-    "DegreesLatGNGGAUnder",
-    "DegreesLatGNGGAEqual",
-    "DegreesLatGNGGARange",
-    // "DegreesLatGNGGARangeFalse",
+    "DegLatGNGGAOver",
+    "DegLatGNGGAUnder",
+    "DegLatGNGGAEqual",
+    "DegLatGNGGARange",
+    // "DegLatGNGGARangeFalse",
 
-    "DegreesLonGNGGAOver",
-    "DegreesLonGNGGAUnder",
-    "DegreesLonGNGGAEqual",
-    "DegreesLonGNGGARange",
-    "DegreesGNGGARanges",
-    // "DegreesGNGGARangesFalse",
+    "DegLonGNGGAOver",
+    "DegLonGNGGAUnder",
+    "DegLonGNGGAEqual",
+    "DegLonGNGGARange",
+    "DegGNGGARanges",
+    // "DegGNGGARangesFalse",
 
 
-    "DegreesLatGNRMCOver",
-    "DegreesLatGNRMCUnder",
-    "DegreesLatGNRMCEqual",
-    "DegreesLatGNRMCRange",
-    // "DegreesLatGNRMCRangeFalse",
+    "DegLatGNRMCOver",
+    "DegLatGNRMCUnder",
+    "DegLatGNRMCEqual",
+    "DegLatGNRMCRange",
+    // "DegLatGNRMCRangeFalse",
     
-    "DegreesLonGNRMCOver",
-    "DegreesLonGNRMCUnder",
-    "DegreesLonGNRMCEqual",
-    "DegreesLonGNRMCRange",
-    // "DegreesLonGNRMCRangeFalse",
+    "DegLonGNRMCOver",
+    "DegLonGNRMCUnder",
+    "DegLonGNRMCEqual",
+    "DegLonGNRMCRange",
+    // "DegLonGNRMCRangeFalse",
 
-    "DegreesGNRMCRanges",
-    // "DegreesGNRMCRangesFalse",
+    "DegGNRMCRanges",
+    // "DegGNRMCRangesFalse",
 
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
@@ -1712,24 +1701,24 @@ struct MatrixStruct {
     "LonGNGGARange",
     // "LonGNGGARangeFalse",
 
-    "PositioningStatusGNGGA",
-    // "PositioningStatusGNGGAFalse",
+    "PosStatusGNGGA",
+    // "PosStatusGNGGAFalse",
 
-    "SatelliteCountOver",
-    "SatelliteCountUnder",
-    "SatelliteCountEqual",
-    "SatelliteCountRange",
-    // "SatelliteCountRangeFalse",
+    "SatCountOver",
+    "SatCountUnder",
+    "SatCountEqual",
+    "SatCountRange",
+    // "SatCountRangeFalse",
 
-    "HemisphereGNGGANorth",
-    "HemisphereGNGGASouth",
-    "HemisphereGNGGAEast",
-    "HemisphereGNGGAWest",
+    "HemiGNGGANorth",
+    "HemiGNGGASouth",
+    "HemiGNGGAEast",
+    "HemiGNGGAWest",
 
-    // "HemisphereGNGGANorthFalse",
-    // "HemisphereGNGGASouthFalse",
-    // "HemisphereGNGGAEastFalse",
-    // "HemisphereGNGGAWestFalse",
+    // "HemiGNGGANorthFalse",
+    // "HemiGNGGASouthFalse",
+    // "HemiGNGGAEastFalse",
+    // "HemiGNGGAWestFalse",
 
     "GPSPrecisionOver",
     "GPSPrecisionUnder",
@@ -1737,11 +1726,11 @@ struct MatrixStruct {
     "GPSPrecisionRange",
     // "GPSPrecisionRangeFalse",
 
-    "AltitudeGNGGAOver",
-    "AltitudeGNGGAUnder",
-    "AltitudeGNGGAEqual",
-    "AltitudeGNGGARange",
-    // "AltitudeGNGGARangeFalse",
+    "AltGNGGAOver",
+    "AltGNGGAUnder",
+    "AltGNGGAEqual",
+    "AltGNGGARange",
+    // "AltGNGGARangeFalse",
 
     "UTCTimeGNRMCOver",
     "UTCTimeGNRMCUnder",
@@ -1749,8 +1738,8 @@ struct MatrixStruct {
     "UTCTimeGNRMCRange",
     // "UTCTimeGNRMCRangeFalse",
 
-    "PositioningStatusGNRMCA",
-    "PositioningStatusGNRMCV",
+    "PosStatusGNRMCA",
+    "PosStatusGNRMCV",
 
     "ModeGNRMCA",
     "ModeGNRMCD",
@@ -1769,21 +1758,21 @@ struct MatrixStruct {
     "LonGNRMCRange",
     // "LonGNRMCRangeFalse",
 
-    "HemisphereGNRMCNorth",
-    "HemisphereGNRMCSouth",
-    "HemisphereGNRMCEast",
-    "HemisphereGNRMCWest",
+    "HemiGNRMCNorth",
+    "HemiGNRMCSouth",
+    "HemiGNRMCEast",
+    "HemiGNRMCWest",
 
-    // "HemisphereGNRMCNorthFalse",
-    // "HemisphereGNRMCSouthFalse",
-    // "HemisphereGNRMCEastFalse",
-    // "HemisphereGNRMCWestFalse",
+    // "HemiGNRMCNorthFalse",
+    // "HemiGNRMCSouthFalse",
+    // "HemiGNRMCEastFalse",
+    // "HemiGNRMCWestFalse",
 
-    "GroundSpeedGNRMCOver",
-    "GroundSpeedGNRMCUnder",
-    "GroundSpeedGNRMCEqual",
-    "GroundSpeedGNRMCRange",
-    // "GroundSpeedGNRMCRangeFalse",
+    "GSpeedGNRMCOver",
+    "GSpeedGNRMCUnder",
+    "GSpeedGNRMCEqual",
+    "GSpeedGNRMCRange",
+    // "GSpeedGNRMCRangeFalse",
 
     "HeadingGNRMCOver",
     "HeadingGNRMCUnder",
@@ -1800,11 +1789,11 @@ struct MatrixStruct {
     "LineFlagGPATTEqual",
     // "LineFlagGPATTEqualFalse",
 
-    "StaticFlagGPATTEqual",
-    // "StaticFlagGPATTEqualFalse",
+    "StaticFlagGPATTEQ",
+    // "StaticFlagGPATTEQFalse",
 
-    "RunStateFlagGPATTEqual",
-    // "RunStateFlagGPATTEqualFalse",
+    "RStateFlagGPATTEQ",
+    // "RStateFlagGPATTEQFalse",
 
     "INSGPATTEqual",
     // "INSGPATTEqualFalse",
@@ -1845,24 +1834,24 @@ struct MatrixStruct {
     "PitchGPATTRange",
     // "PitchGPATTRangeFalse",
 
-    "GNGGAValidChecksum",
-    "GNRMCValidChecksum",
-    "GPATTValidChecksum",
+    "GNGGAValidCS",
+    "GNRMCValidCS",
+    "GPATTValidCS",
 
-    "GNGGAInvalidChecksum",
-    "GNRMCInvalidChecksum",
-    "GPATTInvalidChecksum",
+    "GNGGAInvalidCS",
+    "GNRMCInvalidCS",
+    "GPATTInvalidCS",
 
-    "GNGGAValidCheckData",
-    "GNRMCValidCheckData",
-    "GPATTValidCheckData",
+    "GNGGAValidCD",
+    "GNRMCValidCD",
+    "GPATTValidCD",
 
-    "GNGGAInvalidCheckData",
-    "GNRMCInvalidCheckData",
-    "GPATTInvalidCheckData",
+    "GNGGAInvalidCD",
+    "GNRMCInvalidCD",
+    "GPATTInvalidCD",
 
-    "SunAzimuthRange",
-    "SunAltitudeRange",
+    "SunAzRange",
+    "SunAltRange",
 
     // "SunAzimuthRangeFalse",
     // "SunAltitudeRangeFalse",
@@ -1873,8 +1862,8 @@ struct MatrixStruct {
     "Sunrise",
     "Sunset",
 
-    "MoonAzimuthRange",
-    "MoonAltitudeRange",
+    "MoonAzRange",
+    "MoonAltRange",
     // "MoonAzimuthRangeFalse",
     // "MoonAltitudeRangeFalse",
     "MoonUp",
@@ -1884,8 +1873,8 @@ struct MatrixStruct {
     "MoonPhase",
     // "MoonPhaseFalse",
 
-    "MercuryAzimuthRange",
-    "MercuryAltitudeRange",
+    "MercuryAzRange",
+    "MercuryAltRange",
     // "MercuryAzimuthRangeFalse",
     // "MercuryAltitudeRangeFalse",
     "MercuryUp",
@@ -1893,8 +1882,8 @@ struct MatrixStruct {
     "MercuryRise",
     "MercurySet",
 
-    "VenusAzimuthRange",
-    "VenusAltitudeRange",
+    "VenusAzRange",
+    "VenusAltRange",
     // "VenusAzimuthRangeFalse",
     // "VenusAltitudeRangeFalse",
     "VenusUp",
@@ -1902,8 +1891,8 @@ struct MatrixStruct {
     "VenusRise",
     "VenusSet",
 
-    "MarsAzimuthRange",
-    "MarsAltitudeRange",
+    "MarsAzRange",
+    "MarsAltRange",
     // "MarsAzimuthRangeFalse",
     // "MarsAltitudeRangeFalse",
     "MarsUp",
@@ -1911,8 +1900,8 @@ struct MatrixStruct {
     "MarsRise",
     "MarsSet",
 
-    "JupiterAzimuthRange",
-    "JupiterAltitudeRange",
+    "JupiterAzRange",
+    "JupiterAltRange",
     // "JupiterAzimuthRangeFalse",
     // "JupiterAltitudeRangeFalse",
     "JupiterUp",
@@ -1920,8 +1909,8 @@ struct MatrixStruct {
     "JupiterRise",
     "JupiterSet",
 
-    "SaturnAzimuthRange",
-    "SaturnAltitudeRange",
+    "SaturnAzRange",
+    "SaturnAltRange",
     // "SaturnAzimuthRangeFalse",
     // "SaturnAltitudeRangeFalse",
     "SaturnUp",
@@ -1929,8 +1918,8 @@ struct MatrixStruct {
     "SaturnRise",
     "SaturnSet",
 
-    "UranusAzimuthRange",
-    "UranusAltitudeRange",
+    "UranusAzRange",
+    "UranusAltRange",
     // "UranusAzimuthRangeFalse",
     // "UranusAltitudeRangeFalse",
     "UranusUp",
@@ -1938,8 +1927,8 @@ struct MatrixStruct {
     "UranusRise",
     "UranusSet",
 
-    "NeptuneAzimuthRange",
-    "NeptuneAltitudeRange",
+    "NeptuneAzRange",
+    "NeptuneAltRange",
     // "NeptuneAzimuthRangeFalse",
     // "NeptuneAltitudeRangeFalse",
     "NeptuneUp",
@@ -1977,14 +1966,241 @@ struct MatrixStruct {
     "DHT11_0_HIF_Range",
     // "DHT11_0_HIF_RangeFalse",
 
-    "PhotoResistor_0_Under",
-    "PhotoResistor_0_Over",
-    "PhotoResistor_0_Equal",
-    "PhotoResistor_0_Range",
-    // "PhotoResistor_0_RangeFalse",
+    "PhotoRes_0_Under",
+    "PhotoRes_0_Over",
+    "PhotoRes_0_Equal",
+    "PhotoRes_0_Range",
+    // "PhotoRes_0_RangeFalse",
   };
 };
 MatrixStruct matrixData;
+
+// temporary replica of matrixData variable (while the ui is being re-built for the oled ssd1351)
+const char *menuMatrixSetFunctionNameItems[221] =
+{
+  "$NONE",
+  "$ENABLED",
+  "$OVERLOAD_TRUE",
+  "$OVERLOAD_FALSE",
+  "$SWITCHLINKTRUE",
+  "$SWITCHLINKFALSE",
+  "SecondsTimer",
+  "RTCTimeOver",
+  "RTCTimeUnder",
+  "RTCTimeEqual",
+  "RTCTimeRange",
+  "DaySunday",
+  "DayMonday",
+  "DayTuesday",
+  "DayWednesday",
+  "DayThursday",
+  "DayFriday",
+  "DaySaturday",
+  "DateDayX",
+  "DateMonthX",
+  "DateYearX",
+  "DegLatGNGGAOver",
+  "DegLatGNGGAUnder",
+  "DegLatGNGGAEqual",
+  "DegLatGNGGARange",
+  "DegLonGNGGAOver",
+  "DegLonGNGGAUnder",
+  "DegLonGNGGAEqual",
+  "DegLonGNGGARange",
+  "DegGNGGARanges",
+  "DegLatGNRMCOver",
+  "DegLatGNRMCUnder",
+  "DegLatGNRMCEqual",
+  "DegLatGNRMCRange",
+  "DegLonGNRMCOver",
+  "DegLonGNRMCUnder",
+  "DegLonGNRMCEqual",
+  "DegLonGNRMCRange",
+  "DegGNRMCRanges",
+  "UTCTimeGNGGAOver",
+  "UTCTimeGNGGAUnder",
+  "UTCTimeGNGGAEqual",
+  "UTCTimeGNGGARange",
+  "LatGNGGAOver",
+  "LatGNGGAUnder",
+  "LatGNGGAEqual",
+  "LatGNGGARange",
+  "LonGNGGAOver",
+  "LonGNGGAUnder",
+  "LonGNGGAEqual",
+  "LonGNGGARange",
+  "PosStatusGNGGA",
+  "SatCountOver",
+  "SatCountUnder",
+  "SatCountEqual",
+  "SatCountRange",
+  "HemiGNGGANorth",
+  "HemiGNGGASouth",
+  "HemiGNGGAEast",
+  "HemiGNGGAWest",
+  "GPSPrecisionOver",
+  "GPSPrecisionUnder",
+  "GPSPrecisionEqual",
+  "GPSPrecisionRange",
+  "AltGNGGAOver",
+  "AltGNGGAUnder",
+  "AltGNGGAEqual",
+  "AltGNGGARange",
+  "UTCTimeGNRMCOver",
+  "UTCTimeGNRMCUnder",
+  "UTCTimeGNRMCEqual",
+  "UTCTimeGNRMCRange",
+  "PosStatusGNRMCA",
+  "PosStatusGNRMCV",
+  "ModeGNRMCA",
+  "ModeGNRMCD",
+  "ModeGNRMCE",
+  "ModeGNRMCN",
+  "LatGNRMCOver",
+  "LatGNRMCUnder",
+  "LatGNRMCEqual",
+  "LatGNRMCRange",
+  "LonGNRMCOver",
+  "LonGNRMCUnder",
+  "LonGNRMCEqual",
+  "LonGNRMCRange",
+  "HemiGNRMCNorth",
+  "HemiGNRMCSouth",
+  "HemiGNRMCEast",
+  "HemiGNRMCWest",
+  "GSpeedGNRMCOver",
+  "GSpeedGNRMCUnder",
+  "GSpeedGNRMCEqual",
+  "GSpeedGNRMCRange",
+  "HeadingGNRMCOver",
+  "HeadingGNRMCUnder",
+  "HeadingGNRMCEqual",
+  "HeadingGNRMCRange",
+  "UTCDateGNRMCOver",
+  "UTCDateGNRMCUnder",
+  "UTCDateGNRMCEqual",
+  "UTCDateGNRMCRange",
+  "LineFlagGPATTEqual",
+  "StaticFlagGPATTEQ",
+  "RStateFlagGPATTEQ",
+  "INSGPATTEqual",
+  "SpeedNumGPATTOver",
+  "SpeedNumGPATTUnder",
+  "SpeedNumGPATTEqual",
+  "SpeedNumGPATTRange",
+  "MileageGPATTOver",
+  "MileageGPATTUnder",
+  "MileageGPATTEqual",
+  "MileageGPATTRange",
+  "GSTDataGPATTOver",
+  "GSTDataGPATTUnder",
+  "GSTDataGPATTEqual",
+  "GSTDataGPATTRange",
+  "YawGPATTOver",
+  "YawGPATTUnder",
+  "YawGPATTEqual",
+  "YawGPATTRange",
+  "RollGPATTOver",
+  "RollGPATTUnder",
+  "RollGPATTEqual",
+  "RollGPATTRange",
+  "PitchGPATTOver",
+  "PitchGPATTUnder",
+  "PitchGPATTEqual",
+  "PitchGPATTRange",
+  "GNGGAValidCS",
+  "GNRMCValidCS",
+  "GPATTValidCS",
+  "GNGGAInvalidCS",
+  "GNRMCInvalidCS",
+  "GPATTInvalidCS",
+  "GNGGAValidCD",
+  "GNRMCValidCD",
+  "GPATTValidCD",
+  "GNGGAInvalidCD",
+  "GNRMCInvalidCD",
+  "GPATTInvalidCD",
+  "SunAzRange",
+  "SunAltRange",
+  "DayTime",
+  "NightTime",
+  "Sunrise",
+  "Sunset",
+  "MoonAzRange",
+  "MoonAltRange",
+  "MoonUp",
+  "MoonDown",
+  "Moonrise",
+  "Moonset",
+  "MoonPhase",
+  "MercuryAzRange",
+  "MercuryAltRange",
+  "MercuryUp",
+  "MercuryDown",
+  "MercuryRise",
+  "MercurySet",
+  "VenusAzRange",
+  "VenusAltRange",
+  "VenusUp",
+  "VenusDown",
+  "VenusRise",
+  "VenusSet",
+  "MarsAzRange",
+  "MarsAltRange",
+  "MarsUp",
+  "MarsDown",
+  "MarsRise",
+  "MarsSet",
+  "JupiterAzRange",
+  "JupiterAltRange",
+  "JupiterUp",
+  "JupiterDown",
+  "JupiterRise",
+  "JupiterSet",
+  "SaturnAzRange",
+  "SaturnAltRange",
+  "SaturnUp",
+  "SaturnDown",
+  "SaturnRise",
+  "SaturnSet",
+  "UranusAzRange",
+  "UranusAltRange",
+  "UranusUp",
+  "UranusDown",
+  "UranusRise",
+  "UranusSet",
+  "NeptuneAzRange",
+  "NeptuneAltRange",
+  "NeptuneUp",
+  "NeptuneDown",
+  "NeptuneRise",
+  "NeptuneSet",
+  "DHT11_0_H_Under",
+  "DHT11_0_H_Over",
+  "DHT11_0_H_Equal",
+  "DHT11_0_H_Range",
+  "DHT11_0_C_Under",
+  "DHT11_0_C_Over",
+  "DHT11_0_C_Equal",
+  "DHT11_0_C_Range",
+  "DHT11_0_F_Under",
+  "DHT11_0_F_Over",
+  "DHT11_0_F_Equal",
+  "DHT11_0_F_Range",
+  "DHT11_0_HIC_Under",
+  "DHT11_0_HIC_Over",
+  "DHT11_0_HIC_Equal",
+  "DHT11_0_HIC_Range",
+  "DHT11_0_HIF_Under",
+  "DHT11_0_HIF_Over",
+  "DHT11_0_HIF_Equal",
+  "DHT11_0_HIF_Range",
+  "PhotoRes_0_Under",
+  "PhotoRes_0_Over",
+  "PhotoRes_0_Equal",
+  "PhotoRes_0_Range",
+};
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 221, {{0, 0}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -4211,52 +4427,52 @@ void matrixSwitch() {
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
 
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNGGARange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNGGARange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGARange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           
           }
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesGNGGARanges") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegGNGGARanges") == 0) {
           tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           satData.location_longitude_gngga,
@@ -4267,53 +4483,53 @@ void matrixSwitch() {
         // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
 
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLatGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesLonGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCRange") == 0) {
           tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegreesGNRMCRanges") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegGNRMCRanges") == 0) {
           tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           satData.location_longitude_gnrmc,
@@ -4386,45 +4602,45 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNGGA") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNGGA") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.solution_status),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatelliteCountRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGANorth") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGAEast") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAEast") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGASouth") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGASouth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNGGAWest") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAWest") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);
           }
 
@@ -4449,22 +4665,22 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltitudeGNGGARange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGARange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -4536,38 +4752,38 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCNorth") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCEast") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCEast") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCSouth") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCSouth") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemisphereGNRMCWest") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCWest") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCOver") == 0) {
           tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCUnder") == 0) {
           tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCEqual") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GroundSpeedGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed),
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -4615,11 +4831,11 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNRMCA") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCA") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PositioningStatusGNRMCV") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCV") == 0) {
           tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);
           }
 
@@ -4778,12 +4994,12 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RunStateFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RStateFlagGPATTEQ") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "StaticFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "StaticFlagGPATTEQ") == 0) {
           tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
@@ -4792,14 +5008,14 @@ void matrixSwitch() {
         //                                                                                                     SIDEREAL TIME: SUN
 
         // sun azimuth:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
         // sun altitude:
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -4831,13 +5047,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                 SIDEREAL TIME: MOON
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -4873,13 +5089,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: MERCURY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -4910,13 +5126,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                SIDEREAL TIME: VENUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -4947,13 +5163,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                                 SIDEREAL TIME: MARS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -4984,13 +5200,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: JUPITER
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -5021,13 +5237,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                               SIDEREAL TIME: SATURN
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -5058,13 +5274,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                               SIDEREAL TIME: URANUS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -5095,13 +5311,13 @@ void matrixSwitch() {
         // // -------------------------------------------------------------------------------------------------------------------
         // //                                                                                              SIDEREAL TIME: NEPTUNE
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzimuthRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAltitudeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAltRange") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][2]);
@@ -5247,22 +5463,22 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        PHOTO RESISTORS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Under") == 0) {
           tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Over") == 0) {
           tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Equal") == 0) {
           tmp_matrix[Fi] = check_equal_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoResistor_0_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Range") == 0) {
           tmp_matrix[Fi] = check_ge_and_le_true(sensorData.photoresistor_0,
           matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1]);
@@ -5271,29 +5487,29 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCS") == 0) {
           tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCS") == 0) {
           tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidChecksum") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCS") == 0) {
           tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCD") == 0) {
           tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCD") == 0) {
           tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCheckData") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCD") == 0) {
           tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
 
@@ -5464,8 +5680,9 @@ void menuUp() {
   else if (menu_page==1) {menuMain.up();}
   else if (menu_page==2) {menuMatrixSwitchSelect.up();}
   else if (menu_page==3) {menuMatrixFunctionSelect.up();}
-  else if (menu_page==4) {menuMatrixConfigureFunction.up();}
-  else if (menu_page==5) {menuMatrixSetFunctionName.up();}
+  else if (menu_page==4) {}
+  else if (menu_page==5) {menuMatrixConfigureFunction.up();}
+  else if (menu_page==6) {menuMatrixSetFunctionName.up();}
 }
 
 void menuDown() {
@@ -5473,8 +5690,9 @@ void menuDown() {
   else if (menu_page==1) {menuMain.down();}
   else if (menu_page==2) {menuMatrixSwitchSelect.down();}
   else if (menu_page==3) {menuMatrixFunctionSelect.down();}
-  else if (menu_page==4) {menuMatrixConfigureFunction.down();}
-  else if (menu_page==5) {menuMatrixSetFunctionName.down();}
+  else if (menu_page==4) {}
+  else if (menu_page==5) {menuMatrixConfigureFunction.down();}
+  else if (menu_page==6) {menuMatrixSetFunctionName.down();}
 }
 
 void menuEnter() {
@@ -5529,10 +5747,18 @@ void menuEnter() {
     menu_page=3;
   }
 
-  // matrix switch function name selection
-  else if (menu_page==5) {}
-}
+  // matrix switch select function name, x, y, or z
+  else if (menu_page==5) {
+    if (menuMatrixConfigureFunction.selection()==0) {menu_page=6;}
+  }
 
+  // matrix switch set function name
+  else if (menu_page==6) {
+    memset(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected], 0, sizeof(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]));
+    strcpy(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
+    menu_page=3;
+  }
+}
 
 void ISR_I2C_PERIPHERAL() {
   // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
@@ -5641,7 +5867,7 @@ void UpdateUI() {
     // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
-    // menu_page=4; // uncomment to debug
+    // menu_page=6; // uncomment to debug
     // matrix_switch_selected=0; // uncomment to debug
     // matrix_function_selected=0; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
@@ -5695,7 +5921,7 @@ void UpdateUI() {
 
         // function name
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "F: ");
+        strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]).c_str());
         canvas0.clear();
         canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -5754,7 +5980,42 @@ void UpdateUI() {
       display.drawCanvas(3, 56, canvas0);
     }
 
+    // select function name, x, y, or z
+    if (menu_page==5) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
+      canvas0.setFixedFont(ssd1306xled_font6x8);
+      display.setColor(RGB_COLOR16(255,255,255));
+      display.drawRect(1, 1, 126, 126);
+
+      // matrix switch number 
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
+      strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
+      canvas0.clear();
+      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas0);
+
+      // function number
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "FUNCTION: ");
+      strcat(TMP_UI_DATA_0, String(matrix_function_selected+1).c_str());
+      canvas0.clear();
+      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 22, canvas0);
+
+      // show the menu
+      menuMatrixConfigureFunction.show( display );
+    }
+
+    // select function name
+    if (menu_page==6) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(255,255,255));
+      menuMatrixSetFunctionName.show( display );
+    }
   }
+
   // oled protection: clear ui once if ui updates disabled
   else if ((ui_cleared == false) && (update_ui == false)) {
     Serial.println("[oled protection] clearing ui");
