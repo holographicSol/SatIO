@@ -5674,6 +5674,7 @@ int matrix_switch_selected;
 int matrix_function_selected;
 char input_data[128];
 char allow_input_data = false;
+int enter_digits_key = NULL;
 
 void menuUp() {
   if (menu_page==0) {menuHome.up();}
@@ -5730,6 +5731,7 @@ void menuEnter() {
     if (menuMatrixFunctionSelect.selection()==0) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
+      enter_digits_key = 1;
       menu_page=4;
     }
 
@@ -5740,16 +5742,41 @@ void menuEnter() {
     }
   }
 
-  // matrix switch set port
+  // set digits
   else if (menu_page==4) {
     allow_input_data=false;
-    matrixData.matrix_port_map[0][matrix_switch_selected]=atoi(input_data);
-    menu_page=3;
+    if (enter_digits_key==1) {matrixData.matrix_port_map[0][matrix_switch_selected]=atoi(input_data); menu_page=3;}
+    if (enter_digits_key==2) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]=atoi(input_data); menu_page=3;}
+    if (enter_digits_key==3) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]=atoi(input_data); menu_page=3;}
+    if (enter_digits_key==4) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]=atoi(input_data); menu_page=3;}
+    enter_digits_key = NULL;
   }
 
   // matrix switch select function name, x, y, or z
   else if (menu_page==5) {
     if (menuMatrixConfigureFunction.selection()==0) {menu_page=6;}
+
+    // go to set function value x page
+    if (menuMatrixConfigureFunction.selection()==1) {
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      enter_digits_key = 2;
+      menu_page=4;
+    }
+    // go to set function value y page
+    if (menuMatrixConfigureFunction.selection()==2) {
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      enter_digits_key = 3;
+      menu_page=4;
+    }
+    // go to set function value z page
+    if (menuMatrixConfigureFunction.selection()==3) {
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      enter_digits_key = 4;
+      menu_page=4;
+    }
   }
 
   // matrix switch set function name
@@ -5922,7 +5949,7 @@ void UpdateUI() {
         // function name
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]).c_str());
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-1]).c_str());
         canvas0.clear();
         canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 62, canvas0);
@@ -5930,7 +5957,7 @@ void UpdateUI() {
         // function x
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "X: ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]).c_str());
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-1][0]).c_str());
         canvas0.clear();
         canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 78, canvas0);
@@ -5938,7 +5965,7 @@ void UpdateUI() {
         // function y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Y: ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]).c_str());
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-1][1]).c_str());
         canvas0.clear();
         canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 94, canvas0);
@@ -5946,7 +5973,7 @@ void UpdateUI() {
         // function z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Z: ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]).c_str());
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-1][2]).c_str());
         canvas0.clear();
         canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 110, canvas0);
@@ -5962,18 +5989,18 @@ void UpdateUI() {
       menuMatrixFunctionSelect.show( display );
     }
 
-    // set port number
+    // enter digits page
     if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(RGB_COLOR16(255,0,0));
       display.drawRect(1, 1, 126, 126);
-
       canvas0.clear();
       display.setColor(RGB_COLOR16(255,0,0));
-      canvas0.printFixed(3, 1, " ENTER PORT NUMBER ", STYLE_BOLD );
+      if (enter_digits_key==1) {canvas0.printFixed(3, 1,      " ENTER PORT NUMBER ", STYLE_BOLD );}
+      else if (enter_digits_key==2) {canvas0.printFixed(3, 1, "   ENTER VALUE X    ", STYLE_BOLD );}
+      else if (enter_digits_key==3) {canvas0.printFixed(3, 1, "   ENTER VALUE Y    ", STYLE_BOLD );}
+      else if (enter_digits_key==4) {canvas0.printFixed(3, 1, "   ENTER VALUE Z    ", STYLE_BOLD );}
       display.drawCanvas(3, 6, canvas0);
-
       canvas0.clear();
       display.setColor(RGB_COLOR16(255,0,0));
       canvas0.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
