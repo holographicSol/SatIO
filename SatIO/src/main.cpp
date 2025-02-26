@@ -5628,132 +5628,131 @@ char TMP_UI_DATA_1[56];
 
 void UpdateUI() {
 
-    // oled protection: enable/disable ui updates
-    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
-    else {update_ui=true;}
+  // oled protection: enable/disable ui updates
+  if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+  else {update_ui=true;}
 
-    // update ui
-    if (update_ui==true) {
-      // Serial.println("[oled protection] allowing ui update");
-      ui_cleared = false;
+  // update ui
+  if (update_ui==true) {
+    // Serial.println("[oled protection] allowing ui update");
+    ui_cleared = false;
 
-      menu_page=3; // uncomment to debug
-      matrix_switch_selected=0; // uncomment to debug
-      Serial.println("[menu page] " + String(menu_page));
+    // menu_page=3; // uncomment to debug
+    // matrix_switch_selected=0; // uncomment to debug
+    Serial.println("[menu page] " + String(menu_page));
 
-      // home page items
-      if (menu_page==0) {
-        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-        display.setColor(RGB_COLOR16(255,255,255));
-        menuHome.show( display );
-      }
-
-      // main menu items
-      if (menu_page==1) {
-        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-        display.setColor(RGB_COLOR16(255,255,255));
-        menuMain.show( display );
-      }
-
-      // matrix switch select items
-      if (menu_page==2) {
-        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-        display.setColor(RGB_COLOR16(255,255,255));
-        menuMatrixSwitchSelect.show( display );
-      }
-
-      // matrix switch function items
-      if (menu_page==3) {
-        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
-        canvas0.setFixedFont(ssd1306xled_font6x8);
-        display.setColor(RGB_COLOR16(255,255,255));
-        display.drawRect(1, 1, 126, 126);
-        
-        // matrix switch number 
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
-        strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
-        canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 6, canvas0);
-
-        // port number
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "PORT: ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 22, canvas0);
-
-        if (menuMatrixFunctionSelect.selection()>=1) {
-
-          // function name
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "F: ");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]).c_str());
-          canvas0.clear();
-          canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-          display.drawCanvas(3, 62, canvas0);
-          
-          // function x
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "X: ");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]).c_str());
-          canvas0.clear();
-          canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-          display.drawCanvas(3, 78, canvas0);
-
-          // function y
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "Y: ");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]).c_str());
-          canvas0.clear();
-          canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-          display.drawCanvas(3, 94, canvas0);
-
-          // function z
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "Z: ");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]).c_str());
-          canvas0.clear();
-          canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-          display.drawCanvas(3, 110, canvas0);
-        }
-        else {
-          canvas0.clear();
-          display.drawCanvas(3, 62, canvas0);
-          display.drawCanvas(3, 78, canvas0);
-          display.drawCanvas(3, 94, canvas0);
-          display.drawCanvas(3, 110, canvas0);
-        }
-        // show the menu
-        menuMatrixFunctionSelect.show( display );
-      }
-
-      // set port number
-      if (menu_page==4) {
-        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
-        canvas0.clear();
-        display.setColor(RGB_COLOR16(255,0,0));
-        canvas0.printFixed(1, 1, "  ENTER PORT NUMBER  ", STYLE_BOLD );
-        display.drawCanvas(1, 1, canvas0);
-
-        canvas0.clear();
-        display.setColor(RGB_COLOR16(255,0,0));
-        canvas0.printFixed(1, 1, String(input_data).c_str(), STYLE_BOLD );
-        display.drawCanvas(1, 56, canvas0);
-      }
-
-    // oled protection: clear ui once if ui updates disabled
-    else if ((ui_cleared == false) && (update_ui == false)) {
-      // Serial.println("[oled protection] clearing ui");
-      display.clear();
-      ui_cleared=true;
+    // home page items
+    if (menu_page==0) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(255,255,255));
+      menuHome.show( display );
     }
-  }
 
+    // main menu items
+    if (menu_page==1) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(255,255,255));
+      menuMain.show( display );
+    }
+
+    // matrix switch select items
+    if (menu_page==2) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(255,255,255));
+      menuMatrixSwitchSelect.show( display );
+    }
+
+    // matrix switch function items
+    if (menu_page==3) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
+      canvas0.setFixedFont(ssd1306xled_font6x8);
+      display.setColor(RGB_COLOR16(255,255,255));
+      display.drawRect(1, 1, 126, 126);
+      
+      // matrix switch number 
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
+      strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
+      canvas0.clear();
+      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas0);
+
+      // port number
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "PORT: ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 22, canvas0);
+
+      if (menuMatrixFunctionSelect.selection()>=1) {
+
+        // function name
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "F: ");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 62, canvas0);
+        
+        // function x
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "X: ");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 78, canvas0);
+
+        // function y
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "Y: ");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 94, canvas0);
+
+        // function z
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "Z: ");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 110, canvas0);
+      }
+      else {
+        canvas0.clear();
+        display.drawCanvas(3, 62, canvas0);
+        display.drawCanvas(3, 78, canvas0);
+        display.drawCanvas(3, 94, canvas0);
+        display.drawCanvas(3, 110, canvas0);
+      }
+      // show the menu
+      menuMatrixFunctionSelect.show( display );
+    }
+
+    // set port number
+    if (menu_page==4) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
+      canvas0.clear();
+      display.setColor(RGB_COLOR16(255,0,0));
+      canvas0.printFixed(1, 1, "  ENTER PORT NUMBER  ", STYLE_BOLD );
+      display.drawCanvas(1, 1, canvas0);
+
+      canvas0.clear();
+      display.setColor(RGB_COLOR16(255,0,0));
+      canvas0.printFixed(1, 1, String(input_data).c_str(), STYLE_BOLD );
+      display.drawCanvas(1, 56, canvas0);
+    }
+
+  }
+  // oled protection: clear ui once if ui updates disabled
+  else if ((ui_cleared == false) && (update_ui == false)) {
+    Serial.println("[oled protection] clearing ui");
+    display.clear();
+    ui_cleared=true;
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
