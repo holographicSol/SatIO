@@ -5630,7 +5630,7 @@ void UpdateUI() {
         // matrix switch number 
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "MATRIX SWITCH ");
-        strcat(TMP_UI_DATA_0, String(matrix_switch_selected).c_str());
+        strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(1, 1, canvas0);
