@@ -5621,63 +5621,42 @@ void MatrixStatsCounter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      I2C DATA
-
-#define I2C_ADDR_CONTROL_PANEL_0 8
-#define I2C_ADDR_PORTCONTROLLER_0 9
-
-int I2C_ADDRESSES[] = {
-  I2C_ADDR_CONTROL_PANEL_0,
-  I2C_ADDR_PORTCONTROLLER_0
-};
-
-struct I2CLinkStruct {
-  char * token;
-  byte OUTPUT_BUFFER[10]; // bytes to be sent
-  char INPUT_BUFFER[10];  // chars received
-  char TMP_BUFFER_0[10];  // chars of bytes to be sent
-  char TMP_BUFFER_1[10];  // some space for type conversions
-};
-I2CLinkStruct I2CLink;
-
-void writeI2C(int I2C_Address) {
-  // compile bytes array
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
-  // begin
-  Wire.beginTransmission(I2C_Address);
-  // write bytes array
-  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-  // end
-  Wire.endTransmission();
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                I2C PERIPHERALS
-
-/*
-
-I2C peripheral: interrupts us to let us know it has something we need.
-
-SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
-
-Note: In the future, you should be able to add new I2C devices after flashing, through the ui and control panel:
-      1: add address
-      2: add $tag
-      3: add custom function name.
-      This will make it even simpler than already to build a new I2C peripheral and add it to the system.
-
-*/
+//                                                                                                                     INPUT DATA
 
 bool make_i2c_request = false;
 int unixtime_control_panel_request;
-int button_pressed;
 int previous_menu_page;
 int matrix_switch_selected;
 int matrix_function_selected;
 char input_data[128];
 char allow_input_data = false;
 int enter_digits_key = NULL;
+
+void inputData(char * data) {
+
+  // allow signing as first char
+  if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
+
+  else {
+
+    // port
+    if (enter_digits_key==1) {
+      if ((atoi(input_data) < 999) && (atoi(input_data) >= -1)) {
+        if (allow_input_data==true) {strcat(input_data, data);}
+      }
+    }
+
+    // <= long
+    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+      if ((atol(input_data) < 179769313486232) && (atol(input_data) > -179769313486232)) {
+        if (allow_input_data==true) {strcat(input_data, data);}
+      }
+    }
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        MENU UP
 
 void menuUp() {
   if (menu_page==0) {menuHome.up();}
@@ -5689,6 +5668,9 @@ void menuUp() {
   else if (menu_page==6) {menuMatrixSetFunctionName.up();}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      MENU DOWN
+
 void menuDown() {
   if (menu_page==0) {menuHome.down();}
   else if (menu_page==1) {menuMain.down();}
@@ -5698,6 +5680,9 @@ void menuDown() {
   else if (menu_page==5) {menuMatrixConfigureFunction.down();}
   else if (menu_page==6) {menuMatrixSetFunctionName.down();}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     MENU ENTER
 
 void menuEnter() {
 
@@ -5802,92 +5787,8 @@ void menuEnter() {
   }
 }
 
-void ISR_I2C_PERIPHERAL() {
-  // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
-  make_i2c_request = true;
-}
-
-void inputData(char * data) {
-
-  // allow signing as first char
-  if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
-
-  else if ((atol(input_data) < 179769313486232) && (atol(input_data) > -179769313486232)) {
-    if (allow_input_data==true) {strcat(input_data, data);}
-  }
-}
-
-void readHID() {
-
-  // make i2c request if interrupt flag true 
-  if (make_i2c_request == true) {
-    make_i2c_request = false;
-
-    // request
-    Serial.println("[master] making request");
-    Wire.requestFrom(I2C_ADDR_CONTROL_PANEL_0,sizeof(I2CLink.INPUT_BUFFER));
-
-    // receive
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-
-    // 1: record time of any activity from the i2c control panel.
-    unixtime_control_panel_request = rtc.now().unixtime();
-    Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
-
-    // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
-    if (update_ui==true) {
-
-      // parse special interrupt buttons
-      if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
-
-      // parse numpad buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputData("0");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputData("1");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputData("2");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputData("3");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputData("4");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputData("5");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputData("6");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputData("7");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputData("8");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputData("9");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputData(".");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputData("-");}
-
-      // parse navigation buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
-
-      // parse currently spare creative potential buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {Serial.println("[button] 23");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {Serial.println("[button] 24");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {Serial.println("[button] 25");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {Serial.println("[button] 26");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {Serial.println("[button] 27");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {Serial.println("[button] 28");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {Serial.println("[button] 29");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {Serial.println("[button] 30");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {Serial.println("[button] 31");}
-    }
-  }
-}
-
 // ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              SIMPLE DEBUG UI
+//                                                                                                                           UI
 
 /*
 
@@ -6094,6 +5995,131 @@ void UpdateUI() {
     Serial.println("[oled protection] clearing ui");
     display.clear();
     ui_cleared=true;
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       I2C DATA
+
+#define I2C_ADDR_CONTROL_PANEL_0 8
+#define I2C_ADDR_PORTCONTROLLER_0 9
+
+int I2C_ADDRESSES[] = {
+  I2C_ADDR_CONTROL_PANEL_0,
+  I2C_ADDR_PORTCONTROLLER_0
+};
+
+struct I2CLinkStruct {
+  char * token;
+  byte OUTPUT_BUFFER[10]; // bytes to be sent
+  char INPUT_BUFFER[10];  // chars received
+  char TMP_BUFFER_0[10];  // chars of bytes to be sent
+  char TMP_BUFFER_1[10];  // some space for type conversions
+};
+I2CLinkStruct I2CLink;
+
+void writeI2C(int I2C_Address) {
+  // compile bytes array
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+  // begin
+  Wire.beginTransmission(I2C_Address);
+  // write bytes array
+  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+  // end
+  Wire.endTransmission();
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                I2C PERIPHERALS
+
+/*
+
+I2C peripheral: interrupts us to let us know it has something we need.
+
+SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
+
+Note: In the future, you should be able to add new I2C devices after flashing, through the ui and control panel:
+      1: add address
+      2: add $tag
+      3: add custom function name.
+      This will make it even simpler than already to build a new I2C peripheral and add it to the system.
+
+*/
+
+void ISR_I2C_PERIPHERAL() {
+  // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
+  make_i2c_request = true;
+}
+
+void makeI2CRequest() {
+
+  // make i2c request if interrupt flag true 
+  if (make_i2c_request == true) {
+    make_i2c_request = false;
+
+    // request
+    Serial.println("[master] making request");
+    Wire.requestFrom(I2C_ADDR_CONTROL_PANEL_0,sizeof(I2CLink.INPUT_BUFFER));
+
+    // receive
+    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+    Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+
+    // 1: record time of any activity from the i2c control panel.
+    unixtime_control_panel_request = rtc.now().unixtime();
+    Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
+
+    
+
+    // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
+    if (update_ui==true) {
+
+      // parse special interrupt buttons
+      if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
+
+      // parse numpad buttons
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputData("0");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputData("1");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputData("2");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputData("3");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputData("4");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputData("5");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputData("6");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputData("7");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputData("8");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputData("9");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputData(".");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputData("-");}
+
+      // parse navigation buttons
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
+
+      // parse currently spare creative potential buttons
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {Serial.println("[button] 23");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {Serial.println("[button] 24");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {Serial.println("[button] 25");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {Serial.println("[button] 26");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {Serial.println("[button] 27");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {Serial.println("[button] 28");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {Serial.println("[button] 29");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {Serial.println("[button] 30");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {Serial.println("[button] 31");}
+    }
   }
 }
 
@@ -6625,7 +6651,7 @@ void loop() {
   // systemData.output_matrix_enabled = true;
   // systemData.run_on_startup = true;
 
-  readHID();
+  makeI2CRequest();
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
@@ -6715,7 +6741,7 @@ void loop() {
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   // Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
-  Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
+  // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
   Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));

@@ -44,19 +44,20 @@ bool btnISR2_pressed = false;
 bool btnISR3_pressed = false;
 
 // polled buttons
-#define BTN23_PIN 23
-#define BTN24_PIN 24
-#define BTN25_PIN 25
-#define BTN26_PIN 26
-#define BTN27_PIN 27
-#define BTN28_PIN 28
-#define BTN29_PIN 29
-#define BTN30_PIN 30
-#define BTN31_PIN 31
-#define BTN32_PIN 32
-#define BTN33_PIN 33
-#define BTN34_PIN 34
-#define BTN35_PIN 35
+#define BTN23_PIN 23 // 0
+#define BTN24_PIN 24 // 1
+#define BTN25_PIN 25 // 2
+#define BTN26_PIN 26 // 3
+#define BTN27_PIN 27 // 4
+#define BTN28_PIN 28 // 5
+#define BTN29_PIN 29 // 6
+#define BTN30_PIN 30 // 7
+#define BTN31_PIN 31 // 8
+#define BTN32_PIN 32 // 9
+#define BTN33_PIN 33 // .
+#define BTN34_PIN 34 // -
+
+#define BTN35_PIN 35 // home
 #define BTN36_PIN 36
 #define BTN37_PIN 37
 #define BTN38_PIN 38
@@ -64,6 +65,7 @@ bool btnISR3_pressed = false;
 #define BTN40_PIN 40
 #define BTN41_PIN 41
 #define BTN42_PIN 42
+
 #define BTN43_PIN 43
 #define BTN44_PIN 44
 #define BTN45_PIN 45
