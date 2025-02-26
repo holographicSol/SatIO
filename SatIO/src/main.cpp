@@ -229,18 +229,19 @@ const char *menuHomeItems[2] =
 LcdGfxMenu menuHome( menuHomeItems, 2 );
 
 
-const char *menuMainItems[8] =
+const char *menuMainItems[9] =
 {
     "   MAIN MENU   ",
     "",
     "MATRIX", // allows matrix configuration
+    "FILE", // load/save/delete system and matrix configurations
     "GPS", // enable/disable parsing of sentences from the gps module
     "SERIAL", // enable/disable output of various comma delimited sentences
     "SENSORS", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
     "SYSTEM",
     "UNIVERSE", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
-LcdGfxMenu menuMain( menuMainItems, 8 );
+LcdGfxMenu menuMain( menuMainItems, 9 );
 
 const char *menuMatrixSwitchSelectItems[22] =
 {
@@ -5632,7 +5633,7 @@ char input_data[128];
 char allow_input_data = false;
 int enter_digits_key = NULL;
 
-void inputData(char * data) {
+void inputChar(char * data) {
 
   // allow signing as first char
   if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
@@ -5799,7 +5800,9 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
 
+// void UpdateUI(void *pvParameters) {
 void UpdateUI() {
+  // while (1) {
 
   // oled protection: enable/disable ui updates
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
@@ -5996,6 +5999,8 @@ void UpdateUI() {
     display.clear();
     ui_cleared=true;
   }
+//   delay(1);
+// }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6045,6 +6050,14 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
       3: add custom function name.
       This will make it even simpler than already to build a new I2C peripheral and add it to the system.
 
+      Or auto:
+      1: make an i2 address sweep within a certain address range.
+      2: if you hear back then you have a device address and the device can tell you:
+          1: what its name is so its not some ambiguous device.
+          2: and how to parse it (the human name of the data its giving you).
+          3: then you automatically have a new name for a matrix function and a value every period in which the device gives you a value.
+          4: so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.
+
 */
 
 void ISR_I2C_PERIPHERAL() {
@@ -6083,18 +6096,18 @@ void makeI2CRequest() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
 
       // parse numpad buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputData("0");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputData("1");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputData("2");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputData("3");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputData("4");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputData("5");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputData("6");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputData("7");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputData("8");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputData("9");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputData(".");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputData("-");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputChar("0");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputChar("1");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputChar("2");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputChar("3");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputChar("4");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputChar("5");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputChar("6");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputChar("7");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputChar("8");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputChar("9");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputChar(".");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar("-");}
 
       // parse navigation buttons
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
@@ -6615,7 +6628,7 @@ void setup() {
     &Task1,        /* Task handle. */
     0);            /* Core where the task should run */
   
-  // Create task to increase performance (core 0 also found to be best for this task)
+  // // Create task to increase performance (core 0 also found to be best for this task)
   // xTaskCreatePinnedToCore(
   //   UpdateUI, /* Function to implement the task */
   //   "Task2",       /* Name of the task */
