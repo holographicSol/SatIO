@@ -5603,9 +5603,6 @@ void UpdateUI() {
       if (menu_page==0) {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        // uncomment to debug
-        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
-        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuHome.show( display );
       }
 
@@ -5613,9 +5610,6 @@ void UpdateUI() {
       if (menu_page==1) {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        // uncomment to debug
-        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
-        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuMain.show( display );
       }
 
@@ -5623,9 +5617,6 @@ void UpdateUI() {
       if (menu_page==2) {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-        // uncomment to debug
-        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
-        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
         menuMatrixSwitchSelect.show( display );
       }
 
@@ -5633,10 +5624,6 @@ void UpdateUI() {
       if (menu_page==3) {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
         display.setColor(RGB_COLOR16(255,255,255));
-
-        // uncomment to debug
-        Serial.println("[menu.selection] " + String(menuMatrixFunctionSelect.selection()));
-        Serial.println("[menu.size] " + String(menuMatrixFunctionSelect.size()));
 
         // create variable menu title
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
