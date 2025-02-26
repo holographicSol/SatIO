@@ -284,7 +284,7 @@ const char *menuMatrixFunctionSelectItems[11] =
     "FUNCTION 9",
     "FUNCTION 10",
 };
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 11, {{0, 28}, {128, 128}} );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 11, {{0, 28}, {128, 52}} );
 
 
 const char *menuMatrixConfigureFunctionItems[7] =
@@ -5457,6 +5457,8 @@ int button_pressed;
 int previous_menu_page;
 int matrix_switch_selected;
 int matrix_function_selected;
+char input_data[128];
+char allow_input_data = false;
 
 void menuUp() {
   if (menu_page==0) {menuHome.up();}
@@ -5477,33 +5479,75 @@ void menuDown() {
 }
 
 void menuEnter() {
+
+  // home page
   if (menu_page==0) {
+
+    // go to main menu
     if (menuHome.selection()==0) {menu_page=1;}
   }
+
+  // main menu
   else if (menu_page==1) {
+
+    // go to matrix menu
     if (menuMain.selection()==2) {
       menu_page=2;
-      Serial.println("[enter] matrix configuration");
     }
   }
+
+  // matrix switch selection
   else if (menu_page==2) {
+
+    // go to matrix switch configuration
     if (menuMain.selection()>=2) {
-      matrix_switch_selected=menuMatrixSwitchSelect.selection()-2; // offset menu selection for matrix index access
+      matrix_switch_selected=menuMatrixSwitchSelect.selection()-2;
       menu_page=3;
-      Serial.println("[matrix switch selected] " + String(matrix_switch_selected));
     }
   }
-  else if (menu_page==2) {
-    if (menuMain.selection()==3) {menu_page=3;}
+
+  // matrix switch configuration
+  else if (menu_page==3) {
+
+    // go to set port page
+    if (menuMatrixFunctionSelect.selection()==0) {
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      menu_page=4;
+    }
+
+    // go to function name selection
+    if (menuMatrixFunctionSelect.selection()>=1) {
+      matrix_function_selected=menuMatrixFunctionSelect.selection()-1;
+      menu_page=5;
+    }
   }
-  else if (menu_page==3) {}
-  else if (menu_page==4) {}
+
+  // matrix switch set port
+  else if (menu_page==4) {
+    allow_input_data=false;
+    matrixData.matrix_port_map[0][matrix_switch_selected]=atoi(input_data);
+    menu_page=3;
+  }
+
+  // matrix switch function name selection
   else if (menu_page==5) {}
 }
+
 
 void ISR_I2C_PERIPHERAL() {
   // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
   make_i2c_request = true;
+}
+
+void inputData(char * data) {
+
+  // allow signing as first char
+  if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
+
+  else if ((atol(input_data) < 179769313486232) && (atol(input_data) > -179769313486232)) {
+    if (allow_input_data==true) {strcat(input_data, data);}
+  }
 }
 
 void readHID() {
@@ -5532,18 +5576,18 @@ void readHID() {
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
 
     // parse numpad buttons
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: .");}
-    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputData("0");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputData("1");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputData("2");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputData("3");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputData("4");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputData("5");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputData("6");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputData("7");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputData("8");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputData("9");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputData(".");}
+    else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputData("-");}
 
     // parse navigation buttons
     else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
@@ -5622,10 +5666,9 @@ void UpdateUI() {
       // matrix switch function items
       if (menu_page==3) {
         if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+        
         display.setColor(RGB_COLOR16(255,255,255));
-
         canvas0.setFixedFont(ssd1306xled_font6x8);
-        display.setColor(RGB_COLOR16(255,255,255));
         
         // matrix switch number 
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -5643,10 +5686,27 @@ void UpdateUI() {
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(1, 16, canvas0);
 
+        Serial.println("(menuMatrixFunctionSelect.selection())" + String((menuMatrixFunctionSelect.selection())));
+
         // show the menu
         menuMatrixFunctionSelect.show( display );
       }
-    }
+
+      // set port number
+      if (menu_page==4) {
+        if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+        Serial.println("(menuMatrixFunctionSelect.selection())" + String((menuMatrixFunctionSelect.selection())));
+
+        canvas0.clear();
+        display.setColor(RGB_COLOR16(255,0,0));
+        canvas0.printFixed(1, 1, "  ENTER PORT NUMBER  ", STYLE_BOLD );
+        display.drawCanvas(1, 1, canvas0);
+
+        canvas0.clear();
+        display.setColor(RGB_COLOR16(255,0,0));
+        canvas0.printFixed(1, 1, String(input_data).c_str(), STYLE_BOLD );
+        display.drawCanvas(1, 56, canvas0);
+      }
 
     // oled protection: clear ui once if ui updates disabled
     else if ((ui_cleared == false) && (update_ui == false)) {
@@ -5654,6 +5714,8 @@ void UpdateUI() {
       display.clear();
       ui_cleared=true;
     }
+  }
+
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
