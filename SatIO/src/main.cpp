@@ -228,8 +228,51 @@ const char *menu0Items[5] =
     "settings 3",
     "settings 4",
 };
-
 LcdGfxMenu menu0( menu0Items, 5 );
+
+const char *menuMatrixSwitchSelectItems[22] =
+{
+    "   SELECT SWITCH   ",
+    "",
+    "MATRIX SWITCH 1",
+    "MATRIX SWITCH 2",
+    "MATRIX SWITCH 3",
+    "MATRIX SWITCH 4",
+    "MATRIX SWITCH 5",
+    "MATRIX SWITCH 6",
+    "MATRIX SWITCH 7",
+    "MATRIX SWITCH 8",
+    "MATRIX SWITCH 9",
+    "MATRIX SWITCH 10",
+    "MATRIX SWITCH 11",
+    "MATRIX SWITCH 12",
+    "MATRIX SWITCH 13",
+    "MATRIX SWITCH 14",
+    "MATRIX SWITCH 15",
+    "MATRIX SWITCH 16",
+    "MATRIX SWITCH 17",
+    "MATRIX SWITCH 18",
+    "MATRIX SWITCH 19",
+    "MATRIX SWITCH 20",
+};
+LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
+
+const char *menuMatrixFunctionSelectItems[12] =
+{
+    "  SELECT FUNCTION  ",
+    "",
+    "FUNCTION 1",
+    "FUNCTION 2",
+    "FUNCTION 3",
+    "FUNCTION 4",
+    "FUNCTION 5",
+    "FUNCTION 6",
+    "FUNCTION 7",
+    "FUNCTION 8",
+    "FUNCTION 9",
+    "FUNCTION 10",
+};
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 12 );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -5468,11 +5511,11 @@ void UpdateUI() {
       if (menu_page==0) {
 
         // test menu (automated)
-        Serial.println("[menu.selection] " + String(menu0.selection()));
-        Serial.println("[menu.size] " + String(menu0.size()));
-        menu0.down();
+        Serial.println("[menu.selection] " + String(menuMatrixSwitchSelect.selection()));
+        Serial.println("[menu.size] " + String(menuMatrixSwitchSelect.size()));
+        menuMatrixSwitchSelect.down();
         display.setColor(RGB_COLOR16(255,255,255));
-        menu0.show( display );
+        menuMatrixSwitchSelect.show( display );
       }
       
       if (menu_page==1) {
