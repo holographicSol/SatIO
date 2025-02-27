@@ -6164,7 +6164,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, getRelatedXYZ(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 79, canvas0);
+        display.drawCanvas(3, 89, canvas0);
       }
       else {
         canvas0.clear();
