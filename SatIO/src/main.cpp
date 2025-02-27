@@ -6758,6 +6758,8 @@ void loop() {
 
   aim to always stay well below the 100ms looptime for every loop.
 
+  dont wait for anything, get what we can and go again.
+
   */
 
   if (longer_loop==false) {
