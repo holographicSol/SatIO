@@ -5997,6 +5997,8 @@ void UpdateUI() {
   else if ((ui_cleared == false) && (update_ui == false)) {
     Serial.println("[oled protection] clearing ui");
     display.clear();
+    display.clear();
+    display.clear();
     ui_cleared=true;
   }
 //   delay(1);
@@ -6654,6 +6656,8 @@ int t0 = millis();
 long i_loops_between_gps_reads = 0;
 int t_gps_all = millis();
 bool track_planets_period = false;
+bool longer_loop = false;
+
 void loop() {
 
   // Serial.println("----------------------------------------");
@@ -6682,7 +6686,14 @@ void loop() {
   milliseconds.
   */
 
+  // default is false
+  longer_loop = false;
+
   if (gps_done==true) {
+
+    // mark this loop as taking longer
+    longer_loop = true;
+
     // Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
     // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
@@ -6729,9 +6740,13 @@ void loop() {
     sensors_done=false;
   }
 
-  t0 = millis();
-  UpdateUI(); // put on a task
-  Serial.println("[UpdateUI] " + String(millis()-t0));
+  // this helps keep the system fast accross loops taking different times, by utilizing loops that take less time to complete.
+  // note that this is currently suitable in this case while timing or other conditions may be more suitable in other cases.
+  if (longer_loop==false) {
+    t0 = millis();
+    UpdateUI(); // put on a task
+    Serial.println("[UpdateUI] " + String(millis()-t0));
+  }
 
   // ---------------------------------------------------------------------
 
