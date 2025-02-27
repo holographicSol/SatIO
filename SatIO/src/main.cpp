@@ -6744,7 +6744,7 @@ void loop() {
   // note that this is currently suitable in this case while timing or other conditions may be more suitable in other cases.
   if (longer_loop==false) {
     t0 = millis();
-    UpdateUI(); // put on a task
+    UpdateUI();
     Serial.println("[UpdateUI] " + String(millis()-t0));
   }
 
