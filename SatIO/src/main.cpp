@@ -231,15 +231,15 @@ LcdGfxMenu menuHome( menuHomeItems, 2 );
 
 const char *menuMainItems[9] =
 {
-    "   MAIN MENU   ",
+    "   CONFIGURATION   ",
     "",
-    "MATRIX", // allows matrix configuration
-    "FILE", // load/save/delete system and matrix configurations
-    "GPS", // enable/disable parsing of sentences from the gps module
-    "SERIAL", // enable/disable output of various comma delimited sentences
-    "SENSORS", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
-    "SYSTEM",
-    "UNIVERSE", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "   MATRIX          ", // allows matrix configuration
+    "   FILE            ", // load/save/delete system and matrix configurations
+    "   GPS             ", // enable/disable parsing of sentences from the gps module
+    "   SERIAL          ", // enable/disable output of various comma delimited sentences
+    "   SENSORS         ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
+    "   SYSTEM          ",
+    "   UNIVERSE        ", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
 LcdGfxMenu menuMain( menuMainItems, 9 );
 
@@ -247,44 +247,44 @@ const char *menuMatrixSwitchSelectItems[22] =
 {
     "   SELECT SWITCH   ",
     "",
-    "MATRIX SWITCH 1",
-    "MATRIX SWITCH 2",
-    "MATRIX SWITCH 3",
-    "MATRIX SWITCH 4",
-    "MATRIX SWITCH 5",
-    "MATRIX SWITCH 6",
-    "MATRIX SWITCH 7",
-    "MATRIX SWITCH 8",
-    "MATRIX SWITCH 9",
-    "MATRIX SWITCH 10",
-    "MATRIX SWITCH 11",
-    "MATRIX SWITCH 12",
-    "MATRIX SWITCH 13",
-    "MATRIX SWITCH 14",
-    "MATRIX SWITCH 15",
-    "MATRIX SWITCH 16",
-    "MATRIX SWITCH 17",
-    "MATRIX SWITCH 18",
-    "MATRIX SWITCH 19",
-    "MATRIX SWITCH 20",
+    "MATRIX SWITCH 1    ",
+    "MATRIX SWITCH 2    ",
+    "MATRIX SWITCH 3    ",
+    "MATRIX SWITCH 4    ",
+    "MATRIX SWITCH 5    ",
+    "MATRIX SWITCH 6    ",
+    "MATRIX SWITCH 7    ",
+    "MATRIX SWITCH 8    ",
+    "MATRIX SWITCH 9    ",
+    "MATRIX SWITCH 10   ",
+    "MATRIX SWITCH 11   ",
+    "MATRIX SWITCH 12   ",
+    "MATRIX SWITCH 13   ",
+    "MATRIX SWITCH 14   ",
+    "MATRIX SWITCH 15   ",
+    "MATRIX SWITCH 16   ",
+    "MATRIX SWITCH 17   ",
+    "MATRIX SWITCH 18   ",
+    "MATRIX SWITCH 19   ",
+    "MATRIX SWITCH 20   ",
 };
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
 
 
 const char *menuMatrixFunctionSelectItems[13] =
 {
-    "DISABLE",
-    "ENABLE",
-    "PORT",
-    "FUNCTION 1",
-    "FUNCTION 2",
-    "FUNCTION 3",
-    "FUNCTION 4",
-    "FUNCTION 5",
-    "FUNCTION 6",
-    "FUNCTION 7",
-    "FUNCTION 8",
-    "FUNCTION 9",
+    "DISABLE    ",
+    "ENABLE     ",
+    "PORT       ",
+    "FUNCTION 1 ",
+    "FUNCTION 2 ",
+    "FUNCTION 3 ",
+    "FUNCTION 4 ",
+    "FUNCTION 5 ",
+    "FUNCTION 6 ",
+    "FUNCTION 7 ",
+    "FUNCTION 8 ",
+    "FUNCTION 9 ",
     "FUNCTION 10",
 };
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{3, 34}, {124, 57}} );
@@ -293,9 +293,9 @@ LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{3, 34}
 const char *menuMatrixConfigureFunctionItems[4] =
 {
     "FUNCTION NAME",
-    "VALUE X",
-    "VALUE Y",
-    "VALUE Z",
+    "VALUE X      ",
+    "VALUE Y      ",
+    "VALUE Z      ",
 };
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 34}, {124, 84}} );
 
