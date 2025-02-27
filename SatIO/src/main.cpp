@@ -66,7 +66,7 @@
 
       Use case: From a clock syncronized with satellites to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
                                     expected drift, if GPS data is stale or unavailable.
-                                        Robots, flying machines and automation.
+                        Robots, flying machines and automation, or for use with local LLM's like ollama, anything.
 
       Bare bones architecture: SatIO is an extended development platform built on and around ESP32, allowing for many different kinds of projects
       using SatIO as a standalone system and or integrating SatIO into other systems as a 'part'.
