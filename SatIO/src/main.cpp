@@ -212,7 +212,8 @@ int SSD1351_CS   = 26; // (CS)
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
 NanoCanvas<120,16,1> canvas0;
-NanoCanvas<60,16,1> canvashalfwidth;
+NanoCanvas<30,16,1> canvas30x10; // 
+NanoCanvas<10,16,1> canvas10x10; // 
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -231,15 +232,15 @@ LcdGfxMenu menuHome( menuHomeItems, 2 );
 
 const char *menuMainItems[9] =
 {
-    "   CONFIGURATION   ",
+    "   CONFIGURATION  ",
     "",
-    "   MATRIX          ", // allows matrix configuration
-    "   FILE            ", // load/save/delete system and matrix configurations
-    "   GPS             ", // enable/disable parsing of sentences from the gps module
-    "   SERIAL          ", // enable/disable output of various comma delimited sentences
-    "   SENSORS         ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
-    "   SYSTEM          ",
-    "   UNIVERSE        ", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "   MATRIX         ", // allows matrix configuration
+    "   FILE           ", // load/save/delete system and matrix configurations
+    "   GPS            ", // enable/disable parsing of sentences from the gps module
+    "   SERIAL         ", // enable/disable output of various comma delimited sentences
+    "   SENSORS        ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
+    "   SYSTEM         ",
+    "   UNIVERSE       ", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
 LcdGfxMenu menuMain( menuMainItems, 9 );
 
@@ -273,21 +274,21 @@ LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 22 );
 
 const char *menuMatrixFunctionSelectItems[13] =
 {
-    "DISABLE    ",
-    "ENABLE     ",
-    "PORT       ",
-    "FUNCTION 1 ",
-    "FUNCTION 2 ",
-    "FUNCTION 3 ",
-    "FUNCTION 4 ",
-    "FUNCTION 5 ",
-    "FUNCTION 6 ",
-    "FUNCTION 7 ",
-    "FUNCTION 8 ",
-    "FUNCTION 9 ",
-    "FUNCTION 10",
-};
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{3, 34}, {124, 57}} );
+    "D  ", // disbale
+    "E  ", // enable
+    "P  ", // port
+    "F1 ",
+    "F2 ",
+    "F3 ",
+    "F4 ",
+    "F5 ",
+    "F6 ",
+    "F7 ",
+    "F8 ",
+    "F9 ",
+    "F10",
+}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{91, 2}, {125, 26}} );
 
 
 const char *menuMatrixConfigureFunctionItems[4] =
@@ -463,11 +464,11 @@ struct SDCardStruct {
   char data_5[56];                                             // value placeholder
   char data_6[56];                                             // value placeholder
   char data_7[56];                                             // value placeholder
-  char file_data[56];                                          // buffer
-  char delim[2] = ",";                                         // delimiter char
-  char tmp[4];                                                 // buffer
-  char tag_0[4] = "r";                                         // file line tag
-  char tag_1[4] = "e";                                         // file line tag
+  char file_data[1024];                                        // buffer
+  char delim[56] = ",";                                         // delimiter char
+  char tmp[56];                                                 // buffer
+  char tag_0[56] = "r";                                         // file line tag
+  char tag_1[56] = "e";                                         // file line tag
   File current_file;                                           // file currently handled
 };
 SDCardStruct sdcardData;
@@ -2211,22 +2212,22 @@ LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 221, {{0, 
 
 struct GNGGAStruct {
   char sentence[200];
-  char tag[8];                                                                                                            // <0> Log header
-  char utc_time[8];                     unsigned long bad_utc_time_i;              bool bad_utc_time = true;              // <1> UTC time, the format is hhmmss.sss
-  char latitude[20];                    unsigned long bad_latitude_i;              bool bad_latitude = true;              // <2> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[4];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[20];                   unsigned long bad_longitude_i;             bool bad_longitude = true;             // <4> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[4];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char solution_status[4];              unsigned long bad_solution_status_i;       bool bad_solution_status = true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char tag[56];                                                                                                            // <0> Log header
+  char utc_time[56];                     unsigned long bad_utc_time_i;              bool bad_utc_time = true;              // <1> UTC time, the format is hhmmss.sss
+  char latitude[56];                    unsigned long bad_latitude_i;              bool bad_latitude = true;              // <2> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                   unsigned long bad_longitude_i;             bool bad_longitude = true;             // <4> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
+  char solution_status[56];              unsigned long bad_solution_status_i;       bool bad_solution_status = true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
   char satellite_count_gngga[56] = "0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga = true; // <7> Number of satellites used
   char hdop_precision_factor[56];       unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor = true; // <8> HDOP level precision factor
   char altitude[56];                    unsigned long bad_altitude_i;              bool bad_altitude = true;              // <9> Altitude
-  char altitude_units[4];               unsigned long bad_altitude_units_i;        bool bad_altitude_units = true;        // <10> 
+  char altitude_units[56];               unsigned long bad_altitude_units_i;        bool bad_altitude_units = true;        // <10> 
   char geoidal[56];                     unsigned long bad_geoidal_i;               bool bad_geoidal = true;               // <11> The height of the earth ellipsoid relative to the geoid 
-  char geoidal_units[4];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units = true;         // <12> 
+  char geoidal_units[56];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units = true;         // <12> 
   char differential_delay[56];          unsigned long bad_differential_delay_i;    bool bad_differential_delay = true;    // <13>
   char id[56];                          unsigned long bad_id_i;                    bool bad_id = true;                    // <14> base station ID
-  char check_sum[4];                    unsigned long bad_check_sum_i;             bool bad_check_sum = true;             // <15> XOR check value of all bytes starting from $ to *
+  char check_sum[56];                    unsigned long bad_check_sum_i;             bool bad_check_sum = true;             // <15> XOR check value of all bytes starting from $ to *
   int check_data = 0;                   unsigned long bad_checksum_validity;       bool valid_checksum = false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
 };
 GNGGAStruct gnggaData;
@@ -2283,20 +2284,20 @@ void GNGGA() {
 
 struct GNRMCStruct {
   char sentence[200];
-  char tag[8];                                                                                                                          // <0> Log header
-  char utc_time[8];                     unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                     // <1> UTC time, the format is hhmmss.sss
-  char positioning_status[4];           unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
-  char latitude[20];                    unsigned long bad_latitude_i;                     bool bad_latitude = true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[4];          unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere = true;          // <4> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[20];                   unsigned long bad_longitude_i;                    bool bad_longitude = true;                    // <5> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[4];         unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere = true;         // <6> Longitude hemisphere, E or W (east longitude or west longitude)
+  char tag[56];                                                                                                                          // <0> Log header
+  char utc_time[56];                     unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                     // <1> UTC time, the format is hhmmss.sss
+  char positioning_status[56];           unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
+  char latitude[56];                    unsigned long bad_latitude_i;                     bool bad_latitude = true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere = true;          // <4> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                   unsigned long bad_longitude_i;                    bool bad_longitude = true;                    // <5> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere = true;         // <6> Longitude hemisphere, E or W (east longitude or west longitude)
   char ground_speed[56];                unsigned long bad_ground_speed_i;                 bool bad_ground_speed = true;                 // <7> Ground speed
-  char ground_heading[10];              unsigned long bad_ground_heading_i;               bool bad_ground_heading = true;               // <8> Ground heading (take true north as the reference datum)
-  char utc_date[8];                     unsigned long bad_utc_date_i;                     bool bad_utc_date = true;                     // <9> UTC date, the format is ddmmyy (day, month, year)
-  char installation_angle[8];           unsigned long bad_installation_angle_i;           bool bad_installation_angle = true;           // <10> Magnetic declination (000.0~180.0 degrees)
-  char installation_angle_direction[4]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction = true; // <11> Magnetic declination direction, E (east) or W (west)
-  char mode_indication[4];              unsigned long bad_mode_indication_i;              bool bad_mode_indication = true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
-  char check_sum[4];                    unsigned long bad_check_sum_i;                    bool bad_check_sum = true;                    // <13> XOR check value of all bytes starting from $ to *
+  char ground_heading[56];              unsigned long bad_ground_heading_i;               bool bad_ground_heading = true;               // <8> Ground heading (take true north as the reference datum)
+  char utc_date[56];                     unsigned long bad_utc_date_i;                     bool bad_utc_date = true;                     // <9> UTC date, the format is ddmmyy (day, month, year)
+  char installation_angle[56];           unsigned long bad_installation_angle_i;           bool bad_installation_angle = true;           // <10> Magnetic declination (000.0~180.0 degrees)
+  char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction = true; // <11> Magnetic declination direction, E (east) or W (west)
+  char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication = true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
+  char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum = true;                    // <13> XOR check value of all bytes starting from $ to *
   int check_data = 0;                   unsigned long bad_checksum_validity;              bool valid_checksum = false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
 };
 GNRMCStruct gnrmcData;
@@ -2348,47 +2349,47 @@ void GNRMC() {
 
 struct GPATTStruct {
   char sentence[200];
-  char tag[8];                                                                                       // <0> Log header
-  char pitch[8];             unsigned long bad_pitch_i;            bool bad_pitch = true;            // <1> pitch angle
-  char angle_channel_0[4];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;  // <2> P
-  char roll[8];              unsigned long bad_roll_i;             bool bad_roll = true;             // <3> Roll angle
-  char angle_channel_1[4];   unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1 = true;  // <4> R
-  char yaw[8];               unsigned long bad_yaw_i;              bool bad_yaw = true;              // <5> Yaw angle
-  char angle_channel_2[4];   unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2 = true;  // <6> Y
-  char software_version[10]; unsigned long bad_software_version_i; bool bad_software_version = true; // <7> software verion
-  char version_channel[4];   unsigned long bad_version_channel_i;  bool bad_version_channel = true;  // <8> S
-  char product_id[28];       unsigned long bad_product_id_i;       bool bad_product_id = true;       // <9> Product ID: 96 bit unique ID
-  char id_channel[28];       unsigned long bad_id_channel_i;       bool bad_id_channel = true;       // <10> ID 
-  char ins[4];               unsigned long bad_ins_i;              bool bad_ins = true;              // <11> INS Default open inertial navigation system
-  char ins_channel[4];       unsigned long bad_ins_channel_i;      bool bad_ins_channel = true;      // <12> whether inertial navigation open
-  char hardware_version[28]; unsigned long bad_hardware_version_i; bool bad_hardware_version = true; // <13> Named after master chip
-  char run_state_flag[4];    unsigned long bad_run_state_flag_i;   bool bad_run_state_flag = true;   // <14> Algorithm status flag: 1->3
-  char mis_angle_num[28];    unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num = true;    // <15> number of Installation
-  char custom_logo_0[28];    unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0 = true;    // <16>
-  char custom_logo_1[28];    unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1 = true;    // <17>
-  char custom_logo_2[28];    unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2 = true;    // <18>
-  char static_flag[4];       unsigned long bad_static_flag_i;      bool bad_static_flag = true;      // <19> 1:Static 0：dynamic
-  char user_code[4];         unsigned long bad_user_code_i;        bool bad_user_code = true;        // <20> 1：Normal user X：Customuser
-  char gst_data[8];          unsigned long bad_gst_data_i;         bool bad_gst_data = true;         // <21> User satellite accuracy
-  char line_flag[4];         unsigned long bad_line_flag_i;        bool bad_line_flag = true;        // <22> 1：straight driving，0：curve driving
-  char custom_logo_3[28];    unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3 = true;    // <23>
-  char mis_att_flag[4];      unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag = true;     // <24> 
-  char imu_kind[4];          unsigned long bad_imu_kind_i;         bool bad_imu_kind = true;         // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
-  char ubi_car_kind[4];      unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind = true;     // <26> 1: small car, 2: big car
+  char tag[56];                                                                                       // <0> Log header
+  char pitch[56];             unsigned long bad_pitch_i;            bool bad_pitch = true;            // <1> pitch angle
+  char angle_channel_0[56];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;  // <2> P
+  char roll[56];              unsigned long bad_roll_i;             bool bad_roll = true;             // <3> Roll angle
+  char angle_channel_1[56];   unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1 = true;  // <4> R
+  char yaw[56];               unsigned long bad_yaw_i;              bool bad_yaw = true;              // <5> Yaw angle
+  char angle_channel_2[56];   unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2 = true;  // <6> Y
+  char software_version[56]; unsigned long bad_software_version_i; bool bad_software_version = true; // <7> software verion
+  char version_channel[56];   unsigned long bad_version_channel_i;  bool bad_version_channel = true;  // <8> S
+  char product_id[56];       unsigned long bad_product_id_i;       bool bad_product_id = true;       // <9> Product ID: 96 bit unique ID
+  char id_channel[56];       unsigned long bad_id_channel_i;       bool bad_id_channel = true;       // <10> ID 
+  char ins[56];               unsigned long bad_ins_i;              bool bad_ins = true;              // <11> INS Default open inertial navigation system
+  char ins_channel[56];       unsigned long bad_ins_channel_i;      bool bad_ins_channel = true;      // <12> whether inertial navigation open
+  char hardware_version[56]; unsigned long bad_hardware_version_i; bool bad_hardware_version = true; // <13> Named after master chip
+  char run_state_flag[56];    unsigned long bad_run_state_flag_i;   bool bad_run_state_flag = true;   // <14> Algorithm status flag: 1->3
+  char mis_angle_num[56];    unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num = true;    // <15> number of Installation
+  char custom_logo_0[56];    unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0 = true;    // <16>
+  char custom_logo_1[56];    unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1 = true;    // <17>
+  char custom_logo_2[56];    unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2 = true;    // <18>
+  char static_flag[56];       unsigned long bad_static_flag_i;      bool bad_static_flag = true;      // <19> 1:Static 0：dynamic
+  char user_code[56];         unsigned long bad_user_code_i;        bool bad_user_code = true;        // <20> 1：Normal user X：Customuser
+  char gst_data[56];          unsigned long bad_gst_data_i;         bool bad_gst_data = true;         // <21> User satellite accuracy
+  char line_flag[56];         unsigned long bad_line_flag_i;        bool bad_line_flag = true;        // <22> 1：straight driving，0：curve driving
+  char custom_logo_3[56];    unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3 = true;    // <23>
+  char mis_att_flag[56];      unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag = true;     // <24> 
+  char imu_kind[56];          unsigned long bad_imu_kind_i;         bool bad_imu_kind = true;         // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
+  char ubi_car_kind[56];      unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind = true;     // <26> 1: small car, 2: big car
   char mileage[56];          unsigned long bad_mileage_i;          bool bad_mileage = true;          // <27> kilometers: max 9999 kilometers
-  char custom_logo_4[28];    unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4 = true;    // <28>
-  char custom_logo_5[28];    unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5 = true;    // <29>
-  char run_inetial_flag[4];  unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag = true; // <30> 1->4
-  char custom_logo_6[28];    unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6 = true;    // <31>
-  char custom_logo_7[28];    unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7 = true;    // <32>
-  char custom_logo_8[28];    unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8 = true;    // <33>
-  char custom_logo_9[28];    unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9 = true;    // <34>
-  char speed_enable[4];      unsigned long bad_speed_enable_i;     bool bad_speed_enable = true;     // <35> 
-  char custom_logo_10[28];   unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10 = true;   // <36>
-  char custom_logo_11[28];   unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11 = true;   // <37>
-  char speed_num[4];         unsigned long bad_speed_num_i;        bool bad_speed_num = true;        // <38> 1：fixed setting，0：Self adaptive installation
-  char scalable[28];         unsigned long bad_scalable_i;         bool bad_scalable = true;         // <39> 
-  char check_sum[4];         unsigned long bad_check_sum_i;        bool bad_check_sum = true;        // <40> XOR check value of all bytes starting from $ to *
+  char custom_logo_4[56];    unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4 = true;    // <28>
+  char custom_logo_5[56];    unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5 = true;    // <29>
+  char run_inetial_flag[56];  unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag = true; // <30> 1->4
+  char custom_logo_6[56];    unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6 = true;    // <31>
+  char custom_logo_7[56];    unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7 = true;    // <32>
+  char custom_logo_8[56];    unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8 = true;    // <33>
+  char custom_logo_9[56];    unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9 = true;    // <34>
+  char speed_enable[56];      unsigned long bad_speed_enable_i;     bool bad_speed_enable = true;     // <35> 
+  char custom_logo_10[56];   unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10 = true;   // <36>
+  char custom_logo_11[56];   unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11 = true;   // <37>
+  char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num = true;        // <38> 1：fixed setting，0：Self adaptive installation
+  char scalable[56];         unsigned long bad_scalable_i;         bool bad_scalable = true;         // <39> 
+  char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum = true;        // <40> XOR check value of all bytes starting from $ to *
   int check_data = 0;        unsigned long bad_checksum_validity;  bool valid_checksum = false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
 };
 GPATTStruct gpattData;
@@ -2494,10 +2495,10 @@ void GPATT() {
 struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
-  char satDataTag[8]                  = "$SATIO";                  // satio sentence tag
-  char last_sat_time_stamp_str[18]    = "0000000000000000";        // record last time satellites were seen yyyymmddhhmmssmm
+  char satDataTag[56]                  = "$SATIO";                  // satio sentence tag
+  char last_sat_time_stamp_str[56]    = "0000000000000000";        // record last time satellites were seen yyyymmddhhmmssmm
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
-  char coordinate_conversion_mode[8]  = "GNGGA";                   // sentence coordinates degrees created from
+  char coordinate_conversion_mode[56]  = "GNGGA";                   // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                 // one meter (tune)
   double longitude_meter              = 0.0000100;                 // one meter (tune)
   double latitude_mile                = latitude_meter  * 1609.34; // one mile
@@ -2514,10 +2515,10 @@ struct SatDatatruct {
   double location_longitude_gngga;                                 // degrees converted from absolute
   double location_latitude_gnrmc;                                  // degrees converted from absolute
   double location_longitude_gnrmc;                                 // degrees converted from absolute
-  char location_latitude_gngga_str[20];                            // degrees converted from absolute
-  char location_longitude_gngga_str[20];                           // degrees converted from absolute
-  char location_latitude_gnrmc_str[20];                            // degrees converted from absolute
-  char location_longitude_gnrmc_str[20];                           // degrees converted from absolute
+  char location_latitude_gngga_str[56];                            // degrees converted from absolute
+  char location_longitude_gngga_str[56];                           // degrees converted from absolute
+  char location_latitude_gnrmc_str[56];                            // degrees converted from absolute
+  char location_longitude_gnrmc_str[56];                           // degrees converted from absolute
   double minutesLat;                                               // used for converting absolute latitude and longitude
   double minutesLong;                                              // used for converting absolute latitude and longitude
   double degreesLat;                                               // used for converting absolute latitude and longitude
@@ -2541,13 +2542,13 @@ struct SatDatatruct {
   signed int tmp_minute_int;      // temp current minute
   signed int tmp_second_int;      // temp current second
   signed int tmp_millisecond_int; // temp current millisecond
-  char tmp_year[8];               // temp current year
-  char tmp_month[8];              // temp current month
-  char tmp_day[8];                // temp current day
-  char tmp_hour[8];               // temp current hour
-  char tmp_minute[8];             // temp current minute
-  char tmp_second[8];             // temp current second
-  char tmp_millisecond[8];        // temp current millisecond
+  char tmp_year[56];               // temp current year
+  char tmp_month[56];              // temp current month
+  char tmp_day[56];                // temp current day
+  char tmp_hour[56];               // temp current hour
+  char tmp_minute[56];             // temp current minute
+  char tmp_second[56];             // temp current second
+  char tmp_millisecond[56];        // temp current millisecond
 
   /* TIME VALUES FOR RTC AND OTHER USE */
   signed int lt_year_int = 0;        // last year satellite count > zero
@@ -3653,25 +3654,25 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
         // tag: matrix (r)
         strcat(sdcardData.file_data, sdcardData.tag_0); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix index
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%d", Mi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // matrix function index
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%d", Fi);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function name
         strcat(sdcardData.file_data, matrixData.matrix_function[Mi][Fi]); strcat(sdcardData.file_data, sdcardData.delim);
         // function value x
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][0]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value y
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][1]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // function value z
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.file_data));
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
@@ -5642,7 +5643,7 @@ void inputChar(char * data) {
 
     // port
     if (enter_digits_key==1) {
-      if ((atoi(input_data) < 999) && (atoi(input_data) >= -1)) {
+      if ((atoi(input_data) <= 99) && (atoi(input_data) >= -1)) {
         if (allow_input_data==true) {strcat(input_data, data);}
       }
     }
@@ -5808,6 +5809,8 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+
   // update ui
   if (update_ui==true) {
     // Serial.println("[oled protection] allowing ui update");
@@ -5844,7 +5847,8 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
-      canvashalfwidth.setFixedFont(ssd1306xled_font6x8);
+      canvas10x10.setFixedFont(ssd1306xled_font6x8);
+      canvas30x10.setFixedFont(ssd1306xled_font6x8);
 
       // default border
       display.setColor(RGB_COLOR16(255,255,255));
@@ -5852,43 +5856,43 @@ void UpdateUI() {
       
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "MATRIX: ");
+      strcpy(TMP_UI_DATA_0, "M");
       strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
-      canvashalfwidth.clear();
-      canvashalfwidth.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 6, canvashalfwidth);
+      canvas30x10.clear();
+      canvas30x10.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas30x10);
 
       // port number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "PORT: ");
+      strcpy(TMP_UI_DATA_0, "P");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
-      canvashalfwidth.clear();
-      canvashalfwidth.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 22, canvashalfwidth);
+      canvas30x10.clear();
+      canvas30x10.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(32, 6, canvas30x10);
 
       // enabled/disabled
-      canvashalfwidth.clear();
+      canvas10x10.clear();
       display.setColor(RGB_COLOR16(255,0,0));
       if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        canvashalfwidth.printFixed(1, 1, " ENABLED", STYLE_BOLD );
+        canvas10x10.printFixed(1, 1, "E", STYLE_BOLD );
       }
       else if (matrixData.matrix_switch_enabled[0][matrix_switch_selected]==false) {
-        canvashalfwidth.printFixed(1, 1, " DISABLED", STYLE_BOLD );
+        canvas10x10.printFixed(1, 1, "D", STYLE_BOLD );
       }
-      display.drawCanvas(64, 6, canvashalfwidth);
+      display.drawCanvas(61, 6, canvas10x10);
 
       // state on/off
-      canvashalfwidth.clear();
+      canvas10x10.clear();
       display.setColor(RGB_COLOR16(255,0,0));
       if (matrixData.matrix_switch_state[0][matrix_switch_selected]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        canvashalfwidth.printFixed(1, 1, " ON", STYLE_BOLD );
+        canvas10x10.printFixed(1, 1, "1", STYLE_BOLD );
       }
       else if (matrixData.matrix_switch_state[0][matrix_switch_selected]==false) {
-        canvashalfwidth.printFixed(1, 1, " OFF", STYLE_BOLD );
+        canvas10x10.printFixed(1, 1, "0", STYLE_BOLD );
       }
-      display.drawCanvas(64, 22, canvashalfwidth);
+      display.drawCanvas(76, 6, canvas10x10);
 
       // display function specific data
       display.setColor(RGB_COLOR16(255,255,255));
@@ -5899,39 +5903,39 @@ void UpdateUI() {
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 62, canvas0);
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+        display.drawCanvas(3, 27, canvas0);
         
         // function x
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "X: ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][0]).c_str());
         canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 78, canvas0);
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 40, canvas0);
 
         // function y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Y: ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][1]).c_str());
         canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 94, canvas0);
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 53, canvas0);
 
         // function z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Z: ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][2]).c_str());
         canvas0.clear();
-        canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 110, canvas0);
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 66, canvas0);
       }
       else {
         canvas0.clear();
-        display.drawCanvas(3, 62, canvas0);
-        display.drawCanvas(3, 78, canvas0);
-        display.drawCanvas(3, 94, canvas0);
-        display.drawCanvas(3, 110, canvas0);
+        display.drawCanvas(3, 27, canvas0);
+        display.drawCanvas(3, 40, canvas0);
+        display.drawCanvas(3, 53, canvas0);
+        display.drawCanvas(3, 66, canvas0);
       }
 
       // show the menu
@@ -6344,7 +6348,7 @@ void readGPS(void * pvParameters) {
 
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           
-          SerialLink.nbytes = Serial2.readBytesUntil('\r\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+          SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
           // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
