@@ -5789,6 +5789,234 @@ void menuEnter() {
   }
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                Crude Function Name to Associated Value Mapping 
+
+String getRelatedXYZ(char * data) {
+  // if (strcmp("$NONE", data)==0) {return String();}
+  // if (strcmp("$ENABLED", data)==0) {return String();}
+  if (strcmp("$OVERLOAD_TRUE", data)==0) {return String(systemData.overload);}
+  if (strcmp("$OVERLOAD_FALSE", data)==0) {return String(systemData.overload);}
+  // if (strcmp("$SWITCHLINKTRUE", data)==0) {return String();}
+  // if (strcmp("$SWITCHLINKFALSE", data)==0) {return String();}
+  // if (strcmp("SecondsTimer", data)==0) {return String();}
+  if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
+  if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
+  if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
+  if (strcmp("RTCTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
+  // if (strcmp("DaySunday", data)==0) {return String();}
+  // if (strcmp("DayMonday", data)==0) {return String();}
+  // if (strcmp("DayTuesday", data)==0) {return String();}
+  // if (strcmp("DayWednesday", data)==0) {return String();}
+  // if (strcmp("DayThursday", data)==0) {return String();}
+  // if (strcmp("DayFriday", data)==0) {return String();}
+  // if (strcmp("DaySaturday", data)==0) {return String();}
+  // if (strcmp("DateDayX", data)==0) {return String();}
+  // if (strcmp("DateMonthX", data)==0) {return String();}
+  // if (strcmp("DateYearX", data)==0) {return String();}
+  if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga);}
+  if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga);}
+  if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga);}
+  // if (strcmp("DegLatGNGGARange", data)==0) {return String();}
+  if (strcmp("DegLonGNGGAOver", data)==0) {return String(satData.location_longitude_gngga);}
+  if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga);}
+  if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga);}
+  // if (strcmp("DegLonGNGGARange", data)==0) {return String();}
+  // if (strcmp("DegGNGGARanges", data)==0) {return String();}
+  if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc);}
+  if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc);}
+  if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc);}
+  // if (strcmp("DegLatGNRMCRange", data)==0) {return String();}
+  if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc);}
+  if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc);}
+  if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc);}
+  // if (strcmp("DegLonGNRMCRange", data)==0) {return String();}
+  // if (strcmp("DegGNRMCRanges", data)==0) {return String();}
+  if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
+  if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
+  if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
+  // if (strcmp("UTCTimeGNGGARange", data)==0) {return String();}
+  if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude);}
+  if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude);}
+  if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude);}
+  // if (strcmp("LatGNGGARange", data)==0) {return String();}
+  if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude);}
+  if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude);}
+  if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude);}
+  // if (strcmp("LonGNGGARange", data)==0) {return String();}
+  if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
+  if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
+  if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
+  if (strcmp("SatCountEqual", data)==0) {return String(gnggaData.satellite_count_gngga);}
+  // if (strcmp("SatCountRange", data)==0) {return String();}
+  if (strcmp("HemiGNGGANorth", data)==0) {return String(gnggaData.latitude_hemisphere);}
+  if (strcmp("HemiGNGGASouth", data)==0) {return String(gnggaData.latitude_hemisphere);}
+  if (strcmp("HemiGNGGAEast", data)==0) {return String(gnggaData.latitude_hemisphere);}
+  if (strcmp("HemiGNGGAWest", data)==0) {return String(gnggaData.latitude_hemisphere);}
+  if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor);}
+  if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor);}
+  if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor);}
+  // if (strcmp("GPSPrecisionRange", data)==0) {return String();}
+  if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude);}
+  if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude);}
+  if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude);}
+  // if (strcmp("AltGNGGARange", data)==0) {return String();}
+  if (strcmp("UTCTimeGNRMCOver", data)==0) {return String(gnrmcData.utc_time);}
+  if (strcmp("UTCTimeGNRMCUnder", data)==0) {return String(gnrmcData.utc_time);}
+  if (strcmp("UTCTimeGNRMCEqual", data)==0) {return String(gnrmcData.utc_time);}
+  // if (strcmp("UTCTimeGNRMCRange", data)==0) {return String();}
+  if (strcmp("PosStatusGNRMCA", data)==0) {return String(gnrmcData.positioning_status);}
+  if (strcmp("PosStatusGNRMCV", data)==0) {return String(gnrmcData.positioning_status);}
+  if (strcmp("ModeGNRMCA", data)==0) {return String(gnrmcData.mode_indication);}
+  if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
+  if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
+  if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
+  if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude);}
+  if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude);}
+  if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude);}
+  // if (strcmp("LatGNRMCRange", data)==0) {return String();}
+  if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude);}
+  if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude);}
+  if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude);}
+  // if (strcmp("LonGNRMCRange", data)==0) {return String();}
+  if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+  if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+  if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+  if (strcmp("HemiGNRMCWest", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+  if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed);}
+  if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed);}
+  if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed);}
+  // if (strcmp("GSpeedGNRMCRange", data)==0) {return String();}
+  if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading);}
+  if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading);}
+  if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading);}
+  // if (strcmp("HeadingGNRMCRange", data)==0) {return String();}
+  if (strcmp("UTCDateGNRMCOver", data)==0) {return String(gnrmcData.utc_date);}
+  if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
+  if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
+  // if (strcmp("UTCDateGNRMCRange", data)==0) {return String();}
+  if (strcmp("LineFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
+  if (strcmp("StaticFlagGPATTEQ", data)==0) {return String(gpattData.static_flag);}
+  if (strcmp("RStateFlagGPATTEQ", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("INSGPATTEqual", data)==0) {return String(gpattData.ins);}
+  if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
+  if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
+  if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
+  // if (strcmp("SpeedNumGPATTRange", data)==0) {return String();}
+  if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage);}
+  if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage);}
+  if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage);}
+  // if (strcmp("MileageGPATTRange", data)==0) {return String();}
+  if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
+  if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
+  if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
+  // if (strcmp("GSTDataGPATTRange", data)==0) {return String();}
+  if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw);}
+  if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw);}
+  if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw);}
+  // if (strcmp("YawGPATTRange", data)==0) {return String();}
+  if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll);}
+  if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll);}
+  if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll);}
+  // if (strcmp("RollGPATTRange", data)==0) {return String();}
+  if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch);}
+  if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch);}
+  if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch);}
+  // if (strcmp("PitchGPATTRange", data)==0) {return String();}
+  // if (strcmp("GNGGAValidCS", data)==0) {return String();}
+  // if (strcmp("GNRMCValidCS", data)==0) {return String();}
+  // if (strcmp("GPATTValidCS", data)==0) {return String();}
+  // if (strcmp("GNGGAInvalidCS", data)==0) {return String();}
+  // if (strcmp("GNRMCInvalidCS", data)==0) {return String();}
+  // if (strcmp("GPATTInvalidCS", data)==0) {return String();}
+  // if (strcmp("GNGGAValidCD", data)==0) {return String();}
+  // if (strcmp("GNRMCValidCD", data)==0) {return String();}
+  // if (strcmp("GPATTValidCD", data)==0) {return String();}
+  // if (strcmp("GNGGAInvalidCD", data)==0) {return String();}
+  // if (strcmp("GNRMCInvalidCD", data)==0) {return String();}
+  // if (strcmp("GPATTInvalidCD", data)==0) {return String();}
+  if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
+  if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
+  // if (strcmp("DayTime", data)==0) {return String();}
+  // if (strcmp("NightTime", data)==0) {return String();}
+  if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
+  if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
+  if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
+  if (strcmp("MoonAltRange", data)==0) {return String(siderealPlanetData.moon_alt);}
+  // if (strcmp("MoonUp", data)==0) {return String();}
+  // if (strcmp("MoonDown", data)==0) {return String();}
+  if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
+  if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
+  if (strcmp("MoonPhase", data)==0) {return String(siderealPlanetData.moon_p);}
+  if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
+  if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
+  // if (strcmp("MercuryUp", data)==0) {return String();}
+  // if (strcmp("MercuryDown", data)==0) {return String();}
+  if (strcmp("MercuryRise", data)==0) {return String(siderealPlanetData.mercury_r);}
+  if (strcmp("MercurySet", data)==0) {return String(siderealPlanetData.mercury_s);}
+  if (strcmp("VenusAzRange", data)==0) {return String(siderealPlanetData.venus_az);}
+  if (strcmp("VenusAltRange", data)==0) {return String(siderealPlanetData.venus_alt);}
+  // if (strcmp("VenusUp", data)==0) {return String();}
+  // if (strcmp("VenusDown", data)==0) {return String();}
+  if (strcmp("VenusRise", data)==0) {return String(siderealPlanetData.venus_r);}
+  if (strcmp("VenusSet", data)==0) {return String(siderealPlanetData.venus_s);}
+  if (strcmp("MarsAzRange", data)==0) {return String(siderealPlanetData.mars_az);}
+  if (strcmp("MarsAltRange", data)==0) {return String(siderealPlanetData.mars_alt);}
+  // if (strcmp("MarsUp", data)==0) {return String();}
+  // if (strcmp("MarsDown", data)==0) {return String();}
+  if (strcmp("MarsRise", data)==0) {return String(siderealPlanetData.mars_r);}
+  if (strcmp("MarsSet", data)==0) {return String(siderealPlanetData.mars_s);}
+  if (strcmp("JupiterAzRange", data)==0) {return String(siderealPlanetData.jupiter_az);}
+  if (strcmp("JupiterAltRange", data)==0) {return String(siderealPlanetData.jupiter_alt);}
+  // if (strcmp("JupiterUp", data)==0) {return String();}
+  // if (strcmp("JupiterDown", data)==0) {return String();}
+  if (strcmp("JupiterRise", data)==0) {return String(siderealPlanetData.jupiter_r);}
+  if (strcmp("JupiterSet", data)==0) {return String(siderealPlanetData.jupiter_s);}
+  if (strcmp("SaturnAzRange", data)==0) {return String(siderealPlanetData.saturn_az);}
+  if (strcmp("SaturnAltRange", data)==0) {return String(siderealPlanetData.saturn_alt);}
+  // if (strcmp("SaturnUp", data)==0) {return String();}
+  // if (strcmp("SaturnDown", data)==0) {return String();}
+  if (strcmp("SaturnRise", data)==0) {return String(siderealPlanetData.saturn_r);}
+  if (strcmp("SaturnSet", data)==0) {return String(siderealPlanetData.saturn_s);}
+  if (strcmp("UranusAzRange", data)==0) {return String(siderealPlanetData.uranus_az);}
+  if (strcmp("UranusAltRange", data)==0) {return String(siderealPlanetData.uranus_alt);}
+  // if (strcmp("UranusUp", data)==0) {return String();}
+  // if (strcmp("UranusDown", data)==0) {return String();}
+  if (strcmp("UranusRise", data)==0) {return String(siderealPlanetData.uranus_r);}
+  if (strcmp("UranusSet", data)==0) {return String(siderealPlanetData.uranus_s);}
+  if (strcmp("NeptuneAzRange", data)==0) {return String(siderealPlanetData.neptune_az);}
+  if (strcmp("NeptuneAltRange", data)==0) {return String(siderealPlanetData.neptune_alt);}
+  // if (strcmp("NeptuneUp", data)==0) {return String();}
+  // if (strcmp("NeptuneDown", data)==0) {return String();}
+  if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
+  if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
+  if (strcmp("DHT11_0_H_Under", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11_0_H_Over", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11_0_H_Equal", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11_0_H_Range", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11_0_C_Under", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11_0_C_Over", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11_0_C_Equal", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11_0_C_Range", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11_0_F_Under", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11_0_F_Over", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11_0_F_Equal", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11_0_F_Range", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11_0_HIC_Under", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11_0_HIC_Over", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11_0_HIC_Equal", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11_0_HIC_Range", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11_0_HIF_Under", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11_0_HIF_Over", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11_0_HIF_Equal", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11_0_HIF_Range", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("PhotoRes_0_Under", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes_0_Over", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes_0_Equal", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes_0_Range", data)==0) {return String(sensorData.photoresistor_0);}
+  return String("unknown");
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           UI
 
@@ -5929,6 +6157,14 @@ void UpdateUI() {
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 66, canvas0);
+
+        // the real x: display each functions associated value in 'real time' at the switch logic level (this level)
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "RX: ");
+        strcat(TMP_UI_DATA_0, getRelatedXYZ(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 79, canvas0);
       }
       else {
         canvas0.clear();
