@@ -6750,9 +6750,9 @@ void loop() {
   by updateUI function which should be reserved for text.
 
   updating text procedurally at the end of each loop also means that we avoid any race conditions where if updateUI was running
-  on a task then it may try and display values that are currently being overwritten by other tasks/function.
+  on a task then it may try and display values that are currently being overwritten by other tasks/functions.
 
-  update text at the end of each loop possible.A0
+  update text at the end of each loop possible.
 
   run graphics on tasks when and if required.
 
