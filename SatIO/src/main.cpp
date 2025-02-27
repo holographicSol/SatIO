@@ -6740,8 +6740,24 @@ void loop() {
     sensors_done=false;
   }
 
-  // this helps keep the system fast accross loops taking different times, by utilizing loops that take less time to complete.
-  // note that this is currently suitable in this case while timing or other conditions may be more suitable in other cases.
+  /*
+
+  this helps keep the system fast accross loops taking different times, by utilizing loops that take less time to complete.
+  note that this is currently suitable in this case while timing or other conditions may be more suitable in other cases.
+  this currently allows for text to be updated a little more than 10 times a second.
+
+  anything graphically intensive can be placed on a task and be written to areas of the display that are not being written to
+  by updateUI function which should be reserved for text.
+
+  updating text procedurally at the end of each loop also means that we avoid any race conditions where is updateUI was running
+  on a task then it may try and display values that are currently being overwritten by other tasks/function.
+
+  update text at the end of each loop possible.A0
+
+  run graphics on tasks when and if required.
+
+  */
+
   if (longer_loop==false) {
     t0 = millis();
     UpdateUI();
