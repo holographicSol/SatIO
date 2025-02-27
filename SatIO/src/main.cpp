@@ -6756,6 +6756,8 @@ void loop() {
 
   run graphics on tasks when and if required.
 
+  aim to always stay well below the 100ms looptime for every loop.
+
   */
 
   if (longer_loop==false) {
