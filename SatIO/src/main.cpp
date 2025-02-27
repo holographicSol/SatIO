@@ -6749,7 +6749,7 @@ void loop() {
   anything graphically intensive can be placed on a task and be written to areas of the display that are not being written to
   by updateUI function which should be reserved for text.
 
-  updating text procedurally at the end of each loop also means that we avoid any race conditions where is updateUI was running
+  updating text procedurally at the end of each loop also means that we avoid any race conditions where if updateUI was running
   on a task then it may try and display values that are currently being overwritten by other tasks/function.
 
   update text at the end of each loop possible.A0
