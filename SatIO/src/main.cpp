@@ -6262,10 +6262,10 @@ void UpdateUI() {
         strcpy(TMP_UI_DATA_0, "P");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas19x8.clear();
-        display.invertColors();
+        // display.invertColors();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 10, canvas19x8);
-        display.invertColors();
+        // display.invertColors();
         display.setColor(color_content);
         display.drawRect(35, 6, 62, 21);
       }
@@ -6285,7 +6285,7 @@ void UpdateUI() {
       if (menu_column_selection == 2) {
         canvas8x8.clear();
         // display.setColor(RGB_COLOR16(0,255,0));
-        display.invertColors();
+        // display.invertColors();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
           canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
         }
@@ -6294,7 +6294,7 @@ void UpdateUI() {
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
         }
         display.drawCanvas(70, 10, canvas8x8);
-        display.invertColors();
+        // display.invertColors();
         display.setColor(color_content);
         display.drawRect(66, 6, 82, 21);
       }
