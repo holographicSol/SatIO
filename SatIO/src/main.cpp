@@ -5817,11 +5817,11 @@ String getRelatedXYZ(char * data) {
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga);}
-  // if (strcmp("DegLatGNGGARange", data)==0) {return String();}
+  if (strcmp("DegLatGNGGARange", data)==0) {return String(satData.location_latitude_gngga);}
   if (strcmp("DegLonGNGGAOver", data)==0) {return String(satData.location_longitude_gngga);}
   if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga);}
   if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga);}
-  // if (strcmp("DegLonGNGGARange", data)==0) {return String();}
+  if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga);}
   // if (strcmp("DegGNGGARanges", data)==0) {return String();}
   if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc);}
   if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc);}
@@ -5830,25 +5830,25 @@ String getRelatedXYZ(char * data) {
   if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc);}
   if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc);}
   if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc);}
-  // if (strcmp("DegLonGNRMCRange", data)==0) {return String();}
+  if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc);}
   // if (strcmp("DegGNRMCRanges", data)==0) {return String();}
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
-  // if (strcmp("UTCTimeGNGGARange", data)==0) {return String();}
+  if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude);}
   if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude);}
   if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude);}
-  // if (strcmp("LatGNGGARange", data)==0) {return String();}
+  if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude);}
   if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude);}
   if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude);}
   if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude);}
-  // if (strcmp("LonGNGGARange", data)==0) {return String();}
+  if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude);}
   if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
   if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("SatCountEqual", data)==0) {return String(gnggaData.satellite_count_gngga);}
-  // if (strcmp("SatCountRange", data)==0) {return String();}
+  if (strcmp("SatCountRange", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("HemiGNGGANorth", data)==0) {return String(gnggaData.latitude_hemisphere);}
   if (strcmp("HemiGNGGASouth", data)==0) {return String(gnggaData.latitude_hemisphere);}
   if (strcmp("HemiGNGGAEast", data)==0) {return String(gnggaData.latitude_hemisphere);}
@@ -5856,15 +5856,15 @@ String getRelatedXYZ(char * data) {
   if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor);}
   if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor);}
   if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor);}
-  // if (strcmp("GPSPrecisionRange", data)==0) {return String();}
+  if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor);}
   if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude);}
   if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude);}
   if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude);}
-  // if (strcmp("AltGNGGARange", data)==0) {return String();}
+  if (strcmp("AltGNGGARange", data)==0) {return String(gnggaData.altitude);}
   if (strcmp("UTCTimeGNRMCOver", data)==0) {return String(gnrmcData.utc_time);}
   if (strcmp("UTCTimeGNRMCUnder", data)==0) {return String(gnrmcData.utc_time);}
   if (strcmp("UTCTimeGNRMCEqual", data)==0) {return String(gnrmcData.utc_time);}
-  // if (strcmp("UTCTimeGNRMCRange", data)==0) {return String();}
+  if (strcmp("UTCTimeGNRMCRange", data)==0) {return String(gnrmcData.utc_time);}
   if (strcmp("PosStatusGNRMCA", data)==0) {return String(gnrmcData.positioning_status);}
   if (strcmp("PosStatusGNRMCV", data)==0) {return String(gnrmcData.positioning_status);}
   if (strcmp("ModeGNRMCA", data)==0) {return String(gnrmcData.mode_indication);}
@@ -5874,11 +5874,11 @@ String getRelatedXYZ(char * data) {
   if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude);}
   if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude);}
   if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude);}
-  // if (strcmp("LatGNRMCRange", data)==0) {return String();}
+  if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude);}
   if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude);}
   if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude);}
   if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude);}
-  // if (strcmp("LonGNRMCRange", data)==0) {return String();}
+  if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude);}
   if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
@@ -5886,15 +5886,15 @@ String getRelatedXYZ(char * data) {
   if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed);}
   if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed);}
   if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed);}
-  // if (strcmp("GSpeedGNRMCRange", data)==0) {return String();}
+  if (strcmp("GSpeedGNRMCRange", data)==0) {return String(gnrmcData.ground_speed);}
   if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading);}
   if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading);}
   if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading);}
-  // if (strcmp("HeadingGNRMCRange", data)==0) {return String();}
+  if (strcmp("HeadingGNRMCRange", data)==0) {return String(gnrmcData.ground_heading);}
   if (strcmp("UTCDateGNRMCOver", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
-  // if (strcmp("UTCDateGNRMCRange", data)==0) {return String();}
+  if (strcmp("UTCDateGNRMCRange", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("LineFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
   if (strcmp("StaticFlagGPATTEQ", data)==0) {return String(gpattData.static_flag);}
   if (strcmp("RStateFlagGPATTEQ", data)==0) {return String(gpattData.run_state_flag);}
@@ -5902,27 +5902,27 @@ String getRelatedXYZ(char * data) {
   if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
-  // if (strcmp("SpeedNumGPATTRange", data)==0) {return String();}
+  if (strcmp("SpeedNumGPATTRange", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage);}
   if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage);}
   if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage);}
-  // if (strcmp("MileageGPATTRange", data)==0) {return String();}
+  if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage);}
   if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
-  // if (strcmp("GSTDataGPATTRange", data)==0) {return String();}
+  if (strcmp("GSTDataGPATTRange", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw);}
   if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw);}
   if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw);}
-  // if (strcmp("YawGPATTRange", data)==0) {return String();}
+  if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw);}
   if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll);}
   if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll);}
   if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll);}
-  // if (strcmp("RollGPATTRange", data)==0) {return String();}
+  if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll);}
   if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch);}
   if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch);}
   if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch);}
-  // if (strcmp("PitchGPATTRange", data)==0) {return String();}
+  if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch);}
   // if (strcmp("GNGGAValidCS", data)==0) {return String();}
   // if (strcmp("GNRMCValidCS", data)==0) {return String();}
   // if (strcmp("GPATTValidCS", data)==0) {return String();}
