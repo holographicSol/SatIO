@@ -225,12 +225,11 @@ int update_ui_period = 60;
 bool ui_cleared = false;
 int menu_page = 0;
 
-const char *menuHomeItems[2] =
+const char *menuHomeItems[1] =
 {
-  "C",
-  "",
+  "SETUP",
 };
-LcdGfxMenu menuHome( menuHomeItems, 2 );
+LcdGfxMenu menuHome( menuHomeItems, 1, {{2, 2}, {47, 25}} );
 
 
 const char *menuMainItems[9] =
@@ -269,7 +268,7 @@ const char *menuMatrixSwitchSelectItems[20] =
     "M17",
     "M18",
     "M19",
-}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
+}; // 33px x 23px
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {35, 25}} );
 
 
@@ -285,7 +284,7 @@ const char *menuMatrixFunctionSelectItems[10] =
     "F7 ",
     "F8 ",
     "F9 ",
-}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
+}; // 33px x 23px
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 10, {{92, 2}, {125, 25}} );
 
 
@@ -6087,6 +6086,10 @@ void drawMainBorderRed() {
 
 void UpdateUI() {
 
+  canvas120x8.setFixedFont(ssd1306xled_font6x8);
+  canvas8x8.setFixedFont(ssd1306xled_font6x8);
+  canvas19x8.setFixedFont(ssd1306xled_font6x8);
+
   // oled protection: enable/disable ui updates
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
@@ -6104,8 +6107,11 @@ void UpdateUI() {
     // home page items
     if (menu_page==0) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      drawMainBorder();
       menuHome.show( display );
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+      display.drawCanvas(3, 40, canvas120x8);
     }
 
     // main menu items
@@ -6125,10 +6131,6 @@ void UpdateUI() {
     // matrix switch function items
     if (menu_page==3) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
-      canvas120x8.setFixedFont(ssd1306xled_font6x8);
-      canvas8x8.setFixedFont(ssd1306xled_font6x8);
-      canvas19x8.setFixedFont(ssd1306xled_font6x8);
 
       drawMainBorder();
 
@@ -6484,7 +6486,7 @@ void makeI2CRequest() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar("-");}
 
       // parse navigation buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0; menuHome.down();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
@@ -6966,7 +6968,7 @@ void setup() {
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
   menu_page=0;
-  menuHome.down();
+  // menuHome.down();
   // NanoCanvas<64,16,1> canvas;
   // display.setColor(RGB_COLOR16(0,255,0));
   // display.clear();
