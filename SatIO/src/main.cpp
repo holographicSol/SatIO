@@ -6116,6 +6116,9 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(255,255,255));
       display.drawRect(1, 1, 126, 126);
 
+      // combination border
+      display.drawHLine(2, 26, 126);
+
       // port number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "P");
