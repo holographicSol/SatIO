@@ -6125,11 +6125,11 @@ void UpdateUI() {
       canvas8x8.clear();
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        // display.fillRect(86, 10, 88, 17);
+        display.fillRect(88, 10, 89, 17);
       }
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
         display.setColor(RGB_COLOR16(255,0,0));
-        // display.fillRect(86, 10, 86, 17);
+        display.fillRect(88, 10, 89, 17);
       }
       display.setColor(RGB_COLOR16(255,255,255));
       display.drawRect(86, 6, 91, 21);
