@@ -218,6 +218,7 @@ NanoCanvas<8,8,1> canvas8x8; // 1 chars wide + 2
 NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
 NanoCanvas<33,24,1> canvas33x24; // 
 NanoCanvas<120,8,1> canvas120x8;
+NanoCanvas<120,24,1> canvas120x24;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -6161,14 +6162,14 @@ void UpdateUI() {
 
       // state on/off
       display.setColor(color_content);
-      display.drawRect(86, 6, 91, 21);
+      // display.drawRect(86, 6, 91, 21); // uncomment to border
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        display.fillRect(88, 10, 89, 17);
+        display.fillRect(88, 9, 89, 11);
       }
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
         display.setColor(RGB_COLOR16(255,0,0));
-        display.fillRect(88, 10, 89, 17);
+        display.fillRect(88, 9, 89, 11);
       }
       display.setColor(color_content);
 
@@ -6235,11 +6236,8 @@ void UpdateUI() {
       // clear any previously highlighted menus (the canvas needs to be slighly larger in dimensions to wipe all the menu away)
       if (previous_menu_column_selection!=menu_column_selection) {
         // menu
-        canvas33x24.clear();
-        display.drawCanvas(7, 2, canvas33x24);
-        // menu
-        canvas33x24.clear();
-        display.drawCanvas(92, 2, canvas33x24);
+        canvas120x24.clear();
+        display.drawCanvas(5, 2, canvas120x24);
         // set
         previous_menu_column_selection=menu_column_selection;
       }
@@ -6254,7 +6252,7 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(10, 9, canvas19x8);
-        display.drawRect(6, 6, 31, 21);
+        // display.drawRect(6, 6, 31, 21); // uncomment to border
       }
 
       // highlight matrix switch port select
@@ -6280,7 +6278,7 @@ void UpdateUI() {
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(39, 10, canvas19x8);
         display.setColor(color_content);
-        display.drawRect(35, 6, 62, 21);
+        // display.drawRect(35, 6, 62, 21); // uncomment to border
       }
 
       // highlight matrix switch enable/disable
@@ -6313,7 +6311,7 @@ void UpdateUI() {
         }
         display.drawCanvas(70, 10, canvas8x8);
         display.setColor(color_content);
-        display.drawRect(66, 6, 82, 21);
+        // display.drawRect(66, 6, 82, 21);
       }
 
       // highlight matrix switch function select menu
@@ -6326,7 +6324,7 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(91+4, 9, canvas19x8);
-        display.drawRect(91+4, 6, 91+30, 21);
+        // display.drawRect(91+4, 6, 91+30, 21); // uncomment to border
       }
       
     }
