@@ -6173,7 +6173,7 @@ void UpdateUI() {
 
       // real x: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "RX ");
+      strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -6181,7 +6181,7 @@ void UpdateUI() {
 
       // real y: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "RY ");
+      strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
