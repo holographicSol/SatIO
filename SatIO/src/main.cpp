@@ -5794,8 +5794,8 @@ void menuEnter() {
 
 
 String getRelatedY(char * data) {
-  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga);}
-  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc);}
+  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga, 10);}
+  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
   return String("");
 }
 
@@ -5822,40 +5822,40 @@ String getRelatedX(char * data) {
   // if (strcmp("DateMonthX", data)==0) {return String();}
   // if (strcmp("DateYearX", data)==0) {return String();}
 
-  if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga);}
-  if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga);}
-  if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga);}
-  if (strcmp("DegLatGNGGARange", data)==0) {return String(satData.location_latitude_gngga);}
-  if (strcmp("DegLonGNGGAOver", data)==0) {return String(satData.location_longitude_gngga);}
-  if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga);}
-  if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga);}
-  if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga);}
+  if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
+  if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
+  if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
+  if (strcmp("DegLatGNGGARange", data)==0) {return String(satData.location_latitude_gngga, 10);}
+  if (strcmp("DegLonGNGGAOver", data)==0) {return String(satData.location_longitude_gngga, 10);}
+  if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga, 10);}
+  if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga, 10);}
+  if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga, 10);}
 
-  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_latitude_gngga);}
+  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_latitude_gngga, 10);}
 
-  if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc);}
-  if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc);}
-  if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc);}
-  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_latitude_gnrmc);}
-  if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc);}
-  if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc);}
-  if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc);}
-  if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc);}
+  if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
+  if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
+  if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
+  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
+  if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
+  if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
+  if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
+  if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
 
-  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_latitude_gnrmc);}
+  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
 
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude);}
-  if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude);}
-  if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude);}
-  if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude);}
-  if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude);}
-  if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude);}
-  if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude);}
-  if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude);}
+  if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude, 10);}
+  if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude, 10);}
+  if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude, 10);}
+  if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude, 10);}
+  if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude, 10);}
+  if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude, 10);}
+  if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude, 10);}
+  if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude, 10);}
   if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
   if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
@@ -5865,14 +5865,14 @@ String getRelatedX(char * data) {
   if (strcmp("HemiGNGGASouth", data)==0) {return String(gnggaData.latitude_hemisphere);}
   if (strcmp("HemiGNGGAEast", data)==0) {return String(gnggaData.latitude_hemisphere);}
   if (strcmp("HemiGNGGAWest", data)==0) {return String(gnggaData.latitude_hemisphere);}
-  if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor);}
-  if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor);}
-  if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor);}
-  if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor);}
-  if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude);}
-  if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude);}
-  if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude);}
-  if (strcmp("AltGNGGARange", data)==0) {return String(gnggaData.altitude);}
+  if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+  if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+  if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+  if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+  if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude, 2);}
+  if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude, 2);}
+  if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude, 2);}
+  if (strcmp("AltGNGGARange", data)==0) {return String(gnggaData.altitude, 2);}
   if (strcmp("UTCTimeGNRMCOver", data)==0) {return String(gnrmcData.utc_time);}
   if (strcmp("UTCTimeGNRMCUnder", data)==0) {return String(gnrmcData.utc_time);}
   if (strcmp("UTCTimeGNRMCEqual", data)==0) {return String(gnrmcData.utc_time);}
@@ -5883,26 +5883,26 @@ String getRelatedX(char * data) {
   if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude);}
-  if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude);}
-  if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude);}
-  if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude);}
-  if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude);}
-  if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude);}
-  if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude);}
-  if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude);}
+  if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude, 10);}
+  if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude, 10);}
+  if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude, 10);}
+  if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude, 10);}
+  if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude, 10);}
+  if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude, 10);}
+  if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude, 10);}
+  if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude, 10);}
   if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCWest", data)==0) {return String(gnrmcData.latitude_hemisphere);}
-  if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed);}
-  if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed);}
-  if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed);}
-  if (strcmp("GSpeedGNRMCRange", data)==0) {return String(gnrmcData.ground_speed);}
-  if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading);}
-  if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading);}
-  if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading);}
-  if (strcmp("HeadingGNRMCRange", data)==0) {return String(gnrmcData.ground_heading);}
+  if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed, 2);}
+  if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed, 2);}
+  if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed, 2);}
+  if (strcmp("GSpeedGNRMCRange", data)==0) {return String(gnrmcData.ground_speed, 2);}
+  if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading, 2);}
+  if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading, 2);}
+  if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading, 2);}
+  if (strcmp("HeadingGNRMCRange", data)==0) {return String(gnrmcData.ground_heading, 2);}
   if (strcmp("UTCDateGNRMCOver", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
@@ -5915,26 +5915,26 @@ String getRelatedX(char * data) {
   if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTRange", data)==0) {return String(gpattData.speed_num);}
-  if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage);}
-  if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage);}
-  if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage);}
-  if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage);}
+  if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage, 2);}
+  if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage, 2);}
+  if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage, 2);}
+  if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage, 2);}
   if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
   if (strcmp("GSTDataGPATTRange", data)==0) {return String(gpattData.gst_data);}
-  if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw);}
-  if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw);}
-  if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw);}
-  if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw);}
-  if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll);}
-  if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll);}
-  if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll);}
-  if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll);}
-  if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch);}
-  if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch);}
-  if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch);}
-  if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch);}
+  if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw, 2);}
+  if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw, 2);}
+  if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw, 2);}
+  if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw, 2);}
+  if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll, 2);}
+  if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll, 2);}
+  if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll, 2);}
+  if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll, 2);}
+  if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch, 2);}
+  if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch, 2);}
+  if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch, 2);}
+  if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch, 2);}
   // if (strcmp("GNGGAValidCS", data)==0) {return String();}
   // if (strcmp("GNRMCValidCS", data)==0) {return String();}
   // if (strcmp("GPATTValidCS", data)==0) {return String();}
