@@ -247,6 +247,7 @@ LcdGfxMenu menuMain( menuMainItems, 9 );
 
 const char *menuMatrixSwitchSelectItems[20] =
 {
+    "M0 ",
     "M1 ",
     "M2 ",
     "M3 ",
@@ -266,7 +267,6 @@ const char *menuMatrixSwitchSelectItems[20] =
     "M17",
     "M18",
     "M19",
-    "M20",
 }; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 36px x 24px
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {36, 26}} );
 
