@@ -6072,6 +6072,18 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
+int color_border = RGB_COLOR16(255,255,255);
+int color_content = RGB_COLOR16(255,255,255);
+
+void drawMainBorder() {
+  display.setColor(color_border);
+  display.drawRect(1, 1, 126, 126);
+}
+
+void drawMainBorderRed() {
+  display.setColor(RGB_COLOR16(255,0,0));
+  display.drawRect(1, 1, 126, 126);
+}
 
 // void UpdateUI(void *pvParameters) {
 void UpdateUI() {
@@ -6081,8 +6093,8 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=3; // uncomment to debug
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
@@ -6094,21 +6106,21 @@ void UpdateUI() {
     // home page items
     if (menu_page==0) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
       menuHome.show( display );
     }
 
     // main menu items
     if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
       menuMain.show( display );
     }
 
     // matrix switch select items
     if (menu_page==2) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
       menuMatrixSwitchSelect.show( display );
     }
 
@@ -6120,9 +6132,7 @@ void UpdateUI() {
       canvas8x8.setFixedFont(ssd1306xled_font6x8);
       canvas19x8.setFixedFont(ssd1306xled_font6x8);
 
-      // default border
-      display.setColor(RGB_COLOR16(255,255,255));
-      display.drawRect(1, 1, 126, 126);
+      drawMainBorder();
 
       // combination border
       display.drawHLine(2, 26, 126);
@@ -6137,11 +6147,11 @@ void UpdateUI() {
         display.setColor(RGB_COLOR16(255,0,0));
         display.fillRect(88, 10, 89, 17);
       }
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
       display.drawRect(86, 6, 91, 21);
 
       // display function specific data
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
 
 
 
@@ -6201,8 +6211,10 @@ void UpdateUI() {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(6, 112, canvas120x8);
 
+
+      
       // show the menu
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
 
       // clear any previously highlighted menus (the canvas needs to be slighly larger in dimensions to wipe all the menu away)
       if (previous_menu_column_selection!=menu_column_selection) {
@@ -6240,7 +6252,7 @@ void UpdateUI() {
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 10, canvas19x8);
         display.invertColors();
-        display.setColor(RGB_COLOR16(255,255,255));
+        display.setColor(color_content);
         display.drawRect(35, 6, 62, 21);
       }
       else {
@@ -6251,7 +6263,7 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(39, 10, canvas19x8);
-        display.setColor(RGB_COLOR16(255,255,255));
+        display.setColor(color_content);
         display.drawRect(35, 6, 62, 21);
       }
 
@@ -6267,7 +6279,7 @@ void UpdateUI() {
         }
         display.drawCanvas(70, 10, canvas8x8);
         display.invertColors();
-        display.setColor(RGB_COLOR16(255,255,255));
+        display.setColor(color_content);
         display.drawRect(66, 6, 82, 21);
       }
       else {
@@ -6280,7 +6292,7 @@ void UpdateUI() {
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
         }
         display.drawCanvas(70, 10, canvas8x8);
-        display.setColor(RGB_COLOR16(255,255,255));
+        display.setColor(color_content);
         display.drawRect(66, 6, 82, 21);
       }
 
@@ -6302,17 +6314,14 @@ void UpdateUI() {
     // enter digits page
     if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(255,0,0));
-      display.drawRect(1, 1, 126, 126);
+      drawMainBorderRed();
       canvas120x8.clear();
-      display.setColor(RGB_COLOR16(255,0,0));
       if (enter_digits_key==1) {canvas120x8.printFixed(3, 1,      " ENTER PORT NUMBER ", STYLE_BOLD );}
       else if (enter_digits_key==2) {canvas120x8.printFixed(3, 1, "   ENTER VALUE X    ", STYLE_BOLD );}
       else if (enter_digits_key==3) {canvas120x8.printFixed(3, 1, "   ENTER VALUE Y    ", STYLE_BOLD );}
       else if (enter_digits_key==4) {canvas120x8.printFixed(3, 1, "   ENTER VALUE Z    ", STYLE_BOLD );}
       display.drawCanvas(3, 6, canvas120x8);
       canvas120x8.clear();
-      display.setColor(RGB_COLOR16(255,0,0));
       canvas120x8.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
       display.drawCanvas(3, 56, canvas120x8);
     }
@@ -6322,8 +6331,8 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas120x8.setFixedFont(ssd1306xled_font6x8);
-      display.setColor(RGB_COLOR16(255,255,255));
-      display.drawRect(1, 1, 126, 126);
+
+      drawMainBorder();
 
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6348,7 +6357,7 @@ void UpdateUI() {
     // select function name
     if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(255,255,255));
+      display.setColor(color_content);
       menuMatrixSetFunctionName.show( display );
     }
   }
