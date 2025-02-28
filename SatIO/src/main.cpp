@@ -213,10 +213,11 @@ int SSD1351_CS   = 26; // (CS)
 
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
-NanoCanvas<120,8,1> canvas120x8;
-NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
+NanoCanvas<6,8,1> canvas6x8;
 NanoCanvas<8,8,1> canvas8x8; // 1 chars wide + 2
+NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
 NanoCanvas<36,24,1> canvas36x24; // 
+NanoCanvas<120,8,1> canvas120x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -6084,9 +6085,10 @@ void drawMainBorderRed() {
 
 void UpdateUI() {
 
-  canvas120x8.setFixedFont(ssd1306xled_font6x8);
+  canvas6x8.setFixedFont(ssd1306xled_font6x8);
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
+  canvas120x8.setFixedFont(ssd1306xled_font6x8);
 
   // oled protection: enable/disable ui updates
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
@@ -6143,7 +6145,8 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       // state on/off
-      canvas8x8.clear();
+      display.setColor(color_content);
+      display.drawRect(86, 6, 91, 21);
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
         display.fillRect(88, 10, 89, 17);
@@ -6153,12 +6156,6 @@ void UpdateUI() {
         display.fillRect(88, 10, 89, 17);
       }
       display.setColor(color_content);
-      display.drawRect(86, 6, 91, 21);
-
-      // display function specific data
-      display.setColor(color_content);
-
-
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6216,22 +6213,6 @@ void UpdateUI() {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(6, 112, canvas120x8);
 
-
-      
-      // show the menu
-      display.setColor(color_content);
-
-      // clear any previously highlighted menus (the canvas needs to be slighly larger in dimensions to wipe all the menu away)
-      if (previous_menu_column_selection!=menu_column_selection) {
-        // menu
-        canvas36x24.clear();
-        display.drawCanvas(6-2, 2, canvas36x24);
-        // menu
-        canvas36x24.clear();
-        display.drawCanvas(91-2, 2, canvas36x24);
-        // set
-        previous_menu_column_selection=menu_column_selection;
-      }
 
       // highlight matrix switch select menu
       if (menu_column_selection == 0) {menuMatrixSwitchSelect.show( display );}
