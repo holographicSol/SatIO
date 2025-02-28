@@ -2202,7 +2202,7 @@ const char *menuMatrixSetFunctionNameItems[221] =
   "PhotoRes_0_Equal",
   "PhotoRes_0_Range",
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 221, {{0, 0}, {128, 128}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 221, {{0, 34}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -5836,7 +5836,7 @@ String getRelatedX(char * data) {
   // if (strcmp("$SWITCHLINKFALSE", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
 
-  // potentially redirect calls like these to existing values so that the values are already set before here  
+  // potentially redirect calls like these to existing values so that the values are already set before here: pros=calculate once, cons=stale data
   if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
@@ -6385,6 +6385,23 @@ void UpdateUI() {
     if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
+
+      // matrix switch number 
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
+      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+
+      // function number
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "FUNCTION: ");
+      strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(3, 22, canvas120x8);
+      
       menuMatrixSetFunctionName.show( display );
     }
   }
