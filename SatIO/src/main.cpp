@@ -6122,7 +6122,7 @@ void UpdateUI() {
       // port number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "P");
-      strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
       canvas30x16.clear();
       canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(38, 10, canvas30x16);
