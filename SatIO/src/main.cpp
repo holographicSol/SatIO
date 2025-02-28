@@ -106,6 +106,8 @@
         
         ToDo: output via portcontroller is currently high/low, allowing for turning devices on/off and or for devices to interpret a high low. provide
               output configuration allowing for more variable analogue signals to be output.
+        
+        ToDo: allow for user defined parsing of gps data: allowing for different gps modules to be used even if they have a different data structure and or data content.
   */
 
 // ------------------------------------------------------------------------------------------------------------------------------
