@@ -268,7 +268,7 @@ const char *menuMatrixSwitchSelectItems[20] =
     "M19",
     "M20",
 }; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 36px x 24px
-LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {38, 26}} );
+LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {36, 26}} );
 
 
 const char *menuMatrixFunctionSelectItems[13] =
@@ -6125,7 +6125,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][matrix_switch_selected]).c_str());
       canvas30x16.clear();
       canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(39, 10, canvas30x16);
+      display.drawCanvas(38, 10, canvas30x16);
 
       // enabled/disabled
       canvas10x16.clear();
@@ -6137,7 +6137,7 @@ void UpdateUI() {
       else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
         canvas10x16.printFixed(1, 1, "D", STYLE_BOLD );
       }
-      display.drawCanvas(66, 10, canvas10x16);
+      display.drawCanvas(65, 10, canvas10x16);
 
       // state on/off
       canvas10x16.clear();
@@ -6149,7 +6149,7 @@ void UpdateUI() {
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
         canvas10x16.printFixed(1, 1, "0", STYLE_BOLD );
       }
-      display.drawCanvas(80, 10, canvas10x16);
+      display.drawCanvas(79, 10, canvas10x16);
 
       // display function specific data
       display.setColor(RGB_COLOR16(255,255,255));
