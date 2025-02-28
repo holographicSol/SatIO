@@ -5792,7 +5792,6 @@ void menuEnter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                Crude Function Name to Associated Value Mapping 
 
-
 String getRelatedY(char * data) {
   if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga, 10);}
   if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
@@ -5811,16 +5810,16 @@ String getRelatedX(char * data) {
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
-  // if (strcmp("DaySunday", data)==0) {return String();}
-  // if (strcmp("DayMonday", data)==0) {return String();}
-  // if (strcmp("DayTuesday", data)==0) {return String();}
-  // if (strcmp("DayWednesday", data)==0) {return String();}
-  // if (strcmp("DayThursday", data)==0) {return String();}
-  // if (strcmp("DayFriday", data)==0) {return String();}
-  // if (strcmp("DaySaturday", data)==0) {return String();}
-  // if (strcmp("DateDayX", data)==0) {return String();}
-  // if (strcmp("DateMonthX", data)==0) {return String();}
-  // if (strcmp("DateYearX", data)==0) {return String();}
+  if (strcmp("DaySunday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DayMonday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DayTuesday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DayWednesday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DayThursday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DayFriday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DaySaturday", data)==0) {return String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()));}
+  if (strcmp("DateDayX", data)==0) {return String(rtc.now().day());}
+  if (strcmp("DateMonthX", data)==0) {return String(rtc.now().month());}
+  if (strcmp("DateYearX", data)==0) {return String(rtc.now().year());}
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
