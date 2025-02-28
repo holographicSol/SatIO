@@ -5821,7 +5821,6 @@ String getRelatedX(char * data) {
   // if (strcmp("DateDayX", data)==0) {return String();}
   // if (strcmp("DateMonthX", data)==0) {return String();}
   // if (strcmp("DateYearX", data)==0) {return String();}
-
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
@@ -5830,9 +5829,7 @@ String getRelatedX(char * data) {
   if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga, 10);}
   if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga, 10);}
   if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga, 10);}
-
   if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_latitude_gngga, 10);}
-
   if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
   if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
   if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
@@ -5841,9 +5838,7 @@ String getRelatedX(char * data) {
   if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
   if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
   if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
-
   if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
-
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
@@ -6192,6 +6187,8 @@ void UpdateUI() {
         display.drawCanvas(3, 40, canvas0);
         display.drawCanvas(3, 53, canvas0);
         display.drawCanvas(3, 66, canvas0);
+        display.drawCanvas(3, 89, canvas0);
+        display.drawCanvas(3, 102, canvas0);
       }
 
       // show the menu
