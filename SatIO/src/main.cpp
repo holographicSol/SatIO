@@ -96,13 +96,16 @@
 
         ToDo: Add zero-in functionality to matrix functions. find that signature, find that uap. allows for finding things only the sensors can see.
 
-        Todo: wire up the existing functionality through to the interface level.A0
+        Todo: wire up the existing functionality through to the interface level.
 
         ToDo: esp32 has a NIC, host an RSS feed that can be enabled/disabled.
 
         ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio).
               (redirects joysticks/trigger input to output, variably). requires a special menu page where any given analogue input controls can be calibrated
               and mapped to with certain thresholds for stabalizing input as required.
+        
+        ToDo: output via portcontroller is currently high/low, allowing for turning devices on/off and or for devices to interpret a high low. provide
+              output configuration allowing for more variable analogue signals to be output.
   */
 
 // ------------------------------------------------------------------------------------------------------------------------------
