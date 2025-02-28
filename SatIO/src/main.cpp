@@ -96,6 +96,11 @@
 
         ToDo: Add zero-in functionality to matrix functions. find that signature, find that uap. allows for finding things only the sensors can see.
 
+        Todo: wire up the existing functionality through to the interface level.A0
+
+        ToDo: esp32 has a NIC, host an RSS feed that can be enabled/disabled.
+
+        ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio). 
   */
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6165,11 +6170,11 @@ void UpdateUI() {
       // display.drawRect(86, 6, 91, 21); // uncomment to border
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        display.fillRect(88, 9, 89, 11);
+        display.fillRect(88, 9, 90, 12);
       }
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
         display.setColor(RGB_COLOR16(255,0,0));
-        display.fillRect(88, 9, 89, 11);
+        display.fillRect(88, 9, 90, 12);
       }
       display.setColor(color_content);
 
@@ -6401,7 +6406,7 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 22, canvas120x8);
-      
+
       menuMatrixSetFunctionName.show( display );
     }
   }
