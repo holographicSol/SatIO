@@ -5806,6 +5806,8 @@ String getRelatedX(char * data) {
   // if (strcmp("$SWITCHLINKTRUE", data)==0) {return String();}
   // if (strcmp("$SWITCHLINKFALSE", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
+
+  // potentially redirect calls like these to existing values so that the values are already set before here  
   if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
@@ -5820,6 +5822,7 @@ String getRelatedX(char * data) {
   if (strcmp("DateDayX", data)==0) {return String(rtc.now().day());}
   if (strcmp("DateMonthX", data)==0) {return String(rtc.now().month());}
   if (strcmp("DateYearX", data)==0) {return String(rtc.now().year());}
+
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
@@ -5943,8 +5946,13 @@ String getRelatedX(char * data) {
   if (strcmp("GPATTInvalidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  if (strcmp("DayTime", data)==0) {return String();}
-  if (strcmp("NightTime", data)==0) {return String();}
+
+  // potentially redirect calls like these to existing values so that the values are already set before here  
+  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
+    siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
+    siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+
   if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
   if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
   if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
