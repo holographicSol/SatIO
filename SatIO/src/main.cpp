@@ -6176,7 +6176,7 @@ void UpdateUI() {
         
         // function x
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "X: ");
+        strcpy(TMP_UI_DATA_0, "X ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][0]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -6184,7 +6184,7 @@ void UpdateUI() {
 
         // function y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "Y: ");
+        strcpy(TMP_UI_DATA_0, "Y ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][1]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -6192,7 +6192,7 @@ void UpdateUI() {
 
         // function z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "Z: ");
+        strcpy(TMP_UI_DATA_0, "Z ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3][2]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -6200,7 +6200,7 @@ void UpdateUI() {
 
         // real x: display each functions associated value in 'real time' at the switch logic level (this level)
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "RX: ");
+        strcpy(TMP_UI_DATA_0, "RX ");
         strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -6208,7 +6208,7 @@ void UpdateUI() {
 
         // real y: display each functions associated value in 'real time' at the switch logic level (this level)
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "RY: ");
+        strcpy(TMP_UI_DATA_0, "RY ");
         strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
