@@ -5792,7 +5792,14 @@ void menuEnter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                Crude Function Name to Associated Value Mapping 
 
-String getRelatedXYZ(char * data) {
+
+String getRelatedY(char * data) {
+  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga);}
+  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc);}
+  return String("");
+}
+
+String getRelatedX(char * data) {
   // if (strcmp("$NONE", data)==0) {return String();}
   // if (strcmp("$ENABLED", data)==0) {return String();}
   if (strcmp("$OVERLOAD_TRUE", data)==0) {return String(systemData.overload);}
@@ -5814,6 +5821,7 @@ String getRelatedXYZ(char * data) {
   // if (strcmp("DateDayX", data)==0) {return String();}
   // if (strcmp("DateMonthX", data)==0) {return String();}
   // if (strcmp("DateYearX", data)==0) {return String();}
+
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga);}
@@ -5822,16 +5830,20 @@ String getRelatedXYZ(char * data) {
   if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga);}
   if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga);}
   if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga);}
-  // if (strcmp("DegGNGGARanges", data)==0) {return String();}
+
+  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_latitude_gngga);}
+
   if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc);}
   if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc);}
   if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc);}
-  // if (strcmp("DegLatGNRMCRange", data)==0) {return String();}
+  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_latitude_gnrmc);}
   if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc);}
   if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc);}
   if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc);}
   if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc);}
-  // if (strcmp("DegGNRMCRanges", data)==0) {return String();}
+
+  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_latitude_gnrmc);}
+
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
@@ -6014,7 +6026,7 @@ String getRelatedXYZ(char * data) {
   if (strcmp("PhotoRes_0_Over", data)==0) {return String(sensorData.photoresistor_0);}
   if (strcmp("PhotoRes_0_Equal", data)==0) {return String(sensorData.photoresistor_0);}
   if (strcmp("PhotoRes_0_Range", data)==0) {return String(sensorData.photoresistor_0);}
-  return String("unknown");
+  return String("");
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -6161,10 +6173,18 @@ void UpdateUI() {
         // the real x: display each functions associated value in 'real time' at the switch logic level (this level)
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "RX: ");
-        strcat(TMP_UI_DATA_0, getRelatedXYZ(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
+        strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, 89, canvas0);
+
+        // the real y: display each functions associated value in 'real time' at the switch logic level (this level)
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "RY: ");
+        strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[matrix_switch_selected][menuMatrixFunctionSelect.selection()-3]).c_str());
+        canvas0.clear();
+        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(3, 102, canvas0);
       }
       else {
         canvas0.clear();
