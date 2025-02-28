@@ -6120,7 +6120,7 @@ void UpdateUI() {
       drawMainBorder();
 
       canvas120x8.clear();
-      canvas120x8.printFixed(32, 1, "SETTINGS", STYLE_BOLD );
+      canvas120x8.printFixed(33, 1, "SETTINGS", STYLE_BOLD );
       display.drawCanvas(6, 6, canvas120x8);
 
       menuMain.show( display );
