@@ -6074,7 +6074,7 @@ void UpdateUI() {
   else {update_ui=true;}
 
   update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=3; // uncomment to debug
+  menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
@@ -6205,12 +6205,12 @@ void UpdateUI() {
       }
       else {
         canvas0.clear();
-        display.drawCanvas(6, 27, canvas0);
-        display.drawCanvas(6, 40, canvas0);
-        display.drawCanvas(6, 53, canvas0);
-        display.drawCanvas(6, 66, canvas0);
-        display.drawCanvas(6, 89, canvas0);
-        display.drawCanvas(6, 102, canvas0);
+        display.drawCanvas(6, 32, canvas0);
+        display.drawCanvas(6, 45, canvas0);
+        display.drawCanvas(6, 58, canvas0);
+        display.drawCanvas(6, 71, canvas0);
+        display.drawCanvas(6, 94, canvas0);
+        display.drawCanvas(6, 107, canvas0);
       }
 
       // show the menu
