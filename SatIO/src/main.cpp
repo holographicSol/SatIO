@@ -216,7 +216,7 @@ DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0
 NanoCanvas<6,8,1> canvas6x8;
 NanoCanvas<8,8,1> canvas8x8; // 1 chars wide + 2
 NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
-NanoCanvas<36,24,1> canvas36x24; // 
+NanoCanvas<33,24,1> canvas33x24; // 
 NanoCanvas<120,8,1> canvas120x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
@@ -6213,6 +6213,21 @@ void UpdateUI() {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(6, 112, canvas120x8);
 
+
+      // show the menu
+      display.setColor(color_content);
+
+      // clear any previously highlighted menus (the canvas needs to be slighly larger in dimensions to wipe all the menu away)
+      if (previous_menu_column_selection!=menu_column_selection) {
+        // menu
+        canvas33x24.clear();
+        display.drawCanvas(7, 2, canvas33x24);
+        // menu
+        canvas33x24.clear();
+        display.drawCanvas(92, 2, canvas33x24);
+        // set
+        previous_menu_column_selection=menu_column_selection;
+      }
 
       // highlight matrix switch select menu
       if (menu_column_selection == 0) {menuMatrixSwitchSelect.show( display );}
