@@ -94,7 +94,7 @@
         ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
         including indicators and such can be configurable/customizably placed.
 
-        ToDo: Add zero-in functionality to matrix functions.
+        ToDo: Add zero-in functionality to matrix functions. find that signature, find that uap. allows for finding things only the sensors can see.
 
   */
 
@@ -6081,8 +6081,8 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
-  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=3; // uncomment to debug
+  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  // menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
