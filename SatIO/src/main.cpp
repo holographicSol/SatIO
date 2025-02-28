@@ -232,10 +232,8 @@ const char *menuHomeItems[1] =
 LcdGfxMenu menuHome( menuHomeItems, 1, {{2, 2}, {47, 25}} );
 
 
-const char *menuMainItems[9] =
+const char *menuMainItems[7] =
 {
-    "   CONFIGURATION  ",
-    "",
     "   MATRIX         ", // allows matrix configuration
     "   FILE           ", // load/save/delete system and matrix configurations
     "   GPS            ", // enable/disable parsing of sentences from the gps module
@@ -244,7 +242,7 @@ const char *menuMainItems[9] =
     "   SYSTEM         ",
     "   UNIVERSE       ", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
-LcdGfxMenu menuMain( menuMainItems, 9 );
+LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 84}} );
 
 const char *menuMatrixSwitchSelectItems[20] =
 {
@@ -6118,6 +6116,13 @@ void UpdateUI() {
     if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
+
+      drawMainBorder();
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(32, 1, "SETTINGS", STYLE_BOLD );
+      display.drawCanvas(6, 6, canvas120x8);
+
       menuMain.show( display );
     }
 
