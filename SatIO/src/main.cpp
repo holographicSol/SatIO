@@ -286,7 +286,7 @@ const char *menuMatrixFunctionSelectItems[13] =
     "F8 ",
     "F9 ",
     "F10",
-}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 36px x 24px
+}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{92, 2}, {125, 25}} );
 
 
@@ -6237,7 +6237,8 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]).c_str());
         canvas30x16.clear();
         canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 10, canvas30x16);
+        display.drawCanvas(10, 9, canvas30x16);
+        display.drawRect(6, 6, 32, 21);
       }
 
       // highlight matrix switch function select menu
@@ -6248,8 +6249,9 @@ void UpdateUI() {
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]).c_str());
         canvas30x16.clear();
-        canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(91+4, 10, canvas30x16);
+        canvas30x16.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(91+4, 9, canvas30x16);
+        display.drawRect(91+4, 6, 91+30, 21);
       }
       
     }
