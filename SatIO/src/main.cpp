@@ -6068,41 +6068,60 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 
 */
 
+// ------------------------------------------------
+//                                          UI DATA
+
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
 int color_border = RGB_COLOR16(255,255,255);
 int color_content = RGB_COLOR16(255,255,255);
+
+// ------------------------------------------------
+//                                        UI BORDER
 
 void drawMainBorder() {
   display.setColor(color_border);
   display.drawRect(1, 1, 126, 126);
 }
 
+// ------------------------------------------------
+//                                    UI BORDER RED
+
 void drawMainBorderRed() {
   display.setColor(RGB_COLOR16(255,0,0));
   display.drawRect(1, 1, 126, 126);
 }
 
+// ------------------------------------------------
+//                                               UI
+
 void UpdateUI() {
 
-  canvas6x8.setFixedFont(ssd1306xled_font6x8);
-  canvas8x8.setFixedFont(ssd1306xled_font6x8);
-  canvas19x8.setFixedFont(ssd1306xled_font6x8);
-  canvas120x8.setFixedFont(ssd1306xled_font6x8);
+  // ------------------------------------------------
+  //                                  OLED PROTECTION
 
   // oled protection: enable/disable ui updates
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
+  // ------------------------------------------------
+  //                                DEVELOPER OPTIONS
+
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=3; // uncomment to debug
 
+  // ------------------------------------------------
+  //                                  UPDATE UI PAGES
+
   // update ui
   if (update_ui==true) {
-    // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
+    // Serial.println("[oled protection] allowing ui update");
     Serial.println("[menu page] " + String(menu_page));
+
+    // ------------------------------------------------
+    //                                        HOME PAGE
 
     // home page items
     if (menu_page==0) {
@@ -6114,26 +6133,22 @@ void UpdateUI() {
       display.drawCanvas(3, 40, canvas120x8);
     }
 
+    // ------------------------------------------------
+    //                                    SETTINGS PAGE
+
     // main menu items
     if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
-
       drawMainBorder();
-
       canvas120x8.clear();
       canvas120x8.printFixed(33, 1, "SETTINGS", STYLE_BOLD );
       display.drawCanvas(6, 6, canvas120x8);
-
       menuMain.show( display );
     }
 
-    // matrix switch select items
-    if (menu_page==2) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
-      menuMatrixSwitchSelect.show( display );
-    }
+    // ------------------------------------------------
+    //                         MATRIX SWITCH LOGIC PAGE
 
     // matrix switch function items
     if (menu_page==3) {
@@ -6316,6 +6331,9 @@ void UpdateUI() {
       
     }
 
+    // ------------------------------------------------
+    //                                ENTER DIGITS PAGE
+
     // enter digits page
     if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
@@ -6330,6 +6348,9 @@ void UpdateUI() {
       canvas120x8.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
       display.drawCanvas(3, 56, canvas120x8);
     }
+
+    // ------------------------------------------------
+    //                     SELECT FUNCTION OPTIONS PAGE
 
     // select function name, x, y, or z
     if (menu_page==5) {
@@ -6359,6 +6380,9 @@ void UpdateUI() {
       menuMatrixConfigureFunction.show( display );
     }
 
+    // ------------------------------------------------
+    //                        SELECT FUNCTION NAME PAGE
+
     // select function name
     if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
@@ -6366,6 +6390,9 @@ void UpdateUI() {
       menuMatrixSetFunctionName.show( display );
     }
   }
+
+  // ------------------------------------------------
+  //                                  OLED PROTECTION
 
   // oled protection: clear ui once if ui updates disabled
   else if ((ui_cleared == false) && (update_ui == false)) {
@@ -6969,13 +6996,13 @@ void setup() {
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
   menu_page=0;
-  // menuHome.down();
-  // NanoCanvas<64,16,1> canvas;
-  // display.setColor(RGB_COLOR16(0,255,0));
-  // display.clear();
-  // canvas.clear();
-  // canvas.setFixedFont(ssd1306xled_font6x8);
-  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD ); // uncomment to debug (commented to prevent image-retention/burn-in/etc.. on OLED)
+  canvas6x8.setFixedFont(ssd1306xled_font6x8);
+  canvas8x8.setFixedFont(ssd1306xled_font6x8);
+  canvas19x8.setFixedFont(ssd1306xled_font6x8);
+  canvas120x8.setFixedFont(ssd1306xled_font6x8);
+  display.clear();
+  // uncomment to debug
+  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
   // display.end();
   // endSPIDevice(SSD1351_CS);
