@@ -6085,9 +6085,7 @@ void drawMainBorderRed() {
   display.drawRect(1, 1, 126, 126);
 }
 
-// void UpdateUI(void *pvParameters) {
 void UpdateUI() {
-  // while (1) {
 
   // oled protection: enable/disable ui updates
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
@@ -6370,8 +6368,6 @@ void UpdateUI() {
     display.clear();
     ui_cleared=true;
   }
-//   delay(1);
-// }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
