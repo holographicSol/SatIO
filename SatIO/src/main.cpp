@@ -242,7 +242,7 @@ const char *menuMainItems[7] =
     "   SYSTEM         ",
     "   UNIVERSE       ", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
-LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 125}} );
+LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 124}} );
 
 const char *menuMatrixSwitchSelectItems[20] =
 {
