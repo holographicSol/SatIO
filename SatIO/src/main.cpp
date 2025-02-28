@@ -6074,7 +6074,7 @@ void UpdateUI() {
   else {update_ui=true;}
 
   update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=3; // uncomment to debug
+  // menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
@@ -6161,7 +6161,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.drawCanvas(6, 30, canvas0);
+        display.drawCanvas(6, 32, canvas0);
         
         // function x
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6169,7 +6169,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][0]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 43, canvas0);
+        display.drawCanvas(6, 45, canvas0);
 
         // function y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6177,7 +6177,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][1]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 56, canvas0);
+        display.drawCanvas(6, 58, canvas0);
 
         // function z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6185,7 +6185,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][2]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 69, canvas0);
+        display.drawCanvas(6, 71, canvas0);
 
         // real x: display each functions associated value in 'real time' at the switch logic level (this level)
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6193,7 +6193,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 92, canvas0);
+        display.drawCanvas(6, 94, canvas0);
 
         // real y: display each functions associated value in 'real time' at the switch logic level (this level)
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6201,7 +6201,7 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
         canvas0.clear();
         canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 105, canvas0);
+        display.drawCanvas(6, 107, canvas0);
       }
       else {
         canvas0.clear();
