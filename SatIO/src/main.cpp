@@ -100,7 +100,8 @@
 
         ToDo: esp32 has a NIC, host an RSS feed that can be enabled/disabled.
 
-        ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio). 
+        ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio).
+              (redirects joysticks/trigger input to output, variably).
   */
 
 // ------------------------------------------------------------------------------------------------------------------------------
