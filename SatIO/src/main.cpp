@@ -267,8 +267,8 @@ const char *menuMatrixSwitchSelectItems[20] =
     "M17",
     "M18",
     "M19",
-}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 36px x 24px
-LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {36, 26}} );
+}; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
+LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {35, 25}} );
 
 
 const char *menuMatrixFunctionSelectItems[13] =
@@ -287,7 +287,7 @@ const char *menuMatrixFunctionSelectItems[13] =
     "F9 ",
     "F10",
 }; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 36px x 24px
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{91, 2}, {125, 26}} );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{92, 2}, {125, 25}} );
 
 
 const char *menuMatrixConfigureFunctionItems[4] =
@@ -5627,7 +5627,6 @@ void MatrixStatsCounter() {
 bool make_i2c_request = false;
 int unixtime_control_panel_request;
 int previous_menu_page;
-int matrix_function_selected;
 char input_data[128];
 char allow_input_data = false;
 int enter_digits_key = NULL;
@@ -6074,14 +6073,14 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
     // Serial.println("[oled protection] allowing ui update");
     ui_cleared = false;
 
-    // menu_page=3; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
 
     // home page items
