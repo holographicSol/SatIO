@@ -6268,9 +6268,9 @@ void UpdateUI() {
       // highlight matrix switch enable/disable
       if (menu_column_selection == 2) {
         canvas8x8.clear();
+        display.setColor(RGB_COLOR16(0,255,0));
         display.invertColors();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(0,255,0));
           canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
