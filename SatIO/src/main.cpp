@@ -94,6 +94,8 @@
         ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
         including indicators and such can be configurable/customizably placed.
 
+        ToDo: Add zero-in functionality to matrix functions.
+
   */
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5822,6 +5824,10 @@ String getRelatedY(char * data) {
   return String("");
 }
 
+String getRelatedZ(char * data) {
+  return String("");
+}
+
 String getRelatedX(char * data) {
   // if (strcmp("$NONE", data)==0) {return String();}
   // if (strcmp("$ENABLED", data)==0) {return String();}
@@ -6075,8 +6081,8 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=3; // uncomment to debug
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
@@ -6177,7 +6183,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 102, canvas120x8);
+      display.drawCanvas(6, 92, canvas120x8);
 
       // real y: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6185,9 +6191,15 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 102, canvas120x8);
+
+      // real z: display each functions associated value in 'real time' at the switch logic level (this level)
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "Z ");
+      strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(6, 112, canvas120x8);
-
-
 
       // show the menu
       display.setColor(RGB_COLOR16(255,255,255));
