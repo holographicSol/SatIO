@@ -235,13 +235,13 @@ LcdGfxMenu menuHome( menuHomeItems, 1, {{2, 2}, {47, 25}} );
 
 const char *menuMainItems[7] =
 {
-    "   MATRIX         ", // allows matrix configuration
-    "   FILE           ", // load/save/delete system and matrix configurations
-    "   GPS            ", // enable/disable parsing of sentences from the gps module
-    "   SERIAL         ", // enable/disable output of various comma delimited sentences
-    "   SENSORS        ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
-    "   SYSTEM         ",
-    "   UNIVERSE       ", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "   MATRIX        ", // allows matrix configuration
+    "   FILE          ", // load/save/delete system and matrix configurations
+    "   GPS           ", // enable/disable parsing of sentences from the gps module
+    "   SERIAL        ", // enable/disable output of various comma delimited sentences
+    "   SENSORS       ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
+    "   SYSTEM        ",
+    "   UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
 };
 LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 124}} );
 
