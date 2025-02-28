@@ -6286,13 +6286,13 @@ void UpdateUI() {
       // highlight matrix switch enable/disable
       if (menu_column_selection == 2) {
         canvas8x8.clear();
-        display.setColor(RGB_COLOR16(0,255,0));
+        // display.setColor(RGB_COLOR16(0,255,0));
         display.invertColors();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
           canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(255,0,0));
+          // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
         }
         display.drawCanvas(70, 10, canvas8x8);
@@ -6304,11 +6304,11 @@ void UpdateUI() {
         // draw currently selected menu item when menu not highlighted
         canvas8x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(0,255,0));
+          // display.setColor(RGB_COLOR16(0,255,0));
           canvas8x8.printFixed(1, 1, "E", STYLE_BOLD );
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(255,0,0));
+          // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
         }
         display.drawCanvas(70, 10, canvas8x8);
