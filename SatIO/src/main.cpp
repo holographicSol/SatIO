@@ -212,8 +212,8 @@ int SSD1351_CS   = 26; // (CS)
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
 NanoCanvas<120,16,1> canvas0;
-NanoCanvas<30,16,1> canvas30x16; // 
-NanoCanvas<10,16,1> canvas10x16; // 
+NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
+NanoCanvas<8,8,1> canvas8x8; // 1 chars wide + 2
 NanoCanvas<36,24,1> canvas36x24; // 
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
@@ -271,11 +271,8 @@ const char *menuMatrixSwitchSelectItems[20] =
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {35, 25}} );
 
 
-const char *menuMatrixFunctionSelectItems[13] =
+const char *menuMatrixFunctionSelectItems[10] =
 {
-    "D  ", // disbale
-    "E  ", // enable
-    "P  ", // port
     "F1 ",
     "F2 ",
     "F3 ",
@@ -287,7 +284,7 @@ const char *menuMatrixFunctionSelectItems[13] =
     "F9 ",
     "F10",
 }; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 13, {{92, 2}, {125, 25}} );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 10, {{92, 2}, {125, 25}} );
 
 
 const char *menuMatrixConfigureFunctionItems[4] =
@@ -5665,7 +5662,9 @@ void menuUp() {
   else if (menu_page==2) {menuMatrixSwitchSelect.up();}
   else if (menu_page==3) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.up();}
-    if (menu_column_selection==1) {menuMatrixFunctionSelect.up();}
+    if (menu_column_selection==1) {}
+    if (menu_column_selection==2) {}
+    if (menu_column_selection==3) {menuMatrixFunctionSelect.up();}
   }
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.up();}
@@ -5681,7 +5680,9 @@ void menuDown() {
   else if (menu_page==2) {menuMatrixSwitchSelect.down();}
   else if (menu_page==3) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.down();}
-    if (menu_column_selection==1) {menuMatrixFunctionSelect.down();}
+    if (menu_column_selection==1) {}
+    if (menu_column_selection==2) {}
+    if (menu_column_selection==3) {menuMatrixFunctionSelect.down();}
   }
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.down();}
@@ -5695,10 +5696,11 @@ void menuRight() {
   if (menu_page==0) {}
   else if (menu_page==1) {}
   else if (menu_page==2) {}
-  else if (menu_page==3) {if (menu_column_selection>=1) {menu_column_selection=0;}}
+  else if (menu_page==3) {menu_column_selection++; if (menu_column_selection>3) {menu_column_selection=0;}}
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
+  Serial.println("[menu_column_selection] " + String(menu_column_selection));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5708,10 +5710,11 @@ void menuLeft() {
   if (menu_page==0) {}
   else if (menu_page==1) {}
   else if (menu_page==2) {}
-  else if (menu_page==3) {if (menu_column_selection<=0) {menu_column_selection=1;}}
+  else if (menu_page==3) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=3;}}
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
+  Serial.println("[menu_column_selection] " + String(menu_column_selection));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5738,31 +5741,30 @@ void menuEnter() {
   // matrix switch configuration
   else if (menu_page==3) {
 
+    // go to set port page
     if (menu_column_selection==1) {
-      // disable matrix switch: also turns switch off
-      if (menuMatrixFunctionSelect.selection()==0) {
-        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=false;
-        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
-      }
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      enter_digits_key = 1;
+      menu_page=4;
+    }
 
+    else if (menu_column_selection==2) {
       // enable matrix switch: also turns switch off
-      else if (menuMatrixFunctionSelect.selection()==1) {
+      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
         matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=true;
         matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
       }
-
-      // go to set port page
-      else if (menuMatrixFunctionSelect.selection()==2) {
-        memset(input_data, 0, sizeof(input_data));
-        allow_input_data=true;
-        enter_digits_key = 1;
-        menu_page=4;
+      // disable matrix switch: also turns switch off
+      else {
+        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=false;
+        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
       }
+    }
 
+    else if (menu_column_selection==3) {
       // go to function name selection
-      else if (menuMatrixFunctionSelect.selection()>=3) {
-        menu_page=5;
-      }
+      menu_page=5;
     }
   }
 
@@ -5770,9 +5772,9 @@ void menuEnter() {
   else if (menu_page==4) {
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][0]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][1]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][2]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=3;}
     enter_digits_key = NULL;
   }
 
@@ -5805,8 +5807,8 @@ void menuEnter() {
 
   // matrix switch set function name
   else if (menu_page==6) {
-    memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]));
-    strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
+    memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
+    strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
     menu_page=3;
   }
 }
@@ -6073,8 +6075,8 @@ void UpdateUI() {
   if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
   else {update_ui=true;}
 
-  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=3; // uncomment to debug
+  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  // menu_page=3; // uncomment to debug
 
   // update ui
   if (update_ui==true) {
@@ -6109,8 +6111,8 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas0.setFixedFont(ssd1306xled_font6x8);
-      canvas10x16.setFixedFont(ssd1306xled_font6x8);
-      canvas30x16.setFixedFont(ssd1306xled_font6x8);
+      canvas8x8.setFixedFont(ssd1306xled_font6x8);
+      canvas19x8.setFixedFont(ssd1306xled_font6x8);
 
       // default border
       display.setColor(RGB_COLOR16(255,255,255));
@@ -6119,99 +6121,69 @@ void UpdateUI() {
       // combination border
       display.drawHLine(2, 26, 126);
 
-      // port number
-      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "P");
-      strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
-      canvas30x16.clear();
-      canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(38, 10, canvas30x16);
-
-      // enabled/disabled
-      canvas10x16.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
-      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-        // display.setColor(RGB_COLOR16(0,255,0));
-        canvas10x16.printFixed(1, 1, "E", STYLE_BOLD );
-      }
-      else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-        canvas10x16.printFixed(1, 1, "D", STYLE_BOLD );
-      }
-      display.drawCanvas(65, 10, canvas10x16);
-
       // state on/off
-      canvas10x16.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
+      canvas8x8.clear();
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-        // display.setColor(RGB_COLOR16(0,255,0));
-        canvas10x16.printFixed(1, 1, "1", STYLE_BOLD );
+        display.setColor(RGB_COLOR16(0,255,0));
+        // display.fillRect(86, 10, 88, 17);
       }
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
-        canvas10x16.printFixed(1, 1, "0", STYLE_BOLD );
+        display.setColor(RGB_COLOR16(255,0,0));
+        // display.fillRect(86, 10, 86, 17);
       }
-      display.drawCanvas(79, 10, canvas10x16);
+      display.setColor(RGB_COLOR16(255,255,255));
+      display.drawRect(86, 6, 91, 21);
 
       // display function specific data
       display.setColor(RGB_COLOR16(255,255,255));
-      if (menuMatrixFunctionSelect.selection()>=3) {
 
-        // function name
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.drawCanvas(6, 32, canvas0);
-        
-        // function x
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "X ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][0]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 45, canvas0);
+      // function name
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+      display.drawCanvas(6, 32, canvas0);
+      
+      // function x
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "X ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 45, canvas0);
 
-        // function y
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "Y ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][1]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 58, canvas0);
+      // function y
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "Y ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 58, canvas0);
 
-        // function z
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "Z ");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][2]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 71, canvas0);
+      // function z
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "Z ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 71, canvas0);
 
-        // real x: display each functions associated value in 'real time' at the switch logic level (this level)
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "RX ");
-        strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 94, canvas0);
+      // real x: display each functions associated value in 'real time' at the switch logic level (this level)
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "RX ");
+      strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 94, canvas0);
 
-        // real y: display each functions associated value in 'real time' at the switch logic level (this level)
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "RY ");
-        strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]).c_str());
-        canvas0.clear();
-        canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 107, canvas0);
-      }
-      else {
-        canvas0.clear();
-        display.drawCanvas(6, 32, canvas0);
-        display.drawCanvas(6, 45, canvas0);
-        display.drawCanvas(6, 58, canvas0);
-        display.drawCanvas(6, 71, canvas0);
-        display.drawCanvas(6, 94, canvas0);
-        display.drawCanvas(6, 107, canvas0);
-      }
+      // real y: display each functions associated value in 'real time' at the switch logic level (this level)
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "RY ");
+      strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas0.clear();
+      canvas0.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 107, canvas0);
 
       // show the menu
       display.setColor(RGB_COLOR16(255,255,255));
@@ -6235,22 +6207,77 @@ void UpdateUI() {
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]).c_str());
-        canvas30x16.clear();
-        canvas30x16.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(10, 9, canvas30x16);
-        display.drawRect(6, 6, 32, 21);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(10, 9, canvas19x8);
+        display.drawRect(6, 6, 31, 21);
+      }
+
+      // highlight matrix switch port select
+      if (menu_column_selection == 1) {
+        // port number
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "P");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+        canvas19x8.clear();
+        display.invertColors();
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
+        display.drawCanvas(39, 10, canvas19x8);
+        display.invertColors();
+        display.setColor(RGB_COLOR16(255,255,255));
+        display.drawRect(35, 6, 62, 21);
+      }
+      else {
+        // draw currently selected menu item when menu not highlighted
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "P");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(39, 10, canvas19x8);
+        display.setColor(RGB_COLOR16(255,255,255));
+        display.drawRect(35, 6, 62, 21);
+      }
+
+      // highlight matrix switch enable/disable
+      if (menu_column_selection == 2) {
+        canvas8x8.clear();
+        display.invertColors();
+        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
+        }
+        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
+        }
+        display.drawCanvas(70, 10, canvas8x8);
+        display.invertColors();
+        display.setColor(RGB_COLOR16(255,255,255));
+        display.drawRect(66, 6, 82, 21);
+      }
+      else {
+        // draw currently selected menu item when menu not highlighted
+        canvas8x8.clear();
+        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD );
+        }
+        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
+        }
+        display.drawCanvas(70, 10, canvas8x8);
+        display.setColor(RGB_COLOR16(255,255,255));
+        display.drawRect(66, 6, 82, 21);
       }
 
       // highlight matrix switch function select menu
-      if (menu_column_selection == 1) {menuMatrixFunctionSelect.show( display );}
+      if (menu_column_selection == 3) {menuMatrixFunctionSelect.show( display );}
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]).c_str());
-        canvas30x16.clear();
-        canvas30x16.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(91+4, 9, canvas30x16);
+        canvas19x8.clear();
+        canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.drawCanvas(91+4, 9, canvas19x8);
         display.drawRect(91+4, 6, 91+30, 21);
       }
       
@@ -6293,7 +6320,7 @@ void UpdateUI() {
       // function number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "FUNCTION: ");
-      strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()-3).c_str());
+      strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas0.clear();
       canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 22, canvas0);
