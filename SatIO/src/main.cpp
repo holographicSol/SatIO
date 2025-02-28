@@ -5929,22 +5929,22 @@ String getRelatedX(char * data) {
   if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch, 2);}
   if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch, 2);}
   if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch, 2);}
-  // if (strcmp("GNGGAValidCS", data)==0) {return String();}
-  // if (strcmp("GNRMCValidCS", data)==0) {return String();}
-  // if (strcmp("GPATTValidCS", data)==0) {return String();}
-  // if (strcmp("GNGGAInvalidCS", data)==0) {return String();}
-  // if (strcmp("GNRMCInvalidCS", data)==0) {return String();}
-  // if (strcmp("GPATTInvalidCS", data)==0) {return String();}
-  // if (strcmp("GNGGAValidCD", data)==0) {return String();}
-  // if (strcmp("GNRMCValidCD", data)==0) {return String();}
-  // if (strcmp("GPATTValidCD", data)==0) {return String();}
-  // if (strcmp("GNGGAInvalidCD", data)==0) {return String();}
-  // if (strcmp("GNRMCInvalidCD", data)==0) {return String();}
-  // if (strcmp("GPATTInvalidCD", data)==0) {return String();}
+  if (strcmp("GNGGAValidCS", data)==0) {return String(gnggaData.valid_checksum);}
+  if (strcmp("GNRMCValidCS", data)==0) {return String(gnrmcData.valid_checksum);}
+  if (strcmp("GPATTValidCS", data)==0) {return String(gpattData.valid_checksum);}
+  if (strcmp("GNGGAInvalidCS", data)==0) {return String(gnggaData.valid_checksum);}
+  if (strcmp("GNRMCInvalidCS", data)==0) {return String(gnrmcData.valid_checksum);}
+  if (strcmp("GPATTInvalidCS", data)==0) {return String(gpattData.valid_checksum);}
+  if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.check_data);}
+  if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.check_data);}
+  if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
+  if (strcmp("GNGGAInvalidCD", data)==0) {return String(gnggaData.check_data);}
+  if (strcmp("GNRMCInvalidCD", data)==0) {return String(gnrmcData.check_data);}
+  if (strcmp("GPATTInvalidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  // if (strcmp("DayTime", data)==0) {return String();}
-  // if (strcmp("NightTime", data)==0) {return String();}
+  if (strcmp("DayTime", data)==0) {return String();}
+  if (strcmp("NightTime", data)==0) {return String();}
   if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
   if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
   if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
