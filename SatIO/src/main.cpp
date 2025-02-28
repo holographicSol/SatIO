@@ -273,6 +273,7 @@ LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {35
 
 const char *menuMatrixFunctionSelectItems[10] =
 {
+    "F0 ",
     "F1 ",
     "F2 ",
     "F3 ",
@@ -282,7 +283,6 @@ const char *menuMatrixFunctionSelectItems[10] =
     "F7 ",
     "F8 ",
     "F9 ",
-    "F10",
 }; // (not x,y,w,h) instead its: posx1, posy1, to posx2, posy2: 33px x 23px
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 10, {{92, 2}, {125, 25}} );
 
