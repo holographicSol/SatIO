@@ -5732,7 +5732,7 @@ void menuEnter() {
   else if (menu_page==1) {
 
     // go to matrix menu
-    if (menuMain.selection()==2) {
+    if (menuMain.selection()==0) {
       menu_page=3;
     }
   }
