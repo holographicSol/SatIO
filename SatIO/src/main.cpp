@@ -5627,7 +5627,6 @@ void MatrixStatsCounter() {
 bool make_i2c_request = false;
 int unixtime_control_panel_request;
 int previous_menu_page;
-int matrix_switch_selected;
 int matrix_function_selected;
 char input_data[128];
 char allow_input_data = false;
@@ -5740,40 +5739,41 @@ void menuEnter() {
   // matrix switch configuration
   else if (menu_page==3) {
 
-    // disable matrix switch: also turns switch off
-    if (menuMatrixFunctionSelect.selection()==0) {
-      matrixData.matrix_switch_enabled[0][matrix_switch_selected]=false;
-      matrixData.matrix_switch_state[0][matrix_switch_selected]=false;
-    }
+    if (menu_column_selection==1) {
+      // disable matrix switch: also turns switch off
+      if (menuMatrixFunctionSelect.selection()==0) {
+        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=false;
+        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
+      }
 
-    // enable matrix switch: also turns switch off
-    else if (menuMatrixFunctionSelect.selection()==1) {
-      matrixData.matrix_switch_enabled[0][matrix_switch_selected]=true;
-      matrixData.matrix_switch_state[0][matrix_switch_selected]=false;
-    }
+      // enable matrix switch: also turns switch off
+      else if (menuMatrixFunctionSelect.selection()==1) {
+        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=true;
+        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
+      }
 
-    // go to set port page
-    else if (menuMatrixFunctionSelect.selection()==2) {
-      memset(input_data, 0, sizeof(input_data));
-      allow_input_data=true;
-      enter_digits_key = 1;
-      menu_page=4;
-    }
+      // go to set port page
+      else if (menuMatrixFunctionSelect.selection()==2) {
+        memset(input_data, 0, sizeof(input_data));
+        allow_input_data=true;
+        enter_digits_key = 1;
+        menu_page=4;
+      }
 
-    // go to function name selection
-    else if (menuMatrixFunctionSelect.selection()>=3) {
-      matrix_function_selected=menuMatrixFunctionSelect.selection()-3;
-      menu_page=5;
+      // go to function name selection
+      else if (menuMatrixFunctionSelect.selection()>=3) {
+        menu_page=5;
+      }
     }
   }
 
   // set digits
   else if (menu_page==4) {
     allow_input_data=false;
-    if (enter_digits_key==1) {matrixData.matrix_port_map[0][matrix_switch_selected]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][0]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][1]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[matrix_switch_selected][matrix_function_selected][2]=atoi(input_data); menu_page=3;}
+    if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][0]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][1]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3][2]=atoi(input_data); menu_page=3;}
     enter_digits_key = NULL;
   }
 
@@ -5806,8 +5806,8 @@ void menuEnter() {
 
   // matrix switch set function name
   else if (menu_page==6) {
-    memset(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected], 0, sizeof(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected]));
-    strcpy(matrixData.matrix_function[matrix_switch_selected][matrix_function_selected], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
+    memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3]));
+    strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()-3], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
     menu_page=3;
   }
 }
@@ -6082,8 +6082,6 @@ void UpdateUI() {
     ui_cleared = false;
 
     // menu_page=3; // uncomment to debug
-    // matrix_switch_selected=4; // uncomment to debug
-    // matrix_function_selected=0; // uncomment to debug
     Serial.println("[menu page] " + String(menu_page));
 
     // home page items
@@ -6283,7 +6281,7 @@ void UpdateUI() {
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
-      strcat(TMP_UI_DATA_0, String(matrix_switch_selected+1).c_str());
+      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
       canvas0.clear();
       canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 6, canvas0);
@@ -6291,7 +6289,7 @@ void UpdateUI() {
       // function number
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "FUNCTION: ");
-      strcat(TMP_UI_DATA_0, String(matrix_function_selected+1).c_str());
+      strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()-3).c_str());
       canvas0.clear();
       canvas0.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 22, canvas0);
