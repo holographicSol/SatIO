@@ -6949,17 +6949,17 @@ void UpdateUI() {
       if (systemData.sidereal_track_mars==true) {menuUniverseItems[4]="MARS ENABLED";}
       else {menuUniverseItems[4]="MARS DISABLED";}
 
-      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[1]="JUPITER ENABLED";}
-      else {menuUniverseItems[1]="JUPITER DISABLED";}
+      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[5]="JUPITER ENABLED";}
+      else {menuUniverseItems[5]="JUPITER DISABLED";}
 
-      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[2]="SATURN ENABLED";}
-      else {menuUniverseItems[2]="SATURN DISABLED";}
+      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[6]="SATURN ENABLED";}
+      else {menuUniverseItems[6]="SATURN DISABLED";}
 
-      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[3]="URANUS ENABLED";}
-      else {menuUniverseItems[3]="URANUS DISABLED";}
+      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[7]="URANUS ENABLED";}
+      else {menuUniverseItems[7]="URANUS DISABLED";}
 
-      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[4]="NEPTUNE ENABLED";}
-      else {menuUniverseItems[4]="NEPTUNE DISABLED";}
+      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[8]="NEPTUNE ENABLED";}
+      else {menuUniverseItems[8]="NEPTUNE DISABLED";}
 
       // show menu
       menuUniverse.show( display );
