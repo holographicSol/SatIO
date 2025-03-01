@@ -355,8 +355,8 @@ LcdGfxMenu menuGPS( menuGPSItems, 4, {{0, 14}, {128, 128}} );
 const char *menuSerialItems[5];
 LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
 
-const char *menuUniverseItems[10];
-LcdGfxMenu menuUniverse( menuUniverseItems, 10, {{0, 14}, {128, 128}} );
+const char *menuUniverseItems[9];
+LcdGfxMenu menuUniverse( menuUniverseItems, 9, {{0, 14}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -6123,10 +6123,10 @@ void menuEnter() {
     if (menuUniverse.selection()==2) {systemData.sidereal_track_venus^=true;}
     if (menuUniverse.selection()==3) {systemData.sidereal_track_mars^=true;}
     if (menuUniverse.selection()==4) {systemData.sidereal_track_jupiter^=true;}
-    if (menuUniverse.selection()==1) {systemData.sidereal_track_saturn^=true;}
-    if (menuUniverse.selection()==2) {systemData.sidereal_track_saturn^=true;}
-    if (menuUniverse.selection()==3) {systemData.sidereal_track_uranus^=true;}
-    if (menuUniverse.selection()==4) {systemData.sidereal_track_neptune^=true;}
+    if (menuUniverse.selection()==5) {systemData.sidereal_track_saturn^=true;}
+    if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
+    if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
+    if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
   }
 }
 
