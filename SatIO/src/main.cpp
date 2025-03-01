@@ -136,6 +136,12 @@
 #include "lcdgfx.h"
 #include "lcdgfx_gui.h"
 
+void beginSDCARD();
+void endSDCARD();
+void beginSSD1351();
+void endSSD1351();
+void sdcardCheck();
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
 
@@ -213,6 +219,17 @@ void endSPIDevice(int SS) {
   SPI.end();
   digitalWrite(SS, HIGH); // set control pin high to end transmission
 }
+
+// void spiswap() {
+//     // VSPI: SDCARD
+//     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+//     setupSDCard();
+//     SD.end();
+//     endSPIDevice(SD_CS);
+  
+//     // HSPI: SSD1351 OLED DISPLAY
+//     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+// }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        DISPLAY
@@ -309,6 +326,20 @@ const char *menuMatrixConfigureFunctionItems[4] =
 };
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 34}, {124, 84}} );
 
+const char *menuFileItems[6] =
+{
+    "NEW MATRIX        ",
+    "SAVE MATRIX       ",
+    "LOAD MATRIX       ",
+    "DELETE MATRIX     ",
+    "SAVE SYSTEM CONFIG",
+    "RESTORE DEFAULTS  ",
+};
+LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 104}} );
+
+const char *menuMatrixFilepathItems[20];
+LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{0, 14}, {128, 128}} );
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
 
@@ -352,6 +383,29 @@ SPIClass sdspi = SPIClass(VSPI);
 #if !defined(CONFIG_IDF_TARGET_ESP32)
 #define VSPI FSPI
 #endif
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  SPI SWITCHING
+
+void beginSDCARD() {
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sdcardCheck();
+ }
+
+ void endSDCARD() {
+  SD.end();
+  endSPIDevice(SD_CS);
+ }
+
+ void beginSSD1351() {
+  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+  display.begin();
+ }
+
+ void endSSD1351() {
+  display.end();
+  endSPIDevice(SSD1351_CS);
+ }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            ETX
@@ -457,7 +511,7 @@ struct SDCardStruct {
     "", "", "", "", "",
     };                                                         // matrix filenames created, stored and found by system
   char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";                  // filepath
-  char default_matrix_filepath[56] = "/MATRIX/MATRIX_0.SAVE";  // filepath
+  char default_matrix_filepath[56] = "/MATRIX/M_0.SAVE";  // filepath
   char matrix_filepath[56] = "";                               // current matrix filepath
   char tempmatrixfilepath[56];                                 // used for laoding filepaths
   char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};            // root dirs
@@ -479,6 +533,7 @@ struct SDCardStruct {
   char tag_0[56] = "r";                                         // file line tag
   char tag_1[56] = "e";                                         // file line tag
   File current_file;                                           // file currently handled
+  char newfilename[56];
 };
 SDCardStruct sdcardData;
 
@@ -3497,6 +3552,7 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
       memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
       Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
       }
+    else {strcpy(sdcardData.matrix_filenames[i], "EMPTY");}
   }
 }
 
@@ -3726,7 +3782,7 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
 
 void sdcard_delete_matrix(fs::FS &fs, char * file) {
   sdcardData.is_writing = true;
-  // at least for now, do not allow deletion of MATRIX_0.SAVE.
+  // at least for now, do not allow deletion of M_0.SAVE.
   if (fs.exists(file)) {
     Serial.println("[sdcard] attempting to delete file: " + String(file));
     // try remove
@@ -3735,7 +3791,7 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
       Serial.println("[sdcard] successfully deleted file: " + String(file));
       Serial.println("attempting to remove filename from filenames.");
       // recreate matrix filenames
-      sdcard_list_matrix_files(SD, "/MATRIX/", "MATRIX", ".SAVE");
+      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
       // zero the matrix
       zero_matrix();
       // delete matrix filepath.
@@ -5632,6 +5688,25 @@ void MatrixStatsCounter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        MATRIX SWITCH FUNCTIONS
+
+void setAllMatrixSwitchesEnabledFalse() {
+  for (int i=0; i<matrixData.max_matrices; i++) {matrixData.matrix_switch_enabled[0][i]=false;}
+}
+
+void setAllMatrixSwitchesStateFalse() {
+  for (int i=0; i<matrixData.max_matrices; i++) {matrixData.matrix_switch_state[0][i]=false;}
+}
+
+void setAllMatrixSwitchesEnabledTrue() {
+  for (int i=0; i<matrixData.max_matrices; i++) {matrixData.matrix_switch_enabled[0][i]=true;}
+}
+
+void setAllMatrixSwitchesStateTrue() {
+  for (int i=0; i<matrixData.max_matrices; i++) {matrixData.matrix_switch_state[0][i]=true;}
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     INPUT DATA
 
 bool make_i2c_request = false;
@@ -5682,6 +5757,10 @@ void menuUp() {
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.up();}
   else if (menu_page==6) {menuMatrixSetFunctionName.up();}
+  else if (menu_page==20) {menuFile.up();}
+  else if (menu_page==21) {menuMatrixFilepath.up();}
+  else if (menu_page==22) {menuMatrixFilepath.up();}
+  else if (menu_page==23) {menuMatrixFilepath.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5700,6 +5779,10 @@ void menuDown() {
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.down();}
   else if (menu_page==6) {menuMatrixSetFunctionName.down();}
+  else if (menu_page==20) {menuFile.down();}
+  else if (menu_page==21) {menuMatrixFilepath.down();}
+  else if (menu_page==22) {menuMatrixFilepath.down();}
+  else if (menu_page==23) {menuMatrixFilepath.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5748,6 +5831,11 @@ void menuEnter() {
     // go to matrix menu
     if (menuMain.selection()==0) {
       menu_page=3;
+    }
+
+    // go to file menu
+    if (menuMain.selection()==1) {
+      menu_page=20;
     }
   }
 
@@ -5823,6 +5911,144 @@ void menuEnter() {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
     strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
     menu_page=3;
+  }
+
+  // file menu
+  else if (menu_page==20) {
+
+    // new matrix
+    if (menuFile.selection()==0) {
+      // disable and turn off all matrix switches
+      setAllMatrixSwitchesEnabledFalse();
+      setAllMatrixSwitchesStateFalse();
+      // zero the matrix and clear current matrix file path
+      zero_matrix();
+      memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    }
+
+    // goto save matrix page
+    else if (menuFile.selection()==1) {
+
+      // create list of matrix filespaths and go to save page
+      endSSD1351();
+      beginSDCARD();
+      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      endSDCARD();
+      beginSSD1351();
+      menu_page=21;
+    }
+
+    // goto load matrix page
+    else if (menuFile.selection()==2) {
+
+      // create list of matrix filespaths and go to load page
+      endSSD1351();
+      beginSDCARD();
+      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      endSDCARD();
+      beginSSD1351();
+      menu_page=22;
+    }
+
+    // goto delete matrix page
+    else if (menuFile.selection()==3) {
+
+      // create list of matrix filespaths and go to delete page
+      endSSD1351();
+      beginSDCARD();
+      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      endSDCARD();
+      beginSSD1351();
+      menu_page=23;
+    }
+
+    // save system settings
+    else if (menuFile.selection()==4) {
+      sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
+    }
+
+    // restore default system settings
+    else if (menuFile.selection()==5) {}
+  }
+
+  // save matrix menu
+  else if (menu_page==21) {
+    // generate filename according to selection index
+    memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
+    strcpy(sdcardData.newfilename, "/MATRIX/M_");
+    memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
+    itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
+    strcat(sdcardData.newfilename, sdcardData.tmp);
+    strcat(sdcardData.newfilename, ".SAVE");
+    Serial.println("[saving] " + String(sdcardData.newfilename));
+    // disable and turn off all matrix switches
+    setAllMatrixSwitchesEnabledFalse();
+    setAllMatrixSwitchesStateFalse();
+    // switch spi devices
+    endSSD1351();
+    beginSDCARD();
+    sdcard_save_matrix(SD, sdcardData.newfilename);
+    // switch spi devices
+    endSDCARD();
+    beginSSD1351();
+    // delay(2000);
+    menu_page=20;
+  }
+
+  // load matrix menu
+  else if (menu_page==22) {
+    // handle empty slots
+    if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+      // generate filename according to selection index
+      memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
+      strcpy(sdcardData.newfilename, "/MATRIX/M_");
+      memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
+      itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
+      strcat(sdcardData.newfilename, sdcardData.tmp);
+      strcat(sdcardData.newfilename, ".SAVE");
+      Serial.println("[loading] " + String(sdcardData.newfilename));
+      // disable and turn off all matrix switches
+      setAllMatrixSwitchesEnabledFalse();
+      setAllMatrixSwitchesStateFalse();
+      // switch spi devices
+      endSSD1351();
+      beginSDCARD();
+      sdcard_load_matrix(SD, sdcardData.newfilename);
+      // switch spi devices
+      endSDCARD();
+      beginSSD1351();
+    }
+    else {Serial.println("[loading] aborting! cannot load empty slot.");}
+    // delay(2000);
+    menu_page=20;
+  }
+
+  // delete matrix menu
+  else if (menu_page==23) {
+    // handle empty slots
+    if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+      // generate filename according to selection index
+      memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
+      strcpy(sdcardData.newfilename, "/MATRIX/M_");
+      memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
+      itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
+      strcat(sdcardData.newfilename, sdcardData.tmp);
+      strcat(sdcardData.newfilename, ".SAVE");
+      Serial.println("[deleting] " + String(sdcardData.newfilename));
+      // disable and turn off all matrix switches
+      setAllMatrixSwitchesEnabledFalse();
+      setAllMatrixSwitchesStateFalse();
+      // switch spi devices
+      endSSD1351();
+      beginSDCARD();
+      sdcard_delete_matrix(SD, sdcardData.newfilename);
+      // switch spi devices
+      endSDCARD();
+      beginSSD1351();
+    }
+    else {Serial.println("[deleting] aborting! cannot delete empty slot.");}
+    // delay(2000);
+    menu_page=20;
   }
 }
 
@@ -6105,6 +6331,30 @@ void drawMainBorderRed() {
   display.drawRect(1, 1, 126, 126);
 }
 
+void setMenuMatrixFilePathItems() {
+    // set menu items
+    menuMatrixFilepathItems[0] = sdcardData.matrix_filenames[0];
+    menuMatrixFilepathItems[1] = sdcardData.matrix_filenames[1];
+    menuMatrixFilepathItems[2] = sdcardData.matrix_filenames[2];
+    menuMatrixFilepathItems[3] = sdcardData.matrix_filenames[3];
+    menuMatrixFilepathItems[4] = sdcardData.matrix_filenames[4];
+    menuMatrixFilepathItems[5] = sdcardData.matrix_filenames[5];
+    menuMatrixFilepathItems[6] = sdcardData.matrix_filenames[6];
+    menuMatrixFilepathItems[7] = sdcardData.matrix_filenames[7];
+    menuMatrixFilepathItems[8] = sdcardData.matrix_filenames[8];
+    menuMatrixFilepathItems[9] = sdcardData.matrix_filenames[9];
+    menuMatrixFilepathItems[10] = sdcardData.matrix_filenames[10];
+    menuMatrixFilepathItems[11] = sdcardData.matrix_filenames[11];
+    menuMatrixFilepathItems[12] = sdcardData.matrix_filenames[12];
+    menuMatrixFilepathItems[13] = sdcardData.matrix_filenames[13];
+    menuMatrixFilepathItems[14] = sdcardData.matrix_filenames[14];
+    menuMatrixFilepathItems[15] = sdcardData.matrix_filenames[15];
+    menuMatrixFilepathItems[16] = sdcardData.matrix_filenames[16];
+    menuMatrixFilepathItems[17] = sdcardData.matrix_filenames[17];
+    menuMatrixFilepathItems[18] = sdcardData.matrix_filenames[18];
+    menuMatrixFilepathItems[19] = sdcardData.matrix_filenames[19];
+}
+
 // ------------------------------------------------
 //                                               UI
 
@@ -6120,7 +6370,7 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=3; // uncomment to debug
 
   // ------------------------------------------------
@@ -6416,6 +6666,78 @@ void UpdateUI() {
 
       menuMatrixSetFunctionName.show( display );
     }
+
+    // ------------------------------------------------
+    //                                        FILE MENU
+
+    if (menu_page==20) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+      canvas120x8.clear();
+      canvas120x8.printFixed(52, 1, "FILE", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+      menuFile.show( display );
+    }
+
+    // ------------------------------------------------
+    //                                 SAVE MATRIX MENU
+
+    // save matrix
+    if (menu_page==21) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+      canvas120x8.clear();
+      canvas120x8.printFixed(52, 1, "SAVE", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+
+      // ammend the menu
+      setMenuMatrixFilePathItems();
+
+      // show menu
+      menuMatrixFilepath.show( display );
+      
+    }
+
+    // ------------------------------------------------
+    //                                 LOAD MATRIX MENU
+
+    // load matrix
+    if (menu_page==22) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+      canvas120x8.clear();
+      canvas120x8.printFixed(52, 1, "LOAD", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+
+      // ammend the menu
+      setMenuMatrixFilePathItems();
+
+      // show menu
+      menuMatrixFilepath.show( display );
+    }
+
+    // ------------------------------------------------
+    //                               DELETE MATRIX MENU
+
+    // delete matrix
+    if (menu_page==23) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+      canvas120x8.clear();
+      canvas120x8.printFixed(52, 1, "DELETE", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+
+      // ammend the menu
+      setMenuMatrixFilePathItems();
+
+      // show menu
+      menuMatrixFilepath.show( display );
+    }
+
+
+    // save system settings
+    // restore default system settings
+
   }
 
   // ------------------------------------------------
@@ -6692,8 +7014,25 @@ void setupSDCard() {
 //                                                                                                                  SDCARD: CHECK
 
 void sdcardCheck() {
+  uint8_t cardType;
+  if (SD.begin(SD_CS, sdspi)) {
+    cardType = SD.cardType();
+    Serial.println("[SDCARD] Initialized.");
+    Serial.print("[SDCARD] Type: ");
+    if (cardType == CARD_MMC) {Serial.println("MMC");}
+    else if (cardType == CARD_SD) {Serial.println("SDSC.");}
+    else if (cardType == CARD_SDHC) {Serial.println("SDHC.");}
+    else {Serial.println("UNKNOWN.");}
+  }
+  else {Serial.println("[SDCARD] Failed to initialize.");}
+  // create/load system files
+  if (!(cardType == CARD_NONE)) {
+    Serial.println("[sdcard] initialized");
+    // return true;
+  }
+  // return false;
 }
-
+ 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
