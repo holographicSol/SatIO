@@ -78,7 +78,7 @@
       Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
       including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read. Serial
       output is modular so that depending on the use case, transmission over serial can be more efficient and specific, this expands the creative
-      potential of using satio like letting an LLM on another system know what satio knows for one example.
+      potential of using satio, like letting an LLM on another system know what satio knows for one example.
 
       Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
       according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
