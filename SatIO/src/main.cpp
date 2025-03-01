@@ -5871,6 +5871,11 @@ void menuEnter() {
     if (menuMain.selection()==3) {
       menu_page=60;
     }
+
+    // go to universe menu
+    if (menuMain.selection()==6) {
+      menu_page=70;
+    }
   }
 
   // matrix switch configuration
