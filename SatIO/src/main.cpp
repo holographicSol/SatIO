@@ -6759,7 +6759,7 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-      display.drawCanvas(6, 6, canvas120x120);
+      display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
 
@@ -6772,7 +6772,7 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
-      display.drawCanvas(6, 6, canvas120x120);
+      display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
 
@@ -6785,7 +6785,7 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
-      display.drawCanvas(6, 6, canvas120x120);
+      display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
 
