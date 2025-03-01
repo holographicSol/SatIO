@@ -355,8 +355,8 @@ LcdGfxMenu menuGPS( menuGPSItems, 4, {{0, 14}, {128, 128}} );
 const char *menuSerialItems[5];
 LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
 
-const char *menuUniverseItems[9];
-LcdGfxMenu menuUniverse( menuUniverseItems, 9, {{0, 14}, {128, 128}} );
+const char *menuUniverseItems[7];
+LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{0, 14}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -6946,20 +6946,20 @@ void UpdateUI() {
       if (systemData.sidereal_track_venus==true) {menuUniverseItems[2]="VENUS ENABLED";}
       else {menuUniverseItems[2]="VENUS DISABLED";}
 
-      if (systemData.sidereal_track_mars==true) {menuUniverseItems[4]="MARS ENABLED";}
-      else {menuUniverseItems[4]="MARS DISABLED";}
+      if (systemData.sidereal_track_mars==true) {menuUniverseItems[3]="MARS ENABLED";}
+      else {menuUniverseItems[3]="MARS DISABLED";}
 
-      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[5]="JUPITER ENABLED";}
-      else {menuUniverseItems[5]="JUPITER DISABLED";}
+      if (systemData.sidereal_track_jupiter==true) {menuUniverseItems[4]="JUPITER ENABLED";}
+      else {menuUniverseItems[4]="JUPITER DISABLED";}
 
-      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[6]="SATURN ENABLED";}
-      else {menuUniverseItems[6]="SATURN DISABLED";}
+      if (systemData.sidereal_track_saturn==true) {menuUniverseItems[5]="SATURN ENABLED";}
+      else {menuUniverseItems[5]="SATURN DISABLED";}
 
-      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[7]="URANUS ENABLED";}
-      else {menuUniverseItems[7]="URANUS DISABLED";}
+      if (systemData.sidereal_track_uranus==true) {menuUniverseItems[6]="URANUS ENABLED";}
+      else {menuUniverseItems[6]="URANUS DISABLED";}
 
-      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[8]="NEPTUNE ENABLED";}
-      else {menuUniverseItems[8]="NEPTUNE DISABLED";}
+      if (systemData.sidereal_track_neptune==true) {menuUniverseItems[7]="NEPTUNE ENABLED";}
+      else {menuUniverseItems[7]="NEPTUNE DISABLED";}
 
       // show menu
       menuUniverse.show( display );
