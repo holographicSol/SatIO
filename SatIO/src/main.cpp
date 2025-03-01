@@ -249,7 +249,7 @@ NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
 NanoCanvas<33,24,1> canvas33x24; // 
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<120,24,1> canvas120x24;
-NanoCanvas<122,122,1> canvas122x122;
+NanoCanvas<120,120,1> canvas120x120;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -6386,8 +6386,8 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
-  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=3; // uncomment to debug
+  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  // menu_page=32; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
@@ -6753,31 +6753,31 @@ void UpdateUI() {
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==30) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      drawMainBorderGreen();
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas122x122.clear();
-      canvas122x122.printFixed(40, 40, "SAVING", STYLE_BOLD );
-      display.drawCanvas(3, 3, canvas122x122);
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+      display.drawCanvas(6, 6, canvas120x120);
+      drawMainBorderGreen();
     }
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==31) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      drawMainBorderGreen();
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas122x122.clear();
-      canvas122x122.printFixed(40, 40, "LOADING", STYLE_BOLD );
-      display.drawCanvas(3, 3, canvas122x122);
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
+      display.drawCanvas(6, 6, canvas120x120);
+      drawMainBorderGreen();
     }
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==32) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      drawMainBorderGreen();
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas122x122.clear();
-      canvas122x122.printFixed(40, 40, "DELETING", STYLE_BOLD );
-      display.drawCanvas(3, 3, canvas122x122);
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
+      display.drawCanvas(6, 6, canvas120x120);
+      drawMainBorderGreen();
     }
 
     // save system settings
@@ -7411,7 +7411,7 @@ void setup() {
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
-  canvas122x122.setFixedFont(ssd1306xled_font6x8);
+  canvas120x120.setFixedFont(ssd1306xled_font6x8);
   display.clear();
   // uncomment to debug
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
