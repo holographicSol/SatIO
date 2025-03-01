@@ -5781,7 +5781,7 @@ void menuUp() {
   else if (menu_page==23) {menuMatrixFilepath.up();}
   else if (menu_page==50) {menuGPS.up();}
   else if (menu_page==60) {menuSerial.up();}
-  else if (menu_page==70) {menuSerial.up();}
+  else if (menu_page==70) {menuUniverse.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5806,7 +5806,7 @@ void menuDown() {
   else if (menu_page==23) {menuMatrixFilepath.down();}
   else if (menu_page==50) {menuGPS.down();}
   else if (menu_page==60) {menuSerial.down();}
-  else if (menu_page==70) {menuSerial.down();}
+  else if (menu_page==70) {menuUniverse.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
