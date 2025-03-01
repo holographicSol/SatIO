@@ -6868,19 +6868,19 @@ void UpdateUI() {
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
-      if (systemData.satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
+      if (systemData.output_satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
       else {menuSerialItems[0]="SATIO DISABLED";}
 
-      if (systemData.gngga_enabled==true) {menuSerialItems[1]="GNGGA ENABLED";}
+      if (systemData.output_gngga_enabled==true) {menuSerialItems[1]="GNGGA ENABLED";}
       else {menuSerialItems[1]="GNGGA DISABLED";}
 
-      if (systemData.gnrmc_enabled==true) {menuSerialItems[2]="GNRMC ENABLED";}
+      if (systemData.output_gnrmc_enabled==true) {menuSerialItems[2]="GNRMC ENABLED";}
       else {menuSerialItems[2]="GNRMC DISABLED";}
 
-      if (systemData.gpatt_enabled==true) {menuSerialItems[3]="GPATT ENABLED";}
+      if (systemData.output_gpatt_enabled==true) {menuSerialItems[3]="GPATT ENABLED";}
       else {menuSerialItems[3]="GPATT DISABLED";}
 
-      if (systemData.gpatt_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
+      if (systemData.output_matrix_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
       else {menuSerialItems[4]="MATRIX DISABLED";}
 
       // show menu
