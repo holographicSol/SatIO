@@ -113,7 +113,7 @@
         
         ToDo: allow for user defined parsing of gps data: allowing for different gps modules to be used even if they have a different data structure and or data content.
   
-        ToDo: Black capped grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
+        ToDo: Black capped (occasionally alien green) grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
 
         */
 
