@@ -85,6 +85,8 @@
 
       UI: The matrix has been programmable via the UI however the UI has only just been reinstated, after focusing on performance and architecture. The
       feature of programming the matrix through switches and UI will be reimplemented. Until then, the matrix can be hardcoded for testing purposes.
+      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical. The UI is not
+      polished yet and is still under construction. Only emphasis to importance, consistancy and clarity will be polished, that is all there intends to be.
 
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
