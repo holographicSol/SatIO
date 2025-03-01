@@ -6750,6 +6750,9 @@ void UpdateUI() {
       menuMatrixFilepath.show( display );
     }
 
+    // ------------------------------------------------
+    //                            SAVE MATRIX INDICATOR
+
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==30) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
@@ -6760,6 +6763,9 @@ void UpdateUI() {
       drawMainBorderGreen();
     }
 
+    // ------------------------------------------------
+    //                            LOAD MATRIX INDICATOR
+
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==31) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
@@ -6769,6 +6775,9 @@ void UpdateUI() {
       display.drawCanvas(6, 6, canvas120x120);
       drawMainBorderGreen();
     }
+
+    // ------------------------------------------------
+    //                          DELETE MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     if (menu_page==32) {
