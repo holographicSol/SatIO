@@ -6124,9 +6124,8 @@ void menuEnter() {
     if (menuUniverse.selection()==3) {systemData.sidereal_track_mars^=true;}
     if (menuUniverse.selection()==4) {systemData.sidereal_track_jupiter^=true;}
     if (menuUniverse.selection()==5) {systemData.sidereal_track_saturn^=true;}
-    if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
-    if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
-    if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
+    if (menuUniverse.selection()==6) {systemData.sidereal_track_uranus^=true;}
+    if (menuUniverse.selection()==7) {systemData.sidereal_track_neptune^=true;}
   }
 }
 
