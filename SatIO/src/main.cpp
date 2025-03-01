@@ -141,6 +141,7 @@ void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
 void sdcardCheck();
+void UpdateUI();
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -248,6 +249,7 @@ NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
 NanoCanvas<33,24,1> canvas33x24; // 
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<120,24,1> canvas120x24;
+NanoCanvas<122,122,1> canvas122x122;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -5981,6 +5983,9 @@ void menuEnter() {
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
     Serial.println("[saving] " + String(sdcardData.newfilename));
+    // set notification page
+    menu_page=30;
+    UpdateUI();
     // disable and turn off all matrix switches
     setAllMatrixSwitchesEnabledFalse();
     setAllMatrixSwitchesStateFalse();
@@ -6007,6 +6012,9 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
       Serial.println("[loading] " + String(sdcardData.newfilename));
+      // set notification page
+      menu_page=31;
+      UpdateUI();
       // disable and turn off all matrix switches
       setAllMatrixSwitchesEnabledFalse();
       setAllMatrixSwitchesStateFalse();
@@ -6035,6 +6043,9 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
       Serial.println("[deleting] " + String(sdcardData.newfilename));
+      // set notification page
+      menu_page=32;
+      UpdateUI();
       // disable and turn off all matrix switches
       setAllMatrixSwitchesEnabledFalse();
       setAllMatrixSwitchesStateFalse();
@@ -6331,6 +6342,11 @@ void drawMainBorderRed() {
   display.drawRect(1, 1, 126, 126);
 }
 
+void drawMainBorderGreen() {
+  display.setColor(RGB_COLOR16(0,255,0));
+  display.drawRect(1, 1, 126, 126);
+}
+
 void setMenuMatrixFilePathItems() {
     // set menu items
     menuMatrixFilepathItems[0] = sdcardData.matrix_filenames[0];
@@ -6370,7 +6386,7 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=3; // uncomment to debug
 
   // ------------------------------------------------
@@ -6734,6 +6750,35 @@ void UpdateUI() {
       menuMatrixFilepath.show( display );
     }
 
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    if (menu_page==30) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      drawMainBorderGreen();
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas122x122.clear();
+      canvas122x122.printFixed(40, 40, "SAVING", STYLE_BOLD );
+      display.drawCanvas(3, 3, canvas122x122);
+    }
+
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    if (menu_page==31) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      drawMainBorderGreen();
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas122x122.clear();
+      canvas122x122.printFixed(40, 40, "LOADING", STYLE_BOLD );
+      display.drawCanvas(3, 3, canvas122x122);
+    }
+
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    if (menu_page==32) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      drawMainBorderGreen();
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas122x122.clear();
+      canvas122x122.printFixed(40, 40, "DELETING", STYLE_BOLD );
+      display.drawCanvas(3, 3, canvas122x122);
+    }
 
     // save system settings
     // restore default system settings
@@ -7366,6 +7411,7 @@ void setup() {
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
+  canvas122x122.setFixedFont(ssd1306xled_font6x8);
   display.clear();
   // uncomment to debug
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
