@@ -342,6 +342,12 @@ LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 104}} );
 const char *menuMatrixFilepathItems[20];
 LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{0, 14}, {128, 128}} );
 
+const char *menuGPSItems[4];
+LcdGfxMenu menuGPS( menuGPSItems, 4, {{0, 14}, {128, 128}} );
+
+const char *menuSerialItems[5];
+LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
 
@@ -5763,6 +5769,8 @@ void menuUp() {
   else if (menu_page==21) {menuMatrixFilepath.up();}
   else if (menu_page==22) {menuMatrixFilepath.up();}
   else if (menu_page==23) {menuMatrixFilepath.up();}
+  else if (menu_page==50) {menuGPS.up();}
+  else if (menu_page==60) {menuSerial.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5785,6 +5793,8 @@ void menuDown() {
   else if (menu_page==21) {menuMatrixFilepath.down();}
   else if (menu_page==22) {menuMatrixFilepath.down();}
   else if (menu_page==23) {menuMatrixFilepath.down();}
+  else if (menu_page==50) {menuGPS.down();}
+  else if (menu_page==60) {menuSerial.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5838,6 +5848,16 @@ void menuEnter() {
     // go to file menu
     if (menuMain.selection()==1) {
       menu_page=20;
+    }
+
+    // go to gps menu
+    if (menuMain.selection()==2) {
+      menu_page=50;
+    }
+
+    // go to serial menu
+    if (menuMain.selection()==3) {
+      menu_page=60;
     }
   }
 
@@ -6060,6 +6080,23 @@ void menuEnter() {
     else {Serial.println("[deleting] aborting! cannot delete empty slot.");}
     // delay(2000);
     menu_page=20;
+  }
+
+  // gps page
+  else if (menu_page==50) {
+    if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
+    if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
+    if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
+    if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
+  }
+
+  // serial page
+  else if (menu_page==60) {
+    if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
+    if (menuSerial.selection()==1) {systemData.output_gngga_enabled^=true;}
+    if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
+    if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
+    if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
   }
 }
 
@@ -6706,7 +6743,7 @@ void UpdateUI() {
       canvas120x8.printFixed(52, 1, "SAVE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      // ammend the menu
+      // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
 
       // show menu
@@ -6725,7 +6762,7 @@ void UpdateUI() {
       canvas120x8.printFixed(52, 1, "LOAD", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      // ammend the menu
+      // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
 
       // show menu
@@ -6743,7 +6780,7 @@ void UpdateUI() {
       canvas120x8.printFixed(52, 1, "DELETE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      // ammend the menu
+      // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
 
       // show menu
@@ -6787,6 +6824,67 @@ void UpdateUI() {
       canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
+    }
+
+    // ------------------------------------------------
+    //                                         GPS MENU
+
+    if (menu_page==50) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x8);
+
+      // set items each iteration so that if changed anywhere will be reflected in ui
+
+      if (systemData.satio_enabled==true) {menuGPSItems[0]="SATIO ENABLED";}
+      else {menuGPSItems[0]="SATIO DISABLED";}
+
+      if (systemData.gngga_enabled==true) {menuGPSItems[1]="GNGGA ENABLED";}
+      else {menuGPSItems[1]="GNGGA DISABLED";}
+
+      if (systemData.gnrmc_enabled==true) {menuGPSItems[2]="GNRMC ENABLED";}
+      else {menuGPSItems[2]="GNRMC DISABLED";}
+
+      if (systemData.gpatt_enabled==true) {menuGPSItems[3]="GPATT ENABLED";}
+      else {menuGPSItems[3]="GPATT DISABLED";}
+
+      // show menu
+      menuGPS.show( display );
+    }
+
+    // ------------------------------------------------
+    //                                      SERIAL MENU
+
+    if (menu_page==60) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x8);
+
+      // set items each iteration so that if changed anywhere will be reflected in ui
+
+      if (systemData.satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
+      else {menuSerialItems[0]="SATIO DISABLED";}
+
+      if (systemData.gngga_enabled==true) {menuSerialItems[1]="GNGGA ENABLED";}
+      else {menuSerialItems[1]="GNGGA DISABLED";}
+
+      if (systemData.gnrmc_enabled==true) {menuSerialItems[2]="GNRMC ENABLED";}
+      else {menuSerialItems[2]="GNRMC DISABLED";}
+
+      if (systemData.gpatt_enabled==true) {menuSerialItems[3]="GPATT ENABLED";}
+      else {menuSerialItems[3]="GPATT DISABLED";}
+
+      if (systemData.gpatt_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
+      else {menuSerialItems[4]="MATRIX DISABLED";}
+
+      // show menu
+      menuSerial.show( display );
     }
 
     // save system settings
