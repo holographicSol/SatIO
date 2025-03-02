@@ -472,7 +472,7 @@ struct systemStruct {
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
 
   bool display_auto_off = true;
-  int index_display_autooff_times = 6; // index of currently used time 
+  int index_display_autooff_times = 5; // index of currently used time 
   int max_display_autooff_times = 6; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
