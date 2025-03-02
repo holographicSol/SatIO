@@ -7142,7 +7142,7 @@ void menuRight() {
   if (menu_page==0) {}
   else if (menu_page==1) {}
   else if (menu_page==2) {}
-  else if (menu_page==3) {menu_column_selection++; if (menu_column_selection>3) {menu_column_selection=0;}}
+  else if (menu_page==3) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
@@ -7156,7 +7156,7 @@ void menuLeft() {
   if (menu_page==0) {}
   else if (menu_page==1) {}
   else if (menu_page==2) {}
-  else if (menu_page==3) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=3;}}
+  else if (menu_page==3) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
@@ -7228,18 +7228,15 @@ void menuEnter() {
 
     else if (menu_column_selection==2) {
       // enable matrix switch: also turns switch off
-      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=true;
-        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
-      }
-      // disable matrix switch: also turns switch off
-      else {
-        matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]=false;
-        matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
-      }
+      matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]^=true;
+      matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]^=true;
     }
 
     else if (menu_column_selection==3) {
+      matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]^=true;
+    }
+
+    else if (menu_column_selection==4) {
       // go to function name selection
       menu_page=5;
     }
@@ -7830,8 +7827,8 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=80; // uncomment to debug
+  update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  menu_page=3; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
@@ -7883,17 +7880,17 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       // state on/off
-      display.setColor(systemData.color_content);
-      // display.drawRect(86, 6, 91, 21); // uncomment to border
-      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-        display.setColor(RGB_COLOR16(0,255,0));
-        display.fillRect(88, 9, 90, 12);
-      }
-      else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
-        display.setColor(RGB_COLOR16(255,0,0));
-        display.fillRect(88, 9, 90, 12);
-      }
-      display.setColor(systemData.color_content);
+      // display.setColor(systemData.color_content);
+      // // display.drawRect(86, 6, 91, 21); // uncomment to border
+      // if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
+      //   display.setColor(RGB_COLOR16(0,255,0));
+      //   display.fillRect(88, 9, 90, 12);
+      // }
+      // else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
+      //   display.setColor(RGB_COLOR16(255,0,0));
+      //   display.fillRect(88, 9, 90, 12);
+      // }
+      // display.setColor(systemData.color_content);
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -8015,10 +8012,10 @@ void UpdateUI() {
           // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
         }
-        display.drawCanvas(70, 10, canvas8x8);
+        display.drawCanvas(69, 10, canvas8x8);
         // display.invertColors();
         display.setColor(systemData.color_content);
-        display.drawRect(66, 6, 82, 21);
+        display.drawRect(67, 6, 79, 21);
       }
       else {
         // draw currently selected menu item when menu not highlighted
@@ -8031,13 +8028,39 @@ void UpdateUI() {
           // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
         }
-        display.drawCanvas(70, 10, canvas8x8);
+        display.drawCanvas(69, 10, canvas8x8);
         display.setColor(systemData.color_content);
         // display.drawRect(66, 6, 82, 21);
       }
 
+      // highlight matrix switch inverted logic
+      if (menu_column_selection == 3) {
+        canvas8x8.clear();
+        display.setColor(systemData.color_content);
+        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL );
+        }
+        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL );
+        }
+        display.drawCanvas(83, 10, canvas8x8);
+        display.drawRect(82, 6, 93, 21);
+      }
+      else {
+        // draw currently selected menu item when menu not highlighted
+        canvas8x8.clear();
+        display.setColor(systemData.color_content);
+        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD );
+        }
+        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD );
+        }
+        display.drawCanvas(82, 10, canvas8x8);
+      }
+
       // highlight matrix switch function select menu
-      if (menu_column_selection == 3) {menuMatrixFunctionSelect.show( display );}
+      if (menu_column_selection == 4) {menuMatrixFunctionSelect.show( display );}
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
