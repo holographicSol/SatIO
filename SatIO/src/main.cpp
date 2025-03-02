@@ -484,22 +484,29 @@ struct systemStruct {
     "AUTO OFF TIME 60",
   };
 
-  int index_display_color = 0;
-  int max_color_index = 5;
-  int display_color[5] = {
-    RGB_COLOR16(255,255,255),
-    RGB_COLOR16(255,0,255),
-    RGB_COLOR16(0,0,255),
-    RGB_COLOR16(0,255,0),
-    RGB_COLOR16(255,0,0),
+  int index_display_color = 6;
+  int max_color_index = 7;
+  int display_color[7] = {
+    RGB_COLOR16(255,0,0), // red
+    RGB_COLOR16(255,255,0), // yellow
+    RGB_COLOR16(0,255,0), // green
+    RGB_COLOR16(0,0,255), // blue
+    RGB_COLOR16(0,255,255), // light blue
+    RGB_COLOR16(255,0,255), // purple
+    RGB_COLOR16(255,255,255), // white
   };
-  char char_display_color[5][56] = {
-    "COLOR WHITE",
-    "COLOR PURPLE",
-    "COLOR BLUE",
-    "COLOR GREEN",
+  char char_display_color[7][56] = {
     "COLOR RED",
+    "COLOR YELLOW",
+    "COLOR GREEN",
+    "COLOR BLUE",
+    "COLOR LIGHT BLUE",
+    "COLOR PURPLE",
+    "COLOR WHITE",
   };
+
+  int color_border = display_color[index_display_color];
+  int color_content = display_color[index_display_color];
 
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
   char translate_plus_minus[2][2]  = {"+", "-"}; // bool used as index selects bool translation
@@ -5808,8 +5815,6 @@ void inputChar(char * data) {
 
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
-int color_border = RGB_COLOR16(255,255,255);
-int color_content = RGB_COLOR16(255,255,255);
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        MENU UP
@@ -6203,8 +6208,8 @@ void menuEnter() {
     // iter display color
     if (menuDisplay.selection()==2) {systemData.index_display_color++;
       if (systemData.index_display_color>systemData.max_color_index-1) {systemData.index_display_color=0;}
-      color_content=systemData.display_color[systemData.index_display_color];
-      color_border=systemData.display_color[systemData.index_display_color];
+      systemData.color_content=systemData.display_color[systemData.index_display_color];
+      systemData.color_border=systemData.display_color[systemData.index_display_color];
     }
   }
 }
@@ -6468,7 +6473,7 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 //                                        UI BORDER
 
 void drawMainBorder() {
-  display.setColor(color_border);
+  display.setColor(systemData.color_border);
   display.drawRect(1, 1, 126, 126);
 }
 
@@ -6528,7 +6533,7 @@ void UpdateUI() {
   //                                DEVELOPER OPTIONS
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=32; // uncomment to debug
+  // menu_page=80; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
@@ -6559,7 +6564,7 @@ void UpdateUI() {
     // main menu items
     else if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       drawMainBorder();
       canvas120x8.clear();
       canvas120x8.printFixed(33, 1, "SETTINGS", STYLE_BOLD );
@@ -6580,7 +6585,7 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       // state on/off
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       // display.drawRect(86, 6, 91, 21); // uncomment to border
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
@@ -6590,7 +6595,7 @@ void UpdateUI() {
         display.setColor(RGB_COLOR16(255,0,0));
         display.fillRect(88, 9, 90, 12);
       }
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6650,7 +6655,7 @@ void UpdateUI() {
 
 
       // show the menu
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       // clear any previously highlighted menus (the canvas needs to be slighly larger in dimensions to wipe all the menu away)
       if (previous_menu_column_selection!=menu_column_selection) {
@@ -6685,7 +6690,7 @@ void UpdateUI() {
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 10, canvas19x8);
         // display.invertColors();
-        display.setColor(color_content);
+        display.setColor(systemData.color_content);
         display.drawRect(35, 6, 62, 21);
       }
       else {
@@ -6696,7 +6701,7 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(39, 10, canvas19x8);
-        display.setColor(color_content);
+        display.setColor(systemData.color_content);
         // display.drawRect(35, 6, 62, 21); // uncomment to border
       }
 
@@ -6714,7 +6719,7 @@ void UpdateUI() {
         }
         display.drawCanvas(70, 10, canvas8x8);
         // display.invertColors();
-        display.setColor(color_content);
+        display.setColor(systemData.color_content);
         display.drawRect(66, 6, 82, 21);
       }
       else {
@@ -6729,7 +6734,7 @@ void UpdateUI() {
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
         }
         display.drawCanvas(70, 10, canvas8x8);
-        display.setColor(color_content);
+        display.setColor(systemData.color_content);
         // display.drawRect(66, 6, 82, 21);
       }
 
@@ -6803,7 +6808,7 @@ void UpdateUI() {
     // select function name
     else if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -6829,7 +6834,7 @@ void UpdateUI() {
 
     else if (menu_page==20) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "FILE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -6842,7 +6847,7 @@ void UpdateUI() {
     // save matrix
     else if (menu_page==21) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "SAVE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -6861,7 +6866,7 @@ void UpdateUI() {
     // load matrix
     else if (menu_page==22) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "LOAD", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -6879,7 +6884,7 @@ void UpdateUI() {
     // delete matrix
     else if (menu_page==23) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "DELETE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -6938,7 +6943,7 @@ void UpdateUI() {
 
     else if (menu_page==50) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
@@ -6969,7 +6974,7 @@ void UpdateUI() {
 
     else if (menu_page==60) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
@@ -7003,7 +7008,7 @@ void UpdateUI() {
 
     else if (menu_page==70) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
@@ -7044,7 +7049,7 @@ void UpdateUI() {
 
     else if (menu_page==80) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(color_content);
+      display.setColor(systemData.color_content);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
