@@ -471,6 +471,7 @@ struct systemStruct {
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
 
+  // oled protection
   bool display_auto_off = true;
   int index_display_autooff_times = 5; // index of currently used time 
   int max_display_autooff_times = 6; // max available times
@@ -484,6 +485,7 @@ struct systemStruct {
     "AUTO OFF TIME 60",
   };
 
+  // personalization: color
   int index_display_color = 6;
   int max_color_index = 7;
   int display_color[7] = {
@@ -504,10 +506,10 @@ struct systemStruct {
     "COLOR PURPLE",
     "COLOR WHITE",
   };
-
   int color_border = display_color[index_display_color];
   int color_content = display_color[index_display_color];
 
+  // conversion maps
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
   char translate_plus_minus[2][2]  = {"+", "-"}; // bool used as index selects bool translation
 
