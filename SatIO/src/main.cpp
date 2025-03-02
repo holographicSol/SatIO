@@ -2311,6 +2311,7 @@ const char *menuMatrixSetFunctionNameItems[221] =
   "NeptuneDown",
   "NeptuneRise",
   "NeptuneSet",
+  // rename following to generic name (example: sensor0, sensor1 etc.) and store relative 'custom name(s)' on sdcard
   "DHT11_0_H_Under",
   "DHT11_0_H_Over",
   "DHT11_0_H_Equal",
