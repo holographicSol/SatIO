@@ -7047,7 +7047,7 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIGURATION")/2)*6), (display.height()/2), "SYSTEM CONFIGURATION", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -7061,7 +7061,7 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIGURATION")/2)*6), (display.height()/2), "SYSTEM CONFIGURATION", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
