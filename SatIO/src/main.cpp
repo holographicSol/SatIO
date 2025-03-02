@@ -261,7 +261,7 @@ NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
 bool update_ui = true;
-int update_ui_period = 60;
+signed int update_ui_period = 60;
 bool ui_cleared = false;
 int menu_page = 0;
 
@@ -6198,6 +6198,7 @@ void menuEnter() {
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
       if (systemData.index_display_autooff_times>systemData.max_display_autooff_times-1) {systemData.index_display_autooff_times=0;}
+      update_ui_period = systemData.display_autooff_times[systemData.index_display_autooff_times];
     }
 
     // iter display color
@@ -6518,7 +6519,10 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection: enable/disable ui updates
-  if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+  if (update_ui_period!=-1) {
+    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+    else {update_ui=true;}
+  }
   else {update_ui=true;}
 
   // ------------------------------------------------
