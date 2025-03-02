@@ -7878,11 +7878,15 @@ void UpdateUI() {
       display.setColor(systemData.color_content);
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        display.fillRect(122, 28, 124, 30);
+        // tmp simple indicator
+        display.fillRect(120, 28, 122, 30);
+        // display.drawHLine(6, 28, 120);
       }
       else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
-        display.setColor(RGB_COLOR16(255,0,0));
-        display.fillRect(122, 28, 124, 30);
+        display.setColor(RGB_COLOR16(0,0,0));
+        // tmp simple indicator
+        display.fillRect(120, 28, 122, 30);
+        // display.drawHLine(6, 28, 120);
       }
       display.setColor(systemData.color_content);
 
@@ -7941,7 +7945,6 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(6, 112, canvas120x8);
-
 
       // show the menu
       display.setColor(systemData.color_content);
