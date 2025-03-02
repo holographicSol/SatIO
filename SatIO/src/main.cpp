@@ -4553,29 +4553,76 @@ void matrixSwitch() {
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday") == 0) {
-          if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}}
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            if (strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            if (!strcmp(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(),rtc.now().day()).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX") == 0) {
-          tmp_matrix[Fi] = check_equal_true(rtc.now().day(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(rtc.now().day(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(rtc.now().day(), (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateMonthX") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
