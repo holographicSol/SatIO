@@ -261,7 +261,6 @@ NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
 bool update_ui = true;
-signed int update_ui_period = 60;
 bool ui_cleared = false;
 int menu_page = 0;
 
@@ -484,6 +483,7 @@ struct systemStruct {
     "AUTO OFF TIME 30",
     "AUTO OFF TIME 60",
   };
+  int display_timeout = display_autooff_times[index_display_autooff_times];
 
   // personalization: color
   int index_display_color = 6;
@@ -3131,6 +3131,36 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     sdcardData.current_file.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "DISPLAY_AUTO_OFF,");
+    itoa(systemData.display_auto_off, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_AUTO_OFF,");
+    itoa(systemData.index_display_autooff_times, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_COLOR,");
+    itoa(systemData.index_display_color, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    sdcardData.current_file.println("");
+    sdcardData.current_file.println(sdcardData.file_data);
+    sdcardData.current_file.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -3328,7 +3358,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
     sdcardData.current_file.println("");
     sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");    
+    sdcardData.current_file.println("");
 
     sdcardData.current_file.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
@@ -3353,6 +3383,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
   sdcardData.current_file = fs.open(file); 
   if (sdcardData.current_file) {
     while (sdcardData.current_file.available()) {
+
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
@@ -3361,6 +3392,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       if (sysDebugData.verbose_file==true) {
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       }
+
       // check matrix filepath
       if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
@@ -3370,6 +3402,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
         memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
         strcpy(sdcardData.matrix_filepath, sdcardData.token);
       }
+
       // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
@@ -3380,6 +3413,43 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
           if (atoi(sdcardData.token) == 0) {systemData.run_on_startup = false;} else {systemData.run_on_startup = true;}
         }
       }
+
+      // display auto off
+      if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
+        }
+      }
+
+      // display auto off time index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_AUTO_OFF", strlen("INDEX_DISPLAY_AUTO_OFF")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          systemData.index_display_autooff_times = atoi(sdcardData.token);
+          systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
+        }
+      }
+
+      // display color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_COLOR", strlen("INDEX_DISPLAY_COLOR")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          systemData.index_display_color = atoi(sdcardData.token);
+          systemData.color_border = systemData.display_color[systemData.index_display_color];
+          systemData.color_content = systemData.display_color[systemData.index_display_color];
+        }
+      }
+
       // continue to enable/disable only if auto resume is true
       if (systemData.run_on_startup == true) {
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
@@ -6222,7 +6292,7 @@ void menuEnter() {
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
       if (systemData.index_display_autooff_times>systemData.max_display_autooff_times-1) {systemData.index_display_autooff_times=0;}
-      update_ui_period = systemData.display_autooff_times[systemData.index_display_autooff_times];
+      systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
     }
 
     // iter display color
@@ -6544,7 +6614,7 @@ void UpdateUI() {
 
   // oled protection: enable/disable ui updates
   if (systemData.display_auto_off==true) {
-    if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
+    if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
     else {update_ui=true;}
   }
   else {update_ui=true;}
