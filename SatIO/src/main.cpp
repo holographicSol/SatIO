@@ -2110,8 +2110,8 @@ struct MatrixStruct {
 };
 MatrixStruct matrixData;
 
-// temporary replica of matrixData variable (while the ui is being re-built for the oled ssd1351)
-// add stage bool
+// note that we could work out of this item list entirely to be more efficient but then our function name items would have a
+// display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
 const char *menuMatrixSetFunctionNameItems[222] =
 {
   matrixData.matrix_function_names[0],
