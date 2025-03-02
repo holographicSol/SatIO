@@ -5338,6 +5338,7 @@ void matrixSwitch() {
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_over_false(atol(gnrmcData.ground_speed),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCUnder") == 0) {
@@ -5359,6 +5360,7 @@ void matrixSwitch() {
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.ground_speed),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCRange") == 0) {
