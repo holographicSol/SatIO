@@ -6069,7 +6069,7 @@ void menuEnter() {
 
     // save system settings
     else if (menuFile.selection()==4) {
-      menu_page=21;
+      menu_page=30;
       UpdateUI();
       endSSD1351();
       beginSDCARD();
@@ -6080,7 +6080,16 @@ void menuEnter() {
     }
 
     // restore default system settings
-    else if (menuFile.selection()==5) {}
+    else if (menuFile.selection()==5) {
+      menu_page=30;
+      UpdateUI();
+      endSSD1351();
+      beginSDCARD();
+      //
+      endSDCARD();
+      beginSSD1351();
+      menu_page=20;
+    }
   }
 
   // save matrix menu
