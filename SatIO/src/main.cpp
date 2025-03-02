@@ -6069,7 +6069,14 @@ void menuEnter() {
 
     // save system settings
     else if (menuFile.selection()==4) {
-      // sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
+      menu_page=21;
+      UpdateUI();
+      endSSD1351();
+      beginSDCARD();
+      sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
+      endSDCARD();
+      beginSSD1351();
+      menu_page=20;
     }
 
     // restore default system settings
