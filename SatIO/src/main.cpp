@@ -8012,10 +8012,10 @@ void UpdateUI() {
           // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
         }
-        display.drawCanvas(69, 10, canvas8x8);
+        display.drawCanvas(68, 10, canvas8x8);
         // display.invertColors();
         display.setColor(systemData.color_content);
-        display.drawRect(67, 6, 79, 21);
+        display.drawRect(66, 6, 79, 21);
       }
       else {
         // draw currently selected menu item when menu not highlighted
@@ -8028,7 +8028,7 @@ void UpdateUI() {
           // display.setColor(RGB_COLOR16(255,0,0));
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
         }
-        display.drawCanvas(69, 10, canvas8x8);
+        display.drawCanvas(68, 10, canvas8x8);
         display.setColor(systemData.color_content);
         // display.drawRect(66, 6, 82, 21);
       }
