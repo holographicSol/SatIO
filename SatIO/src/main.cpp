@@ -504,6 +504,15 @@ struct systemStruct {
     "COLOR PURPLE",
     "COLOR WHITE",
   };
+  // char char_display_color[7][56] = {
+  //   "COLOR LOCK N' LOAD",
+  //   "COLOR AMBER SHINE",
+  //   "COLOR ALIEN GREEN",
+  //   "COLOR OCEAN DEEP",
+  //   "COLOR SKY BLUE",
+  //   "COLOR ASGUARD",
+  //   "COLOR SLATE",
+  // };
 
   int color_border = display_color[index_display_color];
   int color_content = display_color[index_display_color];
