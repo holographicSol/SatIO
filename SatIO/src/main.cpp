@@ -593,6 +593,7 @@ struct SDCardStruct {
   char data_5[56];                                             // value placeholder
   char data_6[56];                                             // value placeholder
   char data_7[56];                                             // value placeholder
+  char data_8[56];                                             // value placeholder
   char file_data[1024];                                        // buffer
   char delim[56] = ",";                                         // delimiter char
   char tmp[56];                                                 // buffer
@@ -3670,7 +3671,7 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
         // ensure cleared
         memset(sdcardData.data_0, 0, sizeof(sdcardData.data_0)); memset(sdcardData.data_1, 0, sizeof(sdcardData.data_1)); memset(sdcardData.data_2, 0, sizeof(sdcardData.data_2));
         memset(sdcardData.data_3, 0, sizeof(sdcardData.data_3)); memset(sdcardData.data_4, 0, sizeof(sdcardData.data_4)); memset(sdcardData.data_5, 0, sizeof(sdcardData.data_5));
-        memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7));
+        memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7)); memset(sdcardData.data_8, 0, sizeof(sdcardData.data_8));
         validData.bool_data_0 = false;
         validData.bool_data_1 = false;
         // split line on delimiter
@@ -3721,6 +3722,10 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
             if (sysDebugData.verbose_file==true) {Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));}
           }
           else {if (sysDebugData.verbose_file==true) {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}}
+          // matrix function data: inverted logic
+          sdcardData.token = strtok(NULL, ",");
+          strcpy(sdcardData.data_8, sdcardData.token);
+          if (is_all_digits(sdcardData.data_8) == true) {matrixData.matrix_switch_inverted_logic[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_8);}
         }
       }
       // tag: e
@@ -3806,6 +3811,10 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
         // function value z
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
+        strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+        // inverted function logic
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
+        itoa(matrixData.matrix_switch_inverted_logic[Mi][Fi], sdcardData.tmp, 10);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         // write line
         if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
