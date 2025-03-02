@@ -1574,7 +1574,7 @@ struct MatrixStruct {
   // reflects matrix switch enabled/disabled
   int matrix_switch_enabled[1][20] = {
     {
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
@@ -3812,11 +3812,13 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-        // inverted function logic
+
+        // // inverted function logic
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         itoa(matrixData.matrix_switch_inverted_logic[Mi][Fi], sdcardData.tmp, 10);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-        // write line
+        
+        // // write line
         if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
         sdcardData.current_file.println(sdcardData.file_data);
       }
@@ -3827,10 +3829,12 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       sprintf(sdcardData.tmp, "%d", Mi);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+
       // matrix enabled 0/1
       memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       itoa(matrixData.matrix_switch_enabled[0][Mi], sdcardData.tmp, 10);
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+
       // matrix switch port
       memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
@@ -7087,7 +7091,7 @@ char TMP_UI_DATA_1[56];
 void menuUp() {
   if (menu_page==0) {menuHome.up();}
   else if (menu_page==1) {menuMain.up();}
-  else if (menu_page==2) {menuMatrixSwitchSelect.up();}
+  else if (menu_page==2) {}
   else if (menu_page==3) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.up();}
     if (menu_column_selection==1) {}
@@ -7114,7 +7118,7 @@ void menuUp() {
 void menuDown() {
   if (menu_page==0) {menuHome.down();}
   else if (menu_page==1) {menuMain.down();}
-  else if (menu_page==2) {menuMatrixSwitchSelect.down();}
+  else if (menu_page==2) {}
   else if (menu_page==3) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.down();}
     if (menu_column_selection==1) {}
@@ -7375,9 +7379,6 @@ void menuEnter() {
     // set notification page
     menu_page=30;
     UpdateUI();
-    // disable and turn off all matrix switches
-    setAllMatrixSwitchesEnabledFalse();
-    setAllMatrixSwitchesStateFalse();
     // switch spi devices
     endSSD1351();
     beginSDCARD();
@@ -7404,9 +7405,6 @@ void menuEnter() {
       // set notification page
       menu_page=31;
       UpdateUI();
-      // disable and turn off all matrix switches
-      setAllMatrixSwitchesEnabledFalse();
-      setAllMatrixSwitchesStateFalse();
       // switch spi devices
       endSSD1351();
       beginSDCARD();
@@ -7435,9 +7433,6 @@ void menuEnter() {
       // set notification page
       menu_page=32;
       UpdateUI();
-      // disable and turn off all matrix switches
-      setAllMatrixSwitchesEnabledFalse();
-      setAllMatrixSwitchesStateFalse();
       // switch spi devices
       endSSD1351();
       beginSDCARD();
