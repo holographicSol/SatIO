@@ -7092,7 +7092,7 @@ void menuUp() {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.up();}
     if (menu_column_selection==1) {}
     if (menu_column_selection==2) {}
-    if (menu_column_selection==3) {menuMatrixFunctionSelect.up();}
+    if (menu_column_selection==4) {menuMatrixFunctionSelect.up();}
   }
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.up();}
@@ -7119,7 +7119,7 @@ void menuDown() {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.down();}
     if (menu_column_selection==1) {}
     if (menu_column_selection==2) {}
-    if (menu_column_selection==3) {menuMatrixFunctionSelect.down();}
+    if (menu_column_selection==4) {menuMatrixFunctionSelect.down();}
   }
   else if (menu_page==4) {}
   else if (menu_page==5) {menuMatrixConfigureFunction.down();}
