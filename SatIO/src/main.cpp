@@ -6069,25 +6069,27 @@ void menuEnter() {
 
     // save system settings
     else if (menuFile.selection()==4) {
-      menu_page=30;
+      menu_page=33;
       UpdateUI();
       endSSD1351();
       beginSDCARD();
       sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
       endSDCARD();
       beginSSD1351();
+      delay(2000);
       menu_page=20;
     }
 
     // restore default system settings
     else if (menuFile.selection()==5) {
-      menu_page=30;
+      menu_page=34;
       UpdateUI();
       endSSD1351();
       beginSDCARD();
-      //
+      // restore defaults and save
       endSDCARD();
       beginSSD1351();
+      delay(2000);
       menu_page=20;
     }
   }
@@ -6952,6 +6954,35 @@ void UpdateUI() {
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
+
+    // ------------------------------------------------
+    //                   SAVING SYSTEM CONFIG INDICATOR
+
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    if (menu_page==33) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIGURATION")/2)*6), (display.height()/2), "SYSTEM CONFIGURATION", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+
+    // ------------------------------------------------
+    //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
+
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    if (menu_page==34) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIGURATION")/2)*6), (display.height()/2), "SYSTEM CONFIGURATION", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+
 
     // save system settings
     // restore default system settings
