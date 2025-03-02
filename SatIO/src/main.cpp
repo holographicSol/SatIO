@@ -1752,21 +1752,15 @@ struct MatrixStruct {
   {
     "$NONE",
     "$ENABLED",
-
     "$OVERLOAD_TRUE",
     "$OVERLOAD_FALSE",
-
     "$SWITCHLINKTRUE",
     "$SWITCHLINKFALSE",
-
     "SecondsTimer",
-
     "RTCTimeOver",
     "RTCTimeUnder",
     "RTCTimeEqual",
     "RTCTimeRange",
-    // RTCTimeRangeFalse
-
     "DaySunday",
     "DayMonday",
     "DayTuesday",
@@ -1774,338 +1768,209 @@ struct MatrixStruct {
     "DayThursday",
     "DayFriday",
     "DaySaturday",
-    // "DaySundayFalse",
-    // "DayMondayFalse",
-    // "DayTuesdayFalse",
-    // "DayWednesdayFalse",
-    // "DayThursdayFalse",
-    // "DayFridayFalse",
-    // "DaySaturdayFalse",
-
     "DateDayX",
     "DateMonthX",
     "DateYearX",
-    // "DateDayXFalse",
-    // "DateMonthXFalse",
-    // "DateYearXFalse",
-    
     "DegLatGNGGAOver",
     "DegLatGNGGAUnder",
     "DegLatGNGGAEqual",
     "DegLatGNGGARange",
-    // "DegLatGNGGARangeFalse",
-
     "DegLonGNGGAOver",
     "DegLonGNGGAUnder",
     "DegLonGNGGAEqual",
     "DegLonGNGGARange",
     "DegGNGGARanges",
-    // "DegGNGGARangesFalse",
-
-
     "DegLatGNRMCOver",
     "DegLatGNRMCUnder",
     "DegLatGNRMCEqual",
     "DegLatGNRMCRange",
-    // "DegLatGNRMCRangeFalse",
-    
     "DegLonGNRMCOver",
     "DegLonGNRMCUnder",
     "DegLonGNRMCEqual",
     "DegLonGNRMCRange",
-    // "DegLonGNRMCRangeFalse",
-
     "DegGNRMCRanges",
-    // "DegGNRMCRangesFalse",
-
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
-    // "UTCTimeGNGGARangeFalse",
-
     "LatGNGGAOver",
     "LatGNGGAUnder",
     "LatGNGGAEqual",
     "LatGNGGARange",
-    // "LatGNGGARangeFalse",
-
     "LonGNGGAOver",
     "LonGNGGAUnder",
     "LonGNGGAEqual",
     "LonGNGGARange",
-    // "LonGNGGARangeFalse",
-
     "PosStatusGNGGA",
-    // "PosStatusGNGGAFalse",
-
     "SatCountOver",
     "SatCountUnder",
     "SatCountEqual",
     "SatCountRange",
-    // "SatCountRangeFalse",
-
     "HemiGNGGANorth",
     "HemiGNGGASouth",
     "HemiGNGGAEast",
     "HemiGNGGAWest",
-
-    // "HemiGNGGANorthFalse",
-    // "HemiGNGGASouthFalse",
-    // "HemiGNGGAEastFalse",
-    // "HemiGNGGAWestFalse",
-
     "GPSPrecisionOver",
     "GPSPrecisionUnder",
     "GPSPrecisionEqual",
     "GPSPrecisionRange",
-    // "GPSPrecisionRangeFalse",
-
     "AltGNGGAOver",
     "AltGNGGAUnder",
     "AltGNGGAEqual",
     "AltGNGGARange",
-    // "AltGNGGARangeFalse",
-
     "UTCTimeGNRMCOver",
     "UTCTimeGNRMCUnder",
     "UTCTimeGNRMCEqual",
     "UTCTimeGNRMCRange",
-    // "UTCTimeGNRMCRangeFalse",
-
     "PosStatusGNRMCA",
     "PosStatusGNRMCV",
-
     "ModeGNRMCA",
     "ModeGNRMCD",
     "ModeGNRMCE",
     "ModeGNRMCN",
-
     "LatGNRMCOver",
     "LatGNRMCUnder",
     "LatGNRMCEqual",
     "LatGNRMCRange",
-    // "LatGNRMCRangeFalse",
-
     "LonGNRMCOver",
     "LonGNRMCUnder",
     "LonGNRMCEqual",
     "LonGNRMCRange",
-    // "LonGNRMCRangeFalse",
-
     "HemiGNRMCNorth",
     "HemiGNRMCSouth",
     "HemiGNRMCEast",
     "HemiGNRMCWest",
-
-    // "HemiGNRMCNorthFalse",
-    // "HemiGNRMCSouthFalse",
-    // "HemiGNRMCEastFalse",
-    // "HemiGNRMCWestFalse",
-
     "GSpeedGNRMCOver",
     "GSpeedGNRMCUnder",
     "GSpeedGNRMCEqual",
     "GSpeedGNRMCRange",
-    // "GSpeedGNRMCRangeFalse",
-
     "HeadingGNRMCOver",
     "HeadingGNRMCUnder",
     "HeadingGNRMCEqual",
     "HeadingGNRMCRange",
-    // "HeadingGNRMCRangeFalse",
-
     "UTCDateGNRMCOver",
     "UTCDateGNRMCUnder",
     "UTCDateGNRMCEqual",
     "UTCDateGNRMCRange",
-    // "UTCDateGNRMCRangeFalse",
-    
     "LineFlagGPATTEqual",
-    // "LineFlagGPATTEqualFalse",
-
     "StaticFlagGPATTEQ",
-    // "StaticFlagGPATTEQFalse",
-
     "RStateFlagGPATTEQ",
-    // "RStateFlagGPATTEQFalse",
-
     "INSGPATTEqual",
-    // "INSGPATTEqualFalse",
-
     "SpeedNumGPATTOver",
     "SpeedNumGPATTUnder",
     "SpeedNumGPATTEqual",
     "SpeedNumGPATTRange",
-    // "SpeedNumGPATTRangeFalse",
-
     "MileageGPATTOver",
     "MileageGPATTUnder",
     "MileageGPATTEqual",
     "MileageGPATTRange",
-    // "MileageGPATTRangeFalse",
-
     "GSTDataGPATTOver",
     "GSTDataGPATTUnder",
     "GSTDataGPATTEqual",
     "GSTDataGPATTRange",
-    // "GSTDataGPATTRangeFalse",
-
     "YawGPATTOver",
     "YawGPATTUnder",
     "YawGPATTEqual",
     "YawGPATTRange",
-    // "YawGPATTRangeFalse",
-
     "RollGPATTOver",
     "RollGPATTUnder",
     "RollGPATTEqual",
     "RollGPATTRange",
-    // "RollGPATTRangeFalse",
-
     "PitchGPATTOver",
     "PitchGPATTUnder",
     "PitchGPATTEqual",
     "PitchGPATTRange",
-    // "PitchGPATTRangeFalse",
-
     "GNGGAValidCS",
     "GNRMCValidCS",
     "GPATTValidCS",
-
     "GNGGAInvalidCS",
     "GNRMCInvalidCS",
     "GPATTInvalidCS",
-
     "GNGGAValidCD",
     "GNRMCValidCD",
     "GPATTValidCD",
-
     "GNGGAInvalidCD",
     "GNRMCInvalidCD",
     "GPATTInvalidCD",
-
     "SunAzRange",
     "SunAltRange",
-
-    // "SunAzimuthRangeFalse",
-    // "SunAltitudeRangeFalse",
-
     "DayTime",
     "NightTime",
-
     "Sunrise",
     "Sunset",
-
     "MoonAzRange",
     "MoonAltRange",
-    // "MoonAzimuthRangeFalse",
-    // "MoonAltitudeRangeFalse",
     "MoonUp",
     "MoonDown",
     "Moonrise",
     "Moonset",
     "MoonPhase",
-    // "MoonPhaseFalse",
-
     "MercuryAzRange",
     "MercuryAltRange",
-    // "MercuryAzimuthRangeFalse",
-    // "MercuryAltitudeRangeFalse",
     "MercuryUp",
     "MercuryDown",
     "MercuryRise",
     "MercurySet",
-
     "VenusAzRange",
     "VenusAltRange",
-    // "VenusAzimuthRangeFalse",
-    // "VenusAltitudeRangeFalse",
     "VenusUp",
     "VenusDown",
     "VenusRise",
     "VenusSet",
-
     "MarsAzRange",
     "MarsAltRange",
-    // "MarsAzimuthRangeFalse",
-    // "MarsAltitudeRangeFalse",
     "MarsUp",
     "MarsDown",
     "MarsRise",
     "MarsSet",
-
     "JupiterAzRange",
     "JupiterAltRange",
-    // "JupiterAzimuthRangeFalse",
-    // "JupiterAltitudeRangeFalse",
     "JupiterUp",
     "JupiterDown",
     "JupiterRise",
     "JupiterSet",
-
     "SaturnAzRange",
     "SaturnAltRange",
-    // "SaturnAzimuthRangeFalse",
-    // "SaturnAltitudeRangeFalse",
     "SaturnUp",
     "SaturnDown",
     "SaturnRise",
     "SaturnSet",
-
     "UranusAzRange",
     "UranusAltRange",
-    // "UranusAzimuthRangeFalse",
-    // "UranusAltitudeRangeFalse",
     "UranusUp",
     "UranusDown",
     "UranusRise",
     "UranusSet",
-
     "NeptuneAzRange",
     "NeptuneAltRange",
-    // "NeptuneAzimuthRangeFalse",
-    // "NeptuneAltitudeRangeFalse",
     "NeptuneUp",
     "NeptuneDown",
     "NeptuneRise",
     "NeptuneSet",
-
     "DHT11_0_H_Under",
     "DHT11_0_H_Over",
     "DHT11_0_H_Equal",
     "DHT11_0_H_Range",
-    // "DHT11_0_H_RangeFalse",
-
     "DHT11_0_C_Under",
     "DHT11_0_C_Over",
     "DHT11_0_C_Equal",
     "DHT11_0_C_Range",
-    // "DHT11_0_C_RangeFalse",
-
     "DHT11_0_F_Under",
     "DHT11_0_F_Over",
     "DHT11_0_F_Equal",
     "DHT11_0_F_Range",
-    // "DHT11_0_F_RangeFalse",
-
     "DHT11_0_HIC_Under",
     "DHT11_0_HIC_Over",
     "DHT11_0_HIC_Equal",
     "DHT11_0_HIC_Range",
-    // "DHT11_0_HIC_RangeFalse",
-
     "DHT11_0_HIF_Under",
     "DHT11_0_HIF_Over",
     "DHT11_0_HIF_Equal",
     "DHT11_0_HIF_Range",
-    // "DHT11_0_HIF_RangeFalse",
-
     "PhotoRes_0_Under",
     "PhotoRes_0_Over",
     "PhotoRes_0_Equal",
     "PhotoRes_0_Range",
-    // "PhotoRes_0_RangeFalse",
   };
 };
 MatrixStruct matrixData;
@@ -4575,7 +4440,6 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
           }
         
-
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
           matrixData.matrix_function_xyz[Mi][Fi][0]);
