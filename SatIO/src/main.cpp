@@ -7875,17 +7875,16 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       // state on/off
-      // display.setColor(systemData.color_content);
-      // // display.drawRect(86, 6, 91, 21); // uncomment to border
-      // if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-      //   display.setColor(RGB_COLOR16(0,255,0));
-      //   display.fillRect(88, 9, 90, 12);
-      // }
-      // else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
-      //   display.setColor(RGB_COLOR16(255,0,0));
-      //   display.fillRect(88, 9, 90, 12);
-      // }
-      // display.setColor(systemData.color_content);
+      display.setColor(systemData.color_content);
+      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
+        display.setColor(RGB_COLOR16(0,255,0));
+        display.fillRect(122, 28, 124, 30);
+      }
+      else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
+        display.setColor(RGB_COLOR16(255,0,0));
+        display.fillRect(122, 28, 124, 30);
+      }
+      display.setColor(systemData.color_content);
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
