@@ -358,15 +358,11 @@ LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
 const char *menuUniverseItems[7];
 LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{0, 14}, {128, 128}} );
 
-/*
-
-auto turn off
-turn off time
-color
-
-*/
 const char *menuDisplayItems[3];
 LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{0, 14}, {128, 128}} );
+
+const char *menuSystemItems[3];
+LcdGfxMenu menuSystem( menuSystemItems, 1, {{0, 14}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -445,7 +441,7 @@ void beginSDCARD() {
 
 struct systemStruct {
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  bool run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
+  bool matrix_run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
 
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
   bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
@@ -3122,7 +3118,7 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "AUTO_RESUME,");
-    itoa(systemData.run_on_startup, sdcardData.tmp, 10);
+    itoa(systemData.matrix_run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
@@ -3410,7 +3406,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
         sdcardData.token = strtok(NULL, ",");
         if (is_all_digits(sdcardData.token) == true) {
           PrintFileToken();
-          if (atoi(sdcardData.token) == 0) {systemData.run_on_startup = false;} else {systemData.run_on_startup = true;}
+          if (atoi(sdcardData.token) == 0) {systemData.matrix_run_on_startup = false;} else {systemData.matrix_run_on_startup = true;}
         }
       }
 
@@ -3451,7 +3447,7 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
       }
 
       // continue to enable/disable only if auto resume is true
-      if (systemData.run_on_startup == true) {
+      if (systemData.matrix_run_on_startup == true) {
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
@@ -5912,6 +5908,7 @@ void menuUp() {
   else if (menu_page==60) {menuSerial.up();}
   else if (menu_page==70) {menuUniverse.up();}
   else if (menu_page==80) {menuDisplay.up();}
+  else if (menu_page==90) {menuSystem.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5938,6 +5935,7 @@ void menuDown() {
   else if (menu_page==60) {menuSerial.down();}
   else if (menu_page==70) {menuUniverse.down();}
   else if (menu_page==80) {menuDisplay.down();}
+  else if (menu_page==90) {menuSystem.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6003,6 +6001,13 @@ void menuEnter() {
       menu_page=60;
     }
 
+    // got to sensors page
+
+    // go to system menu
+    if (menuMain.selection()==5) {
+      menu_page=90;
+    }
+
     // go to universe menu
     if (menuMain.selection()==6) {
       menu_page=70;
@@ -6012,6 +6017,7 @@ void menuEnter() {
     if (menuMain.selection()==7) {
       menu_page=80;
     }
+
   }
 
   // matrix switch configuration
@@ -6301,6 +6307,13 @@ void menuEnter() {
       systemData.color_content=systemData.display_color[systemData.index_display_color];
       systemData.color_border=systemData.display_color[systemData.index_display_color];
     }
+  }
+
+  // system page
+  else if (menu_page==90) {
+
+    // startup run matrix
+    if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
   }
 }
 
@@ -7053,8 +7066,6 @@ void UpdateUI() {
       drawMainBorderGreen();
     }
 
-
-    // save system settings
     // restore default system settings
 
     // ------------------------------------------------
@@ -7186,6 +7197,25 @@ void UpdateUI() {
 
       // show menu
       menuDisplay.show( display );
+    }
+
+    // ------------------------------------------------
+    //                                      SYSTEM MENU
+
+    else if (menu_page==90) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(systemData.color_content);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x8);
+
+      // run matrix on startup
+      if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
+      else {menuSystemItems[0]="AUTO MATRIX OFF";}
+
+      // show menu
+      menuSystem.show( display );
     }
   }
 
@@ -7884,7 +7914,7 @@ void loop() {
   // uncomment to override default values
   // systemData.matrix_enabled = true;
   // systemData.output_matrix_enabled = true;
-  // systemData.run_on_startup = true;
+  // systemData.matrix_run_on_startup = true;
 
   makeI2CRequest();
 
