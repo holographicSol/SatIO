@@ -6069,7 +6069,7 @@ void menuEnter() {
 
     // save system settings
     else if (menuFile.selection()==4) {
-      sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
+      // sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
     }
 
     // restore default system settings
