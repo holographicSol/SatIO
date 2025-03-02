@@ -8043,8 +8043,8 @@ void UpdateUI() {
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
           canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL );
         }
-        display.drawCanvas(83, 10, canvas8x8);
-        display.drawRect(82, 6, 93, 21);
+        display.drawCanvas(84, 10, canvas8x8);
+        display.drawRect(83, 6, 93, 21);
       }
       else {
         // draw currently selected menu item when menu not highlighted
@@ -8056,7 +8056,7 @@ void UpdateUI() {
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
           canvas8x8.printFixed(1, 1, "S", STYLE_BOLD );
         }
-        display.drawCanvas(82, 10, canvas8x8);
+        display.drawCanvas(83, 10, canvas8x8);
       }
 
       // highlight matrix switch function select menu
