@@ -473,10 +473,9 @@ struct systemStruct {
 
   bool display_auto_off = true;
   int index_display_autooff_times = 6; // index of currently used time 
-  int max_display_autooff_times = 7; // max available times
-  int display_autooff_times[7] = {-1, 3, 5, 10, 15, 30, 60}; // available times
-  char char_display_autooff_times[7][56] = {
-    "AUTO OFF TIME -1",
+  int max_display_autooff_times = 6; // max available times
+  int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
+  char char_display_autooff_times[6][56] = {
     "AUTO OFF TIME 3",
     "AUTO OFF TIME 5",
     "AUTO OFF TIME 10",
@@ -6519,7 +6518,7 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection: enable/disable ui updates
-  if (update_ui_period!=-1) {
+  if (systemData.display_auto_off==true) {
     if (rtc.now().unixtime() >= unixtime_control_panel_request+update_ui_period) {update_ui=false;}
     else {update_ui=true;}
   }
