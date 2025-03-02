@@ -272,7 +272,7 @@ const char *menuHomeItems[1] =
 LcdGfxMenu menuHome( menuHomeItems, 1, {{2, 2}, {47, 25}} );
 
 
-const char *menuMainItems[7] =
+const char *menuMainItems[8] =
 {
     "   MATRIX        ", // allows matrix configuration
     "   FILE          ", // load/save/delete system and matrix configurations
@@ -281,8 +281,9 @@ const char *menuMainItems[7] =
     "   SENSORS       ", // allows configuration of onboard sensor modules on the multiplexers and i2c sensor modules on the i2c bus
     "   SYSTEM        ",
     "   UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "   DISPLAY       ",
 };
-LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuMain( menuMainItems, 8, {{3, 34}, {124, 124}} );
 
 const char *menuMatrixSwitchSelectItems[20] =
 {
@@ -357,6 +358,16 @@ LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
 
 const char *menuUniverseItems[7];
 LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{0, 14}, {128, 128}} );
+
+/*
+
+auto turn off
+turn off time
+color
+
+*/
+const char *menuDisplayItems[3];
+LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{0, 14}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -460,8 +471,42 @@ struct systemStruct {
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
 
+  bool display_auto_off = true;
+  int index_display_autooff_times = 6; // index of currently used time 
+  int max_display_autooff_times = 7; // max available times
+  int display_autooff_times[7] = {-1, 3, 5, 10, 15, 30, 60}; // available times
+  char char_display_autooff_times[7][56] = {
+    "AUTO OFF TIME -1",
+    "AUTO OFF TIME 3",
+    "AUTO OFF TIME 5",
+    "AUTO OFF TIME 10",
+    "AUTO OFF TIME 15",
+    "AUTO OFF TIME 30",
+    "AUTO OFF TIME 60",
+  };
+
+  int index_display_color = 0;
+  int max_color_index = 5;
+  int display_color[5] = {
+    RGB_COLOR16(255,255,255),
+    RGB_COLOR16(255,0,255),
+    RGB_COLOR16(0,0,255),
+    RGB_COLOR16(0,255,0),
+    RGB_COLOR16(255,0,0),
+  };
+  char char_display_color[5][56] = {
+    "COLOR WHITE",
+    "COLOR PURPLE",
+    "COLOR BLUE",
+    "COLOR GREEN",
+    "COLOR RED",
+  };
+
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
-  char translate_plus_minus[2][2]  = {"+", "-"};              // bool used as index selects bool translation
+  char translate_plus_minus[2][2]  = {"+", "-"}; // bool used as index selects bool translation
+
+  char tmp0[56];
+  char tmp1[56];
 };
 systemStruct systemData;
 
@@ -5759,6 +5804,14 @@ void inputChar(char * data) {
   }
 }
 
+// ------------------------------------------------
+//                                          UI DATA
+
+char TMP_UI_DATA_0[56];
+char TMP_UI_DATA_1[56];
+int color_border = RGB_COLOR16(255,255,255);
+int color_content = RGB_COLOR16(255,255,255);
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        MENU UP
 
@@ -5782,6 +5835,7 @@ void menuUp() {
   else if (menu_page==50) {menuGPS.up();}
   else if (menu_page==60) {menuSerial.up();}
   else if (menu_page==70) {menuUniverse.up();}
+  else if (menu_page==80) {menuDisplay.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5807,6 +5861,7 @@ void menuDown() {
   else if (menu_page==50) {menuGPS.down();}
   else if (menu_page==60) {menuSerial.down();}
   else if (menu_page==70) {menuUniverse.down();}
+  else if (menu_page==80) {menuDisplay.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5875,6 +5930,11 @@ void menuEnter() {
     // go to universe menu
     if (menuMain.selection()==6) {
       menu_page=70;
+    }
+
+    // go to display menu
+    if (menuMain.selection()==7) {
+      menu_page=80;
     }
   }
 
@@ -6126,6 +6186,26 @@ void menuEnter() {
     if (menuUniverse.selection()==5) {systemData.sidereal_track_saturn^=true;}
     if (menuUniverse.selection()==6) {systemData.sidereal_track_uranus^=true;}
     if (menuUniverse.selection()==7) {systemData.sidereal_track_neptune^=true;}
+  }
+
+  // dispaly page
+  else if (menu_page==80) {
+
+    // display auto off
+    if (menuDisplay.selection()==0)  {systemData.display_auto_off^=true;}
+    
+    // iter display auto off timing
+    if (menuDisplay.selection()==1)  {
+      systemData.index_display_autooff_times++;
+      if (systemData.index_display_autooff_times>systemData.max_display_autooff_times-1) {systemData.index_display_autooff_times=0;}
+    }
+
+    // iter display color
+    if (menuDisplay.selection()==2) {systemData.index_display_color++;
+      if (systemData.index_display_color>systemData.max_color_index-1) {systemData.index_display_color=0;}
+      color_content=systemData.display_color[systemData.index_display_color];
+      color_border=systemData.display_color[systemData.index_display_color];
+    }
   }
 }
 
@@ -6385,14 +6465,6 @@ IMPORTANT: beware of image retention and other damage that can be caused to OLED
 */
 
 // ------------------------------------------------
-//                                          UI DATA
-
-char TMP_UI_DATA_0[56];
-char TMP_UI_DATA_1[56];
-int color_border = RGB_COLOR16(255,255,255);
-int color_content = RGB_COLOR16(255,255,255);
-
-// ------------------------------------------------
 //                                        UI BORDER
 
 void drawMainBorder() {
@@ -6482,7 +6554,7 @@ void UpdateUI() {
     //                                    SETTINGS PAGE
 
     // main menu items
-    if (menu_page==1) {
+    else if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
       drawMainBorder();
@@ -6496,7 +6568,7 @@ void UpdateUI() {
     //                         MATRIX SWITCH LOGIC PAGE
 
     // matrix switch function items
-    if (menu_page==3) {
+    else if (menu_page==3) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       drawMainBorder();
@@ -6677,7 +6749,7 @@ void UpdateUI() {
     //                                ENTER DIGITS PAGE
 
     // enter digits page
-    if (menu_page==4) {
+    else if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       drawMainBorderRed();
       canvas120x8.clear();
@@ -6695,7 +6767,7 @@ void UpdateUI() {
     //                     SELECT FUNCTION OPTIONS PAGE
 
     // select function name, x, y, or z
-    if (menu_page==5) {
+    else if (menu_page==5) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       canvas120x8.setFixedFont(ssd1306xled_font6x8);
@@ -6726,7 +6798,7 @@ void UpdateUI() {
     //                        SELECT FUNCTION NAME PAGE
 
     // select function name
-    if (menu_page==6) {
+    else if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
 
@@ -6752,7 +6824,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                        FILE MENU
 
-    if (menu_page==20) {
+    else if (menu_page==20) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
       canvas120x8.clear();
@@ -6765,7 +6837,7 @@ void UpdateUI() {
     //                                 SAVE MATRIX MENU
 
     // save matrix
-    if (menu_page==21) {
+    else if (menu_page==21) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
       canvas120x8.clear();
@@ -6784,7 +6856,7 @@ void UpdateUI() {
     //                                 LOAD MATRIX MENU
 
     // load matrix
-    if (menu_page==22) {
+    else if (menu_page==22) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
       canvas120x8.clear();
@@ -6802,7 +6874,7 @@ void UpdateUI() {
     //                               DELETE MATRIX MENU
 
     // delete matrix
-    if (menu_page==23) {
+    else if (menu_page==23) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
       canvas120x8.clear();
@@ -6820,7 +6892,7 @@ void UpdateUI() {
     //                            SAVE MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    if (menu_page==30) {
+    else if (menu_page==30) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -6833,7 +6905,7 @@ void UpdateUI() {
     //                            LOAD MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    if (menu_page==31) {
+    else if (menu_page==31) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -6861,7 +6933,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                         GPS MENU
 
-    if (menu_page==50) {
+    else if (menu_page==50) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
 
@@ -6892,7 +6964,7 @@ void UpdateUI() {
 
     /* output data to be parsed by other systems or to be read by humans */
 
-    if (menu_page==60) {
+    else if (menu_page==60) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
 
@@ -6926,7 +6998,7 @@ void UpdateUI() {
 
     /* currently solar system tracking */
 
-    if (menu_page==70) {
+    else if (menu_page==70) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(color_content);
 
@@ -6962,6 +7034,31 @@ void UpdateUI() {
 
       // show menu
       menuUniverse.show( display );
+    }
+
+    // ------------------------------------------------
+    //                                     DISPLAY MENU
+
+    else if (menu_page==80) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(color_content);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x8);
+
+      // auto off
+      if (systemData.display_auto_off==true) {menuDisplayItems[0]="AUTO OFF ENABLED";}
+      else {menuDisplayItems[0]="AUTO OFF DISABLED";}
+
+      // auto off time
+      menuDisplayItems[1] = systemData.char_display_autooff_times[systemData.index_display_autooff_times];
+
+      // color
+      menuDisplayItems[2] = systemData.char_display_color[systemData.index_display_color];
+
+      // show menu
+      menuDisplay.show( display );
     }
   }
 
