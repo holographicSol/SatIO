@@ -4032,11 +4032,13 @@ bool check_bool_false(bool _bool) {
 bool SecondsTimer(double n0, double n1, int Mi) {
 
   /*
+
   seconds accumulated by an isr alarm. this does not use satellite data. 
   
   x (n0): total time to be divided between on and off time
   y (n1): total time on within x total time
-  example: X=2, Y=1 = on 1 second, off one second, total time 2 seconds
+  example: X=2, Y=1 = on 1 second, off one second, total time 2 seconds.
+
   */
 
   // turn on or remain off
@@ -8015,10 +8017,10 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted
+          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard
+          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function) 
         }
         display.drawCanvas(84, 10, canvas8x8);
         display.drawRect(83, 6, 93, 21);
@@ -8028,10 +8030,10 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted
+          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function) 
         }
         display.drawCanvas(83, 10, canvas8x8);
       }
