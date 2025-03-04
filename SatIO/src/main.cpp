@@ -1574,7 +1574,15 @@ struct MatrixStruct {
   // reflects matrix switch enabled/disabled
   int matrix_switch_enabled[1][20] = {
     {
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    }
+  };
+
+  // reflects matrix switch output mode: 0=high/low
+  int matrix_switch_output_mode[1][20] = {
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
   };
