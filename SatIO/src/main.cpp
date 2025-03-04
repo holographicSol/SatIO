@@ -8017,12 +8017,14 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(255,255,0)); // caution inverted
           canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
           canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(84, 10, canvas8x8);
+        display.setColor(systemData.color_content);
         display.drawRect(83, 6, 93, 21);
       }
       else {
@@ -8030,12 +8032,14 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(255,255,0)); // caution inverted
           canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
           canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(83, 10, canvas8x8);
+        display.setColor(systemData.color_content);
       }
 
       // highlight matrix switch function select menu
