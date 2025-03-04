@@ -1811,16 +1811,14 @@ struct MatrixStruct {
   /* function names for function name matrix */
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 221;
+  int max_matrix_function_names = 213;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[221][25] = 
+  char matrix_function_names[213][25] = 
   {
     "$NONE",
     "$ENABLED",
-    "$OVERLOAD_TRUE",
-    "$OVERLOAD_FALSE",
-    "$SWITCHLINKTRUE",
-    "$SWITCHLINKFALSE",
+    "$OVERLOAD",
+    "$SWITCHLINK",
     "SecondsTimer",
     "RTCTimeOver",
     "RTCTimeUnder",
@@ -1948,15 +1946,9 @@ struct MatrixStruct {
     "GNGGAValidCS",
     "GNRMCValidCS",
     "GPATTValidCS",
-    "GNGGAInvalidCS",
-    "GNRMCInvalidCS",
-    "GPATTInvalidCS",
     "GNGGAValidCD",
     "GNRMCValidCD",
     "GPATTValidCD",
-    "GNGGAInvalidCD",
-    "GNRMCInvalidCD",
-    "GPATTInvalidCD",
     "SunAzRange",
     "SunAltRange",
     "DayTime",
@@ -2042,7 +2034,7 @@ MatrixStruct matrixData;
 
 // note that we could work out of this item list entirely to be more efficient but then our function name items would have a
 // display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
-const char *menuMatrixSetFunctionNameItems[222] =
+const char *menuMatrixSetFunctionNameItems[213] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -2257,17 +2249,8 @@ const char *menuMatrixSetFunctionNameItems[222] =
   matrixData.matrix_function_names[210],
   matrixData.matrix_function_names[211],
   matrixData.matrix_function_names[212],
-  matrixData.matrix_function_names[213],
-  matrixData.matrix_function_names[214],
-  matrixData.matrix_function_names[215],
-  matrixData.matrix_function_names[216],
-  matrixData.matrix_function_names[217],
-  matrixData.matrix_function_names[218],
-  matrixData.matrix_function_names[219],
-  matrixData.matrix_function_names[220],
-  matrixData.matrix_function_names[221]
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 222, {{0, 34}, {128, 128}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 213, {{0, 34}, {128, 128}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -4497,20 +4480,15 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "$ENABLED") == 0) {tmp_matrix[Fi] = 1;}
 
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD_TRUE") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD") == 0) {
           tmp_matrix[Fi] = check_bool_true(systemData.overload);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD_FALSE") == 0) {
-          tmp_matrix[Fi] = check_bool_false(systemData.overload);}
 
         /*
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
          gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLinkTrue") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SWITCHLINK") == 0) {
           tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
-          
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLinkFalse") == 0) {
-          tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                              TIME DATA
@@ -6900,28 +6878,16 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_false(gnggaData.valid_checksum);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_false(gnrmcData.valid_checksum);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_false(gpattData.valid_checksum);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAInvalidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_false(gnggaData.check_data, 16);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCInvalidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_false(gnrmcData.check_data, 14);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTInvalidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_false(gpattData.check_data, 41);}
       }
 
       // ----------------------------------------------------------------------------------------------------------------------
@@ -7523,10 +7489,8 @@ String getRelatedZ(char * data) {
 String getRelatedX(char * data) {
   // if (strcmp("$NONE", data)==0) {return String();}
   // if (strcmp("$ENABLED", data)==0) {return String();}
-  if (strcmp("$OVERLOAD_TRUE", data)==0) {return String(systemData.overload);}
-  if (strcmp("$OVERLOAD_FALSE", data)==0) {return String(systemData.overload);}
-  // if (strcmp("$SWITCHLINKTRUE", data)==0) {return String();}
-  // if (strcmp("$SWITCHLINKFALSE", data)==0) {return String();}
+  if (strcmp("$OVERLOAD", data)==0) {return String(systemData.overload);}
+  // if (strcmp("$SWITCHLINK", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
 
   // potentially redirect calls like these to existing values so that the values are already set before here: pros=calculate once, cons=stale data
@@ -7657,15 +7621,9 @@ String getRelatedX(char * data) {
   if (strcmp("GNGGAValidCS", data)==0) {return String(gnggaData.valid_checksum);}
   if (strcmp("GNRMCValidCS", data)==0) {return String(gnrmcData.valid_checksum);}
   if (strcmp("GPATTValidCS", data)==0) {return String(gpattData.valid_checksum);}
-  if (strcmp("GNGGAInvalidCS", data)==0) {return String(gnggaData.valid_checksum);}
-  if (strcmp("GNRMCInvalidCS", data)==0) {return String(gnrmcData.valid_checksum);}
-  if (strcmp("GPATTInvalidCS", data)==0) {return String(gpattData.valid_checksum);}
   if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.check_data);}
   if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.check_data);}
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
-  if (strcmp("GNGGAInvalidCD", data)==0) {return String(gnggaData.check_data);}
-  if (strcmp("GNRMCInvalidCD", data)==0) {return String(gnrmcData.check_data);}
-  if (strcmp("GPATTInvalidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
 
