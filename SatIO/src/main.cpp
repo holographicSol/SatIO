@@ -7874,19 +7874,19 @@ void UpdateUI() {
       // combination border
       display.drawHLine(2, 26, 126);
 
-      // state on/off
-      display.setColor(systemData.color_content);
-      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-        display.setColor(RGB_COLOR16(0,255,0));
-        // tmp simple indicator (used space is carefully considered)
-        display.fillRect(120, 28, 122, 30);
-      }
-      else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
-        display.setColor(RGB_COLOR16(0,0,0));
-        // tmp simple indicator (used space is carefully considered)
-        display.fillRect(120, 28, 122, 30);
-      }
-      display.setColor(systemData.color_content);
+      // // state on/off
+      // display.setColor(systemData.color_content);
+      // if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
+      //   display.setColor(RGB_COLOR16(0,255,0));
+      //   // tmp simple indicator (used space is carefully considered)
+      //   display.fillRect(120, 28, 122, 30);
+      // }
+      // else if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==false) {
+      //   display.setColor(RGB_COLOR16(0,0,0));
+      //   // tmp simple indicator (used space is carefully considered)
+      //   display.fillRect(120, 28, 122, 30);
+      // }
+      // display.setColor(systemData.color_content);
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7977,6 +7977,8 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas19x8.clear();
         // display.invertColors();
+        if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        else {display.setColor(RGB_COLOR16(255,0,0));}
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 10, canvas19x8);
         // display.invertColors();
@@ -7989,6 +7991,8 @@ void UpdateUI() {
         strcpy(TMP_UI_DATA_0, "P");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas19x8.clear();
+        if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        else {display.setColor(RGB_COLOR16(255,0,0));}
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(39, 10, canvas19x8);
         display.setColor(systemData.color_content);
