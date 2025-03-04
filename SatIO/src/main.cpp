@@ -8001,11 +8001,11 @@ void UpdateUI() {
         // display.setColor(RGB_COLOR16(0,255,0));
         // display.invertColors();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-          canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
+          canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL ); // enabled
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
           // display.setColor(RGB_COLOR16(255,0,0));
-          canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
+          canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL ); // disabled
         }
         display.drawCanvas(68, 10, canvas8x8);
         // display.invertColors();
@@ -8017,11 +8017,11 @@ void UpdateUI() {
         canvas8x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
           // display.setColor(RGB_COLOR16(0,255,0));
-          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD );
+          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD ); // enabled
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
           // display.setColor(RGB_COLOR16(255,0,0));
-          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
+          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD ); // disabled
         }
         display.drawCanvas(68, 10, canvas8x8);
         display.setColor(systemData.color_content);
@@ -8033,10 +8033,10 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL );
+          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL );
+          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard
         }
         display.drawCanvas(84, 10, canvas8x8);
         display.drawRect(83, 6, 93, 21);
@@ -8046,10 +8046,10 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD );
+          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD );
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard
         }
         display.drawCanvas(83, 10, canvas8x8);
       }
@@ -8564,7 +8564,7 @@ void makeI2CRequest() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
 
-      // parse currently spare creative potential buttons
+      // parse currently spare creative potential buttons: (auto input with set_var_x set_var_y set_var_z) (clear)
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
