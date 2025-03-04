@@ -1675,47 +1675,47 @@ struct MatrixStruct {
   //   }
   // };
 
-  // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default $NONE)
+  // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default NONE)
   char matrix_function[20][10][25] = {
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 1
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 1
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 2
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 2
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 3
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 3
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 4
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 4
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 5
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 5
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 6
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 6
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 7
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 7
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 8
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 8
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 9
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 9
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 10
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 10
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 11
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 11
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 12
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 12
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 13
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 13
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 14
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 14
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 15
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 15
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 16
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 16
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 17
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 17
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 18
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 18
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 19
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 19
      },
-    {"$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", "$NONE", // 20
+    {"NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", "NONE", // 20
      },
     };
 
@@ -1815,10 +1815,10 @@ struct MatrixStruct {
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
   char matrix_function_names[213][25] = 
   {
-    "$NONE",
-    "$ENABLED",
-    "$OVERLOAD",
-    "$SWITCHLINK",
+    "NONE",
+    "ENABLED",
+    "OVERLOAD",
+    "SWITCHLINK",
     "SecondsTimer",
     "RTCTimeOver",
     "RTCTimeUnder",
@@ -3610,7 +3610,7 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    ZERO MATRIX
 
-/* writes $NONE to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
+/* writes NONE to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
 
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
@@ -3619,7 +3619,7 @@ void zero_matrix() {
     matrixData.matrix_switch_enabled[0][Mi] = 0;
     for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
       memset(matrixData.matrix_function[Mi][Fi], 0, 56);
-      strcpy(matrixData.matrix_function[Mi][Fi], "$NONE");
+      strcpy(matrixData.matrix_function[Mi][Fi], "NONE");
       matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
@@ -4463,21 +4463,21 @@ void matrixSwitch() {
         // Serial.println("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
         /*
-        perfromance and logic prefers adding functions from position zero else if position zero $NONE then break.
+        perfromance and logic prefers adding functions from position zero else if position zero NONE then break.
         */
-        if ((strcmp(matrixData.matrix_function[Mi][Fi], "$NONE") == 0) && (Fi == 0)) {break;}
+        if ((strcmp(matrixData.matrix_function[Mi][Fi], "NONE") == 0) && (Fi == 0)) {break;}
 
         /*
-        put true in temporary matrix for functions after position zero that are set to $NONE. allows for 1-10 functions to be set.
+        put true in temporary matrix for functions after position zero that are set to NONE. allows for 1-10 functions to be set.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "$NONE") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NONE") == 0) {
           tmp_matrix[Fi] = 1; count_none_function++;}
 
         /*
-        put true in temporary matrix if switch is $ENABLED (different from enabling disabling) regardless of data. if used,
-        function name $ENABLED will always return true.
+        put true in temporary matrix if switch is ENABLED (different from enabling disabling) regardless of data. if used,
+        function name ENABLED will always return true.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "$ENABLED") == 0) {tmp_matrix[Fi] = 1;}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ENABLED") == 0) {tmp_matrix[Fi] = 1;}
 
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "OVERLOAD") == 0) {
@@ -6894,8 +6894,8 @@ void matrixSwitch() {
       //                                                                                                           FINAL SWITCH
       
       /*
-      safety layer: disengage if all entries are $NONE.
-      this is a second layer on top of initial check for $NONE set at position zero, function 0.
+      safety layer: disengage if all entries are NONE.
+      this is a second layer on top of initial check for NONE set at position zero, function 0.
       */
       if (count_none_function <= matrixData.max_matrix_functions-1) {
 
@@ -7487,10 +7487,10 @@ String getRelatedZ(char * data) {
 }
 
 String getRelatedX(char * data) {
-  // if (strcmp("$NONE", data)==0) {return String();}
-  // if (strcmp("$ENABLED", data)==0) {return String();}
-  if (strcmp("$OVERLOAD", data)==0) {return String(systemData.overload);}
-  // if (strcmp("$SWITCHLINK", data)==0) {return String();}
+  // if (strcmp("NONE", data)==0) {return String();}
+  // if (strcmp("ENABLED", data)==0) {return String();}
+  if (strcmp("OVERLOAD", data)==0) {return String(systemData.overload);}
+  // if (strcmp("SWITCHLINK", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
 
   // potentially redirect calls like these to existing values so that the values are already set before here: pros=calculate once, cons=stale data
