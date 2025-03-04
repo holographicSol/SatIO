@@ -8396,7 +8396,7 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                  OLED PROTECTION
 
-  // oled protection: clear ui once if ui updates disabled
+  // oled protection:
   else if ((ui_cleared == false) && (update_ui == false)) {
     Serial.println("[oled protection] clearing ui");
     display.clear();
