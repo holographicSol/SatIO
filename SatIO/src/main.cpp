@@ -2004,30 +2004,30 @@ struct MatrixStruct {
     "NeptuneDown",
     "NeptuneRise",
     "NeptuneSet",
-    "DHT11_0_H_Under",
-    "DHT11_0_H_Over",
-    "DHT11_0_H_Equal",
-    "DHT11_0_H_Range",
-    "DHT11_0_C_Under",
-    "DHT11_0_C_Over",
-    "DHT11_0_C_Equal",
-    "DHT11_0_C_Range",
-    "DHT11_0_F_Under",
-    "DHT11_0_F_Over",
-    "DHT11_0_F_Equal",
-    "DHT11_0_F_Range",
-    "DHT11_0_HIC_Under",
-    "DHT11_0_HIC_Over",
-    "DHT11_0_HIC_Equal",
-    "DHT11_0_HIC_Range",
-    "DHT11_0_HIF_Under",
-    "DHT11_0_HIF_Over",
-    "DHT11_0_HIF_Equal",
-    "DHT11_0_HIF_Range",
-    "PhotoRes_0_Under",
-    "PhotoRes_0_Over",
-    "PhotoRes_0_Equal",
-    "PhotoRes_0_Range",
+    "DHT11H0Under",
+    "DHT11H0Over",
+    "DHT11H0Equal",
+    "DHT11H0Range",
+    "DHT11C0Under",
+    "DHT11C0Over",
+    "DHT11C0Equal",
+    "DHT11C0Range",
+    "DHT11F0Under",
+    "DHT11F0Over",
+    "DHT11F0Equal",
+    "DHT11F0Range",
+    "DHT11HIC0Under",
+    "DHT11HIC0Over",
+    "DHT11HIC0Equal",
+    "DHT11HIC0Range",
+    "DHT11HIF0Under",
+    "DHT11HIF0Over",
+    "DHT11HIF0Equal",
+    "DHT11HIF0Range",
+    "PhotoRes0Under",
+    "PhotoRes0Over",
+    "PhotoRes0Equal",
+    "PhotoRes0Range",
   };
 };
 MatrixStruct matrixData;
@@ -6586,7 +6586,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6597,7 +6597,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6608,7 +6608,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6619,7 +6619,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_H_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -6634,7 +6634,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        DHT11_0 CELSIUS
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6645,7 +6645,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6656,7 +6656,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6667,7 +6667,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_C_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -6682,7 +6682,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     DHT11_0 FAHRENHEIT
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6693,7 +6693,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6704,7 +6704,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6715,7 +6715,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_F_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -6730,7 +6730,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                             DHT11_0 HEAT INDEX CELSIUS
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6741,7 +6741,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6752,7 +6752,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6763,7 +6763,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIC_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -6778,7 +6778,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6789,7 +6789,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6800,7 +6800,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6811,7 +6811,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11_0_HIF_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -6827,7 +6827,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        PHOTO RESISTORS
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6838,7 +6838,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6849,7 +6849,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.photoresistor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -6860,7 +6860,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes_0_Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.photoresistor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7684,30 +7684,30 @@ String getRelatedX(char * data) {
   // if (strcmp("NeptuneDown", data)==0) {return String();}
   if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
   if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
-  if (strcmp("DHT11_0_H_Under", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11_0_H_Over", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11_0_H_Equal", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11_0_H_Range", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11_0_C_Under", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11_0_C_Over", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11_0_C_Equal", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11_0_C_Range", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11_0_F_Under", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11_0_F_Over", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11_0_F_Equal", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11_0_F_Range", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11_0_HIC_Under", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11_0_HIC_Over", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11_0_HIC_Equal", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11_0_HIC_Range", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11_0_HIF_Under", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11_0_HIF_Over", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11_0_HIF_Equal", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11_0_HIF_Range", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("PhotoRes_0_Under", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes_0_Over", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes_0_Equal", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes_0_Range", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11H0Over", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11H0Equal", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11H0Range", data)==0) {return String(sensorData.dht11_h_0);}
+  if (strcmp("DHT11C0Under", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11C0Over", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11C0Equal", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11C0Range", data)==0) {return String(sensorData.dht11_c_0);}
+  if (strcmp("DHT11F0Under", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11F0Over", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11F0Equal", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11F0Range", data)==0) {return String(sensorData.dht11_f_0);}
+  if (strcmp("DHT11HIC0Under", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11HIC0Over", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11HIC0Equal", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11HIC0Range", data)==0) {return String(sensorData.dht11_hic_0);}
+  if (strcmp("DHT11HIF0Under", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11HIF0Over", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11HIF0Equal", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("DHT11HIF0Range", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("PhotoRes0Under", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes0Over", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes0Equal", data)==0) {return String(sensorData.photoresistor_0);}
+  if (strcmp("PhotoRes0Range", data)==0) {return String(sensorData.photoresistor_0);}
   return String("");
 }
 
