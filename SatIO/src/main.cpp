@@ -7990,9 +7990,11 @@ void UpdateUI() {
       if (menu_column_selection == 2) {
         canvas8x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(0,0,255)); // emphasis
           canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL ); // enabled
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(255,0,0)); // emphasis
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL ); // disabled
         }
         display.drawCanvas(68, 10, canvas8x8);
@@ -8003,9 +8005,11 @@ void UpdateUI() {
         // draw currently selected menu item when menu not highlighted
         canvas8x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(0,0,255)); // emphasis
           canvas8x8.printFixed(1, 1, "E", STYLE_BOLD ); // enabled
         }
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(255,0,0)); // emphasis
           canvas8x8.printFixed(1, 1, "D", STYLE_BOLD ); // disabled
         }
         display.drawCanvas(68, 10, canvas8x8);
@@ -8017,7 +8021,7 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(255,255,0)); // caution inverted
+          display.setColor(RGB_COLOR16(255,255,0)); // emphasis
           canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
@@ -8032,7 +8036,7 @@ void UpdateUI() {
         canvas8x8.clear();
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(255,255,0)); // caution inverted
+          display.setColor(RGB_COLOR16(255,255,0)); // emphasis
           canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
