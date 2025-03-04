@@ -115,6 +115,9 @@
   
         ToDo: Black capped (occasionally alien green) grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
 
+        Ethics. Do we really need to be 'turning our lights on at nautical twighlight' automatically, using data from advanced weapons systems (gps data)? This
+        project may soon be discontinued and disasembled.
+
         */
 
 // ------------------------------------------------------------------------------------------------------------------------------
