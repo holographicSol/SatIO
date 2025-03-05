@@ -7047,20 +7047,30 @@ void inputChar(char * data) {
     // port
     if (enter_digits_key==1) {
       if (allow_input_data==true) {
-        // this should be a temporary var
-        strcat(input_data, data);
-        // if not in range then remove last char
-        if (!(atoi(input_data) <= 99) && (!atoi(input_data) >= -1)) {input_data[strlen(input_data)-1] = '\0';}
+        // create temporary data to concat and test
+        memset(tmp_input_data, 0, sizeof(tmp_input_data));
+        strcpy(tmp_input_data, input_data);
+        strcat(tmp_input_data, data);
+        // test range
+        if ((atoi(tmp_input_data) <= 99) && (atoi(tmp_input_data) >= -1)) {
+          memset(input_data, 0, sizeof(input_data));
+          strcpy(input_data, tmp_input_data);
+        }
       }
     }
 
     // <= long
-    if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
       if (allow_input_data==true) {
-        // this should be a temporary var
-        strcat(input_data, data);
-        // if not in range then remove last char
-        if (!(atoi(input_data) <= 179769313486232) && (!atoi(input_data) >= -179769313486232)) {input_data[strlen(input_data)-1] = '\0';}
+        // create temporary data to concat and test
+        memset(tmp_input_data, 0, sizeof(tmp_input_data));
+        strcpy(tmp_input_data, input_data);
+        strcat(tmp_input_data, data);
+        // test range
+        if ((atoi(tmp_input_data) <= 179769313486232) && (atoi(tmp_input_data) >= -179769313486232)) {
+          memset(input_data, 0, sizeof(input_data));
+          strcpy(input_data, tmp_input_data);
+        }
       }
     }
 
