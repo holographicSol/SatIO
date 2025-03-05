@@ -7040,7 +7040,7 @@ int previous_menu_page;
 char input_data[128];
 char tmp_input_data[128];
 char allow_input_data = false;
-int enter_digits_key = NAN;
+signed int enter_digits_key = -1;
 int menu_column_selection=0;
 int previous_menu_column_selection;
 
@@ -7258,7 +7258,7 @@ void menuEnter() {
     else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=5;}
     else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=5;}
     else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=5;}
-    enter_digits_key = NAN;
+    enter_digits_key = -1;
   }
 
   // matrix switch select function name, x, y, or z
