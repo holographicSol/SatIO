@@ -450,6 +450,16 @@ char digit_9[2] = "9";
 char hyphen_char[2] = "-";
 char period_char[2] = ".";
 
+bool make_i2c_request = false;
+int unixtime_control_panel_request;
+int previous_menu_page;
+char input_data[128];
+char tmp_input_data[128];
+char allow_input_data = false;
+signed int enter_digits_key = -1;
+int menu_column_selection=0;
+int previous_menu_column_selection;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 
@@ -457,19 +467,18 @@ struct systemStruct {
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   bool matrix_run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
 
+  // performace: turn on/off what you need
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
   bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
   bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
   bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
   bool matrix_enabled = false;         // enables/disables matrix switch
-
   bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
   bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
   bool port_controller_enabled = true; // may be false by default but is default true for now.
-
   bool sidereal_track_sun = true;      // enables/disables celestial body tracking
   bool sidereal_track_moon = true;     // enables/disables celestial body tracking
   bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
@@ -532,6 +541,7 @@ systemStruct systemData;
 //                                                                                                                    DATA: DEBUG
 
 struct sysDebugStruct {
+  // performace: turn on/off what you need
   bool gngga_sentence = false;   // enables/disables itemized sentence value output after processing
   bool gnrmc_sentence = false;   // enables/disables itemized sentence value output after processing
   bool gpatt_sentence = false;   // enables/disables itemized sentence value output after processing
@@ -7042,16 +7052,6 @@ void setAllMatrixSwitchesStateTrue() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     INPUT DATA
 
-bool make_i2c_request = false;
-int unixtime_control_panel_request;
-int previous_menu_page;
-char input_data[128];
-char tmp_input_data[128];
-char allow_input_data = false;
-signed int enter_digits_key = -1;
-int menu_column_selection=0;
-int previous_menu_column_selection;
-
 void inputChar(char * data) {
 
   // allow signing as first char
@@ -7828,13 +7828,15 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection: enable/disable ui updates
-  if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
+  if (systemData.display_auto_off==true) {
+    if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
+    else {update_ui=true;}
+  }
   else {update_ui=true;}
 
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
-  Serial.println("[update_ui] " + String(update_ui));
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=3; // uncomment to debug
 
@@ -7844,7 +7846,7 @@ void UpdateUI() {
   if (update_ui==true) {
     ui_cleared = false;
 
-    Serial.println("[oled protection] allowing ui update");
+    // Serial.println("[oled protection] allowing ui update");
     // Serial.println("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
@@ -8641,14 +8643,12 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection:
-  if (systemData.display_auto_off==true) {
-    if ((ui_cleared == false) && (update_ui == false)) {
-      Serial.println("[oled protection] clearing ui");
-      display.clear();
-      display.clear();
-      display.clear();
-      ui_cleared=true;
-    }
+  if ((ui_cleared == false) && (update_ui == false)) {
+    Serial.println("[oled protection] clearing ui");
+    display.clear();
+    display.clear();
+    display.clear();
+    ui_cleared=true;
   }
 }
 
