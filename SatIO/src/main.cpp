@@ -103,7 +103,7 @@
 
         ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio).
               (redirects joysticks/trigger input to output, variably). requires a special menu page where any given analogue input controls can be calibrated
-              and mapped to with certain thresholds for stabalizing input as required.
+              and mapped to within certain thresholds for stabalizing input as required per analogu input device.
   
         ToDo: Black capped (occasionally alien green) grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
 
