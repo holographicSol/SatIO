@@ -8310,7 +8310,7 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(52, 1, "FILE", STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
       menuFile.show( display );
@@ -8330,7 +8330,7 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(52, 1, "SAVE", STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -8355,7 +8355,7 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(52, 1, "LOAD", STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -8379,7 +8379,7 @@ void UpdateUI() {
       display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(52, 1, "DELETE", STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
