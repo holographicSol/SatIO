@@ -7856,7 +7856,7 @@ void UpdateUI() {
       menuHome.show( display );
       canvas120x8.clear();
       canvas120x8.printFixed(2, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
-      display.drawCanvas(4, 40, canvas120x8);
+      display.drawCanvas(3, 40, canvas120x8);
     }
 
     // ------------------------------------------------
@@ -7865,10 +7865,16 @@ void UpdateUI() {
     else if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
       drawMainBorder();
+      
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
-      display.drawCanvas(6, 6, canvas120x8);
+      display.drawCanvas(4, 6, canvas120x8);
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       menuMain.show( display );
     }
 
