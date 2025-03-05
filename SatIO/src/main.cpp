@@ -7873,7 +7873,7 @@ void UpdateUI() {
       display.drawCanvas(4, 6, canvas120x8);
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       menuMain.show( display );
     }
@@ -7886,7 +7886,7 @@ void UpdateUI() {
 
       drawMainBorder();
 
-      // seperator
+      // seperator (slightly lower than other header seperators to allow height space for combination bar)
       display.drawHLine(2, 26, 126);
 
       // function name
@@ -8307,7 +8307,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
@@ -8327,7 +8327,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
@@ -8352,7 +8352,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
@@ -8376,7 +8376,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
@@ -8468,7 +8468,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
@@ -8507,7 +8507,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
@@ -8546,7 +8546,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
@@ -8592,7 +8592,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
@@ -8622,7 +8622,7 @@ void UpdateUI() {
       drawMainBorder();
 
       // seperator
-      display.drawHLine(2, 26, 126);
+      display.drawHLine(2, 20, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
