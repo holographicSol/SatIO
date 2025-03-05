@@ -438,6 +438,27 @@ void beginSDCARD() {
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
+char A_char[4] = "A";
+char D_char[4] = "D";
+char N_char[4] = "N";
+char E_char[4] = "E";
+char S_char[4] = "S";
+char V_char[4] = "V";
+char W_char[4] = "W";
+
+char digit_0[2] = "0";
+char digit_1[2] = "1";
+char digit_2[2] = "2";
+char digit_3[2] = "3";
+char digit_4[2] = "4";
+char digit_5[2] = "5";
+char digit_6[2] = "6";
+char digit_7[2] = "7";
+char digit_8[2] = "8";
+char digit_9[2] = "9";
+char hyphen_char[2] = "-";
+char period_char[2] = ".";
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 
@@ -4067,6 +4088,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
     else {true;}
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -4449,11 +4471,6 @@ void setTrackPlanets() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 MATRIX: SWITCH
-
-char hemi_n[4] = "N";
-char hemi_e[4] = "E";
-char hemi_s[4] = "S";
-char hemi_w[4] = "W";
 
 void matrixSwitch() {
 
@@ -5086,37 +5103,37 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, hemi_n, 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, N_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, hemi_n, 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, N_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAEast") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, hemi_e, 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, E_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, hemi_e, 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, E_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGASouth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, hemi_s, 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, S_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, hemi_s, 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, S_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAWest") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, hemi_w, 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, W_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, hemi_w, 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, W_char, 1);
           }
         }
 
@@ -5355,37 +5372,37 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, N_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, N_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCEast") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, E_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, E_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCSouth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, "S", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, S_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, "S", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, S_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCWest") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, "W", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, W_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, "W", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, W_char, 1);
           }
         }
 
@@ -5529,55 +5546,55 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCA") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "A", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, A_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, "A", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, A_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCV") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, "V", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, V_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, "V", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, V_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCA") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "A", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, A_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, "A", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, A_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCD") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "D", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, D_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, "D", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, D_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCE") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, E_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, E_char, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCN") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, N_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, N_char, 1);
           }
         }
 
@@ -8643,8 +8660,6 @@ void makeI2CRequest() {
     unixtime_control_panel_request = rtc.now().unixtime();
     Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
-    
-
     // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
     if (update_ui==true) {
 
@@ -8655,18 +8670,18 @@ void makeI2CRequest() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
 
       // parse numpad buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputChar("0");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputChar("1");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputChar("2");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputChar("3");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputChar("4");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputChar("5");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputChar("6");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputChar("7");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputChar("8");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputChar("9");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputChar(".");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar("-");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputChar(digit_0);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputChar(digit_1);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputChar(digit_2);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputChar(digit_3);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputChar(digit_4);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputChar(digit_5);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputChar(digit_6);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputChar(digit_7);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputChar(digit_8);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputChar(digit_9);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputChar(period_char);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
 
       // parse navigation buttons
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
