@@ -8472,7 +8472,7 @@ void UpdateUI() {
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x8);
+      display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
@@ -8511,7 +8511,7 @@ void UpdateUI() {
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x8);
+      display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
@@ -8550,7 +8550,7 @@ void UpdateUI() {
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x8);
+      display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
@@ -8596,7 +8596,7 @@ void UpdateUI() {
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x8);
+      display.drawCanvas(3, 6, canvas120x8);
 
       // auto off
       if (systemData.display_auto_off==true) {menuDisplayItems[0]="AUTO OFF ENABLED";}
@@ -8626,7 +8626,7 @@ void UpdateUI() {
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x8);
+      display.drawCanvas(3, 6, canvas120x8);
 
       // run matrix on startup
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
