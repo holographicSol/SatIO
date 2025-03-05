@@ -115,6 +115,8 @@
   
         ToDo: Black capped (occasionally alien green) grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
 
+        ToDo: Documentaion.
+
         Ethics. Do we really need to be 'turning our lights on at nautical twighlight' automatically, using data from advanced weapons systems (gps data)? This
         project may soon be discontinued and disasembled.
 
@@ -7845,7 +7847,7 @@ void UpdateUI() {
     ui_cleared = false;
 
     // Serial.println("[oled protection] allowing ui update");
-    Serial.println("[menu page] " + String(menu_page));
+    // Serial.println("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
     //                                        HOME PAGE
@@ -9426,7 +9428,7 @@ void loop() {
   if (longer_loop==false) {
     t0 = millis();
     UpdateUI();
-    Serial.println("[UpdateUI] " + String(millis()-t0));
+    // Serial.println("[UpdateUI] " + String(millis()-t0));
   }
 
   // ---------------------------------------------------------------------
@@ -9446,15 +9448,15 @@ void loop() {
   // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
-  Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
+  // Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
+  // Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
   // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   // Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
   // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
-  Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
+  // Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
