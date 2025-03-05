@@ -8050,13 +8050,19 @@ void UpdateUI() {
     // enter digits page
     else if (menu_page==4) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       drawMainBorderRed();
+
       canvas120x8.clear();
       if (enter_digits_key==1) {canvas120x8.printFixed((120/2)-((strlen("ENTER PORT NUMBER")/2)*6), 1, "ENTER PORT NUMBER", STYLE_BOLD );}
       else if (enter_digits_key==2) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE X")/2)*6), 1, "ENTER VALUE X", STYLE_BOLD );}
       else if (enter_digits_key==3) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Y")/2)*6), 1, "ENTER VALUE Y", STYLE_BOLD );}
       else if (enter_digits_key==4) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Z")/2)*6), 1, "ENTER VALUE Z", STYLE_BOLD );}
       display.drawCanvas(2, 6, canvas120x8);
+
+      // seperator
+      display.drawHLine(2, 20, 126);
+
       canvas120x8.clear();
       // canvas120x8.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
       canvas120x8.printFixed((120/2)-((strlen(String(input_data).c_str())/2)*6), 1, String(input_data).c_str(), STYLE_BOLD );
