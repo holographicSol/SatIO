@@ -252,7 +252,7 @@ int SSD1351_MOSI = 13; // (SDA)
 int SSD1351_CS   = 26; // (CS)
 
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
-DisplaySSD1351_128x128x16_SPI display( -1, {  -1,  SSD1351_CS,  SSD1351_MISO,  0,  -1,  -1  });
+DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD1351_CS,  (int8_t)SSD1351_MISO,  (int8_t)0,  (int8_t)-1,  (int8_t)-1  });
 NanoCanvas<6,8,1> canvas6x8;
 NanoCanvas<8,8,1> canvas8x8; // 1 chars wide + 2
 NanoCanvas<19,8,1> canvas19x8; // 3 chars wide + 1
