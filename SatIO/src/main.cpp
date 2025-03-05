@@ -90,28 +90,20 @@
 
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
+      
+      Summary: A satellite, inertial and sensor value calculator with over one quintillion combinations of stackable logic for a general purpose part,
+      subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the WTGPS300, it
+      may sometimes be preferrable and useful to have one system to handle the data, rather than requireing a quintillion different systems over time.
 
         ToDo: Latitude and longitude terrain elevation dictionary.
 
-        ToDo: AI peripheral that performs object detection and returns object name.
-
-        ToDo: Create a custom SatIO PCB with all headers broken out and extended, so the system as a 'motherboard' can be mounted and peripherals
-        including indicators and such can be configurable/customizably placed.
-
-        ToDo: Add zero-in functionality to matrix functions. find that signature, find that uap. allows for finding things only the sensors can see.
-
         Todo: wire up the existing functionality through to the interface level.
 
-        ToDo: esp32 has a NIC, host an RSS feed that can be enabled/disabled.
+        ToDo: esp32 has a NIC, host an RSS feed for local/remote parsing that can be enabled/disabled.
 
         ToDo: override: setup for special input controls that can override variable output pins on the port controller (satio drives you/you drive satio).
               (redirects joysticks/trigger input to output, variably). requires a special menu page where any given analogue input controls can be calibrated
               and mapped to with certain thresholds for stabalizing input as required.
-        
-        ToDo: output via portcontroller is currently high/low, allowing for turning devices on/off and or for devices to interpret a high low. provide
-              output configuration allowing for more variable analogue signals to be output.
-        
-        ToDo: allow for user defined parsing of gps data: allowing for different gps modules to be used even if they have a different data structure and or data content.
   
         ToDo: Black capped (occasionally alien green) grey cherry mx switches for the control panel (80 cN operating force takes more pressure than other switches).
 
