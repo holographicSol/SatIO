@@ -8488,8 +8488,8 @@ void UpdateUI() {
       if (systemData.gpatt_enabled==true) {menuGPSItems[3]="GPATT ENABLED";}
       else {menuGPSItems[3]="GPATT DISABLED";}
 
-      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="COORD CONVERT GNGGA";}
-      if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="COORD CONVERT GNRMC";}
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="CONVERT GNGGA";}
+      if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="CONVERT GNRMC";}
 
       // show menu
       menuGPS.show( display );
