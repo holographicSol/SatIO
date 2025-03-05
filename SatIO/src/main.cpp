@@ -335,7 +335,7 @@ const char *menuMatrixConfigureFunctionItems[4] =
     "ENTER VALUE Y   ",
     "ENTER VALUE Z   ",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 34}, {124, 84}} );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 76}, {124, 124}} );
 
 const char *menuFileItems[6] =
 {
@@ -8074,21 +8074,54 @@ void UpdateUI() {
 
       drawMainBorder();
 
-      // matrix switch number 
-      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
-      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("SETUP SWITCH LOGIC")/2)*6), 1, "SETUP SWITCH LOGIC", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      // function number
+      // seperator
+      display.drawHLine(2, 20, 126);
+
+      // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "FUNCTION: ");
+      strcpy(TMP_UI_DATA_0, "M");
+      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
+      strcat(TMP_UI_DATA_0, " / F");
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 22, canvas120x8);
+      display.drawCanvas(3, 26, canvas120x8);
+
+      // function name
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+      display.drawCanvas(6, 36, canvas120x8);
+      
+      // function x
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "X ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 46, canvas120x8);
+
+      // function y
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "Y ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 56, canvas120x8);
+
+      // function z
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "Z ");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(6, 66, canvas120x8);
 
       // show the menu
       menuMatrixConfigureFunction.show( display );
