@@ -88,9 +88,9 @@
       Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical. The UI is not
       polished yet and is still under construction. Only emphasis to importance, consistancy and clarity will be polished, that is all there intends to be.
       
-      Summary: A satellite, inertial and sensor value calculator with over one quintillion possible combinations of stackable logic for a general purpose part,
-      subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the WTGPS300, it
-      may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
+      Summary: A satellite, inertial and sensor value calculator and switch with over one quintillion possible combinations of stackable logic accross 20 switches
+      for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
+      WTGPS300, it may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
 
         ToDo: Latitude and longitude terrain elevation dictionary.
 
