@@ -109,8 +109,7 @@
 
         ToDo: Documentaion.
 
-        Ethics. Do we really need to be 'turning our lights on at nautical twighlight' automatically, using data from advanced weapons systems (gps data)? This
-        project may soon be discontinued and disasembled.
+        ToDo: Serial commands. Reinstate original interface over serial capabilities for programability from another computer.
 
         */
 
