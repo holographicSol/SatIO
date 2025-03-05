@@ -87,9 +87,6 @@
       feature of programming the matrix through switches and UI will be reimplemented. Until then, the matrix can be hardcoded for testing purposes.
       Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical. The UI is not
       polished yet and is still under construction. Only emphasis to importance, consistancy and clarity will be polished, that is all there intends to be.
-
-            Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
-                of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
       
       Summary: A satellite, inertial and sensor value calculator with over one quintillion possible combinations of stackable logic for a general purpose part,
       subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the WTGPS300, it
@@ -110,6 +107,8 @@
         ToDo: Documentaion.
 
         ToDo: Serial commands. Reinstate original interface over serial capabilities for programability from another computer.
+
+        ToDo: Simple Solar System in real-time on home page. And other options for homepage like matrix switch view (view of all switch states).
 
         */
 
