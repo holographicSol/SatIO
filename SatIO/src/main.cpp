@@ -8489,7 +8489,7 @@ void UpdateUI() {
       else {menuGPSItems[3]="GPATT DISABLED";}
 
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="CONVERT GNGGA";}
-      if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="CONVERT GNRMC";}
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="CONVERT GNRMC";}
 
       // show menu
       menuGPS.show( display );
