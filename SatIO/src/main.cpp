@@ -2915,7 +2915,7 @@ void convertUTCToLocal() {
     satData.tmp_year_int);
 
   // set elements as time return functions
-  tmElements_t tm_return = {second(), minute(), hour(), weekday(), day(), month(), year()};
+  tmElements_t tm_return = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
 
   // return time
   time_t tmp_makeTime = makeTime(tm_return);
