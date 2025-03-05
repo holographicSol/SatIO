@@ -91,7 +91,7 @@
             Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
                 of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
       
-      Summary: A satellite, inertial and sensor value calculator with over one quintillion combinations of stackable logic for a general purpose part,
+      Summary: A satellite, inertial and sensor value calculator with over one quintillion possible combinations of stackable logic for a general purpose part,
       subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the WTGPS300, it
       may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
 
