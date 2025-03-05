@@ -330,10 +330,10 @@ LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 10, {{92, 2}
 
 const char *menuMatrixConfigureFunctionItems[4] =
 {
-    "FUNCTION NAME",
-    "VALUE X      ",
-    "VALUE Y      ",
-    "VALUE Z      ",
+    "SELECT FUNCTION ",
+    "ENTER VALUE X   ",
+    "ENTER VALUE Y   ",
+    "ENTER VALUE Z   ",
 };
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 4, {{3, 34}, {124, 84}} );
 
