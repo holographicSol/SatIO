@@ -583,7 +583,9 @@ struct SDCardStruct {
   char default_matrix_filepath[56] = "/MATRIX/M_0.SAVE";  // filepath
   char matrix_filepath[56] = "";                               // current matrix filepath
   char tempmatrixfilepath[56];                                 // used for laoding filepaths
-  char system_dirs[2][56] = {"/MATRIX", "/SYSTEM"};            // root dirs
+  char system_dirs[2][56] = {"/MATRIX/", "/SYSTEM/"};            // root dirs
+  char save_ext[56] = ".SAVE";
+  char matrix_fname[10] = "M";
   unsigned long iter_token;                                    // count token iterations
   char BUFFER[2048];                                           // buffer
   String SBUFFER;                                              // String buffer
@@ -3865,7 +3867,7 @@ void sdcard_delete_matrix(fs::FS &fs, char * file) {
       Serial.println("[sdcard] successfully deleted file: " + String(file));
       Serial.println("attempting to remove filename from filenames.");
       // recreate matrix filenames
-      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       // zero the matrix
       zero_matrix();
       // delete matrix filepath.
@@ -4447,6 +4449,11 @@ void setTrackPlanets() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 MATRIX: SWITCH
+
+char hemi_n[4] = "N";
+char hemi_e[4] = "E";
+char hemi_s[4] = "S";
+char hemi_w[4] = "W";
 
 void matrixSwitch() {
 
@@ -5079,37 +5086,37 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, hemi_n, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, "N", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, hemi_n, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAEast") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, hemi_e, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, "E", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, hemi_e, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGASouth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, "S", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, hemi_s, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, "S", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, hemi_s, 1);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAWest") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, "W", 1);
+            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, hemi_w, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, "W", 1);
+            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, hemi_w, 1);
           }
         }
 
@@ -7028,12 +7035,12 @@ void setAllMatrixSwitchesStateTrue() {
 //                                                                                                                     INPUT DATA
 
 bool make_i2c_request = false;
-int unixtime_control_panel_request;
+float unixtime_control_panel_request;
 int previous_menu_page;
 char input_data[128];
 char tmp_input_data[128];
 char allow_input_data = false;
-int enter_digits_key = NULL;
+int enter_digits_key = NAN;
 int menu_column_selection=0;
 int previous_menu_column_selection;
 
@@ -7251,7 +7258,7 @@ void menuEnter() {
     else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=5;}
     else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=5;}
     else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=5;}
-    enter_digits_key = NULL;
+    enter_digits_key = NAN;
   }
 
   // matrix switch select function name, x, y, or z
@@ -7307,7 +7314,7 @@ void menuEnter() {
       // create list of matrix filespaths and go to save page
       endSSD1351();
       beginSDCARD();
-      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       endSDCARD();
       beginSSD1351();
       menu_page=21;
@@ -7319,7 +7326,7 @@ void menuEnter() {
       // create list of matrix filespaths and go to load page
       endSSD1351();
       beginSDCARD();
-      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       endSDCARD();
       beginSSD1351();
       menu_page=22;
@@ -7331,7 +7338,7 @@ void menuEnter() {
       // create list of matrix filespaths and go to delete page
       endSSD1351();
       beginSDCARD();
-      sdcard_list_matrix_files(SD, "/MATRIX/", "M", ".SAVE");
+      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       endSDCARD();
       beginSSD1351();
       menu_page=23;
