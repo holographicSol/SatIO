@@ -338,22 +338,22 @@ const char *menuFileItems[6] =
 LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 124}} );
 
 const char *menuMatrixFilepathItems[20];
-LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{3, 34}, {124, 124}} );
 
 const char *menuGPSItems[5];
-LcdGfxMenu menuGPS( menuGPSItems, 5, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuGPS( menuGPSItems, 5, {{3, 34}, {124, 124}} );
 
 const char *menuSerialItems[5];
-LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuSerial( menuSerialItems, 5, {{3, 34}, {124, 124}} );
 
 const char *menuUniverseItems[7];
-LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{3, 34}, {124, 124}} );
 
 const char *menuDisplayItems[3];
-LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{3, 34}, {124, 124}} );
 
 const char *menuSystemItems[3];
-LcdGfxMenu menuSystem( menuSystemItems, 1, {{0, 14}, {128, 128}} );
+LcdGfxMenu menuSystem( menuSystemItems, 1, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
@@ -8323,6 +8323,12 @@ void UpdateUI() {
     else if (menu_page==21) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "SAVE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8342,6 +8348,12 @@ void UpdateUI() {
     else if (menu_page==22) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "LOAD", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8360,6 +8372,12 @@ void UpdateUI() {
     else if (menu_page==23) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "DELETE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8447,6 +8465,11 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x8);
@@ -8481,6 +8504,11 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x8);
@@ -8514,6 +8542,11 @@ void UpdateUI() {
     else if (menu_page==70) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
@@ -8556,6 +8589,11 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
       display.drawCanvas(5, 5, canvas120x8);
@@ -8580,6 +8618,11 @@ void UpdateUI() {
     else if (menu_page==90) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
 
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
