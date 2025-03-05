@@ -7909,9 +7909,9 @@ void UpdateUI() {
       display.drawHLine(2, 80, 126);
 
       // real time header
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("REAL-TIME")/2)*6), 1, "REAL-TIME", STYLE_BOLD );
-      display.drawCanvas(2, 84, canvas120x8);
+      // canvas120x8.clear();
+      // canvas120x8.printFixed((120/2)-((strlen("REAL-TIME")/2)*6), 1, "REAL-TIME", STYLE_BOLD );
+      // display.drawCanvas(2, 84, canvas120x8);
 
       // real x: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
