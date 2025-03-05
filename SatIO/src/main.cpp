@@ -83,10 +83,8 @@
       Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
       according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
 
-      UI: The matrix has been programmable via the UI however the UI has only just been reinstated, after focusing on performance and architecture. The
-      feature of programming the matrix through switches and UI will be reimplemented. Until then, the matrix can be hardcoded for testing purposes.
-      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical. The UI is not
-      polished yet and is still under construction. Only emphasis to importance, consistancy and clarity will be polished, that is all there intends to be.
+      UI: Allows programming matrix switch logic and tuning for individual use cases.
+      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical.
       
       Summary: A satellite, inertial and sensor value calculator and switch with over one quintillion possible combinations of stackable logic accross 20 switches
       for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
