@@ -2261,7 +2261,7 @@ const char *menuMatrixSetFunctionNameItems[213] =
   matrixData.matrix_function_names[211],
   matrixData.matrix_function_names[212],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 213, {{0, 34}, {128, 128}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 213, {{3, 46}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -8130,26 +8130,29 @@ void UpdateUI() {
     // ------------------------------------------------
     //                        SELECT FUNCTION NAME PAGE
 
-    // select function name
+    // matrix switch set function name
     else if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
-      // matrix switch number 
-      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "MATRIX SWITCH: ");
-      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
+      drawMainBorder();
+
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("SELECT FUNCTION")/2)*6), 1, "SELECT FUNCTION", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      // function number
+      // seperator
+      display.drawHLine(2, 20, 126);
+
+      // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "FUNCTION: ");
+      strcpy(TMP_UI_DATA_0, "M");
+      strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
+      strcat(TMP_UI_DATA_0, " / F");
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 22, canvas120x8);
+      display.drawCanvas(3, 26, canvas120x8);
 
       menuMatrixSetFunctionName.show( display );
     }
