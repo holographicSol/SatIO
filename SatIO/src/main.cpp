@@ -7870,7 +7870,7 @@ void UpdateUI() {
 
       drawMainBorder();
 
-      // combination border
+      // seperator
       display.drawHLine(2, 26, 126);
 
       // function name
@@ -7879,7 +7879,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(6, 32, canvas120x8);
+      display.drawCanvas(6, 33, canvas120x8);
       
       // function x
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7887,7 +7887,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 42, canvas120x8);
+      display.drawCanvas(6, 43, canvas120x8);
 
       // function y
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7895,7 +7895,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 52, canvas120x8);
+      display.drawCanvas(6, 53, canvas120x8);
 
       // function z
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7903,7 +7903,15 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 62, canvas120x8);
+      display.drawCanvas(6, 63, canvas120x8);
+
+      // seperator
+      display.drawHLine(2, 80, 126);
+
+      // real time header
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("REAL-TIME")/2)*6), 1, "REAL-TIME", STYLE_BOLD );
+      display.drawCanvas(2, 84, canvas120x8);
 
       // real x: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7911,7 +7919,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 92, canvas120x8);
+      display.drawCanvas(6, 94, canvas120x8);
 
       // real y: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7919,7 +7927,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 102, canvas120x8);
+      display.drawCanvas(6, 104, canvas120x8);
 
       // real z: display each functions associated value in 'real time' at the switch logic level (this level)
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -7927,7 +7935,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 112, canvas120x8);
+      display.drawCanvas(6, 114, canvas120x8);
 
       // show the menu
       display.setColor(systemData.color_content);
