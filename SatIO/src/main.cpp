@@ -423,17 +423,17 @@ void beginSDCARD() {
  }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                            ETX
+//                                                                                                                          CHARS
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
-char A_char[4] = "A";
-char D_char[4] = "D";
-char N_char[4] = "N";
-char E_char[4] = "E";
-char S_char[4] = "S";
-char V_char[4] = "V";
-char W_char[4] = "W";
+char A_char[2] = "A";
+char D_char[2] = "D";
+char N_char[2] = "N";
+char E_char[2] = "E";
+char S_char[2] = "S";
+char V_char[2] = "V";
+char W_char[2] = "W";
 
 char digit_0[2] = "0";
 char digit_1[2] = "1";
@@ -8261,6 +8261,14 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 26, canvas120x8);
+
+      // function name
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "");
+      strcat(TMP_UI_DATA_0, String(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+      display.drawCanvas(6, 36, canvas120x8);
 
       menuMatrixSetFunctionName.show( display );
     }
