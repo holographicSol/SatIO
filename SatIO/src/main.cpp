@@ -335,7 +335,7 @@ const char *menuFileItems[6] =
     "SAVE SYSTEM CONFIG",
     "RESTORE DEFAULTS  ",
 };
-LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 104}} );
+LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 124}} );
 
 const char *menuMatrixFilepathItems[20];
 LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{0, 14}, {128, 128}} );
@@ -7867,7 +7867,7 @@ void UpdateUI() {
       display.setColor(systemData.color_content);
 
       drawMainBorder();
-      
+
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
       display.drawCanvas(4, 6, canvas120x8);
@@ -8303,9 +8303,16 @@ void UpdateUI() {
     else if (menu_page==20) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
+
+      drawMainBorder();
+
+      // seperator
+      display.drawHLine(2, 26, 126);
+
       canvas120x8.clear();
       canvas120x8.printFixed(52, 1, "FILE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
+
       menuFile.show( display );
     }
 
