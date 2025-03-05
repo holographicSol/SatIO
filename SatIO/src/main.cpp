@@ -7031,6 +7031,7 @@ bool make_i2c_request = false;
 int unixtime_control_panel_request;
 int previous_menu_page;
 char input_data[128];
+char tmp_input_data[128];
 char allow_input_data = false;
 int enter_digits_key = NULL;
 int menu_column_selection=0;
@@ -7045,17 +7046,24 @@ void inputChar(char * data) {
 
     // port
     if (enter_digits_key==1) {
-      if ((atoi(input_data) <= 99) && (atoi(input_data) >= -1)) {
-        if (allow_input_data==true) {strcat(input_data, data);}
+      if (allow_input_data==true) {
+        // this should be a temporary var
+        strcat(input_data, data);
+        // if not in range then remove last char
+        if (!(atoi(input_data) <= 99) && (!atoi(input_data) >= -1)) {input_data[strlen(input_data)-1] = '\0';}
       }
     }
 
     // <= long
-    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
-      if ((atol(input_data) < 179769313486232) && (atol(input_data) > -179769313486232)) {
-        if (allow_input_data==true) {strcat(input_data, data);}
+    if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+      if (allow_input_data==true) {
+        // this should be a temporary var
+        strcat(input_data, data);
+        // if not in range then remove last char
+        if (!(atoi(input_data) <= 179769313486232) && (!atoi(input_data) >= -179769313486232)) {input_data[strlen(input_data)-1] = '\0';}
       }
     }
+
   }
 }
 
@@ -7800,7 +7808,6 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
 
-  // update ui
   if (update_ui==true) {
     ui_cleared = false;
 
@@ -7810,26 +7817,24 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                        HOME PAGE
 
-    // home page items
     if (menu_page==0) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       drawMainBorder();
       menuHome.show( display );
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
-      display.drawCanvas(3, 40, canvas120x8);
+      canvas120x8.printFixed(2, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+      display.drawCanvas(4, 40, canvas120x8);
     }
 
     // ------------------------------------------------
     //                                    SETTINGS PAGE
 
-    // main menu items
     else if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
       drawMainBorder();
       canvas120x8.clear();
-      canvas120x8.printFixed(33, 1, "SETTINGS", STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
       display.drawCanvas(6, 6, canvas120x8);
       menuMain.show( display );
     }
@@ -7837,7 +7842,6 @@ void UpdateUI() {
     // ------------------------------------------------
     //                         MATRIX SWITCH LOGIC PAGE
 
-    // matrix switch function items
     else if (menu_page==3) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
@@ -8038,14 +8042,15 @@ void UpdateUI() {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       drawMainBorderRed();
       canvas120x8.clear();
-      if (enter_digits_key==1) {canvas120x8.printFixed(3, 1,      " ENTER PORT NUMBER ", STYLE_BOLD );}
-      else if (enter_digits_key==2) {canvas120x8.printFixed(3, 1, "   ENTER VALUE X    ", STYLE_BOLD );}
-      else if (enter_digits_key==3) {canvas120x8.printFixed(3, 1, "   ENTER VALUE Y    ", STYLE_BOLD );}
-      else if (enter_digits_key==4) {canvas120x8.printFixed(3, 1, "   ENTER VALUE Z    ", STYLE_BOLD );}
-      display.drawCanvas(3, 6, canvas120x8);
+      if (enter_digits_key==1) {canvas120x8.printFixed((120/2)-((strlen("ENTER PORT NUMBER")/2)*6), 1, "ENTER PORT NUMBER", STYLE_BOLD );}
+      else if (enter_digits_key==2) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE X")/2)*6), 1, "ENTER VALUE X", STYLE_BOLD );}
+      else if (enter_digits_key==3) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Y")/2)*6), 1, "ENTER VALUE Y", STYLE_BOLD );}
+      else if (enter_digits_key==4) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Z")/2)*6), 1, "ENTER VALUE Z", STYLE_BOLD );}
+      display.drawCanvas(2, 6, canvas120x8);
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
-      display.drawCanvas(3, 56, canvas120x8);
+      // canvas120x8.printFixed(3, 1, String(input_data).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String(input_data).c_str())/2)*6), 1, String(input_data).c_str(), STYLE_BOLD );
+      display.drawCanvas(2, 56, canvas120x8);
     }
 
     // ------------------------------------------------
