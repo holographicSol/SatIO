@@ -7248,9 +7248,9 @@ void menuEnter() {
   else if (menu_page==4) {
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=3;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=5;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=5;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=5;}
     enter_digits_key = NULL;
   }
 
@@ -7285,7 +7285,7 @@ void menuEnter() {
   else if (menu_page==6) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
     strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
-    menu_page=3;
+    menu_page=5;
   }
 
   // file menu
