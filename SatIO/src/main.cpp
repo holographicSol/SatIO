@@ -84,7 +84,7 @@
       according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
 
       UI: Allows programming matrix switch logic and tuning for individual use cases.
-      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple and purely practical.
+      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple, practical and efficient, in turn being better for performance.
       
       Summary: A satellite, inertial and sensor value calculator and switch with over one quintillion possible combinations of stackable logic accross 20 switches
       for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
