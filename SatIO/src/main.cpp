@@ -340,8 +340,8 @@ LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 104}} );
 const char *menuMatrixFilepathItems[20];
 LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{0, 14}, {128, 128}} );
 
-const char *menuGPSItems[4];
-LcdGfxMenu menuGPS( menuGPSItems, 4, {{0, 14}, {128, 128}} );
+const char *menuGPSItems[5];
+LcdGfxMenu menuGPS( menuGPSItems, 5, {{0, 14}, {128, 128}} );
 
 const char *menuSerialItems[5];
 LcdGfxMenu menuSerial( menuSerialItems, 5, {{0, 14}, {128, 128}} );
@@ -7463,6 +7463,16 @@ void menuEnter() {
     if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
     if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
     if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
+    if (menuGPS.selection()==4) {
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+        strcpy(satData.coordinate_conversion_mode, "GNRMC");
+      }
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+        strcpy(satData.coordinate_conversion_mode, "GNGGA");
+      }
+    }
   }
 
   // serial page
@@ -8441,6 +8451,9 @@ void UpdateUI() {
 
       if (systemData.gpatt_enabled==true) {menuGPSItems[3]="GPATT ENABLED";}
       else {menuGPSItems[3]="GPATT DISABLED";}
+
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="COORD CONVERT GNGGA";}
+      if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="COORD CONVERT GNRMC";}
 
       // show menu
       menuGPS.show( display );
