@@ -231,17 +231,6 @@ void endSPIDevice(int SS) {
   digitalWrite(SS, HIGH); // set control pin high to end transmission
 }
 
-// void spiswap() {
-//     // VSPI: SDCARD
-//     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-//     setupSDCard();
-//     SD.end();
-//     endSPIDevice(SD_CS);
-  
-//     // HSPI: SSD1351 OLED DISPLAY
-//     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-// }
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        DISPLAY
 
