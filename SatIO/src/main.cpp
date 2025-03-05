@@ -7043,7 +7043,7 @@ void setAllMatrixSwitchesStateTrue() {
 //                                                                                                                     INPUT DATA
 
 bool make_i2c_request = false;
-float unixtime_control_panel_request;
+int unixtime_control_panel_request;
 int previous_menu_page;
 char input_data[128];
 char tmp_input_data[128];
