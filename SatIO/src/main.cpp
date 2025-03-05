@@ -7828,15 +7828,13 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection: enable/disable ui updates
-  if (systemData.display_auto_off==true) {
-    if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
-    else {update_ui=true;}
-  }
+  if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
   else {update_ui=true;}
 
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
 
+  Serial.println("[update_ui] " + String(update_ui));
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=3; // uncomment to debug
 
@@ -7846,7 +7844,7 @@ void UpdateUI() {
   if (update_ui==true) {
     ui_cleared = false;
 
-    // Serial.println("[oled protection] allowing ui update");
+    Serial.println("[oled protection] allowing ui update");
     // Serial.println("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
@@ -8643,12 +8641,14 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   // oled protection:
-  if ((ui_cleared == false) && (update_ui == false)) {
-    Serial.println("[oled protection] clearing ui");
-    display.clear();
-    display.clear();
-    display.clear();
-    ui_cleared=true;
+  if (systemData.display_auto_off==true) {
+    if ((ui_cleared == false) && (update_ui == false)) {
+      Serial.println("[oled protection] clearing ui");
+      display.clear();
+      display.clear();
+      display.clear();
+      ui_cleared=true;
+    }
   }
 }
 
