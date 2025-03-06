@@ -334,7 +334,7 @@ const char *menuGPSItems[5];
 LcdGfxMenu menuGPS( menuGPSItems, 5, {{3, 34}, {124, 124}} );
 
 const char *menuSerialItems[5];
-LcdGfxMenu menuSerial( menuSerialItems, 5, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuSerial( menuSerialItems, 6, {{3, 34}, {124, 124}} );
 
 const char *menuUniverseItems[7];
 LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{3, 34}, {124, 124}} );
@@ -476,6 +476,8 @@ struct systemStruct {
   bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
+  
+  bool allow_debug_bridge = false; // allows serial programming and other features
 
   // oled protection
   bool display_auto_off = true; // recommended
@@ -7472,6 +7474,7 @@ void menuEnter() {
     if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
     if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
     if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
+    if (menuSerial.selection()==5) {systemData.allow_debug_bridge^=true;}
   }
 
   // universe page
@@ -8548,6 +8551,9 @@ void UpdateUI() {
       if (systemData.output_matrix_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
       else {menuSerialItems[4]="MATRIX DISABLED";}
 
+      if (systemData.allow_debug_bridge==true) {menuSerialItems[5]="DEBUG ENABLED";}
+      else {menuSerialItems[5]="DEBUG DISABLED";}
+
       // show menu
       menuSerial.show( display );
     }
@@ -8947,7 +8953,26 @@ void sdcardCheck() {
   }
   // return false;
 }
- 
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                SERIAL COMMANDS
+
+void readSerial0() {
+  // Serial.println("[readSerial0] ");
+
+  // 
+  if (Serial.available()) {
+    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+    SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+    Serial.println("[readSerial0 RXD] " + String(SerialLink.BUFFER)); // debug
+
+    if (systemData.allow_debug_bridge==true) {
+      if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] received: test");}
+    } 
+    else {Serial.println("[allow_debug_bridge] false. ignoring command");}
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
@@ -9443,6 +9468,8 @@ void loop() {
   dont wait for anything, get what we can and go again.
 
   */
+
+  readSerial0();
 
   if (longer_loop==false) {
     t0 = millis();
