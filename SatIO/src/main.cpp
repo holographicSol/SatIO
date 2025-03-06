@@ -448,6 +448,10 @@ signed int enter_digits_key = -1;
 int menu_column_selection=0;
 int previous_menu_column_selection;
 
+char cwd[1024] = "/";
+File root;
+File entry;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 
@@ -3018,42 +3022,22 @@ void buildSatIOSentence() {
 
 // ls, cat, etc
 
-char cwd[1024] = "/";
-File root;
-
 void cd(char * data) {
   memset(cwd, 0, sizeof(cwd));
   strcpy(cwd, data);
 }
 
-// void printDirectory(File dir, int numTabs) {
-//   while (true) {
-
-//     File entry =  dir.openNextFile();
-//     if (! entry) {break;} // no more files
-
-//     // for (uint8_t i = 0; i < numTabs; i++) {Serial.print('\t');}
-//     Serial.print(entry.name());
-//     if (entry.isDirectory()) {
-//       Serial.println("/");
-//       Serial.print("\t");
-//       printDirectory(entry, numTabs + 1);
-//     } else {
-//       // files have sizes, directories do not
-//       Serial.print(" ");
-//       Serial.println(entry.size(), DEC);
-//     }
-//     entry.close();
-//   }
-// }
-
-void printDirectory(File dir, int numTabs) {
+void printDirectory(File dir) {
 
   /* prints files and dirs in current working directory */
 
+  Serial.println();
+  Serial.println("[ls] " + String(cwd));
+  Serial.println();
+
   while (true) {
 
-    File entry =  dir.openNextFile();
+    entry =  dir.openNextFile();
     
     // no more files
     if (! entry) {break;}
@@ -3071,13 +3055,15 @@ void printDirectory(File dir, int numTabs) {
     }
     entry.close();
   }
+
+  Serial.println();
 }
 
 void ls() {
   endSSD1351();
   beginSDCARD();
   root = SD.open(cwd);
-  printDirectory(root, 0);
+  printDirectory(root);
   endSDCARD();
   beginSSD1351();
 }
@@ -9034,12 +9020,21 @@ void readSerial0() {
     SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
     // Serial.println("$" + String(SerialLink.BUFFER)); // debug
 
-    if (systemData.allow_debug_bridge==true) {
-      if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
+    if (SerialLink.nbytes > 1) {
+      if (systemData.allow_debug_bridge==true) {
+        if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
 
-      if (strncmp(SerialLink.BUFFER, "ls", strlen("ls")) == 0) {Serial.println("[command] ls"); ls();}
+        // // command token
+        // sdcardData.token = strtok(SerialLink.BUFFER, " ");
+
+        // if (strncmp(sdcardData.token, "ls", strlen("ls")) == 0) {Serial.println("[command] ls");
+        //   sdcardData.token = strtok(NULL, " ");
+        //   if (sdcardData.token!=NULL) {memset(cwd, 0, sizeof(cwd)); strcpy(cwd, sdcardData.token);}
+        //   // ls();
+        //   }
+      }
+      else {Serial.println("[access] denied.");}
     }
-    else {Serial.println("[access] denied.");}
   }
 }
 
