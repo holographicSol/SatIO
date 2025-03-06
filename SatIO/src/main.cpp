@@ -8964,12 +8964,12 @@ void readSerial0() {
   if (Serial.available()) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    Serial.println("[readSerial0 RXD] " + String(SerialLink.BUFFER)); // debug
+    Serial.println("$" + String(SerialLink.BUFFER)); // debug
 
     if (systemData.allow_debug_bridge==true) {
-      if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] received: test");}
-    } 
-    else {Serial.println("[allow_debug_bridge] false. ignoring command");}
+      if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
+    }
+    else {Serial.println("[access] denied.");}
   }
 }
 
