@@ -379,7 +379,7 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         SDCARD
 
-// SSD1351 VSPI pins on esp32
+// SD VSPI pins on esp32
 int SD_SCLK = 18;  // default esp32 VSPI
 int SD_MISO = 19;  // default esp32 VSPI
 int SD_MOSI = 23;  // default esp32 VSPI
@@ -8409,7 +8409,7 @@ void UpdateUI() {
     //                          DELETE MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    if (menu_page==32) {
+    else if (menu_page==32) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -8422,7 +8422,7 @@ void UpdateUI() {
     //                   SAVING SYSTEM CONFIG INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    if (menu_page==33) {
+    else if (menu_page==33) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -8436,7 +8436,7 @@ void UpdateUI() {
     //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    if (menu_page==34) {
+    else if (menu_page==34) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -8446,7 +8446,18 @@ void UpdateUI() {
       drawMainBorderGreen();
     }
 
-    // restore default system settings
+    // ------------------------------------------------
+    //                                STARTUP INDICATOR
+
+    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    else if (menu_page==35) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      display.setColor(RGB_COLOR16(0,255,0));
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("STARTING")/2)*6), (display.height()/2)-16, "STARTING", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
 
     // ------------------------------------------------
     //                                         GPS MENU
@@ -9227,7 +9238,7 @@ void setup() {
   // pinMode(SD_CS, OUTPUT);
   // digitalWrite(SD_CS, HIGH);
 
-  // VSPI: SSD1351 OLED DISPLAY
+  // HSPI: SSD1351 OLED DISPLAY
   // SSD1351_SCLK = 14; // (SCL) default esp32 HSPI
   // SSD1351_MISO = 12; // (DC)  default esp32 HSPI
   // SSD1351_MOSI = 13; // (SDA) default esp32 HSPI
@@ -9246,13 +9257,14 @@ void setup() {
   display.begin();
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
-  menu_page=0;
   canvas6x8.setFixedFont(ssd1306xled_font6x8);
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
   display.clear();
+  // menu_page=35;
+  // UpdateUI();
   // uncomment to debug
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
