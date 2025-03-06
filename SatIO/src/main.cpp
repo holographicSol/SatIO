@@ -3019,6 +3019,68 @@ void buildSatIOSentence() {
 // ls, cat, etc
 
 char cwd[1024] = "/";
+File root;
+
+void cd(char * data) {
+  memset(cwd, 0, sizeof(cwd));
+  strcpy(cwd, data);
+}
+
+// void printDirectory(File dir, int numTabs) {
+//   while (true) {
+
+//     File entry =  dir.openNextFile();
+//     if (! entry) {break;} // no more files
+
+//     // for (uint8_t i = 0; i < numTabs; i++) {Serial.print('\t');}
+//     Serial.print(entry.name());
+//     if (entry.isDirectory()) {
+//       Serial.println("/");
+//       Serial.print("\t");
+//       printDirectory(entry, numTabs + 1);
+//     } else {
+//       // files have sizes, directories do not
+//       Serial.print(" ");
+//       Serial.println(entry.size(), DEC);
+//     }
+//     entry.close();
+//   }
+// }
+
+void printDirectory(File dir, int numTabs) {
+
+  /* prints files and dirs in current working directory */
+
+  while (true) {
+
+    File entry =  dir.openNextFile();
+    
+    // no more files
+    if (! entry) {break;}
+
+    // print dirs
+    if (entry.isDirectory()) {
+      Serial.print(entry.name());
+      Serial.println("/");
+    }
+    // print files (files have sizes, directories do not)
+    else {
+      Serial.print(entry.name());
+      Serial.print(" ");
+      Serial.println(entry.size(), DEC);
+    }
+    entry.close();
+  }
+}
+
+void ls() {
+  endSSD1351();
+  beginSDCARD();
+  root = SD.open(cwd);
+  printDirectory(root, 0);
+  endSDCARD();
+  beginSSD1351();
+}
 
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 
@@ -8974,6 +9036,8 @@ void readSerial0() {
 
     if (systemData.allow_debug_bridge==true) {
       if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
+
+      if (strncmp(SerialLink.BUFFER, "ls", strlen("ls")) == 0) {Serial.println("[command] ls"); ls();}
     }
     else {Serial.println("[access] denied.");}
   }
