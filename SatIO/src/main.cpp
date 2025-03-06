@@ -8964,7 +8964,7 @@ void readSerial0() {
   if (Serial.available()) {
     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
     SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    Serial.println("$" + String(SerialLink.BUFFER)); // debug
+    // Serial.println("$" + String(SerialLink.BUFFER)); // debug
 
     if (systemData.allow_debug_bridge==true) {
       if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
