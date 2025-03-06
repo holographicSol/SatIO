@@ -3016,6 +3016,8 @@ void buildSatIOSentence() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                          SDCARD: PRINT FILE CONTENTS TO SERIAL
 
+// ls, cat, etc
+
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 
   /* prints the contents of a file to serial  */
