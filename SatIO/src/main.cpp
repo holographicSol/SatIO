@@ -3018,6 +3018,8 @@ void buildSatIOSentence() {
 
 // ls, cat, etc
 
+char cwd[1024] = "/";
+
 bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 
   /* prints the contents of a file to serial  */
