@@ -7842,8 +7842,12 @@ void UpdateUI() {
 
     if (menu_page==0) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       drawMainBorder();
+
+      // show menu
       menuHome.show( display );
+      
       canvas120x8.clear();
       canvas120x8.printFixed(2, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
       display.drawCanvas(3, 40, canvas120x8);
@@ -7858,6 +7862,7 @@ void UpdateUI() {
 
       drawMainBorder();
 
+      // show title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
       display.drawCanvas(4, 6, canvas120x8);
@@ -7865,6 +7870,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // show menu
       menuMain.show( display );
     }
 
@@ -8080,6 +8086,7 @@ void UpdateUI() {
 
       drawMainBorderRed();
 
+      // show title
       canvas120x8.clear();
       if (enter_digits_key==1) {canvas120x8.printFixed((120/2)-((strlen("ENTER PORT NUMBER")/2)*6), 1, "ENTER PORT NUMBER", STYLE_BOLD );}
       else if (enter_digits_key==2) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE X")/2)*6), 1, "ENTER VALUE X", STYLE_BOLD );}
@@ -8194,6 +8201,7 @@ void UpdateUI() {
 
       drawMainBorder();
 
+      // show title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SETUP SWITCH LOGIC")/2)*6), 1, "SETUP SWITCH LOGIC", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8259,6 +8267,7 @@ void UpdateUI() {
 
       drawMainBorder();
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SELECT FUNCTION")/2)*6), 1, "SELECT FUNCTION", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8284,6 +8293,7 @@ void UpdateUI() {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(6, 36, canvas120x8);
 
+      // show menu
       menuMatrixSetFunctionName.show( display );
     }
 
@@ -8299,10 +8309,12 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
+      // show menu
       menuFile.show( display );
     }
 
@@ -8319,6 +8331,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8344,6 +8357,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8368,6 +8382,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8471,6 +8486,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8510,6 +8526,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8549,6 +8566,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8595,6 +8613,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8625,6 +8644,7 @@ void UpdateUI() {
       // seperator
       display.drawHLine(2, 20, 126);
 
+      // title
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
@@ -8641,7 +8661,6 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                  OLED PROTECTION
 
-  // oled protection:
   if ((ui_cleared == false) && (update_ui == false)) {
     Serial.println("[oled protection] clearing ui");
     display.clear();
