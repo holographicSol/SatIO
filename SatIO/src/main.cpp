@@ -477,7 +477,7 @@ struct systemStruct {
   bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
   
-  bool allow_debug_bridge = false; // allows serial programming and other features
+  bool allow_debug_bridge = false; // allows serial programming and other features (recommended false every startup)
 
   // oled protection
   bool display_auto_off = true; // recommended
