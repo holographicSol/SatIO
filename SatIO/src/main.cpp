@@ -8957,6 +8957,8 @@ void sdcardCheck() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                SERIAL COMMANDS
 
+/* this is where we can accept input over serial in order to program the device or simply return information */
+
 void readSerial0() {
   // Serial.println("[readSerial0] ");
 
