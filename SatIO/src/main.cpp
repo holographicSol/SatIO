@@ -91,6 +91,7 @@
       WTGPS300, it may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
 
         ToDo: Latitude and longitude terrain elevation dictionary. This ties in with SatIO basically knowing and being able to calculate with a lot of 'constants'.
+        This may be sourced from NASA's Shuttle Radar Topography Mission to provide a topographic resolution of 1 arc second (about 30 meters).
 
         Todo: wire up the existing functionality through to the interface level.
 
