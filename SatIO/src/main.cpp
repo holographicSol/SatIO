@@ -90,7 +90,7 @@
       for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
       WTGPS300, it may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
 
-        ToDo: Latitude and longitude terrain elevation dictionary.
+        ToDo: Latitude and longitude terrain elevation dictionary. This ties in with SatIO basically knowing and being able to calculate with a lot of 'constants'.
 
         Todo: wire up the existing functionality through to the interface level.
 
@@ -239,6 +239,7 @@ NanoCanvas<33,24,1> canvas33x24;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<120,24,1> canvas120x24;
 NanoCanvas<120,120,1> canvas120x120;
+NanoCanvas<128,128,1> canvas128x128;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
@@ -7904,7 +7905,7 @@ void UpdateUI() {
       menuHome.show( display );
       
       canvas120x8.clear();
-      canvas120x8.printFixed(2, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed(3, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
       display.drawCanvas(3, 40, canvas120x8);
     }
 
@@ -9534,7 +9535,7 @@ void loop() {
 
   */
 
-  readSerial0();
+  // readSerial0();
 
   if (longer_loop==false) {
     t0 = millis();
