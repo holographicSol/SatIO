@@ -121,7 +121,8 @@
 #include <string.h>
 #include <iostream>
 #include "FS.h"
-#include "SD.h"
+// #include "sd.h"
+#include "SdFat.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <RTClib.h>
@@ -210,7 +211,7 @@ void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
   ESP32 default VSPI pins: SCLK=18, MISO=19, MOSI=23, SS=26
   ESP32 default HSPI pins: SCLK=14, MISO=12, MOSI=13, SS=15
   Devices sharing a bus require seperate CS/SS pin and may require seperate MISO pin.
-  Note that this is a preliminary begin to be called before a 'library specific begin' like SD.begin() for example when stacking
+  Note that this is a preliminary begin to be called before a 'library specific begin' like sd.begin() for example when stacking
   multiple SPI devices on the same SPI bus.
   */
   SPI.begin(SCLK, MISO, MOSI, SS); // set pins
@@ -381,26 +382,34 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         SDCARD
 
-// SD VSPI pins on esp32
+// sd VSPI pins on esp32
 int SD_SCLK = 18;  // default esp32 VSPI
 int SD_MISO = 19;  // default esp32 VSPI
 int SD_MOSI = 23;  // default esp32 VSPI
 int SD_CS   = 5;   // default esp32 VSPI
-SPIClass sdspi = SPIClass(VSPI);
-#if !defined(CONFIG_IDF_TARGET_ESP32)
-#define VSPI FSPI
-#endif
+
+#define SD_FAT_TYPE 2
+// SDCARD_SS_PIN is defined for the built-in SD on some boards.
+const uint8_t SD_CS_PIN = 5;
+// Try max SPI clock for an SD. Reduce SPI_CLOCK if errors occur.
+#define SPI_CLOCK SD_SCK_MHZ(4)
+
+#define SD_CONFIG SdCus
+#define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SPI_CLOCK)
+
+SdExFat sd;
+ExFile exfile;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SPI SWITCHING
 
 void beginSDCARD() {
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  sdcardCheck();
+  // sdcardCheck();
  }
 
  void endSDCARD() {
-  SD.end();
+  sd.end();
   endSPIDevice(SD_CS);
  }
 
@@ -622,7 +631,7 @@ struct SDCardStruct {
   char tmp[56];                                                 // buffer
   char tag_0[56] = "r";                                         // file line tag
   char tag_1[56] = "e";                                         // file line tag
-  File current_file;                                           // file currently handled
+  ExFile current_file;                                           // file currently handled
   char newfilename[56];
 };
 SDCardStruct sdcardData;
@@ -3024,69 +3033,69 @@ void buildSatIOSentence() {
 
 // ls, cat, etc
 
-void cd(char * data) {
-  memset(cwd, 0, sizeof(cwd));
-  strcpy(cwd, data);
-}
+// void cd(char * data) {
+//   memset(cwd, 0, sizeof(cwd));
+//   strcpy(cwd, data);
+// }
 
-void printDirectory(File dir) {
+// void printDirectory(File dir) {
 
-  /* prints files and dirs in current working directory */
+//   /* prints files and dirs in current working directory */
 
-  Serial.println();
-  Serial.println("[ls] " + String(cwd));
-  Serial.println();
+//   Serial.println();
+//   Serial.println("[ls] " + String(cwd));
+//   Serial.println();
 
-  while (true) {
+//   while (true) {
 
-    entry =  dir.openNextFile();
+//     entry =  dir.openNextFile();
     
-    // no more files
-    if (! entry) {break;}
+//     // no more files
+//     if (! entry) {break;}
 
-    // print dirs
-    if (entry.isDirectory()) {
-      Serial.print(entry.name());
-      Serial.println("/");
-    }
-    // print files (files have sizes, directories do not)
-    else {
-      Serial.print(entry.name());
-      Serial.print(" ");
-      Serial.println(entry.size(), DEC);
-    }
-    entry.close();
-  }
+//     // print dirs
+//     if (entry.isDirectory()) {
+//       Serial.print(entry.name());
+//       Serial.println("/");
+//     }
+//     // print files (files have sizes, directories do not)
+//     else {
+//       Serial.print(entry.name());
+//       Serial.print(" ");
+//       Serial.println(entry.size(), DEC);
+//     }
+//     entry.close();
+//   }
 
-  Serial.println();
-}
+//   Serial.println();
+// }
 
-void ls() {
-  endSSD1351();
-  beginSDCARD();
-  root = SD.open(cwd);
-  printDirectory(root);
-  endSDCARD();
-  beginSSD1351();
-}
+// void ls() {
+//   endSSD1351();
+//   beginSDCARD();
+//   root = sd.open(cwd);
+//   printDirectory(root);
+//   endSDCARD();
+//   beginSSD1351();
+// }
 
-bool sdcard_read_to_serial(fs::FS &fs, char * file) {
+// bool sdcard_read_to_serial(fs::FS &fs, char * file) {
 
-  /* prints the contents of a file to serial  */
+//   /* prints the contents of a file to serial  */
 
-  sdcardData.current_file.flush();
-  sdcardData.current_file = fs.open(file);
-  if (sdcardData.current_file) {
-    while (sdcardData.current_file.available()) {Serial.write(sdcardData.current_file.read());}
-    sdcardData.current_file.close(); return true;
-  }
-  else {sdcardData.current_file.close(); return false;}
-}
+//   sdcardData.current_file.flush();
+//   sdcardData.current_file = exfile.open(file);
+//   if (sdcardData.current_file) {
+//     while (sdcardData.current_file.available()) {Serial.write(sdcardData.current_file.read());}
+//     sdcardData.current_file.close(); return true;
+//   }
+//   else {sdcardData.current_file.close(); return false;}
+// }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: SAVE SYSTEM CONFIGURATION
 
-void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) {
+void sdcard_save_system_configuration(char * file, int return_page) {
 
   /* saves tagged, system configuration data to file */
 
@@ -3095,9 +3104,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
   if (sysDebugData.verbose_file==true) {
   Serial.println("[sdcard] attempting to save file: " + String(file));
   }
-  sdcardData.current_file.flush();
-  sdcardData.current_file = fs.open(file, FILE_WRITE);
-  if (sdcardData.current_file) {
+  exfile.flush();
+  exfile = sd.open(file);
+  if (exfile) {
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
@@ -3105,9 +3114,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     else {strcat(sdcardData.file_data, sdcardData.matrix_filepath);}
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "AUTO_RESUME,");
@@ -3115,9 +3124,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "DISPLAY_AUTO_OFF,");
@@ -3125,9 +3134,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "INDEX_DISPLAY_AUTO_OFF,");
@@ -3135,9 +3144,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "INDEX_DISPLAY_COLOR,");
@@ -3145,9 +3154,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
@@ -3155,9 +3164,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "SATIO_ENABLED,");
@@ -3165,9 +3174,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GNGGA_ENABLED,");
@@ -3175,9 +3184,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GNRMC_ENABLED,");
@@ -3185,9 +3194,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "GPATT_ENABLED,");
@@ -3195,9 +3204,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_SATIO_SENTENCE,");
@@ -3205,9 +3214,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GNGGA_SENTENCE,");
@@ -3215,9 +3224,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GNRMC_SENTENCE,");
@@ -3225,9 +3234,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "OUTPUT_GPATT_SENTENCE,");
@@ -3235,9 +3244,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "UTC_OFFSET,");
@@ -3245,9 +3254,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "UTC_OFFSET_FLAG,");
@@ -3255,9 +3264,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_SUN,");
@@ -3265,9 +3274,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MOON,");
@@ -3275,9 +3284,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MERCURY,");
@@ -3285,9 +3294,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_VENUS,");
@@ -3295,9 +3304,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_MARS,");
@@ -3305,9 +3314,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
     
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_JUPITER,");
@@ -3315,9 +3324,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_SATURN,");
@@ -3325,9 +3334,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_URANUS,");
@@ -3335,9 +3344,9 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "TRACK_NEPTUNE,");
@@ -3345,15 +3354,15 @@ void sdcard_save_system_configuration(fs::FS &fs, char * file, int return_page) 
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-    sdcardData.current_file.println("");
-    sdcardData.current_file.println(sdcardData.file_data);
-    sdcardData.current_file.println("");
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
 
-    sdcardData.current_file.close();
+    exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     sdcardData.is_writing = false;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
+  else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
   sdcardData.is_writing = false;
 }
 
@@ -3362,22 +3371,24 @@ void PrintFileToken() {if (sysDebugData.verbose_file==true) {Serial.println("[sd
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
 
-bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) {
+bool sdcard_load_system_configuration(char * file, int return_page) {
 
   sdcardData.is_reading = true;
 
   Serial.println("[sdcard] attempting to load file: " + String(file));
-  // open file to read
-  sdcardData.current_file.flush();
-  sdcardData.current_file = fs.open(file); 
-  if (sdcardData.current_file) {
-    while (sdcardData.current_file.available()) {
+  exfile.flush();
+  if (exfile.open(file, O_RDONLY)==1) {
+
+    while (exfile.available()) {
 
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
-      sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
+
+      sdcardData.SBUFFER = exfile.readStringUntil('\n');
+
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
+
       if (sysDebugData.verbose_file==true) {
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       }
@@ -3623,12 +3634,12 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
         }
       }
     }
-    sdcardData.current_file.close();
+    exfile.close();
     Serial.println("[sdcard] loaded file successfully: " + String(file));
     sdcardData.is_reading = false;
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to load file: " + String(file));
+  else {exfile.close(); Serial.println("[sdcard] failed to load file: " + String(file));
   sdcardData.is_reading = false;
   return false;}
 }
@@ -3638,10 +3649,11 @@ bool sdcard_load_system_configuration(fs::FS &fs, char * file, int return_page) 
 
 /* creates a single directory */
 
-void sdcard_mkdir(fs::FS &fs, char * dir){
-  if (!fs.exists(dir)) {
+void sdcard_mkdir(char * dir){
+
+  if (!sd.exists(dir)) {
     Serial.println("[sdcard] attempting to create directory: " + String(dir));
-    if (!fs.mkdir(dir)) {Serial.println("[sdcard] failed to create directory: " + String(dir));}
+    if (!sd.mkdir(dir)) {Serial.println("[sdcard] failed to create directory: " + String(dir));}
     else {Serial.println("[sdcard] found directory: " + String(dir));}}
   else {Serial.println("[sdcard] directory already exists: " + String(dir));}
 }
@@ -3651,14 +3663,14 @@ void sdcard_mkdir(fs::FS &fs, char * dir){
 
 /* creates root directories required by the system to work properly */
 
-void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(SD, sdcardData.system_dirs[i]);}}
+void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(sdcardData.system_dirs[i]);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
 
 /* discovers and compiles an array of matrix filenames */
 
-void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
+void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
   char tempname[56];
   char temppath[56];
   char temp_i[4];
@@ -3677,7 +3689,7 @@ void sdcard_list_matrix_files(fs::FS &fs, char * dir, char * name, char * ext) {
     strcat(tempname, temp_i);
     strcat(tempname, ext);
     // Serial.println("[sdcard] calculating: " + String(temppath)); // debug
-    if (fs.exists(temppath)) {
+    if (sd.exists(temppath)) {
       Serial.println("[sdcard] calculated filename found: " + String(temppath));
       memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
       Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
@@ -3712,20 +3724,19 @@ void zero_matrix() {
 
 /* loads tagged, comma delimited data from a matrix file */
 
-bool sdcard_load_matrix(fs::FS &fs, char * file) {
+bool sdcard_load_matrix(char * file) {
 
   sdcardData.is_reading = true;
   
   Serial.println("[sdcard] attempting to load file: " + String(file));
-  // open file to read
-  sdcardData.current_file.flush();
-  sdcardData.current_file = fs.open(file); 
-  if (sdcardData.current_file) {
-    while (sdcardData.current_file.available()) {
+  exfile.flush();
+  exfile = sd.open(file); 
+  if (exfile) {
+    while (exfile.available()) {
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
-      sdcardData.SBUFFER = sdcardData.current_file.readStringUntil('\n');
+      sdcardData.SBUFFER = exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));}
       // tag: r
@@ -3819,13 +3830,13 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
     strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
     Serial.println("[sdcard] loaded file successfully:   " + String(file));
     Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
-    sdcardData.current_file.close();
+    exfile.close();
     sdcardData.is_reading = false;
     return true;
   }
   // update matrix filepath (clear)
   else {
-    sdcardData.current_file.close();
+    exfile.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     sdcardData.is_reading = false;
@@ -3839,14 +3850,15 @@ bool sdcard_load_matrix(fs::FS &fs, char * file) {
 
 /* saves tagged, comma delimited data to a matrix file */
 
-bool sdcard_save_matrix(fs::FS &fs, char * file) {
+bool sdcard_save_matrix(char * file) {
 
   sdcardData.is_writing = true;
 
   Serial.println("[sdcard] attempting to save file: " + String(file));
-  sdcardData.current_file.flush();
-  sdcardData.current_file = fs.open(file, FILE_WRITE);
-  if (sdcardData.current_file) {
+  // exfile.flush();
+  exfile = sd.open(file, O_WRITE | O_CREAT);
+  Serial.println("[sdcard exfile] " + String(exfile));
+  if (exfile) {
     for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
         memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
@@ -3882,7 +3894,7 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
         
         // // write line
         if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-        sdcardData.current_file.println(sdcardData.file_data);
+        exfile.println(sdcardData.file_data);
       }
       memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
       // tag: enable (e)
@@ -3904,17 +3916,17 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
       if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
-      sdcardData.current_file.println("");
-      sdcardData.current_file.println(sdcardData.file_data);
-      sdcardData.current_file.println("");
+      exfile.println("");
+      exfile.println(sdcardData.file_data);
+      exfile.println("");
     }
-    sdcardData.current_file.close();
+    exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     strcpy(sdcardData.matrix_filepath, file);
     sdcardData.is_writing = false;
     return true;
   }
-  else {sdcardData.current_file.close(); Serial.println("[sdcard] failed to save file: " + String(file));
+  else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));
   sdcardData.is_writing = false;
   return false;}
 }
@@ -3922,18 +3934,18 @@ bool sdcard_save_matrix(fs::FS &fs, char * file) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     SDCARD: DELETE MATRIX FILE
 
-void sdcard_delete_matrix(fs::FS &fs, char * file) {
+void sdcard_delete_matrix(char * file) {
   sdcardData.is_writing = true;
-  // at least for now, do not allow deletion of M_0.SAVE.
-  if (fs.exists(file)) {
+
+  if (sd.exists(file)) {
     Serial.println("[sdcard] attempting to delete file: " + String(file));
     // try remove
-    fs.remove(file);
-    if (!fs.exists(file)) {
+    sd.remove(file);
+    if (!sd.exists(file)) {
       Serial.println("[sdcard] successfully deleted file: " + String(file));
       Serial.println("attempting to remove filename from filenames.");
       // recreate matrix filenames
-      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       // zero the matrix
       zero_matrix();
       // delete matrix filepath.
@@ -7364,11 +7376,13 @@ void menuEnter() {
     else if (menuFile.selection()==1) {
 
       // create list of matrix filespaths and go to save page
-      endSSD1351();
-      beginSDCARD();
-      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      endSDCARD();
-      beginSSD1351();
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+      sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
       menu_page=21;
     }
 
@@ -7376,11 +7390,13 @@ void menuEnter() {
     else if (menuFile.selection()==2) {
 
       // create list of matrix filespaths and go to load page
-      endSSD1351();
-      beginSDCARD();
-      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      endSDCARD();
-      beginSSD1351();
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+      sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
       menu_page=22;
     }
 
@@ -7388,11 +7404,13 @@ void menuEnter() {
     else if (menuFile.selection()==3) {
 
       // create list of matrix filespaths and go to delete page
-      endSSD1351();
-      beginSDCARD();
-      sdcard_list_matrix_files(SD, sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      endSDCARD();
-      beginSSD1351();
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+      sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
       menu_page=23;
     }
 
@@ -7400,11 +7418,14 @@ void menuEnter() {
     else if (menuFile.selection()==4) {
       menu_page=33;
       UpdateUI();
-      endSSD1351();
-      beginSDCARD();
-      sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);
-      endSDCARD();
-      beginSSD1351();
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+      // setupSDCard();
+      sdcard_save_system_configuration(sdcardData.sysconf, 0);
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
       delay(2000);
       menu_page=20;
     }
@@ -7433,17 +7454,25 @@ void menuEnter() {
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
     Serial.println("[saving] " + String(sdcardData.newfilename));
+
     // set notification page
     menu_page=30;
     UpdateUI();
+
     // switch spi devices
-    endSSD1351();
-    beginSDCARD();
-    sdcard_save_matrix(SD, sdcardData.newfilename);
+    endSPIDevice(SSD1351_CS);
+    beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+
+    // save
+    sdcard_save_matrix(sdcardData.newfilename);
+
     // switch spi devices
-    endSDCARD();
-    beginSSD1351();
-    // delay(2000);
+    sd.end();
+    endSPIDevice(SD_CS);
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+
+    // return to previous page
     menu_page=20;
   }
 
@@ -7459,19 +7488,27 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
       Serial.println("[loading] " + String(sdcardData.newfilename));
+
       // set notification page
       menu_page=31;
       UpdateUI();
+
       // switch spi devices
-      endSSD1351();
-      beginSDCARD();
-      sdcard_load_matrix(SD, sdcardData.newfilename);
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+
+      // load
+      sdcard_load_matrix(sdcardData.newfilename);
+
       // switch spi devices
-      endSDCARD();
-      beginSSD1351();
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
     }
     else {Serial.println("[loading] aborting! cannot load empty slot.");}
-    // delay(2000);
+
+    // return to previous page
     menu_page=20;
   }
 
@@ -7487,19 +7524,27 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
       Serial.println("[deleting] " + String(sdcardData.newfilename));
+      
       // set notification page
       menu_page=32;
       UpdateUI();
+
       // switch spi devices
-      endSSD1351();
-      beginSDCARD();
-      sdcard_delete_matrix(SD, sdcardData.newfilename);
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+
+      // delete
+      sdcard_delete_matrix(sdcardData.newfilename);
+
       // switch spi devices
-      endSDCARD();
-      beginSSD1351();
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
     }
     else {Serial.println("[deleting] aborting! cannot delete empty slot.");}
-    // delay(2000);
+    
+    // return to previous page
     menu_page=20;
   }
 
@@ -8948,64 +8993,55 @@ void writeToPortController() {
 //                                                                                                        SDCARD: FULL INITIALIZE
 
 void setupSDCard() {
+
   /*
   initializes sdcard, attempts to load saved system configuration file and saved matrix file. creates new directory tree, system file
   and matrix file if not exists.
   */
-
- uint8_t cardType;
-  if (SD.begin(SD_CS, sdspi)) {
-    cardType = SD.cardType();
-    Serial.println("[SDCARD] Initialized.");
-    Serial.print("[SDCARD] Type: ");
-    if (cardType == CARD_MMC) {Serial.println("MMC");}
-    else if (cardType == CARD_SD) {Serial.println("SDSC.");}
-    else if (cardType == CARD_SDHC) {Serial.println("SDHC.");}
-    else {Serial.println("UNKNOWN.");}
+  
+  if (!sd.begin(SD_CONFIG)) {
+    sd.initErrorHalt(&Serial);
+    Serial.println("[sdcard] failed to initialize");
   }
-  else {Serial.println("[SDCARD] Failed to initialize.");}
-
-  // create/load system files
-  if (!(cardType == CARD_NONE)) {
+  else {
     Serial.println("[sdcard] initialized");
+
+    // create/load system files
     sdcard_mkdirs();
+
     // load system configuration file
-    if (!sdcard_load_system_configuration(SD, sdcardData.sysconf, 0)) {sdcard_save_system_configuration(SD, sdcardData.sysconf, 0);}
+    if (!sdcard_load_system_configuration(sdcardData.sysconf, 0)) {
+      sdcard_save_system_configuration(sdcardData.sysconf, 0);
+    }
+
     // load matrix file specified by configuration file
-    if (!sdcard_load_matrix(SD, sdcardData.matrix_filepath)) {
+    if (!sdcard_load_matrix(sdcardData.matrix_filepath)) {
       Serial.println("[sdcard] specified matrix file not found!");
-      // create default matrix file
+
+      // is it the the default matrix file that is missing?
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
         Serial.println("[sdcard] default matrix file not found!");
-        if (!sdcard_save_matrix(SD, sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(SD, sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+        
+        // create default matrix file
+        if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+        else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
       }
     }
   }
-  else {Serial.println("[sdcard] failed to initialize.");}
-  }
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SDCARD: CHECK
 
 void sdcardCheck() {
-  uint8_t cardType;
-  if (SD.begin(SD_CS, sdspi)) {
-    cardType = SD.cardType();
-    Serial.println("[SDCARD] Initialized.");
-    Serial.print("[SDCARD] Type: ");
-    if (cardType == CARD_MMC) {Serial.println("MMC");}
-    else if (cardType == CARD_SD) {Serial.println("SDSC.");}
-    else if (cardType == CARD_SDHC) {Serial.println("SDHC.");}
-    else {Serial.println("UNKNOWN.");}
+
+  if (!sd.begin(SD_CONFIG)) {
+    sd.initErrorHalt(&Serial);
+    Serial.println("[sdcard] failed to initialize");
   }
-  else {Serial.println("[SDCARD] Failed to initialize.");}
-  // create/load system files
-  if (!(cardType == CARD_NONE)) {
+  else {
     Serial.println("[sdcard] initialized");
-    // return true;
   }
-  // return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9013,32 +9049,32 @@ void sdcardCheck() {
 
 /* this is where we can accept input over serial in order to program the device or simply return information */
 
-void readSerial0() {
-  // Serial.println("[readSerial0] ");
+// void readSerial0() {
+//   // Serial.println("[readSerial0] ");
 
-  // 
-  if (Serial.available()) {
-    memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-    SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-    // Serial.println("$" + String(SerialLink.BUFFER)); // debug
+//   // 
+//   if (Serial.available()) {
+//     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
+//     SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+//     // Serial.println("$" + String(SerialLink.BUFFER)); // debug
 
-    if (SerialLink.nbytes > 1) {
-      if (systemData.allow_debug_bridge==true) {
-        if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
+//     if (SerialLink.nbytes > 1) {
+//       if (systemData.allow_debug_bridge==true) {
+//         if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
 
-        // // command token
-        // sdcardData.token = strtok(SerialLink.BUFFER, " ");
+//         // // command token
+//         // sdcardData.token = strtok(SerialLink.BUFFER, " ");
 
-        // if (strncmp(sdcardData.token, "ls", strlen("ls")) == 0) {Serial.println("[command] ls");
-        //   sdcardData.token = strtok(NULL, " ");
-        //   if (sdcardData.token!=NULL) {memset(cwd, 0, sizeof(cwd)); strcpy(cwd, sdcardData.token);}
-        //   // ls();
-        //   }
-      }
-      else {Serial.println("[access] denied.");}
-    }
-  }
-}
+//         // if (strncmp(sdcardData.token, "ls", strlen("ls")) == 0) {Serial.println("[command] ls");
+//         //   sdcardData.token = strtok(NULL, " ");
+//         //   if (sdcardData.token!=NULL) {memset(cwd, 0, sizeof(cwd)); strcpy(cwd, sdcardData.token);}
+//         //   // ls();
+//         //   }
+//       }
+//       else {Serial.println("[access] denied.");}
+//     }
+//   }
+// }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
@@ -9360,7 +9396,7 @@ void setup() {
   // VSPI: SDCARD
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
   setupSDCard();
-  SD.end();
+  sd.end();
   endSPIDevice(SD_CS);
 
   // HSPI: SSD1351 OLED DISPLAY
@@ -9539,7 +9575,7 @@ void loop() {
   // readSerial0();
 
   if (longer_loop==false) {
-    t0 = millis();
+    // t0 = millis();
     UpdateUI();
     // Serial.println("[UpdateUI] " + String(millis()-t0));
   }
