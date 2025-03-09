@@ -15,16 +15,16 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller custom peripheral (for large creative potential out):
+                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller custom peripheral (for large creative potential out) (Not on multiplexer):
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel custom peripheral (for large creative potential in):
+                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel custom peripheral (for large creative potential in) (Not on multiplexer):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          Other ESP32 i2C Devices:
+                                          Other ESP32 i2C Devices (Not on multiplexer):
                                           ESP32: SDA0 SCL0 -> DS3231 (RTC): SDA, SCL (5v)
 
                                           ESP32: WTGPS300P (5v) (for getting a downlink):
