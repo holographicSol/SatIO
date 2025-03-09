@@ -1854,9 +1854,9 @@ struct MatrixStruct {
   /* function names for function name matrix */
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 213;
+  int max_matrix_function_names = 209;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[213][25] = 
+  char matrix_function_names[209][25] = 
   {
     "None",
     "Enabled",
@@ -2067,10 +2067,6 @@ struct MatrixStruct {
     "DHT11HIF0Over",
     "DHT11HIF0Equal",
     "DHT11HIF0Range",
-    "PhotoRes0Under",
-    "PhotoRes0Over",
-    "PhotoRes0Equal",
-    "PhotoRes0Range",
   };
 };
 MatrixStruct matrixData;
@@ -2652,14 +2648,34 @@ struct SatDatatruct {
 SatDatatruct satData;
 
 struct SensorDataStruct {
+
+  /* CD74HC4067 x16 Analog/Digital Multiplexer */
+
+  // specific analog/digital sensor: can be refactored
   float dht11_h_0 = 0.0;
   float dht11_c_0 = 0.0;
   float dht11_f_0 = 0.0;
   float dht11_hif_0 = 0.0;
   float dht11_hic_0 = 0.0;
   bool dht11_0_display_hic = true;
-  int photoresistor_0 = 0;
-  int tracking_0 = 0;
+
+  // general analog/digital sensor: can be refactored
+  // float sensor_0 = 0.0; // taken
+  float sensor_1 = 0.0;
+  float sensor_2 = 0.0;
+  float sensor_3 = 0.0;
+  float sensor_4 = 0.0;
+  float sensor_5 = 0.0;
+  float sensor_6 = 0.0;
+  float sensor_7 = 0.0;
+  float sensor_8 = 0.0;
+  float sensor_9 = 0.0;
+  float sensor_10 = 0.0;
+  float sensor_11 = 0.0;
+  float sensor_12 = 0.0;
+  float sensor_13 = 0.0;
+  float sensor_14 = 0.0;
+  float sensor_15 = 0.0;
 };
 SensorDataStruct sensorData;
 
@@ -6919,55 +6935,6 @@ void matrixSwitch() {
         }
         
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                        PHOTO RESISTORS
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Under") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Over") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Equal") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PhotoRes0Range") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.photoresistor_0,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-        
-        // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS") == 0) {
@@ -7849,10 +7816,6 @@ String getRelatedX(char * data) {
   if (strcmp("DHT11HIF0Over", data)==0) {return String(sensorData.dht11_hif_0);}
   if (strcmp("DHT11HIF0Equal", data)==0) {return String(sensorData.dht11_hif_0);}
   if (strcmp("DHT11HIF0Range", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("PhotoRes0Under", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes0Over", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes0Equal", data)==0) {return String(sensorData.photoresistor_0);}
-  if (strcmp("PhotoRes0Range", data)==0) {return String(sensorData.photoresistor_0);}
   return String("");
 }
 
@@ -9254,14 +9217,8 @@ void getSensorData(void * pvParameters) {
 
     if (sensors_done==false) {
 
-      // photo resistor
-      setMultiplexChannel_CD74HC4067(0);
-      delay(10);
-      sensorData.photoresistor_0 = analogRead(CD74HC4067_SIG);
-      // Serial.println("[photoresistor_0] " + String(sensorData.photoresistor_0));
-
       // dht11
-      setMultiplexChannel_CD74HC4067(1);
+      setMultiplexChannel_CD74HC4067(0);
       sensorData.dht11_h_0 = dht.readHumidity();
       sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
       sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
@@ -9343,7 +9300,7 @@ void setup() {
   //                                                                                                                  SETUP: WIRE 
 
   
-  setMultiplexChannel_CD74HC4067(1);
+  setMultiplexChannel_CD74HC4067(0);
   
   Serial.println("[setup] wire");
   Wire.begin();  // sets up the I2C  
@@ -9604,7 +9561,6 @@ void loop() {
   // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
-  // Serial.println("[photoresistor_0]       " + String(sensorData.photoresistor_0));
   // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
   // Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
   // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
