@@ -10281,7 +10281,7 @@ void getSensorData(void * pvParameters) {
       }
       if (systemData.output_sensors_enabled==true) {
         memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
-        strcat(sensorData.sensor_sentence, "$SENSERS,");
+        strcat(sensorData.sensor_sentence, "$SENSORS,");
 
         memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
         ltoa(sensorData.sensor_0, sensorData.TMP, 10);
