@@ -2285,7 +2285,7 @@ const char *menuMatrixSetFunctionNameItems[209] =
   matrixData.matrix_function_names[207],
   matrixData.matrix_function_names[208],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 213, {{3, 46}, {124, 124}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 209, {{3, 46}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
