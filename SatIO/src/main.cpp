@@ -2664,10 +2664,10 @@ void GPATT() {
 struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
-  char satDataTag[56]                  = "$SATIO";                  // satio sentence tag
-  char last_sat_time_stamp_str[56]    = "0000000000000000";        // record last time satellites were seen yyyymmddhhmmssmm
+  char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
+  char downlinksyncdatetime[56]       = "0.0";                       // record last time satellites were seen
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
-  char coordinate_conversion_mode[56]  = "GNGGA";                   // sentence coordinates degrees created from
+  char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                 // one meter (tune)
   double longitude_meter              = 0.0000100;                 // one meter (tune)
   double latitude_mile                = latitude_meter  * 1609.34; // one mile
@@ -2783,9 +2783,25 @@ String padDigitsZero(int digits) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       RTC TIME
 
-String formatRTCTime() {
-  return String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())) +
-  " " + String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year())));
+
+String formatRTCDateTime() {
+  return 
+  String(padDigitsZero(rtc.now().year())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().day())) + " " +
+  String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())));
+}
+
+String formatRTCDateTimeStamp() {
+  return 
+  String(padDigitsZero(rtc.now().year())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().day())) +
+  String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
+}
+
+String formatRTCTImeStamp() {
+  return String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
+}
+
+String formatRTCDateStamp() {
+  return String(padDigitsZero(rtc.now().day())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().year()));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -2923,7 +2939,7 @@ void calculateLocation(){
 
 void syncRTCOnDownlink() {
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  Serial.println("[synchronized] " + formatRTCTime());
+  Serial.println("[synchronized] " + formatRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3069,15 +3085,28 @@ void convertUTCToLocal() {
     to do: when synchronizing RTC, only synchronize RTC within a 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
     */
     if ((first_gps_pass==true) ) {
-      if (satData.tmp_millisecond_int==00) {first_gps_pass=false; syncRTCOnDownlink();} // maybe synchronize on first pass of this function (like on startup for example)
+      if (satData.tmp_millisecond_int==00) {
+        first_gps_pass=false; // dont drop in here next time
+        syncRTCOnDownlink();  // sync rtc
+        // set last sync datetime
+        memset(satData.downlinksyncdatetime, 0, sizeof(satData.downlinksyncdatetime));
+        strcpy(satData.downlinksyncdatetime, formatRTCDateTimeStamp().c_str());
+      }
     }
     else {
       // sync every minute according to downlinked time. 
-      if (satData.lt_second_int == 0) {if (satData.tmp_millisecond_int==00) {syncRTCOnDownlink();}}
+      if (satData.lt_second_int == 0) {
+        if (satData.tmp_millisecond_int==00) {
+          syncRTCOnDownlink(); // sync rtc
+          // set last sync datetime
+          memset(satData.downlinksyncdatetime, 0, sizeof(satData.downlinksyncdatetime));
+          strcpy(satData.downlinksyncdatetime, formatRTCDateTimeStamp().c_str());
+        }
+      }
     }
   }
 
-  // Serial.println("[rtc time] " + formatRTCTime()); // debug
+  // Serial.println("[rtc time] " + formatRTCDateTime()); // debug
 
   /*    now we can do things with time (using rtc time)     */
 
@@ -3094,17 +3123,13 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
 
-    // make unix second time
-    // Serial.println("[unix time]               " + String(rtc.now().unixtime()));
-    // Serial.println("-------------");
-
-  // create timestamp for satio sentence 
-  strcat(satData.satio_sentence, rtc.now().timestamp().c_str());
+  // current rtc unixtime
+  strcat(satData.satio_sentence, String(formatRTCDateTimeStamp()).c_str());
   strcat(satData.satio_sentence, ",");
 
-  // append to satio sentence (pending new method)
-  // strcat(satData.satio_sentence, satData.last_sat_time_stamp_str);
-  // strcat(satData.satio_sentence, ",");
+  // last downlink sync rtc
+  strcat(satData.satio_sentence, satData.downlinksyncdatetime);
+  strcat(satData.satio_sentence, ",");
 
   // coordinate conversion mode
   if (satData.convert_coordinates == true) {
@@ -8834,7 +8859,7 @@ void UpdateUI() {
       menuHome.show( display );
       
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, String(formatRTCTime()).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed(3, 1, String(formatRTCDateTime()).c_str(), STYLE_BOLD );
       display.drawCanvas(3, 40, canvas120x8);
     }
 
@@ -10673,7 +10698,7 @@ void loop() {
 
   // some data while running headless
   // Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  // Serial.println("[RTC Datetime]          " + formatRTCTime()); // fresh from RTC
+  // Serial.println("[RTC Datetime]          " + formatRTCDateTime()); // fresh from RTC
   // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
