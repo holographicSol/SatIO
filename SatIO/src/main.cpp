@@ -8686,6 +8686,50 @@ String getRelatedX(char * data) {
   if (strcmp("DHT11HIF0Over", data)==0) {return String(sensorData.dht11_hif_0);}
   if (strcmp("DHT11HIF0Equal", data)==0) {return String(sensorData.dht11_hif_0);}
   if (strcmp("DHT11HIF0Range", data)==0) {return String(sensorData.dht11_hif_0);}
+  if (strcmp("Sensor0Over", data)==0) {return String(sensorData.sensor_0);}
+  if (strcmp("Sensor0Under", data)==0) {return String(sensorData.sensor_0);}
+  if (strcmp("Sensor0Equal", data)==0) {return String(sensorData.sensor_0);}
+  if (strcmp("Sensor0Range", data)==0) {return String(sensorData.sensor_0);}
+  if (strcmp("Sensor1Over", data)==0) {return String(sensorData.sensor_1);}
+  if (strcmp("Sensor1Under", data)==0) {return String(sensorData.sensor_1);}
+  if (strcmp("Sensor1Equal", data)==0) {return String(sensorData.sensor_1);}
+  if (strcmp("Sensor1Range", data)==0) {return String(sensorData.sensor_1);}
+  if (strcmp("Sensor2Over", data)==0) {return String(sensorData.sensor_2);}
+  if (strcmp("Sensor2Under", data)==0) {return String(sensorData.sensor_2);}
+  if (strcmp("Sensor2Equal", data)==0) {return String(sensorData.sensor_2);}
+  if (strcmp("Sensor2Range", data)==0) {return String(sensorData.sensor_2);}
+  if (strcmp("Sensor3Over", data)==0) {return String(sensorData.sensor_3);}
+  if (strcmp("Sensor3Under", data)==0) {return String(sensorData.sensor_3);}
+  if (strcmp("Sensor3Equal", data)==0) {return String(sensorData.sensor_3);}
+  if (strcmp("Sensor3Range", data)==0) {return String(sensorData.sensor_3);}
+  if (strcmp("Sensor4Over", data)==0) {return String(sensorData.sensor_4);}
+  if (strcmp("Sensor4Under", data)==0) {return String(sensorData.sensor_4);}
+  if (strcmp("Sensor4Equal", data)==0) {return String(sensorData.sensor_4);}
+  if (strcmp("Sensor4Range", data)==0) {return String(sensorData.sensor_4);}
+  if (strcmp("Sensor5Over", data)==0) {return String(sensorData.sensor_5);}
+  if (strcmp("Sensor5Under", data)==0) {return String(sensorData.sensor_5);}
+  if (strcmp("Sensor5Equal", data)==0) {return String(sensorData.sensor_5);}
+  if (strcmp("Sensor5Range", data)==0) {return String(sensorData.sensor_5);}
+  if (strcmp("Sensor6Over", data)==0) {return String(sensorData.sensor_6);}
+  if (strcmp("Sensor6Under", data)==0) {return String(sensorData.sensor_6);}
+  if (strcmp("Sensor6Equal", data)==0) {return String(sensorData.sensor_6);}
+  if (strcmp("Sensor6Range", data)==0) {return String(sensorData.sensor_6);}
+  if (strcmp("Sensor7Over", data)==0) {return String(sensorData.sensor_7);}
+  if (strcmp("Sensor7Under", data)==0) {return String(sensorData.sensor_7);}
+  if (strcmp("Sensor7Equal", data)==0) {return String(sensorData.sensor_7);}
+  if (strcmp("Sensor7Range", data)==0) {return String(sensorData.sensor_7);}
+  if (strcmp("Sensor8Over", data)==0) {return String(sensorData.sensor_8);}
+  if (strcmp("Sensor8Under", data)==0) {return String(sensorData.sensor_8);}
+  if (strcmp("Sensor8Equal", data)==0) {return String(sensorData.sensor_8);}
+  if (strcmp("Sensor8Range", data)==0) {return String(sensorData.sensor_8);}
+  if (strcmp("Sensor9Over", data)==0) {return String(sensorData.sensor_9);}
+  if (strcmp("Sensor9Under", data)==0) {return String(sensorData.sensor_9);}
+  if (strcmp("Sensor9Equal", data)==0) {return String(sensorData.sensor_9);}
+  if (strcmp("Sensor9Range", data)==0) {return String(sensorData.sensor_9);}
+  if (strcmp("Sensor10Over", data)==0) {return String(sensorData.sensor_10);}
+  if (strcmp("Sensor10Under", data)==0) {return String(sensorData.sensor_10);}
+  if (strcmp("Sensor10Equal", data)==0) {return String(sensorData.sensor_10);}
+  if (strcmp("Sensor10Range", data)==0) {return String(sensorData.sensor_10);}
   return String("");
 }
 
