@@ -32,7 +32,7 @@
                                           ESP32: null TXD -> WTGPS300P: RXD
 
                                           ESP32 i2C: i2C Multiplexing (3.3v) (for peripherals):
-                                          ESP32: i2C          -> TCA9548A: SDA, SCL
+                                          ESP32: i2C -> TCA9548A: SDA, SCL
 
                                           ESP32: Analog/Digital Multiplexing (3.3v) (for peripherals):
                                           ESP32: io4    -> CD74HC4067: SIG
@@ -10333,42 +10333,34 @@ void getSensorData(void * pvParameters) {
 
         // i2c channel 0
         if (i_chan==0) {
-          sensorData.sensor_0 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 1
-        if (i_chan==1) {
-          sensorData.sensor_1 = analogRead(CD74HC4067_SIG);
+        else if (i_chan==1) {
         }
 
         // i2c channel 2
         else if (i_chan==2) {
-          sensorData.sensor_2 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 3
         else if (i_chan==3) {
-          sensorData.sensor_3 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 4
         else if (i_chan==4) {
-          sensorData.sensor_4 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 5
         else if (i_chan==5) {
-          sensorData.sensor_5 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 6
         else if (i_chan==6) {
-          sensorData.sensor_6 = analogRead(CD74HC4067_SIG);
         }
 
         // i2c channel 7
         else if (i_chan==7) {
-          sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
       }
       // set multiplexer channel back to zero
       setMultiplexChannel_TCA9548A(0);
