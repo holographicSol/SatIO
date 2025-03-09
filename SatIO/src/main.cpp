@@ -1900,14 +1900,15 @@ struct MatrixStruct {
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
-    "LatGNGGAOver",
-    "LatGNGGAUnder",
-    "LatGNGGAEqual",
-    "LatGNGGARange",
-    "LonGNGGAOver",
-    "LonGNGGAUnder",
-    "LonGNGGAEqual",
-    "LonGNGGARange",
+    // use gngga degrees
+    // "LatGNGGAOver",
+    // "LatGNGGAUnder",
+    // "LatGNGGAEqual",
+    // "LatGNGGARange",
+    // "LonGNGGAOver",
+    // "LonGNGGAUnder",
+    // "LonGNGGAEqual",
+    // "LonGNGGARange",
     "PosStatusGNGGA",
     "SatCountOver",
     "SatCountUnder",
@@ -1935,14 +1936,15 @@ struct MatrixStruct {
     "ModeGNRMCD",
     "ModeGNRMCE",
     "ModeGNRMCN",
-    "LatGNRMCOver",
-    "LatGNRMCUnder",
-    "LatGNRMCEqual",
-    "LatGNRMCRange",
-    "LonGNRMCOver",
-    "LonGNRMCUnder",
-    "LonGNRMCEqual",
-    "LonGNRMCRange",
+    // use gnrmc degrees
+    // "LatGNRMCOver",
+    // "LatGNRMCUnder",
+    // "LatGNRMCEqual",
+    // "LatGNRMCRange",
+    // "LonGNRMCOver",
+    // "LonGNRMCUnder",
+    // "LonGNRMCEqual",
+    // "LonGNRMCRange",
     "HemiGNRMCNorth",
     "HemiGNRMCSouth",
     "HemiGNRMCEast",
@@ -2112,6 +2114,27 @@ struct MatrixStruct {
     "Sensor10Under",
     "Sensor10Equal",
     "Sensor10Range",
+    "Sensor11Over",
+    "Sensor11Under",
+    "Sensor11Equal",
+    "Sensor11Range",
+    "Sensor12Over",
+    "Sensor12Under",
+    "Sensor12Equal",
+    "Sensor12Range",
+    "Sensor13Over",
+    "Sensor13Under",
+    "Sensor13Equal",
+    "Sensor13Range",
+    "Sensor14Over",
+    "Sensor14Under",
+    "Sensor14Equal",
+    "Sensor14Range",
+    // "Sensor15Over",
+    // "Sensor15Under",
+    // "Sensor15Equal",
+    // "Sensor15Range",
+
   };
 };
 MatrixStruct matrixData;
@@ -7586,203 +7609,203 @@ void matrixSwitch() {
           }
         }
 
-        // currently sensor 11-15 are currently reserved due to char array limitation (255). see max_matrix_function_names (array is basically full)
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               SENSOR 11
 
-        // // ----------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                               SENSOR 11
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_11,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_11,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        // }
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               SENSOR 12
 
-        // // ----------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                               SENSOR 12
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_12,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_12,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        // }
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               SENSOR 13
 
-        // // ----------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                               SENSOR 13
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_13,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_13,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        // }
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               SENSOR 14
 
-        // // ----------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                               SENSOR 14
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_14,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_14,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        // }
+        // currently sensor 15 is currently unavailable in calc due to char array limitation (255). see max_matrix_function_names (array is basically full)
 
         // // ----------------------------------------------------------------------------------------------------------------------
         // //                                                                                                               SENSOR 15
@@ -8760,6 +8783,26 @@ String getRelatedX(char * data) {
   if (strcmp("Sensor10Under", data)==0) {return String(sensorData.sensor_10);}
   if (strcmp("Sensor10Equal", data)==0) {return String(sensorData.sensor_10);}
   if (strcmp("Sensor10Range", data)==0) {return String(sensorData.sensor_10);}
+  if (strcmp("Sensor11Over", data)==0) {return String(sensorData.sensor_11);}
+  if (strcmp("Sensor11Under", data)==0) {return String(sensorData.sensor_11);}
+  if (strcmp("Sensor11Equal", data)==0) {return String(sensorData.sensor_11);}
+  if (strcmp("Sensor11Range", data)==0) {return String(sensorData.sensor_11);}
+  if (strcmp("Sensor12Over", data)==0) {return String(sensorData.sensor_12);}
+  if (strcmp("Sensor12Under", data)==0) {return String(sensorData.sensor_12);}
+  if (strcmp("Sensor12Equal", data)==0) {return String(sensorData.sensor_12);}
+  if (strcmp("Sensor12Range", data)==0) {return String(sensorData.sensor_12);}
+  if (strcmp("Sensor13Over", data)==0) {return String(sensorData.sensor_13);}
+  if (strcmp("Sensor13Under", data)==0) {return String(sensorData.sensor_13);}
+  if (strcmp("Sensor13Equal", data)==0) {return String(sensorData.sensor_13);}
+  if (strcmp("Sensor13Range", data)==0) {return String(sensorData.sensor_13);}
+  if (strcmp("Sensor14Over", data)==0) {return String(sensorData.sensor_14);}
+  if (strcmp("Sensor14Under", data)==0) {return String(sensorData.sensor_14);}
+  if (strcmp("Sensor14Equal", data)==0) {return String(sensorData.sensor_14);}
+  if (strcmp("Sensor14Range", data)==0) {return String(sensorData.sensor_14);}
+  // if (strcmp("Sensor15Over", data)==0) {return String(sensorData.sensor_15);}
+  // if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
+  // if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
+  // if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
   return String("");
 }
 
