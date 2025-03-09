@@ -10370,7 +10370,7 @@ void getSensorData(void * pvParameters) {
         else if (i_chan==7) {
           sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
       }
-      // set multiplexer channel back to zero (RTC)
+      // set multiplexer channel back to zero
       setMultiplexChannel_TCA9548A(0);
 
       // build sensory data sentence
