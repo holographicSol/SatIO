@@ -92,6 +92,10 @@
 
         ToDo: Latitude and longitude terrain elevation dictionary. This ties in with SatIO basically knowing and being able to calculate with a lot of 'constants'.
         This may be sourced from NASA's Shuttle Radar Topography Mission to provide a topographic resolution of 1 arc second (about 30 meters).
+        After experimentation I found that extraction of one hgt file on esp32 took 7 minutes and also found that subsequent searching of that hgt file for elevation
+        data also took over 5 minutes. The extraction time we can work with (with a large enough micro sd card) by extracting only what we need within a certain 
+        range of degrees, but time to read elevation data has to be quick and it is not. Maybe its just me and there are better ways than I have tried, i will be
+        saving this feature for a version of SatIO built around something more powerful than ESP32.  
 
         Todo: wire up the existing functionality through to the interface level.
 
@@ -3022,7 +3026,6 @@ void buildSatIOSentence() {
   createChecksum(satData.satio_sentence);
   strcat(satData.satio_sentence, "*");
   strcat(satData.satio_sentence, SerialLink.checksum);
-  strcat(satData.satio_sentence, "\n");
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
 
   // Serial.println(satData.satio_sentence);  // debug
@@ -7055,7 +7058,6 @@ void matrixSwitch() {
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
     strcat(matrixData.matrix_sentence, SerialLink.checksum);
-    strcat(matrixData.matrix_sentence, "\n");
 
     // serial output: switch states.
     if (systemData.output_matrix_enabled == true) {
@@ -7543,7 +7545,7 @@ void menuEnter() {
       display.begin();
     }
     else {Serial.println("[deleting] aborting! cannot delete empty slot.");}
-    
+
     // return to previous page
     menu_page=20;
   }
@@ -8829,7 +8831,7 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
           2: tags. what have you got and how to parse it (the human name(s) of the data its giving you).
           3: append primitives (over, under, equal, inrange) to the human names.
           4: put new concatinated name(s) in matrix function names.
-          ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.
+          ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.sd_c
           extra note: the custom i2c peripherals should be designed to think within the realms of 'primitives', so that being
           the ones who created the custom i2c device, we are also the ones who know what a simple integer means if and when we check
           for that simple integer in the matrix in regards to each and any given custom i2c device.
