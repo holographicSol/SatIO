@@ -10169,8 +10169,14 @@ void getSensorData(void * pvParameters) {
           }
           sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
           sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
+          sensorData.sensor_0 = sensorData.dht11_hic_0; // custum sensor 0
           // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
         }
+
+        // // sensor 0
+        // if (i_chan==0) {
+        //   sensorData.sensor_0 = analogRead(CD74HC4067_SIG);
+        // }
 
         // sensor 1
         else if (i_chan==1) {
