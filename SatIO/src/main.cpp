@@ -5117,97 +5117,97 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAOver") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_over_false(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAUnder") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_under_false(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGARange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGARange") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAOver") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_over_false(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAUnder") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_under_false(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGARange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGARange") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        // }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -5489,97 +5489,97 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCOver") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_over_false(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCUnder") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_under_false(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.latitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCRange") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.latitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCOver") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_over_false(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCUnder") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_under_false(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
           
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.longitude),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCRange") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.longitude),
+        //     matrixData.matrix_function_xyz[Mi][Fi][0],
+        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
+        //   }
+        // }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10208,7 +10208,7 @@ void getSensorData(void * pvParameters) {
     // wait here
     if (sensors_done==false) {
 
-      // step over each multiplexer channel
+      // step over each multiplexer analog/digital channel
       for (int i_chan = 0; i_chan < 16; i_chan++) {
 
         // set multiplexer channel
@@ -10322,6 +10322,18 @@ void getSensorData(void * pvParameters) {
         }
 
       }
+
+      // step over each multiplexer i2C channel
+      for (int i_chan = 0; i_chan < 8; i_chan++) {
+
+        // set multiplexer channel
+        setMultiplexChannel_TCA9548A(i_chan);
+
+      }
+      // set multiplexer channel back to zero (RTC)
+      setMultiplexChannel_TCA9548A(0);
+
+      // build sensory data sentence
       if (systemData.output_sensors_enabled==true) {
         memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
         strcat(sensorData.sensor_sentence, "$SENSORS,");
@@ -10660,7 +10672,7 @@ void loop() {
     // Serial.println("[calculateLocation]   " + String(millis()-t0));
 
     /* uncomment to limit planet tracking to once per second. */
-    // if (track_planets_period == true) {
+    if (track_planets_period == true) {
       track_planets_period = false;
       // t0 = millis();
       setTrackPlanets();
@@ -10669,7 +10681,7 @@ void loop() {
       // t0 = millis();
       trackPlanets();
       // Serial.println("[trackPlanets]        " + String(millis()-t0));
-    // }
+    }
 
     // t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
@@ -10684,7 +10696,6 @@ void loop() {
     MatrixStatsCounter();
 
     // instruct port controller: matrix
-    // setPortControllerReadMode(0);
     // t0 = millis();
     writeToPortController();
     // Serial.println("[writePortController] " + String(millis()-t0));
