@@ -10204,52 +10204,52 @@ void getSensorData(void * pvParameters) {
         }
 
         // sensor 6
-        else if (i_chan==1) {
+        else if (i_chan==6) {
           sensorData.sensor_6 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 7
-        else if (i_chan==2) {
+        else if (i_chan==7) {
           sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 8
-        else if (i_chan==3) {
+        else if (i_chan==8) {
           sensorData.sensor_8 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 9
-        else if (i_chan==4) {
+        else if (i_chan==9) {
           sensorData.sensor_9 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 10
-        else if (i_chan==5) {
+        else if (i_chan==10) {
           sensorData.sensor_10 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 11
-        else if (i_chan==1) {
+        else if (i_chan==11) {
           sensorData.sensor_11 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 12
-        else if (i_chan==2) {
+        else if (i_chan==12) {
           sensorData.sensor_12 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 13
-        else if (i_chan==3) {
+        else if (i_chan==13) {
           sensorData.sensor_13 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 14
-        else if (i_chan==4) {
+        else if (i_chan==14) {
           sensorData.sensor_14 = analogRead(CD74HC4067_SIG);
         }
 
         // sensor 15
-        else if (i_chan==5) {
+        else if (i_chan==15) {
           sensorData.sensor_15 = analogRead(CD74HC4067_SIG);
         }
 
