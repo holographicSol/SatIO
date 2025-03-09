@@ -339,8 +339,8 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{3, 34}, {124, 124}
 const char *menuGPSItems[5];
 LcdGfxMenu menuGPS( menuGPSItems, 5, {{3, 34}, {124, 124}} );
 
-const char *menuSerialItems[5];
-LcdGfxMenu menuSerial( menuSerialItems, 6, {{3, 34}, {124, 124}} );
+const char *menuSerialItems[7];
+LcdGfxMenu menuSerial( menuSerialItems, 7, {{3, 34}, {124, 124}} );
 
 const char *menuUniverseItems[7];
 LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{3, 34}, {124, 124}} );
@@ -484,6 +484,7 @@ struct systemStruct {
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
+  bool output_sensors_enabled = false;  // enables/disables output of sensory data sentence over serial
   bool port_controller_enabled = true; // may be false by default but is default true for now.
   bool sidereal_track_sun = true;      // enables/disables celestial body tracking
   bool sidereal_track_moon = true;     // enables/disables celestial body tracking
@@ -2760,6 +2761,9 @@ struct SensorDataStruct {
   float sensor_13 = 0.0;
   float sensor_14 = 0.0;
   float sensor_15 = 0.0;
+
+  char sensor_sentence[1024];
+  char TMP[1024];
 };
 SensorDataStruct sensorData;
 
@@ -8411,7 +8415,8 @@ void menuEnter() {
     if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
     if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
     if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
-    if (menuSerial.selection()==5) {systemData.allow_debug_bridge^=true;}
+    if (menuSerial.selection()==5) {systemData.output_sensors_enabled^=true;}
+    if (menuSerial.selection()==6) {systemData.allow_debug_bridge^=true;}
   }
 
   // universe page
@@ -9528,8 +9533,11 @@ void UpdateUI() {
       if (systemData.output_matrix_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
       else {menuSerialItems[4]="MATRIX DISABLED";}
 
-      if (systemData.allow_debug_bridge==true) {menuSerialItems[5]="DEBUG ENABLED";}
-      else {menuSerialItems[5]="DEBUG DISABLED";}
+      if (systemData.output_sensors_enabled==true) {menuSerialItems[5]="SENSORS ENABLED";}
+      else {menuSerialItems[5]="SENSORS DISABLED";}
+
+      if (systemData.allow_debug_bridge==true) {menuSerialItems[6]="DEBUG ENABLED";}
+      else {menuSerialItems[6]="DEBUG DISABLED";}
 
       // show menu
       menuSerial.show( display );
@@ -10240,6 +10248,97 @@ void getSensorData(void * pvParameters) {
         }
 
       }
+      if (systemData.output_sensors_enabled==true) {
+        memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
+        strcat(sensorData.sensor_sentence, "$SENSERS,");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_0, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_1, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_2, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_3, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_4, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_5, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_6, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_7, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_8, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_9, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_10, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_11, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_12, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_13, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_14, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
+        ltoa(sensorData.sensor_15, sensorData.TMP, 10);
+        strcat(sensorData.sensor_sentence, sensorData.TMP);
+        strcat(sensorData.sensor_sentence, ",");
+
+        // append checksum
+        createChecksum(sensorData.sensor_sentence);
+        strcat(sensorData.sensor_sentence, "*");
+        strcat(sensorData.sensor_sentence, SerialLink.checksum);
+        if (systemData.output_sensors_enabled == true) {Serial.println(sensorData.sensor_sentence);}
+      }
+
       // let main task know we're done
       sensors_done=true;
     }
