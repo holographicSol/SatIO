@@ -9211,20 +9211,112 @@ void getSensorData(void * pvParameters) {
 
     // Serial.println("[getSensorData] ");
 
+    // wait here
     if (sensors_done==false) {
 
-      // dht11
-      setMultiplexChannel_CD74HC4067(0);
-      sensorData.dht11_h_0 = dht.readHumidity();
-      sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
-      sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
-      if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println("Failed to read from DHT sensor!");
-      }
-      sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
-      sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-      // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+      // step over each multiplexer channel
+      for (int i_chan = 0; i_chan < 16; i_chan++) {
 
+        // set multiplexer channel
+        setMultiplexChannel_CD74HC4067(i_chan);
+
+        /*
+        
+        analogu read is default hardcode for reading each channel, this is for more general flexibility. more complicated sensors
+        can be expanded upon here and new variables created in sensorData where requried.
+        
+        */
+
+        // sensor 0
+        if (i_chan==0) {
+          sensorData.dht11_h_0 = dht.readHumidity();
+          sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
+          sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+          if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
+            Serial.println("Failed to read from DHT sensor!");
+          }
+          sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
+          sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
+          // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+        }
+
+        // sensor 1
+        else if (i_chan==1) {
+          sensorData.sensor_1 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 2
+        else if (i_chan==2) {
+          sensorData.sensor_2 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 3
+        else if (i_chan==3) {
+          sensorData.sensor_3 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 4
+        else if (i_chan==4) {
+          sensorData.sensor_4 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 5
+        else if (i_chan==5) {
+          sensorData.sensor_5 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 6
+        else if (i_chan==1) {
+          sensorData.sensor_6 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 7
+        else if (i_chan==2) {
+          sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 8
+        else if (i_chan==3) {
+          sensorData.sensor_8 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 9
+        else if (i_chan==4) {
+          sensorData.sensor_9 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 10
+        else if (i_chan==5) {
+          sensorData.sensor_10 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 11
+        else if (i_chan==1) {
+          sensorData.sensor_11 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 12
+        else if (i_chan==2) {
+          sensorData.sensor_12 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 13
+        else if (i_chan==3) {
+          sensorData.sensor_13 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 14
+        else if (i_chan==4) {
+          sensorData.sensor_14 = analogRead(CD74HC4067_SIG);
+        }
+
+        // sensor 15
+        else if (i_chan==5) {
+          sensorData.sensor_15 = analogRead(CD74HC4067_SIG);
+        }
+
+      }
+      // let main task know we're done
       sensors_done=true;
     }
     delay(1);
