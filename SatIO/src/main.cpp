@@ -10142,6 +10142,12 @@ void getSensorData(void * pvParameters) {
         
         analogu read is default hardcode for reading each channel, this is for more general flexibility. more complicated sensors
         can be expanded upon here and new variables created in sensorData where requried.
+
+        ESP32 has a 12bit ADC.
+
+        10bit ADC: 0-1023
+        12bit ADC: 0-4095
+        14bit ADC: 0-16383
         
         */
 
