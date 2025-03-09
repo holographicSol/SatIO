@@ -10361,6 +10361,7 @@ void getSensorData(void * pvParameters) {
 
         // i2c channel 7
         else if (i_chan==7) {
+        }
       }
       // set multiplexer channel back to zero
       setMultiplexChannel_TCA9548A(0);
