@@ -2073,7 +2073,7 @@ MatrixStruct matrixData;
 
 // note that we could work out of this item list entirely to be more efficient but then our function name items would have a
 // display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
-const char *menuMatrixSetFunctionNameItems[213] =
+const char *menuMatrixSetFunctionNameItems[209] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -2284,10 +2284,6 @@ const char *menuMatrixSetFunctionNameItems[213] =
   matrixData.matrix_function_names[206],
   matrixData.matrix_function_names[207],
   matrixData.matrix_function_names[208],
-  matrixData.matrix_function_names[209],
-  matrixData.matrix_function_names[210],
-  matrixData.matrix_function_names[211],
-  matrixData.matrix_function_names[212],
 };
 LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 213, {{3, 46}, {124, 124}} );
 
