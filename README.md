@@ -15,7 +15,7 @@
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Keypad custom peripheral (for large creative potential in):
+                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel custom peripheral (for large creative potential in):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
@@ -29,13 +29,12 @@
                                           TCA9548A: SDA0 SCL0 -> DS3231: SDA, SCL (5v)
 
                                           ESP32: Analog/Digital Multiplexing (3.3v) (for peripherals):
-                                          ESP32: io4  -> CD74HC4067: SIG
-                                          ESP32: io32 -> CD74HC4067: S0
-                                          ESP32: io33 -> CD74HC4067: S1
-                                          ESP32: io16 -> CD74HC4067: S2
-                                          ESP32: io17 -> CD74HC4067: S3
-                                          CD74HC4067 C0 -> Photo Resistor: SIG
-                                          CD74HC4067 C1 -> DHT11: SIG
+                                          ESP32: io4    -> CD74HC4067: SIG
+                                          ESP32: io32   -> CD74HC4067: S0
+                                          ESP32: io33   -> CD74HC4067: S1
+                                          ESP32: io16   -> CD74HC4067: S2
+                                          ESP32: io17   -> CD74HC4067: S3
+                                          CD74HC4067 C0 -> DHT11: SIG
 
                                           ESP32 VSPI: SDCARD (5v) (for matrix and system data):
                                           ESP32: io5  -> HW-125: CS (SS)
