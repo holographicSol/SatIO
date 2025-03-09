@@ -1854,9 +1854,9 @@ struct MatrixStruct {
   /* function names for function name matrix */
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 217;
+  int max_matrix_function_names = 221;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[217][25] = 
+  char matrix_function_names[221][25] = 
   {
     "None",
     "Enabled",
@@ -2075,10 +2075,10 @@ struct MatrixStruct {
     "Sensor1Under",
     "Sensor1Equal",
     "Sensor1Range",
-    // "Sensor2Over",
-    // "Sensor2Under",
-    // "Sensor2Equal",
-    // "Sensor2Range",
+    "Sensor2Over",
+    "Sensor2Under",
+    "Sensor2Equal",
+    "Sensor2Range",
     // "Sensor3Over",
     // "Sensor3Under",
     // "Sensor3Equal",
@@ -2137,7 +2137,7 @@ MatrixStruct matrixData;
 
 // note that we could work out of this item list entirely to be more efficient but then our function name items would have a
 // display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
-const char *menuMatrixSetFunctionNameItems[217] =
+const char *menuMatrixSetFunctionNameItems[221] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -2356,10 +2356,10 @@ const char *menuMatrixSetFunctionNameItems[217] =
   matrixData.matrix_function_names[214],
   matrixData.matrix_function_names[215],
   matrixData.matrix_function_names[216],
-  // matrixData.matrix_function_names[217],
-  // matrixData.matrix_function_names[218],
-  // matrixData.matrix_function_names[219],
-  // matrixData.matrix_function_names[220],
+  matrixData.matrix_function_names[217],
+  matrixData.matrix_function_names[218],
+  matrixData.matrix_function_names[219],
+  matrixData.matrix_function_names[220],
   // matrixData.matrix_function_names[221],
   // matrixData.matrix_function_names[222],
   // matrixData.matrix_function_names[223],
@@ -2413,7 +2413,7 @@ const char *menuMatrixSetFunctionNameItems[217] =
   // matrixData.matrix_function_names[271],
   // matrixData.matrix_function_names[272],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 217, {{3, 46}, {124, 124}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 221, {{3, 46}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -8800,7 +8800,7 @@ void UpdateUI() {
   //                                DEVELOPER OPTIONS
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=6; // uncomment to debug
+  // menu_page=6; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
