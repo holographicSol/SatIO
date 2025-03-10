@@ -3158,7 +3158,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, satData.downlinksyncdatetime);
   strcat(satData.satio_sentence, ",");
 
-  // uptime in seconds
+  // system uptime in seconds
   strcat(satData.satio_sentence, String(timeData.uptime_unixtime).c_str());
   strcat(satData.satio_sentence, ",");
 
