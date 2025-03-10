@@ -2061,9 +2061,9 @@ struct MatrixStruct {
     "GSpeedGNRMC",
     "HeadingGNRMC",
     "UTCDateGNRMC",
-    "LineFlagGPATT",
-    "StaticFlagGPATTEQ",
-    "RStateFlagGPATTEQ",
+    "LFlagGPATT",
+    "SFlagGPATT",
+    "RSFlagGPATT",
     "INSGPATT",
     "SpeedNumGPATT",
     "MileageGPATT",
@@ -5678,13 +5678,70 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LineFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTOver") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTUnder") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_equal_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTRange") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTOver") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTUnder") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(atol(gpattData.ins),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
@@ -5700,7 +5757,42 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RStateFlagGPATTEQ") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTRange") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTOver") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTUnder") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -5711,7 +5803,42 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "StaticFlagGPATTEQ") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTRange") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTOver") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTUnder") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -5719,6 +5846,19 @@ void matrixSwitch() {
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_equal_false(atol(gpattData.static_flag),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTRange") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -8217,10 +8357,22 @@ String getRelatedX(char * data) {
   if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
   if (strcmp("UTCDateGNRMCRange", data)==0) {return String(gnrmcData.utc_date);}
-  if (strcmp("LineFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
-  if (strcmp("StaticFlagGPATTEQ", data)==0) {return String(gpattData.static_flag);}
-  if (strcmp("RStateFlagGPATTEQ", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("LFlagGPATTOver", data)==0) {return String(gpattData.line_flag);}
+  if (strcmp("LFlagGPATTUnder", data)==0) {return String(gpattData.line_flag);}
+  if (strcmp("LFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
+  if (strcmp("LFlagGPATTRange", data)==0) {return String(gpattData.line_flag);}
+  if (strcmp("SFlagGPATTOver", data)==0) {return String(gpattData.static_flag);}
+  if (strcmp("SFlagGPATTUnder", data)==0) {return String(gpattData.static_flag);}
+  if (strcmp("SFlagGPATTEqual", data)==0) {return String(gpattData.static_flag);}
+  if (strcmp("SFlagGPATTRange", data)==0) {return String(gpattData.static_flag);}
+  if (strcmp("RSFlagGPATTOver", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("RSFlagGPATTUnder", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("RSFlagGPATTEqual", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("RSFlagGPATTRange", data)==0) {return String(gpattData.run_state_flag);}
+  if (strcmp("INSGPATTOver", data)==0) {return String(gpattData.ins);}
+  if (strcmp("INSGPATTUnder", data)==0) {return String(gpattData.ins);}
   if (strcmp("INSGPATTEqual", data)==0) {return String(gpattData.ins);}
+  if (strcmp("INSGPATTRange", data)==0) {return String(gpattData.ins);}
   if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
   if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
@@ -8253,59 +8405,57 @@ String getRelatedX(char * data) {
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
-    siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
-  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
-    siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
   if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
   if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
   if (strcmp("MoonAltRange", data)==0) {return String(siderealPlanetData.moon_alt);}
-  // if (strcmp("MoonUp", data)==0) {return String();}
-  // if (strcmp("MoonDown", data)==0) {return String();}
+  if (strcmp("MoonUp", data)==0) {return String(siderealPlanetData.moon_r);}
+  if (strcmp("MoonDown", data)==0) {return String(siderealPlanetData.moon_s);}
   if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
   if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
   if (strcmp("MoonPhase", data)==0) {return String(siderealPlanetData.moon_p);}
   if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
   if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
-  // if (strcmp("MercuryUp", data)==0) {return String();}
-  // if (strcmp("MercuryDown", data)==0) {return String();}
+  if (strcmp("MercuryUp", data)==0) {return String(siderealPlanetData.mercury_r);}
+  if (strcmp("MercuryDown", data)==0) {return String(siderealPlanetData.mercury_s);}
   if (strcmp("MercuryRise", data)==0) {return String(siderealPlanetData.mercury_r);}
   if (strcmp("MercurySet", data)==0) {return String(siderealPlanetData.mercury_s);}
   if (strcmp("VenusAzRange", data)==0) {return String(siderealPlanetData.venus_az);}
   if (strcmp("VenusAltRange", data)==0) {return String(siderealPlanetData.venus_alt);}
-  // if (strcmp("VenusUp", data)==0) {return String();}
-  // if (strcmp("VenusDown", data)==0) {return String();}
+  if (strcmp("VenusUp", data)==0) {return String(siderealPlanetData.venus_r);}
+  if (strcmp("VenusDown", data)==0) {return String(siderealPlanetData.venus_s);}
   if (strcmp("VenusRise", data)==0) {return String(siderealPlanetData.venus_r);}
   if (strcmp("VenusSet", data)==0) {return String(siderealPlanetData.venus_s);}
   if (strcmp("MarsAzRange", data)==0) {return String(siderealPlanetData.mars_az);}
   if (strcmp("MarsAltRange", data)==0) {return String(siderealPlanetData.mars_alt);}
-  // if (strcmp("MarsUp", data)==0) {return String();}
-  // if (strcmp("MarsDown", data)==0) {return String();}
+  if (strcmp("MarsUp", data)==0) {return String(siderealPlanetData.mars_r);}
+  if (strcmp("MarsDown", data)==0) {return String(siderealPlanetData.mars_s);}
   if (strcmp("MarsRise", data)==0) {return String(siderealPlanetData.mars_r);}
   if (strcmp("MarsSet", data)==0) {return String(siderealPlanetData.mars_s);}
   if (strcmp("JupiterAzRange", data)==0) {return String(siderealPlanetData.jupiter_az);}
   if (strcmp("JupiterAltRange", data)==0) {return String(siderealPlanetData.jupiter_alt);}
-  // if (strcmp("JupiterUp", data)==0) {return String();}
-  // if (strcmp("JupiterDown", data)==0) {return String();}
+  if (strcmp("JupiterUp", data)==0) {return String(siderealPlanetData.jupiter_r);}
+  if (strcmp("JupiterDown", data)==0) {return String(siderealPlanetData.jupiter_s);}
   if (strcmp("JupiterRise", data)==0) {return String(siderealPlanetData.jupiter_r);}
   if (strcmp("JupiterSet", data)==0) {return String(siderealPlanetData.jupiter_s);}
   if (strcmp("SaturnAzRange", data)==0) {return String(siderealPlanetData.saturn_az);}
   if (strcmp("SaturnAltRange", data)==0) {return String(siderealPlanetData.saturn_alt);}
-  // if (strcmp("SaturnUp", data)==0) {return String();}
-  // if (strcmp("SaturnDown", data)==0) {return String();}
+  if (strcmp("SaturnUp", data)==0) {return String(siderealPlanetData.saturn_r);}
+  if (strcmp("SaturnDown", data)==0) {return String(siderealPlanetData.saturn_s);}
   if (strcmp("SaturnRise", data)==0) {return String(siderealPlanetData.saturn_r);}
   if (strcmp("SaturnSet", data)==0) {return String(siderealPlanetData.saturn_s);}
   if (strcmp("UranusAzRange", data)==0) {return String(siderealPlanetData.uranus_az);}
   if (strcmp("UranusAltRange", data)==0) {return String(siderealPlanetData.uranus_alt);}
-  // if (strcmp("UranusUp", data)==0) {return String();}
-  // if (strcmp("UranusDown", data)==0) {return String();}
+  if (strcmp("UranusUp", data)==0) {return String(siderealPlanetData.uranus_r);}
+  if (strcmp("UranusDown", data)==0) {return String(siderealPlanetData.uranus_s);}
   if (strcmp("UranusRise", data)==0) {return String(siderealPlanetData.uranus_r);}
   if (strcmp("UranusSet", data)==0) {return String(siderealPlanetData.uranus_s);}
   if (strcmp("NeptuneAzRange", data)==0) {return String(siderealPlanetData.neptune_az);}
   if (strcmp("NeptuneAltRange", data)==0) {return String(siderealPlanetData.neptune_alt);}
-  // if (strcmp("NeptuneUp", data)==0) {return String();}
-  // if (strcmp("NeptuneDown", data)==0) {return String();}
+  if (strcmp("NeptuneUp", data)==0) {return String(siderealPlanetData.neptune_r);}
+  if (strcmp("NeptuneDown", data)==0) {return String(siderealPlanetData.neptune_s);}
   if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
   if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
   if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
