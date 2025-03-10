@@ -4870,7 +4870,7 @@ void matrixSwitch() {
         }
 
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRanges") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = in_ranges_check_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
