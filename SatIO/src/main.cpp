@@ -60,7 +60,7 @@
 
                                                        System Uptime                    
                   START                 Last Sync     |                                  Degrees Longitude        
-                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |hh.mm|hh.mm|                  |                 |                
+                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |hh.mm|hh.mm|                 |                 |                
                   $SATIO,00000000000000,00000000000000,000,00.00,00.00,00.00000000000000,00.00000000000000,*Z
                         |              |                  |     |     |                 |                 |            
                          RTC Datetime                     |     |      Degrees Latitude                    Checksum            
