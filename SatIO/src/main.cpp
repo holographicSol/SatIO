@@ -59,11 +59,11 @@
 
 
                                                        System Uptime                    
-                  START                 Last Sync     |                      Degrees Longitude        
-                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |                 |                 |                
-                  $SATIO,00000000000000,00000000000000,000,00.00000000000000,00.00000000000000,*Z
-                        |              |                  |                 |                 |            
-                        RTC Datetime                      Degrees Latitude                    Checksum            
+                  START                 Last Sync     |                                 Degrees Longitude        
+                    |    yyyymmddhhmmss|yyyymmddhhmmss|yyyymmddhhmmss|                 |                 |                
+                  $SATIO,00000000000000,00000000000000,00000000000000,00.00000000000000,00.00000000000000,*Z
+                        |              |                             |                 |                 |            
+                        RTC Datetime                                  Degrees Latitude                    Checksum            
 
 
       Use case: From a clock syncronized with satellites to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
