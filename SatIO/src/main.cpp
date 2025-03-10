@@ -654,7 +654,7 @@ struct TimeStruct {
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
-  uint32_t uptime_seconds;
+  char uptime_datetime[56];
 };
 TimeStruct timeData;
 
@@ -3158,8 +3158,8 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, satData.downlinksyncdatetime);
   strcat(satData.satio_sentence, ",");
 
-  // system uptime in seconds
-  strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
+  // system uptime (as datetime timestamp of approximately when the system started according to th RTC).
+  strcat(satData.satio_sentence, timeData.uptime_datetime);
   strcat(satData.satio_sentence, ",");
 
   // coordinate conversion mode
@@ -10547,6 +10547,9 @@ void setup() {
   Serial.println("[setup] rtc");
   rtc.begin();   // initializes the I2C device
 
+  memset(timeData.uptime_datetime, 0, sizeof(timeData.uptime_datetime));
+  strcpy(timeData.uptime_datetime, String(formatRTCDateTimeStamp()).c_str());
+
   dht.begin();
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -10779,7 +10782,6 @@ void loop() {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
     track_planets_period = true;
-    timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
