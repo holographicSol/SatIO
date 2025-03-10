@@ -557,7 +557,6 @@ struct sysDebugStruct {
   bool gngga_sentence = false;   // enables/disables itemized sentence value output after processing
   bool gnrmc_sentence = false;   // enables/disables itemized sentence value output after processing
   bool gpatt_sentence = false;   // enables/disables itemized sentence value output after processing
-  bool serial_0_sentence = true; // enables/disables itemized command values output after processing
   
   bool validation = false;  // enables/disables data validation such as checksum, length and type checking
   bool verbose_file = true; // provide more information about files being loaded/saved/etc.
@@ -2692,7 +2691,7 @@ struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
   char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
-  char downlinksyncdatetime[56]       = "0.0";                       // record last time satellites were seen
+  char downlinksyncdatetime[56]       = "0.0";                     // record last time satellites were seen
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                 // one meter (tune)
@@ -2772,7 +2771,7 @@ struct SensorDataStruct {
   bool dht11_0_display_hic = true;
 
   // general analog/digital sensor: can be refactored
-  float sensor_0 = 0.0; // taken
+  float sensor_0 = 0.0;
   float sensor_1 = 0.0;
   float sensor_2 = 0.0;
   float sensor_3 = 0.0;
