@@ -59,13 +59,15 @@
 
 
                                                        System Uptime                    
-                  START                 Last Sync     |                      Degrees Longitude        
-                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |                 |                 |                
-                  $SATIO,00000000000000,00000000000000,000,00.00000000000000,00.00000000000000,*Z
-                        |              |                  |                 |                 |            
-                         RTC Datetime                      Degrees Latitude                    Checksum            
+                  START                 Last Sync     |                                  Degrees Longitude        
+                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |                             |                 |                
+                  $SATIO,00000000000000,00000000000000,000,00.00,00.00,00.00000000000000,00.00000000000000,*Z
+                        |              |                  |     |     |                 |                 |            
+                         RTC Datetime                     |     |      Degrees Latitude                    Checksum            
+                                                          |     Sun Set
+                                                          Sun Rise
 
-
+                                                          
       Use case: From a clock syncronized with satellites to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
                                     expected drift, if GPS data is stale or unavailable.
                         Robots, flying machines and automation, or for use with local LLM's like ollama, anything.
