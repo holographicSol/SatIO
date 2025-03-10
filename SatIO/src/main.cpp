@@ -653,6 +653,8 @@ struct TimeStruct {
   unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
+  uint32_t uptime_start_unixtime;
+  uint32_t uptime_unixtime;
 };
 TimeStruct timeData;
 
@@ -3154,6 +3156,10 @@ void buildSatIOSentence() {
 
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.downlinksyncdatetime);
+  strcat(satData.satio_sentence, ",");
+
+  // uptime in seconds
+  strcat(satData.satio_sentence, String(timeData.uptime_unixtime).c_str());
   strcat(satData.satio_sentence, ",");
 
   // coordinate conversion mode
@@ -10540,6 +10546,7 @@ void setup() {
 
   Serial.println("[setup] rtc");
   rtc.begin();   // initializes the I2C device
+  timeData.uptime_start_unixtime = rtc.now().unixtime();
 
   dht.begin();
 
@@ -10645,6 +10652,32 @@ void setup() {
   //                                                                                                      SETUP: SIDEREAL PLANETS
 
   myAstro.begin();
+}
+
+void upTime() {
+
+  /*
+  the following accounts for time travelling into the past (setting rtc to an earlier time) and does not account for time
+  travelling into the future.
+  */
+
+  // ensure start time is less than or equal to current time (account for time travel backwards)
+  if (rtc.now().unixtime() < timeData.uptime_start_unixtime) {
+    Serial.println("[uptime] resetting system uptime start to time now due to time now being prior to uptime start.");
+    // store uptime start same as if we just booted
+    timeData.uptime_start_unixtime=rtc.now().unixtime();
+  }
+
+  // ensure actual uptime is less than current time (account for time travel backwards)
+  uint32_t tempuptime = 0;
+  if (rtc.now().unixtime() < timeData.uptime_unixtime) {
+    Serial.println("[uptime] storing temporary copy of uptime due to a change in uptime data.");
+    // store temporary uptime to be added to actual system uptime (can be zero)
+    tempuptime = timeData.uptime_unixtime;
+  }
+
+  // now deduct start time from current time and add zero/non-zero temp uptime 
+  timeData.uptime_unixtime = tempuptime + (rtc.now().unixtime() - timeData.uptime_start_unixtime);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -10767,6 +10800,8 @@ void loop() {
     // Serial.println("[UpdateUI] " + String(millis()-t0));
   }
 
+  upTime();
+
   // ---------------------------------------------------------------------
 
   if (interrupt_second_counter > 0) {
@@ -10786,6 +10821,7 @@ void loop() {
   // some data while running headless
   // Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
   // Serial.println("[RTC Datetime]          " + formatRTCDateTime()); // fresh from RTC
+  // Serial.println("[uptime_unixtime] " + String(timeData.uptime_unixtime));
   // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
   // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
   // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
