@@ -7930,42 +7930,42 @@ void matrixSwitch() {
     }
     // handle Mi's that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
+  }
 
-    // reset matrix switch state sentence.
-    memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
-    strcpy(matrixData.matrix_sentence, "$MATRIX,");
+  // start building matrix sentence
+  memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
+  strcpy(matrixData.matrix_sentence, "$MATRIX,");
 
-    // append port mapping data
-    for (int i=0; i < matrixData.max_matrices; i++) {
-      itoa(matrixData.matrix_port_map[0][i], matrixData.temp, 10);
-      strcat(matrixData.matrix_sentence, matrixData.temp);
-      strcat(matrixData.matrix_sentence, ",");
-      }
-    
-    // append matrix switch state data
-    for (int i=0; i < matrixData.max_matrices; i++) {
-      if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_sentence, "0,");}
-      else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
+  // append port mapping data
+  for (int i=0; i < matrixData.max_matrices; i++) {
+    itoa(matrixData.matrix_port_map[0][i], matrixData.temp, 10);
+    strcat(matrixData.matrix_sentence, matrixData.temp);
+    strcat(matrixData.matrix_sentence, ",");
     }
+  
+  // append matrix switch state data
+  for (int i=0; i < matrixData.max_matrices; i++) {
+    if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_sentence, "0,");}
+    else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
+  }
 
-    // Satellite Count and HDOP Precision Factor Indicator
-    if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(matrixData.matrix_sentence, "0,");}
-    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
-    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(matrixData.matrix_sentence, "2,");}
+  // Satellite Count and HDOP Precision Factor Indicator
+  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(matrixData.matrix_sentence, "0,");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(matrixData.matrix_sentence, "2,");}
 
-    // Overload Indicator
-    if (systemData.overload==false) {strcat(matrixData.matrix_sentence, "0,");}
-    else {strcat(matrixData.matrix_sentence, "1,");}
+  // Overload Indicator
+  if (systemData.overload==false) {strcat(matrixData.matrix_sentence, "0,");}
+  else {strcat(matrixData.matrix_sentence, "1,");}
 
-    // append checksum
-    createChecksum(matrixData.matrix_sentence);
-    strcat(matrixData.matrix_sentence, "*");
-    strcat(matrixData.matrix_sentence, SerialLink.checksum);
+  // append checksum
+  createChecksum(matrixData.matrix_sentence);
+  strcat(matrixData.matrix_sentence, "*");
+  strcat(matrixData.matrix_sentence, SerialLink.checksum);
 
-    // serial output: switch states.
-    if (systemData.output_matrix_enabled == true) {
-      Serial.println(matrixData.matrix_sentence);
-    }
+  // serial output: switch states.
+  if (systemData.output_matrix_enabled == true) {
+    Serial.println(matrixData.matrix_sentence);
   }
 }
 
