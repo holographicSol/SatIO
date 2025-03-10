@@ -2004,9 +2004,9 @@ struct MatrixStruct {
   /* function names for function name matrix */
 
   // number of available function names that can be used to program a matrix switch
-  int max_matrix_function_names = 253;
+  int max_matrix_function_names = 248;
   // number of available function names that can be used to program a matrix switch (keep strlen() <=23)
-  char matrix_function_names[253][25] = 
+  char matrix_function_names[248][25] = 
   {
     "None",
     "Enabled",
@@ -2027,37 +2027,19 @@ struct MatrixStruct {
     "DateDayX",
     "DateMonthX",
     "DateYearX",
-    "DegLatGNGGAOver",
-    "DegLatGNGGAUnder",
-    "DegLatGNGGAEqual",
-    "DegLatGNGGARange",
-    "DegLonGNGGAOver",
-    "DegLonGNGGAUnder",
-    "DegLonGNGGAEqual",
-    "DegLonGNGGARange",
-    "DegGNGGARanges",
-    "DegLatGNRMCOver",
-    "DegLatGNRMCUnder",
-    "DegLatGNRMCEqual",
-    "DegLatGNRMCRange",
-    "DegLonGNRMCOver",
-    "DegLonGNRMCUnder",
-    "DegLonGNRMCEqual",
-    "DegLonGNRMCRange",
-    "DegGNRMCRanges",
+    "DegLatOver",
+    "DegLatUnder",
+    "DegLatEqual",
+    "DegLatRange",
+    "DegLonOver",
+    "DegLonUnder",
+    "DegLonEqual",
+    "DegLonRange",
+    "DegLatLonRanges",
     "UTCTimeGNGGAOver",
     "UTCTimeGNGGAUnder",
     "UTCTimeGNGGAEqual",
     "UTCTimeGNGGARange",
-    // use gngga degrees
-    // "LatGNGGAOver",
-    // "LatGNGGAUnder",
-    // "LatGNGGAEqual",
-    // "LatGNGGARange",
-    // "LonGNGGAOver",
-    // "LonGNGGAUnder",
-    // "LonGNGGAEqual",
-    // "LonGNGGARange",
     "PosStatusGNGGA",
     "SatCountOver",
     "SatCountUnder",
@@ -2085,15 +2067,6 @@ struct MatrixStruct {
     "ModeGNRMCD",
     "ModeGNRMCE",
     "ModeGNRMCN",
-    // use gnrmc degrees
-    // "LatGNRMCOver",
-    // "LatGNRMCUnder",
-    // "LatGNRMCEqual",
-    // "LatGNRMCRange",
-    // "LonGNRMCOver",
-    // "LonGNRMCUnder",
-    // "LonGNRMCEqual",
-    // "LonGNRMCRange",
     "HemiGNRMCNorth",
     "HemiGNRMCSouth",
     "HemiGNRMCEast",
@@ -2279,10 +2252,10 @@ struct MatrixStruct {
     "Sensor14Under",
     "Sensor14Equal",
     "Sensor14Range",
-    // "Sensor15Over",
-    // "Sensor15Under",
-    // "Sensor15Equal",
-    // "Sensor15Range",
+    "Sensor15Over",
+    "Sensor15Under",
+    "Sensor15Equal",
+    "Sensor15Range",
 
   };
 };
@@ -2290,7 +2263,7 @@ MatrixStruct matrixData;
 
 // note that we could work out of this item list entirely to be more efficient but then our function name items would have a
 // display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
-const char *menuMatrixSetFunctionNameItems[253] =
+const char *menuMatrixSetFunctionNameItems[248] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -2540,13 +2513,15 @@ const char *menuMatrixSetFunctionNameItems[253] =
   matrixData.matrix_function_names[245],
   matrixData.matrix_function_names[246],
   matrixData.matrix_function_names[247],
-  matrixData.matrix_function_names[248],
-  matrixData.matrix_function_names[249],
-  matrixData.matrix_function_names[250],
-  matrixData.matrix_function_names[251],
-  matrixData.matrix_function_names[252],
+  // matrixData.matrix_function_names[248],
+  // matrixData.matrix_function_names[249],
+  // matrixData.matrix_function_names[250],
+  // matrixData.matrix_function_names[251],
+  // matrixData.matrix_function_names[252],
+  // matrixData.matrix_function_names[251],
+  // matrixData.matrix_function_names[252],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 253, {{3, 46}, {124, 124}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 248, {{3, 46}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -2852,10 +2827,8 @@ struct SatDatatruct {
   double temp_longitude_gngga;                                     // degrees converted from absolute
   double temp_latitude_gnrmc;                                      // degrees converted from absolute
   double temp_longitude_gnrmc;                                     // degrees converted from absolute
-  double location_latitude_gngga;                                  // degrees converted from absolute
-  double location_longitude_gngga;                                 // degrees converted from absolute
-  double location_latitude_gnrmc;                                  // degrees converted from absolute
-  double location_longitude_gnrmc;                                 // degrees converted from absolute
+  double degrees_latitude;                                         // degrees converted from absolute
+  double degrees_longitude;                                        // degrees converted from absolute
   double minutesLat;                                               // used for converting absolute latitude and longitude
   double minutesLong;                                              // used for converting absolute latitude and longitude
   double degreesLat;                                               // used for converting absolute latitude and longitude
@@ -3010,14 +2983,14 @@ void calculateLocation(){
     satData.minutesLat = trunc(satData.minutesLat);
     satData.secondsLat = trunc(satData.secondsLat);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
-    satData.location_latitude_gngga =
+    satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnggaData.latitude_hemisphere, "S") == 0) {
-      satData.location_latitude_gngga = 0 - satData.location_latitude_gngga;
+      satData.degrees_latitude = 0 - satData.degrees_latitude;
     }
     // Save formatted latitude value as a string for later use.
-    scanf("%f17", &satData.location_latitude_gngga);
+    scanf("%f17", &satData.degrees_latitude);
 
     // Extract absolute longitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
@@ -3035,14 +3008,14 @@ void calculateLocation(){
     satData.minutesLong = trunc(satData.minutesLong);
     satData.secondsLong = trunc(satData.secondsLong);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
-    satData.location_longitude_gngga =
+    satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnggaData.longitude_hemisphere, "W") == 0) {
-      satData.location_longitude_gngga = 0 - satData.location_longitude_gngga;
+      satData.degrees_longitude = 0 - satData.degrees_longitude;
     }
     // Save formatted latitude value as a string for later use.
-    scanf("%f17", &satData.location_longitude_gngga);
+    scanf("%f17", &satData.degrees_longitude);
   }
 
   // ------------------------------------------------------------------------------------------------------------------------
@@ -3068,14 +3041,14 @@ void calculateLocation(){
     satData.minutesLat = trunc(satData.minutesLat);
     satData.secondsLat = trunc(satData.secondsLat);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
-    satData.location_latitude_gnrmc =
+    satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnrmcData.latitude_hemisphere, "S") == 0) {
-      satData.location_latitude_gnrmc = 0 - satData.location_latitude_gnrmc;
+      satData.degrees_latitude = 0 - satData.degrees_latitude;
     }
     // Save formatted latitude value as a string for later use.
-    scanf("%f17", &satData.location_latitude_gnrmc);
+    scanf("%f17", &satData.degrees_latitude);
 
     // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
@@ -3093,14 +3066,14 @@ void calculateLocation(){
     satData.minutesLong = trunc(satData.minutesLong);
     satData.secondsLong = trunc(satData.secondsLong);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
-    satData.location_longitude_gnrmc =
+    satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
     if (strcmp(gnrmcData.longitude_hemisphere, "W") == 0) {
-      satData.location_longitude_gnrmc = 0 - satData.location_longitude_gnrmc;
+      satData.degrees_longitude = 0 - satData.degrees_longitude;
     }
     // Save formatted latitude value as a string for later use.
-    scanf("%f17", &satData.location_longitude_gnrmc);
+    scanf("%f17", &satData.degrees_longitude);
   }
 }
 
@@ -3314,23 +3287,23 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, ",");
 
   // coordinate conversion mode
-  if (satData.convert_coordinates == true) {
-    if (String(satData.coordinate_conversion_mode) == "GNGGA") {
+  // if (satData.convert_coordinates == true) {
+  //   if (String(satData.coordinate_conversion_mode) == "GNGGA") {
       // append to satio sentence
-      strcat(satData.satio_sentence, String(satData.location_latitude_gngga, 7).c_str());
-      strcat(satData.satio_sentence, ",");
-      strcat(satData.satio_sentence, String(satData.location_longitude_gngga, 7).c_str());
-      strcat(satData.satio_sentence, ",");
-    }
-    else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
-      // append to satio sentence
-      strcat(satData.satio_sentence, String(satData.location_latitude_gnrmc, 7).c_str());
-      strcat(satData.satio_sentence, ",");
-      strcat(satData.satio_sentence, String(satData.location_longitude_gnrmc, 7).c_str());
-      strcat(satData.satio_sentence, ",");
-    }
-  }
-  else {strcat(satData.satio_sentence, "0.0,0.0,");}
+  strcat(satData.satio_sentence, String(satData.degrees_latitude, 7).c_str());
+  strcat(satData.satio_sentence, ",");
+  strcat(satData.satio_sentence, String(satData.degrees_longitude, 7).c_str());
+  strcat(satData.satio_sentence, ",");
+    // }
+    // else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
+    //   // append to satio sentence
+    //   strcat(satData.satio_sentence, String(satData.degrees_latitude, 7).c_str());
+    //   strcat(satData.satio_sentence, ",");
+    //   strcat(satData.satio_sentence, String(satData.degrees_longitude, 7).c_str());
+    //   strcat(satData.satio_sentence, ",");
+    // }
+  // }
+  // else {strcat(satData.satio_sentence, "0.0,0.0,");}
 
   // append checksum
   createChecksum(satData.satio_sentence);
@@ -4692,7 +4665,7 @@ if (systemData.sidereal_track_neptune == true) {trackNeptune();}
 }
 
 void setTrackPlanets() {
-myAstro.setLatLong(satData.location_latitude_gngga, satData.location_longitude_gngga);
+myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
 myAstro.rejectDST();
 myAstro.setGMTdate(rtc.now().year(), rtc.now().month(), rtc.now().day());
 myAstro.setLocalTime(rtc.now().hour(), rtc.now().minute(), rtc.now().second());
@@ -4907,326 +4880,119 @@ void matrixSwitch() {
         // GNGGA (requires satData.coordinate_conversion_mode gngga)
 
         // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_over_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_true(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_over_true(satData.degrees_latitude,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.location_longitude_gngga,
+            tmp_matrix[Fi] = check_over_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(satData.location_longitude_gngga,
+            tmp_matrix[Fi] = check_over_false(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
         // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.location_longitude_gngga,
+            tmp_matrix[Fi] = check_under_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.location_longitude_gngga,
+            tmp_matrix[Fi] = check_under_false(satData.degrees_longitude,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_under_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_under_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
         // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_equal_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.location_latitude_gngga,
+            tmp_matrix[Fi] = check_equal_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gngga,
+            tmp_matrix[Fi] = check_equal_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.location_longitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNGGARange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.location_latitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNGGARange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.location_longitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
-
-        // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegGNGGARanges") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            satData.location_longitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][1],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_ranges_check_false(satData.location_latitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            satData.location_longitude_gngga,
-            matrixData.matrix_function_xyz[Mi][Fi][1],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
-          }
-        }
-        
-        // GNRMC (requires satData.coordinate_conversion_mode gnrmc)
-
-        // over
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        // under
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        // equal
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.location_latitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.location_longitude_gnrmc,
+            tmp_matrix[Fi] = check_equal_false(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
         // range
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.location_latitude_gnrmc,
+            tmp_matrix[Fi] = in_range_check_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.location_latitude_gnrmc,
+            tmp_matrix[Fi] = in_range_check_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            tmp_matrix[Fi] = in_range_check_true(satData.degrees_longitude,
+            matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.location_longitude_gnrmc,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            tmp_matrix[Fi] = in_range_check_false(satData.degrees_longitude,
+            matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
 
         // ranges
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegGNRMCRanges") == 0) {\
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRanges") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_ranges_check_true(satData.location_latitude_gnrmc,
+            tmp_matrix[Fi] = in_ranges_check_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            satData.location_longitude_gnrmc,
+            satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][1],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_ranges_check_false(satData.location_latitude_gnrmc,
+            tmp_matrix[Fi] = in_ranges_check_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            satData.location_longitude_gnrmc,
+            satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][1],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
-        
+
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAOver") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAUnder") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGAEqual") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNGGARange") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAOver") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAUnder") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGAEqual") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNGGARange") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = in_range_check_true(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = in_range_check_false(atol(gnggaData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        // }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -5507,98 +5273,6 @@ void matrixSwitch() {
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCOver") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCUnder") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCEqual") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LatGNRMCRange") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.latitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCOver") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCUnder") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCEqual") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-          
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "LonGNRMCRange") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = in_range_check_true(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = in_range_check_false(atol(gnrmcData.longitude),
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //     matrixData.matrix_function_xyz[Mi][Fi][2]);
-        //   }
-        // }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8536,8 +8210,8 @@ String getRelatedY(char * data) {
   in ranges checks are square (check in square range) where z is square range. example x=lat, y=lon, z= squarerange = 0.0000100 = approx 1 meter in latitude.
   if inverted then in square range check becomes is out of square range check.
   */
-  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
+  if (strcmp("DegLatLonRanges", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.degrees_longitude, 10);}
   return String("");
 }
 
@@ -8565,36 +8239,19 @@ String getRelatedX(char * data) {
   if (strcmp("DateDayX", data)==0) {return String(rtc.now().day());}
   if (strcmp("DateMonthX", data)==0) {return String(rtc.now().month());}
   if (strcmp("DateYearX", data)==0) {return String(rtc.now().year());}
-  if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
-  if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
-  if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
-  if (strcmp("DegLatGNGGARange", data)==0) {return String(satData.location_latitude_gngga, 10);}
-  if (strcmp("DegLonGNGGAOver", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegLonGNGGAUnder", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegLonGNGGAEqual", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegLonGNGGARange", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_latitude_gngga, 10);}
-  if (strcmp("DegLatGNRMCOver", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
-  if (strcmp("DegLatGNRMCUnder", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
-  if (strcmp("DegLatGNRMCEqual", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
-  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
-  if (strcmp("DegLonGNRMCOver", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
-  if (strcmp("DegLonGNRMCUnder", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
-  if (strcmp("DegLonGNRMCEqual", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
-  if (strcmp("DegLonGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
-  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_latitude_gnrmc, 10);}
+  if (strcmp("DegLatOver", data)==0) {return String(satData.degrees_latitude, 10);}
+  if (strcmp("DegLatUnder", data)==0) {return String(satData.degrees_latitude, 10);}
+  if (strcmp("DegLatEqual", data)==0) {return String(satData.degrees_latitude, 10);}
+  if (strcmp("DegLatRange", data)==0) {return String(satData.degrees_latitude, 10);}
+  if (strcmp("DegLonOver", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegLonUnder", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegLonEqual", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegLatLonRanges", data)==0) {return String(satData.degrees_latitude, 10);}
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
-  // if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude, 10);}
-  // if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude, 10);}
-  // if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude, 10);}
-  // if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude, 10);}
-  // if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude, 10);}
-  // if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude, 10);}
-  // if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude, 10);}
-  // if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude, 10);}
   if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
   if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
@@ -8622,14 +8279,6 @@ String getRelatedX(char * data) {
   if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
-  // if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude, 10);}
-  // if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude, 10);}
-  // if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude, 10);}
-  // if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude, 10);}
-  // if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude, 10);}
-  // if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude, 10);}
-  // if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude, 10);}
-  // if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude, 10);}
   if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
