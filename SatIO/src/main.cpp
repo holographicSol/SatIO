@@ -2852,10 +2852,6 @@ struct SatDatatruct {
   double location_longitude_gngga;                                 // degrees converted from absolute
   double location_latitude_gnrmc;                                  // degrees converted from absolute
   double location_longitude_gnrmc;                                 // degrees converted from absolute
-  char location_latitude_gngga_str[56];                            // degrees converted from absolute
-  char location_longitude_gngga_str[56];                           // degrees converted from absolute
-  char location_latitude_gnrmc_str[56];                            // degrees converted from absolute
-  char location_longitude_gnrmc_str[56];                           // degrees converted from absolute
   double minutesLat;                                               // used for converting absolute latitude and longitude
   double minutesLong;                                              // used for converting absolute latitude and longitude
   double degreesLat;                                               // used for converting absolute latitude and longitude
@@ -3018,8 +3014,6 @@ void calculateLocation(){
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gngga);
-    // Convert latitude value to a human-readable string representation.
-    // sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
 
     // Extract absolute longitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
@@ -3045,8 +3039,6 @@ void calculateLocation(){
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gngga);
-    // Convert latitude value to a human-readable string representation.
-    // sprintf(satData.location_longitude_gngga_str, "%f", satData.location_longitude_gngga);
   }
 
   // ------------------------------------------------------------------------------------------------------------------------
@@ -3080,8 +3072,6 @@ void calculateLocation(){
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gnrmc);
-    // Convert latitude value to a human-readable string representation.
-    // sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
 
     // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
@@ -3107,8 +3097,6 @@ void calculateLocation(){
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gnrmc);
-    // Convert latitude value to a human-readable string representation.
-    // sprintf(satData.location_longitude_gnrmc_str, "%f", satData.location_longitude_gnrmc);
   }
 }
 
