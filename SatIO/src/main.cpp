@@ -8171,7 +8171,7 @@ String getRelatedX(char * data) {
   if (strcmp("DegLonUnder", data)==0) {return String(satData.degrees_longitude, 10);}
   if (strcmp("DegLonEqual", data)==0) {return String(satData.degrees_longitude, 10);}
   if (strcmp("DegLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegLatLonRanges", data)==0) {return String(satData.degrees_latitude, 10);}
+  if (strcmp("DegLatLonRange", data)==0) {return String(satData.degrees_latitude, 10);}
   if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
