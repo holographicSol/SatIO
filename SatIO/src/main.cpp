@@ -7395,56 +7395,54 @@ void matrixSwitch() {
           }
         }
 
-        // currently sensor 15 is currently unavailable in calc due to char array limitation (255). see max_matrix_function_names (array is basically full)
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               SENSOR 15
 
-        // // ----------------------------------------------------------------------------------------------------------------------
-        // //                                                                                                               SENSOR 15
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_over_false(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_over_true(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_over_false(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_under_false(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_under_true(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_under_false(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
 
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_equal_true(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_equal_false(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
-        //   }
-        // }
-
-        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
-        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-        //     tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-        //     tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_15,
-        //     matrixData.matrix_function_xyz[Mi][Fi][0],
-        //       matrixData.matrix_function_xyz[Mi][Fi][1]);
-        //   }
-        // }
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_15,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
@@ -8390,10 +8388,10 @@ String getRelatedX(char * data) {
   if (strcmp("Sensor14Under", data)==0) {return String(sensorData.sensor_14);}
   if (strcmp("Sensor14Equal", data)==0) {return String(sensorData.sensor_14);}
   if (strcmp("Sensor14Range", data)==0) {return String(sensorData.sensor_14);}
-  // if (strcmp("Sensor15Over", data)==0) {return String(sensorData.sensor_15);}
-  // if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
-  // if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
-  // if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
+  if (strcmp("Sensor15Over", data)==0) {return String(sensorData.sensor_15);}
+  if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
+  if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
+  if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
   return String("");
 }
 
