@@ -8528,7 +8528,7 @@ void menuEnter() {
 
 String getRelatedY(char * data) {
   if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga, 10);}
-  if (strcmp("DegLatGNRMCRange", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
+  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
   return String("");
 }
 
@@ -8542,7 +8542,6 @@ String getRelatedX(char * data) {
   if (strcmp("Overload", data)==0) {return String(systemData.overload);}
   // if (strcmp("SwitchLink", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
-  // potentially redirect calls like these to existing values so that the values are already set before here: pros=calculate once, cons=stale data
   if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
@@ -8674,7 +8673,6 @@ String getRelatedX(char * data) {
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  // potentially redirect calls like these to existing values so that the values are already set before here  
   if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
     siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
