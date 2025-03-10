@@ -8527,7 +8527,10 @@ void menuEnter() {
 //                                                                                Crude Function Name to Associated Value Mapping 
 
 String getRelatedY(char * data) {
-  /* returns y value for in ranges checks where x and y are different (not typically required for an in range check where range pertains to x alone) */
+  /*
+  returns y value for in ranges checks where x and y are different (not typically required for an in range check where range pertains to x alone).
+  in range checks and in ranges checks are square (check in square range(s)). 
+  */
   if (strcmp("DegGNGGARanges", data)==0) {return String(satData.location_longitude_gngga, 10);}
   if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.location_longitude_gnrmc, 10);}
   return String("");
