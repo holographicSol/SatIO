@@ -3019,7 +3019,7 @@ void calculateLocation(){
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gngga);
     // Convert latitude value to a human-readable string representation.
-    sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
+    // sprintf(satData.location_latitude_gngga_str, "%f", satData.location_latitude_gngga);
 
     // Extract absolute longitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
@@ -3046,7 +3046,7 @@ void calculateLocation(){
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gngga);
     // Convert latitude value to a human-readable string representation.
-    sprintf(satData.location_longitude_gngga_str, "%f", satData.location_longitude_gngga);
+    // sprintf(satData.location_longitude_gngga_str, "%f", satData.location_longitude_gngga);
   }
 
   // ------------------------------------------------------------------------------------------------------------------------
@@ -3081,7 +3081,7 @@ void calculateLocation(){
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_latitude_gnrmc);
     // Convert latitude value to a human-readable string representation.
-    sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
+    // sprintf(satData.location_latitude_gnrmc_str, "%f", satData.location_latitude_gnrmc);
 
     // Extract absolute latitude value from GNGGA data as decimal degrees.
     satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
@@ -3108,7 +3108,7 @@ void calculateLocation(){
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.location_longitude_gnrmc);
     // Convert latitude value to a human-readable string representation.
-    sprintf(satData.location_longitude_gnrmc_str, "%f", satData.location_longitude_gnrmc);
+    // sprintf(satData.location_longitude_gnrmc_str, "%f", satData.location_longitude_gnrmc);
   }
 }
 
@@ -3325,16 +3325,16 @@ void buildSatIOSentence() {
   if (satData.convert_coordinates == true) {
     if (String(satData.coordinate_conversion_mode) == "GNGGA") {
       // append to satio sentence
-      strcat(satData.satio_sentence, satData.location_latitude_gngga_str);
+      strcat(satData.satio_sentence, String(satData.location_latitude_gngga, 7).c_str());
       strcat(satData.satio_sentence, ",");
-      strcat(satData.satio_sentence, satData.location_longitude_gngga_str);
+      strcat(satData.satio_sentence, String(satData.location_longitude_gngga, 7).c_str());
       strcat(satData.satio_sentence, ",");
     }
     else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
       // append to satio sentence
-      strcat(satData.satio_sentence, satData.location_latitude_gnrmc_str);
+      strcat(satData.satio_sentence, String(satData.location_latitude_gnrmc, 7).c_str());
       strcat(satData.satio_sentence, ",");
-      strcat(satData.satio_sentence, satData.location_longitude_gnrmc_str);
+      strcat(satData.satio_sentence, String(satData.location_longitude_gnrmc, 7).c_str());
       strcat(satData.satio_sentence, ",");
     }
   }
