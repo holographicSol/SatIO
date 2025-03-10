@@ -8542,7 +8542,6 @@ String getRelatedX(char * data) {
   if (strcmp("Overload", data)==0) {return String(systemData.overload);}
   // if (strcmp("SwitchLink", data)==0) {return String();}
   // if (strcmp("SecondsTimer", data)==0) {return String();}
-
   // potentially redirect calls like these to existing values so that the values are already set before here: pros=calculate once, cons=stale data
   if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()));}
@@ -8558,7 +8557,6 @@ String getRelatedX(char * data) {
   if (strcmp("DateDayX", data)==0) {return String(rtc.now().day());}
   if (strcmp("DateMonthX", data)==0) {return String(rtc.now().month());}
   if (strcmp("DateYearX", data)==0) {return String(rtc.now().year());}
-
   if (strcmp("DegLatGNGGAOver", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAUnder", data)==0) {return String(satData.location_latitude_gngga, 10);}
   if (strcmp("DegLatGNGGAEqual", data)==0) {return String(satData.location_latitude_gngga, 10);}
@@ -8581,14 +8579,14 @@ String getRelatedX(char * data) {
   if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
   if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude, 10);}
-  if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude, 10);}
-  if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude, 10);}
-  if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude, 10);}
-  if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude, 10);}
-  if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude, 10);}
-  if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude, 10);}
-  if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude, 10);}
+  // if (strcmp("LatGNGGAOver", data)==0) {return String(gnggaData.latitude, 10);}
+  // if (strcmp("LatGNGGAUnder", data)==0) {return String(gnggaData.latitude, 10);}
+  // if (strcmp("LatGNGGAEqual", data)==0) {return String(gnggaData.latitude, 10);}
+  // if (strcmp("LatGNGGARange", data)==0) {return String(gnggaData.latitude, 10);}
+  // if (strcmp("LonGNGGAOver", data)==0) {return String(gnggaData.longitude, 10);}
+  // if (strcmp("LonGNGGAUnder", data)==0) {return String(gnggaData.longitude, 10);}
+  // if (strcmp("LonGNGGAEqual", data)==0) {return String(gnggaData.longitude, 10);}
+  // if (strcmp("LonGNGGARange", data)==0) {return String(gnggaData.longitude, 10);}
   if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
   if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
   if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
@@ -8616,14 +8614,14 @@ String getRelatedX(char * data) {
   if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
   if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude, 10);}
-  if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude, 10);}
-  if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude, 10);}
-  if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude, 10);}
-  if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude, 10);}
-  if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude, 10);}
-  if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude, 10);}
-  if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude, 10);}
+  // if (strcmp("LatGNRMCOver", data)==0) {return String(gnrmcData.latitude, 10);}
+  // if (strcmp("LatGNRMCUnder", data)==0) {return String(gnrmcData.latitude, 10);}
+  // if (strcmp("LatGNRMCEqual", data)==0) {return String(gnrmcData.latitude, 10);}
+  // if (strcmp("LatGNRMCRange", data)==0) {return String(gnrmcData.latitude, 10);}
+  // if (strcmp("LonGNRMCOver", data)==0) {return String(gnrmcData.longitude, 10);}
+  // if (strcmp("LonGNRMCUnder", data)==0) {return String(gnrmcData.longitude, 10);}
+  // if (strcmp("LonGNRMCEqual", data)==0) {return String(gnrmcData.longitude, 10);}
+  // if (strcmp("LonGNRMCRange", data)==0) {return String(gnrmcData.longitude, 10);}
   if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
@@ -8676,13 +8674,11 @@ String getRelatedX(char * data) {
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-
   // potentially redirect calls like these to existing values so that the values are already set before here  
   if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
     siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(rtc.now().hour(), rtc.now().minute()),
     siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
-
   if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
   if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
   if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
