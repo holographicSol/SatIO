@@ -2816,18 +2816,28 @@ String formatRTCDateTime() {
   String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())));
 }
 
+String formatRTCDate() {
+  return 
+  String(padDigitsZero(rtc.now().year())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().day()));
+}
+
+String formatRTCTime() {
+  return 
+  String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())));
+}
+
 String formatRTCDateTimeStamp() {
   return 
   String(padDigitsZero(rtc.now().year())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().day())) +
   String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
 }
 
-String formatRTCTImeStamp() {
-  return String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
-}
-
 String formatRTCDateStamp() {
   return String(padDigitsZero(rtc.now().day())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().year()));
+}
+
+String formatRTCTImeStamp() {
+  return String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3159,6 +3169,14 @@ void buildSatIOSentence() {
 
   // system uptime in seconds (may be preferrable than system startup datetime because datetime is local)
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
+  strcat(satData.satio_sentence, ",");
+
+  // sun rise time
+  strcat(satData.satio_sentence, String(siderealPlanetData.sun_r).c_str());
+  strcat(satData.satio_sentence, ",");
+
+  // sun set time
+  strcat(satData.satio_sentence, String(siderealPlanetData.sun_s).c_str());
   strcat(satData.satio_sentence, ",");
 
   // coordinate conversion mode
