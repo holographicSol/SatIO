@@ -10546,7 +10546,6 @@ void setup() {
 
   Serial.println("[setup] rtc");
   rtc.begin();   // initializes the I2C device
-  timeData.uptime_start_unixtime = rtc.now().unixtime();
 
   dht.begin();
 
