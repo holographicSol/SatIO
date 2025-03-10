@@ -58,14 +58,14 @@
                                                   SENTENCE $SATIO
 
 
-                                                       System Uptime                    
-                  START                 Last Sync     |                                  Degrees Longitude        
-                    |    yyyymmddhhmmss|yyyymmddhhmmss|   |hh.mm|hh.mm|                 |                 |                
-                  $SATIO,00000000000000,00000000000000,000,00.00,00.00,00.00000000000000,00.00000000000000,*Z
-                        |              |                  |     |     |                 |                 |            
-                         RTC Datetime                     |     |      Degrees Latitude                    Checksum            
-                                                          |     Sun Set
-                                                          Sun Rise
+                                                      System Uptime                    
+                  Tag                  Last Sync      |                               Degrees Longitude        
+                  |      yyyymmddhhmmss|yyyymmddhhmmss|s|hh.mm|hh.mm|                 |                 |                
+                  $SATIO,00000000000000,00000000000000,0,00.00,00.00,00.00000000000000,00.00000000000000,*Z
+                        |              |                |     |     |                 |                 |            
+                        RTC Datetime                    |     |     Degrees Latitude                    Checksum            
+                                                        |     Sun Set
+                                                        Sun Rise
 
 
       Use case: From a clock syncronized with satellites to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
