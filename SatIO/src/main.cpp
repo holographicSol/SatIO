@@ -8135,8 +8135,7 @@ String getRelatedY(char * data) {
   in ranges checks are square (check in square range) where z is square range. example x=lat, y=lon, z= squarerange = 0.0000100 = approx 1 meter in latitude.
   if inverted then in square range check becomes is out of square range check.
   */
-  if (strcmp("DegLatLonRanges", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegGNRMCRanges", data)==0) {return String(satData.degrees_longitude, 10);}
+  if (strcmp("DegLatLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
   return String("");
 }
 
