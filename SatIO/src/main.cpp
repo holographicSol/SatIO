@@ -54,8 +54,6 @@
                                           ESP32: io13 -> SSD1351: SDA
                                           ESP32: io26 -> SSD1351: CS
 
-                                          Upcoming: MCP23017 I2C Expansion board (for more custom peripherals)
-
 
                                                   SENTENCE $SATIO
 
