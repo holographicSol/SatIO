@@ -1768,7 +1768,7 @@ struct MatrixStruct {
     }
   };
 
-  // reflects matrix switch inverted logic bool
+  // reflects matrix switch inverted logic bool (per function)
   bool matrix_switch_inverted_logic[20][10] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
@@ -1832,7 +1832,11 @@ struct MatrixStruct {
     },
   };
 
-  // a placeholder for timings when timer functions are selected for a matrix switch (currently intended as one timer per switch so be careful)
+  /*
+  a placeholder for timings when timer functions are selected for a matrix switch.
+  allows modulation with second resolution.
+  currently intended as one timer per switch so be careful.
+  */
   unsigned long matrix_timers[1][20] = {
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
