@@ -314,7 +314,7 @@ const char *menuMatrixSwitchSelectItems[max_matrix_switch_items] =
     "M17",
     "M18",
     "M19",
-}; // 33px x 23px
+};
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, max_matrix_switch_items, {{2, 2}, {35, 25}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ const char *menuMatrixFunctionSelectItems[max_function_menu_items] =
     "F7 ",
     "F8 ",
     "F9 ",
-}; // 33px x 23px
+};
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function_menu_items, {{92, 2}, {125, 25}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
