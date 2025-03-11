@@ -7854,7 +7854,26 @@ void menuLeft() {
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
-  
+  // Serial.println("[menuBack] menupage 0: " + String(menu_page));
+  if (menu_page==1) {menu_page=0;}
+  else if (menu_page==3) {menu_page=1;}
+  else if (menu_page==4) {
+    // Serial.println("[menuBack] enter_digits_key: " + String(enter_digits_key));
+    // enter port, enter function x, enter function y, enter function z
+    if ((enter_digits_key == 1) || (enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=3;}
+  }
+  else if (menu_page==5) {menu_page=3;}
+  else if (menu_page==6) {menu_page=3;}
+  else if (menu_page==20) {menu_page=1;}
+  else if (menu_page==21) {menu_page=20;}
+  else if (menu_page==22) {menu_page=20;}
+  else if (menu_page==23) {menu_page=20;}
+  else if (menu_page==50) {menu_page=1;}
+  else if (menu_page==60) {menu_page=1;}
+  else if (menu_page==70) {menu_page=1;}
+  else if (menu_page==80) {menu_page=1;}
+  else if (menu_page==90) {menu_page=1;}
+  // Serial.println("[menuBack] menupage 1: " + String(menu_page));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
