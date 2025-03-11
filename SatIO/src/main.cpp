@@ -230,7 +230,7 @@ void endSPIDevice(int SS) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        DISPLAY
+//                                                                                                                 DISPLAY WIRING
 
 // SSD1351 HSPI pins on esp32 with custom CS
 int SSD1351_SCLK = 14; // (SCL)
@@ -240,6 +240,10 @@ int SSD1351_CS   = 26; // (CS)
 
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD1351_CS,  (int8_t)SSD1351_MISO,  (int8_t)0,  (int8_t)-1,  (int8_t)-1  });
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 DISPLAY CANVAS
+
 NanoCanvas<6,8,1> canvas6x8;
 NanoCanvas<8,8,1> canvas8x8; 
 NanoCanvas<19,8,1> canvas19x8;
@@ -251,18 +255,28 @@ NanoCanvas<128,128,1> canvas128x128;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              DISPLAY VARIABLES
+
 bool update_ui = true;
 bool ui_cleared = false;
 int menu_page = 0;
 
-const char *menuHomeItems[1] =
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             DISPLAY MENU SETUP
+
+const int max_home_items = 1;
+const char *menuHomeItems[max_home_items] =
 {
   "SETUP",
 };
-LcdGfxMenu menuHome( menuHomeItems, 1, {{2, 2}, {47, 25}} );
+LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{2, 2}, {47, 25}} );
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             DISPLAY MENU SETUP
 
-const char *menuMainItems[7] =
+const int max_main_menu_items = 7;
+const char *menuMainItems[max_main_menu_items] =
 {
     "   MATRIX        ", // allows matrix configuration
     "   FILE          ", // load/save/delete system and matrix configurations
@@ -272,9 +286,13 @@ const char *menuMainItems[7] =
     "   UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
     "   DISPLAY       ",
 };
-LcdGfxMenu menuMain( menuMainItems, 7, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 34}, {124, 124}} );
 
-const char *menuMatrixSwitchSelectItems[20] =
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
+
+const int max_matrix_switch_items = 20;
+const char *menuMatrixSwitchSelectItems[max_matrix_switch_items] =
 {
     "M0 ",
     "M1 ",
@@ -297,10 +315,13 @@ const char *menuMatrixSwitchSelectItems[20] =
     "M18",
     "M19",
 }; // 33px x 23px
-LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, 20, {{2, 2}, {35, 25}} );
+LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, max_matrix_switch_items, {{2, 2}, {35, 25}} );
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                     DISPLAY MENU MATRIX SWITCH FUNCTION SELECT
 
-const char *menuMatrixFunctionSelectItems[10] =
+const int max_function_menu_items = 10;
+const char *menuMatrixFunctionSelectItems[max_function_menu_items] =
 {
     "F0 ",
     "F1 ",
@@ -313,10 +334,13 @@ const char *menuMatrixFunctionSelectItems[10] =
     "F8 ",
     "F9 ",
 }; // 33px x 23px
-LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, 10, {{92, 2}, {125, 25}} );
+LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function_menu_items, {{92, 2}, {125, 25}} );
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                       DISPLAY MENU MATRIX SWITCH CONFIGURATION
 
-const char *menuMatrixConfigureFunctionItems[5] =
+const int max_matrix_function_configure_items = 5;
+const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items] =
 {
     "SELECT FUNCTION ",
     "ENTER VALUE X   ",
@@ -324,9 +348,13 @@ const char *menuMatrixConfigureFunctionItems[5] =
     "ENTER VALUE Z   ",
     "PRIMITIVE       ",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, 5, {{3, 76}, {124, 124}} );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{3, 76}, {124, 124}} );
 
-const char *menuFileItems[6] =
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              DISPLAY MENU FILE
+
+const int max_file_items = 6;
+const char *menuFileItems[max_file_items] =
 {
     "NEW MATRIX        ",
     "SAVE MATRIX       ",
@@ -335,25 +363,49 @@ const char *menuFileItems[6] =
     "SAVE SYSTEM CONFIG",
     "RESTORE DEFAULTS  ",
 };
-LcdGfxMenu menuFile( menuFileItems, 6, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 34}, {124, 124}} );
 
-const char *menuMatrixFilepathItems[20];
-LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, 20, {{3, 34}, {124, 124}} );
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        DISPLAY MENU FILE NAMES
 
-const char *menuGPSItems[5];
-LcdGfxMenu menuGPS( menuGPSItems, 5, {{3, 34}, {124, 124}} );
+const int max_filepath_items = 20;
+const char *menuMatrixFilepathItems[max_filepath_items];
+LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{3, 34}, {124, 124}} );
 
-const char *menuSerialItems[7];
-LcdGfxMenu menuSerial( menuSerialItems, 7, {{3, 34}, {124, 124}} );
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               DISPLAY MENU GPS
 
-const char *menuUniverseItems[8];
-LcdGfxMenu menuUniverse( menuUniverseItems, 8, {{3, 34}, {124, 124}} );
+const int max_gps_items = 5;
+const char *menuGPSItems[max_gps_items];
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{3, 34}, {124, 124}} );
 
-const char *menuDisplayItems[3];
-LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{3, 34}, {124, 124}} );
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            DISPLAY MENU SERIAL
 
-const char *menuSystemItems[1];
-LcdGfxMenu menuSystem( menuSystemItems, 1, {{3, 34}, {124, 124}} );
+const int max_serial_items = 7;
+const char *menuSerialItems[max_serial_items];
+LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 34}, {124, 124}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY MENU UNIVERSE
+
+const int max_universe_items = 8;
+const char *menuUniverseItems[max_universe_items];
+LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 34}, {124, 124}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY MENU UNIVERSE
+
+const int max_display_items = 3;
+const char *menuDisplayItems[max_display_items];
+LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{3, 34}, {124, 124}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          DISPLAY MENU UNIVERSE
+
+const int max_system_items = 1;
+const char *menuSystemItems[max_system_items];
+LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        SENSORS
