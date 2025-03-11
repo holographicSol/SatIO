@@ -122,14 +122,15 @@
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      LIBRARIES
 
-#include "soc/rtc_wdt.h"
 #include <Arduino.h>
+#include "soc/rtc_wdt.h"
+#include "esp_pm.h"
+#include "esp_attr.h"
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
 #include <iostream>
 #include "FS.h"
-// #include "sd.h"
 #include "SdFat.h"
 #include <SPI.h>
 #include <Wire.h>
@@ -138,11 +139,8 @@
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
-#include "esp_pm.h"
-#include "esp_attr.h"
 #include <DHT.h>
 #include <CD74HC4067.h>
-
 #include "lcdgfx.h"
 #include "lcdgfx_gui.h"
 
@@ -7854,6 +7852,11 @@ void menuLeft() {
   Serial.println("[menu_column_selection] " + String(menu_column_selection));
 }
 
+void menuBack() {
+  /* specify explicity which page to go from each given page */
+  
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU ENTER
 
@@ -9582,8 +9585,8 @@ void makeI2CRequest() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left"); menuLeft();}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: back");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: delete");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: delete"); if (allow_input_data==true) {input_data[-1]='\0';}}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: back"); menuBack();}
 
       // parse currently spare creative potential buttons: (auto input with set_var_x set_var_y set_var_z) (clear)
       else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
