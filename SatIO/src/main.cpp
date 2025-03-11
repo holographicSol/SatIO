@@ -265,12 +265,17 @@ int menu_page = 0;
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
 
+/*
+1x1 menu blended into top left corner. this allows this menu to take up no space on the home screen.
+main menu is activated by pressing enter when on homescreen.
+*/
+
 const int max_home_items = 1;
 const char *menuHomeItems[max_home_items] =
 {
-  "SETUP",
+  "",
 };
-LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{3, 3}, {48, 26}} );
+LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
