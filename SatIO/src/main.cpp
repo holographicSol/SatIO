@@ -7859,8 +7859,10 @@ void menuBack() {
   else if (menu_page==3) {menu_page=1;}
   else if (menu_page==4) {
     // Serial.println("[menuBack] enter_digits_key: " + String(enter_digits_key));
-    // enter port, enter function x, enter function y, enter function z
-    if ((enter_digits_key == 1) || (enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=3;}
+    // enter port
+    if (enter_digits_key == 1) {menu_page=3;}
+    // enter function x, enter function y, enter function z
+    else if ((enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=5;}
   }
   else if (menu_page==5) {menu_page=3;}
   else if (menu_page==6) {menu_page=5;}
