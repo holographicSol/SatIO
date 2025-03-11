@@ -268,6 +268,8 @@ int menu_page = 0;
 /*
 1x1 menu blended into border in top left corner. this allows this menu to take up no space on the home screen.
 main menu is activated by pressing enter when on homescreen.
+this may be replaced later by a simple function that changes the page however until then this is preferrable in case more items
+are added to this menu.
 */
 
 const int max_home_items = 1;
