@@ -352,7 +352,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, 8, {{3, 34}, {124, 124}} );
 const char *menuDisplayItems[3];
 LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{3, 34}, {124, 124}} );
 
-const char *menuSystemItems[3];
+const char *menuSystemItems[1];
 LcdGfxMenu menuSystem( menuSystemItems, 1, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
