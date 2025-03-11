@@ -266,7 +266,7 @@ int menu_page = 0;
 //                                                                                                             DISPLAY MENU SETUP
 
 /*
-1x1 menu blended into top left corner. this allows this menu to take up no space on the home screen.
+1x1 menu blended into border in top left corner. this allows this menu to take up no space on the home screen.
 main menu is activated by pressing enter when on homescreen.
 */
 
