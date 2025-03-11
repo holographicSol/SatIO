@@ -58,13 +58,13 @@ bool btnISR3_pressed = false;
 #define BTN34_PIN 34 // -
 
 #define BTN35_PIN 35 // home
-#define BTN36_PIN 36
-#define BTN37_PIN 37
-#define BTN38_PIN 38
-#define BTN39_PIN 39
-#define BTN40_PIN 40
-#define BTN41_PIN 41
-#define BTN42_PIN 42
+#define BTN36_PIN 36 // up
+#define BTN37_PIN 37 // right
+#define BTN38_PIN 38 // down
+#define BTN39_PIN 39 // left
+#define BTN40_PIN 40 // enter
+#define BTN41_PIN 41 // delete
+#define BTN42_PIN 42 // back
 
 #define BTN43_PIN 43
 #define BTN44_PIN 44
