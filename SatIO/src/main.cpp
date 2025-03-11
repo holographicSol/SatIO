@@ -346,8 +346,8 @@ LcdGfxMenu menuGPS( menuGPSItems, 5, {{3, 34}, {124, 124}} );
 const char *menuSerialItems[7];
 LcdGfxMenu menuSerial( menuSerialItems, 7, {{3, 34}, {124, 124}} );
 
-const char *menuUniverseItems[7];
-LcdGfxMenu menuUniverse( menuUniverseItems, 7, {{3, 34}, {124, 124}} );
+const char *menuUniverseItems[8];
+LcdGfxMenu menuUniverse( menuUniverseItems, 8, {{3, 34}, {124, 124}} );
 
 const char *menuDisplayItems[3];
 LcdGfxMenu menuDisplay( menuDisplayItems, 3, {{3, 34}, {124, 124}} );
@@ -9335,6 +9335,7 @@ void UpdateUI() {
 
     else if (menu_page==60) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -9348,6 +9349,20 @@ void UpdateUI() {
       display.drawCanvas(3, 6, canvas120x8);
 
       // set items each iteration so that if changed anywhere will be reflected in ui
+
+      // menuSerialItems[0]=String("SATIO " + String(systemData.translate_enable_bool[systemData.output_satio_enabled])).c_str();
+
+      // menuSerialItems[1]=String("GNGGA " + String(systemData.translate_enable_bool[systemData.output_gngga_enabled])).c_str();
+
+      // menuSerialItems[2]=String("GNRMC " + String(systemData.translate_enable_bool[systemData.output_gnrmc_enabled])).c_str();
+
+      // menuSerialItems[3]=String("GPATT " + String(systemData.translate_enable_bool[systemData.output_gpatt_enabled])).c_str();
+
+      // menuSerialItems[4]=String("MATRIX " + String(systemData.translate_enable_bool[systemData.output_matrix_enabled])).c_str();
+
+      // menuSerialItems[5]=String("SENSORS " + String(systemData.translate_enable_bool[systemData.output_sensors_enabled])).c_str();
+
+      // menuSerialItems[6]=String("DEBUG " + String(systemData.translate_enable_bool[systemData.allow_debug_bridge])).c_str();
 
       if (systemData.output_satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
       else {menuSerialItems[0]="SATIO DISABLED";}
@@ -9381,6 +9396,7 @@ void UpdateUI() {
 
     else if (menu_page==70) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
