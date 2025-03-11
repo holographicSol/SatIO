@@ -7863,7 +7863,7 @@ void menuBack() {
     if ((enter_digits_key == 1) || (enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=3;}
   }
   else if (menu_page==5) {menu_page=3;}
-  else if (menu_page==6) {menu_page=3;}
+  else if (menu_page==6) {menu_page=5;}
   else if (menu_page==20) {menu_page=1;}
   else if (menu_page==21) {menu_page=20;}
   else if (menu_page==22) {menu_page=20;}
