@@ -3,6 +3,7 @@
                                                    "The GPS Master"
 
                           A general purpose programmable satellite, sensor and inertial platform.
+        Supporting stacks (up to 10 functions per output pin) of logic accross 20 output pins on the portcontroller.
 
                                      SatIO is the system, a matrix is the program.
 
