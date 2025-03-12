@@ -90,9 +90,9 @@
       for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
       WTGPS300, it may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
 
-      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a navigation system, control pad and port controller that I can use for
-      other projects in the future. For now I imagine each part will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility
-      accross differnt project requirements. 
+      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation system, control pad and port controller
+      that I can use for other projects in the future. For now I imagine each part will be an I2C device and some parts like SatIO will have both master and slave
+      modes for flexibility accross differnt project requirements. 
 
         ToDo: Latitude and longitude terrain elevation dictionary. This ties in with SatIO basically knowing and being able to calculate with a lot of 'constants'.
         This may be sourced from NASA's Shuttle Radar Topography Mission to provide a topographic resolution of 1 arc second (about 30 meters).
