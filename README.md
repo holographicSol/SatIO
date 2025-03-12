@@ -102,7 +102,13 @@ I2C Control Pad:
 ![plot](./Extras/images/DSC_0000_BURST20250312163643601.JPG)
 
 ---
-  
+
+SatIO and module devices:
+
+![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER_Doc.JPG)
+
+---
+
        Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
        of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
