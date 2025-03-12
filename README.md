@@ -95,11 +95,7 @@
 
 ---
 
-![plot](./Extras/images/DSC_0000_BURST20250222043340010.JPG)
-
----
-
-![plot](./Extras/images/DSC_0000_BURST20250222043428235.JPG)
+![plot](./Extras/images/DSC_0000_BURST20250312163643601.JPG)
 
 ---
   
