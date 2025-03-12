@@ -91,9 +91,13 @@
 
 ---
 
+SatIO with I2C Port Controller and I2C Control Pad:
+
 ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER.JPG)
 
 ---
+
+I2C Control Pad:
 
 ![plot](./Extras/images/DSC_0000_BURST20250312163643601.JPG)
 
