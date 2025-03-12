@@ -117,6 +117,12 @@
 
         ToDo: Simple Solar System in real-time on home page. And other options for homepage like matrix switch view (view of all switch states).
 
+        ToDo: Test sequence.
+
+        ToDo: Error codes.
+
+        ToDo: Debug messages.
+
         */
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -4258,13 +4264,13 @@ bool in_ranges_check_false(double x0, double x1, double y0, double y1, double r)
 }
 
 bool check_over_true(double n0, double n1) {
-  Serial.println("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
+  // Serial.println("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return true;}
   else {return false;}
 }
 
 bool check_over_false(double n0, double n1) {
-  Serial.println("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
+  // Serial.println("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return false;}
   else {return true;}
 }
@@ -8720,6 +8726,16 @@ void UpdateUI() {
 
       drawMainBorder();
 
+      // show sat count
+      canvas120x8.clear();
+      canvas120x8.printFixed(3, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
+      display.drawCanvas(3, 10, canvas120x8);
+
+      // show hdop precision factor
+      canvas120x8.clear();
+      canvas120x8.printFixed(3, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
+      display.drawCanvas(3, 20, canvas120x8);
+
       // show datetime
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, formatRTCDateTime().c_str(), STYLE_BOLD );
@@ -9726,6 +9742,8 @@ void writeToPortController() {
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
+      // Serial.println("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
+
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
@@ -9749,6 +9767,8 @@ void writeToPortController() {
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
+      // Serial.println("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
+
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
@@ -9770,6 +9790,9 @@ void writeToPortController() {
   // data
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
+
+  // Serial.println("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
+
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
   // Uncomment if and when hearing back from the peripheral is required
