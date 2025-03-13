@@ -130,6 +130,9 @@
 
         ToDo: Power modes / sleep / wakeup.
 
+        ToDo: Output ports are programmable, develop extra variable for programming of which port controller should be used as output for any given matrix switch.
+              : programmable addresses for masters and slaves.
+
         */
 
 // ------------------------------------------------------------------------------------------------------------------------------
