@@ -4550,7 +4550,7 @@ void matrixSwitch() {
 
   // iterate through matrices
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
+    // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
 
       /*
