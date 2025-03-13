@@ -10563,7 +10563,7 @@ void loop() {
   // debug("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // debug("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   // debug("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
-  debug("[Looptime]              " + String(timeData.mainLoopTimeTaken));
+  debug("[Looptime] " + String(timeData.mainLoopTimeTaken));
   debug("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   debug("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
