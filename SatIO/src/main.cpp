@@ -3006,8 +3006,8 @@ bool isOneDiff(int a, int b) {
 void convertUTCToLocal() {
 
   // live data from satellites
-  debug("[utc_time] "); Serial.println(gnrmcData.utc_time);
-  debug("[utc_date] "); Serial.println(gnrmcData.utc_date);
+  debug("[utc_time] " + String(gnrmcData.utc_time));
+  debug("[utc_date] " + String(gnrmcData.utc_date));
 
   /*                                     TEMPORARY TIME                                        */
   /* make temporary values that will not disturb final values untiil values whole and complete */
