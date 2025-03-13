@@ -10547,9 +10547,9 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
-  // delay(1000); // debug test overload: increase loop time
+  // delay(50); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=0.100) {systemData.overload=true;} // gps module outputs every 100ms
+  if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
   else {systemData.overload=false;}
   debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
