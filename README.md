@@ -144,6 +144,72 @@ SatIO and module devices:
 
 ---
 
+    Current Hardware Setup (Semi-Modular):
+    
+    [Master] SatIO
+    (Private I2C Slaves) Port Controller
+    (Private I2C Slaves) Control Pad
+    (SPI)                Display
+    (I2C)                Multiplexer
+    (I2C)                Extension
+    (A/D)                Multiplexer
+    
+    
+    Idea Hardware Setup (Fully Modular):
+    
+    [Master] Master Module
+    (Global I2C Slaves)  Shared SatIO Module
+    (Global I2C Slaves)  Shared Matrix Module
+    (Global I2C Slaves)  Shared Port Controller Module
+    (Private I2C Slaves) Private Port Controller (GPIO exclusive to this module)
+    (Private I2C Slaves) Private Control Pad
+    (SPI)                Private Display
+    (I2C)                Private Multiplexer
+    (I2C)                Private Extension
+    (A/D)                Private Multiplexer
+    
+    [Slave] Shared Matrix Module
+    (Global I2C Masters) Master Module
+    (Private I2C Slaves) Private Port Controller (shared GPIO module)
+    (SPI)                Private Display
+    (I2C)                Private Multiplexer
+    (I2C)                Private Extension
+    (A/D)                Private Multiplexer
+    (Note)               Can be more than 1
+    
+    [Slave] Shared SatIO Module
+    (Global I2C Masters)  Master Module
+    (Private I2C Masters) Private Port Controller (shared GPIO module)
+    (UART)                Private GPS
+    (SPI)                 Private Display
+    (I2C)                 Private Multiplexer
+    (I2C)                 Private Extension
+    (A/D)                 Private Multiplexer
+    (Note)                Can be more than 1
+    
+    [Slave] Shared Port Controller Module
+    (Global I2C Masters)  Master Module
+    (Private I2C Masters) Port Controller (shared GPIO module)
+    (SPI)                 Private Display
+    (I2C)                 Private Multiplexer
+    (I2C)                 Private Extension
+    (A/D)                 Private Multiplexer
+    (Note)                Can be more than 1
+    
+    
+    
+    Thoughts on semi/fully modular:
+    
+    Semi-Modular:
+    	Matrix size limited.
+    	Can have more Port Controllers.
+    
+    Fully Modular:
+    	Can have more Matrix modules.
+    	Can have more Port Controllers.
+    	Every module can perform faster.
+
+---
        Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
        of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html)
 
