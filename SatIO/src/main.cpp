@@ -3512,7 +3512,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     exfile.println("");
 
     exfile.close();
-    Serial.println("[sdcard] saved file successfully: " + String(file));
+    debug("[sdcard] saved file successfully: " + String(file));
     sdcardData.is_writing = false;
   }
   else {exfile.close(); debug("[sdcard] failed to save file: " + String(file));}
@@ -10430,7 +10430,7 @@ bool longer_loop = false;
 void loop() {
 
   debug("----------------------------------------");
-
+  debug("[loop]");
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
 
