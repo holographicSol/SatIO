@@ -9810,36 +9810,36 @@ void sdcardCheck() {
 //                                                                                                                  READ GPS DATA
 
 void check_gngga() {
-  debug("[check_gngga]");
+  // debug("[check_gngga]");
   if (systemData.gngga_enabled == true){
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    debug("[gnggaData.sentence] " + String(gnggaData.sentence));
-    debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+    // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
+    // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
     if (gnggaData.valid_checksum == true) {GNGGA();}
     else {gnggaData.bad_checksum_validity++;}
   }
 }
 
 void check_gnrmc() {
-  debug("[check_gnrmc]");
+  // debug("[check_gnrmc]");
   if (systemData.gnrmc_enabled == true) {
     if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-    debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+    // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+    // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
     if (gnrmcData.valid_checksum == true) {GNRMC();}
     else {gnrmcData.bad_checksum_validity++;}
   }
 }
 
 void check_gpatt() {
-  debug("[check_gpatt]");
+  // debug("[check_gpatt]");
   if (systemData.gpatt_enabled == true) {
     if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    debug("[gpattData.sentence] " + String(gpattData.sentence));
-    debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+    // debug("[gpattData.sentence] " + String(gpattData.sentence));
+    // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
     if (gpattData.valid_checksum == true) {GPATT();}
     else {gpattData.bad_checksum_validity++;}
   }
@@ -9852,7 +9852,7 @@ int i_gps = 0;
 bool cs = false;
 
 void readGPS(void * pvParameters) {
-  debug("[readGPS] ");
+  // debug("[readGPS] ");
 
   while (1) {
 
@@ -9881,18 +9881,18 @@ void readGPS(void * pvParameters) {
           
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-          debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+          // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
           if (SerialLink.nbytes>50) {
 
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
-                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
-                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gngga_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -9902,11 +9902,11 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
-                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gnrmc_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -9916,11 +9916,11 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
-                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
-                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gpatt_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -9935,7 +9935,7 @@ void readGPS(void * pvParameters) {
         if (systemData.gngga_enabled == true){
           if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-          debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+          // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
@@ -9943,7 +9943,7 @@ void readGPS(void * pvParameters) {
         if (systemData.gnrmc_enabled == true) {
           if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-          debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+          // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
@@ -9951,13 +9951,13 @@ void readGPS(void * pvParameters) {
         if (systemData.gpatt_enabled == true) {
           if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-          debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+          // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
 
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
-          debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
+          // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t = millis();
           gps_done=true;
         }
