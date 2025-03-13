@@ -9641,7 +9641,7 @@ void writeToPortController() {
 
   // Port Map: $P,X,Y
   for (int i=0; i < 20; i++) {
-    debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
+    // debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
     // check for change
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
@@ -9658,7 +9658,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
+      // debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
 
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
@@ -9666,7 +9666,7 @@ void writeToPortController() {
 
   // Matrix Switch True/False: $M,X,Y
   for (int i=0; i < 20; i++) {
-    debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
+    // debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
     // check for change
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
@@ -9683,7 +9683,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
+      // debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
 
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
