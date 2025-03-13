@@ -199,6 +199,8 @@ SatIO and module devices:
     
     
     Thoughts on semi/fully modular:
+
+    The hardware platform remains the same and the software would be similar.
     
     Semi-Modular:
     	Matrix size limited.
