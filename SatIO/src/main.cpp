@@ -3072,7 +3072,7 @@ void convertUTCToLocal() {
 
   // before conversion
   debug("[temp time  +- offset] " + String(hour()) + ":" + String(minute()) + "." + String(second()));
-  debug("[temp datet +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
+  debug("[temp date +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
 
   /*                        RTC TIME                        */
   /* store current local time on RTC if we have a downlink  */
