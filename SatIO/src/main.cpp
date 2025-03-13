@@ -549,8 +549,9 @@ File entry;
 //                                                                                                                   DATA: SYSTEM
 
 struct systemStruct {
+  bool debug = false;                  // print verbose information over serial
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  bool matrix_run_on_startup = false;         // enables/disable matrix switch on startup as specified by system configuration file
+  bool matrix_run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file
 
   // performace: turn on/off what you need
   bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
@@ -563,7 +564,7 @@ struct systemStruct {
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
-  bool output_sensors_enabled = false;  // enables/disables output of sensory data sentence over serial
+  bool output_sensors_enabled = false; // enables/disables output of sensory data sentence over serial
   bool port_controller_enabled = true; // may be false by default but is default true for now.
   bool sidereal_track_sun = true;      // enables/disables celestial body tracking
   bool sidereal_track_moon = true;     // enables/disables celestial body tracking
@@ -624,6 +625,8 @@ struct systemStruct {
   char tmp1[56];
 };
 systemStruct systemData;
+
+void debug(String x) {if (systemData.debug==true) {Serial.println(x);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: DEBUG
@@ -906,14 +909,14 @@ int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
 
   // uncomment to debug
-  // if (SerialLink.validation == true) {Serial.println("[connected] getCheckSum: " + String(string));}
+  if (SerialLink.validation == true) {debug("[connected] getCheckSum: " + String(string));}
   for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
     if (SerialLink.c_XOR == '*') break;
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
   // uncomment to debug
-  // Serial.println("[connected] getCheckSum: " + String(SerialLink.XOR));
+  debug("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 
@@ -931,23 +934,22 @@ uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
 
-  // uncomment to debug
-  // Serial.println("[validateChecksum]");
-  // Serial.println("[validateChecksum] " + String(buffer));
+  debug("[validateChecksum]");
+  debug("[validateChecksum] " + String(buffer));
 
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
   
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
 
-  // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.gotSum);
+  debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
 
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
-  // Serial.print("[checksum_of_buffer] "); Serial.println(SerialLink.checksum_of_buffer);
+  debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
-  // Serial.print("[checksum_of_buffer converted] "); Serial.println(SerialLink.checksum);
+  debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
-  // Serial.print("[checksum_in_buffer] "); Serial.println(SerialLink.checksum_in_buffer);
+  debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
 
   if (SerialLink.checksum_in_buffer == SerialLink.checksum_of_buffer) {return true;}
   return false;
@@ -956,14 +958,12 @@ bool validateChecksum(char * buffer) {
 void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer = getCheckSum(buffer);
 
-  // uncomment to debug
-  // Serial.print("checksum_of_buffer: "); Serial.println(checksum_of_buffer);
-  // Serial.printf("Hexadecimal number is: %X", checksum_of_buffer); Serial.println();
+  debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
+  // debug("[hexadecimal number] " + String("%X", SerialLink.checksum_of_buffer)); todo
 
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
-  // uncomment to debug
-  // Serial.print("checksum: "); Serial.println(checksum); Serial.println();
+  debug("[checksum] " + String(SerialLink.checksum));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -977,21 +977,18 @@ sanitizing each element of a sentence. thorough testing is required to ensure no
 
 
 bool count_digits(char * data, int expected) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] count_digits: " + String(data));}
   validData.valid_i = 0;
   for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 1) {validData.valid_i++;}}
   if (validData.valid_i == expected) {return true;} else {return false;}
 }
 
 bool count_alpha(char * data, int expected) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] count_alpha: " + String(data));}
   validData.valid_i = 0;
   for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 1) {validData.valid_i++;}}
   if (validData.valid_i == expected) {return true;} else {return false;}
 }
 
 bool is_all_digits(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] is_all_digits: " + String(data));}
   validData.valid_b = true;
   for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {validData.valid_b = false;}}
   return validData.valid_b;
@@ -999,7 +996,6 @@ bool is_all_digits(char * data) {
 
 bool is_all_digits_plus_char(char * data, char find_char) {
   /* designed to check all chars are digits except one period and is more general purpose than just accepting a period */
-  if (sysDebugData.validation == true) {Serial.println("[connected] is_all_digits_plus_char: " + String(data));}
   validData.valid_b = true;
   validData.find_char = strchr(data, find_char);
   validData.index = (int)(validData.find_char - data);
@@ -1008,15 +1004,12 @@ bool is_all_digits_plus_char(char * data, char find_char) {
 }
 
 bool is_positive_negative_num(char * data) {
-
   /*
   designed to check all chars are digits except one period and the signed bit. allows positive/negative floats,
   doubles and ints.
   allows one period anywhere.
   allows one minus (-) sign at index zero.
   */
-
-  if (sysDebugData.validation == true) {Serial.println("[connected] is_positive_negative_num: " + String(data));}
   validData.valid_b = true;
   validData.find_char = strchr(data, '.');
   validData.index = (int)(validData.find_char - data);
@@ -1026,14 +1019,12 @@ bool is_positive_negative_num(char * data) {
 }
 
 bool is_all_alpha(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] is_all_alpha: " + String(data));}
   validData.valid_b = true;
   for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 0) {validData.valid_b = false;}}
   return validData.valid_b;
 }
 
 bool val_utc_time(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_utc_time: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 9) {
     if (data[6] == '.') {
@@ -1046,7 +1037,6 @@ bool val_utc_time(char * data) {
 }
 
 bool val_utc_date(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_utc_date: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 6) {
     if (is_all_digits(data) == true) {
@@ -1057,7 +1047,6 @@ bool val_utc_date(char * data) {
 }
 
 bool val_latitude(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_latitude: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 13) {
     if (data[4] == '.') {
@@ -1072,7 +1061,6 @@ bool val_latitude(char * data) {
 }
 
 bool val_longitude(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_longitude: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 14) {
     if (data[5] == '.') {
@@ -1087,7 +1075,6 @@ bool val_longitude(char * data) {
 }
 
 bool val_latitude_H(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_latitude_H: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "N") == 0) || (strcmp(data, "S") == 0)) {
@@ -1098,7 +1085,6 @@ bool val_latitude_H(char * data) {
 }
 
 bool val_longitude_H(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_longitude_H: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0)) {
@@ -1109,7 +1095,6 @@ bool val_longitude_H(char * data) {
 }
 
 bool val_positioning_status_gngga(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_positioning_status_gngga: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if (is_all_digits(data) == true) {
@@ -1122,7 +1107,6 @@ bool val_positioning_status_gngga(char * data) {
 }
 
 bool val_satellite_count(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_satellite_count: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) >= 0){
@@ -1133,7 +1117,6 @@ bool val_satellite_count(char * data) {
 }
 
 bool val_hdop_precision_factor(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_hdop_precision_factor: " + String(data));}
   bool check_pass = false;
   if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0){
@@ -1144,7 +1127,6 @@ bool val_hdop_precision_factor(char * data) {
 }
 
 bool val_altitude(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_altitude: " + String(data));}
   // account for decimal point
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
@@ -1154,7 +1136,6 @@ bool val_altitude(char * data) {
 }
 
 bool val_altitude_units(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_altitude_units: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if (strcmp(data, "M") == 0) {
@@ -1165,7 +1146,6 @@ bool val_altitude_units(char * data) {
 }
 
 bool val_geoidal(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_geoidal: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1174,7 +1154,6 @@ bool val_geoidal(char * data) {
 }
 
 bool val_geoidal_units(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_geoidal_units: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if (strcmp(data, "M") == 0) {
@@ -1185,7 +1164,6 @@ bool val_geoidal_units(char * data) {
 }
 
 bool val_differential_delay(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_differential_delay: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1194,7 +1172,6 @@ bool val_differential_delay(char * data) {
 }
 
 bool val_basestation_id(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_basestation_id: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if (strlen(data) == 4) {
@@ -1205,7 +1182,6 @@ bool val_basestation_id(char * data) {
 }
 
 bool val_positioning_status_gnrmc(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_positioning_status_gnrmc: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "A") == 0) || (strcmp(data, "V") == 0)) {
@@ -1216,7 +1192,6 @@ bool val_positioning_status_gnrmc(char * data) {
 }
 
 bool val_ground_speed(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ground_speed: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1225,7 +1200,6 @@ bool val_ground_speed(char * data) {
 }
 
 bool val_ground_heading(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ground_heading: " + String(data));}
   bool check_pass = false;
   if (is_all_digits_plus_char(data, '.') == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 360)) {
@@ -1237,7 +1211,6 @@ bool val_ground_heading(char * data) {
 
 // todo
 bool val_installation_angle(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_installation_angle: " + String(data));}
   bool check_pass = false;
   if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0) {
@@ -1248,7 +1221,6 @@ bool val_installation_angle(char * data) {
 }
 
 bool val_installation_angle_direction(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_installation_angle_direction: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0) || (strcmp(data, "M") == 0)) {
@@ -1259,7 +1231,6 @@ bool val_installation_angle_direction(char * data) {
 }
 
 bool val_mode_indication(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_mode_indication: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 1) {
     if ((strcmp(data, "A") == 0) || (strcmp(data, "D") == 0) || (strcmp(data, "E") == 0) || (strcmp(data, "N") == 0)) {
@@ -1270,7 +1241,6 @@ bool val_mode_indication(char * data) {
 }
 
 bool val_pitch_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_pitch_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1279,7 +1249,6 @@ bool val_pitch_gpatt(char * data) {
 }
 
 bool val_roll_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_roll_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1288,7 +1257,6 @@ bool val_roll_gpatt(char * data) {
 }
 
 bool val_yaw_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_yaw_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1297,35 +1265,30 @@ bool val_yaw_gpatt(char * data) {
 }
 
 bool val_angle_channle_p_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_p_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "p") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_angle_channle_r_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_r_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "r") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_angle_channle_y_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_angle_channle_y_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "y") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_version_channel_s_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_version_channel_s_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "S") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_software_version_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_software_version_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) == 20230219) {check_pass = true;}
@@ -1334,21 +1297,18 @@ bool val_software_version_gpatt(char * data) {
 }
 
 bool val_product_id_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_product_id_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "003E009") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_id_channel_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_id_channel_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "ID") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_ins_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
@@ -1357,14 +1317,12 @@ bool val_ins_gpatt(char * data) {
 }
 
 bool val_ins_channel_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_channel_gpatt: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "INS") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_hardware_version_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_hardware_version_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if (strcmp(data, "3335") == 0) {check_pass = true;}
@@ -1373,7 +1331,6 @@ bool val_hardware_version_gpatt(char * data) {
 }
 
 bool val_run_state_flag_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_run_state_flag_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((strcmp(data, "01") == 0) || (strcmp(data, "02") == 0) || (strcmp(data, "03") == 0)) {check_pass = true;}
@@ -1383,7 +1340,6 @@ bool val_run_state_flag_gpatt(char * data) {
 
 // todo
 bool val_mis_angle_num_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_mis_angle_num_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1392,7 +1348,6 @@ bool val_mis_angle_num_gpatt(char * data) {
 }
 
 bool val_static_flag_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_static_flag_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
@@ -1402,7 +1357,6 @@ bool val_static_flag_gpatt(char * data) {
 
 // todo
 bool val_user_code_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_user_code_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits_plus_char(data, '.') == true) {
     if (atoi(data) >= 0) {check_pass = true;}
@@ -1411,7 +1365,6 @@ bool val_user_code_gpatt(char * data) {
 }
 
 bool val_gst_data_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_gst_data_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if (atoi(data) >= 0) {check_pass = true;}
@@ -1420,7 +1373,6 @@ bool val_gst_data_gpatt(char * data) {
 }
 
 bool val_line_flag_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_line_flag_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
@@ -1429,7 +1381,6 @@ bool val_line_flag_gpatt(char * data) {
 }
 
 bool val_mis_att_flag_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_mis_att_flag_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
@@ -1438,7 +1389,6 @@ bool val_mis_att_flag_gpatt(char * data) {
 }
 
 bool val_imu_kind_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_imu_kind_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
@@ -1447,7 +1397,6 @@ bool val_imu_kind_gpatt(char * data) {
 }
 
 bool val_ubi_car_kind_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_car_kind_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 1) && (atoi(data) <= 4)) {check_pass = true;}
@@ -1456,7 +1405,6 @@ bool val_ubi_car_kind_gpatt(char * data) {
 }
 
 bool val_mileage_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_mileage_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1465,7 +1413,6 @@ bool val_mileage_gpatt(char * data) {
 }
 
 bool val_run_inetial_flag_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_run_inetial_flag_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
@@ -1474,7 +1421,6 @@ bool val_run_inetial_flag_gpatt(char * data) {
 }
 
 bool val_speed_enable_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_enable_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
@@ -1483,7 +1429,6 @@ bool val_speed_enable_gpatt(char * data) {
 }
 
 bool val_speed_num_gpatt(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_num_gpatt: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1492,7 +1437,6 @@ bool val_speed_num_gpatt(char * data) {
 }
 
 bool val_speed_status(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_speed_status: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
@@ -1501,14 +1445,12 @@ bool val_speed_status(char * data) {
 }
 
 bool val_accelleration_delimiter(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_accelleration_delimiter: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "A") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_axis_accelleration(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_axis_accelleration: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1517,14 +1459,12 @@ bool val_axis_accelleration(char * data) {
 }
 
 bool val_angular_velocity_delimiter(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_angular_velocity_delimiter: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "G") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_gyro_angular_velocity(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_gyro_angular_velocity: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1533,14 +1473,12 @@ bool val_gyro_angular_velocity(char * data) {
 }
 
 bool val_status_delimiter(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_status_delimiter: " + String(data));}
   bool check_pass = false;
   if (strcmp(data, "S") == 0) {check_pass = true;}
   return check_pass;
 }
 
 bool val_ubi_state_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_state_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1549,7 +1487,6 @@ bool val_ubi_state_flag(char * data) {
 }
 
 bool val_ubi_state_kind_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_state_kind_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
@@ -1558,7 +1495,6 @@ bool val_ubi_state_kind_flag(char * data) {
 }
 
 bool val_code_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_code_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1567,7 +1503,6 @@ bool val_code_flag(char * data) {
 }
 
 bool val_gset_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_gset_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1576,7 +1511,6 @@ bool val_gset_flag(char * data) {
 }
 
 bool val_sset_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_sset_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1585,7 +1519,6 @@ bool val_sset_flag(char * data) {
 }
 
 bool val_ang_dget_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ang_dget_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1594,7 +1527,6 @@ bool val_ang_dget_flag(char * data) {
 }
 
 bool val_ins_run_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_run_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1603,7 +1535,6 @@ bool val_ins_run_flag(char * data) {
 }
 
 bool val_fix_kind_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_fix_kind_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1612,7 +1543,6 @@ bool val_fix_kind_flag(char * data) {
 }
 
 bool val_fiobject_roll_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_fiobject_roll_flag: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1621,7 +1551,6 @@ bool val_fiobject_roll_flag(char * data) {
 }
 
 bool val_fix_pitch_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_fix_pitch_flag: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1630,7 +1559,6 @@ bool val_fix_pitch_flag(char * data) {
 }
 
 bool val_ubi_on_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_on_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
@@ -1639,7 +1567,6 @@ bool val_ubi_on_flag(char * data) {
 }
 
 bool val_ubi_kind_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_kind_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
@@ -1648,7 +1575,6 @@ bool val_ubi_kind_flag(char * data) {
 }
 
 bool val_ubi_a_set(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_a_set: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
@@ -1657,7 +1583,6 @@ bool val_ubi_a_set(char * data) {
 }
 
 bool val_ubi_b_set(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_b_set: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
@@ -1666,7 +1591,6 @@ bool val_ubi_b_set(char * data) {
 }
 
 bool val_acc_X_data(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_acc_X_data: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1675,7 +1599,6 @@ bool val_acc_X_data(char * data) {
 }
 
 bool val_acc_Y_data(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_acc_Y_data: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1684,7 +1607,6 @@ bool val_acc_Y_data(char * data) {
 }
 
 bool val_gyro_Z_data(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_gyro_Z_data: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1693,7 +1615,6 @@ bool val_gyro_Z_data(char * data) {
 }
 
 bool val_pitch_angle(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_pitch_angle: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1702,7 +1623,6 @@ bool val_pitch_angle(char * data) {
 }
 
 bool val_roll_angle(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_roll_angle: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1711,7 +1631,6 @@ bool val_roll_angle(char * data) {
 }
 
 bool val_yaw_angle(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_yaw_angle: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1720,7 +1639,6 @@ bool val_yaw_angle(char * data) {
 }
 
 bool val_car_speed(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_car_speed: " + String(data));}
   bool check_pass = false;
   if (is_all_digits_plus_char(data, '.') == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 100)) {check_pass = true;}
@@ -1729,7 +1647,6 @@ bool val_car_speed(char * data) {
 }
 
 bool val_ins_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ins_flag: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
@@ -1738,7 +1655,6 @@ bool val_ins_flag(char * data) {
 }
 
 bool val_ubi_num(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_num: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1747,7 +1663,6 @@ bool val_ubi_num(char * data) {
 }
 
 bool val_ubi_valid(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_ubi_valid: " + String(data));}
   bool check_pass = false;
   if (is_all_digits(data) == true) {
   if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
@@ -1756,7 +1671,6 @@ bool val_ubi_valid(char * data) {
 }
 
 bool val_coll_T_data(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_coll_T_data: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1765,7 +1679,6 @@ bool val_coll_T_data(char * data) {
 }
 
 bool val_coll_T_heading(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_coll_T_heading: " + String(data));}
   bool check_pass = false;
   if (is_positive_negative_num(data) == true) {
     check_pass = true;
@@ -1774,21 +1687,18 @@ bool val_coll_T_heading(char * data) {
 }
 
 bool val_custom_flag(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_custom_flag: " + String(data));}
   bool check_pass = false;
   if (strlen(data) >= 1) {check_pass = true;}
   return check_pass;
 }
 
 bool val_checksum(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_checksum: " + String(data));}
   bool check_pass = false;
   if (strlen(data) == 3) {check_pass = true;}
   return check_pass;
 }
 
 bool val_scalable(char * data) {
-  if (sysDebugData.validation == true) {Serial.println("[connected] val_scalable: " + String(data));}
   bool check_pass = false;
   if (strlen(data) >= 1) {check_pass = true;}
   return check_pass;
@@ -2544,7 +2454,7 @@ void GNGGA() {
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (sysDebugData.gngga_sentence == true) {
+  if (systemData.debug == true) {
     Serial.println("[gnggaData.tag] "                     + String(gnggaData.tag));
     Serial.println("[gnggaData.utc_time] "                + String(gnggaData.utc_time));
     Serial.println("[gnggaData.latitude] "                + String(gnggaData.latitude));
@@ -2611,7 +2521,7 @@ void GNRMC() {
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (sysDebugData.gnrmc_sentence == true) {
+  if (systemData.debug == true) {
     Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
     Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time));
     Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status));
@@ -2730,7 +2640,7 @@ void GPATT() {
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (sysDebugData.gpatt_sentence == true) {
+  if (systemData.debug == true) {
     Serial.println("[gpattData.tag] "              + String(gpattData.tag));
     Serial.println("[gpattData.pitch] "            + String(gpattData.pitch));
     Serial.println("[gpattData.angle_channel_0] "  + String(gpattData.angle_channel_0));
@@ -3052,7 +2962,7 @@ void calculateLocation(){
 
 void syncRTCOnDownlink() {
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  Serial.println("[synchronized] " + formatRTCDateTime());
+  debug("[synchronized] " + formatRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3095,10 +3005,9 @@ bool isOneDiff(int a, int b) {
 
 void convertUTCToLocal() {
 
-  // // live data from satellites
-  // Serial.println("---------------------"); // debug
-  // Serial.print("[utc_time] "); Serial.println(gnrmcData.utc_time); // debug
-  // Serial.print("[utc_date] "); Serial.println(gnrmcData.utc_date); // debug
+  // live data from satellites
+  debug("[utc_time] "); Serial.println(gnrmcData.utc_time);
+  debug("[utc_date] "); Serial.println(gnrmcData.utc_date);
 
   /*                                     TEMPORARY TIME                                        */
   /* make temporary values that will not disturb final values untiil values whole and complete */
@@ -3106,27 +3015,27 @@ void convertUTCToLocal() {
   // temp store date
   satData.tmp_day[0] = gnrmcData.utc_date[0];
   satData.tmp_day[1] = gnrmcData.utc_date[1];
-  // Serial.print("[tmp_day] "); Serial.println(satData.tmp_day);
+  debug("[tmp_day] " + String(satData.tmp_day));
   satData.tmp_month[0] = gnrmcData.utc_date[2];
   satData.tmp_month[1] = gnrmcData.utc_date[3];
-  // Serial.print("[tmp_month] "); Serial.println(satData.tmp_month);
+  debug("[tmp_month] " + String(satData.tmp_month));
   satData.tmp_year[0] = gnrmcData.utc_date[4];
   satData.tmp_year[1] = gnrmcData.utc_date[5];
-  // Serial.print("[tmp_year] "); Serial.println(satData.tmp_year);
+  debug("[tmp_year] " + String(satData.tmp_year));
 
   // temp store time
   satData.tmp_hour[0] = gnrmcData.utc_time[0];
   satData.tmp_hour[1] = gnrmcData.utc_time[1];
-  // Serial.print("[tmp_hour] "); Serial.println(satData.tmp_hour);
+  debug("[tmp_hour] " + String(satData.tmp_hour));
   satData.tmp_minute[0] = gnrmcData.utc_time[2];
   satData.tmp_minute[1] = gnrmcData.utc_time[3];
-  // Serial.print("[tmp_minute] "); Serial.println(satData.tmp_minute);
+  debug("[tmp_minute] " + String(satData.tmp_minute));
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
-  // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
+  debug("[tmp_second] " + String(satData.tmp_second));
   satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
   satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
-  // Serial.print("[tmp_second] "); Serial.println(satData.tmp_second);
+  debug("[tmp_second] " + String(satData.tmp_millisecond));
 
   // temporary int time values so that we do not disturb the primary values while converting.
   satData.tmp_day_int = atoi(satData.tmp_day);
@@ -3137,15 +3046,9 @@ void convertUTCToLocal() {
   satData.tmp_second_int = atoi(satData.tmp_second);
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
-  // uncomment to debug before conversion
-  // Serial.print("[temp datetime]           ");
-  // Serial.print(satData.tmp_hour_int);
-  // Serial.print(":"); Serial.print(satData.tmp_minute_int);
-  // Serial.print(":"); Serial.print(satData.tmp_second_int);
-  // Serial.print(" "); Serial.print(satData.tmp_day_int);
-  // Serial.print("."); Serial.print(satData.tmp_month_int);
-  // Serial.print("."); Serial.print(satData.tmp_year_int);
-  // Serial.print(" (abbreviated year: "); Serial.print(satData.tmp_year_int); Serial.println(")");
+  // before conversion
+  debug("[temp time] " + String(satData.tmp_hour_int) + ":" + String(satData.tmp_minute_int) + "." + String(satData.tmp_second_int));
+  debug("[temp date] " + String(satData.tmp_day_int) + "." + String(satData.tmp_month_int) + "." + String(satData.tmp_year_int));
 
   // set time using time elements with 2 digit year
   setTime(
@@ -3161,20 +3064,15 @@ void convertUTCToLocal() {
 
   // return time
   time_t tmp_makeTime = makeTime(tm_return);
-  // Serial.print("[tmp_makeTime]            "); Serial.println(tmp_makeTime);
+  debug("[tmp_makeTime] " + String(tmp_makeTime));
 
   // adjust tmp_makeTime back/forward according to UTC offset
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
 
-  // uncomment to debug before conversion
-  // Serial.print("[temp datetime +- offset] ");
-  // Serial.print(hour());
-  // Serial.print(":"); Serial.print(minute());
-  // Serial.print(":"); Serial.print(second());
-  // Serial.print(" "); Serial.print(day());
-  // Serial.print("."); Serial.print(month());
-  // Serial.print("."); Serial.println(year());
+  // before conversion
+  debug("[temp time  +- offset] " + String(hour()) + ":" + String(minute()) + "." + String(second()));
+  debug("[temp datet +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
 
   /*                        RTC TIME                        */
   /* store current local time on RTC if we have a downlink  */
@@ -3219,7 +3117,7 @@ void convertUTCToLocal() {
     }
   }
 
-  // Serial.println("[rtc time] " + formatRTCDateTime()); // debug
+  debug("[rtc time] " + formatRTCDateTime()); // debug
 
   /*    now we can do things with time (using rtc time)     */
 
@@ -3280,8 +3178,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, "*");
   strcat(satData.satio_sentence, SerialLink.checksum);
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
-
-  // Serial.println(satData.satio_sentence);  // debug
+  debug(satData.satio_sentence);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3358,7 +3255,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
   sdcardData.is_writing = true;
 
   if (sysDebugData.verbose_file==true) {
-  Serial.println("[sdcard] attempting to save file: " + String(file));
+  debug("[sdcard] attempting to save file: " + String(file));
   }
   exfile.flush();
   exfile = sd.open(file);
@@ -3369,7 +3266,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     if (!sdcardData.matrix_filepath) {strcat(sdcardData.file_data, sdcardData.default_matrix_filepath);}
     else {strcat(sdcardData.file_data, sdcardData.matrix_filepath);}
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3379,7 +3276,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.matrix_run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3389,7 +3286,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.display_auto_off, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3399,7 +3296,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.index_display_autooff_times, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3409,7 +3306,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.index_display_color, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3419,7 +3316,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3429,7 +3326,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3439,7 +3336,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3449,7 +3346,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3459,7 +3356,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3469,7 +3366,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.output_satio_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3479,7 +3376,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.output_gngga_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3489,7 +3386,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.output_gnrmc_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3499,7 +3396,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.output_gpatt_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3509,7 +3406,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(satData.utc_offset, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3519,7 +3416,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(satData.utc_offset_flag, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3529,7 +3426,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_sun, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3539,7 +3436,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_moon, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3549,7 +3446,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_mercury, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3559,7 +3456,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_venus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3569,7 +3466,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_mars, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3579,7 +3476,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_jupiter, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3589,7 +3486,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_saturn, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3599,7 +3496,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_uranus, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3609,7 +3506,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     itoa(systemData.sidereal_track_neptune, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
-    if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+    debug("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
@@ -3618,11 +3515,11 @@ void sdcard_save_system_configuration(char * file, int return_page) {
     Serial.println("[sdcard] saved file successfully: " + String(file));
     sdcardData.is_writing = false;
   }
-  else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));}
+  else {exfile.close(); debug("[sdcard] failed to save file: " + String(file));}
   sdcardData.is_writing = false;
 }
 
-void PrintFileToken() {if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " +  String(sdcardData.token));}}
+void PrintFileToken() {debug("[sdcard] [reading] " +  String(sdcardData.token));}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
@@ -3631,7 +3528,7 @@ bool sdcard_load_system_configuration(char * file, int return_page) {
 
   sdcardData.is_reading = true;
 
-  Serial.println("[sdcard] attempting to load file: " + String(file));
+  debug("[sdcard] attempting to load file: " + String(file));
   exfile.flush();
   if (exfile.open(file, O_RDONLY)==1) {
 
@@ -3646,7 +3543,7 @@ bool sdcard_load_system_configuration(char * file, int return_page) {
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
 
       if (sysDebugData.verbose_file==true) {
-      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+        debug("[sdcard] [reading] " + String(sdcardData.BUFFER));
       }
 
       // check matrix filepath
@@ -3891,11 +3788,11 @@ bool sdcard_load_system_configuration(char * file, int return_page) {
       }
     }
     exfile.close();
-    Serial.println("[sdcard] loaded file successfully: " + String(file));
+    debug("[sdcard] loaded file successfully: " + String(file));
     sdcardData.is_reading = false;
     return true;
   }
-  else {exfile.close(); Serial.println("[sdcard] failed to load file: " + String(file));
+  else {exfile.close(); debug("[sdcard] failed to load file: " + String(file));
   sdcardData.is_reading = false;
   return false;}
 }
@@ -3908,10 +3805,10 @@ bool sdcard_load_system_configuration(char * file, int return_page) {
 void sdcard_mkdir(char * dir){
 
   if (!sd.exists(dir)) {
-    Serial.println("[sdcard] attempting to create directory: " + String(dir));
-    if (!sd.mkdir(dir)) {Serial.println("[sdcard] failed to create directory: " + String(dir));}
-    else {Serial.println("[sdcard] found directory: " + String(dir));}}
-  else {Serial.println("[sdcard] directory already exists: " + String(dir));}
+    debug("[sdcard] attempting to create directory: " + String(dir));
+    if (!sd.mkdir(dir)) {debug("[sdcard] failed to create directory: " + String(dir));}
+    else {debug("[sdcard] found directory: " + String(dir));}}
+  else {debug("[sdcard] directory already exists: " + String(dir));}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3944,11 +3841,11 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
     strcat(tempname, "_");
     strcat(tempname, temp_i);
     strcat(tempname, ext);
-    // Serial.println("[sdcard] calculating: " + String(temppath)); // debug
+    debug("[sdcard] calculating: " + String(temppath));
     if (sd.exists(temppath)) {
-      Serial.println("[sdcard] calculated filename found: " + String(temppath));
+      debug("[sdcard] calculated filename found: " + String(temppath));
       memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
-      Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
+      debug("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
       }
     else {strcpy(sdcardData.matrix_filenames[i], "EMPTY");}
   }
@@ -3960,7 +3857,7 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
 /* writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
 
 void zero_matrix() {
-  Serial.println("[matrix] setting all matrix values to zero.");
+  debug("[matrix] setting all matrix values to zero.");
   // iterate over each matrix matrix
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     matrixData.matrix_switch_enabled[0][Mi] = 0;
@@ -3984,7 +3881,7 @@ bool sdcard_load_matrix(char * file) {
 
   sdcardData.is_reading = true;
   
-  Serial.println("[sdcard] attempting to load file: " + String(file));
+  debug("[sdcard] attempting to load file: " + String(file));
   exfile.flush();
   exfile = sd.open(file); 
   if (exfile) {
@@ -3994,7 +3891,7 @@ bool sdcard_load_matrix(char * file) {
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER = exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));}
+      debug("[sdcard] [reading] " + String(sdcardData.BUFFER));
       // tag: r
       if (strncmp(sdcardData.BUFFER, sdcardData.tag_0, 1) == 0) {
         // ensure cleared
@@ -4009,16 +3906,16 @@ bool sdcard_load_matrix(char * file) {
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
         if (is_all_digits(sdcardData.data_0) == true) {validData.bool_data_0 = true;
-          if (sysDebugData.verbose_file==true) {Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));}
+          debug("[Mi] [PASS] " +String(sdcardData.data_0));
         }
-        else {if (sysDebugData.verbose_file==true) {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}}
+        else {debug("[Mi] [INVALID] " +String(sdcardData.data_0));}
         // matrix function index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
         if (is_all_digits(sdcardData.data_1) == true) {validData.bool_data_1 = true;
-          if (sysDebugData.verbose_file==true) {Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));}
+          debug("[Fi] [PASS] " +String(sdcardData.data_1));
         }
-        else {if (sysDebugData.verbose_file==true) {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}}
+        else {debug("[Fi] [INVALID] " +String(sdcardData.data_1));}
         // continue if we have valid index numbers
         if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
           // matrix function name
@@ -4026,31 +3923,31 @@ bool sdcard_load_matrix(char * file) {
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, sizeof(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
-          if (sysDebugData.verbose_file==true) {Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));}
+          debug("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           // matrix function data: x
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
-            if (sysDebugData.verbose_file==true) {Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));}
+            debug("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
-          else {if (sysDebugData.verbose_file==true) {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}}
+          else {debug("[X] [INVALID] " + String(sdcardData.data_3));}
           // matrix function data: y
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
-            if (sysDebugData.verbose_file==true) {Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));}
+            debug("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
-          else {if (sysDebugData.verbose_file==true) {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}}
+          else {debug("[Y] [INVALID] " + String(sdcardData.data_4));}
           // matrix function data: z
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5) == true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
-            if (sysDebugData.verbose_file==true) {Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));}
+            debug("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
-          else {if (sysDebugData.verbose_file==true) {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}}
+          else {debug("[Z] [INVALID] " + String(sdcardData.data_5));}
           // matrix function data: inverted logic
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_8, sdcardData.token);
@@ -4066,26 +3963,26 @@ bool sdcard_load_matrix(char * file) {
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
           matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
-          if (sysDebugData.verbose_file==true) {Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));}
+          debug("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
           }
-        else {if (sysDebugData.verbose_file==true) {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}}
+        else {debug("[E]  [INVALID] " +String(sdcardData.data_6));}
         // port
         sdcardData.token = strtok(NULL, ",");
         // check
         if (is_all_digits_plus_char(sdcardData.data_7, '-') == true) {
           strcpy(sdcardData.data_7, sdcardData.token);
           matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
-          if (sysDebugData.verbose_file==true) {Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));}
+          debug("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
           }
-        else {if (sysDebugData.verbose_file==true) {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}}
+        else {debug("[E]  [INVALID] " +String(sdcardData.data_7));}
       }
     }
     // update current matrix filepath
     strcpy(sdcardData.tempmatrixfilepath, file);
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
-    Serial.println("[sdcard] loaded file successfully:   " + String(file));
-    Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
+    debug("[sdcard] loaded file successfully:   " + String(file));
+    debug("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
     exfile.close();
     sdcardData.is_reading = false;
     return true;
@@ -4093,7 +3990,7 @@ bool sdcard_load_matrix(char * file) {
   // update matrix filepath (clear)
   else {
     exfile.close();
-    Serial.println("[sdcard] failed to load file: " + String(file));
+    debug("[sdcard] failed to load file: " + String(file));
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     sdcardData.is_reading = false;
     return false;
@@ -4110,10 +4007,10 @@ bool sdcard_save_matrix(char * file) {
 
   sdcardData.is_writing = true;
 
-  Serial.println("[sdcard] attempting to save file: " + String(file));
+  debug("[sdcard] attempting to save file: " + String(file));
   // exfile.flush();
   exfile = sd.open(file, O_WRITE | O_CREAT);
-  Serial.println("[sdcard exfile] " + String(exfile));
+  debug("[sdcard exfile] " + String(exfile));
   if (exfile) {
     for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
@@ -4149,7 +4046,7 @@ bool sdcard_save_matrix(char * file) {
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
         
         // // write line
-        if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+        debug("[sdcard] [writing] " + String(sdcardData.file_data));
         exfile.println(sdcardData.file_data);
       }
       memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
@@ -4168,21 +4065,21 @@ bool sdcard_save_matrix(char * file) {
       // matrix switch port
       memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
       itoa(matrixData.matrix_port_map[0][Mi], sdcardData.tmp, 10);
-      if (sysDebugData.verbose_file==true) {Serial.println("[check] " + String(matrixData.matrix_port_map[0][Mi]));}
+      debug("[check] " + String(matrixData.matrix_port_map[0][Mi]));
       strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
       // write line
-      if (sysDebugData.verbose_file==true) {Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));}
+      debug("[sdcard] [writing] " + String(sdcardData.file_data));
       exfile.println("");
       exfile.println(sdcardData.file_data);
       exfile.println("");
     }
     exfile.close();
-    Serial.println("[sdcard] saved file successfully: " + String(file));
+    debug("[sdcard] saved file successfully: " + String(file));
     strcpy(sdcardData.matrix_filepath, file);
     sdcardData.is_writing = false;
     return true;
   }
-  else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));
+  else {exfile.close(); debug("[sdcard] failed to save file: " + String(file));
   sdcardData.is_writing = false;
   return false;}
 }
@@ -4194,12 +4091,12 @@ void sdcard_delete_matrix(char * file) {
   sdcardData.is_writing = true;
 
   if (sd.exists(file)) {
-    Serial.println("[sdcard] attempting to delete file: " + String(file));
+    debug("[sdcard] attempting to delete file: " + String(file));
     // try remove
     sd.remove(file);
     if (!sd.exists(file)) {
-      Serial.println("[sdcard] successfully deleted file: " + String(file));
-      Serial.println("attempting to remove filename from filenames.");
+      debug("[sdcard] successfully deleted file: " + String(file));
+      debug("attempting to remove filename from filenames.");
       // recreate matrix filenames
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       // zero the matrix
@@ -4207,9 +4104,9 @@ void sdcard_delete_matrix(char * file) {
       // delete matrix filepath.
       memset(sdcardData.matrix_filepath, 0, 56);
     }
-    else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
+    else {debug("[sdcard] failed to deleted file: " + String(file));}
   }
-  else {Serial.println("[sdcard] file does not exist: " + String(file));}
+  else {debug("[sdcard] file does not exist: " + String(file));}
   sdcardData.is_writing = false;
 }
 
@@ -4223,40 +4120,40 @@ return true when otherwise a check would return false, which allows more flexibi
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_true(double n0, double n1, double r) {
-  // Serial.println(
-  //   "in_range_check_true: (n0 " +
-  //   String(n0) +
-  //   " >= n1 (" +
-  //   String(n1) +
-  //   " - r/2 " +
-  //   String(r/2) +
-  //   ")) && (n0 " +
-  //   String(n0) +
-  //   " <= n1 (" +
-  //   String(n1) +
-  //   " + r/2 " +
-  //   String(r/2) +
-  //   "))");
+  debug(
+    "in_range_check_true: (n0 " +
+    String(n0) +
+    " >= n1 (" +
+    String(n1) +
+    " - r/2 " +
+    String(r/2) +
+    ")) && (n0 " +
+    String(n0) +
+    " <= n1 (" +
+    String(n1) +
+    " + r/2 " +
+    String(r/2) +
+    "))");
   if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return true;}
   else {return false;}
 }
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_false(double n0, double n1, double r) {
-  // Serial.println(
-  //   "in_range_check_false: (n0 " +
-  //   String(n0) +
-  //   " >= n1 (" +
-  //   String(n1) +
-  //   " - r/2 " +
-  //   String(r/2) +
-  //   ")) && (n0 " +
-  //   String(n0) +
-  //   " <= n1 (" +
-  //   String(n1) +
-  //   " + r/2 " +
-  //   String(r/2) +
-  //   "))");
+  debug(
+    "in_range_check_false: (n0 " +
+    String(n0) +
+    " >= n1 (" +
+    String(n1) +
+    " - r/2 " +
+    String(r/2) +
+    ")) && (n0 " +
+    String(n0) +
+    " <= n1 (" +
+    String(n1) +
+    " + r/2 " +
+    String(r/2) +
+    "))");
   if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return false;}
   else {return true;}
 }
@@ -4274,88 +4171,88 @@ bool in_ranges_check_false(double x0, double x1, double y0, double y1, double r)
 }
 
 bool check_over_true(double n0, double n1) {
-  // Serial.println("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
+  debug("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return true;}
   else {return false;}
 }
 
 bool check_over_false(double n0, double n1) {
-  // Serial.println("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
+  debug("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return false;}
   else {return true;}
 }
 
 bool check_under_true(double n0, double n1) {
-  // Serial.println("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
+  debug("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
   if (n0 < n1) {return true;}
   else {return false;}
 }
 
 bool check_under_false(double n0, double n1) {
-  // Serial.println("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
+  debug("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
   if (n0 < n1) {return false;}
   else {return true;}
 }
 
 bool check_equal_true(double n0, double n1) {
-  // Serial.println("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
+  debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 == n1) {return true;}
   else {return false;}
 }
 
 bool check_equal_false(double n0, double n1) {
-  // Serial.println("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
+  debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 != n1) {return true;}
   else {return false;}
 }
 
 bool check_ge_and_le_true(double n0, double n1, double n2) {
-  // Serial.println(
-  //   "check_ge_and_le_true: n0 " +
-  //   String(n0) +
-  //   " >= n1 " +
-  //   String(n1) +
-  //   " && n0 " +
-  //   String(n0) +
-  //   " <= " +
-  //   String(n2));
+  debug(
+    "check_ge_and_le_true: n0 " +
+    String(n0) +
+    " >= n1 " +
+    String(n1) +
+    " && n0 " +
+    String(n0) +
+    " <= " +
+    String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return true;}
   else {return false;}
 }
 
 bool check_ge_and_le_false(double n0, double n1, double n2) {
-  // Serial.println(
-  //   "check_ge_and_le_false: n0 " +
-  //   String(n0) +
-  //   " >= n1 " +
-  //   String(n1) +
-  //   " && n0 " +
-  //   String(n0) +
-  //   " <= " +
-  //   String(n2));
+  debug(
+    "check_ge_and_le_false: n0 " +
+    String(n0) +
+    " >= n1 " +
+    String(n1) +
+    " && n0 " +
+    String(n0) +
+    " <= " +
+    String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return false;}
   else {return true;}
 }
 
 bool check_strncmp_true(char * c0, char * c1, int n) {
-  // Serial.println("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
   if (strncmp(c0, c1, n) == 0) {return true;}
   else {return false;}
 }
 
 bool check_strncmp_false(char * c0, char * c1, int n) {
-  // Serial.println("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
   if (strncmp(c0, c1, n) == 0) {return false;}
   else {return true;}
 }
 
 bool check_bool_true(bool _bool) {
-  // Serial.println("check_bool_true: " + String(_bool));
+  debug("check_bool_true: " + String(_bool));
   if (_bool == true) {return true;} else {return false;}
 }
 
 bool check_bool_false(bool _bool) {
-  // Serial.println("check_bool_false: " + String(_bool));
+  debug("check_bool_false: " + String(_bool));
   if (_bool == false) {return true;} else {return false;}
 }
 
@@ -4653,7 +4550,7 @@ void matrixSwitch() {
 
   // iterate through matrices
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    // Serial.println("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
+    debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
 
       /*
@@ -4666,9 +4563,9 @@ void matrixSwitch() {
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
 
         // uncomment to debug
-        // Serial.println("[Mi] " + String(Mi));
-        // Serial.println("[Fi] " + String(Fi));
-        // Serial.println("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
+        debug("[Mi] " + String(Mi));
+        debug("[Fi] " + String(Fi));
+        debug("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
         /*
         perfromance and logic prefers adding functions from position zero else if position zero None then break.
@@ -7691,10 +7588,15 @@ void matrixSwitch() {
         bool final_bool = true;
         
         // debug (same as line below but with output)
-        // for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
-        //   Serial.println("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}}
+        if (systemData.debug==true) {
+          for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
+            Serial.println ("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}
+          }
+        }
 
-        for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
+        else {
+          for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
+        }
 
         /*
         WARNING: why do you think you can trust the data you are receiving?
@@ -7704,15 +7606,17 @@ void matrixSwitch() {
         */
 
         // debug (same as line below but with output)
-        // if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
-        // else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
-
+        if (systemData.debug==true) {
+          if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
+          else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
+        }
         /* a short call to the port controller each iteration may be made here */
-
-        if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
-        else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
+        else {
+          if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
+          else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
+        }
       }
-      else {Serial.println("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
+      else {debug("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
     }
     // handle Mi's that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
@@ -7753,16 +7657,18 @@ void matrixSwitch() {
   if (systemData.output_matrix_enabled == true) {
     Serial.println(matrixData.matrix_sentence);
   }
+  debug(matrixData.matrix_sentence);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 STATS COUNTERS
 
-void CountMatrixEnabled(){
+void CountMatrixEnabled() {
   matrixData.matrix_enabled_i = 0;
   matrixData.matrix_disabled_i = 0;
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}}
+    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}
+  }
 }
 
 void CountMatrixActive(){
@@ -7910,7 +7816,7 @@ void menuRight() {
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
-  Serial.println("[menu_column_selection] " + String(menu_column_selection));
+  debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -7924,16 +7830,16 @@ void menuLeft() {
   else if (menu_page==4) {}
   else if (menu_page==5) {}
   else if (menu_page==6) {}
-  Serial.println("[menu_column_selection] " + String(menu_column_selection));
+  debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
-  // Serial.println("[menuBack] menupage 0: " + String(menu_page));
+  debug("[menuBack] menupage 0: " + String(menu_page));
   if (menu_page==1) {menu_page=0;}
   else if (menu_page==3) {menu_page=1;}
   else if (menu_page==4) {
-    // Serial.println("[menuBack] enter_digits_key: " + String(enter_digits_key));
+    debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
     // enter port
     if (enter_digits_key == 1) {menu_page=3;}
     // enter function x, enter function y, enter function z
@@ -7950,7 +7856,7 @@ void menuBack() {
   else if (menu_page==70) {menu_page=1;}
   else if (menu_page==80) {menu_page=1;}
   else if (menu_page==90) {menu_page=1;}
-  // Serial.println("[menuBack] menupage 1: " + String(menu_page));
+  debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -8073,7 +7979,7 @@ void menuEnter() {
       // iterate over primitives
       matrixData.i_primitive++;
       if (matrixData.i_primitive > 4) {matrixData.i_primitive=0;}
-      // Serial.println("[primitives]" + String(matrixData.primitives[matrixData.i_primitive]));
+      debug("[primitives]" + String(matrixData.primitives[matrixData.i_primitive]));
 
       // put current str in temp
       memset(matrixData.temp, 0, sizeof(matrixData.temp));
@@ -8085,11 +7991,11 @@ void menuEnter() {
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
       matrixData.tempStr.replace("Range", "");
-      // Serial.println("[temp 0] " + matrixData.tempStr);
+      debug("[temp 0] " + matrixData.tempStr);
 
       // concatinate base function name with primitive
       matrixData.tempStr = matrixData.tempStr + matrixData.primitives[matrixData.i_primitive];
-      // Serial.println("[temp 1] " + matrixData.tempStr);
+      debug("[temp 1] " + matrixData.tempStr);
 
       // copy new name into matrix
       memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
@@ -8198,7 +8104,7 @@ void menuEnter() {
     itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
-    Serial.println("[saving] " + String(sdcardData.newfilename));
+    debug("[saving] " + String(sdcardData.newfilename));
 
     // set notification page
     menu_page=30;
@@ -8232,7 +8138,7 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      Serial.println("[loading] " + String(sdcardData.newfilename));
+      debug("[loading] " + String(sdcardData.newfilename));
 
       // set notification page
       menu_page=31;
@@ -8251,7 +8157,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
     }
-    else {Serial.println("[loading] aborting! cannot load empty slot.");}
+    else {debug("[loading] aborting! cannot load empty slot.");}
 
     // return to previous page
     menu_page=20;
@@ -8268,7 +8174,7 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      Serial.println("[deleting] " + String(sdcardData.newfilename));
+      debug("[deleting] " + String(sdcardData.newfilename));
       
       // set notification page
       menu_page=32;
@@ -8287,7 +8193,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
     }
-    else {Serial.println("[deleting] aborting! cannot delete empty slot.");}
+    else {debug("[deleting] aborting! cannot delete empty slot.");}
 
     // return to previous page
     menu_page=20;
@@ -8319,7 +8225,7 @@ void menuEnter() {
     if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
     if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
     if (menuSerial.selection()==5) {systemData.output_sensors_enabled^=true;}
-    if (menuSerial.selection()==6) {systemData.allow_debug_bridge^=true;}
+    if (menuSerial.selection()==6) {systemData.debug^=true;}
   }
 
   // universe page
@@ -8725,8 +8631,8 @@ void UpdateUI() {
   if (update_ui==true) {
     ui_cleared = false;
 
-    // Serial.println("[oled protection] allowing ui update");
-    // Serial.println("[menu page] " + String(menu_page));
+    debug("[oled protection] allowing ui update");
+    debug("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
     //                                        HOME PAGE
@@ -9446,7 +9352,7 @@ void UpdateUI() {
 
       // menuSerialItems[5]=String("SENSORS " + String(systemData.translate_enable_bool[systemData.output_sensors_enabled])).c_str();
 
-      // menuSerialItems[6]=String("DEBUG " + String(systemData.translate_enable_bool[systemData.allow_debug_bridge])).c_str();
+      // menuSerialItems[6]=String("DEBUG " + String(systemData.translate_enable_bool[systemData.debug])).c_str();
 
       if (systemData.output_satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
       else {menuSerialItems[0]="SATIO DISABLED";}
@@ -9466,7 +9372,7 @@ void UpdateUI() {
       if (systemData.output_sensors_enabled==true) {menuSerialItems[5]="SENSORS ENABLED";}
       else {menuSerialItems[5]="SENSORS DISABLED";}
 
-      if (systemData.allow_debug_bridge==true) {menuSerialItems[6]="DEBUG ENABLED";}
+      if (systemData.debug==true) {menuSerialItems[6]="DEBUG ENABLED";}
       else {menuSerialItems[6]="DEBUG DISABLED";}
 
       // show menu
@@ -9584,7 +9490,7 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   if ((ui_cleared == false) && (update_ui == false)) {
-    Serial.println("[oled protection] clearing ui");
+    debug("[oled protection] clearing ui");
     display.clear();
     display.clear();
     display.clear();
@@ -9653,7 +9559,7 @@ Note: In the future, you should be able to add new I2C devices after flashing, t
 */
 
 void ISR_I2C_PERIPHERAL() {
-  // Serial.println("[ISR] ISR_I2C_PERIPHERAL");
+  // Serial.println("[ISR] ISR_I2C_PERIPHERAL"); // do not ever uncomment this unless when absolutely necessary (no stuff in isr)
   make_i2c_request = true;
 }
 
@@ -9664,64 +9570,64 @@ void makeI2CRequest() {
     make_i2c_request = false;
 
     // request
-    Serial.println("[master] making request");
+    debug("[master] making request");
     Wire.requestFrom(I2C_ADDR_CONTROL_PANEL_0,sizeof(I2CLink.INPUT_BUFFER));
 
     // receive
     memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
     Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    debug("[received] " + String(I2CLink.INPUT_BUFFER));
 
     // 1: record time of any activity from the i2c control panel.
     unixtime_control_panel_request = rtc.now().unixtime();
-    Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
+    debug("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
 
     // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
     if (update_ui==true) {
 
       // parse special interrupt buttons
-      if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
+      if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {debug("[button] ISR0");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {debug("[button] ISR1");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {debug("[button] ISR2");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {debug("[button] ISR3");}
 
       // parse numpad buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputChar(digit_0);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputChar(digit_1);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputChar(digit_2);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputChar(digit_3);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputChar(digit_4);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputChar(digit_5);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputChar(digit_6);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputChar(digit_7);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputChar(digit_8);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputChar(digit_9);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputChar(period_char);}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {debug("[button] 0"); inputChar(digit_0);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {debug("[button] 1"); inputChar(digit_1);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {debug("[button] 2"); inputChar(digit_2);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {debug("[button] 3"); inputChar(digit_3);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {debug("[button] 4"); inputChar(digit_4);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {debug("[button] 5"); inputChar(digit_5);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {debug("[button] 6"); inputChar(digit_6);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {debug("[button] 7"); inputChar(digit_7);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {debug("[button] 8"); inputChar(digit_8);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {debug("[button] 9"); inputChar(digit_9);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {debug("[button] 10: ."); inputChar(period_char);}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {debug("[button] 11: -"); inputChar(hyphen_char);}
 
       // parse navigation buttons
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left"); menuLeft();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: delete"); if (allow_input_data==true) {input_data[strlen(input_data)-1]='\0';}}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: back"); menuBack();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {debug("[button] 12: home"); menu_page=0;}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {debug("[button] 13: up"); menuUp();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {debug("[button] 14: right"); menuRight();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {debug("[button] 15: down"); menuDown();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {debug("[button] 16: left"); menuLeft();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {debug("[button] 17: enter"); menuEnter();}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {debug("[button] 18: delete"); if (allow_input_data==true) {input_data[strlen(input_data)-1]='\0';}}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {debug("[button] 19: back"); menuBack();}
 
       // parse currently spare creative potential buttons: (auto input with set_var_x set_var_y set_var_z) (clear)
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {Serial.println("[button] 23");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {Serial.println("[button] 24");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {Serial.println("[button] 25");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {Serial.println("[button] 26");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {Serial.println("[button] 27");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {Serial.println("[button] 28");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {Serial.println("[button] 29");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {Serial.println("[button] 30");}
-      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {Serial.println("[button] 31");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {debug("[button] 20");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {debug("[button] 21");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {debug("[button] 22");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {debug("[button] 23");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {debug("[button] 24");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {debug("[button] 25");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {debug("[button] 26");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {debug("[button] 27");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {debug("[button] 28");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {debug("[button] 29");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {debug("[button] 30");}
+      else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {debug("[button] 31");}
     }
   }
 }
@@ -9731,11 +9637,11 @@ void makeI2CRequest() {
 
 void writeToPortController() {
 
-  // Serial.println("[writeToPortController]");
+  // debug("[writeToPortController]");
 
   // Port Map: $P,X,Y
   for (int i=0; i < 20; i++) {
-    // Serial.println("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
+    debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
     // check for change
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
@@ -9752,7 +9658,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      // Serial.println("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
+      debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
 
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
@@ -9760,7 +9666,7 @@ void writeToPortController() {
 
   // Matrix Switch True/False: $M,X,Y
   for (int i=0; i < 20; i++) {
-    // Serial.println("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
+    debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
     // check for change
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
@@ -9777,7 +9683,7 @@ void writeToPortController() {
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
 
-      // Serial.println("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
+      debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
 
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
@@ -9801,7 +9707,7 @@ void writeToPortController() {
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
 
-  // Serial.println("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
+  debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
 
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
@@ -9825,10 +9731,10 @@ void setupSDCard() {
   
   if (!sd.begin(SD_CONFIG)) {
     sd.initErrorHalt(&Serial);
-    Serial.println("[sdcard] failed to initialize");
+    debug("[sdcard] failed to initialize");
   }
   else {
-    Serial.println("[sdcard] initialized");
+    debug("[sdcard] initialized");
 
     // create/load system files
     sdcard_mkdirs();
@@ -9840,15 +9746,15 @@ void setupSDCard() {
 
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(sdcardData.matrix_filepath)) {
-      Serial.println("[sdcard] specified matrix file not found!");
+      debug("[sdcard] specified matrix file not found!");
 
       // is it the the default matrix file that is missing?
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        Serial.println("[sdcard] default matrix file not found!");
+        debug("[sdcard] default matrix file not found!");
         
         // create default matrix file
-        if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+        if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {debug("[sdcard] failed to write default marix file.");}
+        else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {debug("[sdcard] failed to load matrix file");}
       }
     }
   }
@@ -9861,10 +9767,10 @@ void sdcardCheck() {
 
   if (!sd.begin(SD_CONFIG)) {
     sd.initErrorHalt(&Serial);
-    Serial.println("[sdcard] failed to initialize");
+    debug("[sdcard] failed to initialize");
   }
   else {
-    Serial.println("[sdcard] initialized");
+    debug("[sdcard] initialized");
   }
 }
 
@@ -9904,41 +9810,38 @@ void sdcardCheck() {
 //                                                                                                                  READ GPS DATA
 
 void check_gngga() {
-  // Serial.println("[check_gngga]");
+  debug("[check_gngga]");
   if (systemData.gngga_enabled == true){
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    // output.println("[gnggaData.sentence] " + String(gnggaData.sentence));
-    // output.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+    debug("[gnggaData.sentence] " + String(gnggaData.sentence));
+    debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
     if (gnggaData.valid_checksum == true) {GNGGA();}
     else {gnggaData.bad_checksum_validity++;}
-    // GNGGA();
   }
 }
 
 void check_gnrmc() {
-  // Serial.println("[check_gnrmc]");
+  debug("[check_gnrmc]");
   if (systemData.gnrmc_enabled == true) {
     if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    // output.println("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-    // output.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+    debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+    debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
     if (gnrmcData.valid_checksum == true) {GNRMC();}
     else {gnrmcData.bad_checksum_validity++;}
-    // GNRMC();
   }
 }
 
 void check_gpatt() {
-  // Serial.println("[check_gpatt]");
+  debug("[check_gpatt]");
   if (systemData.gpatt_enabled == true) {
     if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    // output.println("[gpattData.sentence] " + String(gpattData.sentence));
-    // output.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+    debug("[gpattData.sentence] " + String(gpattData.sentence));
+    debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
     if (gpattData.valid_checksum == true) {GPATT();}
     else {gpattData.bad_checksum_validity++;}
-    // GPATT();
   }
 }
 
@@ -9949,7 +9852,7 @@ int i_gps = 0;
 bool cs = false;
 
 void readGPS(void * pvParameters) {
-  // Serial.println("[readGPS] ");
+  debug("[readGPS] ");
 
   while (1) {
 
@@ -9978,18 +9881,18 @@ void readGPS(void * pvParameters) {
           
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-          // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+          debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
 
           if (SerialLink.nbytes>50) {
 
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
-                  // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
-                  // Serial.println("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // Serial.println("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // Serial.println("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gngga_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -9999,11 +9902,11 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
-                  // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-                  // Serial.println("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // Serial.println("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // Serial.println("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gnrmc_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -10013,11 +9916,11 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
-                  // Serial.println("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
+                  debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
-                  // Serial.println("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // Serial.println("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // Serial.println("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
+                  debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
+                  debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
+                  debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gpatt_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
@@ -10032,7 +9935,7 @@ void readGPS(void * pvParameters) {
         if (systemData.gngga_enabled == true){
           if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-          // Serial.println("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+          debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
@@ -10040,7 +9943,7 @@ void readGPS(void * pvParameters) {
         if (systemData.gnrmc_enabled == true) {
           if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-          // Serial.println("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+          debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
@@ -10048,13 +9951,13 @@ void readGPS(void * pvParameters) {
         if (systemData.gpatt_enabled == true) {
           if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-          // Serial.println("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+          debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
 
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
-          // Serial.println("[gps_done_t] " + String(millis()-gps_done_t)); // debug
+          debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t = millis();
           gps_done=true;
         }
@@ -10073,7 +9976,7 @@ void getSensorData(void * pvParameters) {
 
   while (1) {
 
-    // Serial.println("[getSensorData] ");
+    debug("[getSensorData] ");
 
     // wait here
     if (sensors_done==false) {
@@ -10108,7 +10011,7 @@ void getSensorData(void * pvParameters) {
           sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
           sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
           sensorData.sensor_0 = sensorData.dht11_hic_0; // custum sensor 0
-          // Serial.println("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+          debug("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
         }
 
         // sensor 0
@@ -10526,8 +10429,7 @@ bool longer_loop = false;
 
 void loop() {
 
-  // Serial.println("----------------------------------------");
-  // Serial.println("[loop] ");
+  debug("----------------------------------------");
 
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
@@ -10560,46 +10462,46 @@ void loop() {
     // mark this loop as taking longer
     longer_loop = true;
 
-    // Serial.println("[gps_done_t]          " + String(millis()-gps_done_t));
-    // Serial.println("[loops between gps]   " + String(i_loops_between_gps_reads));
+    debug("[gps_done_t]          " + String(millis()-gps_done_t));
+    debug("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
-    // t0 = millis();
+    t0 = millis();
     convertUTCToLocal();
-    // Serial.println("[convertUTCToLocal]   " + String(millis()-t0));
+    debug("[convertUTCToLocal]   " + String(millis()-t0));
 
-    // t0 = millis();
+    t0 = millis();
     calculateLocation();
-    // Serial.println("[calculateLocation]   " + String(millis()-t0));
+    debug("[calculateLocation]   " + String(millis()-t0));
 
     /* uncomment to limit planet tracking to once per second. */
     if (track_planets_period == true) {
       track_planets_period = false;
-      // t0 = millis();
+      t0 = millis();
       setTrackPlanets();
-      // Serial.println("[setTrackPlanets]     " + String(millis()-t0));
+      debug("[setTrackPlanets]     " + String(millis()-t0));
 
-      // t0 = millis();
+      t0 = millis();
       trackPlanets();
-      // Serial.println("[trackPlanets]        " + String(millis()-t0));
+      debug("[trackPlanets]        " + String(millis()-t0));
     }
 
-    // t0 = millis();
+    t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    // Serial.println("[buildSatIOSentence]  " + String(millis()-t0));
+    debug("[buildSatIOSentence]  " + String(millis()-t0));
     
-    // t0 = millis();
+    t0 = millis();
     if (sensors_done==true) {
       if (systemData.matrix_enabled == true) {matrixSwitch();}
     }
-    // Serial.println("[matrixSwitch]        " + String(millis()-t0));
+    debug("[matrixSwitch]        " + String(millis()-t0));
 
     MatrixStatsCounter();
 
     // instruct port controller: matrix
-    // t0 = millis();
+    t0 = millis();
     writeToPortController();
-    // Serial.println("[writePortController] " + String(millis()-t0));
+    debug("[writePortController] " + String(millis()-t0));
 
     gps_done = false;
     sensors_done=false;
@@ -10630,9 +10532,9 @@ void loop() {
   // readSerial0();
 
   if (longer_loop==false) {
-    // t0 = millis();
+    t0 = millis();
     UpdateUI();
-    // Serial.println("[UpdateUI] " + String(millis()-t0));
+    debug("[UpdateUI] " + String(millis()-t0));
   }
 
   // ---------------------------------------------------------------------
@@ -10649,21 +10551,21 @@ void loop() {
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
   else {systemData.overload=false;}
-  // if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  // if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
+  if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
   // some data while running headless
-  // Serial.println("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  // Serial.println("[RTC Datetime]          " + formatRTCDateTime()); // fresh from RTC
-  // Serial.println("[uptime_seconds] " + String(timeData.uptime_seconds));
-  // Serial.println("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
-  // Serial.println("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
-  // Serial.println("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
-  // Serial.println("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
-  // Serial.println("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
-  // Serial.println("[Looptime]              " + String(timeData.mainLoopTimeTaken));
-  // Serial.println("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
-  // Serial.println("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
+  // debug("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
+  // debug("[RTC Datetime]          " + formatRTCDateTime()); // fresh from RTC
+  // debug("[uptime_seconds] " + String(timeData.uptime_seconds));
+  // debug("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
+  // debug("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
+  // debug("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
+  // debug("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
+  // debug("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
+  debug("[Looptime]              " + String(timeData.mainLoopTimeTaken));
+  debug("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
+  debug("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
   // delay(500);
   
