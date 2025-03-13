@@ -9976,10 +9976,10 @@ void getSensorData(void * pvParameters) {
 
   while (1) {
 
-    debug("[getSensorData] ");
-
+    
     // wait here
     if (sensors_done==false) {
+      debug("[getSensorData] ");
 
       // step over each multiplexer analog/digital channel
       for (int i_chan = 0; i_chan < 16; i_chan++) {
