@@ -225,6 +225,7 @@ SatIO and module devices:
     * Reduces required wires/wiring to build the platform each time a new module is required.
     * Reduces cost because money can instead be built on PCB fab and components.
     * Makes the platform more easy to work with overall.
+    * Able to flash new firmware to the board (to both MCU's individually).
     
     [The platform (PCB)]
 
@@ -244,8 +245,6 @@ SatIO and module devices:
   	ATMEGA2560:
   	       Traced to Shared I2C extension bus.
   	       Exposed headers for everything else.
-  	
-  	Able to flash new firmware to the board (to both MCU's individually).
 	
 
 ---
