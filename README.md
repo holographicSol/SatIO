@@ -105,7 +105,7 @@
 
 -----
 
-![plot](./SatIO/Extras/images/DSC_0000_BURST20250312163643601.JPG)
+![plot](./Extras/images/DSC_0000_BURST20250312163643601.JPG)
 
 -----
 
