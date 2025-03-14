@@ -3195,7 +3195,7 @@ void sdcard_save_system_configuration(char * file) {
 
   Serial.println("[sdcard] attempting to save file: " + String(file));
   exfile.flush();
-  exfile = sd.open(file, O_WRITE);
+  exfile = sd.open(file, O_WRITE | O_CREAT);
   if (exfile) {
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
