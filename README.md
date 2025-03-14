@@ -94,3 +94,21 @@
       Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation system, control pad and port controller
       that I can use for other projects in the future. For now I imagine each part will be an I2C device and some parts like SatIO will have both master and slave
       modes for flexibility accross differnt project requirements.
+
+-----
+
+      ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER_Doc.JPG)
+
+-----
+
+      ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER.JPG)
+
+-----
+
+      ![plot](./SatIO/Extras/images/DSC_0000_BURST20250312163643601.JPG)
+
+-----
+
+      ![plot](./Extras/images/UnidentifiedStudios.png)
+
+-----
