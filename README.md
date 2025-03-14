@@ -1,6 +1,6 @@
-                                    SatIO - Written by Benjamin Jack Cullen.
+                                  SatIO - Written by Benjamin Jack Cullen.
 
-                                               "The GPS Master"
+                                            "The GPS Master"
 
                       A general purpose programmable satellite, sensor and inertial platform.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
@@ -65,24 +65,23 @@
                                               Sun Rise
 
 
-    Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
-    or to provide data to local LLM's over serial, the list goes on.
-    
-    Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
-    be turned on/off.
+  Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
+  or to provide data to local LLM's over serial, the list goes on.
   
-    Port Controller: Port controller to turn pins high/low according to instructions received from master.
+  Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
+  be turned on/off.
+
+  Port Controller: Port controller to turn pins high/low according to instructions received from master.
+
+  UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
+  consistency.
   
-    UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
-    consistency.
-    
-    Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
-    part, subsystem or standalone device.
-  
-    Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation
-    system, control pad and port controller that I can use for other projects in the future. For now I imagine each part#
-    will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility across differnt
-    project requirements.
+  Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
+  part, subsystem or standalone device.
+
+  Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+  as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
+
 
 -----
 
