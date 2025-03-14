@@ -3187,7 +3187,7 @@ void buildSatIOSentence() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: SAVE SYSTEM CONFIGURATION
 
-void sdcard_save_system_configuration(char * file, int return_page) {
+void sdcard_save_system_configuration(char * file) {
 
   /* saves tagged, system configuration data to file */
 
@@ -3195,7 +3195,7 @@ void sdcard_save_system_configuration(char * file, int return_page) {
 
   Serial.println("[sdcard] attempting to save file: " + String(file));
   exfile.flush();
-  exfile = sd.open(file);
+  exfile = sd.open(file, O_WRITE);
   if (exfile) {
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
@@ -3461,7 +3461,7 @@ void PrintFileToken() {Serial.println("[sdcard] [reading] " +  String(sdcardData
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
 
-bool sdcard_load_system_configuration(char * file, int return_page) {
+bool sdcard_load_system_configuration(char * file) {
 
   sdcardData.is_reading = true;
 
@@ -8007,7 +8007,7 @@ void menuEnter() {
       endSPIDevice(SSD1351_CS);
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       // setupSDCard();
-      sdcard_save_system_configuration(sdcardData.sysconf, 0);
+      sdcard_save_system_configuration(sdcardData.sysconf);
       sd.end();
       endSPIDevice(SD_CS);
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
@@ -9675,8 +9675,8 @@ void setupSDCard() {
     sdcard_mkdirs();
 
     // load system configuration file
-    if (!sdcard_load_system_configuration(sdcardData.sysconf, 0)) {
-      sdcard_save_system_configuration(sdcardData.sysconf, 0);
+    if (!sdcard_load_system_configuration(sdcardData.sysconf)) {
+      sdcard_save_system_configuration(sdcardData.sysconf);
     }
 
     // load matrix file specified by configuration file
