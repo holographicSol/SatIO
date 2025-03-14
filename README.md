@@ -97,18 +97,18 @@
 
 -----
 
-      ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER_Doc.JPG)
+![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER_Doc.JPG)
 
 -----
 
-      ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER.JPG)
+![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER.JPG)
 
 -----
 
-      ![plot](./SatIO/Extras/images/DSC_0000_BURST20250312163643601.JPG)
+![plot](./SatIO/Extras/images/DSC_0000_BURST20250312163643601.JPG)
 
 -----
 
-      ![plot](./Extras/images/UnidentifiedStudios.png)
+![plot](./Extras/images/UnidentifiedStudios.png)
 
 -----
