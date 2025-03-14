@@ -102,7 +102,9 @@
 
 -----
 
-    Current Hardware Setup (Semi-Modular):
+
+
+    [Current Hardware Setup (Semi-Modular)]
     
     [Master] SatIO
     (Private I2C Slaves) Port Controller
@@ -113,7 +115,7 @@
     (A/D)                Multiplexer
     
     
-    Idea Hardware Setup (Fully Modular):
+    [Idea Hardware Setup (Fully Modular)]
     
     [Master] Master Module
     (Global I2C Slaves)  Shared SatIO Module
