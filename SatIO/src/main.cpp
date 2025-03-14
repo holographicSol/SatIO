@@ -83,10 +83,8 @@
   Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
   part, subsystem or standalone device.
 
-  Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation
-  system, control pad and port controller that I can use for other projects in the future. For now I imagine each part#
-  will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility across differnt
-  project requirements.
+  Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+  as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
 */
 
