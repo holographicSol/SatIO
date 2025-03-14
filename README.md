@@ -65,22 +65,22 @@
                                               Sun Rise
 
 
-  Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
-  or to provide data to local LLM's over serial, the list goes on.
+    Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
+    or to provide data to local LLM's over serial, the list goes on.
+    
+    Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
+    be turned on/off.
   
-  Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
-  be turned on/off.
-
-  Port Controller: Port controller to turn pins high/low according to instructions received from master.
-
-  UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
-  consistency.
+    Port Controller: Port controller to turn pins high/low according to instructions received from master.
   
-  Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
-  part, subsystem or standalone device.
-
-  Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
-  as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
+    UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
+    consistency.
+    
+    Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
+    part, subsystem or standalone device.
+  
+    Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+    as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
 
 -----
