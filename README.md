@@ -101,3 +101,107 @@
 ![plot](./Extras/images/UnidentifiedStudios.png)
 
 -----
+
+Current Hardware Setup (Semi-Modular):
+
+[Master] SatIO
+(Private I2C Slaves) Port Controller
+(Private I2C Slaves) Control Pad
+(SPI)                Display
+(I2C)                Multiplexer
+(I2C)                Extension
+(A/D)                Multiplexer
+
+
+Idea Hardware Setup (Fully Modular):
+
+[Master] Master Module
+(Global I2C Slaves)  Shared SatIO Module
+(Global I2C Slaves)  Shared Matrix Module
+(Global I2C Slaves)  Shared Port Controller Module
+(Private I2C Slaves) Private Port Controller (GPIO exclusive to this module)
+(Private I2C Slaves) Private Control Pad
+(SPI)                Private Display
+(I2C)                Private Multiplexer
+(I2C)                Private Extension
+(A/D)                Private Multiplexer
+
+[Slave] Shared Matrix Module
+(Global I2C Masters) Master Module
+(Private I2C Slaves) Private Port Controller (shared GPIO module)
+(SPI)                Private Display
+(I2C)                Private Multiplexer
+(I2C)                Private Extension
+(A/D)                Private Multiplexer
+(Note)               Can be more than 1
+
+[Slave] Shared SatIO Module
+(Global I2C Masters)  Master Module
+(Private I2C Masters) Private Port Controller (shared GPIO module)
+(UART)                Private GPS
+(SPI)                 Private Display
+(I2C)                 Private Multiplexer
+(I2C)                 Private Extension
+(A/D)                 Private Multiplexer
+(Note)                Can be more than 1
+
+[Slave] Shared Port Controller Module
+(Global I2C Masters)  Master Module
+(Private I2C Masters) Port Controller (shared GPIO module)
+(SPI)                 Private Display
+(I2C)                 Private Multiplexer
+(I2C)                 Private Extension
+(A/D)                 Private Multiplexer
+(Note)                Can be more than 1
+
+
+
+[Thoughts on semi/fully modular]
+
+    The hardware platform remains the same and the software would be similar.
+    
+    [Semi-Modular]
+    	Matrix size limited.
+    	Can have more Port Controllers.
+    
+    [Fully Modular]
+    	Can have more Matrix modules.
+    	Can have more Port Controllers.
+    	Every module can perform faster.
+
+
+     [Taking the platform fully modular]
+
+    [Problem]
+    * Keyestudio ATMEGA2560 Shields are now mostly unavailable.
+    * Each pair of ATMEGA2560 Dev boards and Shields cost around 20GBP+.
+    * Building I2C extension bus every time a new module is required takes a lot of soldering.
+    * Building equivalent shields also requires a lot of soldering (voltage lanes, ground lanes, etc.).
+    
+    [Solution]
+    Begin fabrication of the current development platform.
+    * Reduces required wires/wiring to build the platform each time a new module is required.
+    * Reduces cost because money can instead be built on PCB fab and components.
+    * Makes the platform more easy to work with overall.
+    * Able to flash new firmware to the board (to both MCU's individually).
+    
+    [The platform (PCB)]
+
+  	*Fabricate a development board from the current platform built around ESP32.
+  	*The PBC should integrate both the ESP32 and ATMEGA250, and integrate some other soon non-modular components.
+  	*This board provides a development platform with the high clock speeds and radio capabilities of ESP32, while
+  	also utilizing an integrated ATMEGA250 for a large amount of GPIO.
+  	Currently these boards are intended for use as standalone systems or modules that can work together, 1 as master
+  	and the rest as slaves, all built on the same platform and each with the same compute power and GPIO capacity.
+  
+  	ESP32: Traced to Analogue digital multiplexer (Analogue digital multiplexer should have exposed channel headers).
+  	       Traced to I2C multiplexer (I2C multiplexer should have exposed channel headers).
+  	       Traced to RTC.
+  	       Traced to Shared I2C extension bus.
+  	       Exposed headers for everything else.
+  
+  	ATMEGA2560:
+  	       Traced to Shared I2C extension bus.
+  	       Exposed headers for everything else.
+          
+-----
