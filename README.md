@@ -3,7 +3,7 @@
                                                    "The GPS Master"
 
                           A general purpose programmable satellite, sensor and inertial platform.
-        Supporting stacks (up to 10 functions per output pin) of logic accross 20 output pins on the portcontroller.
+        Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
 
                                      SatIO is the system, a matrix is the program.
 
@@ -12,11 +12,11 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller (not on multiplexer):
+                                          ESP32: 1st ATMEGA2560 with shield as Port Controller (not on multiplexer):
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel (not on multiplexer):
+                                          ESP32: 2nd ATMEGA2560 with shield as Control Panel (not on multiplexer):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
@@ -76,12 +76,12 @@
       UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
       consistency.
       
-      Summary: Over one quintillion possible combinations of stackable logic accross 20 switches for a general purpose
+      Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
       part, subsystem or standalone device.
 
       Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation
       system, control pad and port controller that I can use for other projects in the future. For now I imagine each part#
-      will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility accross differnt
+      will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility across differnt
       project requirements.
 
 -----
