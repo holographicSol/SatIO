@@ -217,8 +217,8 @@ SatIO and module devices:
     [Problem]
     * Keyestudio ATMEGA2560 Shields are now mostly unavailable.
     * Each pair of ATMEGA2560 Dev boards and Shields cost around 20GBP+.
-    * Building I2C extension bus every time a new module is required.
-    * Building equivalent shields requires a lot of soldering (voltage lanes, ground lanes, etc.).
+    * Building I2C extension bus every time a new module is required takes a lot of soldering.
+    * Building equivalent shields also requires a lot of soldering (voltage lanes, ground lanes, etc.).
     
     [Solution]
     Begin fabrication of the current development platform.
