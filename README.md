@@ -65,8 +65,8 @@
                                                         Sun Rise
 
 
-      Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, or to provide data
-      to local LLM's over serial, the list goes on.
+      Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
+      or to provide data to local LLM's over serial, the list goes on.
       
       Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
       be turned on/off.
