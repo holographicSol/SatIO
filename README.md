@@ -12,16 +12,16 @@
                                     
                                     Wiring For Keystudio ESP32 PLUS Development Board
 
-                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller custom peripheral (for large creative potential out) (Not on multiplexer):
+                                          ESP32: 1st ATMEGA2560 with sheild as Port Controller (not on multiplexer):
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel custom peripheral (for large creative potential in) (Not on multiplexer):
+                                          ESP32: 2nd ATMEGA2560 with sheild as Control Panel (not on multiplexer):
                                           ESP32: io25    -> ATMEGA2560: io22
                                           ESP32: I2C SDA -> ATMEGA2560: I2C SDA
                                           ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-                                          Other ESP32 i2C Devices (Not on multiplexer):
+                                          Other ESP32 i2C Devices (not on multiplexer):
                                           ESP32: SDA0 SCL0 -> DS3231 (RTC): SDA, SCL (5v)
 
                                           ESP32: WTGPS300P (5v) (for getting a downlink):
@@ -65,35 +65,20 @@
                                                         Sun Rise
 
 
-      Use case: From a clock syncronized with satellites to riding the INS (roll, pitch, yaw) on a fine line to within a certain degree of
-                                    expected drift, if GPS data is stale or unavailable.
-                        Robots, flying machines and automation, or for use with local LLM's like ollama, anything.
-
-      Bare bones architecture: SatIO is an extended development platform built on and around ESP32, allowing for many different kinds of projects
-      using SatIO as a standalone system and or integrating SatIO into other systems as a 'part'.
-                                              Extended I2C
-                                              Extended Analogue/Digital.
-                                              Supports Extended VSPI and HSPI.
-                                              Extended IO (using an ATMEGA2560).
+      Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines and automation, or data for local LLM's.
       
-      Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off for different use cases,
-      including simply returning calculated results from programmable matrix as zero's and one's over the serial for another system to read. Serial
-      output is modular so that depending on the use case, transmission over serial can be more efficient and specific, this expands the creative
-      potential of using satio, like letting an LLM on another system know what satio knows for one example.
+      Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off. for
 
-      Port Controller: ESP32 receives sensory data, calculates according to programmable matrix, then instructs the port controller to turn pins high/low
-      according to results from the calculations. The pins could be switching led's, motors or microconrtollers for some examples.
+      Port Controller: Port controller to turn pins high/low according to instructions received from master.
 
-      UI: Allows programming matrix switch logic and tuning for individual use cases.
-      Focus is payed to emphasis to importance, consistancy and clarity, nothing more, this keeps things simple, practical and efficient, in turn being better for performance.
+      UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importancec, clarity, consistency.
       
-      Summary: A satellite, inertial and sensor value calculator and switch with over one quintillion possible combinations of stackable logic accross 20 switches
-      for a general purpose part, subsystem or standalone device. Because there is so much information from and that can be calculated from a gps module like the
-      WTGPS300, it may sometimes be preferrable and useful to have one system to handle the data, rather than requiring a quintillion different systems over time.
+      Summary: Over one quintillion possible combinations of stackable logic accross 20 switches for a general purpose part, subsystem or
+      standalone device.
 
-      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation system, control pad and port controller
-      that I can use for other projects in the future. For now I imagine each part will be an I2C device and some parts like SatIO will have both master and slave
-      modes for flexibility accross differnt project requirements.
+      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation system, control
+      pad and port controller that I can use for other projects in the future. For now I imagine each part will be an I2C device and some
+      parts like SatIO will have both master and slave modes for flexibility accross differnt project requirements.
 
 -----
 
