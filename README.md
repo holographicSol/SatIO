@@ -65,20 +65,24 @@
                                                         Sun Rise
 
 
-      Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines and automation, or data for local LLM's.
+      Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines and automation, or
+      to provide data to local LLM's over serial.
       
-      Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can be turned on/off. for
+      Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
+      be turned on/off.
 
       Port Controller: Port controller to turn pins high/low according to instructions received from master.
 
-      UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importancec, clarity, consistency.
+      UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importancec, clarity,
+      consistency.
       
-      Summary: Over one quintillion possible combinations of stackable logic accross 20 switches for a general purpose part, subsystem or
-      standalone device.
+      Summary: Over one quintillion possible combinations of stackable logic accross 20 switches for a general purpose
+      part, subsystem or standalone device.
 
-      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation system, control
-      pad and port controller that I can use for other projects in the future. For now I imagine each part will be an I2C device and some
-      parts like SatIO will have both master and slave modes for flexibility accross differnt project requirements.
+      Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation
+      system, control pad and port controller that I can use for other projects in the future. For now I imagine each part#
+      will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility accross differnt
+      project requirements.
 
 -----
 
