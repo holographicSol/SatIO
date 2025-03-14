@@ -73,7 +73,7 @@
 
       Port Controller: Port controller to turn pins high/low according to instructions received from master.
 
-      UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importancec, clarity,
+      UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
       consistency.
       
       Summary: Over one quintillion possible combinations of stackable logic accross 20 switches for a general purpose
