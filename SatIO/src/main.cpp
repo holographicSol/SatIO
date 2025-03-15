@@ -3744,6 +3744,8 @@ bool sdcard_load_system_configuration(char * file) {
           systemData.index_display_color = atoi(sdcardData.token);
           systemData.color_border = systemData.display_color[systemData.index_display_color];
           systemData.color_content = systemData.display_color[systemData.index_display_color];
+          // Serial.println("[index_display_color] " + String(systemData.index_display_color));
+          // Serial.println("[color_content] " + String(systemData.color_content));
         }
       }
 
@@ -8784,6 +8786,8 @@ void UpdateUI() {
     if (menu_page==0) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
+      display.setColor(systemData.color_content);
+
       // drawMainBorder();
 
       // show sat count
@@ -8815,6 +8819,7 @@ void UpdateUI() {
 
     else if (menu_page==1) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -8836,6 +8841,8 @@ void UpdateUI() {
 
     else if (menu_page==3) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
+      display.setColor(systemData.color_content);
 
       drawMainBorder();
 
@@ -9154,6 +9161,8 @@ void UpdateUI() {
     else if (menu_page==5) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
+      display.setColor(systemData.color_content);
+
       drawMainBorder();
 
       // show title
@@ -9218,6 +9227,7 @@ void UpdateUI() {
     // matrix switch set function name
     else if (menu_page==6) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -9257,6 +9267,7 @@ void UpdateUI() {
 
     else if (menu_page==20) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -9279,6 +9290,7 @@ void UpdateUI() {
     // save matrix
     else if (menu_page==21) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -9305,6 +9317,7 @@ void UpdateUI() {
     // load matrix
     else if (menu_page==22) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+
       display.setColor(systemData.color_content);
 
       drawMainBorder();
@@ -9330,6 +9343,7 @@ void UpdateUI() {
     // delete matrix
     else if (menu_page==23) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      
       display.setColor(systemData.color_content);
 
       drawMainBorder();
