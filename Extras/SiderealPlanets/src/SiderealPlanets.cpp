@@ -1282,9 +1282,10 @@ boolean SiderealPlanets::doPlans(int planetNumber) {
   
   if (planetNumber < 1 || planetNumber > 7) return false; //bad planet value
   doMoonDone = false;
-  doPlanetElements();
+  // doPlanetElements(); // uncomment to do this automatically otherwise this must be called manually from elsewhere
   double lightTravelTime = 0.;
-  doSun();
+  // doSun(); // uncomment to do this automatically otherwise this must be called manually from elsewhere
+  
   sunMeanAnomaly = SP_meanAnomaly; // SP_meanAnomaly is Mean Anomaly of the Sun in radians
   radiusVectorEarth = sunEarthDistance;
   earthEclipticLongitude = sunTrueGeocentricLongitude + FPI; //Earth's ecliptic longitude (radians)
@@ -1299,6 +1300,7 @@ boolean SiderealPlanets::doPlans(int planetNumber) {
 	perturbationMeanAnomaly = 0.;
 	perturbationSemiMajorAxis = 0.;
 	perturbationHeliocentricEclipticLatitude = 0.;
+
 	if (planetNumber == 1) {
       //Mercury
 	  perturbationLongitude = 2.04e-3 * cos(5. * planetAnomalies[2] - 2. * planetAnomalies[1] + 2.1328e-1);
