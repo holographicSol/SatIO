@@ -8781,9 +8781,9 @@ void UpdateUI() {
       // canvas120x8.printFixed(3, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
       // display.drawCanvas(3, 10, canvas120x8);
 
-      if (atoi(gnggaData.satellite_count_gngga)==0) {display.drawBitmap16(106, 8, 12, 12, sat12x12_red_emit);}
-      else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(106, 8, 12, 12, sat12x12_green_emit);}
-      else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(106, 8, 12, 12, sat12x12_blue_emit);}
+      if (atoi(gnggaData.satellite_count_gngga)==0) {display.drawBitmap16(108, 8, 12, 12, sat12x12_red_emit);}
+      else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(108, 8, 12, 12, sat12x12_green_emit);}
+      else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(108, 8, 12, 12, sat12x12_blue_emit);}
 
       // show hdop precision factor
       // canvas120x8.clear();
