@@ -10649,6 +10649,7 @@ long i_loops_between_gps_reads = 0;
 int t_gps_all = millis();
 bool track_planets_period = false;
 bool longer_loop = false;
+bool gps_data_used = false;
 
 void loop() {
 
@@ -10681,6 +10682,7 @@ void loop() {
 
   // default is false
   longer_loop = false;
+  gps_data_used = false;
 
   if (gps_done==true) {
 
@@ -10714,50 +10716,30 @@ void loop() {
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
     bench("[buildSatIOSentence]  " + String(millis()-t0));
 
-    gps_done = false;
+    gps_data_used = true;
   }
 
-  // get other sensor data (every loop)
+  // get other sensor data (every loop): allows new sensory data to be populated every loop
   t0 = millis();
   getSensorData();
   bench("[getSensorData] " + String(millis()-t0));
 
-  // logic calc (every loop)
+  // logic calc (every loop): allows new answers to be generated every loop
   t0 = millis();
   if (systemData.matrix_enabled == true) {matrixSwitch();}
   MatrixStatsCounter();
   bench("[matrixSwitch] " + String(millis()-t0));
 
-  // GPIO (every loop)
+  // GPIO (every loop): allows GPIO about as quickly as we can loop
   t0 = millis();
   writeToPortController();
   bench("[writePortController] " + String(millis()-t0));
 
+  // instruct task to collect more data while we do other things
+  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
 
-  /*
 
-  this helps keep the system fast across loops taking different times, by utilizing loops that take less time to complete.
-  note that this is currently suitable in this case while timing or other conditions may be more suitable in other cases.
-  this currently allows for text to be updated a little more than 10 times a second.
-
-  anything graphically intensive can be placed on a task and be written to areas of the display that are not being written to
-  by updateUI function which should be reserved for text.
-
-  updating text procedurally at the end of each loop also means that we avoid any race conditions where if updateUI was running
-  on a task then it may try and display values that are currently being overwritten by other tasks/functions.
-
-  update text at the end of each loop possible.
-
-  run graphics on tasks when and if required.
-
-  aim to always stay well below the 100ms looptime for every loop.
-
-  dont wait for anything, get what we can and go again.
-
-  */
-
-  // readSerial0();
-
+  // distribute UI updates to less busy loops: aim to never exceed 100ms looptime for any given loop
   if (longer_loop==false) {
     t0 = millis();
     UpdateUI();
