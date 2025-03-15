@@ -4524,7 +4524,8 @@ siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
 
 
 void trackSun() {
-myAstro.doSun();
+// myAstro.doPlanetElements();
+// myAstro.doSun();
 siderealPlanetData.sun_ra  = myAstro.getRAdec();
 siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
 myAstro.doRAdec2AltAz();
@@ -4678,15 +4679,19 @@ siderealPlanetData.neptune_s = myAstro.getSetTime();
 //                                                                                                   TASK: PLANETARY CALCULATIONS
 
 void trackPlanets() {
-if (systemData.sidereal_track_sun == true) {trackSun();}
-if (systemData.sidereal_track_moon == true) {trackMoon();}
-if (systemData.sidereal_track_mercury == true) {trackMercury();}
-if (systemData.sidereal_track_venus == true) {trackVenus();}
-if (systemData.sidereal_track_mars == true) {trackMars();}
-if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
-if (systemData.sidereal_track_saturn == true) {trackSaturn();}
-if (systemData.sidereal_track_uranus == true) {trackUranus();}
-if (systemData.sidereal_track_neptune == true) {trackNeptune();}
+  // do planet elements and do sun before doing other plans
+  myAstro.doPlanetElements();
+  myAstro.doSun();
+  // now do other plans
+  if (systemData.sidereal_track_sun == true) {trackSun();}
+  if (systemData.sidereal_track_moon == true) {trackMoon();}
+  if (systemData.sidereal_track_mercury == true) {trackMercury();}
+  if (systemData.sidereal_track_venus == true) {trackVenus();}
+  if (systemData.sidereal_track_mars == true) {trackMars();}
+  if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
+  if (systemData.sidereal_track_saturn == true) {trackSaturn();}
+  if (systemData.sidereal_track_uranus == true) {trackUranus();}
+  if (systemData.sidereal_track_neptune == true) {trackNeptune();}
 }
 
 void setTrackPlanets() {
