@@ -713,6 +713,7 @@ File entry;
 
 struct systemStruct {
   bool debug = false;                  // print verbose information over serial
+  bool t_bench = false;
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   bool matrix_run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file
 
@@ -790,6 +791,8 @@ struct systemStruct {
 systemStruct systemData;
 
 void debug(String x) {if (systemData.debug==true) {Serial.println(x);}}
+
+void bench(String x) {if (systemData.t_bench==true) {Serial.println(x);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DATA: SERIAL 1
@@ -10415,6 +10418,7 @@ void getSensorData(void * pvParameters) {
 //                                                                                                                          SETUP
 
 void setup() {
+  
   // rtc_wdt_protect_off();
   // rtc_wdt_disable();
 
@@ -10609,8 +10613,10 @@ bool longer_loop = false;
 
 void loop() {
 
-  debug("----------------------------------------");
-  debug("[loop]");
+  systemData.t_bench = true; // uncomment to observe timings
+
+  bench("----------------------------------------");
+  bench("[loop]");
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
 
@@ -10642,46 +10648,46 @@ void loop() {
     // mark this loop as taking longer
     longer_loop = true;
 
-    debug("[gps_done_t]          " + String(millis()-gps_done_t));
-    debug("[loops between gps]   " + String(i_loops_between_gps_reads));
+    bench("[gps_done_t]          " + String(millis()-gps_done_t));
+    bench("[loops between gps]   " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
     t0 = millis();
     convertUTCToLocal();
-    debug("[convertUTCToLocal]   " + String(millis()-t0));
+    bench("[convertUTCToLocal]   " + String(millis()-t0));
 
     t0 = millis();
     calculateLocation();
-    debug("[calculateLocation]   " + String(millis()-t0));
+    bench("[calculateLocation]   " + String(millis()-t0));
 
     /* uncomment to limit planet tracking to once per second. */
     if (track_planets_period == true) {
       track_planets_period = false;
       t0 = millis();
       setTrackPlanets();
-      debug("[setTrackPlanets]     " + String(millis()-t0));
+      bench("[setTrackPlanets]     " + String(millis()-t0));
 
       t0 = millis();
       trackPlanets();
-      debug("[trackPlanets]        " + String(millis()-t0));
+      bench("[trackPlanets]        " + String(millis()-t0));
     }
 
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    debug("[buildSatIOSentence]  " + String(millis()-t0));
+    bench("[buildSatIOSentence]  " + String(millis()-t0));
     
     t0 = millis();
     if (sensors_done==true) {
       if (systemData.matrix_enabled == true) {matrixSwitch();}
     }
-    debug("[matrixSwitch]        " + String(millis()-t0));
+    bench("[matrixSwitch]        " + String(millis()-t0));
 
     MatrixStatsCounter();
 
     // instruct port controller: matrix
     t0 = millis();
     writeToPortController();
-    debug("[writePortController] " + String(millis()-t0));
+    bench("[writePortController] " + String(millis()-t0));
 
     gps_done = false;
     sensors_done=false;
@@ -10714,7 +10720,7 @@ void loop() {
   if (longer_loop==false) {
     t0 = millis();
     UpdateUI();
-    debug("[UpdateUI] " + String(millis()-t0));
+    bench("[UpdateUI] " + String(millis()-t0));
   }
 
   // ---------------------------------------------------------------------
@@ -10744,8 +10750,8 @@ void loop() {
   // debug("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
   // debug("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
   // debug("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
-  debug("[Looptime] " + String(timeData.mainLoopTimeTaken));
-  debug("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
+  bench("[Looptime] " + String(timeData.mainLoopTimeTaken));
+  bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   debug("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
 
   // delay(500);
