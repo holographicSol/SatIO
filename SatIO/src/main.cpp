@@ -218,7 +218,7 @@ NanoCanvas<8,8,1> canvas8x8;
 NanoCanvas<19,8,1> canvas19x8;
 NanoCanvas<33,24,1> canvas33x24;
 NanoCanvas<120,8,1> canvas120x8;
-NanoCanvas<64,8,1> canvas64x8;
+NanoCanvas<64,8,1> canvas50x8;
 NanoCanvas<120,24,1> canvas120x24;
 NanoCanvas<120,120,1> canvas120x120;
 NanoCanvas<128,128,1> canvas128x128;
@@ -2963,6 +2963,11 @@ String formatRTCDateTime() {
 String formatRTCDate() {
   return 
   String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year()));
+}
+
+String formatRTCDateAbbreviated() {
+  return 
+  String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year())[2]) + String(padDigitsZero(rtc.now().year())[3]);
 }
 
 String formatRTCTime() {
@@ -8810,12 +8815,12 @@ void UpdateUI() {
       // display.drawCanvas(3, 20, canvas120x8);
 
       // show datetime
-      canvas64x8.clear();
-      canvas64x8.printFixed(3, 1, formatRTCTime().c_str(), STYLE_BOLD );
-      display.drawCanvas(3, 4, canvas64x8);
-      canvas64x8.clear();
-      canvas64x8.printFixed(3, 1, formatRTCDate().c_str(), STYLE_BOLD );
-      display.drawCanvas(3, 14, canvas64x8);
+      canvas50x8.clear();
+      canvas50x8.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
+      display.drawCanvas(39, 4, canvas50x8);
+      canvas50x8.clear();
+      canvas50x8.printFixed(1, 1, formatRTCDateAbbreviated().c_str(), STYLE_BOLD );
+      display.drawCanvas(39, 14, canvas50x8);
 
       // show menu
       menuHome.show( display );
@@ -10538,7 +10543,7 @@ void setup() {
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
-  canvas64x8.setFixedFont(ssd1306xled_font6x8);
+  canvas50x8.setFixedFont(ssd1306xled_font6x8);
   
   display.clear();
 
