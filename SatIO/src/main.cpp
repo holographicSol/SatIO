@@ -10659,7 +10659,7 @@ void loop() {
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
     bench("[buildSatIOSentence]  " + String(millis()-t0));
 
-    // help avert any potential race conditions
+    // help avert any potential race conditions while also running matrix switch and port controller every loop
     gps_data_used = true;
   }
 
