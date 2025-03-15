@@ -120,7 +120,7 @@ void endSSD1351();
 void sdcardCheck();
 void UpdateUI();
 
-bool gps_done = false;
+bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -10507,11 +10507,8 @@ void setup() {
   timerAlarmEnable(second_timer);
 
   /*
-
   Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
-
   */
-
   pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
   attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
 
@@ -10586,54 +10583,27 @@ void setup() {
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
-  canvas50x8.setFixedFont(ssd1306xled_font6x8);
-  
+  canvas50x8.setFixedFont(ssd1306xled_font6x8);  
   display.clear();
 
-  // display.drawBitmap16(0, 0, 8, 8, sat16x16_red_noemit);
-  // menu_page=35;
-  // UpdateUI();
   // uncomment to debug
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
-  // display.end();
-  // endSPIDevice(SSD1351_CS);
-
   // delay(2000);
   // display.clear();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            SETUP: CORE TASKS
 
-  // Create task to increase performance (core 0 also found to be best for this task)
+  // Create task to increase performance
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
-      4096,   /* Stack size in words */
+      4096,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &Task0,  /* Task handle. */
       0);      /* Core where the task should run */
-    
-  // Create task to increase performance (core 0 also found to be best for this task)
-  // xTaskCreatePinnedToCore(
-  //   getSensorData, /* Function to implement the task */
-  //   "Task1",       /* Name of the task */
-  //   4096,         /* Stack size in words */
-  //   NULL,          /* Task input parameter */
-  //   2,             /* Priority of the task */
-  //   &Task1,        /* Task handle. */
-  //   0);            /* Core where the task should run */
-  
-  // // Create task to increase performance (core 0 also found to be best for this task)
-  // xTaskCreatePinnedToCore(
-  //   UpdateUI, /* Function to implement the task */
-  //   "Task2",       /* Name of the task */
-  //   4096,         /* Stack size in words */
-  //   NULL,          /* Task input parameter */
-  //   1,             /* Priority of the task */
-  //   &Task2,        /* Task handle. */
-  //   0);            /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
@@ -10652,42 +10622,26 @@ bool longer_loop = false;
 bool gps_data_used = false;
 
 void loop() {
-
-  systemData.t_bench = true; // uncomment to observe timings
-
   bench("----------------------------------------");
   bench("[loop]");
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
+  systemData.t_bench = true; // uncomment to observe timings
 
-  // uncomment to override default values
-  // systemData.matrix_enabled = true;
-  // systemData.output_matrix_enabled = true;
-  // systemData.matrix_run_on_startup = true;
-
+  /* run every loop */
   makeI2CRequest();
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
 
-  /*
-  ensure safe execution each loop. final matrix values for port controller
-  must not be altered while instructing port controller. this must be true
-  while also instructing port controller every loop and while not blocking
-  the loop so that we can utilize the port controller for other instructions
-  and do other things if needed until gps data is ready. the WTGPSs300P outputs
-  each sentence (gngga, gpatt, gnrmc, desbi) 10 times a second, every 100
-  milliseconds.
-  */
+  /* occasional */
 
-  // default is false
   longer_loop = false;
   gps_data_used = false;
-
   if (gps_done==true) {
-
-    // mark this loop as taking longer
     longer_loop = true;
+
+    /* only calculate data dependent on gps here */
 
     bench("[gps_done_t]          " + String(millis()-gps_done_t));
     bench("[loops between gps]   " + String(i_loops_between_gps_reads));
@@ -10701,7 +10655,62 @@ void loop() {
     calculateLocation();
     bench("[calculateLocation]   " + String(millis()-t0));
 
-    /* uncomment to limit planet tracking to once per second. */
+    t0 = millis();
+    if (systemData.satio_enabled == true) {buildSatIOSentence();}
+    bench("[buildSatIOSentence]  " + String(millis()-t0));
+
+    // help avert any potential race conditions
+    gps_data_used = true;
+  }
+
+
+  // ---------------------------------------------------------------------
+  //                                                           SENSOR DATA
+
+  /* run every loop */
+
+  t0 = millis();
+  getSensorData();
+  bench("[getSensorData] " + String(millis()-t0));
+
+
+  // ---------------------------------------------------------------------
+  //                                                         MATRIX SWITCH
+
+  /* run every loop */
+
+  t0 = millis();
+  if (systemData.matrix_enabled == true) {matrixSwitch();}
+  MatrixStatsCounter();
+  bench("[matrixSwitch] " + String(millis()-t0));
+
+
+  // ---------------------------------------------------------------------
+  //                                                       PORT CONTROLLER
+
+  /* run every loop */
+
+  t0 = millis();
+  writeToPortController();
+  bench("[writePortController] " + String(millis()-t0));
+
+
+  // ---------------------------------------------------------------------
+  //                                             ALLOW GPS DATA COLLECTION
+
+  /* occasional */
+
+  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
+
+
+  // ---------------------------------------------------------------------
+  //                                                          LONGER LOOPS
+
+  /* occasional */
+
+  if (longer_loop==false) {
+    
+    // track planets
     if (track_planets_period == true) {
       track_planets_period = false;
       t0 = millis();
@@ -10712,41 +10721,17 @@ void loop() {
       bench("[trackPlanets]        " + String(millis()-t0));
     }
 
-    t0 = millis();
-    if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    bench("[buildSatIOSentence]  " + String(millis()-t0));
-
-    gps_data_used = true;
-  }
-
-  // get other sensor data (every loop): allows new sensory data to be populated every loop
-  t0 = millis();
-  getSensorData();
-  bench("[getSensorData] " + String(millis()-t0));
-
-  // logic calc (every loop): allows new answers to be generated every loop
-  t0 = millis();
-  if (systemData.matrix_enabled == true) {matrixSwitch();}
-  MatrixStatsCounter();
-  bench("[matrixSwitch] " + String(millis()-t0));
-
-  // GPIO (every loop): allows output about as quickly as we can loop
-  t0 = millis();
-  writeToPortController();
-  bench("[writePortController] " + String(millis()-t0));
-
-  // instruct task to collect more data while we do other things
-  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
-
-
-  // distribute UI updates to less busy loops: aim to never exceed 100ms looptime for any given loop
-  if (longer_loop==false) {
+    // update ui
     t0 = millis();
     UpdateUI();
     bench("[UpdateUI] " + String(millis()-t0));
   }
 
+
   // ---------------------------------------------------------------------
+  //                                                        SECOND COUNTER
+
+  /* occasional */
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
@@ -10756,7 +10741,12 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
-  // delay(50); // debug test overload: increase loop time
+
+  // ---------------------------------------------------------------------
+  //                                                               TIMINGS
+
+  // delay(100); // debug test overload: increase loop time
+
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
   else {systemData.overload=false;}
@@ -10764,20 +10754,13 @@ void loop() {
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
-  // some data while running headless
-  // debug("[UTC_Datetime]          " + String(gnrmcData.utc_time) + " " + String(String(gnrmcData.utc_date))); // (at this point stale)
-  // debug("[RTC Datetime]          " + formatRTCDateTime()); // fresh from RTC
-  // debug("[uptime_seconds] " + String(timeData.uptime_seconds));
-  // debug("[Satellite Count]       " + String(gnggaData.satellite_count_gngga));
-  // debug("[HDOP Precision Factor] " + String(gnggaData.hdop_precision_factor));
-  // debug("[gnrmcData.latitude]    " + String(gnrmcData.latitude));
-  // debug("[gnrmcData.longitude]   " + String(gnrmcData.longitude));
-  // debug("[dht11_hic_0]           " + String(sensorData.dht11_hic_0));
+
+  // ---------------------------------------------------------------------
+  //                                                                 DEBUG
+
   bench("[Looptime] " + String(timeData.mainLoopTimeTaken));
   bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   debug("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
-
-  // delay(500);
   
   // ---------------------------------------------------------------------
 }
