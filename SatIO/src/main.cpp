@@ -10730,7 +10730,7 @@ void loop() {
   MatrixStatsCounter();
   bench("[matrixSwitch] " + String(millis()-t0));
 
-  // GPIO (every loop): allows GPIO about as quickly as we can loop
+  // GPIO (every loop): allows output about as quickly as we can loop
   t0 = millis();
   writeToPortController();
   bench("[writePortController] " + String(millis()-t0));
