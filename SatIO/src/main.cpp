@@ -4537,7 +4537,7 @@ siderealPlanetData.sun_s  = myAstro.getSunsetTime();
 }
 
 void trackMoon() {
-myAstro.doSun();
+// myAstro.doSun();
 siderealPlanetData.moon_ra  = myAstro.getRAdec();
 siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
 myAstro.doRAdec2AltAz();
