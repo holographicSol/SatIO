@@ -10683,19 +10683,14 @@ void loop() {
 
     MatrixStatsCounter();
 
-    // // instruct port controller: matrix
-    // t0 = millis();
-    // writeToPortController();
-    // bench("[writePortController] " + String(millis()-t0));
+    // instruct port controller: matrix
+    t0 = millis();
+    writeToPortController();
+    bench("[writePortController] " + String(millis()-t0));
 
     gps_done = false;
     sensors_done=false;
   }
-
-  // instruct port controller
-  t0 = millis();
-  writeToPortController();
-  bench("[writePortController] " + String(millis()-t0));
 
   /*
 
