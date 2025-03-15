@@ -9603,7 +9603,7 @@ void UpdateUI() {
       if (systemData.sidereal_track_mercury==true) {menuUniverseItems[1]="MERCURY ENABLED";}
       else {menuUniverseItems[1]="MERCURY DISABLED";}
 
-      if (systemData.sidereal_track_moon=true) {menuUniverseItems[2]="MOON ENABLED";}
+      if (systemData.sidereal_track_moon==true) {menuUniverseItems[2]="MOON ENABLED";}
       else {menuUniverseItems[2]="MOON DISABLED";}
 
       if (systemData.sidereal_track_venus==true) {menuUniverseItems[3]="VENUS ENABLED";}
