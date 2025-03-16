@@ -9743,8 +9743,8 @@ void UpdateUI() {
 
       /*
       max decimal places can be customized per displayed sensor value.
-      raw analog values do not reuiqre floats however float placeholders are required for many
-      developments made upon those placeholders, therefore the default placeholders are floats.
+      raw analog values do not require floats however float placeholders are required for many
+      developments made upon those sensor placeholders, therefore the default placeholders are floats.
       */
 
       /* sensor value column 0 */
