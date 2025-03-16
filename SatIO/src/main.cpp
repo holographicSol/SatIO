@@ -10756,21 +10756,21 @@ void loop() {
 
     /* only calculate data dependent on gps here */
 
-    bench("[gps_done_t]          " + String(millis()-gps_done_t));
-    bench("[loops between gps]   " + String(i_loops_between_gps_reads));
+    bench("[gps_done_t] " + String(millis()-gps_done_t));
+    bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
     t0 = millis();
     convertUTCToLocal();
-    bench("[convertUTCToLocal]   " + String(millis()-t0));
+    bench("[convertUTCToLocal] " + String(millis()-t0));
 
     t0 = millis();
     calculateLocation();
-    bench("[calculateLocation]   " + String(millis()-t0));
+    bench("[calculateLocation] " + String(millis()-t0));
 
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    bench("[buildSatIOSentence]  " + String(millis()-t0));
+    bench("[buildSatIOSentence] " + String(millis()-t0));
 
     // help avert any potential race conditions while also running matrix switch and port controller every loop
     gps_data_used = true;
