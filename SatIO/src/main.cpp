@@ -9741,7 +9741,11 @@ void UpdateUI() {
       canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      /* max decimal places can be customized per displayed sensor value */
+      /*
+      max decimal places can be customized per displayed sensor value.
+      raw analog values do not reuiqre floats however float placeholders are required for many
+      developments made upon those placeholders, therefore the default placeholders are floats.
+      */
 
       /* sensor value column 0 */
 
