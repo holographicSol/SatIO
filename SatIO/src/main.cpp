@@ -10823,11 +10823,11 @@ void loop() {
 
   if (longer_loop==false) {
 
-    /* now divide up the occasional: do either when can but not both */
+    /* now divide up the occasional: do either when can but not all */
     
+    // track planets
     if (loop_division==0) {
       loop_division=1;
-      // track planets
       if (track_planets_period == true) {
         track_planets_period = false;
         t0 = millis();
@@ -10839,9 +10839,9 @@ void loop() {
       }
     }
 
+    // update ui: where possible try to avoid displaying a lot or take a performance hit
     else if (loop_division==1) {
       loop_division=0;
-      // update ui: where possible try to avoid displaying a lot or take a performance hit
       t0 = millis();
       UpdateUI();
       bench("[UpdateUI] " + String(millis()-t0));
