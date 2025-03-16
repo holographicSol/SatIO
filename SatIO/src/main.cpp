@@ -9791,13 +9791,13 @@ void UpdateUI() {
       display.drawCanvas(3, 100, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,String(sensorData.sensor_7, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_7, 4).c_str());
       display.drawCanvas(3, 110, canvas60x8);
 
       /* sensor value column 1 */
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,String(sensorData.sensor_8, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_8, 4).c_str());
       display.drawCanvas(64, 40, canvas60x8);
 
       canvas60x8.clear();
@@ -9825,7 +9825,7 @@ void UpdateUI() {
       display.drawCanvas(64, 100, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,String(sensorData.sensor_15, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str());
       display.drawCanvas(64, 110, canvas60x8);
     }
 
