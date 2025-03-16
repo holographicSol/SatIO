@@ -9846,13 +9846,7 @@ void UpdateUI() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C DATA
 
-#define I2C_ADDR_CONTROL_PANEL_0 8
 #define I2C_ADDR_PORTCONTROLLER_0 9
-
-int I2C_ADDRESSES[] = {
-  I2C_ADDR_CONTROL_PANEL_0,
-  I2C_ADDR_PORTCONTROLLER_0
-};
 
 struct I2CLinkStruct {
   char * token;
