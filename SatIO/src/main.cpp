@@ -9870,7 +9870,7 @@ I2CLinkStruct I2CLink;
 
 [this setup is for custom i2c peripherals]
 
-I2C peripheral: interrupts us to let us know it has something we need.
+I2C peripheral: interrupts us to let us know it has something we need. should return empty message if requested during sweep.
 
 SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
 
