@@ -10832,10 +10832,10 @@ void loop() {
         track_planets_period = false;
         t0 = millis();
         setTrackPlanets();
-        bench("[setTrackPlanets]     " + String(millis()-t0));
+        bench("[setTrackPlanets] " + String(millis()-t0));
         t0 = millis();
         trackPlanets();
-        bench("[trackPlanets]        " + String(millis()-t0));
+        bench("[trackPlanets] " + String(millis()-t0));
       }
     }
 
