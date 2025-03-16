@@ -9883,6 +9883,8 @@ Cons:
 
 Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
+2: care should be taken so that slave messages do not conflict (slaves having the same messages). use of acronym names may be used in message content. 
+2: this is (subjectively) far more preferrable during development, production may prefer explicitly addressing devices.
 
 */
 
@@ -9973,6 +9975,9 @@ void readI2C() {
 
       // blind button press protection: ignore button presses when screen is a sleep/off/blank (some buttons may be moved out of this block)
       if (update_ui==true) {
+
+        // -------------------------------------------------
+        //                                       CONTROL PAD
 
         // parse special interrupt buttons
         if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
