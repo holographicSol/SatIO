@@ -9870,13 +9870,15 @@ I2CLinkStruct I2CLink;
 
 [this setup is for custom i2c peripherals]
 
-I2C peripheral: interrupts us to let us know it has something we need. should return empty message if requested during sweep.
-
-SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
+1: Master is interrupted.
+2: Master sweeps address range.
+3: Response is parsed for slave that responds with non empty message.
 
 Note: a slave devices ability to interrupt the master eliminates the requirement for slaves and masters to switch between master/slave
 mode, also eliminates any requirement to poll slaves which would mean we do not get x when x occurs unlike this method.
 resistors would be required for multiple slaves interrupting on the same pin.
+
+The address sweep method is currently being considered and is intended to be implemented soon.
 
 */
 
