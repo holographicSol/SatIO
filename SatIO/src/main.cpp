@@ -9741,7 +9741,7 @@ void UpdateUI() {
       canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
-      /* note that max decimal places can be customized per displayed sensor value */
+      /* max decimal places can be customized per displayed sensor value */
 
       /* sensor value column 0 */
 
