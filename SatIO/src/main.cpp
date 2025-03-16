@@ -10836,7 +10836,7 @@ void loop() {
     }
 
     else {
-      // update ui
+      // update ui: where possible try to avoid displaying a lot or take a performance hit
       t0 = millis();
       UpdateUI();
       bench("[UpdateUI] " + String(millis()-t0));
