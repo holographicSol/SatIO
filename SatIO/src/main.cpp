@@ -9746,6 +9746,7 @@ void UpdateUI() {
       raw analog values do not require floats however sensors default data type is float to
       account for many developments made where a raw analog reading would be insufficient,
       like in the case of a digital sensor providing values accurate to N decimal places for example.
+      this allows uniformity as default.
       */
 
       /* sensor value column 0 */
@@ -10820,6 +10821,8 @@ void loop() {
   /* occasional */
 
   if (longer_loop==false) {
+
+    /* now divide up the occasional within non gps done loops */
     
     // track planets
     if (track_planets_period == true) {
@@ -10832,10 +10835,12 @@ void loop() {
       bench("[trackPlanets]        " + String(millis()-t0));
     }
 
-    // update ui
-    t0 = millis();
-    UpdateUI();
-    bench("[UpdateUI] " + String(millis()-t0));
+    else {
+      // update ui
+      t0 = millis();
+      UpdateUI();
+      bench("[UpdateUI] " + String(millis()-t0));
+    }
   }
 
 
