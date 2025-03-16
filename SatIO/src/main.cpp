@@ -9727,20 +9727,31 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==100) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
 
-      display.setColor(systemData.color_content);
+        display.setColor(systemData.color_content);
+        drawMainBorder();
 
-      drawMainBorder();
+        // seperator
+        display.drawHLine(2, 20, 126);
 
-      // seperator
-      display.drawHLine(2, 20, 126);
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
 
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
-      display.drawCanvas(3, 6, canvas120x8);
+        /* sensor value column 0 */
+        canvas60x8.clear();
+        canvas60x8.printFixed(1, 1, "0-7");
+        display.drawCanvas(3, 27, canvas60x8);
 
+        /* sensor value column 1 */
+        canvas60x8.clear();
+        canvas60x8.printFixed(1, 1, "8-15");
+        display.drawCanvas(64, 27, canvas60x8);
+      }
+      
       /*
       max decimal places can be customized per displayed sensor value.
       raw analog values do not require floats however sensors default data type is float to
@@ -9750,10 +9761,6 @@ void UpdateUI() {
       */
 
       /* sensor value column 0 */
-
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, "0-7");
-      display.drawCanvas(3, 27, canvas60x8);
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_0, 4)).c_str());
@@ -9788,10 +9795,6 @@ void UpdateUI() {
       display.drawCanvas(3, 110, canvas60x8);
 
       /* sensor value column 1 */
-
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, "8-15");
-      display.drawCanvas(64, 27, canvas60x8);
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_8, 4)).c_str());
