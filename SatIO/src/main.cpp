@@ -9748,35 +9748,35 @@ void UpdateUI() {
       display.drawCanvas(3, 26, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_0)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_0, 4)).c_str());
       display.drawCanvas(3, 40, canvas60x8);
       
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_1)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_1, 4)).c_str());
       display.drawCanvas(3, 50, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_2)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_2, 4)).c_str());
       display.drawCanvas(3, 60, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_3)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_3, 4)).c_str());
       display.drawCanvas(3, 70, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_4)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_4, 4)).c_str());
       display.drawCanvas(3, 80, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_5)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_5, 4)).c_str());
       display.drawCanvas(3, 90, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_6)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_6, 4)).c_str());
       display.drawCanvas(3, 100, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_7)).c_str());
+      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_7, 4)).c_str());
       display.drawCanvas(3, 110, canvas60x8);
 
       /* sensor value column 1 */
@@ -9786,35 +9786,35 @@ void UpdateUI() {
       display.drawCanvas(64, 26, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_8)).c_str());
+      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_8, 4)).c_str());
       display.drawCanvas(64, 40, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_9)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_9, 4)).c_str());
       display.drawCanvas(64, 50, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_10)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_10, 4)).c_str());
       display.drawCanvas(64, 60, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_11)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_11, 4)).c_str());
       display.drawCanvas(64, 70, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_12)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_12, 4)).c_str());
       display.drawCanvas(64, 80, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_13)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_13, 4)).c_str());
       display.drawCanvas(64, 90, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_14)).c_str());
+      canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_14, 4)).c_str());
       display.drawCanvas(64, 100, canvas60x8);
 
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_15)).c_str());
+      canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_15, 4)).c_str());
       display.drawCanvas(64, 110, canvas60x8);
     }
 
