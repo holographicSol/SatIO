@@ -9877,7 +9877,7 @@ I2CLinkStruct I2CLink;
 Pros:
 1: no need for slaves and masters to switch between master/slave mode.
 2: no need to poll slaves in case they have a message (which they often may not).
-3: requests are made when they need to be (because a slave has a messaage). 
+3: requests are made when they need to be (because a slave has a messaage and so interrupted). 
 
 Cons:
 1: requires 3 wires per slave (SDA, SCL, interrupt).
