@@ -9745,7 +9745,7 @@ void UpdateUI() {
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, "0-7");
-      display.drawCanvas(3, 25, canvas60x8);
+      display.drawCanvas(3, 26, canvas60x8);
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1,  String("" + String(sensorData.sensor_0)).c_str());
@@ -9783,7 +9783,7 @@ void UpdateUI() {
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, "8-15");
-      display.drawCanvas(64, 25, canvas60x8);
+      display.drawCanvas(64, 26, canvas60x8);
 
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String("" + String(sensorData.sensor_8)).c_str());
