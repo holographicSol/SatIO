@@ -10746,7 +10746,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                                   GPS
 
-  /* occasional: gps data from wtgps300p every 100ms */
+  /* occasional: gps data from wtgps300p is every 100ms, so aim to keep loop time under 100ms */
 
   longer_loop = false;
   gps_data_used = false;
@@ -10810,7 +10810,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                             ALLOW GPS DATA COLLECTION
 
-  /* occasional */
+  /* occasional: do this when can */
 
   if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
 
@@ -10818,11 +10818,11 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                          LONGER LOOPS
 
-  /* occasional */
+  /* occasional: do this when can */
 
   if (longer_loop==false) {
 
-    /* now divide up the occasional within non gps done loops */
+    /* now divide up the occasional: do either when can but not both */
     
     // track planets
     if (track_planets_period == true) {
@@ -10847,7 +10847,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                        SECOND COUNTER
 
-  /* occasional */
+  /* occasional: do this when can */
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
