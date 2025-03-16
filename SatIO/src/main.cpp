@@ -10839,7 +10839,7 @@ void loop() {
       }
     }
 
-    // update ui: where possible try to avoid displaying a lot or take a performance hit
+    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
     else if (loop_distribution==1) {
       loop_distribution=0;
       t0 = millis();
