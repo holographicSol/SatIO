@@ -9744,7 +9744,8 @@ void UpdateUI() {
       /*
       max decimal places can be customized per displayed sensor value.
       raw analog values do not require floats however sensors default data type is float to
-      account for many developments made where a raw analog reading would be insufficient.
+      account for many developments made where a raw analog reading would be insufficient,
+      like in the case of a digital sensor for example.
       */
 
       /* sensor value column 0 */
