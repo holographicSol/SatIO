@@ -10847,7 +10847,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                        SECOND COUNTER
 
-  /* occasional: do this when can */
+  /* occasional */
 
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
