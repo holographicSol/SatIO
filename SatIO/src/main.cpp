@@ -9889,7 +9889,6 @@ Cons:
 
 Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
-2:The address sweep method is currently being considered and is intended to be implemented soon.
 
 */
 
