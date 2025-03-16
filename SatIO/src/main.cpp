@@ -9739,6 +9739,8 @@ void UpdateUI() {
       canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
       display.drawCanvas(3, 6, canvas120x8);
 
+      /* sensor value column 0 */
+
       canvas50x8.clear();
       canvas120x8.printFixed(3, 20,  String("AD0 " + String(sensorData.sensor_0)).c_str());
       display.drawCanvas(3, 6, canvas120x8);
@@ -9770,6 +9772,8 @@ void UpdateUI() {
       canvas50x8.clear();
       canvas120x8.printFixed(3, 100, String("AD7 " + String(sensorData.sensor_7)).c_str());
       display.drawCanvas(3, 6, canvas120x8);
+
+      /* sensor value column 1 */
 
       canvas50x8.clear();
       canvas120x8.printFixed(3, 20, String("AD8  " + String(sensorData.sensor_8)).c_str());
