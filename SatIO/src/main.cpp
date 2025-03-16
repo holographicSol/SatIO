@@ -8836,7 +8836,7 @@ void UpdateUI() {
   //                                DEVELOPER OPTIONS
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=100; // uncomment to debug
+  // menu_page=100; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
@@ -9742,69 +9742,69 @@ void UpdateUI() {
       /* sensor value column 0 */
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("0 " + String(sensorData.sensor_0)).c_str());
+      canvas50x8.printFixed(1, 1,  String("0 " + String((int)sensorData.sensor_0)).c_str());
       display.drawCanvas(3, 30, canvas50x8);
       
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("1 " + String(sensorData.sensor_1)).c_str());
+      canvas50x8.printFixed(1, 1,  String("1 " + String((int)sensorData.sensor_1)).c_str());
       display.drawCanvas(3, 40, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("2 " + String(sensorData.sensor_2)).c_str());
+      canvas50x8.printFixed(1, 1,  String("2 " + String((int)sensorData.sensor_2)).c_str());
       display.drawCanvas(3, 50, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("3 " + String(sensorData.sensor_3)).c_str());
+      canvas50x8.printFixed(1, 1,  String("3 " + String((int)sensorData.sensor_3)).c_str());
       display.drawCanvas(3, 60, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("4 " + String(sensorData.sensor_4)).c_str());
+      canvas50x8.printFixed(1, 1,  String("4 " + String((int)sensorData.sensor_4)).c_str());
       display.drawCanvas(3, 70, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("5 " + String(sensorData.sensor_5)).c_str());
+      canvas50x8.printFixed(1, 1,  String("5 " + String((int)sensorData.sensor_5)).c_str());
       display.drawCanvas(3, 80, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("6 " + String(sensorData.sensor_6)).c_str());
+      canvas50x8.printFixed(1, 1,  String("6 " + String((int)sensorData.sensor_6)).c_str());
       display.drawCanvas(3, 90, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1, String("7 " + String(sensorData.sensor_7)).c_str());
+      canvas50x8.printFixed(1, 1, String("7 " + String((int)sensorData.sensor_7)).c_str());
       display.drawCanvas(3, 100, canvas50x8);
 
       /* sensor value column 1 */
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1, String("8  " + String(sensorData.sensor_8)).c_str());
+      canvas50x8.printFixed(1, 1, String("8  " + String((int)sensorData.sensor_8)).c_str());
       display.drawCanvas(64, 30, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("9  " + String(sensorData.sensor_9)).c_str());
+      canvas50x8.printFixed(1, 1,  String("9  " + String((int)sensorData.sensor_9)).c_str());
       display.drawCanvas(64, 40, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("10 " + String(sensorData.sensor_10)).c_str());
+      canvas50x8.printFixed(1, 1,  String("10 " + String((int)sensorData.sensor_10)).c_str());
       display.drawCanvas(64, 50, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("11 " + String(sensorData.sensor_11)).c_str());
+      canvas50x8.printFixed(1, 1,  String("11 " + String((int)sensorData.sensor_11)).c_str());
       display.drawCanvas(64, 60, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("12 " + String(sensorData.sensor_12)).c_str());
+      canvas50x8.printFixed(1, 1,  String("12 " + String((int)sensorData.sensor_12)).c_str());
       display.drawCanvas(64, 70, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("13 " + String(sensorData.sensor_13)).c_str());
+      canvas50x8.printFixed(1, 1,  String("13 " + String((int)sensorData.sensor_13)).c_str());
       display.drawCanvas(64, 80, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1,  String("14 " + String(sensorData.sensor_14)).c_str());
+      canvas50x8.printFixed(1, 1,  String("14 " + String((int)sensorData.sensor_14)).c_str());
       display.drawCanvas(64, 90, canvas50x8);
 
       canvas50x8.clear();
-      canvas50x8.printFixed(1, 1, String("15 " + String(sensorData.sensor_15)).c_str());
+      canvas50x8.printFixed(1, 1, String("15 " + String((int)sensorData.sensor_15)).c_str());
       display.drawCanvas(64, 100, canvas50x8);
     }
 
