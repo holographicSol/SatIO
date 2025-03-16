@@ -9980,48 +9980,48 @@ void readI2C() {
         //                                       CONTROL PAD
 
         // parse special interrupt buttons
-        if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR0")==0) {Serial.println("[button] ISR0");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR1")==0) {Serial.println("[button] ISR1");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR2")==0) {Serial.println("[button] ISR2");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,ISR3")==0) {Serial.println("[button] ISR3");}
+        if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I0")==0) {Serial.println("[button] ISR0");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I1")==0) {Serial.println("[button] ISR1");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I2")==0) {Serial.println("[button] ISR2");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I3")==0) {Serial.println("[button] ISR3");}
 
         // parse numpad buttons
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,0")==0) {Serial.println("[button] 0"); inputChar(digit_0);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,1")==0) {Serial.println("[button] 1"); inputChar(digit_1);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,2")==0) {Serial.println("[button] 2"); inputChar(digit_2);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,3")==0) {Serial.println("[button] 3"); inputChar(digit_3);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,4")==0) {Serial.println("[button] 4"); inputChar(digit_4);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,5")==0) {Serial.println("[button] 5"); inputChar(digit_5);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,6")==0) {Serial.println("[button] 6"); inputChar(digit_6);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,7")==0) {Serial.println("[button] 7"); inputChar(digit_7);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,8")==0) {Serial.println("[button] 8"); inputChar(digit_8);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,9")==0) {Serial.println("[button] 9"); inputChar(digit_9);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,10")==0) {Serial.println("[button] 10: ."); inputChar(period_char);}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,0")==0) {Serial.println("[button] 0"); inputChar(digit_0);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,1")==0) {Serial.println("[button] 1"); inputChar(digit_1);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,2")==0) {Serial.println("[button] 2"); inputChar(digit_2);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,3")==0) {Serial.println("[button] 3"); inputChar(digit_3);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,4")==0) {Serial.println("[button] 4"); inputChar(digit_4);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,5")==0) {Serial.println("[button] 5"); inputChar(digit_5);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,6")==0) {Serial.println("[button] 6"); inputChar(digit_6);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,7")==0) {Serial.println("[button] 7"); inputChar(digit_7);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,8")==0) {Serial.println("[button] 8"); inputChar(digit_8);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,9")==0) {Serial.println("[button] 9"); inputChar(digit_9);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,10")==0) {Serial.println("[button] 10: ."); inputChar(period_char);}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
 
         // parse navigation buttons
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,16")==0) {Serial.println("[button] 16: left"); menuLeft();}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,18")==0) {Serial.println("[button] 18: delete"); if (allow_input_data==true) {input_data[strlen(input_data)-1]='\0';}}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,19")==0) {Serial.println("[button] 19: back"); menuBack();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,16")==0) {Serial.println("[button] 16: left"); menuLeft();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,18")==0) {Serial.println("[button] 18: delete"); if (allow_input_data==true) {input_data[strlen(input_data)-1]='\0';}}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,19")==0) {Serial.println("[button] 19: back"); menuBack();}
 
         // parse currently spare creative potential buttons: (auto input with set_var_x set_var_y set_var_z) (clear)
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,20")==0) {Serial.println("[button] 20");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,21")==0) {Serial.println("[button] 21");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,22")==0) {Serial.println("[button] 22");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,23")==0) {Serial.println("[button] 23");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,24")==0) {Serial.println("[button] 24");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,25")==0) {Serial.println("[button] 25");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,26")==0) {Serial.println("[button] 26");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,27")==0) {Serial.println("[button] 27");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,28")==0) {Serial.println("[button] 28");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,29")==0) {Serial.println("[button] 29");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,30")==0) {Serial.println("[button] 30");}
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$B,31")==0) {Serial.println("[button] 31");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,20")==0) {Serial.println("[button] 20");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,21")==0) {Serial.println("[button] 21");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,22")==0) {Serial.println("[button] 22");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,23")==0) {Serial.println("[button] 23");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,24")==0) {Serial.println("[button] 24");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,25")==0) {Serial.println("[button] 25");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,26")==0) {Serial.println("[button] 26");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,27")==0) {Serial.println("[button] 27");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,28")==0) {Serial.println("[button] 28");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,29")==0) {Serial.println("[button] 29");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
       }
     }
   }
