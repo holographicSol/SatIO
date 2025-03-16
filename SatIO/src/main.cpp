@@ -9874,11 +9874,17 @@ I2CLinkStruct I2CLink;
 2: Master sweeps address range.
 3: Response is parsed for slave that responds with non empty message.
 
-Note: a slave devices ability to interrupt the master eliminates the requirement for slaves and masters to switch between master/slave
-mode, also eliminates any requirement to poll slaves which would mean we do not get x when x occurs unlike this method.
-resistors would be required for multiple slaves interrupting on the same pin.
+Pros:
+1: no need for slaves and masters to switch between master/slave mode.
+2: no need to poll slaves in case they have a message (which they often may not).
+3: requests are made when they need to be (because a slave has a messaage). 
 
-The address sweep method is currently being considered and is intended to be implemented soon.
+Cons:
+1: requires 3 wires per slave (SDA, SCL, interrupt).
+
+Note:
+1: resistors would be required for multiple slaves interrupting on the same pin.
+2:The address sweep method is currently being considered and is intended to be implemented soon.
 
 */
 
