@@ -10868,7 +10868,7 @@ void loop() {
   else {systemData.overload=false;}
   debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  if (timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
 
   // ---------------------------------------------------------------------
@@ -10876,7 +10876,7 @@ void loop() {
 
   bench("[Looptime] " + String(timeData.mainLoopTimeTaken));
   bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
-  debug("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
+  bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
   
   // ---------------------------------------------------------------------
 }
