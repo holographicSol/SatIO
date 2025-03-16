@@ -9724,6 +9724,8 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                     SENSORS MENU
 
+    /* this may be a menu and is currently a view */
+
     else if (menu_page==100) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
