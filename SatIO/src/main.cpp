@@ -10732,6 +10732,7 @@ int t_gps_all = millis();
 bool track_planets_period = false;
 bool longer_loop = false;
 bool gps_data_used = false;
+int loop_division = 0;
 
 void loop() {
   bench("----------------------------------------");
@@ -10824,18 +10825,22 @@ void loop() {
 
     /* now divide up the occasional: do either when can but not both */
     
-    // track planets
-    if (track_planets_period == true) {
-      track_planets_period = false;
-      t0 = millis();
-      setTrackPlanets();
-      bench("[setTrackPlanets]     " + String(millis()-t0));
-      t0 = millis();
-      trackPlanets();
-      bench("[trackPlanets]        " + String(millis()-t0));
+    if (loop_division==0) {
+      loop_division=1;
+      // track planets
+      if (track_planets_period == true) {
+        track_planets_period = false;
+        t0 = millis();
+        setTrackPlanets();
+        bench("[setTrackPlanets]     " + String(millis()-t0));
+        t0 = millis();
+        trackPlanets();
+        bench("[trackPlanets]        " + String(millis()-t0));
+      }
     }
 
-    else {
+    else if (loop_division==1) {
+      loop_division=0;
       // update ui: where possible try to avoid displaying a lot or take a performance hit
       t0 = millis();
       UpdateUI();
