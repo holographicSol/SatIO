@@ -9720,42 +9720,90 @@ void UpdateUI() {
       // show menu
       menuSystem.show( display );
     }
-  }
 
-  // ------------------------------------------------
-  //                                     SENSORS MENU
+    // ------------------------------------------------
+    //                                     SENSORS MENU
 
-  else if (menu_page==100) {
-    if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-    display.setColor(systemData.color_content);
+    else if (menu_page==100) {
+      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
-    drawMainBorder();
+      display.setColor(systemData.color_content);
 
-    // seperator
-    display.drawHLine(2, 20, 126);
+      drawMainBorder();
 
-    // title
-    canvas120x8.clear();
-    canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
-    display.drawCanvas(3, 6, canvas120x8);
+      // seperator
+      display.drawHLine(2, 20, 126);
 
-    canvas50x8.clear();
-    canvas120x8.printFixed(3, 20,  String("AD0 " + String(sensorData.sensor_0)).c_str());
-    canvas120x8.printFixed(3, 40,  String("AD1 " + String(sensorData.sensor_1)).c_str());
-    canvas120x8.printFixed(3, 50,  String("AD2 " + String(sensorData.sensor_2)).c_str());
-    canvas120x8.printFixed(3, 60,  String("AD3 " + String(sensorData.sensor_3)).c_str());
-    canvas120x8.printFixed(3, 70,  String("AD4 " + String(sensorData.sensor_4)).c_str());
-    canvas120x8.printFixed(3, 80,  String("AD5 " + String(sensorData.sensor_5)).c_str());
-    canvas120x8.printFixed(3, 90,  String("AD6 " + String(sensorData.sensor_6)).c_str());
-    canvas120x8.printFixed(3, 100, String("AD7 " + String(sensorData.sensor_7)).c_str());
-    canvas120x8.printFixed(64, 20, String("AD8  " + String(sensorData.sensor_8)).c_str());
-    canvas120x8.printFixed(64, 40,  String("AD9  " + String(sensorData.sensor_9)).c_str());
-    canvas120x8.printFixed(64, 50,  String("AD10 " + String(sensorData.sensor_10)).c_str());
-    canvas120x8.printFixed(64, 60,  String("AD11 " + String(sensorData.sensor_11)).c_str());
-    canvas120x8.printFixed(64, 70,  String("AD12 " + String(sensorData.sensor_12)).c_str());
-    canvas120x8.printFixed(64, 80,  String("AD13 " + String(sensorData.sensor_13)).c_str());
-    canvas120x8.printFixed(64, 90,  String("AD14 " + String(sensorData.sensor_14)).c_str());
-    canvas120x8.printFixed(64, 100, String("AD15 " + String(sensorData.sensor_15)).c_str());
+      // title
+      canvas120x8.clear();
+      canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 20,  String("AD0 " + String(sensorData.sensor_0)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+      
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 40,  String("AD1 " + String(sensorData.sensor_1)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 50,  String("AD2 " + String(sensorData.sensor_2)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 60,  String("AD3 " + String(sensorData.sensor_3)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 70,  String("AD4 " + String(sensorData.sensor_4)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 80,  String("AD5 " + String(sensorData.sensor_5)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 90,  String("AD6 " + String(sensorData.sensor_6)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(3, 100, String("AD7 " + String(sensorData.sensor_7)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 20, String("AD8  " + String(sensorData.sensor_8)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 40,  String("AD9  " + String(sensorData.sensor_9)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 50,  String("AD10 " + String(sensorData.sensor_10)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 60,  String("AD11 " + String(sensorData.sensor_11)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 70,  String("AD12 " + String(sensorData.sensor_12)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 80,  String("AD13 " + String(sensorData.sensor_13)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 90,  String("AD14 " + String(sensorData.sensor_14)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+
+      canvas50x8.clear();
+      canvas120x8.printFixed(64, 100, String("AD15 " + String(sensorData.sensor_15)).c_str());
+      display.drawCanvas(3, 6, canvas120x8);
+    }
+
   }
 
   // ------------------------------------------------
