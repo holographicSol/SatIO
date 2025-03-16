@@ -7,7 +7,7 @@ A large platform allowing for plenty of creative potential for sending user inpu
 Wiring For Keystudio ATMEGA2560 R3 Development Board with Sheild v1.3:
 
 Interrupt the ESP32 on input:
-ESP32: io25    -> ATMEGA2560: io22
+ESP32: io25 -> ATMEGA2560: io22
 
 Data transmission:
 ESP32: I2C SDA -> ATMEGA2560: I2C SDA
@@ -147,6 +147,7 @@ int BTNMATRIX[] = {
 //                                                                                                                       I2C DATA
 
 #define SLAVE_ADDR 8
+char device_name_tag[5] = "$CP,"; // control pad
 
 struct I2CLinkStruct {
   char * token;
@@ -285,16 +286,16 @@ void loop() {
 
   /* check button pressed interrupt flags */
 
-  if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR0"); interruptMaster();
+  if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I0"); interruptMaster();
     Serial.println("[button] ISR0 pressed");
   }
-  if (btnISR1_pressed==true) {btnISR1_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR1"); interruptMaster();
+  if (btnISR1_pressed==true) {btnISR1_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I1"); interruptMaster();
     Serial.println("[button] ISR1 pressed");
   }
-  if (btnISR2_pressed==true) {btnISR2_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR2"); interruptMaster();
+  if (btnISR2_pressed==true) {btnISR2_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I2"); interruptMaster();
     Serial.println("[button] ISR2 pressed");
   }
-  if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,ISR3"); interruptMaster();
+  if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I3"); interruptMaster();
     Serial.println("[button] ISR3 pressed");
   }
 
@@ -305,7 +306,8 @@ void loop() {
       Serial.println("[button] " + String(i) + " pressed");
       deBounce();
       clearTMPBuffer();
-      strcpy(I2CLink.TMP_BUFFER0, "$B,");
+      strcat(I2CLink.TMP_BUFFER0, device_name_tag);
+      strcat(I2CLink.TMP_BUFFER0, "B,");
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1)); itoa(i, I2CLink.TMP_BUFFER1, 10);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       interruptMaster();
