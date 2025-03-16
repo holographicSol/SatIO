@@ -9883,6 +9883,9 @@ void ISR_I2C_PERIPHERAL() {
   make_i2c_request = true;
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      I2C WRITE
+
 void writeI2C(int I2C_Address) {
   // compile bytes array
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
@@ -9894,6 +9897,9 @@ void writeI2C(int I2C_Address) {
   // end
   Wire.endTransmission();
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       I2C READ
 
 void readI2C() {
 
