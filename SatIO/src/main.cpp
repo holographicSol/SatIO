@@ -9863,6 +9863,26 @@ struct I2CLinkStruct {
 };
 I2CLinkStruct I2CLink;
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  I2C INTERRUPT
+
+/*
+
+I2C peripheral: interrupts us to let us know it has something we need.
+
+SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
+
+Note: a slave devices ability to interrupt the master eliminates the requirement for slaves and masters to switch between master/slave
+mode, also eliminates any requirement to poll slaves which would mean we do not get x when x occurs unlike this method.
+resistors would be required for multiple slaves interrupting on the same pin.
+
+*/
+
+void ISR_I2C_PERIPHERAL() {
+  // Serial.println("[ISR] ISR_I2C_PERIPHERAL"); // do not ever uncomment this unless when absolutely necessary (no stuff in isr)
+  make_i2c_request = true;
+}
+
 void writeI2C(int I2C_Address) {
   // compile bytes array
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
@@ -9875,40 +9895,7 @@ void writeI2C(int I2C_Address) {
   Wire.endTransmission();
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                I2C PERIPHERALS
-
-/*
-
-I2C peripheral: interrupts us to let us know it has something we need.
-
-SatIO: makes i2c requests (possibly with an address sweep for scalability so that all i2c peripheral interrupt on the same pin).
-
-Note: In the future, you should be able to add new I2C devices after flashing, through the ui and control panel:
-      1: add address
-      2: add $tag
-      3: add custom function name.
-      This will make it even simpler than already to build a new I2C peripheral and add it to the system.
-
-      Or auto:
-      1: make an i2 address sweep within a certain address range.
-      2: if you hear back then you have a device address and the device can tell you:
-          1: name. what the device is? so that 'what it is' is not ambiguous.
-          2: tags. what have you got and how to parse it (the human name(s) of the data its giving you).
-          3: append primitives (over, under, equal, inrange) to the human names.
-          4: put new concatinated name(s) in matrix function names.
-          ... so you can just make an i2c peripheral/module, plug it in on the i2c bus and it works how we need.sd_c
-          extra note: the custom i2c peripherals should be designed to think within the realms of 'primitives', so that being
-          the ones who created the custom i2c device, we are also the ones who know what a simple integer means if and when we check
-          for that simple integer in the matrix in regards to each and any given custom i2c device.
-*/
-
-void ISR_I2C_PERIPHERAL() {
-  // Serial.println("[ISR] ISR_I2C_PERIPHERAL"); // do not ever uncomment this unless when absolutely necessary (no stuff in isr)
-  make_i2c_request = true;
-}
-
-void makeI2CRequest() {
+void readI2C() {
 
   // make i2c request if interrupt flag true 
   if (make_i2c_request == true) {
@@ -10745,7 +10732,7 @@ void loop() {
   systemData.t_bench = true; // uncomment to observe timings
 
   /* run every loop */
-  makeI2CRequest();
+  readI2C();
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
