@@ -8836,7 +8836,7 @@ void UpdateUI() {
   //                                DEVELOPER OPTIONS
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  menu_page=100; // uncomment to debug
+  // menu_page=100; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
