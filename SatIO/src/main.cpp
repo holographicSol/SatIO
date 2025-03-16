@@ -9876,7 +9876,7 @@ I2CLinkStruct I2CLink;
 
 1: Master is interrupted.
 2: Master sweeps address range.
-3: Response is parsed from slaves (strongly recommended to design custom slaves to clear their message buffers after slave sends message).
+3: Response is parsed from slaves (strongly recommended to design custom slaves to clear their message buffers after sending message buffer).
 
 Pros:
 1: no need for slaves and masters to switch between master/slave mode.
