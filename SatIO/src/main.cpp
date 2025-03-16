@@ -9748,8 +9748,6 @@ void UpdateUI() {
     canvas120x8.printFixed(3, 80,  String("AD5 " + String(sensorData.sensor_5)).c_str());
     canvas120x8.printFixed(3, 90,  String("AD6 " + String(sensorData.sensor_6)).c_str());
     canvas120x8.printFixed(3, 100, String("AD7 " + String(sensorData.sensor_7)).c_str());
-
-
     canvas120x8.printFixed(64, 20, String("AD8  " + String(sensorData.sensor_8)).c_str());
     canvas120x8.printFixed(64, 40,  String("AD9  " + String(sensorData.sensor_9)).c_str());
     canvas120x8.printFixed(64, 50,  String("AD10 " + String(sensorData.sensor_10)).c_str());
