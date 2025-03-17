@@ -9917,7 +9917,7 @@ void UpdateUI() {
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("GNGGA")/2)*6), 1, "GNGGA", STYLE_BOLD );
-        display.drawCanvas(4, 6, canvas120x8);
+        display.drawCanvas(3, 6, canvas120x8);
 
       }
       canvas120x8.clear();
@@ -10127,6 +10127,14 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SRTCD " + String(satData.rtcSyncDate)).c_str());
       display.drawCanvas(4, 77, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SUNR  " + String(siderealPlanetData.sun_r)).c_str());
+      display.drawCanvas(4, 87, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SUNS  " + String(siderealPlanetData.sun_s)).c_str());
+      display.drawCanvas(4, 97, canvas120x8);
     }
 
   }
