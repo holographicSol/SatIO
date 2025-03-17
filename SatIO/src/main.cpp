@@ -10133,7 +10133,7 @@ void UpdateUI() {
       display.drawCanvas(4, 87, canvas120x8);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("SUNS  " + String(siderealPlanetData.sun_s)).c_str());
+      canvas120x8.printFixed(1, 1, String("DAY   " + String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day()))).c_str());
       display.drawCanvas(4, 97, canvas120x8);
     }
 
