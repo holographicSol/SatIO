@@ -9884,7 +9884,7 @@ Cons:
 Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
 2: care should be taken so that slave messages do not conflict (slaves having the same messages). use of acronym names may be used in message content. 
-2: this is (subjectively) far more preferrable during development, production may prefer explicitly addressing devices.
+2: scanning may be preferrable during development but in production may prefer explicitly addressing devices (scanning takes time).
 
 */
 
