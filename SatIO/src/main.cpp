@@ -9855,8 +9855,8 @@ struct I2CLinkStruct {
   char TMP_BUFFER_0[10];  // chars of bytes to be sent
   char TMP_BUFFER_1[10];  // some space for type conversions
   int I2CADDRESSINDEX = 0;
-  int I2CADDRESSRANGEMIN = 0;   // for performance this should be modifiable
-  int I2CADDRESSRANGEMAX = 127; // for performance this should be modifiable
+  int I2CADDRESSRANGEMIN = 0;   // for performance this should be modifiable, can be min zero
+  int I2CADDRESSRANGEMAX = 127; // for performance this should be modifiable, can be max 127
   bool MESSAGE_RECEIVED = false;
 };
 I2CLinkStruct I2CLink;
