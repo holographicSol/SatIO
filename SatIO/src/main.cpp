@@ -588,7 +588,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{3,
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       MENU GPS
 
-const int max_gps_items = 8;
+const int max_gps_items = 9;
 const char *menuGPSItems[max_gps_items];
 LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{3, 34}, {124, 124}} );
 
@@ -2868,7 +2868,8 @@ struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
   char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
-  char downlinksyncdatetime[56]       = "0.0";                     // record last time satellites were seen
+  char rtcSyncDatetimeStamp[56]       = "0.0";                     // record last time satellites were seen
+  char rtcSyncDatetime[56]            = "0.0";                     // record last time satellites were seen
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                 // one meter (tune)
@@ -3284,8 +3285,10 @@ void convertUTCToLocal() {
         first_gps_pass=false; // dont drop in here next time
         syncRTCOnDownlink();  // sync rtc
         // set last sync datetime
-        memset(satData.downlinksyncdatetime, 0, sizeof(satData.downlinksyncdatetime));
-        strcpy(satData.downlinksyncdatetime, formatRTCDateTimeStamp().c_str());
+        memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
+        strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
+        memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetimeStamp));
+        strcpy(satData.rtcSyncDatetime, formatRTCDateTime().c_str());
       }
     }
     else {
@@ -3294,8 +3297,10 @@ void convertUTCToLocal() {
         if (satData.tmp_millisecond_int==00) {
           syncRTCOnDownlink(); // sync rtc
           // set last sync datetime
-          memset(satData.downlinksyncdatetime, 0, sizeof(satData.downlinksyncdatetime));
-          strcpy(satData.downlinksyncdatetime, formatRTCDateTimeStamp().c_str());
+          memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
+          strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
+          memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetimeStamp));
+          strcpy(satData.rtcSyncDatetime, formatRTCDateTime().c_str());
         }
       }
     }
@@ -3323,7 +3328,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, ",");
 
   // last downlink sync rtc
-  strcat(satData.satio_sentence, satData.downlinksyncdatetime);
+  strcat(satData.satio_sentence, satData.rtcSyncDatetimeStamp);
   strcat(satData.satio_sentence, ",");
 
   // system uptime in seconds (may be preferrable than system startup datetime because datetime is local)
@@ -8088,6 +8093,7 @@ void menuBack() {
   else if (menu_page==110) {menu_page=50;}
   else if (menu_page==120) {menu_page=50;}
   else if (menu_page==130) {menu_page=50;}
+  else if (menu_page==140) {menu_page=50;}
   debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
@@ -8455,6 +8461,7 @@ void menuEnter() {
     else if (menuGPS.selection()==5) {menu_page=110;}
     else if (menuGPS.selection()==6) {menu_page=120;}
     else if (menuGPS.selection()==7) {menu_page=130;}
+    else if (menuGPS.selection()==8) {menu_page=140;}
   }
 
   // serial page
@@ -8896,7 +8903,7 @@ void UpdateUI() {
 
       // syncronized rtc indicator
       if (rtc.now().second()==0) {
-        if (formatRTCDateTimeStamp() == satData.downlinksyncdatetime) {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_blue);}
+        if (formatRTCDateTimeStamp() == satData.rtcSyncDatetimeStamp) {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_blue);}
         else {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_red);}
       }
 
@@ -10045,6 +10052,54 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String(String("M   ") + String(gpattData.mileage)).c_str());
       display.drawCanvas(3, 107, canvas120x8);
+    }
+
+    // ------------------------------------------------
+    //                                       SATIO MENU
+
+    /* this may be a menu and is currently a view */
+
+    else if (menu_page==140) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SATIO")/2)*6), 1, "SATIO", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+
+      }
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RTC " + String(formatRTCDateTime())).c_str());
+      display.drawCanvas(3, 27, canvas120x8);
+
+      canvas120x8.clear();
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        canvas120x8.printFixed(1, 1, String(String(gnggaData.latitude_hemisphere) + "   " + String(satData.degrees_latitude)).c_str());
+      }
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        canvas120x8.printFixed(1, 1, String(String(gnrmcData.latitude_hemisphere) + "   " + String(satData.degrees_latitude)).c_str());
+      }
+      display.drawCanvas(3, 37, canvas120x8);
+
+      canvas120x8.clear();
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        canvas120x8.printFixed(1, 1, String(String(gnggaData.longitude_hemisphere) + "   " + String(satData.degrees_longitude)).c_str());
+      }
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        canvas120x8.printFixed(1, 1, String(String(gnrmcData.longitude_hemisphere) + "   " + String(satData.degrees_longitude)).c_str());
+      }
+      display.drawCanvas(3, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("Last RTC Sync  " + String(satData.rtcSyncDatetime)).c_str());
+      display.drawCanvas(3, 57, canvas120x8);
     }
 
   }
