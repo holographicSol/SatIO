@@ -9885,6 +9885,8 @@ Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
 2: care should be taken so that slave messages do not conflict (slaves having the same messages). use of acronym names may be used in message content. 
 2: scanning may be preferrable during development but in production may prefer explicitly addressing devices (scanning takes time).
+   reducing scanner address range may also be more preferrable as a production solution, so that slaves can still share one interrupt pin and
+   scan time is also reduced.
 
 */
 
