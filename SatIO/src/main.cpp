@@ -9887,7 +9887,8 @@ Note:
    reducing scanner address range may also be more preferrable as a production solution, so that slaves can still share one interrupt pin and
    scan time is also reduced.
 4: consideration should be payed to weather a slave should be on the I2C extension bus (these devices should be able to interrupt), or
-   on the I2C multilpexer (devices that can be polled satisfactorily).
+   on the I2C multilpexer (devices that can be polled satisfactorily), in which it is recommended to poll the I2C device on a channel in getSensorData.
+
 */
 
 void ISR_I2C_PERIPHERAL() {
