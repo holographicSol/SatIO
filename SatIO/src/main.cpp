@@ -9828,7 +9828,6 @@ void UpdateUI() {
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str());
       display.drawCanvas(64, 110, canvas60x8);
     }
-
   }
 
   // ------------------------------------------------
@@ -9884,10 +9883,11 @@ Cons:
 Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
 2: care should be taken so that slave messages do not conflict (slaves having the same messages). use of acronym names may be used in message content. 
-2: scanning may be preferrable during development but in production may prefer explicitly addressing devices (scanning takes time).
+3: scanning may be preferrable during development but in production may prefer explicitly addressing devices (scanning takes time).
    reducing scanner address range may also be more preferrable as a production solution, so that slaves can still share one interrupt pin and
    scan time is also reduced.
-
+4: consideration should be payed to weather a slave should be on the I2C extension bus (these devices should be able to interrupt), or
+   on the I2C multilpexer (devices that can be polled satisfactorily).
 */
 
 void ISR_I2C_PERIPHERAL() {
