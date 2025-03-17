@@ -9886,7 +9886,7 @@ Note:
 3: scanning may be preferrable during development but in production may prefer explicitly addressing devices (scanning takes time).
    reducing scanner address range may also be more preferrable as a production solution, so that slaves can still share one interrupt pin and
    scan time is also reduced.
-4: consideration should be payed to weather a slave should be on the I2C extension bus (these devices should be able to interrupt), or
+4: consideration should be payed to weather a slave should be on the general I2C extension bus (these devices should be able to interrupt), or
    on the I2C multilpexer (devices that can be polled satisfactorily), in which it is recommended to poll the I2C device on a channel in getSensorData.
 
 */
