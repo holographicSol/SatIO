@@ -10095,28 +10095,28 @@ void UpdateUI() {
 
       }
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("RTCT " + String(formatRTCTime())).c_str());
+      canvas120x8.printFixed(1, 1, String("RTCT  " + String(formatRTCTime())).c_str());
       display.drawCanvas(3, 27, canvas120x8);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("RTCD " + String(formatRTCDate())).c_str());
+      canvas120x8.printFixed(1, 1, String("RTCD  " + String(formatRTCDate())).c_str());
       display.drawCanvas(3, 37, canvas120x8);
 
       canvas120x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        canvas120x8.printFixed(1, 1, String(String(gnggaData.latitude_hemisphere) + "    " + String(satData.degrees_latitude)).c_str());
+        canvas120x8.printFixed(1, 1, String(String(gnggaData.latitude_hemisphere) + "     " + String(satData.degrees_latitude)).c_str());
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        canvas120x8.printFixed(1, 1, String(String(gnrmcData.latitude_hemisphere) + "    " + String(satData.degrees_latitude)).c_str());
+        canvas120x8.printFixed(1, 1, String(String(gnrmcData.latitude_hemisphere) + "     " + String(satData.degrees_latitude)).c_str());
       }
       display.drawCanvas(3, 47, canvas120x8);
 
       canvas120x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        canvas120x8.printFixed(1, 1, String(String(gnggaData.longitude_hemisphere) + "    " + String(satData.degrees_longitude)).c_str());
+        canvas120x8.printFixed(1, 1, String(String(gnggaData.longitude_hemisphere) + "     " + String(satData.degrees_longitude)).c_str());
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        canvas120x8.printFixed(1, 1, String(String(gnrmcData.longitude_hemisphere) + "    " + String(satData.degrees_longitude)).c_str());
+        canvas120x8.printFixed(1, 1, String(String(gnrmcData.longitude_hemisphere) + "     " + String(satData.degrees_longitude)).c_str());
       }
       display.drawCanvas(3, 57, canvas120x8);
 
