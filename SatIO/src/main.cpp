@@ -10028,7 +10028,8 @@ void readI2C() {
       //                               OBJECT DETECTION AI
 
       // example
-      // if (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,1")==0) {Serial.println("[object detection ai] object 0: true"); object_0=true;}
+      // if      (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,1")==0) {Serial.println("[object detection ai] object 0: true"); object_0=true;}
+      // else if (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,0")==0) {Serial.println("[object detection ai] object 0: false"); object_0=false;}
 
     }
   }
