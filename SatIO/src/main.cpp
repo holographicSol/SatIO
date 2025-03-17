@@ -9923,11 +9923,11 @@ void UpdateUI() {
       display.drawCanvas(3, 87, canvas120x8);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String(String("GEO  ") + String(gnggaData.altitude)).c_str());
+      canvas120x8.printFixed(1, 1, String(String("GEO  ") + String(gnggaData.geoidal)).c_str());
       display.drawCanvas(3, 97, canvas120x8);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String(String("DD   ") + String(gnggaData.altitude)).c_str());
+      canvas120x8.printFixed(1, 1, String(String("DD   ") + String(gnggaData.differential_delay)).c_str());
       display.drawCanvas(3, 107, canvas120x8);
     }
 
