@@ -10077,8 +10077,12 @@ void UpdateUI() {
 
       }
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("RTC " + String(formatRTCDateTime())).c_str());
+      canvas120x8.printFixed(1, 1, String("RTCT " + String(formatRTCTime())).c_str());
       display.drawCanvas(3, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RTCD " + String(formatRTCDate())).c_str());
+      display.drawCanvas(3, 37, canvas120x8);
 
       canvas120x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -10087,7 +10091,7 @@ void UpdateUI() {
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
         canvas120x8.printFixed(1, 1, String(String(gnrmcData.latitude_hemisphere) + "   " + String(satData.degrees_latitude)).c_str());
       }
-      display.drawCanvas(3, 37, canvas120x8);
+      display.drawCanvas(3, 47, canvas120x8);
 
       canvas120x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -10096,11 +10100,15 @@ void UpdateUI() {
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
         canvas120x8.printFixed(1, 1, String(String(gnrmcData.longitude_hemisphere) + "   " + String(satData.degrees_longitude)).c_str());
       }
-      display.drawCanvas(3, 47, canvas120x8);
+      display.drawCanvas(3, 57, canvas120x8);
 
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("Last RTC Sync  " + String(satData.rtcSyncDatetime)).c_str());
-      display.drawCanvas(3, 57, canvas120x8);
+      canvas120x8.printFixed((120/2)-((strlen("LAST RTC SYNC")/2)*6), 1, "LAST RTC SYNC", STYLE_BOLD );
+      display.drawCanvas(3, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("" + String(satData.rtcSyncDatetime)).c_str());
+      display.drawCanvas(3, 77, canvas120x8);
     }
 
   }
