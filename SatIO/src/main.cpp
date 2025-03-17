@@ -550,7 +550,7 @@ const char *menuMatrixFunctionSelectItems[max_function_menu_items] =
 LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function_menu_items, {{92, 3}, {125, 26}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                       DISPLAY MENU MATRIX SWITCH CONFIGURATION
+//                                                                                               MENU MATRIX SWITCH CONFIGURATION
 
 const int max_matrix_function_configure_items = 5;
 const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items] =
@@ -564,7 +564,7 @@ const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{3, 76}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              DISPLAY MENU FILE
+//                                                                                                                      MENU FILE
 
 const int max_file_items = 6;
 const char *menuFileItems[max_file_items] =
@@ -579,49 +579,46 @@ const char *menuFileItems[max_file_items] =
 LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        DISPLAY MENU FILE NAMES
+//                                                                                                                MENU FILE NAMES
 
 const int max_filepath_items = 20;
 const char *menuMatrixFilepathItems[max_filepath_items];
 LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                               DISPLAY MENU GPS
+//                                                                                                                       MENU GPS
 
-const int max_gps_items = 5;
+const int max_gps_items = 8;
 const char *menuGPSItems[max_gps_items];
 LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            DISPLAY MENU SERIAL
+//                                                                                                                    MENU SERIAL
 
 const int max_serial_items = 7;
 const char *menuSerialItems[max_serial_items];
 LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          DISPLAY MENU UNIVERSE
+//                                                                                                                  MENU UNIVERSE
 
 const int max_universe_items = 9;
 const char *menuUniverseItems[max_universe_items];
 LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          DISPLAY MENU UNIVERSE
+//                                                                                                                   MENU DISPLAY 
 
 const int max_display_items = 3;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          DISPLAY MENU UNIVERSE
+//                                                                                                                  MENU UNIVERSE
 
 const int max_system_items = 1;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{3, 34}, {124, 124}} );
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                        SENSORS
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
@@ -8087,6 +8084,10 @@ void menuBack() {
   else if (menu_page==70) {menu_page=1;}
   else if (menu_page==80) {menu_page=1;}
   else if (menu_page==90) {menu_page=1;}
+  else if (menu_page==100) {menu_page=1;}
+  else if (menu_page==110) {menu_page=50;}
+  else if (menu_page==120) {menu_page=50;}
+  else if (menu_page==130) {menu_page=50;}
   debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
@@ -8438,10 +8439,10 @@ void menuEnter() {
   // gps page
   else if (menu_page==50) {
     if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
-    if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
-    if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
-    if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
-    if (menuGPS.selection()==4) {
+    else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
+    else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
+    else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
+    else if (menuGPS.selection()==4) {
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
         memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
         strcpy(satData.coordinate_conversion_mode, "GNRMC");
@@ -8451,30 +8452,33 @@ void menuEnter() {
         strcpy(satData.coordinate_conversion_mode, "GNGGA");
       }
     }
+    else if (menuGPS.selection()==5) {menu_page=110;}
+    else if (menuGPS.selection()==6) {menu_page=120;}
+    else if (menuGPS.selection()==7) {menu_page=130;}
   }
 
   // serial page
   else if (menu_page==60) {
     if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
-    if (menuSerial.selection()==1) {systemData.output_gngga_enabled^=true;}
-    if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
-    if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
-    if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
-    if (menuSerial.selection()==5) {systemData.output_sensors_enabled^=true;}
-    if (menuSerial.selection()==6) {systemData.debug^=true;}
+    else if (menuSerial.selection()==1) {systemData.output_gngga_enabled^=true;}
+    else if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
+    else if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
+    else if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
+    else if (menuSerial.selection()==5) {systemData.output_sensors_enabled^=true;}
+    else if (menuSerial.selection()==6) {systemData.debug^=true;}
   }
 
   // universe page
   else if (menu_page==70) {
     if (menuUniverse.selection()==0) {systemData.sidereal_track_sun^=true;}
-    if (menuUniverse.selection()==1) {systemData.sidereal_track_mercury^=true;}
-    if (menuUniverse.selection()==2) {systemData.sidereal_track_moon^=true;}
-    if (menuUniverse.selection()==3) {systemData.sidereal_track_venus^=true;}
-    if (menuUniverse.selection()==4) {systemData.sidereal_track_mars^=true;}
-    if (menuUniverse.selection()==5) {systemData.sidereal_track_jupiter^=true;}
-    if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
-    if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
-    if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
+    else if (menuUniverse.selection()==1) {systemData.sidereal_track_mercury^=true;}
+    else if (menuUniverse.selection()==2) {systemData.sidereal_track_moon^=true;}
+    else if (menuUniverse.selection()==3) {systemData.sidereal_track_venus^=true;}
+    else if (menuUniverse.selection()==4) {systemData.sidereal_track_mars^=true;}
+    else if (menuUniverse.selection()==5) {systemData.sidereal_track_jupiter^=true;}
+    else if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
+    else if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
+    else if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
   }
 
   // dispaly page
@@ -9583,6 +9587,10 @@ void UpdateUI() {
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="CONVERT GNGGA";}
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="CONVERT GNRMC";}
 
+      menuGPSItems[5]="VIEW GNGGA DATA";
+      menuGPSItems[6]="VIEW GNRMC DATA";
+      menuGPSItems[7]="VIEW GPATT DATA";
+
       // show menu
       menuGPS.show( display );
     }
@@ -9864,6 +9872,181 @@ void UpdateUI() {
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str());
       display.drawCanvas(64, 110, canvas60x8);
     }
+
+    // ------------------------------------------------
+    //                                       GNGGA MENU
+
+    /* this may be a menu and is currently a view */
+
+    else if (menu_page==110) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("GNGGA")/2)*6), 1, "GNGGA", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+
+      }
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("UTCT " + String(gnggaData.utc_time)).c_str());
+      display.drawCanvas(3, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String(gnggaData.latitude_hemisphere) + "    " + String(gnggaData.latitude)).c_str());
+      display.drawCanvas(3, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String(gnggaData.longitude_hemisphere) + "    " + String(gnggaData.longitude)).c_str());
+      display.drawCanvas(3, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("SS   ") + String(gnggaData.solution_status)).c_str());
+      display.drawCanvas(3, 57, canvas120x8);
+      
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("SC   ") +  String(gnggaData.satellite_count_gngga)).c_str());
+      display.drawCanvas(3, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("PF   ") +  String(gnggaData.hdop_precision_factor)).c_str());
+      display.drawCanvas(3, 77, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("A    ") + String(gnggaData.altitude)).c_str());
+      display.drawCanvas(3, 87, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("GEO  ") + String(gnggaData.altitude)).c_str());
+      display.drawCanvas(3, 97, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("DD   ") + String(gnggaData.altitude)).c_str());
+      display.drawCanvas(3, 107, canvas120x8);
+    }
+
+    // ------------------------------------------------
+    //                                       GNRMC MENU
+
+    /* this may be a menu and is currently a view */
+
+    else if (menu_page==120) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("GNRMC")/2)*6), 1, "GNRMC", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+
+      }
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("UTCT " + String(gnrmcData.utc_time)).c_str());
+      display.drawCanvas(3, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String(gnrmcData.latitude_hemisphere) + "    " + String(gnrmcData.latitude)).c_str());
+      display.drawCanvas(3, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String(gnrmcData.longitude_hemisphere) + "    " + String(gnrmcData.longitude)).c_str());
+      display.drawCanvas(3, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("GS   ") + String(gnrmcData.ground_speed)).c_str());
+      display.drawCanvas(3, 57, canvas120x8);
+      
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("GH   ") +  String(gnrmcData.ground_heading)).c_str());
+      display.drawCanvas(3, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("UTCD ") +  String(gnrmcData.utc_date)).c_str());
+      display.drawCanvas(3, 77, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("IA   ") + String(gnrmcData.installation_angle)).c_str());
+      display.drawCanvas(3, 87, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("IAD  ") + String(gnrmcData.installation_angle_direction)).c_str());
+      display.drawCanvas(3, 97, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("MI   ") + String(gnrmcData.mode_indication)).c_str());
+      display.drawCanvas(3, 107, canvas120x8);
+    }
+
+    // ------------------------------------------------
+    //                                       GPATT MENU
+
+    /* this may be a menu and is currently a view */
+
+    else if (menu_page==130) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("GPATT")/2)*6), 1, "GPATT", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+
+      }
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("P   " + String(gpattData.pitch)).c_str());
+      display.drawCanvas(3, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("R   " + String(gpattData.roll)).c_str());
+      display.drawCanvas(3, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("Y   " + String(gpattData.yaw)).c_str());
+      display.drawCanvas(3, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("INS ") + String(gpattData.ins)).c_str());
+      display.drawCanvas(3, 57, canvas120x8);
+      
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("RSF ") +  String(gpattData.run_state_flag) + String("  RIF ") + String(gpattData.run_inetial_flag)).c_str());
+      display.drawCanvas(3, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("SF  ") +  String(gpattData.static_flag)).c_str());
+      display.drawCanvas(3, 77, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("GST ") + String(gpattData.gst_data)).c_str());
+      display.drawCanvas(3, 87, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("LF  ") + String(gpattData.line_flag)).c_str());
+      display.drawCanvas(3, 97, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String(String("M   ") + String(gpattData.mileage)).c_str());
+      display.drawCanvas(3, 107, canvas120x8);
+    }
+
   }
 
   // ------------------------------------------------
