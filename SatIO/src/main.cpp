@@ -9597,6 +9597,7 @@ void UpdateUI() {
       menuGPSItems[5]="VIEW GNGGA DATA";
       menuGPSItems[6]="VIEW GNRMC DATA";
       menuGPSItems[7]="VIEW GPATT DATA";
+      menuGPSItems[8]="VIEW SATIO DATA";
 
       // show menu
       menuGPS.show( display );
