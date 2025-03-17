@@ -9958,7 +9958,7 @@ void readI2C() {
         Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
         Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
-        // break if message or keep scanning if message empty
+        // break if message or keep scanning if message empty (and dont parse the message in loop)
         if (!strcmp(I2CLink.INPUT_BUFFER, "")==0) {I2CLink.MESSAGE_RECEIVED=true; break;}
       }
     }
