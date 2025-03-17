@@ -9722,7 +9722,7 @@ void UpdateUI() {
     }
 
     // ------------------------------------------------
-    //                                     SENSORS MENU
+    //                                  CD74HC4067 MENU
 
     /* this may be a menu and is currently a view */
 
