@@ -286,16 +286,16 @@ void loop() {
 
   /* check button pressed interrupt flags */
 
-  if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I0"); interruptMaster();
+  if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I0"); interruptMaster();
     Serial.println("[button] ISR0 pressed");
   }
-  if (btnISR1_pressed==true) {btnISR1_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I1"); interruptMaster();
+  if (btnISR1_pressed==true) {btnISR1_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I1"); interruptMaster();
     Serial.println("[button] ISR1 pressed");
   }
-  if (btnISR2_pressed==true) {btnISR2_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I2"); interruptMaster();
+  if (btnISR2_pressed==true) {btnISR2_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I2"); interruptMaster();
     Serial.println("[button] ISR2 pressed");
   }
-  if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$B,I3"); interruptMaster();
+  if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I3"); interruptMaster();
     Serial.println("[button] ISR3 pressed");
   }
 
