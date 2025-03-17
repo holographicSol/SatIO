@@ -10023,6 +10023,13 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
       }
+
+      // -------------------------------------------------
+      //                               OBJECT DETECTION AI
+
+      // example
+      // if (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,1")==0) {Serial.println("[object detection ai] object 0: true"); object_0=true;}
+
     }
   }
 }
