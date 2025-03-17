@@ -473,7 +473,7 @@ const char *menuMainItems[max_main_menu_items] =
     "   SYSTEM        ",
     "   UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
     "   DISPLAY       ",
-    "   SENSORS       ",
+    "   CD74HC4067    ",
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 34}, {124, 124}} );
 
@@ -9738,7 +9738,7 @@ void UpdateUI() {
 
         // title
         canvas120x8.clear();
-        canvas120x8.printFixed((120/2)-((strlen("SENSORS")/2)*6), 1, "SENSORS", STYLE_BOLD );
+        canvas120x8.printFixed((120/2)-((strlen("CD74HC4067")/2)*6), 1, "CD74HC4067", STYLE_BOLD );
         display.drawCanvas(3, 6, canvas120x8);
 
         /* sensor value column 0 */
@@ -9879,7 +9879,7 @@ Pros:
 4: allows at least 127 custom sensor slaves for all kinds of things that can return data to the master.
 
 Cons:
-1: requires 3 wires per slave (SDA, SCL, interrupt).
+1: requires 3 wires (over 2 I2C wires) per slave (SDA, SCL, interrupt).
 
 Note:
 1: resistors would be required for multiple slaves interrupting on the same pin.
