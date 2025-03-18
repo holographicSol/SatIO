@@ -602,7 +602,7 @@ LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 34}, {124, 124}} 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
 
-const int max_universe_items = 9;
+const int max_universe_items = 15;
 const char *menuUniverseItems[max_universe_items];
 LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 34}, {124, 124}} );
 
@@ -950,7 +950,17 @@ struct SiderealPlantetsStruct {
   double moon_alt;
   double moon_r;
   double moon_s;
-  double moon_p;
+  int moon_p;
+  char moon_p_name[8][28] = {
+    "New Moon",
+    "Waxing Crescent",
+    "First Quarter",
+    "Waxing Gibbous",
+    "Full Moon",
+    "Waning Gibbous",
+    "Third Quarter",
+    "Waning Crescent"
+  };
   double mercury_ra;
   double mercury_dec;
   double mercury_az;
@@ -8112,6 +8122,15 @@ void menuBack() {
   else if (menu_page==120) {menu_page=50;}
   else if (menu_page==130) {menu_page=50;}
   else if (menu_page==140) {menu_page=50;}
+  else if (menu_page==1001) {menu_page=70;}
+  else if (menu_page==1002) {menu_page=70;}
+  else if (menu_page==1003) {menu_page=70;}
+  else if (menu_page==1004) {menu_page=70;}
+  else if (menu_page==1005) {menu_page=70;}
+  else if (menu_page==1006) {menu_page=70;}
+  else if (menu_page==1007) {menu_page=70;}
+  else if (menu_page==1007) {menu_page=70;}
+
   debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
@@ -8504,6 +8523,15 @@ void menuEnter() {
     else if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
     else if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
     else if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
+    else if (menuUniverse.selection()==9) {menu_page=1000;}
+    else if (menuUniverse.selection()==10) {menu_page=1001;}
+    else if (menuUniverse.selection()==11) {menu_page=1002;}
+    else if (menuUniverse.selection()==12) {menu_page=1003;}
+    else if (menuUniverse.selection()==13) {menu_page=1004;}
+    else if (menuUniverse.selection()==14) {menu_page=1005;}
+    else if (menuUniverse.selection()==15) {menu_page=1006;}
+    else if (menuUniverse.selection()==16) {menu_page=1007;}
+    else if (menuUniverse.selection()==17) {menu_page=1008;}
   }
 
   // dispaly page
@@ -9731,6 +9759,16 @@ void UpdateUI() {
       if (systemData.sidereal_track_neptune==true) {menuUniverseItems[8]="NEPTUNE ENABLED";}
       else {menuUniverseItems[8]="NEPTUNE DISABLED";}
 
+      menuUniverseItems[9]="VIEW SUN";
+      menuUniverseItems[10]="VIEW MERCURY";
+      menuUniverseItems[11]="VIEW VENUS";
+      menuUniverseItems[12]="VIEW MOON";
+      menuUniverseItems[10]="VIEW MARS";
+      menuUniverseItems[11]="VIEW JUPITER";
+      menuUniverseItems[12]="VIEW SATURN";
+      menuUniverseItems[13]="VIEW URANUS";
+      menuUniverseItems[14]="VIEW NEPTUNE";
+
       // show menu
       menuUniverse.show( display );
     }
@@ -10139,6 +10177,384 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DAY   " + String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day()))).c_str());
       display.drawCanvas(4, 107, canvas120x8);
+    }
+
+    // ------------------------------------------------
+    //                                   UNIVERSE VIEWS
+
+    /* currently solar system tracking */
+
+    else if (menu_page==1000) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SUN")/2)*6), 1, "SUN", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.sun_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.sun_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.sun_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.sun_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.sun_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.sun_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1001) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("MOON")/2)*6), 1, "MOON", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.moon_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.moon_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.moon_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.moon_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.moon_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.moon_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("PH   " + String(siderealPlanetData.moon_p_name[siderealPlanetData.moon_p])).c_str());
+      display.drawCanvas(4, 87, canvas120x8);
+    }
+
+    else if (menu_page==1002) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("MERCURY")/2)*6), 1, "MERCURY", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.mercury_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.mercury_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.mercury_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.mercury_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.mercury_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.mercury_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1003) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("VENUS")/2)*6), 1, "VENUS", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.venus_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.venus_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.venus_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.venus_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.venus_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.venus_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1004) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("MARS")/2)*6), 1, "MARS", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.mars_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.mars_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.mars_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.mars_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.mars_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.mars_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1005) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("JUPITER")/2)*6), 1, "JUPITER", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.jupiter_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.jupiter_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.jupiter_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.jupiter_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.jupiter_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.jupiter_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1006) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SATURN")/2)*6), 1, "SATURN", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.saturn_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.saturn_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.saturn_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.saturn_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.saturn_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.saturn_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1007) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("URANUS")/2)*6), 1, "URANUS", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.uranus_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.uranus_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.uranus_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.uranus_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.uranus_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.uranus_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
+    }
+
+    else if (menu_page==1008) {
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+
+        display.setColor(systemData.color_content);
+        drawMainBorder();
+
+        // seperator
+        display.drawHLine(2, 20, 126);
+
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("NEPTUNE")/2)*6), 1, "NEPTUNE", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.neptune_ra)).c_str());
+      display.drawCanvas(4, 27, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.neptune_dec)).c_str());
+      display.drawCanvas(4, 37, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.neptune_az)).c_str());
+      display.drawCanvas(4, 47, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.neptune_alt)).c_str());
+      display.drawCanvas(4, 57, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.neptune_r)).c_str());
+      display.drawCanvas(4, 67, canvas120x8);
+
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.neptune_s)).c_str());
+      display.drawCanvas(4, 77, canvas120x8);
     }
 
   }
