@@ -963,6 +963,7 @@ struct SiderealPlantetsStruct {
     "Third Quarter",
     "Waning Crescent"
   };
+  double moon_lum;
   double mercury_ra;
   double mercury_dec;
   double mercury_az;
@@ -4618,6 +4619,7 @@ siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
 // t0 = millis();
 siderealPlanetData.moon_p  = myAstro.getMoonPhase();
 // bench("[p]" + String(millis()-t0));
+siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
 }
 
 void trackMercury() {
@@ -4636,6 +4638,10 @@ siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.mercury_r = myAstro.getRiseTime();
 siderealPlanetData.mercury_s = myAstro.getSetTime();
+
+// myAstro.getDP
+// myAstro.getGMTsiderealTime
+// myAstro.getPL
 }
 
 void trackVenus() {
@@ -9783,20 +9789,6 @@ void UpdateUI() {
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
-      // menuSerialItems[0]=String("SATIO " + String(systemData.translate_enable_bool[systemData.output_satio_enabled])).c_str();
-
-      // menuSerialItems[1]=String("GNGGA " + String(systemData.translate_enable_bool[systemData.output_gngga_enabled])).c_str();
-
-      // menuSerialItems[2]=String("GNRMC " + String(systemData.translate_enable_bool[systemData.output_gnrmc_enabled])).c_str();
-
-      // menuSerialItems[3]=String("GPATT " + String(systemData.translate_enable_bool[systemData.output_gpatt_enabled])).c_str();
-
-      // menuSerialItems[4]=String("MATRIX " + String(systemData.translate_enable_bool[systemData.output_matrix_enabled])).c_str();
-
-      // menuSerialItems[5]=String("SENSORS " + String(systemData.translate_enable_bool[systemData.output_sensors_enabled])).c_str();
-
-      // menuSerialItems[6]=String("DEBUG " + String(systemData.translate_enable_bool[systemData.debug])).c_str();
-
       if (systemData.output_satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
       else {menuSerialItems[0]="SATIO DISABLED";}
 
@@ -10361,6 +10353,10 @@ void UpdateUI() {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("PH   " + String(siderealPlanetData.moon_p_name[siderealPlanetData.moon_p])).c_str());
       display.drawCanvas(4, 85, canvas120x8);
+      canvas120x8.clear();
+      canvas120x8.printFixed(1, 1, String("LUM  " + String(siderealPlanetData.moon_lum)).c_str());
+      display.drawCanvas(4, 95, canvas120x8);
+      
     }
 
     else if (menu_page==1002) {
