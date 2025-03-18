@@ -10310,22 +10310,22 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.sun_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.sun_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.sun_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.sun_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.sun_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.sun_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
     }
 
     else if (menu_page==1001) {
@@ -10342,25 +10342,25 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.moon_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.moon_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.moon_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.moon_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.moon_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.moon_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("PH   " + String(siderealPlanetData.moon_p_name[siderealPlanetData.moon_p])).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
     }
 
     else if (menu_page==1002) {
@@ -10377,34 +10377,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.mercury_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.mercury_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.mercury_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.mercury_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.mercury_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.mercury_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.mercury_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.mercury_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.mercury_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.mercury_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1003) {
@@ -10421,34 +10421,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.venus_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.venus_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.venus_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.venus_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.venus_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.venus_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.venus_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.venus_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.venus_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.venus_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1004) {
@@ -10465,34 +10465,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.mars_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.mars_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.mars_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.mars_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.mars_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.mars_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.mars_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.mars_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.mars_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.mars_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1005) {
@@ -10509,34 +10509,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.jupiter_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.jupiter_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.jupiter_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.jupiter_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.jupiter_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.jupiter_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.jupiter_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.jupiter_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.jupiter_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.jupiter_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1006) {
@@ -10553,34 +10553,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.saturn_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.saturn_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.saturn_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.saturn_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.saturn_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.saturn_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.saturn_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.saturn_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.saturn_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.saturn_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1007) {
@@ -10597,34 +10597,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.uranus_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.uranus_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.uranus_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.uranus_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.uranus_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.uranus_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.uranus_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.uranus_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.uranus_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.uranus_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
     else if (menu_page==1008) {
@@ -10641,34 +10641,34 @@ void UpdateUI() {
       }
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RA   " + String(siderealPlanetData.neptune_ra)).c_str());
-      display.drawCanvas(4, 27, canvas120x8);
+      display.drawCanvas(4, 25, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DEC  " + String(siderealPlanetData.neptune_dec)).c_str());
-      display.drawCanvas(4, 37, canvas120x8);
+      display.drawCanvas(4, 35, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("AZ   " + String(siderealPlanetData.neptune_az)).c_str());
-      display.drawCanvas(4, 47, canvas120x8);
+      display.drawCanvas(4, 45, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("ALT  " + String(siderealPlanetData.neptune_alt)).c_str());
-      display.drawCanvas(4, 57, canvas120x8);
+      display.drawCanvas(4, 55, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RISE " + String(siderealPlanetData.neptune_r)).c_str());
-      display.drawCanvas(4, 67, canvas120x8);
+      display.drawCanvas(4, 65, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.neptune_s)).c_str());
-      display.drawCanvas(4, 77, canvas120x8);
+      display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELA " + String(siderealPlanetData.neptune_helio_ecliptic_lat)).c_str());
-      display.drawCanvas(4, 87, canvas120x8);
+      display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("HELO " + String(siderealPlanetData.neptune_helio_ecliptic_long)).c_str());
-      display.drawCanvas(4, 97, canvas120x8);
+      display.drawCanvas(4, 95, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("RADV " + String(siderealPlanetData.neptune_radius_vector)).c_str());
-      display.drawCanvas(4, 107, canvas120x8);
+      display.drawCanvas(4, 105, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("DIST " + String(siderealPlanetData.neptune_distance)).c_str());
-      display.drawCanvas(4, 117, canvas120x8);
+      display.drawCanvas(4, 115, canvas120x8);
     }
 
   }
