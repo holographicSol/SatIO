@@ -6208,12 +6208,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.sun_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6222,12 +6222,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.sun_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6284,12 +6284,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6297,12 +6297,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6391,12 +6391,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6407,12 +6407,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6420,12 +6420,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6484,12 +6484,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6497,12 +6497,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6561,25 +6561,25 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltRange") == 0) {\
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6638,12 +6638,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6651,12 +6651,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6715,12 +6715,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6728,12 +6728,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6792,12 +6792,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6805,12 +6805,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6869,12 +6869,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_az,
               matrixData.matrix_function_xyz[Mi][Fi][0],
-              matrixData.matrix_function_xyz[Mi][Fi][2]);
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6882,12 +6882,12 @@ void matrixSwitch() {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][2]);
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
@@ -6960,7 +6960,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
-        if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7010,7 +7010,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        DHT11_0 CELSIUS
 
-        if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
