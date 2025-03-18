@@ -4751,16 +4751,132 @@ void trackPlanets() {
   // do planet elements and do sun before doing other plans
   myAstro.doPlanetElements();
   myAstro.doSun();
+
   // now do other plans
   if (systemData.sidereal_track_sun == true) {trackSun();}
+  else {
+    siderealPlanetData.sun_ra=NAN;
+    siderealPlanetData.sun_dec=NAN;
+    siderealPlanetData.sun_az=NAN;
+    siderealPlanetData.sun_alt=NAN;
+    siderealPlanetData.sun_r=NAN;
+    siderealPlanetData.sun_s=NAN;
+  }
   if (systemData.sidereal_track_moon == true) {trackMoon();}
+  else {
+    siderealPlanetData.moon_ra=NAN;
+    siderealPlanetData.moon_dec=NAN;
+    siderealPlanetData.moon_az=NAN;
+    siderealPlanetData.moon_alt=NAN;
+    siderealPlanetData.moon_r=NAN;
+    siderealPlanetData.moon_s=NAN;
+    siderealPlanetData.moon_p=NAN;
+  }
   if (systemData.sidereal_track_mercury == true) {trackMercury();}
+  else {
+    siderealPlanetData.mercury_ra=NAN;
+    siderealPlanetData.mercury_dec=NAN;
+    siderealPlanetData.mercury_az=NAN;
+    siderealPlanetData.mercury_alt=NAN;
+    siderealPlanetData.mercury_r=NAN;
+    siderealPlanetData.mercury_s=NAN;
+    siderealPlanetData.mercury_helio_ecliptic_lat=NAN;
+    siderealPlanetData.mercury_helio_ecliptic_long=NAN;
+    siderealPlanetData.mercury_radius_vector=NAN;
+    siderealPlanetData.mercury_distance=NAN;
+    siderealPlanetData.mercury_ecliptic_lat=NAN;
+    siderealPlanetData.mercury_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_venus == true) {trackVenus();}
+  else {
+    siderealPlanetData.venus_ra=NAN;
+    siderealPlanetData.venus_dec=NAN;
+    siderealPlanetData.venus_az=NAN;
+    siderealPlanetData.venus_alt=NAN;
+    siderealPlanetData.venus_r=NAN;
+    siderealPlanetData.venus_s=NAN;
+    siderealPlanetData.venus_helio_ecliptic_lat=NAN;
+    siderealPlanetData.venus_helio_ecliptic_long=NAN;
+    siderealPlanetData.venus_radius_vector=NAN;
+    siderealPlanetData.venus_distance=NAN;
+    siderealPlanetData.venus_ecliptic_lat=NAN;
+    siderealPlanetData.venus_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_mars == true) {trackMars();}
+  else {
+    siderealPlanetData.mars_ra=NAN;
+    siderealPlanetData.mars_dec=NAN;
+    siderealPlanetData.mars_az=NAN;
+    siderealPlanetData.mars_alt=NAN;
+    siderealPlanetData.mars_r=NAN;
+    siderealPlanetData.mars_s=NAN;
+    siderealPlanetData.mars_helio_ecliptic_lat=NAN;
+    siderealPlanetData.mars_helio_ecliptic_long=NAN;
+    siderealPlanetData.mars_radius_vector=NAN;
+    siderealPlanetData.mars_distance=NAN;
+    siderealPlanetData.mars_ecliptic_lat=NAN;
+    siderealPlanetData.mars_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
+  else {
+    siderealPlanetData.jupiter_ra=NAN;
+    siderealPlanetData.jupiter_dec=NAN;
+    siderealPlanetData.jupiter_az=NAN;
+    siderealPlanetData.jupiter_alt=NAN;
+    siderealPlanetData.jupiter_r=NAN;
+    siderealPlanetData.jupiter_s=NAN;
+    siderealPlanetData.jupiter_helio_ecliptic_lat=NAN;
+    siderealPlanetData.jupiter_helio_ecliptic_long=NAN;
+    siderealPlanetData.jupiter_radius_vector=NAN;
+    siderealPlanetData.jupiter_distance=NAN;
+    siderealPlanetData.jupiter_ecliptic_lat=NAN;
+    siderealPlanetData.jupiter_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_saturn == true) {trackSaturn();}
+  else {
+    siderealPlanetData.saturn_ra=NAN;
+    siderealPlanetData.saturn_dec=NAN;
+    siderealPlanetData.saturn_az=NAN;
+    siderealPlanetData.saturn_alt=NAN;
+    siderealPlanetData.saturn_r=NAN;
+    siderealPlanetData.saturn_s=NAN;
+    siderealPlanetData.saturn_helio_ecliptic_lat=NAN;
+    siderealPlanetData.saturn_helio_ecliptic_long=NAN;
+    siderealPlanetData.saturn_radius_vector=NAN;
+    siderealPlanetData.saturn_distance=NAN;
+    siderealPlanetData.saturn_ecliptic_lat=NAN;
+    siderealPlanetData.saturn_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_uranus == true) {trackUranus();}
+  else {
+    siderealPlanetData.uranus_ra=NAN;
+    siderealPlanetData.uranus_dec=NAN;
+    siderealPlanetData.uranus_az=NAN;
+    siderealPlanetData.uranus_alt=NAN;
+    siderealPlanetData.uranus_r=NAN;
+    siderealPlanetData.uranus_s=NAN;
+    siderealPlanetData.uranus_helio_ecliptic_lat=NAN;
+    siderealPlanetData.uranus_helio_ecliptic_long=NAN;
+    siderealPlanetData.uranus_radius_vector=NAN;
+    siderealPlanetData.uranus_distance=NAN;
+    siderealPlanetData.uranus_ecliptic_lat=NAN;
+    siderealPlanetData.uranus_ecliptic_long=NAN;
+  }
   if (systemData.sidereal_track_neptune == true) {trackNeptune();}
+  else {
+    siderealPlanetData.neptune_ra=NAN;
+    siderealPlanetData.neptune_dec=NAN;
+    siderealPlanetData.neptune_az=NAN;
+    siderealPlanetData.neptune_alt=NAN;
+    siderealPlanetData.neptune_r=NAN;
+    siderealPlanetData.neptune_s=NAN;
+    siderealPlanetData.neptune_helio_ecliptic_lat=NAN;
+    siderealPlanetData.neptune_helio_ecliptic_long=NAN;
+    siderealPlanetData.neptune_radius_vector=NAN;
+    siderealPlanetData.neptune_distance=NAN;
+    siderealPlanetData.neptune_ecliptic_lat=NAN;
+    siderealPlanetData.neptune_ecliptic_long=NAN;
+  }
 }
 
 void setTrackPlanets() {
