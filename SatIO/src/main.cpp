@@ -7203,7 +7203,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 0
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_0") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7214,7 +7214,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_0") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7225,7 +7225,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_0") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7236,7 +7236,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_0") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7252,7 +7252,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 1
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_1") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7263,7 +7263,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_1") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7274,7 +7274,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_1") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7285,7 +7285,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_1") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7301,7 +7301,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 2
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_2") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7312,7 +7312,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_2") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7323,7 +7323,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_2") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7334,7 +7334,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_2") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7350,7 +7350,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 3
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_3") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7361,7 +7361,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_3") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7372,7 +7372,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_3") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7383,7 +7383,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_3") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7399,7 +7399,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 4
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_4") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7410,7 +7410,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_4") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7421,7 +7421,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_4") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7432,7 +7432,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_4") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7448,7 +7448,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 5
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_5") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7459,7 +7459,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_5") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7470,7 +7470,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_5") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7481,7 +7481,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_5") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7497,7 +7497,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 6
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_6") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7508,7 +7508,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_6") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7519,7 +7519,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_6") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7530,7 +7530,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_6") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7546,7 +7546,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 7
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_7") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7557,7 +7557,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_7") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7568,7 +7568,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_7") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7579,7 +7579,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_7") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7595,7 +7595,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 8
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_8") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7606,7 +7606,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_8") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7617,7 +7617,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_8") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7628,7 +7628,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_8") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7644,7 +7644,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 9
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_9") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7655,7 +7655,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_9") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7666,7 +7666,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_9") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7677,7 +7677,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_9") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7693,7 +7693,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 10
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_10") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7704,7 +7704,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_10") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7715,7 +7715,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_10") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7726,7 +7726,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_10") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7742,7 +7742,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 11
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7753,7 +7753,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7764,7 +7764,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7775,7 +7775,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_11") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7791,7 +7791,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 12
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7802,7 +7802,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7813,7 +7813,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7824,7 +7824,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_12") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7840,7 +7840,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 13
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7851,7 +7851,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7862,7 +7862,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7873,7 +7873,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_13") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7889,7 +7889,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 14
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7900,7 +7900,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7911,7 +7911,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7922,7 +7922,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_14") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0],
@@ -7938,7 +7938,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 15
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7949,7 +7949,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Under") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7960,7 +7960,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Equal") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -7971,7 +7971,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor_15") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Range") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0],
