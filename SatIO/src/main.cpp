@@ -602,7 +602,7 @@ LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 34}, {124, 124}} 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
 
-const int max_universe_items = 15;
+const int max_universe_items = 18;
 const char *menuUniverseItems[max_universe_items];
 LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 34}, {124, 124}} );
 
@@ -9765,11 +9765,11 @@ void UpdateUI() {
       menuUniverseItems[10]="VIEW MERCURY";
       menuUniverseItems[11]="VIEW VENUS";
       menuUniverseItems[12]="VIEW MOON";
-      menuUniverseItems[10]="VIEW MARS";
-      menuUniverseItems[11]="VIEW JUPITER";
-      menuUniverseItems[12]="VIEW SATURN";
-      menuUniverseItems[13]="VIEW URANUS";
-      menuUniverseItems[14]="VIEW NEPTUNE";
+      menuUniverseItems[13]="VIEW MARS";
+      menuUniverseItems[14]="VIEW JUPITER";
+      menuUniverseItems[15]="VIEW SATURN";
+      menuUniverseItems[16]="VIEW URANUS";
+      menuUniverseItems[17]="VIEW NEPTUNE";
 
       // show menu
       menuUniverse.show( display );
