@@ -4971,7 +4971,8 @@ void matrixSwitch() {
         
 
         /* run the following logic checks providing the gps data has already been collected (gps_done is set automatically by a task) */
-        if (gps_done == true) {
+        // temporarily disabled while matrix moved back to running inside gps done block in main loop
+        // if (gps_done == true) {
         
           // next up: matrix_switch_inverted_logic. utilize inverted theoretical primitives for all checks so we can choose to return true when true or to return true when false
           
@@ -6217,6 +6218,7 @@ void matrixSwitch() {
               matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][2]);
             }
+            Serial.println(tmp_matrix[Fi]);
           }
 
           // sun altitude:
@@ -7946,9 +7948,8 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
-
         
-      }
+        // }
 
       // ----------------------------------------------------------------------------------------------------------------------
       //                                                                                                           FINAL SWITCH
@@ -11668,19 +11669,35 @@ void loop() {
   if (gps_done==true) {
     longer_loop = true;
 
+    // ---------------------------------------------------------------------
+
     /* only calculate data dependent on gps here */
 
     bench("[gps_done_t] " + String(millis()-gps_done_t));
     bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
+    // ---------------------------------------------------------------------
+
     t0 = millis();
     convertUTCToLocal();
     bench("[convertUTCToLocal] " + String(millis()-t0));
 
+    // ---------------------------------------------------------------------
+
     t0 = millis();
     calculateLocation();
     bench("[calculateLocation] " + String(millis()-t0));
+
+    // ---------------------------------------------------------------------
+    //                                                         MATRIX SWITCH
+
+    t0 = millis();
+    if (systemData.matrix_enabled == true) {matrixSwitch();}
+    MatrixStatsCounter();
+    bench("[matrixSwitch] " + String(millis()-t0));
+
+    // ---------------------------------------------------------------------
 
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
@@ -11699,17 +11716,6 @@ void loop() {
   t0 = millis();
   getSensorData();
   bench("[getSensorData] " + String(millis()-t0));
-
-
-  // ---------------------------------------------------------------------
-  //                                                         MATRIX SWITCH
-
-  /* run every loop */
-
-  t0 = millis();
-  if (systemData.matrix_enabled == true) {matrixSwitch();}
-  MatrixStatsCounter();
-  bench("[matrixSwitch] " + String(millis()-t0));
 
 
   // ---------------------------------------------------------------------
