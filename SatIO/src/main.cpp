@@ -952,7 +952,7 @@ struct SiderealPlantetsStruct {
   double moon_alt;
   double moon_r;
   double moon_s;
-  int moon_p;
+  double moon_p;
   char moon_p_name[8][28] = {
     "New Moon",
     "Waxing Crescent",
@@ -4638,10 +4638,6 @@ siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.mercury_r = myAstro.getRiseTime();
 siderealPlanetData.mercury_s = myAstro.getSetTime();
-
-// myAstro.getDP
-// myAstro.getGMTsiderealTime
-// myAstro.getPL
 }
 
 void trackVenus() {
@@ -4779,6 +4775,7 @@ void trackPlanets() {
     siderealPlanetData.moon_r=NAN;
     siderealPlanetData.moon_s=NAN;
     siderealPlanetData.moon_p=NAN;
+    siderealPlanetData.moon_lum=NAN;
   }
   if (systemData.sidereal_track_mercury == true) {trackMercury();}
   else {
@@ -6357,8 +6354,8 @@ void matrixSwitch() {
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhase") == 0) {
-          tmp_matrix[Fi] = check_equal_true(siderealPlanetData.moon_p,
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseEqual") == 0) {
+          tmp_matrix[Fi] = check_equal_true((int)siderealPlanetData.moon_p,
           matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
 
@@ -8832,7 +8829,7 @@ String getRelatedX(char * data) {
   if (strcmp("MoonDown", data)==0) {return String(siderealPlanetData.moon_s);}
   if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
   if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
-  if (strcmp("MoonPhase", data)==0) {return String(siderealPlanetData.moon_p);}
+  if (strcmp("MoonPhase", data)==0) {return String((int)siderealPlanetData.moon_p);}
   if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
   if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
   if (strcmp("MercuryUp", data)==0) {return String(siderealPlanetData.mercury_r);}
@@ -10351,12 +10348,11 @@ void UpdateUI() {
       canvas120x8.printFixed(1, 1, String("SET  " + String(siderealPlanetData.moon_s)).c_str());
       display.drawCanvas(4, 75, canvas120x8);
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("PH   " + String(siderealPlanetData.moon_p_name[siderealPlanetData.moon_p])).c_str());
+      canvas120x8.printFixed(1, 1, String("PH   " + String(siderealPlanetData.moon_p_name[(int)siderealPlanetData.moon_p])).c_str());
       display.drawCanvas(4, 85, canvas120x8);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String("LUM  " + String(siderealPlanetData.moon_lum)).c_str());
       display.drawCanvas(4, 95, canvas120x8);
-      
     }
 
     else if (menu_page==1002) {
