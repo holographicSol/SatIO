@@ -8122,6 +8122,8 @@ void menuBack() {
   else if (menu_page==120) {menu_page=50;}
   else if (menu_page==130) {menu_page=50;}
   else if (menu_page==140) {menu_page=50;}
+
+  else if (menu_page==1000) {menu_page=70;}
   else if (menu_page==1001) {menu_page=70;}
   else if (menu_page==1002) {menu_page=70;}
   else if (menu_page==1003) {menu_page=70;}
@@ -8129,7 +8131,7 @@ void menuBack() {
   else if (menu_page==1005) {menu_page=70;}
   else if (menu_page==1006) {menu_page=70;}
   else if (menu_page==1007) {menu_page=70;}
-  else if (menu_page==1007) {menu_page=70;}
+  else if (menu_page==1008) {menu_page=70;}
 
   debug("[menuBack] menupage 1: " + String(menu_page));
 }
