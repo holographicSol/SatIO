@@ -86,6 +86,9 @@
   Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
   as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
+  ToDO: Always set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and modification to matrix (to handle NAN).
+        This will be practical for when data is invalid and when some functions are disabled but are still set in matrix. 
+
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6202,7 +6205,7 @@ void matrixSwitch() {
 
           // ----------------------------------------------------------------------------------------------------------------------
           //                                                                                                     SIDEREAL TIME: SUN
-
+          
           // sun azimuth:
           else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange") == 0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
