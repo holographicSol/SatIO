@@ -9762,9 +9762,9 @@ void UpdateUI() {
       else {menuUniverseItems[8]="NEPTUNE DISABLED";}
 
       menuUniverseItems[9]="VIEW SUN";
-      menuUniverseItems[10]="VIEW MERCURY";
-      menuUniverseItems[11]="VIEW VENUS";
-      menuUniverseItems[12]="VIEW MOON";
+      menuUniverseItems[10]="VIEW MOON";
+      menuUniverseItems[11]="VIEW MERCURY";
+      menuUniverseItems[12]="VIEW VENUS";
       menuUniverseItems[13]="VIEW MARS";
       menuUniverseItems[14]="VIEW JUPITER";
       menuUniverseItems[15]="VIEW SATURN";
