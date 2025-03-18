@@ -6218,7 +6218,6 @@ void matrixSwitch() {
               matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][2]);
             }
-            Serial.println(tmp_matrix[Fi]);
           }
 
           // sun altitude:
@@ -6917,8 +6916,6 @@ void matrixSwitch() {
             tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
           else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD") == 0) {
             tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
-
-          }
 
 
           /* run the following logic checks providing the sensor data has already been collected (sensor data must be called manually before calling matrix switch) */
@@ -7949,7 +7946,7 @@ void matrixSwitch() {
             }
           }
         
-        // }
+      }
 
       // ----------------------------------------------------------------------------------------------------------------------
       //                                                                                                           FINAL SWITCH
