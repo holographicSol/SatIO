@@ -6354,6 +6354,28 @@ void matrixSwitch() {
           }
         }
 
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseOver") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_true((int)siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_over_false((int)siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseUnder") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_true((int)siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_under_false((int)siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true((int)siderealPlanetData.moon_p,
@@ -6362,6 +6384,19 @@ void matrixSwitch() {
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_false((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseRange") == 0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][2]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_p,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
 
@@ -8835,7 +8870,10 @@ String getRelatedX(char * data) {
   if (strcmp("MoonDown", data)==0) {return String(siderealPlanetData.moon_s);}
   if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
   if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
+  if (strcmp("MoonPhaseOver", data)==0) {return String((int)siderealPlanetData.moon_p);}
+  if (strcmp("MoonPhaseUnder", data)==0) {return String((int)siderealPlanetData.moon_p);}
   if (strcmp("MoonPhaseEqual", data)==0) {return String((int)siderealPlanetData.moon_p);}
+  if (strcmp("MoonPhaseRange", data)==0) {return String((int)siderealPlanetData.moon_p);}
   if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
   if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
   if (strcmp("MercuryUp", data)==0) {return String(siderealPlanetData.mercury_r);}
