@@ -549,6 +549,56 @@
 -----
 
 
+    [PERFORMANCE]
+
+    Built in functions can be enabled/disabled for application specific tuning.
+
+    SatIO: Enable/disable. Converts UTC to local time.
+                           Converts absolute latitude and longitude to degrees.
+                           Syncronizes RTC with local time from UTC.
+                           Records last RTC syncronization datetime.
+    
+    GNGGA: Enable/disable. Parse GNGGA data from GPS module.
+
+    GNRMC: Enable/disable. Parse GNRMC data from GPS module.
+
+    GPATT: Enable/disable. Parse GPATT data from GPS module.
+
+    Matrix: Enable/disable. Enable/disable programmable matrix logic function.
+
+    Output SatIO: Enable/disable. Print SatIO sentence over serial.
+
+    Output GNGGA: Enable/disable. Print GNGGA sentence over serial.
+
+    Output GNRMC: Enable/disable. Print GNRMC sentence over serial.
+
+    Output GPATT: Enable/disable. Print GPATT sentence over serial.
+
+    Output Matrix: Enable/disable. Print Matrix sentence over serial.
+
+    Output Sensors: Enable/disable. Print Sensors sentence over serial.
+
+    Track Sun: Enable/disable.
+
+    Track Moon: Enable/disable.
+
+    Track Mercury: Enable/disable.
+
+    Track Venus: Enable/disable.
+
+    Track Mars: Enable/disable.
+
+    Track Jupiter: Enable/disable.
+
+    Track Saturn: Enable/disable.
+
+    Track Uranus: Enable/disable.
+
+    Track Neptune: Enable/disable.
+
+-----
+
+
     [Current Hardware Setup (Semi-Modular)]
     
     [Master] SatIO
