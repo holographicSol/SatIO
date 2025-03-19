@@ -8722,6 +8722,10 @@ void menuEnter() {
 
     // startup run matrix
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
+
+    // consider matrix switch state handling before allowing the below two values to be changed after flashing
+    // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
+    // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
   }
 }
 
@@ -9976,6 +9980,14 @@ void UpdateUI() {
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
       else {menuSystemItems[0]="AUTO MATRIX OFF";}
 
+      // // enable/disable matrix
+      // if (systemData.matrix_enabled==true) {menuSystemItems[1]="MATRIX ENABLED";}
+      // else {menuSystemItems[1]="MATRIX DISABLED";}
+
+      // // enable/disable port controller
+      // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
+      // else {menuSystemItems[2]="PORT.CON DISABLED";}
+      
       // show menu
       menuSystem.show( display );
     }
@@ -11729,6 +11741,7 @@ void loop() {
 
     t0 = millis();
     if (systemData.matrix_enabled == true) {matrixSwitch();}
+    // else zero states
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String(millis()-t0));
 
@@ -11759,9 +11772,9 @@ void loop() {
   /* run every loop */
 
   t0 = millis();
-  writeToPortController();
+  if (systemData.port_controller_enabled == true) {writeToPortController();}
+  // else zero states
   bench("[writePortController] " + String(millis()-t0));
-
 
   // ---------------------------------------------------------------------
   //                                             ALLOW GPS DATA COLLECTION
