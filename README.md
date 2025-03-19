@@ -553,9 +553,9 @@
 
     Built in functions can be enabled/disabled for application specific tuning.
 
-    SatIO: Enable/disable. Converts UTC to local time.
-                           Converts absolute latitude and longitude to degrees.
-                           Syncronizes RTC with local time from UTC.
+    SatIO: Enable/disable. Converts UTC from GPS to local time.
+                           Converts absolute latitude and longitude from GPS to degrees.
+                           Syncronizes RTC with local time from GPS UTC.
                            Records last RTC syncronization datetime.
     
     GNGGA: Enable/disable. Parse GNGGA data from GPS module.
@@ -565,6 +565,8 @@
     GPATT: Enable/disable. Parse GPATT data from GPS module.
 
     Matrix: Enable/disable. Enable/disable programmable matrix logic function.
+
+    Port Controller: Enable/sisable. Enable/disable Port Controller IO.
 
     Output SatIO: Enable/disable. Print SatIO sentence over serial.
 
