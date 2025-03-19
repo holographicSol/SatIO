@@ -105,14 +105,14 @@
     [ MATRIX SWITCH LOGIC ]
 
     Logic may require or not require values X,Y,Z.
-    Typical rules:
+    
+    [Typical rules]
     0: no arguments.
     1: Is value greater than, less than or equal to X.
     2: Is value greater than X and less than Y.
     3: Is value in Z square range of X and Y. 
 
-    Special functions:
-
+    [Special functions]
     None: Returns false, takes no further arguments.
     Enabled: Returns true, takes no further arguments.
     Overload: Returns bool, takes no further arguments.
