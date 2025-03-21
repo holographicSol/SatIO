@@ -468,6 +468,51 @@ const uint8_t rtcsync_red[] = {
 bool update_ui = true;
 bool ui_cleared = false;
 int menu_page = 0;
+/* HOME */
+static int page_home = 0;
+/* MAIN MENU */
+static int page_main_menu = 1;
+/* MATRIX LOGIC */
+static int page_matrix_logic_main = 2;
+static int page_matrix_logic_select_setup = 3;
+static int page_matrix_logic_setup_function = 4;
+/* INPUT DATA */
+static int page_input_data = 5;
+/* FILE */
+static int page_file_main = 6;
+static int page_file_save_matrix = 7;
+static int page_file_load_matrix = 8;
+static int page_file_delete_matrix = 9;
+static int page_save_system_config_indicator = 29;
+static int page_save_matrix_file_indicator = 30;
+static int page_load_matrix_file_indicator = 31;
+static int page_delete_matrix_file_indicator = 32;
+static int page_restore_default_matrix_indicator = 32;
+/* GPS */
+static int page_gps_main = 10;
+static int page_gps_view_gngga = 11;
+static int page_gps_view_gnrmc = 12;
+static int page_gps_view_gpatt = 13;
+static int page_gps_view_satio = 14;
+/* SERIAL */
+static int page_serial_main = 15;
+/* SYSTEM */
+static int page_system_main = 16;
+/* UNIVERSE */
+static int page_universe_main = 17;
+static int page_universe_view_sun = 18;
+static int page_universe_view_moon = 19;
+static int page_universe_view_mercury = 20;
+static int page_universe_view_venus = 21;
+static int page_universe_view_mars = 22;
+static int page_universe_view_jupiter = 23;
+static int page_universe_view_saturn = 24;
+static int page_universe_view_uranus = 25;
+static int page_universe_view_neptune = 26;
+/* DISPLAY */
+static int page_display_main = 27;
+/* CD74HC4067 */
+static int page_CD74HC4067_main = 28;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
@@ -616,7 +661,7 @@ const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{3, 34}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  MENU UNIVERSE
+//                                                                                                                      MENU SYSTEM
 
 const int max_system_items = 1;
 const char *menuSystemItems[max_system_items];
@@ -8176,67 +8221,62 @@ char TMP_UI_DATA_1[56];
 //                                                                                                                        MENU UP
 
 void menuUp() {
-  if (menu_page==0) {menuHome.up();}
-  else if (menu_page==1) {menuMain.up();}
-  else if (menu_page==2) {}
-  else if (menu_page==3) {
+  if (menu_page==page_home) {menuHome.up();}
+  else if (menu_page==page_main_menu) {menuMain.up();}
+  else if (menu_page==page_matrix_logic_main) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.up();}
     if (menu_column_selection==1) {}
     if (menu_column_selection==2) {}
     if (menu_column_selection==4) {menuMatrixFunctionSelect.up();}
   }
-  else if (menu_page==4) {}
-  else if (menu_page==5) {menuMatrixConfigureFunction.up();}
-  else if (menu_page==6) {menuMatrixSetFunctionName.up();}
-  else if (menu_page==20) {menuFile.up();}
-  else if (menu_page==21) {menuMatrixFilepath.up();}
-  else if (menu_page==22) {menuMatrixFilepath.up();}
-  else if (menu_page==23) {menuMatrixFilepath.up();}
-  else if (menu_page==50) {menuGPS.up();}
-  else if (menu_page==60) {menuSerial.up();}
-  else if (menu_page==70) {menuUniverse.up();}
-  else if (menu_page==80) {menuDisplay.up();}
-  else if (menu_page==90) {menuSystem.up();}
+  else if (menu_page==page_input_data) {}
+  else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.up();}
+  else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.up();}
+  else if (menu_page==page_file_main) {menuFile.up();}
+  else if (menu_page==page_file_save_matrix) {menuMatrixFilepath.up();}
+  else if (menu_page==page_file_load_matrix) {menuMatrixFilepath.up();}
+  else if (menu_page==page_file_delete_matrix) {menuMatrixFilepath.up();}
+  else if (menu_page==page_gps_main) {menuGPS.up();}
+  else if (menu_page==page_serial_main) {menuSerial.up();}
+  else if (menu_page==page_universe_main) {menuUniverse.up();}
+  else if (menu_page==page_display_main) {menuDisplay.up();}
+  else if (menu_page==page_system_main) {menuSystem.up();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU DOWN
 
 void menuDown() {
-  if (menu_page==0) {menuHome.down();}
-  else if (menu_page==1) {menuMain.down();}
-  else if (menu_page==2) {}
-  else if (menu_page==3) {
+  if (menu_page==page_home) {menuHome.down();}
+  else if (menu_page==page_main_menu) {menuMain.down();}
+  else if (menu_page==page_matrix_logic_main) {
     if (menu_column_selection==0) {menuMatrixSwitchSelect.down();}
     if (menu_column_selection==1) {}
     if (menu_column_selection==2) {}
     if (menu_column_selection==4) {menuMatrixFunctionSelect.down();}
   }
-  else if (menu_page==4) {}
-  else if (menu_page==5) {menuMatrixConfigureFunction.down();}
-  else if (menu_page==6) {menuMatrixSetFunctionName.down();}
-  else if (menu_page==20) {menuFile.down();}
-  else if (menu_page==21) {menuMatrixFilepath.down();}
-  else if (menu_page==22) {menuMatrixFilepath.down();}
-  else if (menu_page==23) {menuMatrixFilepath.down();}
-  else if (menu_page==50) {menuGPS.down();}
-  else if (menu_page==60) {menuSerial.down();}
-  else if (menu_page==70) {menuUniverse.down();}
-  else if (menu_page==80) {menuDisplay.down();}
-  else if (menu_page==90) {menuSystem.down();}
+  else if (menu_page==page_input_data) {}
+  else if (menu_page==page_matrix_logic_select_setup) {menuMatrixConfigureFunction.down();}
+  else if (menu_page==page_matrix_logic_setup_function) {menuMatrixSetFunctionName.down();}
+  else if (menu_page==page_file_main) {menuFile.down();}
+  else if (menu_page==page_file_save_matrix) {menuMatrixFilepath.down();}
+  else if (menu_page==page_file_load_matrix) {menuMatrixFilepath.down();}
+  else if (menu_page==page_file_delete_matrix) {menuMatrixFilepath.down();}
+  else if (menu_page==page_gps_main) {menuGPS.down();}
+  else if (menu_page==page_serial_main) {menuSerial.down();}
+  else if (menu_page==page_universe_main) {menuUniverse.down();}
+  else if (menu_page==page_display_main) {menuDisplay.down();}
+  else if (menu_page==page_system_main) {menuSystem.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU RIGHT
 
 void menuRight() {
-  if (menu_page==0) {}
-  else if (menu_page==1) {}
-  else if (menu_page==2) {}
-  else if (menu_page==3) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
-  else if (menu_page==4) {}
-  else if (menu_page==5) {}
-  else if (menu_page==6) {}
+  if (menu_page==page_home) {}
+  else if (menu_page==page_main_menu) {}
+  else if (menu_page==page_matrix_logic_main) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
+
   debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
@@ -8244,54 +8284,50 @@ void menuRight() {
 //                                                                                                                      MENU LEFT
 
 void menuLeft() {
-  if (menu_page==0) {}
-  else if (menu_page==1) {}
-  else if (menu_page==2) {}
-  else if (menu_page==3) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
-  else if (menu_page==4) {}
-  else if (menu_page==5) {}
-  else if (menu_page==6) {}
+  if (menu_page==page_home) {}
+  else if (menu_page==page_main_menu) {}
+  else if (menu_page==page_matrix_logic_main) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
   debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
   debug("[menuBack] menupage 0: " + String(menu_page));
-  if (menu_page==1) {menu_page=0;}
-  else if (menu_page==3) {menu_page=1;}
-  else if (menu_page==4) {
+  if (menu_page==page_main_menu) {menu_page=page_home;}
+  else if (menu_page==page_matrix_logic_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_input_data) {
     debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
     // enter port
-    if (enter_digits_key == 1) {menu_page=3;}
+    if (enter_digits_key == 1) {menu_page=page_matrix_logic_main;}
     // enter function x, enter function y, enter function z
-    else if ((enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=5;}
+    else if ((enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=page_matrix_logic_select_setup;}
   }
-  else if (menu_page==5) {menu_page=3;}
-  else if (menu_page==6) {menu_page=5;}
-  else if (menu_page==20) {menu_page=1;}
-  else if (menu_page==21) {menu_page=20;}
-  else if (menu_page==22) {menu_page=20;}
-  else if (menu_page==23) {menu_page=20;}
-  else if (menu_page==50) {menu_page=1;}
-  else if (menu_page==60) {menu_page=1;}
-  else if (menu_page==70) {menu_page=1;}
-  else if (menu_page==80) {menu_page=1;}
-  else if (menu_page==90) {menu_page=1;}
-  else if (menu_page==100) {menu_page=1;}
-  else if (menu_page==110) {menu_page=50;}
-  else if (menu_page==120) {menu_page=50;}
-  else if (menu_page==130) {menu_page=50;}
-  else if (menu_page==140) {menu_page=50;}
+  else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
+  else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
+  else if (menu_page==page_file_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_file_save_matrix) {menu_page=page_file_main;}
+  else if (menu_page==page_file_load_matrix) {menu_page=page_file_main;}
+  else if (menu_page==page_file_delete_matrix) {menu_page=page_file_main;}
+  else if (menu_page==page_gps_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_serial_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_universe_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_display_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_system_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_CD74HC4067_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_gps_view_gngga) {menu_page=page_gps_main;}
+  else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
+  else if (menu_page==page_gps_view_gpatt) {menu_page=page_gps_main;}
+  else if (menu_page==page_gps_view_satio) {menu_page=page_gps_main;}
 
-  else if (menu_page==1000) {menu_page=70;}
-  else if (menu_page==1001) {menu_page=70;}
-  else if (menu_page==1002) {menu_page=70;}
-  else if (menu_page==1003) {menu_page=70;}
-  else if (menu_page==1004) {menu_page=70;}
-  else if (menu_page==1005) {menu_page=70;}
-  else if (menu_page==1006) {menu_page=70;}
-  else if (menu_page==1007) {menu_page=70;}
-  else if (menu_page==1008) {menu_page=70;}
+  else if (menu_page==page_universe_view_sun) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_moon) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_mercury) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_venus) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_mars) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_jupiter) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_saturn) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
+  else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
 
   debug("[menuBack] menupage 1: " + String(menu_page));
 }
@@ -8302,66 +8338,66 @@ void menuBack() {
 void menuEnter() {
 
   // home page
-  if (menu_page==0) {
+  if (menu_page==page_home) {
 
     // go to main menu
-    if (menuHome.selection()==0) {menu_page=1;}
+    if (menuHome.selection()==0) {menu_page=page_main_menu;}
   }
 
   // main menu
-  else if (menu_page==1) {
+  else if (menu_page==page_main_menu) {
 
     // go to matrix menu
     if (menuMain.selection()==0) {
-      menu_page=3;
+      menu_page=page_matrix_logic_main;
     }
 
     // go to file menu
     else if (menuMain.selection()==1) {
-      menu_page=20;
+      menu_page=page_file_main;
     }
 
     // go to gps menu
     else if (menuMain.selection()==2) {
-      menu_page=50;
+      menu_page=page_gps_main;
     }
 
     // go to serial menu
     else if (menuMain.selection()==3) {
-      menu_page=60;
+      menu_page=page_serial_main;
     }
 
     // go to system menu
     else if (menuMain.selection()==4) {
-      menu_page=90;
+      menu_page=page_system_main;
     }
 
     // go to universe menu
     else if (menuMain.selection()==5) {
-      menu_page=70;
+      menu_page=page_universe_main;
     }
 
     // go to display menu
     else if (menuMain.selection()==6) {
-      menu_page=80;
+      menu_page=page_display_main;
     }
 
-    // go to display menu
+    // go to CD74HC4067 menu
     else if (menuMain.selection()==7) {
-      menu_page=100;
+      menu_page=page_CD74HC4067_main;
     }
 
   }
 
   // matrix switch configuration
-  else if (menu_page==3) {
+  else if (menu_page==page_matrix_logic_main) {
 
     // go to set port page
     if (menu_column_selection==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 1;
-      menu_page=4;
+      menu_page=page_input_data;
     }
 
     else if (menu_column_selection==2) {
@@ -8376,44 +8412,44 @@ void menuEnter() {
 
     else if (menu_column_selection==4) {
       // go to function name selection
-      menu_page=5;
+      menu_page=page_matrix_logic_select_setup;
     }
   }
 
   // set digits
-  else if (menu_page==4) {
+  else if (menu_page==page_input_data) {
     allow_input_data=false;
-    if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=3;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=5;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=5;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=5;}
+    if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=page_matrix_logic_main;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
     enter_digits_key = -1;
   }
 
   // matrix switch select function name, x, y, or z
-  else if (menu_page==5) {
-    if (menuMatrixConfigureFunction.selection()==0) {menu_page=6;}
+  else if (menu_page==page_matrix_logic_select_setup) {
+    if (menuMatrixConfigureFunction.selection()==0) {menu_page=page_matrix_logic_setup_function;}
 
     // go to set function value x page
     if (menuMatrixConfigureFunction.selection()==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 2;
-      menu_page=4;
+      menu_page=page_input_data;
     }
     // go to set function value y page
     else if (menuMatrixConfigureFunction.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 3;
-      menu_page=4;
+      menu_page=page_input_data;
     }
     // go to set function value z page
     else if (menuMatrixConfigureFunction.selection()==3) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
       enter_digits_key = 4;
-      menu_page=4;
+      menu_page=page_input_data;
     }
     // set primitives
     else if (menuMatrixConfigureFunction.selection()==4) {
@@ -8446,14 +8482,14 @@ void menuEnter() {
   }
 
   // matrix switch set function name
-  else if (menu_page==6) {
+  else if (menu_page==page_matrix_logic_setup_function) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
     strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
-    menu_page=5;
+    menu_page=page_matrix_logic_select_setup;
   }
 
   // file menu
-  else if (menu_page==20) {
+  else if (menu_page==page_file_main) {
 
     // new matrix
     if (menuFile.selection()==0) {
@@ -8476,7 +8512,7 @@ void menuEnter() {
       endSPIDevice(SD_CS);
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      menu_page=21;
+      menu_page=page_file_save_matrix;
     }
 
     // goto load matrix page
@@ -8490,7 +8526,7 @@ void menuEnter() {
       endSPIDevice(SD_CS);
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      menu_page=22;
+      menu_page=page_file_load_matrix;
     }
 
     // goto delete matrix page
@@ -8504,12 +8540,12 @@ void menuEnter() {
       endSPIDevice(SD_CS);
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      menu_page=23;
+      menu_page=page_file_delete_matrix;
     }
 
     // save system settings
     else if (menuFile.selection()==4) {
-      menu_page=33;
+      menu_page=page_save_system_config_indicator;
       UpdateUI();
       endSPIDevice(SSD1351_CS);
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
@@ -8520,25 +8556,25 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
       delay(2000);
-      menu_page=20;
+      menu_page=page_file_main;
     }
 
     // restore default system settings
     else if (menuFile.selection()==5) {
-      menu_page=34;
+      menu_page=page_restore_default_matrix_indicator;
       UpdateUI();
       endSSD1351();
       beginSDCARD();
-      // restore defaults and save
+      // ToDo: restore defaults and save
       endSDCARD();
       beginSSD1351();
       delay(2000);
-      menu_page=20;
+      menu_page=page_file_main;
     }
   }
 
   // save matrix menu
-  else if (menu_page==21) {
+  else if (menu_page==page_file_save_matrix) {
     // generate filename according to selection index
     memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
     strcpy(sdcardData.newfilename, "/MATRIX/M_");
@@ -8549,7 +8585,7 @@ void menuEnter() {
     debug("[saving] " + String(sdcardData.newfilename));
 
     // set notification page
-    menu_page=30;
+    menu_page=page_save_matrix_file_indicator;
     UpdateUI();
 
     // switch spi devices
@@ -8566,11 +8602,11 @@ void menuEnter() {
     display.begin();
 
     // return to previous page
-    menu_page=20;
+    menu_page=page_file_main;
   }
 
   // load matrix menu
-  else if (menu_page==22) {
+  else if (menu_page==page_file_load_matrix) {
     // handle empty slots
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
       // generate filename according to selection index
@@ -8583,7 +8619,7 @@ void menuEnter() {
       debug("[loading] " + String(sdcardData.newfilename));
 
       // set notification page
-      menu_page=31;
+      menu_page=page_load_matrix_file_indicator;
       UpdateUI();
 
       // switch spi devices
@@ -8602,11 +8638,11 @@ void menuEnter() {
     else {debug("[loading] aborting! cannot load empty slot.");}
 
     // return to previous page
-    menu_page=20;
+    menu_page=page_file_main;
   }
 
   // delete matrix menu
-  else if (menu_page==23) {
+  else if (menu_page==page_file_delete_matrix) {
     // handle empty slots
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
       // generate filename according to selection index
@@ -8619,7 +8655,7 @@ void menuEnter() {
       debug("[deleting] " + String(sdcardData.newfilename));
       
       // set notification page
-      menu_page=32;
+      menu_page=page_delete_matrix_file_indicator;
       UpdateUI();
 
       // switch spi devices
@@ -8638,11 +8674,11 @@ void menuEnter() {
     else {debug("[deleting] aborting! cannot delete empty slot.");}
 
     // return to previous page
-    menu_page=20;
+    menu_page=page_file_main;
   }
 
   // gps page
-  else if (menu_page==50) {
+  else if (menu_page==page_gps_main) {
     if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
     else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
     else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
@@ -8657,14 +8693,14 @@ void menuEnter() {
         strcpy(satData.coordinate_conversion_mode, "GNGGA");
       }
     }
-    else if (menuGPS.selection()==5) {menu_page=110;}
-    else if (menuGPS.selection()==6) {menu_page=120;}
-    else if (menuGPS.selection()==7) {menu_page=130;}
-    else if (menuGPS.selection()==8) {menu_page=140;}
+    else if (menuGPS.selection()==5) {menu_page=page_gps_view_gngga;}
+    else if (menuGPS.selection()==6) {menu_page=page_gps_view_gnrmc;}
+    else if (menuGPS.selection()==7) {menu_page=page_gps_view_gpatt;}
+    else if (menuGPS.selection()==8) {menu_page=page_gps_view_satio;}
   }
 
   // serial page
-  else if (menu_page==60) {
+  else if (menu_page==page_serial_main) {
     if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
     else if (menuSerial.selection()==1) {systemData.output_gngga_enabled^=true;}
     else if (menuSerial.selection()==2) {systemData.output_gnrmc_enabled^=true;}
@@ -8675,7 +8711,7 @@ void menuEnter() {
   }
 
   // universe page
-  else if (menu_page==70) {
+  else if (menu_page==page_universe_main) {
     if (menuUniverse.selection()==0) {systemData.sidereal_track_sun^=true;}
     else if (menuUniverse.selection()==1) {systemData.sidereal_track_mercury^=true;}
     else if (menuUniverse.selection()==2) {systemData.sidereal_track_moon^=true;}
@@ -8685,19 +8721,19 @@ void menuEnter() {
     else if (menuUniverse.selection()==6) {systemData.sidereal_track_saturn^=true;}
     else if (menuUniverse.selection()==7) {systemData.sidereal_track_uranus^=true;}
     else if (menuUniverse.selection()==8) {systemData.sidereal_track_neptune^=true;}
-    else if (menuUniverse.selection()==9) {menu_page=1000;}
-    else if (menuUniverse.selection()==10) {menu_page=1001;}
-    else if (menuUniverse.selection()==11) {menu_page=1002;}
-    else if (menuUniverse.selection()==12) {menu_page=1003;}
-    else if (menuUniverse.selection()==13) {menu_page=1004;}
-    else if (menuUniverse.selection()==14) {menu_page=1005;}
-    else if (menuUniverse.selection()==15) {menu_page=1006;}
-    else if (menuUniverse.selection()==16) {menu_page=1007;}
-    else if (menuUniverse.selection()==17) {menu_page=1008;}
+    else if (menuUniverse.selection()==9) {menu_page=page_universe_view_sun;}
+    else if (menuUniverse.selection()==10) {menu_page=page_universe_view_moon;}
+    else if (menuUniverse.selection()==11) {menu_page=page_universe_view_mercury;}
+    else if (menuUniverse.selection()==12) {menu_page=page_universe_view_venus;}
+    else if (menuUniverse.selection()==13) {menu_page=page_universe_view_mars;}
+    else if (menuUniverse.selection()==14) {menu_page=page_universe_view_jupiter;}
+    else if (menuUniverse.selection()==15) {menu_page=page_universe_view_saturn;}
+    else if (menuUniverse.selection()==16) {menu_page=page_universe_view_uranus;}
+    else if (menuUniverse.selection()==17) {menu_page=page_universe_view_neptune;}
   }
 
   // dispaly page
-  else if (menu_page==80) {
+  else if (menu_page==page_display_main) {
 
     // display auto off
     if (menuDisplay.selection()==0)  {systemData.display_auto_off^=true;}
@@ -8718,7 +8754,7 @@ void menuEnter() {
   }
 
   // system page
-  else if (menu_page==90) {
+  else if (menu_page==page_system_main) {
 
     // startup run matrix
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
@@ -9088,7 +9124,7 @@ void UpdateUI() {
   //                                DEVELOPER OPTIONS
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
-  // menu_page=100; // uncomment to debug
+  // menu_page=page_CD74HC4067_main; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
@@ -9102,7 +9138,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                        HOME PAGE
 
-    if (menu_page==0) {
+    if (menu_page==page_home) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9149,7 +9185,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                    SETTINGS PAGE
 
-    else if (menu_page==1) {
+    else if (menu_page==page_main_menu) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9171,7 +9207,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                         MATRIX SWITCH LOGIC PAGE
 
-    else if (menu_page==3) {
+    else if (menu_page==page_matrix_logic_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9377,7 +9413,7 @@ void UpdateUI() {
     //                                ENTER DIGITS PAGE
 
     // enter digits page
-    else if (menu_page==4) {
+    else if (menu_page==page_input_data) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       drawMainBorderRed();
@@ -9490,7 +9526,7 @@ void UpdateUI() {
     //                     SELECT FUNCTION OPTIONS PAGE
 
     // select function name, x, y, or z
-    else if (menu_page==5) {
+    else if (menu_page==page_matrix_logic_select_setup) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9557,7 +9593,7 @@ void UpdateUI() {
     //                        SELECT FUNCTION NAME PAGE
 
     // matrix switch set function name
-    else if (menu_page==6) {
+    else if (menu_page==page_matrix_logic_setup_function) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9597,7 +9633,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                        FILE MENU
 
-    else if (menu_page==20) {
+    else if (menu_page==page_file_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9620,7 +9656,7 @@ void UpdateUI() {
     //                                 SAVE MATRIX MENU
 
     // save matrix
-    else if (menu_page==21) {
+    else if (menu_page==page_file_save_matrix) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9647,7 +9683,7 @@ void UpdateUI() {
     //                                 LOAD MATRIX MENU
 
     // load matrix
-    else if (menu_page==22) {
+    else if (menu_page==page_file_load_matrix) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9673,7 +9709,7 @@ void UpdateUI() {
     //                               DELETE MATRIX MENU
 
     // delete matrix
-    else if (menu_page==23) {
+    else if (menu_page==page_file_delete_matrix) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       
       display.setColor(systemData.color_content);
@@ -9699,7 +9735,7 @@ void UpdateUI() {
     //                            SAVE MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==30) {
+    else if (menu_page==page_save_matrix_file_indicator) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -9712,7 +9748,7 @@ void UpdateUI() {
     //                            LOAD MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==31) {
+    else if (menu_page==page_load_matrix_file_indicator) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -9725,7 +9761,7 @@ void UpdateUI() {
     //                          DELETE MATRIX INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==32) {
+    else if (menu_page==page_delete_matrix_file_indicator) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -9738,7 +9774,7 @@ void UpdateUI() {
     //                   SAVING SYSTEM CONFIG INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==33) {
+    else if (menu_page==page_save_system_config_indicator) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -9752,7 +9788,7 @@ void UpdateUI() {
     //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==34) {
+    else if (menu_page==page_restore_default_matrix_indicator) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.clear();
@@ -9763,22 +9799,9 @@ void UpdateUI() {
     }
 
     // ------------------------------------------------
-    //                                STARTUP INDICATOR
-
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==35) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("STARTING")/2)*6), (display.height()/2)-16, "STARTING", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
-    }
-
-    // ------------------------------------------------
     //                                         GPS MENU
 
-    else if (menu_page==50) {
+    else if (menu_page==page_gps_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
@@ -9823,7 +9846,7 @@ void UpdateUI() {
 
     /* output data to be parsed by other systems or to be read by humans */
 
-    else if (menu_page==60) {
+    else if (menu_page==page_serial_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9870,7 +9893,7 @@ void UpdateUI() {
 
     /* currently solar system tracking */
 
-    else if (menu_page==70) {
+    else if (menu_page==page_universe_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
 
       display.setColor(systemData.color_content);
@@ -9931,7 +9954,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                     DISPLAY MENU
 
-    else if (menu_page==80) {
+    else if (menu_page==page_display_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
@@ -9962,7 +9985,7 @@ void UpdateUI() {
     // ------------------------------------------------
     //                                      SYSTEM MENU
 
-    else if (menu_page==90) {
+    else if (menu_page==page_system_main) {
       if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
 
@@ -9997,7 +10020,7 @@ void UpdateUI() {
 
     /* this may be a menu and is currently a view */
 
-    else if (menu_page==100) {
+    else if (menu_page==page_CD74HC4067_main) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
 
@@ -10105,7 +10128,7 @@ void UpdateUI() {
 
     /* this may be a menu and is currently a view */
 
-    else if (menu_page==110) {
+    else if (menu_page==page_gps_view_gngga) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
 
@@ -10163,7 +10186,7 @@ void UpdateUI() {
 
     /* this may be a menu and is currently a view */
 
-    else if (menu_page==120) {
+    else if (menu_page==page_gps_view_gnrmc) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
 
@@ -10221,7 +10244,7 @@ void UpdateUI() {
 
     /* this may be a menu and is currently a view */
 
-    else if (menu_page==130) {
+    else if (menu_page==page_gps_view_gpatt) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
 
@@ -10279,7 +10302,7 @@ void UpdateUI() {
 
     /* this may be a menu and is currently a view */
 
-    else if (menu_page==140) {
+    else if (menu_page==page_gps_view_satio) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
 
@@ -10347,7 +10370,7 @@ void UpdateUI() {
 
     /* currently solar system tracking */
 
-    else if (menu_page==1000) {
+    else if (menu_page==page_universe_view_sun) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10379,7 +10402,7 @@ void UpdateUI() {
       display.drawCanvas(4, 75, canvas120x8);
     }
 
-    else if (menu_page==1001) {
+    else if (menu_page==page_universe_view_moon) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10417,7 +10440,7 @@ void UpdateUI() {
       display.drawCanvas(4, 95, canvas120x8);
     }
 
-    else if (menu_page==1002) {
+    else if (menu_page==page_universe_view_mercury) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10461,7 +10484,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1003) {
+    else if (menu_page==page_universe_view_venus) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10505,7 +10528,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1004) {
+    else if (menu_page==page_universe_view_mars) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10549,7 +10572,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1005) {
+    else if (menu_page==page_universe_view_jupiter) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10593,7 +10616,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1006) {
+    else if (menu_page==page_universe_view_saturn) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10637,7 +10660,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1007) {
+    else if (menu_page==page_universe_view_uranus) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10681,7 +10704,7 @@ void UpdateUI() {
       display.drawCanvas(4, 115, canvas120x8);
     }
 
-    else if (menu_page==1008) {
+    else if (menu_page==page_universe_view_neptune) {
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
         display.setColor(systemData.color_content);
@@ -10900,7 +10923,7 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
 
         // parse navigation buttons
-        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,12")==0) {Serial.println("[button] 12: home"); menu_page=0;}
+        else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,12")==0) {Serial.println("[button] 12: home"); menu_page=page_home;}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,13")==0) {Serial.println("[button] 13: up"); menuUp();}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,14")==0) {Serial.println("[button] 14: right"); menuRight();}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,15")==0) {Serial.println("[button] 15: down"); menuDown();}
