@@ -465,54 +465,56 @@ const uint8_t rtcsync_red[] = {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              DISPLAY VARIABLES
 
+/* try to ensure space for developments by leaving a space of 20 pages between each page group */
+
 bool update_ui = true;
 bool ui_cleared = false;
 int menu_page = 0;
 /* HOME */
-static int page_home = 0;
-/* MAIN MENU */
-static int page_main_menu = 1;
-/* MATRIX LOGIC */
-static int page_matrix_logic_main = 2;
-static int page_matrix_logic_select_setup = 3;
-static int page_matrix_logic_setup_function = 4;
+static int page_home                             = 0;
 /* INPUT DATA */
-static int page_input_data = 5;
+static int page_input_data                       = 20;
+/* MAIN MENU */
+static int page_main_menu                        = 40;
+/* MATRIX LOGIC */
+static int page_matrix_logic_main                = 60;
+static int page_matrix_logic_select_setup        = 61;
+static int page_matrix_logic_setup_function      = 62;
 /* FILE */
-static int page_file_main = 6;
-static int page_file_save_matrix = 7;
-static int page_file_load_matrix = 8;
-static int page_file_delete_matrix = 9;
-static int page_save_system_config_indicator = 29;
-static int page_save_matrix_file_indicator = 30;
-static int page_load_matrix_file_indicator = 31;
-static int page_delete_matrix_file_indicator = 32;
-static int page_restore_default_matrix_indicator = 32;
+static int page_file_main                        = 80;
+static int page_file_save_matrix                 = 81;
+static int page_file_load_matrix                 = 83;
+static int page_file_delete_matrix               = 84;
+static int page_save_system_config_indicator     = 85;
+static int page_save_matrix_file_indicator       = 86;
+static int page_load_matrix_file_indicator       = 87;
+static int page_delete_matrix_file_indicator     = 88;
+static int page_restore_default_matrix_indicator = 89;
 /* GPS */
-static int page_gps_main = 10;
-static int page_gps_view_gngga = 11;
-static int page_gps_view_gnrmc = 12;
-static int page_gps_view_gpatt = 13;
-static int page_gps_view_satio = 14;
+static int page_gps_main                         = 100;
+static int page_gps_view_gngga                   = 101;
+static int page_gps_view_gnrmc                   = 102;
+static int page_gps_view_gpatt                   = 103;
+static int page_gps_view_satio                   = 104;
 /* SERIAL */
-static int page_serial_main = 15;
+static int page_serial_main                      = 120;
 /* SYSTEM */
-static int page_system_main = 16;
+static int page_system_main                      = 140;
 /* UNIVERSE */
-static int page_universe_main = 17;
-static int page_universe_view_sun = 18;
-static int page_universe_view_moon = 19;
-static int page_universe_view_mercury = 20;
-static int page_universe_view_venus = 21;
-static int page_universe_view_mars = 22;
-static int page_universe_view_jupiter = 23;
-static int page_universe_view_saturn = 24;
-static int page_universe_view_uranus = 25;
-static int page_universe_view_neptune = 26;
+static int page_universe_main                    = 160;
+static int page_universe_view_sun                = 161;
+static int page_universe_view_moon               = 162;
+static int page_universe_view_mercury            = 163;
+static int page_universe_view_venus              = 164;
+static int page_universe_view_mars               = 165;
+static int page_universe_view_jupiter            = 166;
+static int page_universe_view_saturn             = 167;
+static int page_universe_view_uranus             = 168;
+static int page_universe_view_neptune            = 169;
 /* DISPLAY */
-static int page_display_main = 27;
+static int page_display_main                     = 180;
 /* CD74HC4067 */
-static int page_CD74HC4067_main = 28;
+static int page_CD74HC4067_main                  = 200;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
