@@ -637,12 +637,12 @@ LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_ma
 const int max_file_items = 6;
 const char *menuFileItems[max_file_items] =
 {
-    "NEW MATRIX        ",
-    "SAVE MATRIX       ",
-    "LOAD MATRIX       ",
-    "DELETE MATRIX     ",
-    "SAVE SYSTEM CONFIG",
-    "RESTORE DEFAULTS  ",
+    "NEW     MATRIX",
+    "SAVE    MATRIX",
+    "LOAD    MATRIX",
+    "DELETE  MATRIX",
+    "SAVE    SYSTEM",
+    "RESTORE DEFAULTS",
 };
 LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 34}, {124, 124}} );
 
