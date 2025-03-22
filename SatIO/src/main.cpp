@@ -567,7 +567,8 @@ const char *menuMainItems[max_main_menu_items] =
     "   DISPLAY        ",
     "   CD74HC4067     ",
 };
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 20}, {124, 124}} );
+//  "                  "
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 20}, {125, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
