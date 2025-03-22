@@ -115,12 +115,204 @@
 #include "lcdgfx.h"
 #include "lcdgfx_gui.h"
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        HEADERS
+
+void setMultiplexChannel_TCA9548A(uint8_t channel);
+void setMultiplexChannel_CD74HC4067(int channel);
+void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS);
+void endSPIDevice(int SS);
 void beginSDCARD();
-void endSDCARD();
-void beginSSD1351();
-void endSSD1351();
-void sdcardCheck();
+void debug(String x);
+void bench(String x);
+void isr_second_timer();
+int getCheckSum(char * string);
+bool validateChecksum(char * buffer);
+void createChecksum(char * buffer);
+bool count_digits(char * data, int expected);
+bool count_alpha(char * data, int expected);
+bool is_all_digits(char * data);
+bool is_all_digits_plus_char(char * data, char find_char);
+bool is_positive_negative_num(char * data);
+bool is_all_alpha(char * data);
+bool val_utc_time(char * data);
+bool val_utc_date(char * data);
+bool val_latitude(char * data);
+bool val_longitude(char * data);
+bool val_latitude_H(char * data);
+bool val_longitude_H(char * data);
+bool val_positioning_status_gngga(char * data);
+bool val_satellite_count(char * data);
+bool val_hdop_precision_factor(char * data);
+bool val_altitude(char * data);
+bool val_altitude_units(char * data);
+bool val_geoidal(char * data);
+bool val_geoidal_units(char * data);
+bool val_differential_delay(char * data);
+bool val_basestation_id(char * data);
+bool val_positioning_status_gnrmc(char * data);
+bool val_ground_speed(char * data);
+bool val_ground_heading(char * data);
+bool val_installation_angle(char * data);
+bool val_installation_angle_direction(char * data);
+bool val_mode_indication(char * data);
+bool val_pitch_gpatt(char * data);
+bool val_roll_gpatt(char * data);
+bool val_yaw_gpatt(char * data);
+bool val_angle_channle_p_gpatt(char * data);
+bool val_angle_channle_r_gpatt(char * data);
+bool val_angle_channle_y_gpatt(char * data);
+bool val_version_channel_s_gpatt(char * data);
+bool val_software_version_gpatt(char * data);
+bool val_product_id_gpatt(char * data);
+bool val_id_channel_gpatt(char * data);
+bool val_ins_gpatt(char * data);
+bool val_ins_channel_gpatt(char * data);
+bool val_hardware_version_gpatt(char * data);
+bool val_run_state_flag_gpatt(char * data);
+bool val_mis_angle_num_gpatt(char * data);
+bool val_static_flag_gpatt(char * data);
+bool val_user_code_gpatt(char * data);
+bool val_gst_data_gpatt(char * data);
+bool val_line_flag_gpatt(char * data);
+bool val_mis_att_flag_gpatt(char * data);
+bool val_imu_kind_gpatt(char * data);
+bool val_ubi_car_kind_gpatt(char * data);
+bool val_mileage_gpatt(char * data);
+bool val_run_inetial_flag_gpatt(char * data);
+bool val_speed_enable_gpatt(char * data);
+bool val_speed_num_gpatt(char * data);
+bool val_speed_status(char * data);
+bool val_accelleration_delimiter(char * data);
+bool val_axis_accelleration(char * data);
+bool val_angular_velocity_delimiter(char * data);
+bool val_gyro_angular_velocity(char * data);
+bool val_status_delimiter(char * data);
+bool val_ubi_state_flag(char * data);
+bool val_ubi_state_kind_flag(char * data);
+bool val_code_flag(char * data);
+bool val_gset_flag(char * data);
+bool val_sset_flag(char * data);
+bool val_ang_dget_flag(char * data);
+bool val_ins_run_flag(char * data);
+bool val_fix_kind_flag(char * data);
+bool val_fiobject_roll_flag(char * data);
+bool val_fix_pitch_flag(char * data);
+bool val_ubi_on_flag(char * data);
+bool val_ubi_kind_flag(char * data);
+bool val_ubi_a_set(char * data);
+bool val_ubi_b_set(char * data);
+bool val_acc_X_data(char * data);
+bool val_acc_Y_data(char * data);
+bool val_gyro_Z_data(char * data);
+bool val_pitch_angle(char * data);
+bool val_roll_angle(char * data);
+bool val_yaw_angle(char * data);
+bool val_car_speed(char * data);
+bool val_ins_flag(char * data);
+bool val_ubi_num(char * data);
+bool val_ubi_valid(char * data);
+bool val_coll_T_data(char * data);
+bool val_coll_T_heading(char * data);
+bool val_custom_flag(char * data);
+bool val_checksum(char * data);
+bool val_scalable(char * data);
+void GNGGA();
+void GNRMC();
+void GPATT();
+String padDigitsZero(int digits);
+String formatRTCDateTime();
+String formatRTCDate();
+String formatRTCDateAbbreviated();
+String formatRTCTime();
+String formatRTCDateTimeStamp();
+String formatRTCDateStamp();
+String formatRTCTImeStamp();
+void calculateLocation();
+void syncRTCOnDownlink();
+int hoursMinutesSecondsToInt(int hours, int minutes, int seconds);
+int hoursMinutesToInt(int hours, int minutes);
+bool isTwoDiff(int a, int b);
+bool isOneDiff(int a, int b);
+void convertUTCToLocal();
+void buildSatIOSentence();
+void sdcard_save_system_configuration(char * file);
+void PrintFileToken();
+bool sdcard_load_system_configuration(char * file);
+void sdcard_mkdir(char * dir);
+void sdcard_mkdirs();
+void sdcard_list_matrix_files(char * dir, char * name, char * ext);
+void zero_matrix();
+bool sdcard_load_matrix(char * file);
+bool sdcard_save_matrix(char * file);
+void sdcard_delete_matrix(char * file);
+bool in_range_check_true(double n0, double n1, double r);
+bool in_range_check_false(double n0, double n1, double r);
+bool in_square_range_check_true(double x0, double x1, double y0, double y1, double r);
+bool in_square_range_check_false(double x0, double x1, double y0, double y1, double r);
+bool check_over_true(double n0, double n1);
+bool check_over_false(double n0, double n1);
+bool check_under_true(double n0, double n1);
+bool check_under_false(double n0, double n1);
+bool check_equal_true(double n0, double n1);
+bool check_equal_false(double n0, double n1);
+bool check_ge_and_le_true(double n0, double n1, double n2);
+bool check_ge_and_le_false(double n0, double n1, double n2);
+bool check_strncmp_true(char * c0, char * c1, int n);
+bool check_strncmp_false(char * c0, char * c1, int n);
+bool check_bool_true(bool _bool);
+bool check_bool_false(bool _bool);
+bool SecondsTimer(double n0, double n1, int Mi);
+void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i);
+void IdentifyObject(double object_ra, double object_dec);
+void trackSun();
+void trackMoon();
+void trackMercury();
+void trackVenus();
+void trackMars();
+void trackJupiter();
+void trackSaturn();
+void trackUranus();
+void trackNeptune();
+void trackPlanets();
+void setTrackPlanets();
+void matrixSwitch();
+void CountMatrixEnabled();
+void CountMatrixActive();
+void MatrixStatsCounter();
+void setAllMatrixSwitchesEnabledFalse();
+void setAllMatrixSwitchesStateFalse();
+void setAllMatrixSwitchesEnabledTrue();
+void setAllMatrixSwitchesStateTrue();
+void inputChar(char * data);
+void menuUp();
+void menuDown();
+void menuRight();
+void menuLeft();
+void menuBack();
+void menuEnter();
+String getRelatedY(char * data);
+String getRelatedZ(char * data);
+String getRelatedX(char * data);
+void drawMainBorder();
+void drawMainBorderRed();
+void drawMainBorderGreen();
+void setMenuMatrixFilePathItems();
 void UpdateUI();
+void ISR_I2C_PERIPHERAL();
+void writeI2C(int I2C_Address);
+void readI2C();
+void writeToPortController();
+void setupSDCard();
+void sdcardCheck();
+void check_gngga();
+void check_gnrmc();
+void check_gpatt();
+void readGPS(void * pvParameters);
+void getSensorData();
+void setup();
+
+// ------------------------------------------------------------------------------------------------------------------------------
 
 bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
 
@@ -4951,67 +5143,66 @@ bool SecondsTimer(double n0, double n1, int Mi) {
   return false;
 }
 
-void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second,
-  int object_table_i, int object_i) {
-myAstro.setLatLong(latitude, longitude);
-// myAstro.setTimeZone(tz);
-myAstro.rejectDST();
-myAstro.setGMTdate(year, month, day);
-myAstro.setLocalTime(hour, minute, second);
-myAstro.setGMTtime(hour, minute, second);
-if (object_table_i == 0) {myAstroObj.selectStarTable(object_i);}
-if (object_table_i == 1) {myAstroObj.selectNGCTable(object_i);}
-if (object_table_i == 2) {myAstroObj.selectICTable(object_i);}
-if (object_table_i == 3) {myAstroObj.selectMessierTable(object_i);}
-if (object_table_i == 4) {myAstroObj.selectCaldwellTable(object_i);}
-if (object_table_i == 5) {myAstroObj.selectHershel400Table(object_i);}
-if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
-myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
-myAstro.doRAdec2AltAz();
-siderealObjectData.object_az = myAstro.getAzimuth();
-siderealObjectData.object_alt = myAstro.getAltitude();
-siderealObjectData.object_r = myAstro.getRiseTime();
-siderealObjectData.object_s = myAstro.getSetTime();
+void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i) {
+  myAstro.setLatLong(latitude, longitude);
+  // myAstro.setTimeZone(tz);
+  myAstro.rejectDST();
+  myAstro.setGMTdate(year, month, day);
+  myAstro.setLocalTime(hour, minute, second);
+  myAstro.setGMTtime(hour, minute, second);
+  if (object_table_i == 0) {myAstroObj.selectStarTable(object_i);}
+  if (object_table_i == 1) {myAstroObj.selectNGCTable(object_i);}
+  if (object_table_i == 2) {myAstroObj.selectICTable(object_i);}
+  if (object_table_i == 3) {myAstroObj.selectMessierTable(object_i);}
+  if (object_table_i == 4) {myAstroObj.selectCaldwellTable(object_i);}
+  if (object_table_i == 5) {myAstroObj.selectHershel400Table(object_i);}
+  if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
+  myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
+  myAstro.doRAdec2AltAz();
+  siderealObjectData.object_az = myAstro.getAzimuth();
+  siderealObjectData.object_alt = myAstro.getAltitude();
+  siderealObjectData.object_r = myAstro.getRiseTime();
+  siderealObjectData.object_s = myAstro.getSetTime();
 }
 
 void IdentifyObject(double object_ra, double object_dec) {
-myAstroObj.setRAdec(object_ra, object_dec);
-myAstro.doRAdec2AltAz();
-siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
-myAstroObj.identifyObject();
-switch(myAstroObj.getIdentifiedObjectTable()) {
-case(1):
-siderealObjectData.object_table_i = 0; break;
-case(2):
-siderealObjectData.object_table_i = 1; break;
-case(3):
-siderealObjectData.object_table_i = 2;  break;
-case(7):
-siderealObjectData.object_table_i = 3;  break;
-}
-if (myAstroObj.getIdentifiedObjectTable() == 1) {
-// set table name
-memset(siderealObjectData.object_table_name, 0, 56);
-strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-// set object id name
-memset(siderealObjectData.object_name, 0, 56);
-strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
-}
-if (myAstroObj.getAltIdentifiedObjectTable()) {
-switch(myAstroObj.getAltIdentifiedObjectTable()) {
-casematrix_indi_h:
-siderealObjectData.object_table_i = 4;  break;
-case(5):
-siderealObjectData.object_table_i = 5;  break;
-case(6):
-siderealObjectData.object_table_i = 6;  break;
-}
-// set table name
-memset(siderealObjectData.object_table_name, 0, 56);
-strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-// set object id number
-siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
-}
+  myAstroObj.setRAdec(object_ra, object_dec);
+  myAstro.doRAdec2AltAz();
+  siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
+  myAstroObj.identifyObject();
+  switch(myAstroObj.getIdentifiedObjectTable()) {
+  case(1):
+  siderealObjectData.object_table_i = 0; break;
+  case(2):
+  siderealObjectData.object_table_i = 1; break;
+  case(3):
+  siderealObjectData.object_table_i = 2;  break;
+  case(7):
+  siderealObjectData.object_table_i = 3;  break;
+  }
+  if (myAstroObj.getIdentifiedObjectTable() == 1) {
+    // set table name
+    memset(siderealObjectData.object_table_name, 0, 56);
+    strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+    // set object id name
+    memset(siderealObjectData.object_name, 0, 56);
+    strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
+  }
+  if (myAstroObj.getAltIdentifiedObjectTable()) {
+    switch(myAstroObj.getAltIdentifiedObjectTable()) {
+    casematrix_indi_h:
+    siderealObjectData.object_table_i = 4;  break;
+    case(5):
+    siderealObjectData.object_table_i = 5;  break;
+    case(6):
+    siderealObjectData.object_table_i = 6;  break;
+  }
+  // set table name
+  memset(siderealObjectData.object_table_name, 0, 56);
+  strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+  // set object id number
+  siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
+  }
 }
 
 void trackSun() {
