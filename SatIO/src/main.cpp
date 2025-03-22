@@ -9726,7 +9726,6 @@ void UpdateUI() {
   //                                  UPDATE UI PAGES
 
   if (update_ui==true) {
-    ui_cleared = false;
     debug("[oled protection] allowing ui update");
     debug("[menu page] " + String(menu_page));
 
@@ -9736,7 +9735,8 @@ void UpdateUI() {
     if (menu_page==page_home) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
-      if (menu_page != previous_menu_page) {
+
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
       }
       // ------------------------------------------------
@@ -9772,7 +9772,7 @@ void UpdateUI() {
     else if (menu_page==page_main_menu) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -9791,7 +9791,7 @@ void UpdateUI() {
     else if (menu_page==page_matrix_logic_main) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         display.drawHLine(2, 26, 126);
@@ -9998,7 +9998,7 @@ void UpdateUI() {
     else if (menu_page==page_overview_matrix_switching) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MATRIX OVERVIEW")/2)*6), 1, "MATRIX OVERVIEW", STYLE_BOLD );
@@ -10086,7 +10086,7 @@ void UpdateUI() {
     else if (menu_page==page_input_data) {
       display.setColor(RGB_COLOR16(255,0,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorderRed();
         canvas120x8.clear();
@@ -10189,7 +10189,7 @@ void UpdateUI() {
     else if (menu_page==page_matrix_logic_select_setup) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10249,7 +10249,7 @@ void UpdateUI() {
     else if (menu_page==page_matrix_logic_setup_function) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10284,7 +10284,7 @@ void UpdateUI() {
     else if (menu_page==page_file_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10313,7 +10313,7 @@ void UpdateUI() {
     else if (menu_page==page_file_save_matrix) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10338,7 +10338,7 @@ void UpdateUI() {
     else if (menu_page==page_file_load_matrix) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10362,7 +10362,7 @@ void UpdateUI() {
     else if (menu_page==page_file_delete_matrix) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10386,7 +10386,7 @@ void UpdateUI() {
     else if (menu_page==page_save_matrix_file_indicator) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x120.clear();
         canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
@@ -10403,7 +10403,7 @@ void UpdateUI() {
     else if (menu_page==page_load_matrix_file_indicator) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x120.clear();
         canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
@@ -10420,7 +10420,7 @@ void UpdateUI() {
     else if (menu_page==page_delete_matrix_file_indicator) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x120.clear();
         canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
@@ -10437,7 +10437,7 @@ void UpdateUI() {
     else if (menu_page==page_save_system_config_indicator) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x120.clear();
         canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
@@ -10455,7 +10455,7 @@ void UpdateUI() {
     else if (menu_page==page_restore_default_matrix_indicator) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         canvas120x120.clear();
         canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
@@ -10472,7 +10472,7 @@ void UpdateUI() {
     else if (menu_page==page_gps_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10509,7 +10509,7 @@ void UpdateUI() {
     else if (menu_page==page_serial_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10566,7 +10566,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10616,7 +10616,7 @@ void UpdateUI() {
     else if (menu_page==page_display_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10645,7 +10645,7 @@ void UpdateUI() {
     else if (menu_page==page_system_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10676,7 +10676,7 @@ void UpdateUI() {
     else if (menu_page==page_CD74HC4067_main) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10768,7 +10768,7 @@ void UpdateUI() {
     else if (menu_page==page_gps_view_gngga) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10862,7 +10862,7 @@ void UpdateUI() {
     else if (menu_page==page_gps_view_gnrmc) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -10956,7 +10956,7 @@ void UpdateUI() {
     else if (menu_page==page_gps_view_gpatt) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11058,7 +11058,7 @@ void UpdateUI() {
     else if (menu_page==page_gps_view_satio) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11164,7 +11164,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_sun) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11216,7 +11216,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_moon) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11277,7 +11277,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_mercury) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11363,7 +11363,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_venus) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11449,7 +11449,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_mars) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11535,7 +11535,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_jupiter) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11621,7 +11621,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_saturn) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11707,7 +11707,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_uranus) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11793,7 +11793,7 @@ void UpdateUI() {
     else if (menu_page==page_universe_view_neptune) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (menu_page != previous_menu_page) {
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         canvas120x8.clear();
@@ -11873,6 +11873,8 @@ void UpdateUI() {
       display.drawCanvas(40, ui_content_10, canvas42x8);
     }
 
+    // set this flag last so that we can use it to update static ui data upon waking up from oled protection mode
+    ui_cleared = false;
   }
 
   // ------------------------------------------------
