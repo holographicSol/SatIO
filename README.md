@@ -602,7 +602,7 @@
 
     Matrix: Enable/disable. Enable/disable programmable matrix logic function.
 
-    Port Controller: Enable/sisable. Enable/disable Port Controller IO.
+    Port Controller: Enable/disable. Enable/disable Port Controller IO.
 
     Output SatIO: Enable/disable. Print SatIO sentence over serial.
 
