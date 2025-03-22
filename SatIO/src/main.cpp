@@ -4147,12 +4147,25 @@ void zero_matrix() {
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     matrixData.matrix_switch_enabled[0][Mi] = 0;
     for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+      // clear function names
       memset(matrixData.matrix_function[Mi][Fi], 0, 56);
       strcpy(matrixData.matrix_function[Mi][Fi], "None");
+      // clear function values
       matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
       matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
+      // clear port maps
       matrixData.matrix_port_map[0][Mi] = -1;
+      matrixData.tmp_matrix_port_map[0][Mi] = -1;
+      // clear inverted logic (default is standard not inverted)
+      matrixData.matrix_switch_inverted_logic[Mi][Fi] = false;
+      // clear timers
+      matrixData.matrix_timers[0][Mi] = 0.0;
+      // clear enabled
+      matrixData.matrix_switch_enabled[0][Mi] = false;
+      // clear states
+      matrixData.matrix_switch_state[0][Mi] = false;
+      matrixData.tmp_matrix_switch_state[0][Mi] = false;
     }
   }
 }
