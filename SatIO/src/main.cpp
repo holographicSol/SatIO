@@ -10531,11 +10531,11 @@ void UpdateUI() {
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatRTCTime()).c_str());
-      display.drawCanvas(44, ui_content_0, canvas80x8);
+      display.drawCanvas(45, ui_content_0, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatRTCDate()).c_str());
-      display.drawCanvas(44, ui_content_1, canvas80x8);
+      display.drawCanvas(45, ui_content_1, canvas80x8);
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -10549,7 +10549,7 @@ void UpdateUI() {
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_latitude).c_str());
-      display.drawCanvas(44, ui_content_2, canvas80x8);
+      display.drawCanvas(45, ui_content_2, canvas80x8);
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -10563,27 +10563,27 @@ void UpdateUI() {
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude).c_str());
-      display.drawCanvas(44, ui_content_3, canvas80x8);
+      display.drawCanvas(45, ui_content_3, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncTime).c_str());
-      display.drawCanvas(44, ui_content_4, canvas80x8);
+      display.drawCanvas(45, ui_content_4, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncDate).c_str());
-      display.drawCanvas(44, ui_content_5, canvas80x8);
+      display.drawCanvas(45, ui_content_5, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
-      display.drawCanvas(44, ui_content_6, canvas80x8);
+      display.drawCanvas(45, ui_content_6, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
-      display.drawCanvas(44, ui_content_7, canvas80x8);
+      display.drawCanvas(45, ui_content_7, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day())).c_str());
-      display.drawCanvas(44, ui_content_8, canvas80x8);
+      display.drawCanvas(45, ui_content_8, canvas80x8);
       // ------------------------------------------------
     }
 
