@@ -12344,7 +12344,7 @@ void readGPS(void * pvParameters) {
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
 
         if (systemData.gngga_enabled == true){
-          if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+          // if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
           debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
@@ -12840,6 +12840,12 @@ void loop() {
     bench("[gps_done_t] " + String(millis()-gps_done_t));
     bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
+
+    // ---------------------------------------------------------------------
+    
+    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+    if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+    if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
 
     // ---------------------------------------------------------------------
 
