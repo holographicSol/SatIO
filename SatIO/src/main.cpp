@@ -9425,19 +9425,24 @@ void UpdateUI() {
     else if (menu_page==page_overview_matrix_switching) {
 
       display.setColor(systemData.color_content);
+
+      // ------------------------------------------------
       
+      // clear and display title once upon entering the page
       if (menu_page != previous_menu_page) {
-        
+      
         previous_menu_page=menu_page; display.clear();
         
-        // show title
+        // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MATRIX OVERVIEW")/2)*6), 1, "MATRIX OVERVIEW", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
 
-        // border title
+        // title border
         display.drawRect(1, 1, 127, 16);
       }
+
+      // ------------------------------------------------
       
       int size = 23;
       int start = 2;
