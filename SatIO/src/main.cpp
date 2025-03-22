@@ -4752,24 +4752,42 @@ void trackMoon() {
 }
 
 void trackMercury() {
-myAstro.doMercury();
-siderealPlanetData.mercury_ra  = myAstro.getRAdec();
-siderealPlanetData.mercury_dec = myAstro.getDeclinationDec();
-myAstro.doRAdec2AltAz();
-siderealPlanetData.mercury_az  = myAstro.getAzimuth();
-siderealPlanetData.mercury_alt = myAstro.getAltitude();
-siderealPlanetData.mercury_helio_ecliptic_lat = myAstro.getHelioLat();
-siderealPlanetData.mercury_helio_ecliptic_long = myAstro.getHelioLong();
-siderealPlanetData.mercury_radius_vector = myAstro.getRadiusVec();
-siderealPlanetData.mercury_distance = myAstro.getDistance();
-siderealPlanetData.mercury_ecliptic_lat = myAstro.getEclipticLatitude();
-siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
-myAstro.doXRiseSetTimes();
-siderealPlanetData.mercury_r = myAstro.getRiseTime();
-siderealPlanetData.mercury_s = myAstro.getSetTime();
-if (systemData.output_mercury_enabled==true) {
-  
-}
+  myAstro.doMercury();
+  siderealPlanetData.mercury_ra  = myAstro.getRAdec();
+  siderealPlanetData.mercury_dec = myAstro.getDeclinationDec();
+  myAstro.doRAdec2AltAz();
+  siderealPlanetData.mercury_az  = myAstro.getAzimuth();
+  siderealPlanetData.mercury_alt = myAstro.getAltitude();
+  siderealPlanetData.mercury_helio_ecliptic_lat = myAstro.getHelioLat();
+  siderealPlanetData.mercury_helio_ecliptic_long = myAstro.getHelioLong();
+  siderealPlanetData.mercury_radius_vector = myAstro.getRadiusVec();
+  siderealPlanetData.mercury_distance = myAstro.getDistance();
+  siderealPlanetData.mercury_ecliptic_lat = myAstro.getEclipticLatitude();
+  siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
+  myAstro.doXRiseSetTimes();
+  siderealPlanetData.mercury_r = myAstro.getRiseTime();
+  siderealPlanetData.mercury_s = myAstro.getSetTime();
+  // create and ouptput lunar tracking information
+  if (systemData.output_mercury_enabled==true) {
+    memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
+    strcat(siderealPlanetData.sentence, "$MOON,");
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_ra + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_dec + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_az + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_alt + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_helio_ecliptic_lat + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_helio_ecliptic_long + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_radius_vector + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_distance + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_ecliptic_lat + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_ecliptic_long + String(",")).c_str());
+    // append checksum
+    createChecksum(siderealPlanetData.sentence);
+    strcat(siderealPlanetData.sentence, "*");
+    strcat(siderealPlanetData.sentence, SerialLink.checksum);
+    Serial.println(siderealPlanetData.sentence);
+    debug(satData.satio_sentence);
+  }
 }
 
 void trackVenus() {
