@@ -9452,6 +9452,11 @@ void UpdateUI() {
         canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
         display.drawCanvas(start, 28, canvas19x8);
 
+        // 0-4 port number
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 39, canvas19x8);
+
         // 0-4 border
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
@@ -9465,6 +9470,11 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
         display.drawCanvas(start, 53, canvas19x8);
+
+        // 5-9 port number
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 64, canvas19x8);
 
         // 5-9 border
         display.setColor(RGB_COLOR16(50,50,50));
@@ -9480,6 +9490,12 @@ void UpdateUI() {
         canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
         display.drawCanvas(start, 78, canvas19x8);
 
+        // 10-14 port number
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 89, canvas19x8);
+
+
         // 10-14 border
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
@@ -9493,6 +9509,11 @@ void UpdateUI() {
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
         display.drawCanvas(start, 103, canvas19x8);
+
+        // 15-19 port number
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 114, canvas19x8);
 
         // 15-19 border
         display.setColor(RGB_COLOR16(50,50,50));
