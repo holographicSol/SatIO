@@ -9725,6 +9725,8 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
 
+  /* OLED protection is in place to try and ensure no damage is inflicted upon the OLED. this protection also has the added benefit of a performance boost when update ui is false */
+
   if (update_ui==true) {
     debug("[oled protection] allowing ui update");
     debug("[menu page] " + String(menu_page));
