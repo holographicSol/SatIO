@@ -2681,6 +2681,7 @@ LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 134, {{2, 
 
 struct GNGGAStruct {
   char sentence[200];
+  char outsentence[200];
   char tag[56];                                                                                                            // <0> Log header
   char utc_time[56];                     unsigned long bad_utc_time_i;              bool bad_utc_time = true;              // <1> UTC time, the format is hhmmss.sss
   char latitude[56];                    unsigned long bad_latitude_i;              bool bad_latitude = true;              // <2> Latitude, the format is  ddmm.mmmmmmm
@@ -2753,6 +2754,7 @@ void GNGGA() {
 
 struct GNRMCStruct {
   char sentence[200];
+  char outsentence[200];
   char tag[56];                                                                                                                          // <0> Log header
   char utc_time[56];                     unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                     // <1> UTC time, the format is hhmmss.sss
   char positioning_status[56];           unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
@@ -2818,6 +2820,7 @@ void GNRMC() {
 
 struct GPATTStruct {
   char sentence[200];
+  char outsentence[200];
   char tag[56];                                                                                       // <0> Log header
   char pitch[56];             unsigned long bad_pitch_i;            bool bad_pitch = true;            // <1> pitch angle
   char angle_channel_0[56];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;  // <2> P
@@ -12299,11 +12302,13 @@ int i_gps = 0;
 bool cs = false;
 
 void readGPS(void * pvParameters) {
-  // debug("[readGPS] ");
 
   while (1) {
 
+    // lock to avoid potential race conditions for yeilded gps data
     if (gps_done==false) {
+
+      // ----------------------------------------------------------------------------------------------------------------------
 
       gps_done_t = millis();
       serial1Data.gngga_bool = false;
@@ -12313,101 +12318,118 @@ void readGPS(void * pvParameters) {
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
-      /* 
-      this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms.
-       */
+      // ----------------------------------------------------------------------------------------------------------------------
 
+      /* this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms. */
+
+      // read up until attempt limit is reached
       for (i_gps = 0; i_gps < 10; i_gps++) {
         if (Serial2.available()) {
 
+          // first check break for if we have everything we need
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
 
-          // gps_read_t = millis();
-
+          // read gps module to either terminating character or until the buffer is full
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-          
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
 
-          // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
-
+          // eliminate potential partial reads
           if (SerialLink.nbytes>50) {
+
+            // ----------------------------------------------------------------------------------------------------------------------
 
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
-                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
-                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gngga_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
+            // ----------------------------------------------------------------------------------------------------------------------
 
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
-                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gnrmc_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
+            // ----------------------------------------------------------------------------------------------------------------------
 
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
-                  // debug("[readGPS RXD] [t=" + String(millis()-gps_read_t) + "] [b=" + String(SerialLink.nbytes) + "] " + String(SerialLink.BUFFER)); // debug
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
-                  // debug("[serial1Data.gngga_bool] " + String(serial1Data.gngga_bool));
-                  // debug("[serial1Data.gnrmc_bool] " + String(serial1Data.gnrmc_bool));
-                  // debug("[serial1Data.gpatt_bool] " + String(serial1Data.gpatt_bool));
                   serial1Data.gpatt_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
+            // ----------------------------------------------------------------------------------------------------------------------
           }
         }
       }
-    
+
+      /* parse the above sentences fast so as not to miss each next sentence. then we can drop in here afterwards if we collected all the sentences */
+
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
 
+        // ----------------------------------------------------------------------------------------------------------------------
+
         if (systemData.gngga_enabled == true){
-          if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+          if (systemData.output_gngga_enabled==true) {
+            // store a copy before tokenization since this is a task we may prefer not to print here
+            memset(gnggaData.outsentence, 0, sizeof(gnggaData.outsentence));
+            strcpy(gnggaData.outsentence, gnggaData.sentence);
+          }
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
           // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
+
+        // ----------------------------------------------------------------------------------------------------------------------
         
         if (systemData.gnrmc_enabled == true) {
-          if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+          if (systemData.output_gnrmc_enabled == true) {
+            // store a copy before tokenization since this is a task we may prefer not to print here
+            memset(gnrmcData.outsentence, 0, sizeof(gnrmcData.outsentence));
+            strcpy(gnrmcData.outsentence, gnrmcData.sentence);
+          }
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
           // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
 
+        // ----------------------------------------------------------------------------------------------------------------------
+
         if (systemData.gpatt_enabled == true) {
-          if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
+          if (systemData.output_gpatt_enabled == true) {
+            // store a copy before tokenization since this is a task we may prefer not to print here
+            memset(gpattData.outsentence, 0, sizeof(gpattData.outsentence));
+            strcpy(gpattData.outsentence, gpattData.sentence);
+          }
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
           // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
 
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        // is everything collected and validated? if so then reset the lock ready for other functions to use the data before going again
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
           // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t = millis();
           gps_done=true;
         }
+
+        // ----------------------------------------------------------------------------------------------------------------------
       }
     }
     delay(1);
@@ -12871,6 +12893,12 @@ void loop() {
 
     // ---------------------------------------------------------------------
 
+    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
+    if (systemData.gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
+    if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
+
+    // ---------------------------------------------------------------------
+
     /* only calculate data dependent on gps here */
 
     bench("[gps_done_t] " + String(millis()-gps_done_t));
@@ -12908,6 +12936,12 @@ void loop() {
     gps_data_used = true;
   }
 
+  // ---------------------------------------------------------------------
+  //                                             ALLOW GPS DATA COLLECTION
+
+  /* occasional: only allow collection after we are done with the data */
+  
+  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
 
   // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
@@ -12930,17 +12964,9 @@ void loop() {
   bench("[writePortController] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
-  //                                             ALLOW GPS DATA COLLECTION
-
-  /* occasional: do this when can */
-
-  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
-
-
-  // ---------------------------------------------------------------------
   //                                                          LONGER LOOPS
 
-  /* occasional: do this when can */
+  /* occasional */
 
   if (longer_loop==false) {
 
@@ -12968,7 +12994,6 @@ void loop() {
       bench("[UpdateUI] " + String(millis()-t0));
     }
   }
-
 
   // ---------------------------------------------------------------------
   //                                                        SECOND COUNTER
