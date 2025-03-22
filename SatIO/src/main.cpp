@@ -127,12 +127,12 @@ bool gps_done = false; // helps avoid any potential race conditions where gps da
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
 
+#define ISR_I2C_PERIPHERAL_PIN 25 // allows the Control Panel or other device to interrupt this system
+
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
 const byte txd_to_atmega = 25; // 
 const byte rxd_from_gps = 26;  //
-
-#define ISR_I2C_PERIPHERAL_PIN 25 // allows the Control Panel to interrupt us
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
