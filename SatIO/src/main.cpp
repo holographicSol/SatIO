@@ -4681,8 +4681,6 @@ siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
 
 
 void trackSun() {
-// myAstro.doPlanetElements();
-// myAstro.doSun();
 siderealPlanetData.sun_ra  = myAstro.getRAdec();
 siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
 myAstro.doRAdec2AltAz();
@@ -4691,15 +4689,12 @@ siderealPlanetData.sun_alt = myAstro.getAltitude();
 myAstro.doSunRiseSetTimes();
 siderealPlanetData.sun_r  = myAstro.getSunriseTime();
 siderealPlanetData.sun_s  = myAstro.getSunsetTime();
-
 if (systemData.output_sun_enabled==true) {
 
 }
 }
 
 void trackMoon() {
-// myAstro.doSun();
-// int t0 = millis();
 siderealPlanetData.moon_ra  = myAstro.getRAdec();
 siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
 // bench("[ra dec]" + String(millis()-t0));
@@ -10044,9 +10039,9 @@ void UpdateUI() {
       else {menuSerialItems[10]                                         ="MARS    DISABLED";}
       if (systemData.output_jupiter_enabled==true) {menuSerialItems[11] ="JUPITER ENABLED";}
       else {menuSerialItems[11]                                         ="JUPITER DISABLED";}
-      if (systemData.output_saturn_enabled=true) {menuSerialItems[12]   ="SATURN  ENABLED";}
+      if (systemData.output_saturn_enabled==true) {menuSerialItems[12]   ="SATURN  ENABLED";}
       else {menuSerialItems[12]                                         ="SATURN  DISABLED";}
-      if (systemData.output_uranus_enabled=true) {menuSerialItems[13]   ="URANUS  ENABLED";}
+      if (systemData.output_uranus_enabled==true) {menuSerialItems[13]   ="URANUS  ENABLED";}
       else {menuSerialItems[13]                                         ="URANUS  DISABLED";}
       if (systemData.output_neptune_enabled) {menuSerialItems[14]       ="NEPTUNE ENABLED";}
       else {menuSerialItems[14]                                         ="NEPTUNE DISABLED";}
