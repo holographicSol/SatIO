@@ -12257,42 +12257,6 @@ void sdcardCheck() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
-void check_gngga() {
-  // debug("[check_gngga]");
-  if (systemData.gngga_enabled == true){
-    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
-    gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
-    // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-    if (gnggaData.valid_checksum == true) {GNGGA();}
-    else {gnggaData.bad_checksum_validity++;}
-  }
-}
-
-void check_gnrmc() {
-  // debug("[check_gnrmc]");
-  if (systemData.gnrmc_enabled == true) {
-    if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
-    gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-    // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-    if (gnrmcData.valid_checksum == true) {GNRMC();}
-    else {gnrmcData.bad_checksum_validity++;}
-  }
-}
-
-void check_gpatt() {
-  // debug("[check_gpatt]");
-  if (systemData.gpatt_enabled == true) {
-    if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
-    gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    // debug("[gpattData.sentence] " + String(gpattData.sentence));
-    // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-    if (gpattData.valid_checksum == true) {GPATT();}
-    else {gpattData.bad_checksum_validity++;}
-  }
-}
-
 int gps_read_t;
 int gps_done_t = millis();
 int i_gps = 0;
@@ -12380,25 +12344,25 @@ void readGPS(void * pvParameters) {
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
 
         if (systemData.gngga_enabled == true){
-          // if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+          if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-          // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+          debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
         
         if (systemData.gnrmc_enabled == true) {
-          // if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+          if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-          // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+          debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
 
         if (systemData.gpatt_enabled == true) {
-          // if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
+          if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-          // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+          debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
@@ -12854,7 +12818,7 @@ void loop() {
   bench("[loop]");
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
-  systemData.t_bench = true; // uncomment to observe timings
+  // systemData.t_bench = true; // uncomment to observe timings
 
   /* run every loop */
   readI2C();
