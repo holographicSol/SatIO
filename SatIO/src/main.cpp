@@ -644,7 +644,7 @@ const char *menuFileItems[max_file_items] =
     "SAVE    SYSTEM",
     "RESTORE DEFAULTS",
 };
-LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 54}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                MENU FILE NAMES
@@ -9721,12 +9721,18 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        display.drawHLine(2, 42, 126);
+        // ------------------------------------------------
+        canvas120x8.clear();
+        canvas120x8.printFixed(1, 1, "CURRENT MATRIX FILE", STYLE_BOLD);
+        display.drawCanvas(6, 20, canvas120x8);
       }
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("M " + String(sdcardData.matrix_filepath)).c_str(), STYLE_BOLD);
-      display.drawCanvas(6, 26, canvas120x8);
+      canvas120x8.printFixed(1, 1, String(sdcardData.matrix_filepath).c_str(), STYLE_BOLD);
+      display.drawCanvas(6, 30, canvas120x8);
       // ------------------------------------------------
       menuFile.show( display );
       // ------------------------------------------------
