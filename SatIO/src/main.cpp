@@ -567,7 +567,7 @@ const char *menuMainItems[max_main_menu_items] =
     "   DISPLAY       ",
     "   CD74HC4067    ",
 };
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
@@ -651,42 +651,42 @@ LcdGfxMenu menuFile( menuFileItems, max_file_items, {{3, 34}, {124, 124}} );
 
 const int max_filepath_items = 20;
 const char *menuMatrixFilepathItems[max_filepath_items];
-LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       MENU GPS
 
 const int max_gps_items = 9;
 const char *menuGPSItems[max_gps_items];
-LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
 
 const int max_serial_items = 7;
 const char *menuSerialItems[max_serial_items];
-LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
 
 const int max_universe_items = 18;
 const char *menuUniverseItems[max_universe_items];
-LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
 
 const int max_display_items = 3;
 const char *menuDisplayItems[max_display_items];
-LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{3, 20}, {124, 124}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU SYSTEM
 
 const int max_system_items = 1;
 const char *menuSystemItems[max_system_items];
-LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{3, 34}, {124, 124}} );
+LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{3, 20}, {124, 124}} );
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
