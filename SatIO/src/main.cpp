@@ -4767,10 +4767,10 @@ void trackMercury() {
   myAstro.doXRiseSetTimes();
   siderealPlanetData.mercury_r = myAstro.getRiseTime();
   siderealPlanetData.mercury_s = myAstro.getSetTime();
-  // create and ouptput lunar tracking information
+  // create and ouptput tracking information
   if (systemData.output_mercury_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
-    strcat(siderealPlanetData.sentence, "$MOON,");
+    strcat(siderealPlanetData.sentence, "$MERCURY,");
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_ra + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_dec + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.mercury_az + String(",")).c_str());
