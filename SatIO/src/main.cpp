@@ -12952,7 +12952,6 @@ void loop() {
   getSensorData();
   bench("[getSensorData] " + String(millis()-t0));
 
-
   // ---------------------------------------------------------------------
   //                                                       PORT CONTROLLER
 
