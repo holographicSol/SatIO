@@ -11872,7 +11872,7 @@ void UpdateUI() {
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_long).c_str());
       display.drawCanvas(40, ui_content_10, canvas42x8);
     }
-    
+
     // ------------------------------------------------
 
     // set this flag last so that we can use it to update static ui data upon waking up from oled protection mode
@@ -11887,8 +11887,8 @@ void UpdateUI() {
   if ((ui_cleared == false) && (update_ui == false)) {
     debug("[oled protection] clearing ui");
     display.clear();
-    display.clear();
-    display.clear();
+    // display.clear();
+    // display.clear();
     ui_cleared=true;
   }
 }
