@@ -52,8 +52,7 @@
                                 ESP32: io26 -> SSD1351: CS
 
 
-                                          SENTENCE $SATIO
-
+                                        SENTENCE $SATIO
 
                                             System Uptime                    
         Tag                  Last Sync      |                               Degrees Longitude        
