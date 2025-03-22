@@ -1133,6 +1133,7 @@ struct SiderealPlantetsStruct {
   double neptune_distance;
   double neptune_ecliptic_lat;
   double neptune_ecliptic_long;
+  char sentence[1024];
 };
 SiderealPlantetsStruct siderealPlanetData;
 
@@ -4689,8 +4690,23 @@ siderealPlanetData.sun_alt = myAstro.getAltitude();
 myAstro.doSunRiseSetTimes();
 siderealPlanetData.sun_r  = myAstro.getSunriseTime();
 siderealPlanetData.sun_s  = myAstro.getSunsetTime();
-if (systemData.output_sun_enabled==true) {
 
+if (systemData.output_sun_enabled==true) {
+  memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
+  strcat(siderealPlanetData.sentence, "$SUN,");
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_ra + String(",")).c_str());
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_dec + String(",")).c_str());
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_az + String(",")).c_str());
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_r + String(",")).c_str());
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_alt + String(",")).c_str());
+  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_s + String(",")).c_str());
+
+  // append checksum
+  createChecksum(siderealPlanetData.sentence);
+  strcat(siderealPlanetData.sentence, "*");
+  strcat(siderealPlanetData.sentence, SerialLink.checksum);
+  Serial.println(siderealPlanetData.sentence);
+  debug(satData.satio_sentence);
 }
 }
 
