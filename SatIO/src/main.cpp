@@ -9152,16 +9152,10 @@ void UpdateUI() {
     //                                        HOME PAGE
 
     if (menu_page==page_home) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      // drawMainBorder();
-
-      // show sat count
-      // canvas19x8.clear();
-      // canvas20x20.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD );
-      // display.drawCanvas(3, 10, canvas20x20);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+      }
 
       int iconsize = 16;
 
@@ -9177,11 +9171,6 @@ void UpdateUI() {
         else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_green_signal);}
         else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_blue_signal);}
       }
-
-      // show hdop precision factor
-      // canvas120x8.clear();
-      // canvas120x8.printFixed(3, 1, gnggaData.hdop_precision_factor, STYLE_BOLD );
-      // display.drawCanvas(3, 20, canvas120x8);
 
       // show datetime
       canvas60x8.clear();
@@ -9199,19 +9188,17 @@ void UpdateUI() {
     //                                    SETTINGS PAGE
 
     else if (menu_page==page_main_menu) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SETTINGS")/2)*6), 1, "SETTINGS", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // show menu
       menuMain.show( display );
@@ -9221,14 +9208,13 @@ void UpdateUI() {
     //                         MATRIX SWITCH LOGIC PAGE
 
     else if (menu_page==page_matrix_logic_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // seperator (slightly lower than other header seperators to allow height space for combination bar)
-      display.drawHLine(2, 26, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // seperator (slightly lower than other header seperators to allow height space for combination bar)
+        display.drawHLine(2, 26, 126);
+      }
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -9433,14 +9419,11 @@ void UpdateUI() {
       
       // clear and display title once upon entering the page
       if (menu_page != previous_menu_page) {
-      
         previous_menu_page=menu_page; display.clear();
-        
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MATRIX OVERVIEW")/2)*6), 1, "MATRIX OVERVIEW", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // title border
         display.drawRect(1, 1, 127, 16);
       }
@@ -9540,20 +9523,20 @@ void UpdateUI() {
 
     // enter digits page
     else if (menu_page==page_input_data) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
-      drawMainBorderRed();
-
-      // show title
-      canvas120x8.clear();
-      if (enter_digits_key==1) {canvas120x8.printFixed((120/2)-((strlen("ENTER PORT NUMBER")/2)*6), 1, "ENTER PORT NUMBER", STYLE_BOLD );}
-      else if (enter_digits_key==2) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE X")/2)*6), 1, "ENTER VALUE X", STYLE_BOLD );}
-      else if (enter_digits_key==3) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Y")/2)*6), 1, "ENTER VALUE Y", STYLE_BOLD );}
-      else if (enter_digits_key==4) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Z")/2)*6), 1, "ENTER VALUE Z", STYLE_BOLD );}
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      display.setColor(RGB_COLOR16(255,0,0));
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorderRed();
+        // title
+        canvas120x8.clear();
+        if (enter_digits_key==1) {canvas120x8.printFixed((120/2)-((strlen("ENTER PORT NUMBER")/2)*6), 1, "ENTER PORT NUMBER", STYLE_BOLD );}
+        else if (enter_digits_key==2) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE X")/2)*6), 1, "ENTER VALUE X", STYLE_BOLD );}
+        else if (enter_digits_key==3) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Y")/2)*6), 1, "ENTER VALUE Y", STYLE_BOLD );}
+        else if (enter_digits_key==4) {canvas120x8.printFixed((120/2)-((strlen("ENTER VALUE Z")/2)*6), 1, "ENTER VALUE Z", STYLE_BOLD );}
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       if (enter_digits_key==1) {
 
@@ -9653,19 +9636,17 @@ void UpdateUI() {
 
     // select function name, x, y, or z
     else if (menu_page==page_matrix_logic_select_setup) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // show title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SETUP SWITCH LOGIC")/2)*6), 1, "SETUP SWITCH LOGIC", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SETUP SWITCH LOGIC")/2)*6), 1, "SETUP SWITCH LOGIC", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -9720,19 +9701,17 @@ void UpdateUI() {
 
     // matrix switch set function name
     else if (menu_page==page_matrix_logic_setup_function) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SELECT FUNCTION")/2)*6), 1, "SELECT FUNCTION", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SELECT FUNCTION")/2)*6), 1, "SELECT FUNCTION", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -9760,19 +9739,17 @@ void UpdateUI() {
     //                                        FILE MENU
 
     else if (menu_page==page_file_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("FILE")/2)*6), 1, "FILE", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // show menu
       menuFile.show( display );
@@ -9783,19 +9760,17 @@ void UpdateUI() {
 
     // save matrix
     else if (menu_page==page_file_save_matrix) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
@@ -9810,19 +9785,17 @@ void UpdateUI() {
 
     // load matrix
     else if (menu_page==page_file_load_matrix) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
@@ -9836,19 +9809,17 @@ void UpdateUI() {
 
     // delete matrix
     else if (menu_page==page_file_delete_matrix) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-      
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-      
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
@@ -9862,12 +9833,14 @@ void UpdateUI() {
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     else if (menu_page==page_save_matrix_file_indicator) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        canvas120x120.clear();
+        canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+        display.drawCanvas(5, 5, canvas120x120);
+        drawMainBorderGreen();
+      }
     }
 
     // ------------------------------------------------
@@ -9875,12 +9848,14 @@ void UpdateUI() {
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     else if (menu_page==page_load_matrix_file_indicator) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        canvas120x120.clear();
+        canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
+        display.drawCanvas(5, 5, canvas120x120);
+        drawMainBorderGreen();
+      }
     }
 
     // ------------------------------------------------
@@ -9888,12 +9863,14 @@ void UpdateUI() {
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     else if (menu_page==page_delete_matrix_file_indicator) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        canvas120x120.clear();
+        canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
+        display.drawCanvas(5, 5, canvas120x120);
+        drawMainBorderGreen();
+      }
     }
 
     // ------------------------------------------------
@@ -9901,13 +9878,15 @@ void UpdateUI() {
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     else if (menu_page==page_save_system_config_indicator) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        canvas120x120.clear();
+        canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+        canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+        display.drawCanvas(5, 5, canvas120x120);
+        drawMainBorderGreen();
+      }
     }
 
     // ------------------------------------------------
@@ -9915,31 +9894,32 @@ void UpdateUI() {
 
     // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
     else if (menu_page==page_restore_default_matrix_indicator) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(RGB_COLOR16(0,255,0));
-      canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-      display.drawCanvas(5, 5, canvas120x120);
-      drawMainBorderGreen();
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        canvas120x120.clear();
+        canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
+        canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+        display.drawCanvas(5, 5, canvas120x120);
+        drawMainBorderGreen();
+      }
     }
 
     // ------------------------------------------------
     //                                         GPS MENU
 
     else if (menu_page==page_gps_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("GPS")/2)*6), 1, "GPS", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
@@ -9973,19 +9953,17 @@ void UpdateUI() {
     /* output data to be parsed by other systems or to be read by humans */
 
     else if (menu_page==page_serial_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
@@ -10020,20 +9998,14 @@ void UpdateUI() {
     /* currently solar system tracking */
 
     else if (menu_page==page_universe_main) {
-      
       display.setColor(systemData.color_content);
-      
       if (menu_page != previous_menu_page) {
-        
         previous_menu_page=menu_page; display.clear();
-        
         drawMainBorder();
-  
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -10085,18 +10057,17 @@ void UpdateUI() {
     //                                     DISPLAY MENU
 
     else if (menu_page==page_display_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // auto off
       if (systemData.display_auto_off==true) {menuDisplayItems[0]="AUTO OFF ENABLED";}
@@ -10116,18 +10087,17 @@ void UpdateUI() {
     //                                      SYSTEM MENU
 
     else if (menu_page==page_system_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
       display.setColor(systemData.color_content);
-
-      drawMainBorder();
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
-      display.drawCanvas(4, 4, canvas120x8);
-
-      // seperator
-      display.drawHLine(2, 16, 126);
+      if (menu_page != previous_menu_page) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("SYSTEM")/2)*6), 1, "SYSTEM", STYLE_BOLD );
+        display.drawCanvas(4, 4, canvas120x8);
+        // seperator
+        display.drawHLine(2, 16, 126);
+      }
 
       // run matrix on startup
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
@@ -10151,25 +10121,20 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_CD74HC4067_main) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("CD74HC4067")/2)*6), 1, "CD74HC4067", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
-
         /* sensor value column 0 */
         canvas60x8.clear();
         canvas60x8.printFixed(1, 1, "0-7");
         display.drawCanvas(3, 27, canvas60x8);
-
         /* sensor value column 1 */
         canvas60x8.clear();
         canvas60x8.printFixed(1, 1, "8-15");
@@ -10259,17 +10224,14 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gngga) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("GNGGA")/2)*6), 1, "GNGGA", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
 
@@ -10317,17 +10279,14 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gnrmc) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("GNRMC")/2)*6), 1, "GNRMC", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
 
@@ -10375,17 +10334,14 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gpatt) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("GPATT")/2)*6), 1, "GPATT", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
 
@@ -10433,17 +10389,14 @@ void UpdateUI() {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_satio) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("SATIO")/2)*6), 1, "SATIO", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
 
@@ -10501,19 +10454,14 @@ void UpdateUI() {
     /* currently solar system tracking */
 
     else if (menu_page==page_universe_view_sun) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("SUN")/2)*6), 1, "SUN", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -10565,19 +10513,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_moon) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MOON")/2)*6), 1, "MOON", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -10642,19 +10585,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_mercury) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MERCURY")/2)*6), 1, "MERCURY", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -10733,19 +10671,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_venus) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("VENUS")/2)*6), 1, "VENUS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
 
@@ -10825,19 +10758,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_mars) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MARS")/2)*6), 1, "MARS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -10916,19 +10844,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_jupiter) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("JUPITER")/2)*6), 1, "JUPITER", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -11007,19 +10930,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_saturn) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("SATURN")/2)*6), 1, "SATURN", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -11098,19 +11016,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_uranus) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("URANUS")/2)*6), 1, "URANUS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
@@ -11189,19 +11102,14 @@ void UpdateUI() {
     }
 
     else if (menu_page==page_universe_view_neptune) {
+      display.setColor(systemData.color_content);
       if (menu_page != previous_menu_page) {
-
         previous_menu_page=menu_page; display.clear();
-
-        display.setColor(systemData.color_content);
-
         drawMainBorder();
-
         // title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("NEPTUNE")/2)*6), 1, "NEPTUNE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
-
         // seperator
         display.drawHLine(2, 16, 126);
       }
