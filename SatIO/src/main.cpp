@@ -3815,6 +3815,96 @@ void sdcard_save_system_configuration(char * file) {
     exfile.println(sdcardData.file_data);
     exfile.println("");
 
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_SUN,");
+    itoa(systemData.output_sun_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_MOON,");
+    itoa(systemData.output_moon_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_MERCURY,");
+    itoa(systemData.output_mercury_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_VENUS,");
+    itoa(systemData.output_venus_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_MARS,");
+    itoa(systemData.output_mars_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_JUPITER,");
+    itoa(systemData.output_jupiter_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_SATURN,");
+    itoa(systemData.output_saturn_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_URANUS,");
+    itoa(systemData.output_uranus_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_NEPTUNE,");
+    itoa(systemData.output_neptune_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
     exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     sdcardData.is_writing = false;
@@ -4089,6 +4179,88 @@ bool sdcard_load_system_configuration(char * file) {
             if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_neptune = false;} else {systemData.sidereal_track_neptune = true;}
           }
         }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SUN", strlen("OUTPUT_SUN")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_sun_enabled = false;} else {systemData.output_sun_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MOON", strlen("OUTPUT_MOON")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_moon_enabled = false;} else {systemData.output_moon_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MERCURY", strlen("OUTPUT_MERCURY")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_mercury_enabled = false;} else {systemData.output_mercury_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_VENUS", strlen("OUTPUT_VENUS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_venus_enabled = false;} else {systemData.output_venus_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MARS", strlen("OUTPUT_MARS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_mars_enabled = false;} else {systemData.output_mars_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_JUPITER", strlen("OUTPUT_JUPITER")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_jupiter_enabled = false;} else {systemData.output_jupiter_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATURN", strlen("OUTPUT_SATURN")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_saturn_enabled = false;} else {systemData.output_saturn_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_URANUS", strlen("OUTPUT_URANUS")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_uranus_enabled = false;} else {systemData.output_uranus_enabled = true;}
+          }
+        }
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_NEPTUNE", strlen("OUTPUT_NEPTUNE")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_neptune_enabled = false;} else {systemData.output_neptune_enabled = true;}
+          }
+        }
+        
       }
     }
     exfile.close();
