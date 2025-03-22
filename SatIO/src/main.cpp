@@ -9989,15 +9989,15 @@ void UpdateUI() {
       else {menuUniverseItems[7]                                         ="URANUS  DISABLED";}
       if (systemData.sidereal_track_neptune==true) {menuUniverseItems[8] ="NEPTUNE ENABLED";}
       else {menuUniverseItems[8]                                         ="NEPTUNE DISABLED";}
-      menuUniverseItems[9] ="VIEW SUN";
-      menuUniverseItems[10]="VIEW MOON";
-      menuUniverseItems[11]="VIEW MERCURY";
-      menuUniverseItems[12]="VIEW VENUS";
-      menuUniverseItems[13]="VIEW MARS";
-      menuUniverseItems[14]="VIEW JUPITER";
-      menuUniverseItems[15]="VIEW SATURN";
-      menuUniverseItems[16]="VIEW URANUS";
-      menuUniverseItems[17]="VIEW NEPTUNE";
+      menuUniverseItems[9]                                               ="VIEW    SUN";
+      menuUniverseItems[10]                                              ="VIEW    MOON";
+      menuUniverseItems[11]                                              ="VIEW    MERCURY";
+      menuUniverseItems[12]                                              ="VIEW    VENUS";
+      menuUniverseItems[13]                                              ="VIEW    MARS";
+      menuUniverseItems[14]                                              ="VIEW    JUPITER";
+      menuUniverseItems[15]                                              ="VIEW    SATURN";
+      menuUniverseItems[16]                                              ="VIEW    URANUS";
+      menuUniverseItems[17]                                              ="VIEW    NEPTUNE";
       // ------------------------------------------------
       menuUniverse.show( display );
       // ------------------------------------------------
