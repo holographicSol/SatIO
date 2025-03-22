@@ -4680,61 +4680,75 @@ siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
 }
 }
 
-
 void trackSun() {
-siderealPlanetData.sun_ra  = myAstro.getRAdec();
-siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
-myAstro.doRAdec2AltAz();
-siderealPlanetData.sun_az  = myAstro.getAzimuth();
-siderealPlanetData.sun_alt = myAstro.getAltitude();
-myAstro.doSunRiseSetTimes();
-siderealPlanetData.sun_r  = myAstro.getSunriseTime();
-siderealPlanetData.sun_s  = myAstro.getSunsetTime();
-
-if (systemData.output_sun_enabled==true) {
-  memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
-  strcat(siderealPlanetData.sentence, "$SUN,");
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_ra + String(",")).c_str());
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_dec + String(",")).c_str());
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_az + String(",")).c_str());
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_r + String(",")).c_str());
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_alt + String(",")).c_str());
-  strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_s + String(",")).c_str());
-
-  // append checksum
-  createChecksum(siderealPlanetData.sentence);
-  strcat(siderealPlanetData.sentence, "*");
-  strcat(siderealPlanetData.sentence, SerialLink.checksum);
-  Serial.println(siderealPlanetData.sentence);
-  debug(satData.satio_sentence);
-}
+  siderealPlanetData.sun_ra  = myAstro.getRAdec();
+  siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
+  myAstro.doRAdec2AltAz();
+  siderealPlanetData.sun_az  = myAstro.getAzimuth();
+  siderealPlanetData.sun_alt = myAstro.getAltitude();
+  myAstro.doSunRiseSetTimes();
+  siderealPlanetData.sun_r  = myAstro.getSunriseTime();
+  siderealPlanetData.sun_s  = myAstro.getSunsetTime();
+  // create and ouptput solar tracking information
+  if (systemData.output_sun_enabled==true) {
+    memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
+    strcat(siderealPlanetData.sentence, "$SUN,");
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_ra + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_dec + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_az + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_r + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_alt + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_s + String(",")).c_str());
+    // append checksum
+    createChecksum(siderealPlanetData.sentence);
+    strcat(siderealPlanetData.sentence, "*");
+    strcat(siderealPlanetData.sentence, SerialLink.checksum);
+    Serial.println(siderealPlanetData.sentence);
+    debug(satData.satio_sentence);
+  }
 }
 
 void trackMoon() {
-siderealPlanetData.moon_ra  = myAstro.getRAdec();
-siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
-// bench("[ra dec]" + String(millis()-t0));
-// t0 = millis();
-myAstro.doRAdec2AltAz();
-// bench("[doRAdec2AltAz]" + String(millis()-t0));
-// t0 = millis();
-siderealPlanetData.moon_az  = myAstro.getAzimuth();
-siderealPlanetData.moon_alt = myAstro.getAltitude();
-// bench("[azalt]" + String(millis()-t0));
-// t0 = millis();
-myAstro.doMoonRiseSetTimes();
-// bench("[doMoonRiseSetTimes]" + String(millis()-t0));
-// t0 = millis();
-siderealPlanetData.moon_r  = myAstro.getMoonriseTime();
-siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
-// bench("[rs]" + String(millis()-t0));
-// t0 = millis();
-siderealPlanetData.moon_p  = myAstro.getMoonPhase();
-// bench("[p]" + String(millis()-t0));
-siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
-if (systemData.output_moon_enabled==true) {
-  
-}
+  siderealPlanetData.moon_ra  = myAstro.getRAdec();
+  siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
+  // bench("[ra dec]" + String(millis()-t0));
+  // t0 = millis();
+  myAstro.doRAdec2AltAz();
+  // bench("[doRAdec2AltAz]" + String(millis()-t0));
+  // t0 = millis();
+  siderealPlanetData.moon_az  = myAstro.getAzimuth();
+  siderealPlanetData.moon_alt = myAstro.getAltitude();
+  // bench("[azalt]" + String(millis()-t0));
+  // t0 = millis();
+  myAstro.doMoonRiseSetTimes();
+  // bench("[doMoonRiseSetTimes]" + String(millis()-t0));
+  // t0 = millis();
+  siderealPlanetData.moon_r  = myAstro.getMoonriseTime();
+  siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
+  // bench("[rs]" + String(millis()-t0));
+  // t0 = millis();
+  siderealPlanetData.moon_p  = myAstro.getMoonPhase();
+  // bench("[p]" + String(millis()-t0));
+  siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
+  // create and ouptput lunar tracking information
+  if (systemData.output_moon_enabled==true) {
+    memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
+    strcat(siderealPlanetData.sentence, "$MOON,");
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_ra + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_dec + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_az + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_alt + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_r + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_s + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_p + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.moon_lum + String(",")).c_str());
+    // append checksum
+    createChecksum(siderealPlanetData.sentence);
+    strcat(siderealPlanetData.sentence, "*");
+    strcat(siderealPlanetData.sentence, SerialLink.checksum);
+    Serial.println(siderealPlanetData.sentence);
+    debug(satData.satio_sentence);
+  }
 }
 
 void trackMercury() {
