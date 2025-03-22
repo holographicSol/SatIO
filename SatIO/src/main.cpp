@@ -480,6 +480,8 @@ static int page_main_menu                        = 40;
 static int page_matrix_logic_main                = 60;
 static int page_matrix_logic_select_setup        = 61;
 static int page_matrix_logic_setup_function      = 62;
+/* OVERVIEW MATRIX SWITCHING */
+static int page_overview_matrix_switching        = 63;
 /* FILE */
 static int page_file_main                        = 80;
 static int page_file_save_matrix                 = 81;
@@ -536,10 +538,11 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
 
-const int max_main_menu_items = 8;
+const int max_main_menu_items = 9;
 const char *menuMainItems[max_main_menu_items] =
 {
     "   MATRIX        ", // allows matrix configuration
+    "   VIEW MATRIX   ", // overview matrix switching
     "   FILE          ", // load/save/delete system and matrix configurations
     "   GPS           ", // enable/disable parsing of sentences from the gps module
     "   SERIAL        ", // enable/disable output of various comma delimited sentences
@@ -8306,6 +8309,7 @@ void menuBack() {
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
   else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
+  else if (menu_page==page_overview_matrix_switching) {menu_page=page_main_menu;}
   else if (menu_page==page_file_main) {menu_page=page_main_menu;}
   else if (menu_page==page_file_save_matrix) {menu_page=page_file_main;}
   else if (menu_page==page_file_load_matrix) {menu_page=page_file_main;}
@@ -8354,38 +8358,43 @@ void menuEnter() {
       menu_page=page_matrix_logic_main;
     }
 
+    // go to matrix menu
+    if (menuMain.selection()==1) {
+      menu_page=page_overview_matrix_switching;
+    }
+
     // go to file menu
-    else if (menuMain.selection()==1) {
+    else if (menuMain.selection()==2) {
       menu_page=page_file_main;
     }
 
     // go to gps menu
-    else if (menuMain.selection()==2) {
+    else if (menuMain.selection()==3) {
       menu_page=page_gps_main;
     }
 
     // go to serial menu
-    else if (menuMain.selection()==3) {
+    else if (menuMain.selection()==4) {
       menu_page=page_serial_main;
     }
 
     // go to system menu
-    else if (menuMain.selection()==4) {
+    else if (menuMain.selection()==5) {
       menu_page=page_system_main;
     }
 
     // go to universe menu
-    else if (menuMain.selection()==5) {
+    else if (menuMain.selection()==6) {
       menu_page=page_universe_main;
     }
 
     // go to display menu
-    else if (menuMain.selection()==6) {
+    else if (menuMain.selection()==7) {
       menu_page=page_display_main;
     }
 
     // go to CD74HC4067 menu
-    else if (menuMain.selection()==7) {
+    else if (menuMain.selection()==8) {
       menu_page=page_CD74HC4067_main;
     }
 
@@ -9409,6 +9418,96 @@ void UpdateUI() {
         // display.drawRect(91+4, 6, 91+30, 21); // uncomment to border
       }
       
+    }
+
+    // ------------------------------------------------
+    //                        OVERVIEW MATRIX SWITCHING
+
+    else if (menu_page==page_overview_matrix_switching) {
+
+      display.setColor(systemData.color_content);
+      
+      if (menu_page != previous_menu_page) {
+        
+        previous_menu_page=menu_page; display.clear();
+        
+        // drawMainBorder();
+
+        // seperator (slightly lower than other header seperators to allow height space for combination bar)
+        display.drawHLine(1, 16, 128);
+  
+        // show title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("MATRIX OVERVIEW")/2)*6), 1, "MATRIX OVERVIEW", STYLE_BOLD );
+        display.drawCanvas(4, 1, canvas120x8);
+
+      }
+      
+      int size = 23;
+      int start = 2;
+      for (int i=0; i<5; i++) {
+
+        // ------------------------------------------------
+
+        // 0-4 switch number
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 28, canvas19x8);
+
+        // 0-4 border
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        display.drawRect(start, 27, start+size, 27+size);
+
+        // ------------------------------------------------
+
+        // 5-9 switch number
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 53, canvas19x8);
+
+        // 5-9 border
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        display.drawRect(start, 52, start+size, 52+size);
+
+        // ------------------------------------------------
+
+        // 10-14 switch number
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 78, canvas19x8);
+
+        // 10-14 border
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        display.drawRect(start, 77, start+size, 77+size);
+
+        // ------------------------------------------------
+
+        // 15-19 switch number
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start, 103, canvas19x8);
+
+        // 15-19 border
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        display.drawRect(start, 102, start+size, 102+size);
+
+        // ------------------------------------------------
+
+        // adjust x
+        start = start+25;
+      }
     }
 
     // ------------------------------------------------
