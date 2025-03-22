@@ -10509,7 +10509,7 @@ void UpdateUI() {
       display.drawCanvas(40, 75, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_moon) {
@@ -10581,7 +10581,7 @@ void UpdateUI() {
       display.drawCanvas(40, 95, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_mercury) {
@@ -10667,7 +10667,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_venus) {
@@ -10754,7 +10754,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_mars) {
@@ -10840,7 +10840,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_jupiter) {
@@ -10926,7 +10926,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_saturn) {
@@ -11012,7 +11012,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_uranus) {
@@ -11098,7 +11098,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
     else if (menu_page==page_universe_view_neptune) {
@@ -11184,7 +11184,7 @@ void UpdateUI() {
       display.drawCanvas(40, 115, canvas49x8);
 
       // seperator
-      display.drawVLine(35, 20, 126);
+      display.drawVLine(35, 16, 126);
     }
 
   }
