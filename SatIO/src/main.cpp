@@ -10548,7 +10548,7 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
       display.drawCanvas(45, ui_content_2, canvas80x8);
       // ------------------------------------------------
       canvas36x8.clear();
@@ -10562,7 +10562,7 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
       display.drawCanvas(45, ui_content_3, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
