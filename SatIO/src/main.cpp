@@ -10441,9 +10441,9 @@ void UpdateUI() {
       canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
       display.drawCanvas(32, ui_content_0, canvas92x8);
       // ----------------------------------------------------------
-      canvas21x8.clear();
-      canvas21x8.printFixed(1, 1, String(gpattData.roll).c_str());
-      display.drawCanvas(32, ui_content_1, canvas21x8);
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
+      display.drawCanvas(32, ui_content_1, canvas92x8);
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
