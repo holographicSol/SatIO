@@ -9726,7 +9726,7 @@ void UpdateUI() {
         display.drawHLine(2, 42, 126);
         // ------------------------------------------------
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, "CURRENT MATRIX FILE", STYLE_NORMAL);
+        canvas120x8.printFixed(1, 1, "CURRENT MATRIX FILE:", STYLE_NORMAL);
         display.drawCanvas(6, 20, canvas120x8);
       }
       // ------------------------------------------------
