@@ -9431,15 +9431,13 @@ void UpdateUI() {
         
         previous_menu_page=menu_page; display.clear();
         
-        // drawMainBorder();
-
-        // seperator (slightly lower than other header seperators to allow height space for combination bar)
-        display.drawHLine(1, 16, 128);
-  
         // show title
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("MATRIX OVERVIEW")/2)*6), 1, "MATRIX OVERVIEW", STYLE_BOLD );
-        display.drawCanvas(4, 1, canvas120x8);
+        display.drawCanvas(4, 4, canvas120x8);
+
+        // border title
+        display.drawRect(1, 1, 128, 16);
 
       }
       
