@@ -10497,7 +10497,7 @@ void UpdateUI() {
         display.drawCanvas(4, 3, canvas120x8);
         // ------------------------------------------------
         display.drawHLine(2, 13, 126);
-        display.drawVLine(42, 13, 126);
+        display.drawVLine(41, 13, 126);
         // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("RTCT").c_str());
