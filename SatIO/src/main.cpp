@@ -232,6 +232,7 @@ NanoCanvas<128,128,1> canvas128x128;
 NanoCanvas<28,8,1> canvas28x8;
 NanoCanvas<21,8,1> canvas21x8;
 NanoCanvas<42,8,1> canvas42x8;
+NanoCanvas<36,8,1> canvas36x8;
 NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
@@ -10498,91 +10499,91 @@ void UpdateUI() {
         display.drawHLine(2, 13, 126);
         display.drawVLine(47, 13, 126);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("RTCT").c_str());
-        display.drawCanvas(4, ui_content_0, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("RTCT").c_str());
+        display.drawCanvas(4, ui_content_0, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("RTCD").c_str());
-        display.drawCanvas(4, ui_content_1, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("RTCD").c_str());
+        display.drawCanvas(4, ui_content_1, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("SRTCT").c_str());
-        display.drawCanvas(4, ui_content_4, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SRTCT").c_str());
+        display.drawCanvas(4, ui_content_4, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("SRTCD").c_str());
-        display.drawCanvas(4, ui_content_5, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SRTCD").c_str());
+        display.drawCanvas(4, ui_content_5, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("SUNR").c_str());
-        display.drawCanvas(4, ui_content_6, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SUNR").c_str());
+        display.drawCanvas(4, ui_content_6, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("SUNS").c_str());
-        display.drawCanvas(4, ui_content_7, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SUNS").c_str());
+        display.drawCanvas(4, ui_content_7, canvas36x8);
         // ------------------------------------------------
-        canvas42x8.clear();
-        canvas42x8.printFixed(1, 1, String("DAY").c_str());
-        display.drawCanvas(4, ui_content_8, canvas42x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("DAY").c_str());
+        display.drawCanvas(4, ui_content_8, canvas36x8);
 
       }
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatRTCTime()).c_str());
-      display.drawCanvas(49, ui_content_0, canvas80x8);
+      display.drawCanvas(44, ui_content_0, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatRTCDate()).c_str());
-      display.drawCanvas(49, ui_content_1, canvas80x8);
+      display.drawCanvas(44, ui_content_1, canvas80x8);
       // ------------------------------------------------
-      canvas42x8.clear();
+      canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        canvas42x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_2, canvas42x8);
+        canvas36x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_2, canvas36x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        canvas42x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_2, canvas42x8);
+        canvas36x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_2, canvas36x8);
       }
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_latitude).c_str());
-      display.drawCanvas(49, ui_content_2, canvas80x8);
+      display.drawCanvas(44, ui_content_2, canvas80x8);
       // ------------------------------------------------
-      canvas42x8.clear();
+      canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        canvas42x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_3, canvas42x8);
+        canvas36x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_3, canvas36x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        canvas42x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_3, canvas42x8);
+        canvas36x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_3, canvas36x8);
       }
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude).c_str());
-      display.drawCanvas(49, ui_content_3, canvas80x8);
+      display.drawCanvas(44, ui_content_3, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncTime).c_str());
-      display.drawCanvas(49, ui_content_4, canvas80x8);
+      display.drawCanvas(44, ui_content_4, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncDate).c_str());
-      display.drawCanvas(49, ui_content_5, canvas80x8);
+      display.drawCanvas(44, ui_content_5, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
-      display.drawCanvas(49, ui_content_6, canvas80x8);
+      display.drawCanvas(44, ui_content_6, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
-      display.drawCanvas(49, ui_content_7, canvas80x8);
+      display.drawCanvas(44, ui_content_7, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day())).c_str());
-      display.drawCanvas(49, ui_content_8, canvas80x8);
+      display.drawCanvas(44, ui_content_8, canvas80x8);
       // ------------------------------------------------
     }
 
@@ -12238,6 +12239,7 @@ void setup() {
   canvas60x8.setFixedFont(ssd1306xled_font6x8);
   canvas28x8.setFixedFont(ssd1306xled_font6x8);
   canvas21x8.setFixedFont(ssd1306xled_font6x8);
+  canvas36x8.setFixedFont(ssd1306xled_font6x8);
   canvas42x8.setFixedFont(ssd1306xled_font6x8);
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas70x8.setFixedFont(ssd1306xled_font6x8);
