@@ -863,6 +863,7 @@ struct systemStruct {
   // conversion maps
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
   char translate_plus_minus[2][2]  = {"+", "-"}; // bool used as index selects bool translation
+  char translate_am_pm[2][4]  = {"AM", "PM"}; // bool used as index selects bool translation
 
   char tmp0[56];
   char tmp1[56];
@@ -10344,7 +10345,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("SUN")/2)*6), 1, "SUN", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
         display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10399,6 +10403,9 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("MOON")/2)*6), 1, "MOON", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10449,9 +10456,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.moon_lum).c_str());
       display.drawCanvas(40, 95, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10467,6 +10471,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("MERCURY")/2)*6), 1, "MERCURY", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10529,9 +10537,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.mercury_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10547,6 +10552,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("VENUS")/2)*6), 1, "VENUS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10609,9 +10618,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.venus_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10627,6 +10633,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("MARS")/2)*6), 1, "MARS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10690,9 +10700,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.mars_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10708,6 +10715,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("JUPITER")/2)*6), 1, "JUPITER", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10770,9 +10781,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.jupiter_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10788,6 +10796,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("SATURN")/2)*6), 1, "SATURN", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10850,9 +10862,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.saturn_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10868,6 +10877,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("URANUS")/2)*6), 1, "URANUS", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10930,9 +10943,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.uranus_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10948,6 +10958,10 @@ void UpdateUI() {
         canvas120x8.printFixed((120/2)-((strlen("NEPTUNE")/2)*6), 1, "NEPTUNE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
+        display.drawVLine(35, 16, 126);
+        display.drawVLine(90, 16, 126);
+        // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
         display.drawCanvas(4, 25, canvas28x8);
@@ -10992,7 +11006,7 @@ void UpdateUI() {
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.neptune_alt).c_str());
       display.drawCanvas(40, 55, canvas49x8);
       canvas49x8.clear();
-      canvas49x8.printFixed(1, 1, String(siderealPlanetData.neptune_r).c_str());
+      canvas49x8.printFixed(1, 1, String(siderealPlanetData.neptune_r + String()).c_str());
       display.drawCanvas(40, 65, canvas49x8);
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.neptune_s).c_str());
@@ -11010,9 +11024,6 @@ void UpdateUI() {
       canvas49x8.clear();
       canvas49x8.printFixed(1, 1, String(siderealPlanetData.neptune_distance).c_str());
       display.drawCanvas(40, 115, canvas49x8);
-      // ------------------------------------------------
-      display.drawVLine(35, 16, 126);
-      // ------------------------------------------------
     }
 
   }
