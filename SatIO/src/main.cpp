@@ -10330,7 +10330,7 @@ void UpdateUI() {
     }
 
     // ------------------------------------------------
-    //                                   UNIVERSE VIEWS
+    //                              UNIVERSE VIEWS: SUN
 
     /* currently solar system tracking */
 
@@ -10385,6 +10385,9 @@ void UpdateUI() {
       display.drawVLine(35, 16, 126);
       // ------------------------------------------------
     }
+
+    // ------------------------------------------------
+    //                             UNIVERSE VIEWS: MOON
 
     else if (menu_page==page_universe_view_moon) {
       display.setColor(systemData.color_content);
@@ -10450,6 +10453,9 @@ void UpdateUI() {
       display.drawVLine(35, 16, 126);
       // ------------------------------------------------
     }
+
+    // ------------------------------------------------
+    //                          UNIVERSE VIEWS: MERCURY
 
     else if (menu_page==page_universe_view_mercury) {
       display.setColor(systemData.color_content);
@@ -10528,6 +10534,9 @@ void UpdateUI() {
       // ------------------------------------------------
     }
 
+    // ------------------------------------------------
+    //                            UNIVERSE VIEWS: VENUS
+
     else if (menu_page==page_universe_view_venus) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10604,6 +10613,9 @@ void UpdateUI() {
       display.drawVLine(35, 16, 126);
       // ------------------------------------------------
     }
+
+    // ------------------------------------------------
+    //                             UNIVERSE VIEWS: MARS
 
     else if (menu_page==page_universe_view_mars) {
       display.setColor(systemData.color_content);
@@ -10682,6 +10694,9 @@ void UpdateUI() {
       // ------------------------------------------------
     }
 
+    // ------------------------------------------------
+    //                          UNIVERSE VIEWS: JUPITER
+
     else if (menu_page==page_universe_view_jupiter) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10758,6 +10773,9 @@ void UpdateUI() {
       display.drawVLine(35, 16, 126);
       // ------------------------------------------------
     }
+
+    // ------------------------------------------------
+    //                           UNIVERSE VIEWS: SATURN
 
     else if (menu_page==page_universe_view_saturn) {
       display.setColor(systemData.color_content);
@@ -10836,6 +10854,9 @@ void UpdateUI() {
       // ------------------------------------------------
     }
 
+    // ------------------------------------------------
+    //                           UNIVERSE VIEWS: URANUS
+
     else if (menu_page==page_universe_view_uranus) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10912,6 +10933,9 @@ void UpdateUI() {
       display.drawVLine(35, 16, 126);
       // ------------------------------------------------
     }
+
+    // ------------------------------------------------
+    //                          UNIVERSE VIEWS: NEPTUNE
 
     else if (menu_page==page_universe_view_neptune) {
       display.setColor(systemData.color_content);
