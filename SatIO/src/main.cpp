@@ -4530,9 +4530,8 @@ bool SecondsTimer(double n0, double n1, int Mi) {
 
   seconds accumulated by an isr alarm. this does not use satellite data. 
   
-  x (n0): total time to be divided between on and off time
-  y (n1): total time on within x total time
-  example: X=2, Y=1 = on 1 second, off one second, total time 2 seconds.
+  x (n0): off interval
+  y (n1): on interval (should not exceed off interval)
 
   */
 
