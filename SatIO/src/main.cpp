@@ -9725,7 +9725,7 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String("M: " + String(sdcardData.matrix_filepath)).c_str(), STYLE_BOLD);
+      canvas120x8.printFixed(1, 1, String("M " + String(sdcardData.matrix_filepath)).c_str(), STYLE_BOLD);
       display.drawCanvas(6, 26, canvas120x8);
       // ------------------------------------------------
       menuFile.show( display );
