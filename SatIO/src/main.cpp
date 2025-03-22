@@ -10020,19 +10020,23 @@ void UpdateUI() {
     /* currently solar system tracking */
 
     else if (menu_page==page_universe_main) {
-      if (menu_page != previous_menu_page) {previous_menu_page=menu_page; display.clear();}
-
+      
       display.setColor(systemData.color_content);
+      
+      if (menu_page != previous_menu_page) {
+        
+        previous_menu_page=menu_page; display.clear();
+        
+        drawMainBorder();
 
-      drawMainBorder();
-
-      // seperator
-      display.drawHLine(2, 20, 126);
-
-      // title
-      canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
-      display.drawCanvas(3, 6, canvas120x8);
+        // seperator
+        display.drawHLine(2, 20, 126);
+  
+        // title
+        canvas120x8.clear();
+        canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
+        display.drawCanvas(3, 6, canvas120x8);
+      }
 
       // set items each iteration so that if changed anywhere will be reflected in ui
 
