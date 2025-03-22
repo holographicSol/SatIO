@@ -668,7 +668,7 @@ LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
 
-const int max_serial_items = 7;
+const int max_serial_items = 16;
 const char *menuSerialItems[max_serial_items];
 LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 38}, {125, 125}} );
 
@@ -820,13 +820,26 @@ struct systemStruct {
   bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
   bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
   bool matrix_enabled = false;         // enables/disables matrix switch
+
   bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
   bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
   bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
   bool output_sensors_enabled = false; // enables/disables output of sensory data sentence over serial
+
+  bool output_sun_enabled = false;     // enables/disables output sentence over serial
+  bool output_moon_enabled = false;    // enables/disables output sentence over serial
+  bool output_mercury_enabled = false; // enables/disables output sentence over serial
+  bool output_venus_enabled = false;   // enables/disables output sentence over serial
+  bool output_mars_enabled = false;    // enables/disables output sentence over serial
+  bool output_jupiter_enabled = false; // enables/disables output sentence over serial
+  bool output_saturn_enabled = false;  // enables/disables output sentence over serial
+  bool output_uranus_enabled = false;  // enables/disables output sentence over serial
+  bool output_neptune_enabled = false; // enables/disables output sentence over serial
+
   bool port_controller_enabled = true; // may be false by default but is default true for now.
+
   bool sidereal_track_sun = true;      // enables/disables celestial body tracking
   bool sidereal_track_moon = true;     // enables/disables celestial body tracking
   bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
@@ -4678,6 +4691,10 @@ siderealPlanetData.sun_alt = myAstro.getAltitude();
 myAstro.doSunRiseSetTimes();
 siderealPlanetData.sun_r  = myAstro.getSunriseTime();
 siderealPlanetData.sun_s  = myAstro.getSunsetTime();
+
+if (systemData.output_sun_enabled==true) {
+
+}
 }
 
 void trackMoon() {
@@ -4704,6 +4721,9 @@ siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
 siderealPlanetData.moon_p  = myAstro.getMoonPhase();
 // bench("[p]" + String(millis()-t0));
 siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
+if (systemData.output_moon_enabled==true) {
+  
+}
 }
 
 void trackMercury() {
@@ -4722,6 +4742,9 @@ siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.mercury_r = myAstro.getRiseTime();
 siderealPlanetData.mercury_s = myAstro.getSetTime();
+if (systemData.output_mercury_enabled==true) {
+  
+}
 }
 
 void trackVenus() {
@@ -4740,6 +4763,9 @@ siderealPlanetData.venus_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.venus_r = myAstro.getRiseTime();
 siderealPlanetData.venus_s = myAstro.getSetTime();
+if (systemData.output_venus_enabled==true) {
+  
+}
 }
 
 void trackMars() {
@@ -4758,6 +4784,9 @@ siderealPlanetData.mars_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.mars_r = myAstro.getRiseTime();
 siderealPlanetData.mars_s = myAstro.getSetTime();
+if (systemData.output_mars_enabled==true) {
+  
+}
 }
 
 void trackJupiter() {
@@ -4776,6 +4805,9 @@ siderealPlanetData.jupiter_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.jupiter_r = myAstro.getRiseTime();
 siderealPlanetData.jupiter_s = myAstro.getSetTime();
+if (systemData.output_jupiter_enabled==true) {
+  
+}
 }
 
 void trackSaturn() {
@@ -4794,6 +4826,9 @@ siderealPlanetData.saturn_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.saturn_r = myAstro.getRiseTime();
 siderealPlanetData.saturn_s = myAstro.getSetTime();
+if (systemData.output_saturn_enabled==true) {
+  
+}
 }
 
 void trackUranus() {
@@ -4812,6 +4847,9 @@ siderealPlanetData.uranus_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.uranus_r = myAstro.getRiseTime();
 siderealPlanetData.uranus_s = myAstro.getSetTime();
+if (systemData.output_uranus_enabled==true) {
+  
+}
 }
 
 void trackNeptune() {
@@ -4830,6 +4868,9 @@ siderealPlanetData.neptune_ecliptic_long = myAstro.getEclipticLongitude();
 myAstro.doXRiseSetTimes();
 siderealPlanetData.neptune_r = myAstro.getRiseTime();
 siderealPlanetData.neptune_s = myAstro.getSetTime();
+if (systemData.output_neptune_enabled==true) {
+  
+}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -8752,7 +8793,16 @@ void menuEnter() {
     else if (menuSerial.selection()==3) {systemData.output_gpatt_enabled^=true;}
     else if (menuSerial.selection()==4) {systemData.output_matrix_enabled^=true;}
     else if (menuSerial.selection()==5) {systemData.output_sensors_enabled^=true;}
-    else if (menuSerial.selection()==6) {systemData.debug^=true;}
+    else if (menuSerial.selection()==6) {systemData.output_sun_enabled^=true;}
+    else if (menuSerial.selection()==7) {systemData.output_moon_enabled^=true;}
+    else if (menuSerial.selection()==8) {systemData.output_mercury_enabled^=true;}
+    else if (menuSerial.selection()==9) {systemData.output_venus_enabled^=true;}
+    else if (menuSerial.selection()==10) {systemData.output_mars_enabled^=true;}
+    else if (menuSerial.selection()==11) {systemData.output_jupiter_enabled^=true;}
+    else if (menuSerial.selection()==12) {systemData.output_saturn_enabled^=true;}
+    else if (menuSerial.selection()==13) {systemData.output_uranus_enabled^=true;}
+    else if (menuSerial.selection()==14) {systemData.output_neptune_enabled^=true;}
+    else if (menuSerial.selection()==15) {systemData.debug^=true;}
   }
 
   // universe page
@@ -9970,20 +10020,38 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
-      if (systemData.output_satio_enabled==true) {menuSerialItems[0]   ="SATIO   ENABLED";}
-      else {menuSerialItems[0]                                         ="SATIO   DISABLED";}
-      if (systemData.output_gngga_enabled==true) {menuSerialItems[1]   ="GNGGA   ENABLED";}
-      else {menuSerialItems[1]                                         ="GNGGA   DISABLED";}
-      if (systemData.output_gnrmc_enabled==true) {menuSerialItems[2]   ="GNRMC   ENABLED";}
-      else {menuSerialItems[2]                                         ="GNRMC   DISABLED";}
-      if (systemData.output_gpatt_enabled==true) {menuSerialItems[3]   ="GPATT   ENABLED";}
-      else {menuSerialItems[3]                                         ="GPATT   DISABLED";}
-      if (systemData.output_matrix_enabled==true) {menuSerialItems[4]  ="MATRIX  ENABLED";}
-      else {menuSerialItems[4]                                         ="MATRIX  DISABLED";}
-      if (systemData.output_sensors_enabled==true) {menuSerialItems[5] ="SENSORS ENABLED";}
-      else {menuSerialItems[5]                                         ="SENSORS DISABLED";}
-      if (systemData.debug==true) {menuSerialItems[6]                  ="DEBUG   ENABLED";}
-      else {menuSerialItems[6]                                         ="DEBUG   DISABLED";}
+      if (systemData.output_satio_enabled==true) {menuSerialItems[0]    ="SATIO   ENABLED";}
+      else {menuSerialItems[0]                                          ="SATIO   DISABLED";}
+      if (systemData.output_gngga_enabled==true) {menuSerialItems[1]    ="GNGGA   ENABLED";}
+      else {menuSerialItems[1]                                          ="GNGGA   DISABLED";}
+      if (systemData.output_gnrmc_enabled==true) {menuSerialItems[2]    ="GNRMC   ENABLED";}
+      else {menuSerialItems[2]                                          ="GNRMC   DISABLED";}
+      if (systemData.output_gpatt_enabled==true) {menuSerialItems[3]    ="GPATT   ENABLED";}
+      else {menuSerialItems[3]                                          ="GPATT   DISABLED";}
+      if (systemData.output_matrix_enabled==true) {menuSerialItems[4]   ="MATRIX  ENABLED";}
+      else {menuSerialItems[4]                                          ="MATRIX  DISABLED";}
+      if (systemData.output_sensors_enabled==true) {menuSerialItems[5]  ="SENSORS ENABLED";}
+      else {menuSerialItems[5]                                          ="SENSORS DISABLED";}
+      if (systemData.output_sun_enabled==true) {menuSerialItems[6]      ="SUN     ENABLED";}
+      else {menuSerialItems[6]                                          ="SUN     DISABLED";}
+      if (systemData.output_moon_enabled==true) {menuSerialItems[7]     ="MOON    ENABLED";}
+      else {menuSerialItems[7]                                          ="MOON    DISABLED";}
+      if (systemData.output_mercury_enabled==true) {menuSerialItems[8]  ="MERCURY ENABLED";}
+      else {menuSerialItems[8]                                          ="MERCURY DISABLED";}
+      if (systemData.output_venus_enabled==true) {menuSerialItems[9]    ="VENUS   ENABLED";}
+      else {menuSerialItems[9]                                          ="VENUS   DISABLED";}
+      if (systemData.output_mars_enabled==true) {menuSerialItems[10]    ="MARS    ENABLED";}
+      else {menuSerialItems[10]                                         ="MARS    DISABLED";}
+      if (systemData.output_jupiter_enabled==true) {menuSerialItems[11] ="JUPITER ENABLED";}
+      else {menuSerialItems[11]                                         ="JUPITER DISABLED";}
+      if (systemData.output_saturn_enabled=true) {menuSerialItems[12]   ="SATURN  ENABLED";}
+      else {menuSerialItems[12]                                         ="SATURN  DISABLED";}
+      if (systemData.output_uranus_enabled=true) {menuSerialItems[13]   ="URANUS  ENABLED";}
+      else {menuSerialItems[13]                                         ="URANUS  DISABLED";}
+      if (systemData.output_neptune_enabled) {menuSerialItems[14]       ="NEPTUNE ENABLED";}
+      else {menuSerialItems[14]                                         ="NEPTUNE DISABLED";}
+      if (systemData.debug==true) {menuSerialItems[15]                  ="DEBUG   ENABLED";}
+      else {menuSerialItems[15]                                         ="DEBUG   DISABLED";}
       // ------------------------------------------------
       menuSerial.show( display );
       // ------------------------------------------------
