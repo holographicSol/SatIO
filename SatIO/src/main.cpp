@@ -9934,20 +9934,20 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
-      if (systemData.output_satio_enabled==true) {menuSerialItems[0]="SATIO ENABLED";}
-      else {menuSerialItems[0]="SATIO DISABLED";}
-      if (systemData.output_gngga_enabled==true) {menuSerialItems[1]="GNGGA ENABLED";}
-      else {menuSerialItems[1]="GNGGA DISABLED";}
-      if (systemData.output_gnrmc_enabled==true) {menuSerialItems[2]="GNRMC ENABLED";}
-      else {menuSerialItems[2]="GNRMC DISABLED";}
-      if (systemData.output_gpatt_enabled==true) {menuSerialItems[3]="GPATT ENABLED";}
-      else {menuSerialItems[3]="GPATT DISABLED";}
-      if (systemData.output_matrix_enabled==true) {menuSerialItems[4]="MATRIX ENABLED";}
-      else {menuSerialItems[4]="MATRIX DISABLED";}
-      if (systemData.output_sensors_enabled==true) {menuSerialItems[5]="SENSORS ENABLED";}
-      else {menuSerialItems[5]="SENSORS DISABLED";}
-      if (systemData.debug==true) {menuSerialItems[6]="DEBUG ENABLED";}
-      else {menuSerialItems[6]="DEBUG DISABLED";}
+      if (systemData.output_satio_enabled==true) {menuSerialItems[0]   ="SATIO   ENABLED";}
+      else {menuSerialItems[0]                                         ="SATIO   DISABLED";}
+      if (systemData.output_gngga_enabled==true) {menuSerialItems[1]   ="GNGGA   ENABLED";}
+      else {menuSerialItems[1]                                         ="GNGGA   DISABLED";}
+      if (systemData.output_gnrmc_enabled==true) {menuSerialItems[2]   ="GNRMC   ENABLED";}
+      else {menuSerialItems[2]                                         ="GNRMC   DISABLED";}
+      if (systemData.output_gpatt_enabled==true) {menuSerialItems[3]   ="GPATT   ENABLED";}
+      else {menuSerialItems[3]                                         ="GPATT   DISABLED";}
+      if (systemData.output_matrix_enabled==true) {menuSerialItems[4]  ="MATRIX  ENABLED";}
+      else {menuSerialItems[4]                                         ="MATRIX  DISABLED";}
+      if (systemData.output_sensors_enabled==true) {menuSerialItems[5] ="SENSORS ENABLED";}
+      else {menuSerialItems[5]                                         ="SENSORS DISABLED";}
+      if (systemData.debug==true) {menuSerialItems[6]                  ="DEBUG   ENABLED";}
+      else {menuSerialItems[6]                                         ="DEBUG   DISABLED";}
       // ------------------------------------------------
       menuSerial.show( display );
       // ------------------------------------------------
