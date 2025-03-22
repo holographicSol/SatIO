@@ -9450,12 +9450,12 @@ void UpdateUI() {
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 28, canvas19x8);
+        display.drawCanvas(start+1, 28, canvas19x8);
 
         // 0-4 port number
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 39, canvas19x8);
+        display.drawCanvas(start+1, 39, canvas19x8);
 
         // 0-4 border
         display.setColor(RGB_COLOR16(50,50,50));
@@ -9469,12 +9469,12 @@ void UpdateUI() {
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 53, canvas19x8);
+        display.drawCanvas(start+1, 53, canvas19x8);
 
         // 5-9 port number
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 64, canvas19x8);
+        display.drawCanvas(start+1, 64, canvas19x8);
 
         // 5-9 border
         display.setColor(RGB_COLOR16(50,50,50));
@@ -9488,12 +9488,12 @@ void UpdateUI() {
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 78, canvas19x8);
+        display.drawCanvas(start+1, 78, canvas19x8);
 
         // 10-14 port number
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 89, canvas19x8);
+        display.drawCanvas(start+1, 89, canvas19x8);
 
 
         // 10-14 border
@@ -9508,12 +9508,12 @@ void UpdateUI() {
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 103, canvas19x8);
+        display.drawCanvas(start+1, 103, canvas19x8);
 
         // 15-19 port number
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start, 114, canvas19x8);
+        display.drawCanvas(start+1, 114, canvas19x8);
 
         // 15-19 border
         display.setColor(RGB_COLOR16(50,50,50));
