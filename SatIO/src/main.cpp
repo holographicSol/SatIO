@@ -9437,8 +9437,7 @@ void UpdateUI() {
         display.drawCanvas(4, 4, canvas120x8);
 
         // border title
-        display.drawRect(1, 1, 128, 16);
-
+        display.drawRect(1, 1, 127, 16);
       }
       
       int size = 23;
