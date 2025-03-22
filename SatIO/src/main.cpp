@@ -568,7 +568,7 @@ const char *menuMainItems[max_main_menu_items] =
     "    CD74HC4067    ",
 };
 //  "                  "
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
@@ -659,14 +659,14 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 
 const int max_gps_items = 9;
 const char *menuGPSItems[max_gps_items];
-LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
 
 const int max_serial_items = 7;
 const char *menuSerialItems[max_serial_items];
-LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
@@ -680,14 +680,14 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 20}, {125, 
 
 const int max_display_items = 3;
 const char *menuDisplayItems[max_display_items];
-LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU SYSTEM
 
 const int max_system_items = 1;
 const char *menuSystemItems[max_system_items];
-LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 38}, {125, 125}} );
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
@@ -9764,7 +9764,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("SAVE")/2)*6), 1, "SAVE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -9787,7 +9789,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("LOAD")/2)*6), 1, "LOAD", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -9809,7 +9813,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("DELETE")/2)*6), 1, "DELETE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -9954,7 +9960,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("SERIAL")/2)*6), 1, "SERIAL", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -9991,7 +9999,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("UNIVERSE")/2)*6), 1, "UNIVERSE", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
@@ -10039,7 +10049,9 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("DISPLAY")/2)*6), 1, "DISPLAY", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       // auto off
@@ -10097,15 +10109,21 @@ void UpdateUI() {
         canvas120x8.clear();
         canvas120x8.printFixed((120/2)-((strlen("CD74HC4067")/2)*6), 1, "CD74HC4067", STYLE_BOLD );
         display.drawCanvas(4, 4, canvas120x8);
+        // ------------------------------------------------
         display.drawHLine(2, 16, 126);
+        display.drawHLine(2, 36, 126);
+        display.drawVLine(64, 16, 126);
+        // ------------------------------------------------
         /* sensor value column 0 */
         canvas60x8.clear();
-        canvas60x8.printFixed(1, 1, "0-7");
-        display.drawCanvas(3, 27, canvas60x8);
+        canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD );
+        display.drawCanvas(3, 22, canvas60x8);
+        // ------------------------------------------------
         /* sensor value column 1 */
         canvas60x8.clear();
-        canvas60x8.printFixed(1, 1, "8-15");
-        display.drawCanvas(64, 27, canvas60x8);
+        canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD );
+        display.drawCanvas(66, 22, canvas60x8);
+        // ------------------------------------------------
       }
       // ------------------------------------------------
       /*
@@ -10144,28 +10162,28 @@ void UpdateUI() {
       /* sensor value column 1 */
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_8, 4).c_str());
-      display.drawCanvas(64, 40, canvas60x8);
+      display.drawCanvas(67, 40, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_9, 4).c_str());
-      display.drawCanvas(64, 50, canvas60x8);
+      display.drawCanvas(67, 50, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_10, 4).c_str());
-      display.drawCanvas(64, 60, canvas60x8);
+      display.drawCanvas(67, 60, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_11, 4).c_str());
-      display.drawCanvas(64, 70, canvas60x8);
+      display.drawCanvas(67, 70, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_12, 4).c_str());
-      display.drawCanvas(64, 80, canvas60x8);
+      display.drawCanvas(67, 80, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_13, 4).c_str());
-      display.drawCanvas(64, 90, canvas60x8);
+      display.drawCanvas(67, 90, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_14, 4).c_str());
-      display.drawCanvas(64, 100, canvas60x8);
+      display.drawCanvas(67, 100, canvas60x8);
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str());
-      display.drawCanvas(64, 110, canvas60x8);
+      display.drawCanvas(67, 110, canvas60x8);
       // ------------------------------------------------
     }
 
