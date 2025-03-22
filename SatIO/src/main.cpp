@@ -131,8 +131,6 @@ bool gps_done = false; // helps avoid any potential race conditions where gps da
 
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte txd_to_atmega = 25; // 
-const byte rxd_from_gps = 26;  //
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
