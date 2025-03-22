@@ -840,15 +840,15 @@ struct systemStruct {
   int max_display_autooff_times = 6; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
-    "AUTO OFF TIME 3",
-    "AUTO OFF TIME 5",
-    "AUTO OFF TIME 10",
-    "AUTO OFF TIME 15",
-    "AUTO OFF TIME 30",
-    "AUTO OFF TIME 60",
+    "AUTO-OFF 3",
+    "AUTO-OFF 5",
+    "AUTO-OFF 10",
+    "AUTO-OFF 15",
+    "AUTO-OFF 30",
+    "AUTO-OFF 60",
   };
   int display_timeout = display_autooff_times[index_display_autooff_times];
-
+  
   // personalization: color
   int index_display_color = 0;
   int max_color_index = 7;
@@ -862,13 +862,13 @@ struct systemStruct {
     RGB_COLOR16(255,255,255), // white
   };
   char char_display_color[7][56] = {
-    "COLOR RED",
-    "COLOR YELLOW",
-    "COLOR GREEN",
-    "COLOR BLUE",
-    "COLOR LIGHT BLUE",
-    "COLOR PURPLE",
-    "COLOR WHITE",
+    "COLOR    RED",
+    "COLOR    YELLOW",
+    "COLOR    GREEN",
+    "COLOR    BLUE",
+    "COLOR    LIGHT BLUE",
+    "COLOR    PURPLE",
+    "COLOR    WHITE",
   };
   int color_border = display_color[index_display_color];
   int color_content = display_color[index_display_color];
@@ -10019,8 +10019,8 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       // auto off
-      if (systemData.display_auto_off==true) {menuDisplayItems[0]="AUTO OFF ENABLED";}
-      else {menuDisplayItems[0]="AUTO OFF DISABLED";}
+      if (systemData.display_auto_off==true) {menuDisplayItems[0] ="AUTO-OFF ENABLED";}
+      else {menuDisplayItems[0]                                   ="AUTO-OFF DISABLED";}
       // auto off time
       menuDisplayItems[1] = systemData.char_display_autooff_times[systemData.index_display_autooff_times];
       // color
