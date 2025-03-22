@@ -9897,20 +9897,20 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
-      if (systemData.satio_enabled==true) {menuGPSItems[0]="SATIO ENABLED";}
-      else {menuGPSItems[0]="SATIO DISABLED";}
-      if (systemData.gngga_enabled==true) {menuGPSItems[1]="GNGGA ENABLED";}
-      else {menuGPSItems[1]="GNGGA DISABLED";}
-      if (systemData.gnrmc_enabled==true) {menuGPSItems[2]="GNRMC ENABLED";}
-      else {menuGPSItems[2]="GNRMC DISABLED";}
-      if (systemData.gpatt_enabled==true) {menuGPSItems[3]="GPATT ENABLED";}
-      else {menuGPSItems[3]="GPATT DISABLED";}
-      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]="CONVERT GNGGA";}
-      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4]="CONVERT GNRMC";}
-      menuGPSItems[5]="VIEW GNGGA DATA";
-      menuGPSItems[6]="VIEW GNRMC DATA";
-      menuGPSItems[7]="VIEW GPATT DATA";
-      menuGPSItems[8]="VIEW SATIO DATA";
+      if (systemData.satio_enabled==true) {menuGPSItems[0 ]                             ="SATIO   ENABLED";}
+      else {menuGPSItems[0]                                                             ="SATIO   DISABLED";}
+      if (systemData.gngga_enabled==true) {menuGPSItems[1]                              ="GNGGA   ENABLED";}
+      else {menuGPSItems[1]                                                             ="GNGGA   DISABLED";}
+      if (systemData.gnrmc_enabled==true) {menuGPSItems[2]                              ="GNRMC   ENABLED";}
+      else {menuGPSItems[2]                                                             ="GNRMC   DISABLED";}
+      if (systemData.gpatt_enabled==true) {menuGPSItems[3]                              ="GPATT   ENABLED";}
+      else {menuGPSItems[3]                                                             ="GPATT   DISABLED";}
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {menuGPSItems[4]      ="CONVERT GNGGA";}
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {menuGPSItems[4] ="CONVERT GNRMC";}
+      menuGPSItems[5]                                                                   ="VIEW    GNGGA";
+      menuGPSItems[6]                                                                   ="VIEW    GNRMC";
+      menuGPSItems[7]                                                                   ="VIEW    GPATT";
+      menuGPSItems[8]                                                                   ="VIEW    SATIO";
       // ------------------------------------------------
       menuGPS.show( display );
       // ------------------------------------------------
