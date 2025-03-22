@@ -557,15 +557,15 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 const int max_main_menu_items = 9;
 const char *menuMainItems[max_main_menu_items] =
 {
-    "   MATRIX        ", // allows matrix configuration
-    "   VIEW MATRIX   ", // overview matrix switching
-    "   FILE          ", // load/save/delete system and matrix configurations
-    "   GPS           ", // enable/disable parsing of sentences from the gps module
-    "   SERIAL        ", // enable/disable output of various comma delimited sentences
-    "   SYSTEM        ",
-    "   UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
-    "   DISPLAY       ",
-    "   CD74HC4067    ",
+    "   MATRIX         ", // allows matrix configuration
+    "   VIEW MATRIX    ", // overview matrix switching
+    "   FILE           ", // load/save/delete system and matrix configurations
+    "   GPS            ", // enable/disable parsing of sentences from the gps module
+    "   SERIAL         ", // enable/disable output of various comma delimited sentences
+    "   SYSTEM         ",
+    "   UNIVERSE       ", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "   DISPLAY        ",
+    "   CD74HC4067     ",
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{3, 20}, {124, 124}} );
 
@@ -623,11 +623,11 @@ LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function
 const int max_matrix_function_configure_items = 5;
 const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items] =
 {
-    "SELECT FUNCTION ",
-    "ENTER VALUE X   ",
-    "ENTER VALUE Y   ",
-    "ENTER VALUE Z   ",
-    "PRIMITIVE       ",
+    "SELECT FUNCTION",
+    "ENTER  VALUE X",
+    "ENTER  VALUE Y",
+    "ENTER  VALUE Z",
+    "CHANGE PRIMITIVE",
 };
 LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{3, 76}, {124, 124}} );
 
