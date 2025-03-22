@@ -9709,7 +9709,8 @@ void UpdateUI() {
   // ------------------------------------------------
   //                                  OLED PROTECTION
 
-  // oled protection: enable/disable ui updates
+  /* oled protection: enable/disable ui updates. automatically clears screen n amount of time after some interraction event. */
+
   if (systemData.display_auto_off==true) {
     if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
     else {update_ui=true;}
