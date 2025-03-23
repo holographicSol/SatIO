@@ -5614,7 +5614,6 @@ void IdentifyObject(double object_ra, double object_dec) {
 
   // object tables
   if (myAstroObj.getIdentifiedObjectTable() == 1) {
-    Serial.println("myAstroObj.getIdentifiedObjectTable() " + String(myAstroObj.getIdentifiedObjectTable()));
     // set table name
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
@@ -5623,13 +5622,11 @@ void IdentifyObject(double object_ra, double object_dec) {
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
     // set object id number
     siderealObjectData.object_number = myAstroObj.getIdentifiedObjectNumber();
-    Serial.println("myAstroObj.getIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
   // -------------------------------------------------------
 
   // alternate object tables
   if (myAstroObj.getAltIdentifiedObjectTable()) {
-    Serial.println("myAstroObj.getAltIdentifiedObjectTable() " + String(myAstroObj.getAltIdentifiedObjectTable()));
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
       casematrix_indi_h:
       siderealObjectData.object_table_i = 4;  break; // Messier
@@ -5646,7 +5643,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getAltIdentifiedObjectNumber()));
     // set object id number
     siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
-    Serial.println("myAstroObj.getAltIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
   // -------------------------------------------------------
 }
