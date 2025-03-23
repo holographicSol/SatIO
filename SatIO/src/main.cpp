@@ -70,6 +70,35 @@
 
 
 
+                                          $SUN SENTENCE
+                                                    
+                                    Right Ascension 
+                                    |       Azimuth 
+                                    |       |       Rise
+                                    |       |       |
+                                $SUN,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                        |       |       |
+                                        |       |       Set 
+                                        |       Altitude
+                                        Declination 
+
+
+
+                                          $MOON SENTENCE
+
+                                                Rise
+                                Right Ascension |
+                                |       Azimuth | 
+                                |       |       |       Phase
+                                |       |       |       |
+                          $MOON,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                    |       |       |       |
+                                    |       |       Set     Luminessence
+                                    |       Altitude
+                                    Declination
+
+
+
                                         $MERCURY SENTENCE
 
                                       Rise
@@ -5577,8 +5606,8 @@ void trackSun() {
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_ra + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_dec + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_az + String(",")).c_str());
-    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_r + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_alt + String(",")).c_str());
+    strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_r + String(",")).c_str());
     strcat(siderealPlanetData.sentence, String(siderealPlanetData.sun_s + String(",")).c_str());
     // append checksum
     createChecksum(siderealPlanetData.sentence);
