@@ -305,9 +305,6 @@ void readI2C();
 void writeToPortController();
 void setupSDCard();
 void sdcardCheck();
-void check_gngga();
-void check_gnrmc();
-void check_gpatt();
 void readGPS(void * pvParameters);
 void getSensorData();
 void setup();
@@ -12571,6 +12568,8 @@ void writeToPortController() {
 
   // debug("[writeToPortController]");
 
+  // -------------------------------------------------
+
   // Port Map: $P,X,Y
   for (int i=0; i < 20; i++) {
     // debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
@@ -12578,7 +12577,6 @@ void writeToPortController() {
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
       matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
-
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
@@ -12589,12 +12587,12 @@ void writeToPortController() {
       // port number
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-
       // debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
-
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+
+  // -------------------------------------------------
 
   // Matrix Switch True/False: $M,X,Y
   for (int i=0; i < 20; i++) {
@@ -12603,7 +12601,6 @@ void writeToPortController() {
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
       matrixData.tmp_matrix_switch_state[0][i] = matrixData.matrix_switch_state[0][i];
-
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
       strcpy(I2CLink.TMP_BUFFER_0, "$M,");
@@ -12614,12 +12611,12 @@ void writeToPortController() {
       // true/false
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-
       // debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
-
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+
+  // -------------------------------------------------
 
   // Satellite Count and HDOP Precision Factor Indicator
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
@@ -12631,6 +12628,8 @@ void writeToPortController() {
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
+  // -------------------------------------------------
+
   // Overload Indicator
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
@@ -12638,10 +12637,10 @@ void writeToPortController() {
   // data
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-
   debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
-
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+
+  // -------------------------------------------------
 
   // Uncomment if and when hearing back from the peripheral is required
   // Serial.println("[master] read data");
@@ -12696,7 +12695,6 @@ void setupSDCard() {
 //                                                                                                                  SDCARD: CHECK
 
 void sdcardCheck() {
-
   if (!sd.begin(SD_CONFIG)) {
     sd.initErrorHalt(&Serial);
     debug("[sdcard] failed to initialize");
@@ -12740,42 +12738,6 @@ void sdcardCheck() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
-
-void check_gngga() {
-  // debug("[check_gngga]");
-  if (systemData.gngga_enabled == true){
-    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
-    gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
-    // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-    if (gnggaData.valid_checksum == true) {GNGGA();}
-    else {gnggaData.bad_checksum_validity++;}
-  }
-}
-
-void check_gnrmc() {
-  // debug("[check_gnrmc]");
-  if (systemData.gnrmc_enabled == true) {
-    if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
-    gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-    // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-    if (gnrmcData.valid_checksum == true) {GNRMC();}
-    else {gnrmcData.bad_checksum_validity++;}
-  }
-}
-
-void check_gpatt() {
-  // debug("[check_gpatt]");
-  if (systemData.gpatt_enabled == true) {
-    if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
-    gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    // debug("[gpattData.sentence] " + String(gpattData.sentence));
-    // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-    if (gpattData.valid_checksum == true) {GPATT();}
-    else {gpattData.bad_checksum_validity++;}
-  }
-}
 
 int gps_read_t;
 int gps_done_t = millis();
