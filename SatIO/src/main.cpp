@@ -10575,21 +10575,9 @@ String getRelatedX(char * data) {
   else if (strcmp("MercuryDown", data)==0) {return String(siderealPlanetData.mercury_s);}
   else if (strcmp("MercuryRise", data)==0) {return String(siderealPlanetData.mercury_r);}
   else if (strcmp("MercurySet", data)==0) {return String(siderealPlanetData.mercury_s);}
-  // else if (strcmp("MercuryHELatOver", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_lat);}
-  // else if (strcmp("MercuryHELatUnder", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_lat);}
-  // else if (strcmp("MercuryHELatEqual", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_lat);}
   else if (strcmp("MercuryHELatRange", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_lat);}
-  // else if (strcmp("MercuryHELonOver", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_long);}
-  // else if (strcmp("MercuryHELonUnder", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_long);}
-  // else if (strcmp("MercuryHELonEqual", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_long);}
   else if (strcmp("MercuryHELonRange", data)==0) {return String(siderealPlanetData.mercury_helio_ecliptic_long);}
-  // else if (strcmp("MercuryEcLatOver", data)==0) {return String(siderealPlanetData.mercury_ecliptic_lat);}
-  // else if (strcmp("MercuryEcLatUnder", data)==0) {return String(siderealPlanetData.mercury_ecliptic_lat);}
-  // else if (strcmp("MercuryEcLatEqual", data)==0) {return String(siderealPlanetData.mercury_ecliptic_lat);}
   else if (strcmp("MercuryEcLatRange", data)==0) {return String(siderealPlanetData.mercury_ecliptic_lat);}
-  // else if (strcmp("MercuryEcLonOver", data)==0) {return String(siderealPlanetData.mercury_ecliptic_long);}
-  // else if (strcmp("MercuryEcLonUnder", data)==0) {return String(siderealPlanetData.mercury_ecliptic_long);}
-  // else if (strcmp("MercuryEcLonEqual", data)==0) {return String(siderealPlanetData.mercury_ecliptic_long);}
   else if (strcmp("MercuryEcLonRange", data)==0) {return String(siderealPlanetData.mercury_ecliptic_long);}
   else if (strcmp("VenusAzRange", data)==0) {return String(siderealPlanetData.venus_az);}
   else if (strcmp("VenusAltRange", data)==0) {return String(siderealPlanetData.venus_alt);}
@@ -10597,21 +10585,9 @@ String getRelatedX(char * data) {
   else if (strcmp("VenusDown", data)==0) {return String(siderealPlanetData.venus_s);}
   else if (strcmp("VenusRise", data)==0) {return String(siderealPlanetData.venus_r);}
   else if (strcmp("VenusSet", data)==0) {return String(siderealPlanetData.venus_s);}
-  // else if (strcmp("VenusHELatOver", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_lat);}
-  // else if (strcmp("VenusHELatUnder", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_lat);}
-  // else if (strcmp("VenusHELatEqual", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_lat);}
   else if (strcmp("VenusHELatRange", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_lat);}
-  // else if (strcmp("VenusHELonOver", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_long);}
-  // else if (strcmp("VenusHELonUnder", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_long);}
-  // else if (strcmp("VenusHELonEqual", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_long);}
   else if (strcmp("VenusHELonRange", data)==0) {return String(siderealPlanetData.venus_helio_ecliptic_long);}
-  // else if (strcmp("VenusEcLatOver", data)==0) {return String(siderealPlanetData.venus_ecliptic_lat);}
-  // else if (strcmp("VenusEcLatUnder", data)==0) {return String(siderealPlanetData.venus_ecliptic_lat);}
-  // else if (strcmp("VenusEcLatEqual", data)==0) {return String(siderealPlanetData.venus_ecliptic_lat);}
   else if (strcmp("VenusEcLatRange", data)==0) {return String(siderealPlanetData.venus_ecliptic_lat);}
-  // else if (strcmp("VenusEcLonOver", data)==0) {return String(siderealPlanetData.venus_ecliptic_long);}
-  // else if (strcmp("VenusEcLonUnder", data)==0) {return String(siderealPlanetData.venus_ecliptic_long);}
-  // else if (strcmp("VenusEcLonEqual", data)==0) {return String(siderealPlanetData.venus_ecliptic_long);}
   else if (strcmp("VenusEcLonRange", data)==0) {return String(siderealPlanetData.venus_ecliptic_long);}
   else if (strcmp("MarsAzRange", data)==0) {return String(siderealPlanetData.mars_az);}
   else if (strcmp("MarsAltRange", data)==0) {return String(siderealPlanetData.mars_alt);}
@@ -10619,21 +10595,9 @@ String getRelatedX(char * data) {
   else if (strcmp("MarsDown", data)==0) {return String(siderealPlanetData.mars_s);}
   else if (strcmp("MarsRise", data)==0) {return String(siderealPlanetData.mars_r);}
   else if (strcmp("MarsSet", data)==0) {return String(siderealPlanetData.mars_s);}
-  // else if (strcmp("MarsHELatOver", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_lat);}
-  // else if (strcmp("MarsHELatUnder", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_lat);}
-  // else if (strcmp("MarsHELatEqual", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_lat);}
   else if (strcmp("MarsHELatRange", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_lat);}
-  // else if (strcmp("MarsHELonOver", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_long);}
-  // else if (strcmp("MarsHELonUnder", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_long);}
-  // else if (strcmp("MarsHELonEqual", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_long);}
   else if (strcmp("MarsHELonRange", data)==0) {return String(siderealPlanetData.mars_helio_ecliptic_long);}
-  // else if (strcmp("MarsEcLatOver", data)==0) {return String(siderealPlanetData.mars_ecliptic_lat);}
-  // else if (strcmp("MarsEcLatUnder", data)==0) {return String(siderealPlanetData.mars_ecliptic_lat);}
-  // else if (strcmp("MarsEcLatEqual", data)==0) {return String(siderealPlanetData.mars_ecliptic_lat);}
   else if (strcmp("MarsEcLatRange", data)==0) {return String(siderealPlanetData.mars_ecliptic_lat);}
-  // else if (strcmp("MarsEcLonOver", data)==0) {return String(siderealPlanetData.mars_ecliptic_long);}
-  // else if (strcmp("MarsEcLonUnder", data)==0) {return String(siderealPlanetData.mars_ecliptic_long);}
-  // else if (strcmp("MarsEcLonEqual", data)==0) {return String(siderealPlanetData.mars_ecliptic_long);}
   else if (strcmp("MarsEcLonRange", data)==0) {return String(siderealPlanetData.mars_ecliptic_long);}
   else if (strcmp("JupiterAzRange", data)==0) {return String(siderealPlanetData.jupiter_az);}
   else if (strcmp("JupiterAltRange", data)==0) {return String(siderealPlanetData.jupiter_alt);}
@@ -10641,21 +10605,9 @@ String getRelatedX(char * data) {
   else if (strcmp("JupiterDown", data)==0) {return String(siderealPlanetData.jupiter_s);}
   else if (strcmp("JupiterRise", data)==0) {return String(siderealPlanetData.jupiter_r);}
   else if (strcmp("JupiterSet", data)==0) {return String(siderealPlanetData.jupiter_s);}
-  // else if (strcmp("JupiterHELatOver", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_lat);}
-  // else if (strcmp("JupiterHELatUnder", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_lat);}
-  // else if (strcmp("JupiterHELatEqual", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_lat);}
   else if (strcmp("JupiterHELatRange", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_lat);}
-  // else if (strcmp("JupiterHELonOver", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_long);}
-  // else if (strcmp("JupiterHELonUnder", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_long);}
-  // else if (strcmp("JupiterHELonEqual", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_long);}
   else if (strcmp("JupiterHELonRange", data)==0) {return String(siderealPlanetData.jupiter_helio_ecliptic_long);}
-  // else if (strcmp("JupiterEcLatOver", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
-  // else if (strcmp("JupiterEcLatUnder", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
-  // else if (strcmp("JupiterEcLatEqual", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
   else if (strcmp("JupiterEcLatRange", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
-  // else if (strcmp("JupiterEcLonOver", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_long);}
-  // else if (strcmp("JupiterEcLonUnder", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
-  // else if (strcmp("JupiterEcLonEqual", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
   else if (strcmp("JupiterEcLonRange", data)==0) {return String(siderealPlanetData.jupiter_ecliptic_lat);}
   else if (strcmp("SaturnAzRange", data)==0) {return String(siderealPlanetData.saturn_az);}
   else if (strcmp("SaturnAltRange", data)==0) {return String(siderealPlanetData.saturn_alt);}
@@ -10663,21 +10615,9 @@ String getRelatedX(char * data) {
   else if (strcmp("SaturnDown", data)==0) {return String(siderealPlanetData.saturn_s);}
   else if (strcmp("SaturnRise", data)==0) {return String(siderealPlanetData.saturn_r);}
   else if (strcmp("SaturnSet", data)==0) {return String(siderealPlanetData.saturn_s);}
-  // else if (strcmp("SaturnHELatOver", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_lat);}
-  // else if (strcmp("SaturnHELatUnder", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_lat);}
-  // else if (strcmp("SaturnHELatEqual", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_lat);}
   else if (strcmp("SaturnHELatRange", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_lat);}
-  // else if (strcmp("SaturnHELonOver", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_long);}
-  // else if (strcmp("SaturnHELonUnder", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_long);}
-  // else if (strcmp("SaturnHELonEqual", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_long);}
   else if (strcmp("SaturnHELonRange", data)==0) {return String(siderealPlanetData.saturn_helio_ecliptic_long);}
-  // else if (strcmp("SaturnEcLatOver", data)==0) {return String(siderealPlanetData.saturn_ecliptic_lat);}
-  // else if (strcmp("SaturnEcLatUnder", data)==0) {return String(siderealPlanetData.saturn_ecliptic_lat);}
-  // else if (strcmp("SaturnEcLatEqual", data)==0) {return String(siderealPlanetData.saturn_ecliptic_lat);}
   else if (strcmp("SaturnEcLatRange", data)==0) {return String(siderealPlanetData.saturn_ecliptic_lat);}
-  // else if (strcmp("SaturnEcLonOver", data)==0) {return String(siderealPlanetData.saturn_ecliptic_long);}
-  // else if (strcmp("SaturnEcLonUnder", data)==0) {return String(siderealPlanetData.saturn_ecliptic_long);}
-  // else if (strcmp("SaturnEcLonEqual", data)==0) {return String(siderealPlanetData.saturn_ecliptic_long);}
   else if (strcmp("SaturnEcLonRange", data)==0) {return String(siderealPlanetData.saturn_ecliptic_long);}
   else if (strcmp("UranusAzRange", data)==0) {return String(siderealPlanetData.uranus_az);}
   else if (strcmp("UranusAltRange", data)==0) {return String(siderealPlanetData.uranus_alt);}
@@ -10685,21 +10625,9 @@ String getRelatedX(char * data) {
   else if (strcmp("UranusDown", data)==0) {return String(siderealPlanetData.uranus_s);}
   else if (strcmp("UranusRise", data)==0) {return String(siderealPlanetData.uranus_r);}
   else if (strcmp("UranusSet", data)==0) {return String(siderealPlanetData.uranus_s);}
-  // else if (strcmp("UranusHELatOver", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_lat);}
-  // else if (strcmp("UranusHELatUnder", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_lat);}
-  // else if (strcmp("UranusHELatEqual", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_lat);}
   else if (strcmp("UranusHELatRange", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_lat);}
-  // else if (strcmp("UranusHELonOver", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_long);}
-  // else if (strcmp("UranusHELonUnder", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_long);}
-  // else if (strcmp("UranusHELonEqual", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_long);}
   else if (strcmp("UranusHELonRange", data)==0) {return String(siderealPlanetData.uranus_helio_ecliptic_long);}
-  // else if (strcmp("UranusEcLatOver", data)==0) {return String(siderealPlanetData.uranus_ecliptic_lat);}
-  // else if (strcmp("UranusEcLatUnder", data)==0) {return String(siderealPlanetData.uranus_ecliptic_lat);}
-  // else if (strcmp("UranusEcLatEqual", data)==0) {return String(siderealPlanetData.uranus_ecliptic_lat);}
   else if (strcmp("UranusEcLatRange", data)==0) {return String(siderealPlanetData.uranus_ecliptic_lat);}
-  // else if (strcmp("UranusEcLonOver", data)==0) {return String(siderealPlanetData.uranus_ecliptic_long);}
-  // else if (strcmp("UranusEcLonUnder", data)==0) {return String(siderealPlanetData.uranus_ecliptic_long);}
-  // else if (strcmp("UranusEcLonEqual", data)==0) {return String(siderealPlanetData.uranus_ecliptic_long);}
   else if (strcmp("UranusEcLonRange", data)==0) {return String(siderealPlanetData.uranus_ecliptic_long);}
   else if (strcmp("NeptuneAzRange", data)==0) {return String(siderealPlanetData.neptune_az);}
   else if (strcmp("NeptuneAltRange", data)==0) {return String(siderealPlanetData.neptune_alt);}
@@ -10707,21 +10635,9 @@ String getRelatedX(char * data) {
   else if (strcmp("NeptuneDown", data)==0) {return String(siderealPlanetData.neptune_s);}
   else if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
   else if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
-  // else if (strcmp("NeptuneHELatOver", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_lat);}
-  // else if (strcmp("NeptuneHELatUnder", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_lat);}
-  // else if (strcmp("NeptuneHELatEqual", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_lat);}
   else if (strcmp("NeptuneHELatRange", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_lat);}
-  // else if (strcmp("NeptuneHELonOver", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_long);}
-  // else if (strcmp("NeptuneHELonUnder", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_long);}
-  // else if (strcmp("NeptuneHELonEqual", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_long);}
   else if (strcmp("NeptuneHELonRange", data)==0) {return String(siderealPlanetData.neptune_helio_ecliptic_long);}
-  // else if (strcmp("NeptuneEcLatOver", data)==0) {return String(siderealPlanetData.neptune_ecliptic_lat);}
-  // else if (strcmp("NeptuneEcLatUnder", data)==0) {return String(siderealPlanetData.neptune_ecliptic_lat);}
-  // else if (strcmp("NeptuneEcLatEqual", data)==0) {return String(siderealPlanetData.neptune_ecliptic_lat);}
   else if (strcmp("NeptuneEcLatRange", data)==0) {return String(siderealPlanetData.neptune_ecliptic_lat);}
-  // else if (strcmp("NeptuneEcLonOver", data)==0) {return String(siderealPlanetData.neptune_ecliptic_long);}
-  // else if (strcmp("NeptuneEcLonUnder", data)==0) {return String(siderealPlanetData.neptune_ecliptic_long);}
-  // else if (strcmp("NeptuneEcLonEqual", data)==0) {return String(siderealPlanetData.neptune_ecliptic_long);}
   else if (strcmp("NeptuneEcLonRange", data)==0) {return String(siderealPlanetData.neptune_ecliptic_long);}
   else if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
   else if (strcmp("DHT11H0Over", data)==0) {return String(sensorData.dht11_h_0);}
