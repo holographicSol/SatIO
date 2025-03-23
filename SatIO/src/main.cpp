@@ -91,7 +91,7 @@
                                                                                   Sensor 15
 
 
-                                                                                  
+
                                           $SUN SENTENCE
                                                     
                                     Right Ascension 
@@ -244,6 +244,10 @@
   as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
   ToDO: set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and possibly modification to matrix (to handle NAN).
+
+  Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+  of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html).
+  Additions: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
 
 */
 
@@ -1499,7 +1503,7 @@ struct SiderealObjectStruct {
   double object_mag;
   double object_r;
   double object_s;
-  // double objects_data[609][7];
+  float objects_data[609][7];
   char object_table[7][20] =
   {
     "Star Table",          // 0
@@ -5560,8 +5564,11 @@ void trackObject(double latitude, double longitude, int year, int month, int day
   if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
   myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
   myAstro.doRAdec2AltAz();
+  siderealObjectData.object_ra = myAstro.getRAdec();
+  siderealObjectData.object_dec = myAstro.getDeclinationDec();
   siderealObjectData.object_az = myAstro.getAzimuth();
   siderealObjectData.object_alt = myAstro.getAltitude();
+  myAstro.doXRiseSetTimes();
   siderealObjectData.object_r = myAstro.getRiseTime();
   siderealObjectData.object_s = myAstro.getSetTime();
 }
@@ -5570,10 +5577,22 @@ void trackObject(double latitude, double longitude, int year, int month, int day
 //                                                                                                                IDENTIFY OBJECT
 
 void IdentifyObject(double object_ra, double object_dec) {
+
+  /*
+  scans object tables and if object is identified then an object number will be set.
+  it would be nice have this for navigation potential and would in that case be complimented by a gyro.
+  */
+
+  // set right ascension and declination of object
   myAstroObj.setRAdec(object_ra, object_dec);
+
+  // convert right ascension and declination to altitude and azimuth
   myAstro.doRAdec2AltAz();
-  siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
+
+  // identify object
   myAstroObj.identifyObject();
+
+  // scan tables for the object
   switch(myAstroObj.getIdentifiedObjectTable()) {
   case(1):
   siderealObjectData.object_table_i = 0; break;
@@ -5584,14 +5603,18 @@ void IdentifyObject(double object_ra, double object_dec) {
   case(7):
   siderealObjectData.object_table_i = 3;  break;
   }
+
   if (myAstroObj.getIdentifiedObjectTable() == 1) {
+
     // set table name
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+
     // set object id name
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
   }
+
   if (myAstroObj.getAltIdentifiedObjectTable()) {
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
     casematrix_indi_h:
@@ -5601,11 +5624,16 @@ void IdentifyObject(double object_ra, double object_dec) {
     case(6):
     siderealObjectData.object_table_i = 6;  break;
   }
+
   // set table name
   memset(siderealObjectData.object_table_name, 0, 56);
   strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+
   // set object id number
   siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
+
+  // object info
+  // siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
   }
 }
 
