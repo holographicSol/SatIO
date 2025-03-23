@@ -13126,22 +13126,19 @@ void setup() {
   //                                                                                                                SETUP: SERIAL
 
   Serial.println("[setup] serial");
-
   Serial.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial.setTimeout(50); // ensure this is set before begin()
+  Serial.setTimeout(50);        // ensure this is set before begin()
   Serial.begin(115200); while(!Serial);
-
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
-  Serial2.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial2.setTimeout(50); // ensure this is set before begin()
+  Serial2.setRxBufferSize(2000);           // ensure this is set before begin()
+  Serial2.setTimeout(50);                  // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SETUP: PINS
 
   Serial.println("[setup] pins");
-
   pinMode(CD74HC4067_S0, OUTPUT); 
   pinMode(CD74HC4067_S1, OUTPUT); 
   pinMode(CD74HC4067_S2, OUTPUT); 
@@ -13153,42 +13150,34 @@ void setup() {
   digitalWrite(CD74HC4067_S3, LOW);
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                       SETUP: PORT CONTROLLER
-  // setPortControllerReadMode(0); // put port controller in read mode
-
-  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SETUP: SECOND TIMER
 
   Serial.println("[setup] second timer");
-
   // to do: sync second timer with rtc
   second_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
   timerAlarmEnable(second_timer);
 
-  /*
-  Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
-  */
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                          ISR
+  
+  /* connects one or more I2C peripherals so they can tell this sysetm when to make a request sweep. */
   pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
   attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SETUP: WIRE 
-
   
-  setMultiplexChannel_CD74HC4067(0);
-  
-  Serial.println("[setup] wire");
-  Wire.begin();  // sets up the I2C  
+  Wire.begin(); // sets up I2C
+  rtc.begin();  // initialize I2C device
+  dht.begin();  // initialize I2C device
 
-  Serial.println("[setup] selecting i2C channel: 0");
-  setMultiplexChannel_TCA9548A(0);  // set i2c multiplexer channel
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                  SETUP: MULTIPLEXER CHANNELS 
 
-  Serial.println("[setup] rtc");
-  rtc.begin();   // initializes the I2C device
-
-  dht.begin();
+  setMultiplexChannel_CD74HC4067(0); // set analog/digital multiplexer channel
+  setMultiplexChannel_TCA9548A(0); // set i2c multiplexer channel
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           SETUP: SYSTEM INFO
@@ -13213,22 +13202,6 @@ void setup() {
   //                                                                                                                   SETUP: SPI
 
   // VSPI: SDCARD
-  // SD_SCLK = 18;  // default esp32 VSPI
-  // SD_MISO = 19;  // default esp32 VSPI
-  // SD_MOSI = 23;  // default esp32 VSPI
-  // SD_CS   = 5;   // default esp32 VSPI
-  // pinMode(SD_CS, OUTPUT);
-  // digitalWrite(SD_CS, HIGH);
-
-  // HSPI: SSD1351 OLED DISPLAY
-  // SSD1351_SCLK = 14; // (SCL) default esp32 HSPI
-  // SSD1351_MISO = 12; // (DC)  default esp32 HSPI
-  // SSD1351_MOSI = 13; // (SDA) default esp32 HSPI
-  // SSD1351_CS   = 26; // (CS)   custom esp32 HSPI
-  // pinMode(SSD1351_CS, OUTPUT);
-  // digitalWrite(SSD1351_CS, HIGH);
-
-  // VSPI: SDCARD
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
   setupSDCard();
   sd.end();
@@ -13239,6 +13212,7 @@ void setup() {
   display.begin();
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
+  display.clear();
   canvas6x8.setFixedFont(ssd1306xled_font6x8);
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
@@ -13253,9 +13227,6 @@ void setup() {
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas70x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
-  
-  display.clear();
-
   // uncomment to debug
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
