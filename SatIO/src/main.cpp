@@ -5580,62 +5580,71 @@ void trackObject(double latitude, double longitude, int year, int month, int day
 void IdentifyObject(double object_ra, double object_dec) {
 
   /*
-  scans object tables and if object is identified then an object number will be set.
-  it would be nice have this for navigation potential and would in that case be complimented by a gyro.
+  requires RA and DEC.
+  sets object values according to identified object table and identified object number.
   */
 
-  // set right ascension and declination of object
+  // -------------------------------------------------------
+
   myAstroObj.setRAdec(object_ra, object_dec);
-
-  // convert right ascension and declination to altitude and azimuth
   myAstro.doRAdec2AltAz();
-
-  // identify object
   myAstroObj.identifyObject();
+
+  // -------------------------------------------------------
 
   // scan tables for the object
   switch(myAstroObj.getIdentifiedObjectTable()) {
-  case(1):
-  siderealObjectData.object_table_i = 0; break;
-  case(2):
-  siderealObjectData.object_table_i = 1; break;
-  case(3):
-  siderealObjectData.object_table_i = 2;  break;
-  case(7):
-  siderealObjectData.object_table_i = 3;  break;
+    case(1):
+    siderealObjectData.object_table_i = 0; break; // Star
+    case(2):
+    siderealObjectData.object_table_i = 1; break; // NGC
+    case(3):
+    siderealObjectData.object_table_i = 2;  break; //IC
+    case(7):
+    siderealObjectData.object_table_i = 3;  break; // Other
   }
 
-  if (myAstroObj.getIdentifiedObjectTable() == 1) {
+  // -------------------------------------------------------
 
+  // object tables
+  if (myAstroObj.getIdentifiedObjectTable() == 1) {
+    Serial.println("myAstroObj.getIdentifiedObjectTable() " + String(myAstroObj.getIdentifiedObjectTable()));
     // set table name
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-
     // set object id name
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
+    // set object id number
+    siderealObjectData.object_number = myAstroObj.getIdentifiedObjectNumber();
+    Serial.println("myAstroObj.getIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
 
+  // -------------------------------------------------------
+
+  // alternate object tables
   if (myAstroObj.getAltIdentifiedObjectTable()) {
+    Serial.println("myAstroObj.getAltIdentifiedObjectTable() " + String(myAstroObj.getAltIdentifiedObjectTable()));
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
-    casematrix_indi_h:
-    siderealObjectData.object_table_i = 4;  break;
-    case(5):
-    siderealObjectData.object_table_i = 5;  break;
-    case(6):
-    siderealObjectData.object_table_i = 6;  break;
+      casematrix_indi_h:
+      siderealObjectData.object_table_i = 4;  break; // Messier
+      case(5):
+      siderealObjectData.object_table_i = 5;  break; // Caldwell
+      case(6):
+      siderealObjectData.object_table_i = 6;  break; // Herschel 400 number
+    }
+    // set table name
+    memset(siderealObjectData.object_table_name, 0, 56);
+    strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+    // set object id name
+    memset(siderealObjectData.object_name, 0, 56);
+    strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getAltIdentifiedObjectNumber()));
+    // set object id number
+    siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
+    Serial.println("myAstroObj.getAltIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
 
-  // set table name
-  memset(siderealObjectData.object_table_name, 0, 56);
-  strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
-
-  // set object id number
-  siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
-
-  // object info
-  // siderealObjectData.object_mag = myAstroObj.getStarMagnitude();
-  }
+  // -------------------------------------------------------
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
