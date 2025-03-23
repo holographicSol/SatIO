@@ -5582,6 +5582,7 @@ void IdentifyObject(double object_ra, double object_dec) {
   /*
   requires RA and DEC.
   sets object values according to identified object table and identified object number.
+  once we have the object number we can track the object if required.
   */
 
   // -------------------------------------------------------
