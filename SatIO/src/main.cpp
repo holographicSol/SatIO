@@ -2855,14 +2855,12 @@ struct MatrixStruct {
     "GNGGAValidCD",
     "GNRMCValidCD",
     "GPATTValidCD",
-
     "SunAz",
     "SunAlt",
     "DayTime",
     "NightTime",
     "Sunrise",
     "Sunset",
-
     "MoonAz",
     "MoonAlt",
     "MoonUp",
@@ -2870,7 +2868,6 @@ struct MatrixStruct {
     "Moonrise",
     "Moonset",
     "MoonPhase",
-
     "MercuryAz",
     "MercuryAlt",
     "MercuryUp",
@@ -2881,7 +2878,6 @@ struct MatrixStruct {
     "MercuryHELon",
     "MercuryEcLat",
     "MercuryEcLon",
-
     "VenusAz",
     "VenusAlt",
     "VenusUp",
@@ -2892,7 +2888,6 @@ struct MatrixStruct {
     "VenusHELon",
     "VenusEcLat",
     "VenusEcLon",
-
     "MarsAz",
     "MarsAlt",
     "MarsUp",
@@ -2903,7 +2898,6 @@ struct MatrixStruct {
     "MarsHELon",
     "MarsEcLat",
     "MarsEcLon",
-
     "JupiterAz",
     "JupiterAlt",
     "JupiterUp",
@@ -2914,7 +2908,6 @@ struct MatrixStruct {
     "JupiterHELon",
     "JupiterEcLat",
     "JupiterEcLon",
-
     "SaturnAz",
     "SaturnAlt",
     "SaturnUp",
@@ -2925,7 +2918,6 @@ struct MatrixStruct {
     "SaturnHELon",
     "SaturnEcLat",
     "SaturnEcLon",
-
     "UranusAz",
     "UranusAlt",
     "UranusUp",
@@ -2936,7 +2928,6 @@ struct MatrixStruct {
     "UranusHELon",
     "UranusEcLat",
     "UranusEcLon",
-
     "NeptuneAz",
     "NeptuneAlt",
     "NeptuneUp",
@@ -2947,7 +2938,6 @@ struct MatrixStruct {
     "NeptuneHELon",
     "NeptuneEcLat",
     "NeptuneEcLon",
-
     "DHT11H0",
     "DHT11C0",
     "DHT11F",
@@ -7768,16 +7758,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7814,16 +7804,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7861,16 +7851,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7907,16 +7897,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8030,16 +8020,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8076,16 +8066,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8122,16 +8112,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8168,16 +8158,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8313,16 +8303,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8359,16 +8349,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8405,16 +8395,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8451,16 +8441,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8552,16 +8542,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8598,16 +8588,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8644,16 +8634,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8690,16 +8680,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8813,16 +8803,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8859,16 +8849,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8905,16 +8895,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8951,16 +8941,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9074,16 +9064,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9120,16 +9110,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9166,16 +9156,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9212,16 +9202,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9335,16 +9325,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9381,16 +9371,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9427,16 +9417,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_lat,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_lat,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9473,16 +9463,16 @@ void matrixSwitch() {
           }
         }
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_long,
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
+        // else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonEqual") == 0) {
+        //   if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+        //     tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        //   else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+        //     tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_long,
+        //     matrixData.matrix_function_xyz[Mi][Fi][0]);
+        //   }
+        // }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
