@@ -1,6 +1,6 @@
-                                    SatIO - Written by Benjamin Jack Cullen.
+                                  SatIO - Written by Benjamin Jack Cullen.
 
-                                               "The GPS Master"
+                                            "The GPS Master"
 
                       A general purpose programmable satellite, sensor and inertial platform.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
@@ -52,7 +52,8 @@
                                 ESP32: io26 -> SSD1351: CS
 
 
-                                        SENTENCE $SATIO
+
+                                           $SATIO SENTENCE
 
                                             System Uptime                    
         Tag                  Last Sync      |                               Degrees Longitude        
@@ -62,6 +63,163 @@
               RTC Datetime                    |     |     Degrees Latitude                    Checksum            
                                               |     Sun Set
                                               Sun Rise
+
+
+
+                                          $MATRIX SENTENCE 
+
+                                                                              Matrix Switch Output Port 19
+                                                                              |
+                                                                              |    Matrix Switch State 0
+                                                                              |    |
+    $MATRIX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+          |                                                                                                                                                   |
+          Matrix Switch Output Port 0                                                                                                                         Matrix Switch State 19
+                                                                                          
+
+
+                                          $SENSORS SENTENCE
+
+                      Sensor 0
+                      |
+              $SENSORS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                                                                  |
+                                                                                  Sensor 15
+
+
+                                                                                  
+                                          $SUN SENTENCE
+                                                    
+                                    Right Ascension 
+                                    |       Azimuth 
+                                    |       |       Rise
+                                    |       |       |
+                                $SUN,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                        |       |       |
+                                        |       |       Set 
+                                        |       Altitude
+                                        Declination 
+
+
+
+                                          $MOON SENTENCE
+
+                                                Rise
+                                Right Ascension |
+                                |       Azimuth | 
+                                |       |       |       Phase
+                                |       |       |       |
+                          $MOON,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                    |       |       |       |
+                                    |       |       Set     Luminessence
+                                    |       Altitude
+                                    Declination
+
+
+
+                                        $MERCURY SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $MERCURY,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
+
+
+                                         $VENUS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+                $VENUS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
+
+
+                                        $MARS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+                 $MARS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $JUPITER SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $JUPITER,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $SATURN SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+               $SATURN,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $URANUS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+               $URANUS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude 
+
+
+
+                                      $NEPTUNE SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $NEPTUNE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
 
 
     Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
@@ -78,10 +236,10 @@
     Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
     part, subsystem or standalone device.
   
-    Whats to gain? From this project I intend to have reusable, general purpose parts, namely a programmable navigation
-    system, control pad and port controller that I can use for other projects in the future. For now I imagine each part#
-    will be an I2C device and some parts like SatIO will have both master and slave modes for flexibility across differnt
-    project requirements.
+    Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+    as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
+  
+    ToDO: set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and possibly modification to matrix (to handle NAN).
 
 -----
 
