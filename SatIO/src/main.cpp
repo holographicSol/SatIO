@@ -82,7 +82,6 @@
                                                                                           
 
 
-
                                           $SENSORS SENTENCE
 
                       Sensor 0
@@ -92,6 +91,7 @@
                                                                                   Sensor 15
 
 
+                                                                                  
                                           $SUN SENTENCE
                                                     
                                     Right Ascension 
