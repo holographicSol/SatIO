@@ -58,7 +58,6 @@
 
                                           SENTENCE $SATIO
 
-
                                             System Uptime                    
         Tag                  Last Sync      |                               Degrees Longitude        
         |      yyyymmddhhmmss|yyyymmddhhmmss|s|hh.mm|hh.mm|                 |                 |                
