@@ -70,6 +70,15 @@
 
 
 
+                                          $SENSORS SENTENCE
+
+                      Sensor 0
+                      |
+              $SENSORS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+                                                                                  |
+                                                                                  Sensor 16
+
+
                                           $SUN SENTENCE
                                                     
                                     Right Ascension 
