@@ -67,7 +67,7 @@
               RTC Datetime                    |     |     Degrees Latitude                    Checksum            
                                               |     Sun Set
                                               Sun Rise
-\
+
 
 
                                         $MERCURY SENTENCE
