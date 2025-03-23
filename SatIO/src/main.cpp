@@ -70,13 +70,26 @@
 
 
 
+                                          $MATRIX SENTENCE 
+
+                                                                              Matrix Switch Output Port 19
+                                                                              |
+                                                                              |    Matrix Switch State 0
+                                                                              |    |
+    $MATRIX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
+          |                                                                                                                                                   |
+          Matrix Switch Output Port 0                                                                                                                         Matrix Switch State 19
+                                                                                          
+
+
+
                                           $SENSORS SENTENCE
 
                       Sensor 0
                       |
               $SENSORS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
                                                                                   |
-                                                                                  Sensor 16
+                                                                                  Sensor 15
 
 
                                           $SUN SENTENCE
