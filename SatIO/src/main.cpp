@@ -7748,45 +7748,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7794,45 +7794,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7841,45 +7841,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7887,45 +7887,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.static_flag),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8010,45 +8010,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8056,45 +8056,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.venus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.venus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.venus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8102,45 +8102,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.venus_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8148,45 +8148,45 @@ void matrixSwitch() {
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.venus_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8293,45 +8293,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.mars_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8339,45 +8339,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.mars_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8385,45 +8385,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.mars_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8431,45 +8431,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.mars_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8532,45 +8532,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.jupiter_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8578,45 +8578,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.jupiter_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8624,45 +8624,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.jupiter_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8670,45 +8670,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.jupiter_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8793,45 +8793,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.saturn_helio_ecliptic_lat,
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.saturn_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8839,45 +8839,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.saturn_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8885,45 +8885,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.saturn_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8931,45 +8931,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.saturn_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9054,45 +9054,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.uranus_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9100,45 +9100,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.uranus_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9146,45 +9146,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.uranus_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9192,45 +9192,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.uranus_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9315,45 +9315,45 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.neptune_helio_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_helio_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9361,45 +9361,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneHELonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.neptune_helio_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_helio_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9407,45 +9407,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.neptune_ecliptic_lat),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_ecliptic_lat,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9453,45 +9453,45 @@ void matrixSwitch() {
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_over_true(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_over_false(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(siderealPlanetData.static_fneptune_ecliptic_longlag),
+            tmp_matrix[Fi] = check_equal_true(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_equal_false(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneEcLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(siderealPlanetData.neptune_ecliptic_long),
+            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_ecliptic_long,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
