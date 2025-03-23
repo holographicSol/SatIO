@@ -9227,7 +9227,6 @@ void inputChar(char * data) {
   if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
 
   else {
-
     // port
     if (enter_digits_key==1) {
       if (allow_input_data==true) {
@@ -9242,7 +9241,6 @@ void inputChar(char * data) {
         }
       }
     }
-
     // <= long
     else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
       if (allow_input_data==true) {
@@ -9261,8 +9259,8 @@ void inputChar(char * data) {
   }
 }
 
-// ------------------------------------------------
-//                                          UI DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                        UI DATA
 
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
@@ -9340,6 +9338,9 @@ void menuLeft() {
   debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      MENU BACK
+
 void menuBack() {
   /* specify explicity which page to go from each given page */
   debug("[menuBack] menupage 0: " + String(menu_page));
@@ -9369,7 +9370,6 @@ void menuBack() {
   else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gpatt) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_satio) {menu_page=page_gps_main;}
-
   else if (menu_page==page_universe_view_sun) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_moon) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_mercury) {menu_page=page_universe_main;}
@@ -10139,10 +10139,15 @@ void drawMainBorderRed() {
   display.drawRect(0, 0, 127, 127);
 }
 
+// ------------------------------------------------
+//                                  UI BORDER GREEN
+
 void drawMainBorderGreen() {
   display.setColor(RGB_COLOR16(0,255,0));
   display.drawRect(0, 0, 127, 127);
 }
+
+// ------------------------------------------------
 
 void setMenuMatrixFilePathItems() {
     // set menu items
@@ -10170,8 +10175,6 @@ void setMenuMatrixFilePathItems() {
 
 // ------------------------------------------------
 //                                               UI
-
-bool display_sync;
 
 void UpdateUI() {
 
