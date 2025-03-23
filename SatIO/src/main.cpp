@@ -5550,8 +5550,14 @@ bool SecondsTimer(double n0, double n1, int Mi) {
 //                                                                                                                   TRACK OBJECT
 
 void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i) {
+
+  /*
+  requires time, location, object table number and object number.
+  sets time and location specific values pertaining to an object.
+  object will first need to be identified.
+  */
+
   myAstro.setLatLong(latitude, longitude);
-  // myAstro.setTimeZone(tz);
   myAstro.rejectDST();
   myAstro.setGMTdate(year, month, day);
   myAstro.setLocalTime(hour, minute, second);
