@@ -247,8 +247,10 @@
 
   Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
   of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html).
-  Additions: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
-
+  Additions: 1: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
+             2: inRange60(). Ensures minutes and second values are wihin 0-59 for planet rise, set times.
+             3: inRange24(). Ensures hour values are wihin 0-23 for planet rise, set times.
+             4: inRange60 and inRange24 for object rise, set times.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
