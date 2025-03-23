@@ -56,7 +56,8 @@
                                 ESP32: io26 -> SSD1351: CS
 
 
-                                          SENTENCE $SATIO
+
+                                           $SATIO SENTENCE
 
                                             System Uptime                    
         Tag                  Last Sync      |                               Degrees Longitude        
@@ -66,6 +67,112 @@
               RTC Datetime                    |     |     Degrees Latitude                    Checksum            
                                               |     Sun Set
                                               Sun Rise
+\
+
+
+                                        $MERCURY SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $MERCURY,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
+
+
+                                         $VENUS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+                $VENUS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
+
+
+                                        $MARS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+                 $MARS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $JUPITER SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $JUPITER,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $SATURN SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+               $SATURN,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude
+
+
+
+                                      $URANUS SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+               $URANUS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude 
+
+
+
+                                      $NEPTUNE SENTENCE
+
+                                      Rise
+                      Right Ascension |       Helio Ecliptic Latitude
+                      |       Azimuth |       |       Radius Vector   
+                      |       |       |       |       |       Ecliptic Latitude
+                      |       |       |       |       |       |
+              $NEPTUNE,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0*CHECKSUM
+                          |       |       |       |       |       |
+                          |       |       Set     |       |       Ecliptic Longitude
+                          |       Altitude        |       Distance
+                          Declination             Helio Ecliptic Longitude  
+
 
 
   Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
