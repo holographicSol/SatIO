@@ -13264,13 +13264,18 @@ bool gps_data_used = false;
 int loop_distribution = 0;
 
 void loop() {
-  bench("----------------------------------------");
-  bench("[loop]");
+
+  // ---------------------------------------------------------------------
+
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
+  bench("----------------------------------------");
+  bench("[loop]");
   // systemData.t_bench = true; // uncomment to observe timings
 
-  /* run every loop */
+  // ---------------------------------------------------------------------
+
+  /* check interrupt flag outside ISR incase we have been interrupted and so should make a request sweep */
   readI2C();
 
   // ---------------------------------------------------------------------
