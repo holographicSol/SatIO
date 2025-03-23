@@ -5603,7 +5603,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     case(7):
     siderealObjectData.object_table_i = 3;  break; // Other
   }
-
   // -------------------------------------------------------
 
   // object tables
@@ -5619,7 +5618,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     siderealObjectData.object_number = myAstroObj.getIdentifiedObjectNumber();
     Serial.println("myAstroObj.getIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
-
   // -------------------------------------------------------
 
   // alternate object tables
@@ -5643,7 +5641,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
     Serial.println("myAstroObj.getAltIdentifiedObjectNumber() " + String(siderealObjectData.object_number));
   }
-
   // -------------------------------------------------------
 }
 
