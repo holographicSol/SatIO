@@ -12887,25 +12887,21 @@ void getSensorData() {
 
   debug("[getSensorData] ");
 
+  // ---------------------------------------------------------------------
+  /*                         MULTIPLEXER CD74HC4067                     */
+
   // step over each multiplexer analog/digital channel
   for (int i_chan = 0; i_chan < 16; i_chan++) {
-
     // set multiplexer channel
     setMultiplexChannel_CD74HC4067(i_chan);
-
     /*
-    
-    analogu read is default hardcode for reading each channel, this is for more general flexibility. more complicated sensors
+    analog read is default hardcode for reading each channel, this is for more general flexibility. more complicated sensors
     can be expanded upon here and new variables created in sensorData where requried.
-
-    ESP32 has a 12bit ADC.
-
     10bit ADC: 0-1023
     12bit ADC: 0-4095
     14bit ADC: 0-16383
-    
+    ESP32 has a 12bit ADC.
     */
-
     // sensor 0
     if (i_chan==0) {
       sensorData.dht11_h_0 = dht.readHumidity();
@@ -12919,129 +12915,109 @@ void getSensorData() {
       sensorData.sensor_0 = sensorData.dht11_hic_0; // custum sensor 0
       debug("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
     }
-
     // sensor 0
     // if (i_chan==0) {
     //   sensorData.sensor_0 = analogRead(CD74HC4067_SIG);
     // }
-
     // sensor 1
     else if (i_chan==1) {
       sensorData.sensor_1 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 2
     else if (i_chan==2) {
       sensorData.sensor_2 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 3
     else if (i_chan==3) {
       sensorData.sensor_3 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 4
     else if (i_chan==4) {
       sensorData.sensor_4 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 5
     else if (i_chan==5) {
       sensorData.sensor_5 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 6
     else if (i_chan==6) {
       sensorData.sensor_6 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 7
     else if (i_chan==7) {
       sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 8
     else if (i_chan==8) {
       sensorData.sensor_8 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 9
     else if (i_chan==9) {
       sensorData.sensor_9 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 10
     else if (i_chan==10) {
       sensorData.sensor_10 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 11
     else if (i_chan==11) {
       sensorData.sensor_11 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 12
     else if (i_chan==12) {
       sensorData.sensor_12 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 13
     else if (i_chan==13) {
       sensorData.sensor_13 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 14
     else if (i_chan==14) {
       sensorData.sensor_14 = analogRead(CD74HC4067_SIG);
     }
-
     // sensor 15
     else if (i_chan==15) {
       sensorData.sensor_15 = analogRead(CD74HC4067_SIG);
     }
-
   }
+
+  // ---------------------------------------------------------------------
+  /*                         MULTIPLEXER TCA9548A                       */
 
   // step over each multiplexer i2C channel
   for (int i_chan = 0; i_chan < 8; i_chan++) {
-
     // set multiplexer channel
     setMultiplexChannel_TCA9548A(i_chan);
-
     // i2c channel 0
     if (i_chan==0) {
     }
-
     // i2c channel 1
     else if (i_chan==1) {
     }
-
     // i2c channel 2
     else if (i_chan==2) {
     }
-
     // i2c channel 3
     else if (i_chan==3) {
     }
-
     // i2c channel 4
     else if (i_chan==4) {
     }
-
     // i2c channel 5
     else if (i_chan==5) {
     }
-
     // i2c channel 6
     else if (i_chan==6) {
     }
-
     // i2c channel 7
     else if (i_chan==7) {
     }
   }
   // set multiplexer channel back to zero
   setMultiplexChannel_TCA9548A(0);
+
+  // ---------------------------------------------------------------------
+  /*                         SENSOR OUTPUT                              */
 
   // build sensory data sentence
   if (systemData.output_sensors_enabled==true) {
@@ -13133,6 +13109,8 @@ void getSensorData() {
     strcat(sensorData.sensor_sentence, "*");
     strcat(sensorData.sensor_sentence, ChecksumData.checksum);
     if (systemData.output_sensors_enabled == true) {Serial.println(sensorData.sensor_sentence);}
+
+    // ---------------------------------------------------------------------
   }
 }
 
