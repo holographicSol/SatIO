@@ -13037,7 +13037,7 @@ void setup() {
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
-      4096,    /* Stack size in words */
+      5120,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &Task0,  /* Task handle. */
@@ -13066,9 +13066,9 @@ void loop() {
   systemData.t_bench = true; // uncomment to observe timings
 
   /* run every loop */
-  t0 = millis();
+  // t0 = micros();
   readI2C();
-  bench("[readI2C] " + String(millis()-t0));
+  // bench("[readI2C] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
@@ -13089,30 +13089,30 @@ void loop() {
 
     /* only calculate data dependent on gps here */
 
-    bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000) + "s");
-    bench("[loops between gps] " + String(i_loops_between_gps_reads));
+    bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
+    // bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
     // ---------------------------------------------------------------------
 
-    t0 = millis();
+    t0 = micros();
     convertUTCToLocal();
-    bench("[convertUTCToLocal] " + String(millis()-t0));
+    // bench("[convertUTCToLocal] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
 
-    t0 = millis();
+    t0 = micros();
     calculateLocation();
-    bench("[calculateLocation] " + String(millis()-t0));
+    // bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
     //                                                         MATRIX SWITCH
 
-    t0 = millis();
+    t0 = micros();
     if (systemData.matrix_enabled == true) {matrixSwitch();}
     // else zero states
     MatrixStatsCounter();
-    bench("[matrixSwitch] " + String(millis()-t0));
+    bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
     //                                             ALLOW GPS DATA COLLECTION
@@ -13136,9 +13136,9 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        SATIO SENTENCE
 
-    t0 = millis();
+    t0 = micros();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    bench("[buildSatIOSentence] " + String(millis()-t0));
+    // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
   // ---------------------------------------------------------------------
@@ -13146,19 +13146,19 @@ void loop() {
 
   /* run every loop */
 
-  t0 = millis();
+  t0 = micros();
   if (systemData.port_controller_enabled == true) {writeToPortController();}
   // else zero states
-  bench("[writePortController] " + String(millis()-t0));
+  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
 
   /* run every loop */
 
-  t0 = millis();
+  t0 = micros();
   getSensorData();
-  bench("[getSensorData] " + String(millis()-t0));
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                          LONGER LOOPS
@@ -13174,21 +13174,21 @@ void loop() {
       loop_distribution=1;
       if (track_planets_period == true) {
         track_planets_period = false;
-        t0 = millis();
+        t0 = micros();
         setTrackPlanets();
-        bench("[setTrackPlanets] " + String(millis()-t0));
-        t0 = millis();
+        bench("[setTrackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
+        t0 = micros();
         trackPlanets();
-        bench("[trackPlanets] " + String(millis()-t0));
+        bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
     }
 
     // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
     else if (loop_distribution==1) {
       loop_distribution=0;
-      t0 = millis();
+      t0 = micros();
       UpdateUI();
-      bench("[UpdateUI] " + String(millis()-t0));
+      bench("[UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
@@ -13222,9 +13222,9 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                                 DEBUG
 
-  bench("[Looptime] " + String(timeData.mainLoopTimeTaken) + " uS");
-  bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax) + " uS");
-  bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin) + " uS");
+  bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
+  bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
+  // bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin, 6) + " uS");
   
   // ---------------------------------------------------------------------
 }
