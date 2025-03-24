@@ -3412,28 +3412,12 @@ void syncRTCOnDownlink() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           CONVERT UTC TO LOCAL
 
-char hours_minutes_seconds[6];
-char tmp_hours_minutes_seconds[4];
 int hoursMinutesSecondsToInt(int hours, int minutes, int seconds) {
-  itoa(hours, tmp_hours_minutes_seconds, 10);
-  hours_minutes_seconds[0] = tmp_hours_minutes_seconds[0];
-  hours_minutes_seconds[1] = tmp_hours_minutes_seconds[1];
-  itoa(minutes, tmp_hours_minutes_seconds, 10);
-  hours_minutes_seconds[2] = tmp_hours_minutes_seconds[0];
-  hours_minutes_seconds[3] = tmp_hours_minutes_seconds[1];
-  itoa(seconds, tmp_hours_minutes_seconds, 10);
-  hours_minutes_seconds[4] = tmp_hours_minutes_seconds[0];
-  hours_minutes_seconds[5] = tmp_hours_minutes_seconds[1];
-  return atoi(hours_minutes_seconds);
+  return atoi(String(String(hours) + String(minutes) + String(seconds)).c_str());
 }
+
 int hoursMinutesToInt(int hours, int minutes) {
-  itoa(hours, tmp_hours_minutes_seconds, 10);
-  hours_minutes_seconds[0] = tmp_hours_minutes_seconds[0];
-  hours_minutes_seconds[1] = tmp_hours_minutes_seconds[1];
-  itoa(minutes, tmp_hours_minutes_seconds, 10);
-  hours_minutes_seconds[2] = tmp_hours_minutes_seconds[0];
-  hours_minutes_seconds[3] = tmp_hours_minutes_seconds[1];
-  return atoi(hours_minutes_seconds);
+  return atoi(String(String(hours) + String(minutes)).c_str());
 }
 
 // temporary char time values so that we do not disturb the primary values while converting.
