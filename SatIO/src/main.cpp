@@ -1144,10 +1144,10 @@ SDCardStruct sdcardData;
 
 struct TimeStruct {
   double seconds;                      // seconds accumulated since startup
-  unsigned long mainLoopTimeTaken;     // current main loop time
-  unsigned long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
-  unsigned long mainLoopTimeTakenMax;  // current record of longest main loop time
-  unsigned long mainLoopTimeTakenMin;  // current record of shortest main loop time
+  signed long mainLoopTimeTaken;     // current main loop time
+  signed long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
+  signed long mainLoopTimeTakenMax;  // current record of longest main loop time
+  signed long mainLoopTimeTakenMin;  // current record of shortest main loop time
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
   uint32_t uptime_seconds;
@@ -12513,13 +12513,18 @@ void readGPS(void * pvParameters) {
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
       serial1Data.gpatt_bool = false;
+      memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
+      memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
+      memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
       // ----------------------------------------------------------------------------------------------------------------------
 
       /* this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms. */
 
-      // read up until attempt limit is reached
-      for (int i_gps = 0; i_gps < 1000; i_gps++) {
+      // read up until attempt limit is reached. the aim here is to keep looping really fast for just what we need before handling the data later.
+      // a while loop could be used with clauses to break.
+      // for (int i_gps = 0; i_gps < 1000000000; i_gps++) {
+      while (1) {
       // while (!serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         if (Serial2.available()) {
 
@@ -12540,7 +12545,6 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
-                  memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
                   serial1Data.gngga_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -12552,7 +12556,6 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
-                  memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
                   serial1Data.gnrmc_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -12564,7 +12567,6 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
-                  memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
                   serial1Data.gpatt_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -13076,7 +13078,7 @@ int loop_distribution = 0;
 void loop() {
   // bench("----------------------------------------");
   // bench("[loop]");
-  timeData.mainLoopTimeStart = millis();
+  timeData.mainLoopTimeStart = micros();
   i_loops_between_gps_reads++;
   // systemData.t_bench = true; // uncomment to observe timings
 
@@ -13139,12 +13141,12 @@ void loop() {
 
     // ---------------------------------------------------------------------
     //                                                         TRACK PLANETS
-    t0 = millis();
-    setTrackPlanets();
-    bench("[setTrackPlanets] " + String(millis()-t0));
-    t0 = millis();
-    trackPlanets();
-    bench("[trackPlanets] " + String(millis()-t0));
+    // t0 = millis();
+    // setTrackPlanets();
+    // bench("[setTrackPlanets] " + String(millis()-t0));
+    // t0 = millis();
+    // trackPlanets();
+    // bench("[trackPlanets] " + String(millis()-t0));
 
     // ---------------------------------------------------------------------
     //                                                        SATIO SENTENCE
@@ -13153,15 +13155,6 @@ void loop() {
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
     bench("[buildSatIOSentence] " + String(millis()-t0));
   }
-
-  // ---------------------------------------------------------------------
-  //                                                           SENSOR DATA
-
-  /* run every loop */
-
-  t0 = millis();
-  getSensorData();
-  bench("[getSensorData] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
   //                                                       PORT CONTROLLER
@@ -13174,42 +13167,45 @@ void loop() {
   bench("[writePortController] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
-  //                                                          LONGER LOOPS
+  //                                                           SENSOR DATA
 
-  if (longer_loop==false) {
-    t0 = millis();
-    UpdateUI();
-    bench("[UpdateUI] " + String(millis()-t0));
-  }
+  /* run every loop */
+
+  t0 = millis();
+  getSensorData();
+  bench("[getSensorData] " + String(millis()-t0));
+
+  // ---------------------------------------------------------------------
+  //                                                          LONGER LOOPS
 
   /* occasional */
 
-  // if (longer_loop==false) {
+  if (longer_loop==false) {
 
-  //   /* now divide up the occasional: do either when can but not all at once */
+    /* now divide up the occasional: do either when can but not all at once */
     
-  //   // track planets
-  //   if (loop_distribution==0) {
-  //     loop_distribution=1;
-  //     if (track_planets_period == true) {
-  //       track_planets_period = false;
-  //       t0 = millis();
-  //       setTrackPlanets();
-  //       bench("[setTrackPlanets] " + String(millis()-t0));
-  //       t0 = millis();
-  //       trackPlanets();
-  //       bench("[trackPlanets] " + String(millis()-t0));
-  //     }
-  //   }
+    // track planets
+    if (loop_distribution==0) {
+      loop_distribution=1;
+      if (track_planets_period == true) {
+        track_planets_period = false;
+        t0 = millis();
+        setTrackPlanets();
+        bench("[setTrackPlanets] " + String(millis()-t0));
+        t0 = millis();
+        trackPlanets();
+        bench("[trackPlanets] " + String(millis()-t0));
+      }
+    }
 
-  //   // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
-  //   else if (loop_distribution==1) {
-  //     loop_distribution=0;
-  //     t0 = millis();
-  //     UpdateUI();
-  //     bench("[UpdateUI] " + String(millis()-t0));
-  //   }
-  // }
+    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
+    else if (loop_distribution==1) {
+      loop_distribution=0;
+      t0 = millis();
+      UpdateUI();
+      bench("[UpdateUI] " + String(millis()-t0));
+    }
+  }
 
   // ---------------------------------------------------------------------
   //                                                        SECOND COUNTER
@@ -13230,8 +13226,8 @@ void loop() {
 
   // delay(100); // debug test overload: increase loop time
 
-  timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
+  timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
+  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true;} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
   // debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
@@ -13241,7 +13237,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                                 DEBUG
 
-  bench("[Looptime] " + String(timeData.mainLoopTimeTaken));
+  bench("[Looptime] " + String(timeData.mainLoopTimeTaken) + " uS");
   bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
   bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
   
