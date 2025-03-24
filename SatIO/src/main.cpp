@@ -13076,7 +13076,6 @@ void loop() {
   longer_loop = false;
   if (gps_done==true) {
     longer_loop = true;
-
     vTaskSuspend(GPSTask);
 
     // ---------------------------------------------------------------------
@@ -13110,7 +13109,6 @@ void loop() {
 
     t0 = micros();
     if (systemData.matrix_enabled == true) {matrixSwitch();}
-    // else zero states
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
