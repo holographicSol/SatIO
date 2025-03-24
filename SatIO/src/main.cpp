@@ -3879,6 +3879,30 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_MATRIX_SENTENCE,");
+    itoa(systemData.output_matrix_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "OUTPUT_SENSORS_SENTENCE,");
+    itoa(systemData.output_sensors_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "UTC_OFFSET,");
     itoa(satData.utc_offset, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -4333,6 +4357,30 @@ bool sdcard_load_system_configuration(char * file) {
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_gpatt_enabled = false;} else {systemData.output_gpatt_enabled = true;}
+          }
+        }
+
+        // ------------------------------------------------
+
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MATRIX_SENTENCE", strlen("OUTPUT_MATRIX_SENTENCE")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_matrix_enabled = false;} else {systemData.output_matrix_enabled = true;}
+          }
+        }
+
+        // ------------------------------------------------
+
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SENSORS_SENTENCE", strlen("OUTPUT_SENSORS_SENTENCE")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            if (atoi(sdcardData.token) == 0) {systemData.output_sensors_enabled = false;} else {systemData.output_sensors_enabled = true;}
           }
         }
 
