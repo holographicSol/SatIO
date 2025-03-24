@@ -3413,11 +3413,11 @@ void syncRTCOnDownlink() {
 //                                                                                                           CONVERT UTC TO LOCAL
 
 int hoursMinutesSecondsToInt(int hours, int minutes, int seconds) {
-  return atoi(String(String(hours) + String(minutes) + String(seconds)).c_str());
+  return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes) + padDigitsZero(seconds)).c_str());
 }
 
 int hoursMinutesToInt(int hours, int minutes) {
-  return atoi(String(String(hours) + String(minutes)).c_str());
+  return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes)).c_str());
 }
 
 // temporary char time values so that we do not disturb the primary values while converting.
@@ -5783,7 +5783,6 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
         }
 
-          
         if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
