@@ -866,9 +866,7 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 //                                                                                                                          TASKS
 
 /* ESP32 has 2 cores. initiate task handles */
-TaskHandle_t Task0;
-TaskHandle_t Task1;
-TaskHandle_t Task2;
+TaskHandle_t GPSTask;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -13036,11 +13034,11 @@ void setup() {
   // Create task to increase performance
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
-      "Task0", /* Name of the task */
+      "GPSTask", /* Name of the task */
       5120,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
-      &Task0,  /* Task handle. */
+      &GPSTask,  /* Task handle. */
       0);      /* Core where the task should run */
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -13079,6 +13077,8 @@ void loop() {
   if (gps_done==true) {
     longer_loop = true;
 
+    vTaskSuspend(GPSTask);
+
     // ---------------------------------------------------------------------
 
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
@@ -13097,13 +13097,13 @@ void loop() {
 
     t0 = micros();
     convertUTCToLocal();
-    // bench("[convertUTCToLocal] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    bench("[convertUTCToLocal] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
 
     t0 = micros();
     calculateLocation();
-    // bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
     //                                                         MATRIX SWITCH
@@ -13123,6 +13123,7 @@ void loop() {
     finished using the data.
     */
     gps_done = false;
+    vTaskResume(GPSTask);
 
     // ---------------------------------------------------------------------
     //                                                         TRACK PLANETS
@@ -13138,7 +13139,7 @@ void loop() {
 
     t0 = micros();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
   // ---------------------------------------------------------------------
@@ -13149,7 +13150,7 @@ void loop() {
   t0 = micros();
   if (systemData.port_controller_enabled == true) {writeToPortController();}
   // else zero states
-  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
@@ -13158,7 +13159,7 @@ void loop() {
 
   t0 = micros();
   getSensorData();
-  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                          LONGER LOOPS
@@ -13216,7 +13217,7 @@ void loop() {
   else {systemData.overload=false;}
   // debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
 
   // ---------------------------------------------------------------------
