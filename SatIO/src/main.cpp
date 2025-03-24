@@ -261,7 +261,6 @@
 #include <limits.h>
 #include <string.h>
 #include <iostream>
-#include "FS.h"
 #include "SdFat.h"
 #include <SPI.h>
 #include <Wire.h>
@@ -274,6 +273,7 @@
 #include <CD74HC4067.h>
 #include "lcdgfx.h"
 #include "lcdgfx_gui.h"
+#include <assert.h>
 
 void beginSDCARD();
 void endSDCARD();
@@ -896,7 +896,6 @@ const uint8_t SD_CS_PIN = 5;
 // Try max SPI clock for an SD. Reduce SPI_CLOCK if errors occur.
 #define SPI_CLOCK SD_SCK_MHZ(4)
 
-#define SD_CONFIG SdCus
 #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SPI_CLOCK)
 
 SdExFat sd;
@@ -962,8 +961,6 @@ int menu_column_selection=0;
 int previous_menu_column_selection;
 
 char cwd[1024] = "/";
-File root;
-File entry;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
@@ -1342,14 +1339,14 @@ int getCheckSum(char * string) {
   /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
 
   // uncomment to debug
-  if (SerialLink.validation == true) {debug("[connected] getCheckSum: " + String(string));}
+  // debug("[connected] getCheckSum: " + String(string));
   for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
     if (SerialLink.c_XOR == '*') break;
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
   // uncomment to debug
-  debug("[connected] getCheckSum: " + String(SerialLink.XOR));
+  // debug("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 
@@ -1367,22 +1364,22 @@ uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
 
-  debug("[validateChecksum]");
-  debug("[validateChecksum] " + String(buffer));
+  // debug("[validateChecksum]");
+  // debug("[validateChecksum] " + String(buffer));
 
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
   
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
 
-  debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
+  // debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
 
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
-  debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
+  // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
-  debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
+  // debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
-  debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
+  // debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
 
   if (SerialLink.checksum_in_buffer == SerialLink.checksum_of_buffer) {return true;}
   return false;
@@ -1391,12 +1388,12 @@ bool validateChecksum(char * buffer) {
 void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer = getCheckSum(buffer);
 
-  debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
+  // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // debug("[hexadecimal number] " + String("%X", SerialLink.checksum_of_buffer)); todo
 
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
-  debug("[checksum] " + String(SerialLink.checksum));
+  // debug("[checksum] " + String(SerialLink.checksum));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3409,7 +3406,7 @@ void calculateLocation(){
 
 void syncRTCOnDownlink() {
   rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
-  debug("[synchronized] " + formatRTCDateTime());
+  // debug("[synchronized] " + formatRTCDateTime());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3453,8 +3450,8 @@ bool isOneDiff(int a, int b) {
 void convertUTCToLocal() {
 
   // live data from satellites
-  debug("[utc_time] " + String(gnrmcData.utc_time));
-  debug("[utc_date] " + String(gnrmcData.utc_date));
+  // debug("[utc_time] " + String(gnrmcData.utc_time));
+  // debug("[utc_date] " + String(gnrmcData.utc_date));
 
   /*                                     TEMPORARY TIME                                        */
   /* make temporary values that will not disturb final values untiil values whole and complete */
@@ -3462,27 +3459,27 @@ void convertUTCToLocal() {
   // temp store date
   satData.tmp_day[0] = gnrmcData.utc_date[0];
   satData.tmp_day[1] = gnrmcData.utc_date[1];
-  debug("[tmp_day] " + String(satData.tmp_day));
+  // debug("[tmp_day] " + String(satData.tmp_day));
   satData.tmp_month[0] = gnrmcData.utc_date[2];
   satData.tmp_month[1] = gnrmcData.utc_date[3];
-  debug("[tmp_month] " + String(satData.tmp_month));
+  // debug("[tmp_month] " + String(satData.tmp_month));
   satData.tmp_year[0] = gnrmcData.utc_date[4];
   satData.tmp_year[1] = gnrmcData.utc_date[5];
-  debug("[tmp_year] " + String(satData.tmp_year));
+  // debug("[tmp_year] " + String(satData.tmp_year));
 
   // temp store time
   satData.tmp_hour[0] = gnrmcData.utc_time[0];
   satData.tmp_hour[1] = gnrmcData.utc_time[1];
-  debug("[tmp_hour] " + String(satData.tmp_hour));
+  // debug("[tmp_hour] " + String(satData.tmp_hour));
   satData.tmp_minute[0] = gnrmcData.utc_time[2];
   satData.tmp_minute[1] = gnrmcData.utc_time[3];
-  debug("[tmp_minute] " + String(satData.tmp_minute));
+  // debug("[tmp_minute] " + String(satData.tmp_minute));
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
-  debug("[tmp_second] " + String(satData.tmp_second));
+  // debug("[tmp_second] " + String(satData.tmp_second));
   satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
   satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
-  debug("[tmp_second] " + String(satData.tmp_millisecond));
+  // debug("[tmp_second] " + String(satData.tmp_millisecond));
 
   // temporary int time values so that we do not disturb the primary values while converting.
   satData.tmp_day_int = atoi(satData.tmp_day);
@@ -3494,8 +3491,8 @@ void convertUTCToLocal() {
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
   // before conversion
-  debug("[temp time] " + String(satData.tmp_hour_int) + ":" + String(satData.tmp_minute_int) + "." + String(satData.tmp_second_int));
-  debug("[temp date] " + String(satData.tmp_day_int) + "." + String(satData.tmp_month_int) + "." + String(satData.tmp_year_int));
+  // debug("[temp time] " + String(satData.tmp_hour_int) + ":" + String(satData.tmp_minute_int) + "." + String(satData.tmp_second_int));
+  // debug("[temp date] " + String(satData.tmp_day_int) + "." + String(satData.tmp_month_int) + "." + String(satData.tmp_year_int));
 
   // set time using time elements with 2 digit year
   setTime(
@@ -3511,15 +3508,15 @@ void convertUTCToLocal() {
 
   // return time
   time_t tmp_makeTime = makeTime(tm_return);
-  debug("[tmp_makeTime] " + String(tmp_makeTime));
+  // debug("[tmp_makeTime] " + String(tmp_makeTime));
 
   // adjust tmp_makeTime back/forward according to UTC offset
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
 
   // before conversion
-  debug("[temp time  +- offset] " + String(hour()) + ":" + String(minute()) + "." + String(second()));
-  debug("[temp date +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
+  // debug("[temp time  +- offset] " + String(hour()) + ":" + String(minute()) + "." + String(second()));
+  // debug("[temp date +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
 
   /*                        RTC TIME                        */
   /* store current local time on RTC if we have a downlink  */
@@ -3584,7 +3581,7 @@ void convertUTCToLocal() {
     }
   }
 
-  debug("[rtc time] " + formatRTCDateTime()); // debug
+  // debug("[rtc time] " + formatRTCDateTime()); // debug
 
   /*    now we can do things with time (using rtc time)     */
 
@@ -3645,7 +3642,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, "*");
   strcat(satData.satio_sentence, SerialLink.checksum);
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
-  debug(satData.satio_sentence);
+  // debug(satData.satio_sentence);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -4933,40 +4930,40 @@ return true when otherwise a check would return false, which allows more flexibi
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_true(double n0, double n1, double r) {
-  debug(
-    "in_range_check_true: (n0 " +
-    String(n0) +
-    " >= n1 (" +
-    String(n1) +
-    " - r/2 " +
-    String(r/2) +
-    ")) && (n0 " +
-    String(n0) +
-    " <= n1 (" +
-    String(n1) +
-    " + r/2 " +
-    String(r/2) +
-    "))");
+  // debug(
+  //   "in_range_check_true: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
   if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return true;}
   else {return false;}
 }
 
 // calculate if n0 in (+- range/2) of n1
 bool in_range_check_false(double n0, double n1, double r) {
-  debug(
-    "in_range_check_false: (n0 " +
-    String(n0) +
-    " >= n1 (" +
-    String(n1) +
-    " - r/2 " +
-    String(r/2) +
-    ")) && (n0 " +
-    String(n0) +
-    " <= n1 (" +
-    String(n1) +
-    " + r/2 " +
-    String(r/2) +
-    "))");
+  // debug(
+  //   "in_range_check_false: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
   if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return false;}
   else {return true;}
 }
@@ -4984,88 +4981,88 @@ bool in_square_range_check_false(double x0, double x1, double y0, double y1, dou
 }
 
 bool check_over_true(double n0, double n1) {
-  debug("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
+  // debug("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return true;}
   else {return false;}
 }
 
 bool check_over_false(double n0, double n1) {
-  debug("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
+  // debug("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
   if (n0 > n1) {return false;}
   else {return true;}
 }
 
 bool check_under_true(double n0, double n1) {
-  debug("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
+  // debug("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
   if (n0 < n1) {return true;}
   else {return false;}
 }
 
 bool check_under_false(double n0, double n1) {
-  debug("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
+  // debug("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
   if (n0 < n1) {return false;}
   else {return true;}
 }
 
 bool check_equal_true(double n0, double n1) {
-  debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
+  // debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 == n1) {return true;}
   else {return false;}
 }
 
 bool check_equal_false(double n0, double n1) {
-  debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
+  // debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
   if (n0 != n1) {return true;}
   else {return false;}
 }
 
 bool check_ge_and_le_true(double n0, double n1, double n2) {
-  debug(
-    "check_ge_and_le_true: n0 " +
-    String(n0) +
-    " >= n1 " +
-    String(n1) +
-    " && n0 " +
-    String(n0) +
-    " <= " +
-    String(n2));
+  // debug(
+  //   "check_ge_and_le_true: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+    // String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return true;}
   else {return false;}
 }
 
 bool check_ge_and_le_false(double n0, double n1, double n2) {
-  debug(
-    "check_ge_and_le_false: n0 " +
-    String(n0) +
-    " >= n1 " +
-    String(n1) +
-    " && n0 " +
-    String(n0) +
-    " <= " +
-    String(n2));
+  // debug(
+  //   "check_ge_and_le_false: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+  //   String(n2));
   if ((n0 >= n1) && (n0 <= n2)) {return false;}
   else {return true;}
 }
 
 bool check_strncmp_true(char * c0, char * c1, int n) {
-  debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  // debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
   if (strncmp(c0, c1, n) == 0) {return true;}
   else {return false;}
 }
 
 bool check_strncmp_false(char * c0, char * c1, int n) {
-  debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  // debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
   if (strncmp(c0, c1, n) == 0) {return false;}
   else {return true;}
 }
 
 bool check_bool_true(bool _bool) {
-  debug("check_bool_true: " + String(_bool));
+  // debug("check_bool_true: " + String(_bool));
   if (_bool == true) {return true;} else {return false;}
 }
 
 bool check_bool_false(bool _bool) {
-  debug("check_bool_false: " + String(_bool));
+  // debug("check_bool_false: " + String(_bool));
   if (_bool == false) {return true;} else {return false;}
 }
 
@@ -5238,7 +5235,7 @@ void trackSun() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5281,7 +5278,7 @@ void trackMoon() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5322,7 +5319,7 @@ void trackMercury() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5363,7 +5360,7 @@ void trackVenus() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5404,7 +5401,7 @@ void trackMars() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5445,7 +5442,7 @@ void trackJupiter() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5486,7 +5483,7 @@ void trackSaturn() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5527,7 +5524,7 @@ void trackUranus() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5568,7 +5565,7 @@ void trackNeptune() {
     strcat(siderealPlanetData.sentence, "*");
     strcat(siderealPlanetData.sentence, SerialLink.checksum);
     Serial.println(siderealPlanetData.sentence);
-    debug(satData.satio_sentence);
+    // debug(satData.satio_sentence);
   }
 }
 
@@ -5755,9 +5752,9 @@ void matrixSwitch() {
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
 
         // uncomment to debug
-        debug("[Mi] " + String(Mi));
-        debug("[Fi] " + String(Fi));
-        debug("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
+        // debug("[Mi] " + String(Mi));
+        // debug("[Fi] " + String(Fi));
+        // debug("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
         /*
         perfromance and logic prefers adding functions from position zero else if position zero None then break.
@@ -8861,7 +8858,7 @@ void matrixSwitch() {
           else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
         }
       }
-      else {debug("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
+      // else {debug("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
     }
     // handle Mi's that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
@@ -8902,7 +8899,7 @@ void matrixSwitch() {
   if (systemData.output_matrix_enabled == true) {
     Serial.println(matrixData.matrix_sentence);
   }
-  debug(matrixData.matrix_sentence);
+  // debug(matrixData.matrix_sentence);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9056,7 +9053,7 @@ void menuRight() {
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
 
-  debug("[menu_column_selection] " + String(menu_column_selection));
+  // debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9066,16 +9063,16 @@ void menuLeft() {
   if (menu_page==page_home) {}
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
-  debug("[menu_column_selection] " + String(menu_column_selection));
+  // debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
-  debug("[menuBack] menupage 0: " + String(menu_page));
+  // debug("[menuBack] menupage 0: " + String(menu_page));
   if (menu_page==page_main_menu) {menu_page=page_home;}
   else if (menu_page==page_matrix_logic_main) {menu_page=page_main_menu;}
   else if (menu_page==page_input_data) {
-    debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
+    // debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
     // enter port
     if (enter_digits_key == 1) {menu_page=page_matrix_logic_main;}
     // enter function x, enter function y, enter function z
@@ -9109,7 +9106,7 @@ void menuBack() {
   else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
 
-  debug("[menuBack] menupage 1: " + String(menu_page));
+  // debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9242,7 +9239,7 @@ void menuEnter() {
       // iterate over primitives
       matrixData.i_primitive++;
       if (matrixData.i_primitive > 4) {matrixData.i_primitive=0;}
-      debug("[primitives]" + String(matrixData.primitives[matrixData.i_primitive]));
+      // debug("[primitives]" + String(matrixData.primitives[matrixData.i_primitive]));
 
       // put current str in temp
       memset(matrixData.temp, 0, sizeof(matrixData.temp));
@@ -9254,11 +9251,11 @@ void menuEnter() {
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
       matrixData.tempStr.replace("Range", "");
-      debug("[temp 0] " + matrixData.tempStr);
+      // debug("[temp 0] " + matrixData.tempStr);
 
       // concatinate base function name with primitive
       matrixData.tempStr = matrixData.tempStr + matrixData.primitives[matrixData.i_primitive];
-      debug("[temp 1] " + matrixData.tempStr);
+      // debug("[temp 1] " + matrixData.tempStr);
 
       // copy new name into matrix
       memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
@@ -9367,7 +9364,7 @@ void menuEnter() {
     itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
-    debug("[saving] " + String(sdcardData.newfilename));
+    // debug("[saving] " + String(sdcardData.newfilename));
 
     // set notification page
     menu_page=page_save_matrix_file_indicator;
@@ -9401,7 +9398,7 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      debug("[loading] " + String(sdcardData.newfilename));
+      // debug("[loading] " + String(sdcardData.newfilename));
 
       // set notification page
       menu_page=page_load_matrix_file_indicator;
@@ -9420,7 +9417,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
     }
-    else {debug("[loading] aborting! cannot load empty slot.");}
+    // else {debug("[loading] aborting! cannot load empty slot.");}
 
     // return to previous page
     menu_page=page_file_main;
@@ -9437,7 +9434,7 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      debug("[deleting] " + String(sdcardData.newfilename));
+      // debug("[deleting] " + String(sdcardData.newfilename));
       
       // set notification page
       menu_page=page_delete_matrix_file_indicator;
@@ -9456,7 +9453,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
     }
-    else {debug("[deleting] aborting! cannot delete empty slot.");}
+    // else {debug("[deleting] aborting! cannot delete empty slot.");}
 
     // return to previous page
     menu_page=page_file_main;
@@ -9924,8 +9921,8 @@ void UpdateUI() {
   //                                  UPDATE UI PAGES
 
   if (update_ui==true) {
-    debug("[oled protection] allowing ui update");
-    debug("[menu page] " + String(menu_page));
+    // debug("[oled protection] allowing ui update");
+    // debug("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
     //                                        HOME PAGE
@@ -12083,7 +12080,7 @@ void UpdateUI() {
   //                                  OLED PROTECTION
 
   if ((ui_cleared == false) && (update_ui == false)) {
-    debug("[oled protection] clearing ui");
+    // debug("[oled protection] clearing ui");
     display.clear();
     display.clear();
     display.clear();
@@ -12362,7 +12359,7 @@ void writeToPortController() {
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
 
-  debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
+  // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
 
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
@@ -12386,10 +12383,10 @@ void setupSDCard() {
   
   if (!sd.begin(SD_CONFIG)) {
     sd.initErrorHalt(&Serial);
-    debug("[sdcard] failed to initialize");
+    // debug("[sdcard] failed to initialize");
   }
   else {
-    debug("[sdcard] initialized");
+    // debug("[sdcard] initialized");
 
     // create/load system files
     sdcard_mkdirs();
@@ -12401,11 +12398,11 @@ void setupSDCard() {
 
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(sdcardData.matrix_filepath)) {
-      debug("[sdcard] specified matrix file not found!");
+      // debug("[sdcard] specified matrix file not found!");
 
       // is it the the default matrix file that is missing?
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        debug("[sdcard] default matrix file not found!");
+        // debug("[sdcard] default matrix file not found!");
         
         // create default matrix file
         if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {debug("[sdcard] failed to write default marix file.");}
@@ -12422,10 +12419,10 @@ void sdcardCheck() {
 
   if (!sd.begin(SD_CONFIG)) {
     sd.initErrorHalt(&Serial);
-    debug("[sdcard] failed to initialize");
+    // debug("[sdcard] failed to initialize");
   }
   else {
-    debug("[sdcard] initialized");
+    // debug("[sdcard] initialized");
   }
 }
 
@@ -12646,7 +12643,7 @@ void readGPS(void * pvParameters) {
 void getSensorData() {
 
 
-  debug("[getSensorData] ");
+  // debug("[getSensorData] ");
 
   // step over each multiplexer analog/digital channel
   for (int i_chan = 0; i_chan < 16; i_chan++) {
@@ -12673,12 +12670,12 @@ void getSensorData() {
       sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
       sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        debug("[dht11_hic_0] Failed to read from dht senor!");
+        // debug("[dht11_hic_0] Failed to read from dht senor!");
       }
       sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
       sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
       sensorData.sensor_0 = sensorData.dht11_hic_0; // custum sensor 0
-      debug("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
+      // debug("[dht11_hic_0] " + String(sensorData.dht11_hic_0));
     }
 
     // sensor 0
@@ -13220,7 +13217,7 @@ void loop() {
   timeData.mainLoopTimeTaken = (millis() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=100) {systemData.overload=true;} // gps module outputs every 100ms
   else {systemData.overload=false;}
-  debug("[overload] " + String(systemData.overload));
+  // debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
 
