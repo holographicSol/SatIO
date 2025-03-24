@@ -12917,7 +12917,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial2.setTimeout(20); // ensure this is set before begin()
+  Serial2.setTimeout(5); // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
