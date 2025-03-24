@@ -9363,7 +9363,7 @@ void menuEnter() {
     // switch spi devices
     sd.end();
     endSPIDevice(SD_CS);
-    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
     display.begin();
 
     // return to previous page
@@ -13037,7 +13037,7 @@ void setup() {
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
-      4096,    /* Stack size in words */
+      5120,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &Task0,  /* Task handle. */
