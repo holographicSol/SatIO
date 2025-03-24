@@ -75,8 +75,8 @@
                                                                               |    Matrix Switch State 0
                                                                               |    |
     $MATRIX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
-          |                                                                                                                                                   |
-          Matrix Switch Output Port 0                                                                                                                         Matrix Switch State 19
+           |                                                                                                                                                   |
+          Matrix Switch Output Port 0                                                                                                                          Matrix Switch State 19
                                                                                           
 
 
@@ -4903,196 +4903,6 @@ void sdcard_delete_matrix(char * file) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   MATRIX FUNCTIONS: PRIMITIVES
-
-/*
-matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
-return true when otherwise a check would return false, which allows more flexibility.
-*/
-
-// calculate if n0 in (+- range/2) of n1
-bool in_range_check_true(double n0, double n1, double r) {
-  // debug(
-  //   "in_range_check_true: (n0 " +
-  //   String(n0) +
-  //   " >= n1 (" +
-  //   String(n1) +
-  //   " - r/2 " +
-  //   String(r/2) +
-  //   ")) && (n0 " +
-  //   String(n0) +
-  //   " <= n1 (" +
-  //   String(n1) +
-  //   " + r/2 " +
-  //   String(r/2) +
-  //   "))");
-  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return true;}
-  else {return false;}
-}
-
-// calculate if n0 in (+- range/2) of n1
-bool in_range_check_false(double n0, double n1, double r) {
-  // debug(
-  //   "in_range_check_false: (n0 " +
-  //   String(n0) +
-  //   " >= n1 (" +
-  //   String(n1) +
-  //   " - r/2 " +
-  //   String(r/2) +
-  //   ")) && (n0 " +
-  //   String(n0) +
-  //   " <= n1 (" +
-  //   String(n1) +
-  //   " + r/2 " +
-  //   String(r/2) +
-  //   "))");
-  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return false;}
-  else {return true;}
-}
-
-bool in_square_range_check_true(double x0, double x1, double y0, double y1, double r) {
-  if (in_range_check_true(x0, x1, r) == true) {
-    if (in_range_check_true(y0, y1, r) == true) {return true;} else return false;}
-  else {return false;}
-}
-
-bool in_square_range_check_false(double x0, double x1, double y0, double y1, double r) {
-  if (in_range_check_true(x0, x1, r) == true) {
-    if (in_range_check_true(y0, y1, r) == true) {return false;} else return true;}
-  else {return true;}
-}
-
-bool check_over_true(double n0, double n1) {
-  // debug("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
-  if (n0 > n1) {return true;}
-  else {return false;}
-}
-
-bool check_over_false(double n0, double n1) {
-  // debug("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
-  if (n0 > n1) {return false;}
-  else {return true;}
-}
-
-bool check_under_true(double n0, double n1) {
-  // debug("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
-  if (n0 < n1) {return true;}
-  else {return false;}
-}
-
-bool check_under_false(double n0, double n1) {
-  // debug("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
-  if (n0 < n1) {return false;}
-  else {return true;}
-}
-
-bool check_equal_true(double n0, double n1) {
-  // debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
-  if (n0 == n1) {return true;}
-  else {return false;}
-}
-
-bool check_equal_false(double n0, double n1) {
-  // debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
-  if (n0 != n1) {return true;}
-  else {return false;}
-}
-
-bool check_ge_and_le_true(double n0, double n1, double n2) {
-  // debug(
-  //   "check_ge_and_le_true: n0 " +
-  //   String(n0) +
-  //   " >= n1 " +
-  //   String(n1) +
-  //   " && n0 " +
-  //   String(n0) +
-  //   " <= " +
-    // String(n2));
-  if ((n0 >= n1) && (n0 <= n2)) {return true;}
-  else {return false;}
-}
-
-bool check_ge_and_le_false(double n0, double n1, double n2) {
-  // debug(
-  //   "check_ge_and_le_false: n0 " +
-  //   String(n0) +
-  //   " >= n1 " +
-  //   String(n1) +
-  //   " && n0 " +
-  //   String(n0) +
-  //   " <= " +
-  //   String(n2));
-  if ((n0 >= n1) && (n0 <= n2)) {return false;}
-  else {return true;}
-}
-
-bool check_strncmp_true(char * c0, char * c1, int n) {
-  // debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
-  if (strncmp(c0, c1, n) == 0) {return true;}
-  else {return false;}
-}
-
-bool check_strncmp_false(char * c0, char * c1, int n) {
-  // debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
-  if (strncmp(c0, c1, n) == 0) {return false;}
-  else {return true;}
-}
-
-bool check_bool_true(bool _bool) {
-  // debug("check_bool_true: " + String(_bool));
-  if (_bool == true) {return true;} else {return false;}
-}
-
-bool check_bool_false(bool _bool) {
-  // debug("check_bool_false: " + String(_bool));
-  if (_bool == false) {return true;} else {return false;}
-}
-
-bool SecondsTimer(double n0, double n1, int Mi) {
-
-  /*
-
-  seconds accumulated by an isr alarm. this does not use satellite data. 
-  
-  x (n0): off interval
-  y (n1): on interval (should not exceed off interval)
-
-  */
-
-  // turn on or remain off
-  if (matrixData.matrix_switch_state[0][Mi] == 0) {
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
-    else {false;}
-  }
-
-  // turn off or remain on
-  else if (matrixData.matrix_switch_state[0][Mi] == 1) {
-    if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
-    /*
-    timer style: stacked time: y on time period is stacked on top of x time interval.
-                 (1) total off time is x (x time interval effectively becomes an off time period).
-                 (2) total on time is y.
-                 (3) total on off time is x+y.
-                 (4) considerations: harder to predict because on and off times will creep.
-    */
-    // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
-
-    /*
-    timer style: integrated time: y on time occurrs for a period within x time interval.
-                 (1) total off time is x - y (time interval minus on time period).
-                 (2) total on time is y.
-                 (3) total on off time is x.
-                 (4) considerations: take care no to overlap x and y to prevent always returning true or false.
-                 
-    */
-    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
-    else {true;}
-  }
-  return false;
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   TRACK OBJECT
 
 void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i) {
@@ -5709,9 +5519,197 @@ void setTrackPlanets() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 MATRIX: SWITCH
+//                                                                                                   MATRIX FUNCTIONS: PRIMITIVES
 
-bool allow_calculate_satellite_data = false;
+/*
+matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
+return true when otherwise a check would return false, which allows more flexibility.
+*/
+
+// calculate if n0 in (+- range/2) of n1
+bool in_range_check_true(double n0, double n1, double r) {
+  // debug(
+  //   "in_range_check_true: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
+  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return true;}
+  else {return false;}
+}
+
+// calculate if n0 in (+- range/2) of n1
+bool in_range_check_false(double n0, double n1, double r) {
+  // debug(
+  //   "in_range_check_false: (n0 " +
+  //   String(n0) +
+  //   " >= n1 (" +
+  //   String(n1) +
+  //   " - r/2 " +
+  //   String(r/2) +
+  //   ")) && (n0 " +
+  //   String(n0) +
+  //   " <= n1 (" +
+  //   String(n1) +
+  //   " + r/2 " +
+  //   String(r/2) +
+  //   "))");
+  if ((n0  >=  n1 - r/2) && (n0  <= n1 + r/2)) {return false;}
+  else {return true;}
+}
+
+bool in_square_range_check_true(double x0, double x1, double y0, double y1, double r) {
+  if (in_range_check_true(x0, x1, r) == true) {
+    if (in_range_check_true(y0, y1, r) == true) {return true;} else return false;}
+  else {return false;}
+}
+
+bool in_square_range_check_false(double x0, double x1, double y0, double y1, double r) {
+  if (in_range_check_true(x0, x1, r) == true) {
+    if (in_range_check_true(y0, y1, r) == true) {return false;} else return true;}
+  else {return true;}
+}
+
+bool check_over_true(double n0, double n1) {
+  // debug("check_over_true: n0 " + String(n0) + " > n1 " + String(n1));
+  if (n0 > n1) {return true;}
+  else {return false;}
+}
+
+bool check_over_false(double n0, double n1) {
+  // debug("check_over_false: n0 " + String(n0) + " > n1 " + String(n1));
+  if (n0 > n1) {return false;}
+  else {return true;}
+}
+
+bool check_under_true(double n0, double n1) {
+  // debug("check_under_true: n0 " + String(n0) + " < n1 " + String(n1));
+  if (n0 < n1) {return true;}
+  else {return false;}
+}
+
+bool check_under_false(double n0, double n1) {
+  // debug("check_under_false: n0 " + String(n0) + " < n1 " + String(n1));
+  if (n0 < n1) {return false;}
+  else {return true;}
+}
+
+bool check_equal_true(double n0, double n1) {
+  // debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
+  if (n0 == n1) {return true;}
+  else {return false;}
+}
+
+bool check_equal_false(double n0, double n1) {
+  // debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
+  if (n0 != n1) {return true;}
+  else {return false;}
+}
+
+bool check_ge_and_le_true(double n0, double n1, double n2) {
+  // debug(
+  //   "check_ge_and_le_true: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+    // String(n2));
+  if ((n0 >= n1) && (n0 <= n2)) {return true;}
+  else {return false;}
+}
+
+bool check_ge_and_le_false(double n0, double n1, double n2) {
+  // debug(
+  //   "check_ge_and_le_false: n0 " +
+  //   String(n0) +
+  //   " >= n1 " +
+  //   String(n1) +
+  //   " && n0 " +
+  //   String(n0) +
+  //   " <= " +
+  //   String(n2));
+  if ((n0 >= n1) && (n0 <= n2)) {return false;}
+  else {return true;}
+}
+
+bool check_strncmp_true(char * c0, char * c1, int n) {
+  // debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  if (strncmp(c0, c1, n) == 0) {return true;}
+  else {return false;}
+}
+
+bool check_strncmp_false(char * c0, char * c1, int n) {
+  // debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
+  if (strncmp(c0, c1, n) == 0) {return false;}
+  else {return true;}
+}
+
+bool check_bool_true(bool _bool) {
+  // debug("check_bool_true: " + String(_bool));
+  if (_bool == true) {return true;} else {return false;}
+}
+
+bool check_bool_false(bool _bool) {
+  // debug("check_bool_false: " + String(_bool));
+  if (_bool == false) {return true;} else {return false;}
+}
+
+bool SecondsTimer(double n0, double n1, int Mi) {
+
+  /*
+
+  seconds accumulated by an isr alarm. this does not use satellite data. 
+  
+  x (n0): off interval
+  y (n1): on interval (should not exceed off interval)
+
+  */
+
+  // turn on or remain off
+  if (matrixData.matrix_switch_state[0][Mi] == 0) {
+    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
+    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+    else {false;}
+  }
+
+  // turn off or remain on
+  else if (matrixData.matrix_switch_state[0][Mi] == 1) {
+    if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
+    /*
+    timer style: stacked time: y on time period is stacked on top of x time interval.
+                 (1) total off time is x (x time interval effectively becomes an off time period).
+                 (2) total on time is y.
+                 (3) total on off time is x+y.
+                 (4) considerations: harder to predict because on and off times will creep.
+    */
+    // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
+
+    /*
+    timer style: integrated time: y on time occurrs for a period within x time interval.
+                 (1) total off time is x - y (time interval minus on time period).
+                 (2) total on time is y.
+                 (3) total on off time is x.
+                 (4) considerations: take care no to overlap x and y to prevent always returning true or false.
+                 
+    */
+    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
+    else {true;}
+  }
+  return false;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 MATRIX: SWITCH
 
 void matrixSwitch() {
 
@@ -5781,7 +5779,7 @@ void matrixSwitch() {
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
         }
 
-        if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(rtc.now().hour(), rtc.now().minute(), rtc.now().second()),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -8845,42 +8843,31 @@ void matrixSwitch() {
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
   }
 
-  // start building matrix sentence
-  memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
-  strcpy(matrixData.matrix_sentence, "$MATRIX,");
-
-  // append port mapping data
-  for (int i=0; i < matrixData.max_matrices; i++) {
-    itoa(matrixData.matrix_port_map[0][i], matrixData.temp, 10);
-    strcat(matrixData.matrix_sentence, matrixData.temp);
-    strcat(matrixData.matrix_sentence, ",");
-    }
-  
-  // append matrix switch state data
-  for (int i=0; i < matrixData.max_matrices; i++) {
-    if      (matrixData.matrix_switch_state[0][i] == 0) {strcat(matrixData.matrix_sentence, "0,");}
-    else if (matrixData.matrix_switch_state[0][i] == 1) {strcat(matrixData.matrix_sentence, "1,");}
-  }
-
-  // Satellite Count and HDOP Precision Factor Indicator
-  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(matrixData.matrix_sentence, "0,");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(matrixData.matrix_sentence, "1,");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(matrixData.matrix_sentence, "2,");}
-
-  // Overload Indicator
-  if (systemData.overload==false) {strcat(matrixData.matrix_sentence, "0,");}
-  else {strcat(matrixData.matrix_sentence, "1,");}
-
-  // append checksum
-  createChecksum(matrixData.matrix_sentence);
-  strcat(matrixData.matrix_sentence, "*");
-  strcat(matrixData.matrix_sentence, SerialLink.checksum);
-
-  // serial output: switch states.
   if (systemData.output_matrix_enabled == true) {
+
+    // start building matrix sentence
+    memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
+    strcpy(matrixData.matrix_sentence, "$MATRIX,");
+
+    // append port mapping data
+    for (int i=0; i < matrixData.max_matrices; i++) {
+      strcat(matrixData.matrix_sentence, String(String(matrixData.matrix_port_map[0][i])+",").c_str());
+      }
+    
+    // append matrix switch state data
+    for (int i=0; i < matrixData.max_matrices; i++) {
+      strcat(matrixData.matrix_sentence, String(String(matrixData.matrix_switch_state[0][i])+",").c_str());
+    }
+
+    // append checksum
+    createChecksum(matrixData.matrix_sentence);
+    strcat(matrixData.matrix_sentence, "*");
+    strcat(matrixData.matrix_sentence, SerialLink.checksum);
+
+    // serial output: switch states.
     Serial.println(matrixData.matrix_sentence);
   }
-  // debug(matrixData.matrix_sentence);
+  debug(matrixData.matrix_sentence);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12638,16 +12625,12 @@ void getSensorData() {
     setMultiplexChannel_CD74HC4067(i_chan);
 
     /*
-    
     analogu read is default hardcode for reading each channel, this is for more general flexibility. more complicated sensors
     can be expanded upon here and new variables created in sensorData where requried.
-
     ESP32 has a 12bit ADC.
-
     10bit ADC: 0-1023
     12bit ADC: 0-4095
     14bit ADC: 0-16383
-    
     */
 
     // sensor 0
@@ -12743,8 +12726,9 @@ void getSensorData() {
     else if (i_chan==15) {
       sensorData.sensor_15 = analogRead(CD74HC4067_SIG);
     }
-
   }
+  // set multiplexer channel back to zero
+  setMultiplexChannel_CD74HC4067(0);
 
   // step over each multiplexer i2C channel
   for (int i_chan = 0; i_chan < 8; i_chan++) {
@@ -12789,6 +12773,26 @@ void getSensorData() {
 
   // build sensory data sentence
   if (systemData.output_sensors_enabled==true) {
+    // Serial.println(
+    //   "$SENSORS," +
+    //   String(sensorData.sensor_0) + "," +
+    //   String(sensorData.sensor_1) + "," +
+    //   String(sensorData.sensor_2) + "," +
+    //   String(sensorData.sensor_3) + "," +
+    //   String(sensorData.sensor_4) + "," +
+    //   String(sensorData.sensor_5) + "," +
+    //   String(sensorData.sensor_6) + "," +
+    //   String(sensorData.sensor_7) + "," +
+    //   String(sensorData.sensor_8) + "," +
+    //   String(sensorData.sensor_9) + "," +
+    //   String(sensorData.sensor_10) + "," +
+    //   String(sensorData.sensor_10) + "," +
+    //   String(sensorData.sensor_11) + "," +
+    //   String(sensorData.sensor_12) + "," +
+    //   String(sensorData.sensor_13) + "," +
+    //   String(sensorData.sensor_14) + "," +
+    //   String(sensorData.sensor_15)
+    // );
     memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
     strcat(sensorData.sensor_sentence, "$SENSORS,");
 
@@ -13057,7 +13061,7 @@ bool longer_loop = false;
 int loop_distribution = 0;
 
 void loop() {
-  // bench("----------------------------------------");
+  bench("-----");
   // bench("[loop]");
   timeData.mainLoopTimeStart = micros();
   i_loops_between_gps_reads++;
