@@ -13104,7 +13104,7 @@ void loop() {
 
     /* only calculate data dependent on gps here */
 
-    bench("[gps_done_t] " + String(gps_done_t1-gps_done_t0/1000000) + "s");
+    bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000) + "ms");
     bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
