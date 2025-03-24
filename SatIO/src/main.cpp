@@ -9363,7 +9363,7 @@ void menuEnter() {
     // switch spi devices
     sd.end();
     endSPIDevice(SD_CS);
-    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
     display.begin();
 
     // return to previous page
@@ -12444,41 +12444,41 @@ void sdcardCheck() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  READ GPS DATA
 
-void check_gngga() {
-  // debug("[check_gngga]");
-  if (systemData.gngga_enabled == true){
-    if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
-    gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-    // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
-    // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-    if (gnggaData.valid_checksum == true) {GNGGA();}
-    else {gnggaData.bad_checksum_validity++;}
-  }
-}
+// void check_gngga() {
+//   // debug("[check_gngga]");
+//   if (systemData.gngga_enabled == true){
+//     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
+//     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
+//     // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
+//     // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
+//     if (gnggaData.valid_checksum == true) {GNGGA();}
+//     else {gnggaData.bad_checksum_validity++;}
+//   }
+// }
 
-void check_gnrmc() {
-  // debug("[check_gnrmc]");
-  if (systemData.gnrmc_enabled == true) {
-    if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
-    gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-    // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-    // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-    if (gnrmcData.valid_checksum == true) {GNRMC();}
-    else {gnrmcData.bad_checksum_validity++;}
-  }
-}
+// void check_gnrmc() {
+//   // debug("[check_gnrmc]");
+//   if (systemData.gnrmc_enabled == true) {
+//     if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
+//     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
+//     // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
+//     // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
+//     if (gnrmcData.valid_checksum == true) {GNRMC();}
+//     else {gnrmcData.bad_checksum_validity++;}
+//   }
+// }
 
-void check_gpatt() {
-  // debug("[check_gpatt]");
-  if (systemData.gpatt_enabled == true) {
-    if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
-    gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-    // debug("[gpattData.sentence] " + String(gpattData.sentence));
-    // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-    if (gpattData.valid_checksum == true) {GPATT();}
-    else {gpattData.bad_checksum_validity++;}
-  }
-}
+// void check_gpatt() {
+//   // debug("[check_gpatt]");
+//   if (systemData.gpatt_enabled == true) {
+//     if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
+//     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
+//     // debug("[gpattData.sentence] " + String(gpattData.sentence));
+//     // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
+//     if (gpattData.valid_checksum == true) {GPATT();}
+//     else {gpattData.bad_checksum_validity++;}
+//   }
+// }
 
 int gps_done_t0;
 int gps_done_t1;
@@ -13037,7 +13037,7 @@ void setup() {
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "Task0", /* Name of the task */
-      5120,    /* Stack size in words */
+      4096,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &Task0,  /* Task handle. */
@@ -13063,10 +13063,12 @@ void loop() {
   // bench("[loop]");
   timeData.mainLoopTimeStart = micros();
   i_loops_between_gps_reads++;
-  // systemData.t_bench = true; // uncomment to observe timings
+  systemData.t_bench = true; // uncomment to observe timings
 
   /* run every loop */
+  t0 = millis();
   readI2C();
+  bench("[readI2C] " + String(millis()-t0));
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
@@ -13080,7 +13082,7 @@ void loop() {
     // ---------------------------------------------------------------------
 
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
-    if (systemData.gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
+    if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
 
     // ---------------------------------------------------------------------
