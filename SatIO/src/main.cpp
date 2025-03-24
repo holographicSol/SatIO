@@ -967,7 +967,7 @@ char cwd[1024] = "/";
 
 struct systemStruct {
   bool debug = false;                  // print verbose information over serial
-  bool t_bench = false;
+  bool t_bench = true;
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   bool matrix_run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file
 
@@ -12497,10 +12497,8 @@ void check_gpatt() {
   }
 }
 
-int gps_read_t;
-int gps_done_t = millis();
-int i_gps = 0;
-bool cs = false;
+int gps_done_t0;
+int gps_done_t1;
 
 void readGPS(void * pvParameters) {
 
@@ -12511,37 +12509,37 @@ void readGPS(void * pvParameters) {
 
       // ----------------------------------------------------------------------------------------------------------------------
 
-      gps_done_t = millis();
+      gps_done_t0 = micros();
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
       serial1Data.gpatt_bool = false;
-      memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
-      memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
-      memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
 
       // ----------------------------------------------------------------------------------------------------------------------
 
       /* this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms. */
 
       // read up until attempt limit is reached
-      for (i_gps = 0; i_gps < 10; i_gps++) {
+      for (int i_gps = 0; i_gps < 10; i_gps++) {
         if (Serial2.available()) {
 
           // first check break for if we have everything we need
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
+          // if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true) {break;}
 
           // read gps module to either terminating character or until the buffer is full
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+          // Serial.println(SerialLink.BUFFER);
 
           // eliminate potential partial reads
-          if (SerialLink.nbytes>50) {
+          if (SerialLink.nbytes>10) {
 
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
+                  memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
                   serial1Data.gngga_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -12553,6 +12551,7 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
+                  memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
                   serial1Data.gnrmc_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -12564,6 +12563,7 @@ void readGPS(void * pvParameters) {
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
+                  memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
                   serial1Data.gpatt_bool = true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
@@ -12578,6 +12578,7 @@ void readGPS(void * pvParameters) {
       /* parse the above sentences fast so as not to miss each next sentence. then we can drop in here afterwards if we collected all the sentences */
 
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
+      // if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true) {
 
         // ----------------------------------------------------------------------------------------------------------------------
 
@@ -12625,8 +12626,9 @@ void readGPS(void * pvParameters) {
 
         // is everything collected and validated? if so then reset the lock ready for other functions to use the data before going again
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
+        // if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true)) {
           // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
-          gps_done_t = millis();
+          gps_done_t1 = micros();
           gps_done=true;
         }
 
@@ -12914,7 +12916,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial2.setTimeout(50); // ensure this is set before begin()
+  Serial2.setTimeout(10); // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -13073,8 +13075,8 @@ bool gps_data_used = false;
 int loop_distribution = 0;
 
 void loop() {
-  bench("----------------------------------------");
-  bench("[loop]");
+  // bench("----------------------------------------");
+  // bench("[loop]");
   timeData.mainLoopTimeStart = millis();
   i_loops_between_gps_reads++;
   // systemData.t_bench = true; // uncomment to observe timings
@@ -13102,7 +13104,7 @@ void loop() {
 
     /* only calculate data dependent on gps here */
 
-    bench("[gps_done_t] " + String(millis()-gps_done_t));
+    bench("[gps_done_t] " + String(gps_done_t1-gps_done_t0/1000000) + "s");
     bench("[loops between gps] " + String(i_loops_between_gps_reads));
     i_loops_between_gps_reads = 0;
 
@@ -13129,20 +13131,20 @@ void loop() {
 
     // ---------------------------------------------------------------------
 
+    /*
+    help avert any potential race conditions while using gps data above.
+    we aim to set this true as soon as possible but never before we are
+    finished using the data.
+    */
+    gps_done = true;
+
+    // ---------------------------------------------------------------------
+    //                                             ALLOW GPS DATA COLLECTION
+
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
     bench("[buildSatIOSentence] " + String(millis()-t0));
-
-    // help avert any potential race conditions while also running matrix switch and port controller every loop
-    gps_data_used = true;
   }
-
-  // ---------------------------------------------------------------------
-  //                                             ALLOW GPS DATA COLLECTION
-
-  /* occasional: only allow collection after we are done with the data */
-  
-  if ((gps_done==true) && (gps_data_used==true)) {gps_done = false;}
 
   // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
@@ -13170,7 +13172,7 @@ void loop() {
 
   if (longer_loop==false) {
 
-    /* now divide up the occasional: do either when can but not all */
+    /* now divide up the occasional: do either when can but not all at once */
     
     // track planets
     if (loop_distribution==0) {
