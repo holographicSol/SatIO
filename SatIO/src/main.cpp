@@ -966,34 +966,34 @@ char cwd[1024] = "/";
 //                                                                                                                   DATA: SYSTEM
 
 struct systemStruct {
-  bool debug = false;                  // print verbose information over serial
-  bool t_bench = false;
-  bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  bool matrix_run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file
+  bool debug = false;                // print verbose information over serial
+  bool t_bench = false;              // prints bennchmark information for tuning
+  bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
+  bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
 
   // performace: turn on/off what you need
-  bool satio_enabled = true;           // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
-  bool gngga_enabled = true;           // enables/disables parsing of serial GPS data
-  bool gnrmc_enabled = true;           // enables/disables parsing of serial GPS data
-  bool gpatt_enabled = true;           // enables/disables parsing of serial GPS data
-  bool matrix_enabled = false;         // enables/disables matrix switch
+  bool satio_enabled = true;          // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
+  bool gngga_enabled = true;          // enables/disables parsing of serial GPS data
+  bool gnrmc_enabled = true;          // enables/disables parsing of serial GPS data
+  bool gpatt_enabled = true;          // enables/disables parsing of serial GPS data
+  bool matrix_enabled = true;         // enables/disables matrix switch
 
-  bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
-  bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
-  bool output_sensors_enabled = false; // enables/disables output of sensory data sentence over serial
+  bool output_satio_enabled = true;   // enables/disables output SatIO sentence over serial
+  bool output_gngga_enabled = true;   // enables/disables output GPS sentence over serial
+  bool output_gnrmc_enabled = true;   // enables/disables output GPS sentence over serial
+  bool output_gpatt_enabled = true;   // enables/disables output GPS sentence over serial
+  bool output_matrix_enabled = true;  // enables/disables output matrix switch active/inactive states sentence over serial
+  bool output_sensors_enabled = true; // enables/disables output of sensory data sentence over serial
 
-  bool output_sun_enabled = false;     // enables/disables output sentence over serial
-  bool output_moon_enabled = false;    // enables/disables output sentence over serial
-  bool output_mercury_enabled = false; // enables/disables output sentence over serial
-  bool output_venus_enabled = false;   // enables/disables output sentence over serial
-  bool output_mars_enabled = false;    // enables/disables output sentence over serial
-  bool output_jupiter_enabled = false; // enables/disables output sentence over serial
-  bool output_saturn_enabled = false;  // enables/disables output sentence over serial
-  bool output_uranus_enabled = false;  // enables/disables output sentence over serial
-  bool output_neptune_enabled = false; // enables/disables output sentence over serial
+  bool output_sun_enabled = true;     // enables/disables output sentence over serial
+  bool output_moon_enabled = true;    // enables/disables output sentence over serial
+  bool output_mercury_enabled = true; // enables/disables output sentence over serial
+  bool output_venus_enabled = true;   // enables/disables output sentence over serial
+  bool output_mars_enabled = true;    // enables/disables output sentence over serial
+  bool output_jupiter_enabled = true; // enables/disables output sentence over serial
+  bool output_saturn_enabled = true;  // enables/disables output sentence over serial
+  bool output_uranus_enabled = true;  // enables/disables output sentence over serial
+  bool output_neptune_enabled = true; // enables/disables output sentence over serial
 
   bool port_controller_enabled = true; // may be false by default but is default true for now.
 
