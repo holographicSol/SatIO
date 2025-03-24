@@ -12508,7 +12508,7 @@ void readGPS(void * pvParameters) {
     if (gps_done==false) {
 
       // ----------------------------------------------------------------------------------------------------------------------
-
+      
       gps_done_t0 = micros();
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
@@ -12519,7 +12519,8 @@ void readGPS(void * pvParameters) {
       /* this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms. */
 
       // read up until attempt limit is reached
-      for (int i_gps = 0; i_gps < 10; i_gps++) {
+      for (int i_gps = 0; i_gps < 1000; i_gps++) {
+      // while (!serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         if (Serial2.available()) {
 
           // first check break for if we have everything we need
@@ -12916,7 +12917,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial2.setTimeout(10); // ensure this is set before begin()
+  Serial2.setTimeout(20); // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -13068,10 +13069,8 @@ void setup() {
 
 int t0 = millis();
 long i_loops_between_gps_reads = 0;
-int t_gps_all = millis();
 bool track_planets_period = false;
 bool longer_loop = false;
-bool gps_data_used = false;
 int loop_distribution = 0;
 
 void loop() {
@@ -13090,7 +13089,6 @@ void loop() {
   /* occasional: gps data from wtgps300p is every 100ms, so aim to keep loop time under 100ms */
 
   longer_loop = false;
-  gps_data_used = false;
   if (gps_done==true) {
     longer_loop = true;
 
@@ -13130,16 +13128,26 @@ void loop() {
     bench("[matrixSwitch] " + String(millis()-t0));
 
     // ---------------------------------------------------------------------
+    //                                             ALLOW GPS DATA COLLECTION
 
     /*
     help avert any potential race conditions while using gps data above.
     we aim to set this true as soon as possible but never before we are
     finished using the data.
     */
-    gps_done = true;
+    gps_done = false;
 
     // ---------------------------------------------------------------------
-    //                                             ALLOW GPS DATA COLLECTION
+    //                                                         TRACK PLANETS
+    t0 = millis();
+    setTrackPlanets();
+    bench("[setTrackPlanets] " + String(millis()-t0));
+    t0 = millis();
+    trackPlanets();
+    bench("[trackPlanets] " + String(millis()-t0));
+
+    // ---------------------------------------------------------------------
+    //                                                        SATIO SENTENCE
 
     t0 = millis();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
@@ -13168,34 +13176,40 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                          LONGER LOOPS
 
+  if (longer_loop==false) {
+    t0 = millis();
+    UpdateUI();
+    bench("[UpdateUI] " + String(millis()-t0));
+  }
+
   /* occasional */
 
-  if (longer_loop==false) {
+  // if (longer_loop==false) {
 
-    /* now divide up the occasional: do either when can but not all at once */
+  //   /* now divide up the occasional: do either when can but not all at once */
     
-    // track planets
-    if (loop_distribution==0) {
-      loop_distribution=1;
-      if (track_planets_period == true) {
-        track_planets_period = false;
-        t0 = millis();
-        setTrackPlanets();
-        bench("[setTrackPlanets] " + String(millis()-t0));
-        t0 = millis();
-        trackPlanets();
-        bench("[trackPlanets] " + String(millis()-t0));
-      }
-    }
+  //   // track planets
+  //   if (loop_distribution==0) {
+  //     loop_distribution=1;
+  //     if (track_planets_period == true) {
+  //       track_planets_period = false;
+  //       t0 = millis();
+  //       setTrackPlanets();
+  //       bench("[setTrackPlanets] " + String(millis()-t0));
+  //       t0 = millis();
+  //       trackPlanets();
+  //       bench("[trackPlanets] " + String(millis()-t0));
+  //     }
+  //   }
 
-    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
-    else if (loop_distribution==1) {
-      loop_distribution=0;
-      t0 = millis();
-      UpdateUI();
-      bench("[UpdateUI] " + String(millis()-t0));
-    }
-  }
+  //   // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
+  //   else if (loop_distribution==1) {
+  //     loop_distribution=0;
+  //     t0 = millis();
+  //     UpdateUI();
+  //     bench("[UpdateUI] " + String(millis()-t0));
+  //   }
+  // }
 
   // ---------------------------------------------------------------------
   //                                                        SECOND COUNTER
