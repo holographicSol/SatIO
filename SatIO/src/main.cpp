@@ -967,7 +967,7 @@ char cwd[1024] = "/";
 
 struct systemStruct {
   bool debug = false;                  // print verbose information over serial
-  bool t_bench = true;
+  bool t_bench = false;
   bool overload = false;               // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   bool matrix_run_on_startup = false;  // enables/disable matrix switch on startup as specified by system configuration file
 
@@ -12919,7 +12919,7 @@ void setup() {
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
-  Serial2.setTimeout(5); // ensure this is set before begin()
+  Serial2.setTimeout(10); // ensure this is set before begin()
   Serial2.begin(115200);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -13238,8 +13238,8 @@ void loop() {
   //                                                                 DEBUG
 
   bench("[Looptime] " + String(timeData.mainLoopTimeTaken) + " uS");
-  bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax));
-  bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin));
+  bench("[Looptime Max] " + String(timeData.mainLoopTimeTakenMax) + " uS");
+  bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin) + " uS");
   
   // ---------------------------------------------------------------------
 }
