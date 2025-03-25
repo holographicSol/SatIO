@@ -241,8 +241,6 @@
   Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
   as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
-  ToDO: set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and possibly modification to matrix (to handle NAN).
-
   Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
   of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html).
   Additions: 1: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
@@ -10918,6 +10916,7 @@ void UpdateUI() {
       this allows uniformity as default.
       */
      // ------------------------------------------------
+     
       /* sensor value column 0 */
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_0, 4).c_str());
