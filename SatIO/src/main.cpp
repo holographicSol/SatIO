@@ -788,7 +788,7 @@ const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items
     "ENTER  VALUE Z",
     "CHANGE EXPRESSION",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 66}, {125, 125}} );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 64}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU FILE
