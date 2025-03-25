@@ -786,9 +786,9 @@ const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items
     "ENTER  VALUE X",
     "ENTER  VALUE Y",
     "ENTER  VALUE Z",
-    "CHANGE PRIMITIVE",
+    "CHANGE EXPRESSION",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 76}, {125, 125}} );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 66}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU FILE
@@ -2410,15 +2410,15 @@ struct MatrixStruct {
 
   /* function names for function name matrix */
 
-  char primitives[5][16] =
+  char expression[5][16] =
   {
-    "", // empty for functions that take no primitive
+    "", // empty for functions that take no expression
     "Equal",
     "Over",
     "Under",
     "Range",
   };
-  int i_primitive = 0;
+  int i_expression = 0;
 
   // number of available base function names that can be used to program a matrix switch
   int max_matrix_function_names = 134;
@@ -5561,7 +5561,7 @@ void setTrackPlanets() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   MATRIX FUNCTIONS: PRIMITIVES
+//                                                                                                   MATRIX FUNCTIONS: EXPRESSIONS
 
 /*
 matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
@@ -9243,19 +9243,19 @@ void menuEnter() {
       enter_digits_key = 4;
       menu_page=page_input_data;
     }
-    // set primitives
+    // set expression
     else if (menuMatrixConfigureFunction.selection()==4) {
 
-      // iterate over primitives
-      matrixData.i_primitive++;
-      if (matrixData.i_primitive > 4) {matrixData.i_primitive=0;}
-      // debug("[primitives]" + String(matrixData.primitives[matrixData.i_primitive]));
+      // iterate over expression
+      matrixData.i_expression++;
+      if (matrixData.i_expression > 4) {matrixData.i_expression=0;}
+      // debug("[expression]" + String(matrixData.expression[matrixData.i_expression]));
 
       // put current str in temp
       memset(matrixData.temp, 0, sizeof(matrixData.temp));
       strcpy(matrixData.temp, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       
-      // remove primitives
+      // remove expression
       matrixData.tempStr = String(matrixData.temp);
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
@@ -9263,8 +9263,8 @@ void menuEnter() {
       matrixData.tempStr.replace("Range", "");
       // debug("[temp 0] " + matrixData.tempStr);
 
-      // concatinate base function name with primitive
-      matrixData.tempStr = matrixData.tempStr + matrixData.primitives[matrixData.i_primitive];
+      // concatinate base function name with expression
+      matrixData.tempStr = matrixData.tempStr + matrixData.expression[matrixData.i_expression];
       // debug("[temp 1] " + matrixData.tempStr);
 
       // copy new name into matrix
@@ -10433,35 +10433,35 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 26, canvas120x8);
+      display.drawCanvas(3, 16, canvas120x8);
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(6, 36, canvas120x8);
+      display.drawCanvas(6, 26, canvas120x8);
       // function x
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 46, canvas120x8);
+      display.drawCanvas(6, 36, canvas120x8);
       // function y
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 56, canvas120x8);
+      display.drawCanvas(6, 46, canvas120x8);
       // function z
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(6, 66, canvas120x8);
+      display.drawCanvas(6, 56, canvas120x8);
       // ------------------------------------------------
       menuMatrixConfigureFunction.show( display );
       // ------------------------------------------------
