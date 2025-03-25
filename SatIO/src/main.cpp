@@ -10334,7 +10334,7 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
-        // matrix switch number 
+        // matrix switch number
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "M");
         strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
