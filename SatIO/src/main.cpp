@@ -13103,123 +13103,138 @@ void setup() {
 //                                                                                                                      MAIN LOOP
 
 int t0 = millis();
-long i_loops_between_gps_reads = 0;
 bool track_planets_period = false;
 bool longer_loop = false;
 int loop_distribution = 0;
 
 void loop() {
   bench("-----");
-  // bench("[loop]");
   timeData.mainLoopTimeStart = micros();
-  i_loops_between_gps_reads++;
   systemData.t_bench = true; // uncomment to observe timings
 
-  /* run every loop */
+  // ---------------------------------------------------------------------
+  //                                                            IC2 CHECKS
   // t0 = micros();
   readI2C();
   // bench("[readI2C] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ---------------------------------------------------------------------
   //                                                                   GPS
-
-  /* occasional: gps data from wtgps300p is every 100ms, so aim to keep loop time under 100ms */
-
+  /*
+  Efficiency and performance.
+  Only run the following block when new GPS data has been collected.
+  GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
+  */
   longer_loop = false;
   if (gps_done==true) {
-    longer_loop = true;
+    longer_loop = true; // set load distribution flag
+    
+    // ---------------------------------------------------------------------
+    //                                                 SUSPEND READ GPS TASK
+    /*
+    Do not allow values to be changed while we use the GPS data!
+    Avert race conditions while using GPS data.
+    */
     vTaskSuspend(GPSTask);
-
     // ---------------------------------------------------------------------
 
+    // ---------------------------------------------------------------------
+    //                                                   GPS SENTENCE OUTPUT
+    /*
+    Read GPS is running on a task so print the data here for safe output.
+    Only run if new GPS data has been collected.
+    */
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
     if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
 
-    // ---------------------------------------------------------------------
-
-    /* only calculate data dependent on gps here */
-
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
-    // bench("[loops between gps] " + String(i_loops_between_gps_reads));
-    i_loops_between_gps_reads = 0;
-
     // ---------------------------------------------------------------------
 
+    // ---------------------------------------------------------------------
+    //                                                           CONVERSIONS
+    /*
+    Convert absolute latitude and longitude to degrees.
+    convert UTC to local time.
+    Sync RTC.
+    Only run if new GPS data has been collected.
+    */
     t0 = micros();
     convertUTCToLocal();
     bench("[convertUTCToLocal] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-    // ---------------------------------------------------------------------
-
     t0 = micros();
     calculateLocation();
     bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                         MATRIX SWITCH
-
+    /*
+    Check users programmable logic.
+    Never run while values are being updated.
+    Only run if new GPS data has been collected.
+    */
     t0 = micros();
     if (systemData.matrix_enabled == true) {matrixSwitch();}
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
-    //                                             ALLOW GPS DATA COLLECTION
-
+    //                                                  RESUME READ GPS TASK
     /*
-    help avert any potential race conditions while using gps data above.
-    we aim to set this true as soon as possible but never before we are
-    finished using the data.
+    Aim to set this true as soon as possible and never before we are
+    finished using the GPS data.
     */
     gps_done = false;
     vTaskResume(GPSTask);
-
     // ---------------------------------------------------------------------
-    //                                                         TRACK PLANETS
-    // t0 = millis();
-    // setTrackPlanets();
-    // bench("[setTrackPlanets] " + String(millis()-t0));
-    // t0 = millis();
-    // trackPlanets();
-    // bench("[trackPlanets] " + String(millis()-t0));
 
     // ---------------------------------------------------------------------
     //                                                        SATIO SENTENCE
-
+    /*
+    Create and output special SatIO sentence over serial.
+    Only run if new GPS data has been collected.
+    */
     t0 = micros();
     if (systemData.satio_enabled == true) {buildSatIOSentence();}
     bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // ---------------------------------------------------------------------
   }
 
   // ---------------------------------------------------------------------
-  //                                                       PORT CONTROLLER
-
-  /* run every loop */
-
-  t0 = micros();
-  if (systemData.port_controller_enabled == true) {writeToPortController();}
-  // else zero states
-  bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
-
-  /* run every loop */
-
+  /*
+  Collect sensor data that could be utilized every loop.
+  Run every loop.
+  */
   t0 = micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
-  //                                                          LONGER LOOPS
+  //                                                       PORT CONTROLLER
+  /*
+  Port controller to be utilized every loop.
+  Run every loop.
+  */
+  t0 = micros();
+  if (systemData.port_controller_enabled == true) {writeToPortController();}
+  bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // ---------------------------------------------------------------------
 
-  /* occasional */
-
+  // ---------------------------------------------------------------------
+  //                                                     LOAD DISTRIBUTION
+  /*
+  Efficiency and performance.
+  Distribute functions between faster loops.
+  Utilizes loops that did not perform GPS calculations and conversions.
+  GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
+  Run every loop.
+  */
   if (longer_loop==false) {
-
-    /* now divide up the occasional: do either when can but not all at once */
-    
     // track planets
     if (loop_distribution==0) {
       loop_distribution=1;
@@ -13233,7 +13248,6 @@ void loop() {
         bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
     }
-
     // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
     else if (loop_distribution==1) {
       loop_distribution=0;
@@ -13242,12 +13256,10 @@ void loop() {
       bench("[UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
+  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
-  //                                                        SECOND COUNTER
-
-  /* occasional */
-
+  //                                                    ISR SECOND COUNTER
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
@@ -13256,26 +13268,17 @@ void loop() {
     portEXIT_CRITICAL(&second_timer_mux);
   }
 
-
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
-
   // delay(100); // debug test overload: increase loop time
-
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true;} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
-  // debug("[overload] " + String(systemData.overload));
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
-
-
-  // ---------------------------------------------------------------------
-  //                                                                 DEBUG
-
+  bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   // bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin, 6) + " uS");
-  
   // ---------------------------------------------------------------------
 }
