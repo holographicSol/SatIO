@@ -375,15 +375,11 @@ DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD13
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY CANVAS
 
-NanoCanvas<6,8,1> canvas6x8;
 NanoCanvas<8,8,1> canvas8x8; 
 NanoCanvas<19,8,1> canvas19x8;
-NanoCanvas<20,20,1> canvas20x20;
-NanoCanvas<33,24,1> canvas33x24;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
 NanoCanvas<80,8,1> canvas80x8;
-NanoCanvas<70,8,1> canvas70x8;
 NanoCanvas<120,24,1> canvas120x24;
 NanoCanvas<120,120,1> canvas120x120;
 NanoCanvas<128,128,1> canvas128x128;
@@ -12096,9 +12092,13 @@ void UpdateUI() {
 
   if ((ui_cleared == false) && (update_ui == false)) {
     // debug("[oled protection] clearing ui");
-    display.clear();
-    display.clear();
-    display.clear();
+    // uncomment if issues occur using faster option
+    // display.clear();
+    // display.clear();
+    // display.clear();
+    // faster
+    canvas128x128.clear();
+    display.drawCanvas(0, 0, canvas128x128);
     ui_cleared=true;
   }
 }
@@ -13056,10 +13056,8 @@ void setup() {
   display.begin();
   display.setFixedFont(ssd1306xled_font6x8);
   display.fill( 0x0000 );
-  canvas6x8.setFixedFont(ssd1306xled_font6x8);
   canvas8x8.setFixedFont(ssd1306xled_font6x8);
   canvas19x8.setFixedFont(ssd1306xled_font6x8);
-  canvas20x20.setFixedFont(ssd1306xled_font6x8);
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
   canvas60x8.setFixedFont(ssd1306xled_font6x8);
@@ -13068,7 +13066,6 @@ void setup() {
   canvas36x8.setFixedFont(ssd1306xled_font6x8);
   canvas42x8.setFixedFont(ssd1306xled_font6x8);
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
-  canvas70x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
   
   display.clear();
