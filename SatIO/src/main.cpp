@@ -10325,15 +10325,12 @@ void UpdateUI() {
       display.setColor(RGB_COLOR16(255,0,0));
       // ------------------------------------------------
       if (enter_digits_key==1) {
-        // matrix switch number 
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "M");
-        strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
-        strcat(TMP_UI_DATA_0, " / P");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String("MATRIX SWITCH: " + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
         display.drawCanvas(3, 26, canvas120x8);
+        canvas120x8.clear();
+        canvas120x8.printFixed(1, 1, String("CURRENT PORT: " + String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()])).c_str(), STYLE_BOLD );
+        display.drawCanvas(3, 36, canvas120x8);
       }
       // ------------------------------------------------
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
