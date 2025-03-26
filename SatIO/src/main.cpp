@@ -10036,7 +10036,7 @@ void UpdateUI() {
       // DISABLED
       else {
         canvas60x8.clear();
-        display.setColor(RGB_COLOR16(100,100,100));
+        display.setColor(RGB_COLOR16(255,0,0));
         canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD );
         display.drawCanvas(1, 39, canvas60x8);
       }
@@ -10052,7 +10052,7 @@ void UpdateUI() {
       // INACTIVE
       else {
         canvas60x8.clear();
-        display.setColor(RGB_COLOR16(100,100,100));
+        display.setColor(RGB_COLOR16(255,0,0));
         canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD );
         display.drawCanvas(66, 39, canvas60x8);
       }
