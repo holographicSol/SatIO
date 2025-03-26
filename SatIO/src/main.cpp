@@ -803,7 +803,7 @@ const char *menuFileItems[max_file_items] =
     "SAVE    SYSTEM",
     "RESTORE DEFAULTS",
 };
-LcdGfxMenu menuFile( menuFileItems, max_file_items, {{2, 54}, {125, 125}} );
+LcdGfxMenu menuFile( menuFileItems, max_file_items, {{2, 62}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                MENU FILE NAMES
@@ -824,7 +824,7 @@ LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
 
 const int max_serial_items = 16;
 const char *menuSerialItems[max_serial_items];
-LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 38}, {125, 125}} );
+LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 20}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
