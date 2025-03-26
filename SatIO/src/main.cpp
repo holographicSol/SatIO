@@ -10216,6 +10216,7 @@ void UpdateUI() {
           canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(0,0,255));
           canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(84, 19, canvas8x8);
@@ -10231,6 +10232,7 @@ void UpdateUI() {
           canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(0,0,255));
           canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(83, 19, canvas8x8);
