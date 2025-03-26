@@ -10312,21 +10312,19 @@ void UpdateUI() {
     //                                ENTER DIGITS PAGE
 
     else if (menu_page==page_input_data) {
+
       // ------------------------------------------------
-      display.setColor(RGB_COLOR16(255,0,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorderRed();
-        if (enter_digits_key==1) {drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255, 0, 0));}
-        else if (enter_digits_key==2) {drawGeneralTitle("ENTER VALUE X", RGB_COLOR16(255, 0, 0));}
-        else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", RGB_COLOR16(255, 0, 0));}
-        else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", RGB_COLOR16(255, 0, 0));}
-      }
-      // ------------------------------------------------
-      display.setColor(RGB_COLOR16(255,0,0));
-      // ------------------------------------------------
+      //                                ENTER PORT NUMBER
+      
       if (enter_digits_key==1) {
+        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+          previous_menu_page=menu_page; display.clear();
+          drawMainBorderRed();
+          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255, 0, 0));
+        }
+        // ------------------------------------------------
+        display.setColor(RGB_COLOR16(255,0,0));
+        // ------------------------------------------------
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, String("MATRIX SWITCH: " + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
         display.drawCanvas(3, ui_content_0, canvas120x8);
@@ -10334,8 +10332,18 @@ void UpdateUI() {
         canvas120x8.printFixed(1, 1, String("CURRENT PORT: " + String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()])).c_str(), STYLE_BOLD );
         display.drawCanvas(3, ui_content_1, canvas120x8);
       }
+
       // ------------------------------------------------
+      //                             ENTER FUNCTION X,Y,Z
+
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+          previous_menu_page=menu_page; display.clear();
+          drawMainBorder();
+          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", RGB_COLOR16(255, 0, 0));}
+          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", RGB_COLOR16(255, 0, 0));}
+          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", RGB_COLOR16(255, 0, 0));}
+        }
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
