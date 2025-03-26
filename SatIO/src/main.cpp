@@ -10053,7 +10053,7 @@ void UpdateUI() {
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(100,100,100));
-        canvas60x8.printFixed(1, 1, "INACTIVE", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD );
         display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
