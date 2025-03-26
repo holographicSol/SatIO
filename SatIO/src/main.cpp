@@ -10315,7 +10315,7 @@ void UpdateUI() {
 
       // ------------------------------------------------
       //                                ENTER PORT NUMBER
-      
+
       if (enter_digits_key==1) {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
@@ -10340,9 +10340,9 @@ void UpdateUI() {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", RGB_COLOR16(255, 0, 0));}
-          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", RGB_COLOR16(255, 0, 0));}
-          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", RGB_COLOR16(255, 0, 0));}
+          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", systemData.color_content);}
+          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", systemData.color_content);}
+          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", systemData.color_content);}
         }
         // ------------------------------------------------
         display.setColor(systemData.color_content);
