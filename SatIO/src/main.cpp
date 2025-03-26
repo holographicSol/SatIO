@@ -13371,9 +13371,18 @@ void loop() {
   Run every loop.
   */
   if (longer_loop==false) {
-    // track planets
+
+    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
     if (loop_distribution==0) {
       loop_distribution=1;
+      t0 = micros();
+      UpdateUI();
+      bench("[UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
+
+    // track planets
+    else if (loop_distribution==1) {
+      loop_distribution=0;
       if (track_planets_period == true) {
         track_planets_period = false;
         t0 = micros();
@@ -13383,13 +13392,6 @@ void loop() {
         trackPlanets();
         bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
-    }
-    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
-    else if (loop_distribution==1) {
-      loop_distribution=0;
-      t0 = micros();
-      UpdateUI();
-      bench("[UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
   // ---------------------------------------------------------------------
