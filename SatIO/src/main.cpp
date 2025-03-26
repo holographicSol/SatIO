@@ -1033,7 +1033,7 @@ struct systemStruct {
     "COLOR    YELLOW",
     "COLOR    GREEN",
     "COLOR    BLUE",
-    "COLOR    LIGHT BLUE",
+    "COLOR    L. BLUE",
     "COLOR    PURPLE",
     "COLOR    WHITE",
   };
