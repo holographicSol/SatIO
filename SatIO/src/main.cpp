@@ -10013,7 +10013,7 @@ void UpdateUI() {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         // ------------------------------------------------
-        display.drawHLine(2, 26, 126);
+        display.drawHLine(1, 26, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10057,7 +10057,7 @@ void UpdateUI() {
       display.drawCanvas(6, 63, canvas120x8);
 
       // ------------------------------------------------
-      display.drawHLine(2, 80, 126);
+      display.drawHLine(1, 80, 127);
 
       // ------------------------------------------------
       // real x: display functions associated X
@@ -10327,10 +10327,10 @@ void UpdateUI() {
       if (enter_digits_key==1) {
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, String("MATRIX SWITCH: " + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
-        display.drawCanvas(3, 26, canvas120x8);
+        display.drawCanvas(3, ui_content_0, canvas120x8);
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, String("CURRENT PORT: " + String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()])).c_str(), STYLE_BOLD );
-        display.drawCanvas(3, 36, canvas120x8);
+        display.drawCanvas(3, ui_content_1, canvas120x8);
       }
       // ------------------------------------------------
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
@@ -10344,59 +10344,59 @@ void UpdateUI() {
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(3, 26, canvas120x8);
+        display.drawCanvas(3, ui_content_0, canvas120x8);
         // function name
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.drawCanvas(6, 36, canvas120x8);
+        display.drawCanvas(6, ui_content_1, canvas120x8);
         // function x
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "X ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 46, canvas120x8);
+        display.drawCanvas(6, ui_content_2, canvas120x8);
         // function y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Y ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 56, canvas120x8);
+        display.drawCanvas(6, ui_content_3, canvas120x8);
         // function z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Z ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 66, canvas120x8);
+        display.drawCanvas(6, ui_content_4, canvas120x8);
         // real x: display functions X
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "X ");
         strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 76, canvas120x8);
+        display.drawCanvas(6, ui_content_5, canvas120x8);
         // real y: display functions Y
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Y ");
         strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 86, canvas120x8);
+        display.drawCanvas(6, ui_content_6, canvas120x8);
         // real z: display functions Z
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "Z ");
         strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-        display.drawCanvas(6, 96, canvas120x8);
+        display.drawCanvas(6, ui_content_7, canvas120x8);
       }
       // ------------------------------------------------
-      display.drawHLine(2, 108, 126);
+      display.drawHLine(1, 108, 127);
       // ------------------------------------------------
       // draw input data
       canvas120x8.clear();
@@ -10516,20 +10516,18 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("FILE", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 42, 126);
-        // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, "MATRIX FILE:", STYLE_NORMAL);
-        display.drawCanvas(6, 20, canvas120x8);
+        display.drawCanvas(6, ui_content_0, canvas120x8);
       }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, String(sdcardData.matrix_filepath).c_str(), STYLE_NORMAL);
-      display.drawCanvas(6, 30, canvas120x8);
+      display.drawCanvas(6, ui_content_1, canvas120x8);
       // ------------------------------------------------
       menuFile.show( display );
       // ------------------------------------------------
@@ -10913,8 +10911,8 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("CD74HC4067", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 36, 126);
-        display.drawVLine(64, 16, 126);
+        display.drawHLine(1, 36, 127);
+        display.drawVLine(64, 16, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11006,7 +11004,7 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("GNGGA", systemData.color_border);
         // ------------------------------------------------
-        display.drawVLine(28, 13, 126);
+        display.drawVLine(28, 13, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11100,7 +11098,7 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("GNRMC", systemData.color_border);
         // ------------------------------------------------
-        display.drawVLine(28, 13, 126);
+        display.drawVLine(28, 13, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11194,7 +11192,7 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("GPATT", systemData.color_border);
         // ------------------------------------------------
-        display.drawVLine(28, 13, 126);
+        display.drawVLine(28, 13, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11296,7 +11294,7 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("SATIO", systemData.color_border);
         // ------------------------------------------------
-        display.drawVLine(41, 13, 126);
+        display.drawVLine(41, 13, 127);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11402,11 +11400,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("SUN", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11455,10 +11453,10 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("MOON", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make two columns (because of long string moon phase we cannot have 3 columns like the others)
-        display.drawVLine(35, 24, 126); // vertical seperator 0
+        display.drawVLine(35, 24, 127); // vertical seperator 0
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11518,11 +11516,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("MERCURY", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11606,11 +11604,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("VENUS", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11694,11 +11692,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("MARS", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11782,11 +11780,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("JUPITER", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11870,11 +11868,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("SATURN", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11958,11 +11956,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("URANUS", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -12046,11 +12044,11 @@ void UpdateUI() {
         drawMainBorder();
         drawGeneralTitle("NEPTUNE", systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(2, 24, 126); // seperate rise and set from rest of content
+        display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
         // make three columns
-        display.drawVLine(35, 24, 126); // vertical seperator 0
-        display.drawVLine(84, 24, 126); // vertical seperator 1
+        display.drawVLine(35, 24, 127); // vertical seperator 0
+        display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
