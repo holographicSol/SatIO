@@ -3688,6 +3688,20 @@ void buildSatIOSentence() {
 // }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                    SDCARD: UPDATE MATRIX FILEPATH AND FILENAME
+
+void UpdateMatrixFileNameFilePath(char * filepath) {
+  memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+  strcpy(sdcardData.matrix_filepath, filepath);
+  if (strlen(sdcardData.matrix_filepath)>8) {
+    memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+    strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
+    Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
+    Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: SAVE SYSTEM CONFIGURATION
 
 void sdcard_save_system_configuration(char * file) {
@@ -4167,11 +4181,8 @@ bool sdcard_load_system_configuration(char * file) {
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
-
       sdcardData.SBUFFER = exfile.readStringUntil('\n');
-
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
 
       // ------------------------------------------------
@@ -4183,14 +4194,7 @@ bool sdcard_load_system_configuration(char * file) {
         sdcardData.token = strtok(NULL, ",");
         PrintFileToken();
         // update filename and file path
-        memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-        strcpy(sdcardData.matrix_filepath, sdcardData.token);
-        if (strlen(sdcardData.matrix_filepath)>8) {
-          memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
-          strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
-          Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
-          Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
-        }
+        UpdateMatrixFileNameFilePath(sdcardData.token);
       }
 
       // ------------------------------------------------
@@ -4830,19 +4834,8 @@ bool sdcard_load_matrix(char * file) {
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
       }
     }
-    // update current matrix filepath
-    strcpy(sdcardData.tempmatrixfilepath, file);
-    memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-    strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
     // update filename and file path
-    if (strlen(sdcardData.matrix_filepath)>8) {
-      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
-      strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
-      Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
-      Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
-    }
-    Serial.println("[sdcard] loaded file successfully:   " + String(file));
-    Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
+    Serial.println("[sdcard] loaded file successfully: " + String(sdcardData.matrix_filepath));
     exfile.close();
     return true;
   }
@@ -4933,13 +4926,7 @@ bool sdcard_save_matrix(char * file) {
     exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     // update filename and file path
-    strcpy(sdcardData.matrix_filepath, file);
-    if (strlen(sdcardData.matrix_filepath)>8) {
-      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
-      strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
-      Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
-      Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
-    }
+    UpdateMatrixFileNameFilePath(file);
     return true;
   }
   else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));
