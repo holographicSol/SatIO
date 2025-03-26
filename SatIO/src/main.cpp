@@ -824,14 +824,14 @@ LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
 
 const int max_serial_items = 16;
 const char *menuSerialItems[max_serial_items];
-LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 14}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
 
 const int max_universe_items = 18;
 const char *menuUniverseItems[max_universe_items];
-LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
