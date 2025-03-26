@@ -10312,6 +10312,7 @@ void UpdateUI() {
     //                                ENTER DIGITS PAGE
 
     else if (menu_page==page_input_data) {
+      // ------------------------------------------------
       display.setColor(RGB_COLOR16(255,0,0));
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
@@ -10335,6 +10336,9 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_content);
+        // ------------------------------------------------
         // matrix switch number
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "M");
