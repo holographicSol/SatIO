@@ -10021,7 +10021,7 @@ void UpdateUI() {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       display.drawHLine(1, 37, 127); // seperate combo bar from content 0
-      display.drawHLine(1, 50, 127); // seperate content 0 from content 1
+      display.drawHLine(1, 49, 127); // seperate content 0 from content 1
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
       // ------------------------------------------------
 
