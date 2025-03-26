@@ -10023,8 +10023,42 @@ void UpdateUI() {
       display.drawHLine(1, 37, 127); // seperate combo bar from content 0
       display.drawHLine(1, 49, 127); // seperate content 0 from content 1
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
-      // ------------------------------------------------
+      display.drawVLine(64, 37, 49); // seperate enabled/disabled from high/low
 
+      // ------------------------------------------------
+      // ENABLED
+      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(0,0,255)); // emphasis
+        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD );
+        display.drawCanvas(1, 39, canvas60x8);
+      }
+      // DISABLED
+      else {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(100,100,100));
+        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD );
+        display.drawCanvas(1, 39, canvas60x8);
+      }
+
+      // ------------------------------------------------
+      // ACTIVE
+      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(0,0,255)); // emphasis
+        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD );
+        display.drawCanvas(66, 39, canvas60x8);
+      }
+      // INACTIVE
+      else {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(100,100,100));
+        canvas60x8.printFixed(1, 1, "INACTIVE", STYLE_BOLD );
+        display.drawCanvas(66, 39, canvas60x8);
+      }
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
