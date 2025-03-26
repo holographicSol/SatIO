@@ -10026,7 +10026,7 @@ void UpdateUI() {
 
 
       // ------------------------------------------------
-      display.drawHLine(1, 42, 127);
+      display.drawHLine(1, 44, 127);
 
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -10034,7 +10034,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, 46, canvas120x8);
+      display.drawCanvas(3, 48, canvas120x8);
 
       // ------------------------------------------------
       // function x
@@ -10043,7 +10043,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 56, canvas120x8);
+      display.drawCanvas(3, 58, canvas120x8);
 
       // ------------------------------------------------
       // function y
@@ -10052,7 +10052,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 66, canvas120x8);
+      display.drawCanvas(3, 68, canvas120x8);
 
       // ------------------------------------------------
       // function z
@@ -10061,7 +10061,7 @@ void UpdateUI() {
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 76, canvas120x8);
+      display.drawCanvas(3, 78, canvas120x8);
 
       // ------------------------------------------------
       display.drawHLine(1, 90, 127);
