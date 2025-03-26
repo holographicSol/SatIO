@@ -10847,12 +10847,10 @@ void UpdateUI() {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("DISPLAY", systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_content);
-        // ------------------------------------------------
       }
+      // this page currently has border and title drawn every frame in case the color is changed
+      drawMainBorder();
+      drawGeneralTitle("DISPLAY", systemData.color_border);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
