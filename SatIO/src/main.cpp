@@ -277,7 +277,7 @@ void beginSDCARD();
 void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
-void sdcardCheck();
+bool sdcardCheck();
 void UpdateUI();
 
 bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
@@ -893,12 +893,13 @@ const uint8_t SD_CS_PIN = 5;
 SdExFat sd;
 ExFile exfile;
 
+bool sdcard_initialized = false;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SPI SWITCHING
 
 void beginSDCARD() {
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  // sdcardCheck();
  }
 
  void endSDCARD() {
@@ -1094,21 +1095,22 @@ SerialLinkStruct SerialLink;
 //                                                                                                                   DATA: SDCARD
 
 struct SDCardStruct {
-  int max_matrix_filenames = 20;                               // max matrix file names available 
+  int max_matrix_filenames = 20; // max matrix file names available 
   char matrix_filenames[20][56] = {  
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
-    };                                                         // matrix filenames created, stored and found by system
-  char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";                  // filepath
-  char default_matrix_filepath[56] = "/MATRIX/M_0.SAVE";  // filepath
-  char matrix_filepath[56] = "";                               // current matrix filepath
-  char tempmatrixfilepath[56];                                 // used for laoding filepaths
-  char system_dirs[2][56] = {"/MATRIX/", "/SYSTEM/"};            // root dirs
+    };                                                   // matrix filenames created, stored and found by system
+  char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";            // filepath
+  char default_matrix_filepath[56] = "/MATRIX/M_0.SAVE"; // filepath
+  char matrix_filename[56] = "";                         // filename
+  char matrix_filepath[56] = "";                         // current matrix filepath
+  char tempmatrixfilepath[56];                           // used for laoding filepaths
+  char system_dirs[2][56] = {"/MATRIX/", "/SYSTEM/"};    // root dirs
   char save_ext[56] = ".SAVE";
   char matrix_fname[10] = "M";
-  unsigned long iter_token;                                    // count token iterations
+  unsigned long iter_token; // count token iterations
   char BUFFER[2048];                                           // buffer
   String SBUFFER;                                              // String buffer
   char * token = strtok(BUFFER, ",");                          // token pointer 
@@ -1122,11 +1124,11 @@ struct SDCardStruct {
   char data_7[56];                                             // value placeholder
   char data_8[56];                                             // value placeholder
   char file_data[1024];                                        // buffer
-  char delim[56] = ",";                                         // delimiter char
-  char tmp[56];                                                 // buffer
-  char tag_0[56] = "r";                                         // file line tag
-  char tag_1[56] = "e";                                         // file line tag
-  ExFile current_file;                                           // file currently handled
+  char delim[56] = ",";                                        // delimiter char
+  char tmp[56];                                                // buffer
+  char tag_0[56] = "r";                                        // file line tag
+  char tag_1[56] = "e";                                        // file line tag
+  ExFile current_file;                                         // file currently handled
   char newfilename[56];
 };
 SDCardStruct sdcardData;
@@ -4180,8 +4182,15 @@ bool sdcard_load_system_configuration(char * file) {
         PrintFileToken();
         sdcardData.token = strtok(NULL, ",");
         PrintFileToken();
+        // update filename and file path
         memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
         strcpy(sdcardData.matrix_filepath, sdcardData.token);
+        if (strlen(sdcardData.matrix_filepath)>8) {
+          memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+          strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
+          Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
+          Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
+        }
       }
 
       // ------------------------------------------------
@@ -4825,6 +4834,13 @@ bool sdcard_load_matrix(char * file) {
     strcpy(sdcardData.tempmatrixfilepath, file);
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
+    // update filename and file path
+    if (strlen(sdcardData.matrix_filepath)>8) {
+      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+      strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
+      Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
+      Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
+    }
     Serial.println("[sdcard] loaded file successfully:   " + String(file));
     Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
     exfile.close();
@@ -4834,7 +4850,9 @@ bool sdcard_load_matrix(char * file) {
   else {
     exfile.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
+    // update filename and file path
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     return false;
     }
 }
@@ -4914,7 +4932,14 @@ bool sdcard_save_matrix(char * file) {
     }
     exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
+    // update filename and file path
     strcpy(sdcardData.matrix_filepath, file);
+    if (strlen(sdcardData.matrix_filepath)>8) {
+      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+      strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
+      Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
+      Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
+    }
     return true;
   }
   else {exfile.close(); Serial.println("[sdcard] failed to save file: " + String(file));
@@ -4936,8 +4961,9 @@ void sdcard_delete_matrix(char * file) {
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       // zero the matrix
       zero_matrix();
-      // delete matrix filepath.
-      memset(sdcardData.matrix_filepath, 0, 56);
+      // update filename and file path
+      memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     }
     else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
   }
@@ -9290,7 +9316,9 @@ void menuEnter() {
       setAllMatrixSwitchesStateFalse();
       // zero the matrix and clear current matrix file path
       zero_matrix();
+      // update filename and file path
       memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     }
 
     // goto save matrix page
@@ -9355,11 +9383,12 @@ void menuEnter() {
     else if (menuFile.selection()==5) {
       menu_page=page_restore_default_matrix_indicator;
       UpdateUI();
-      endSSD1351();
-      beginSDCARD();
+      endSPIDevice(SSD1351_CS);
+      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       // ToDo: restore defaults and save
-      endSDCARD();
-      beginSSD1351();
+      sd.end();
+      endSPIDevice(SD_CS);
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       delay(2000);
       menu_page=page_file_main;
     }
@@ -10567,15 +10596,29 @@ void UpdateUI() {
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
-        canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, "MATRIX FILE:", STYLE_NORMAL);
-        display.drawCanvas(3, ui_content_0, canvas120x8);
+        // matrix file
+        // canvas120x8.clear();
+        // canvas120x8.printFixed((120/2)-((strlen(String("MATRIX FILE").c_str())/2)*6), 1, "MATRIX FILE", STYLE_BOLD );
+        // display.drawCanvas(3, ui_content_0, canvas120x8);
       }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
+      // sdcard
+      // if (sdcard_initialized==true) {display.setColor(RGB_COLOR16(0,0,255));}
+      // else {display.setColor(RGB_COLOR16(255,0,0));}
+      // canvas19x8.clear();
+      // canvas19x8.printFixed(1, 1, "SD", STYLE_BOLD);
+      // display.drawCanvas(109, ui_content_2, canvas19x8);
+      // // ------------------------------------------------
+      // display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // matrix file
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, String(sdcardData.matrix_filepath).c_str(), STYLE_NORMAL);
+      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+      strcpy(TMP_UI_DATA_0, "MATRIX: ");
+      strcat(TMP_UI_DATA_0, String(String(sdcardData.matrix_filename).c_str()).c_str());
+      canvas120x8.printFixed(1, 1,TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_1, canvas120x8);
       // ------------------------------------------------
       menuFile.show( display );
@@ -12486,8 +12529,7 @@ void setupSDCard() {
   */
   
   if (!sd.begin(SD_CONFIG)) {
-    sd.initErrorHalt(&Serial);
-    // debug("[sdcard] failed to initialize");
+    Serial.println("[sdcard] failed to initialize");
   }
   else {
     // debug("[sdcard] initialized");
@@ -12502,15 +12544,15 @@ void setupSDCard() {
 
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(sdcardData.matrix_filepath)) {
-      // debug("[sdcard] specified matrix file not found!");
+      Serial.println("[sdcard] specified matrix file not found!");
 
       // is it the the default matrix file that is missing?
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        // debug("[sdcard] default matrix file not found!");
+        Serial.println("[sdcard] default matrix file not found!");
         
         // create default matrix file
-        if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {debug("[sdcard] failed to write default marix file.");}
-        else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {debug("[sdcard] failed to load matrix file");}
+        if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+        else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
       }
     }
   }
@@ -12519,15 +12561,17 @@ void setupSDCard() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SDCARD: CHECK
 
-void sdcardCheck() {
-
-  if (!sd.begin(SD_CONFIG)) {
-    sd.initErrorHalt(&Serial);
-    // debug("[sdcard] failed to initialize");
+bool sdcardCheck() {
+  /* a quick check to see if card can begin. cardBegin should return 1 or 0 */
+  Serial.println("[sdcard] cardBegin: " + String(sd.cardBegin(SD_CONFIG)));
+  if (!sd.cardBegin(SD_CONFIG)) {
+    Serial.println("[sdcard] could not begin card");
   }
   else {
-    // debug("[sdcard] initialized");
+    Serial.println("[sdcard] sdcard began");
+    return true;
   }
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -13156,10 +13200,8 @@ void setup() {
   canvas42x8.setFixedFont(ssd1306xled_font6x8);
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
-  
   display.clear();
-
-  // uncomment to debug
+  // uncomment to test display
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
   // delay(2000);
@@ -13192,6 +13234,7 @@ void setup() {
 
 int t0 = millis();
 bool track_planets_period = false;
+bool check_sdcard = false;
 bool longer_loop = false;
 int loop_distribution = 0;
 
@@ -13316,6 +13359,26 @@ void loop() {
   // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
+  //                                                                SDCARD
+  /*
+  Check if sd card is present.
+  Currently commented because we are so extensible that we will literally see
+  this check happening (ui ending/beginning) due to SPI switching.
+  */
+  // t0 = micros();
+  // endSPIDevice(SSD1351_CS);
+  // display.end();
+  // beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  // sdcard_initialized = sdcardCheck();
+  // sd.end();
+  // endSPIDevice(SD_CS);
+  // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+  // display.begin();
+  // bench("[sdcardCheck] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // delay(50);
+  // ---------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------
   //                                                     LOAD DISTRIBUTION
   /*
   Efficiency and performance.
@@ -13348,12 +13411,14 @@ void loop() {
   }
   // ---------------------------------------------------------------------
 
+
   // ---------------------------------------------------------------------
   //                                                    ISR SECOND COUNTER
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
     track_planets_period = true;
+    check_sdcard = true;
     timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
   }
