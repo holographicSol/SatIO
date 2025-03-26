@@ -1019,7 +1019,7 @@ struct systemStruct {
   
   // personalization: color
   int index_display_color = 0;
-  int max_color_index = 7;
+  int max_color_index = 6;
   int display_color[7] = {
     RGB_COLOR16(255,0,0), // red
     RGB_COLOR16(255,255,0), // yellow
