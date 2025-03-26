@@ -10596,10 +10596,6 @@ void UpdateUI() {
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
-        // matrix file
-        // canvas120x8.clear();
-        // canvas120x8.printFixed((120/2)-((strlen(String("MATRIX FILE").c_str())/2)*6), 1, "MATRIX FILE", STYLE_BOLD );
-        // display.drawCanvas(3, ui_content_0, canvas120x8);
       }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
