@@ -699,6 +699,8 @@ static int ui_content_8 = 96;
 static int ui_content_9 = 106;
 static int ui_content_10 = 116;
 
+bool updateui_content = true;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
 
@@ -10151,25 +10153,11 @@ void UpdateUI(void * pvParamters) {
 
     if (menu_page==page_home) {
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
-
+      // performace/efficiency: draw conditionally 
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
+        previous_menu_page=menu_page;
+        display.clear();
       }
-      // ------------------------------------------------
-      // syncronized rtc indicator
-      // int iconsize = 16;
-      // if (rtc.now().second()==0) {
-        // if (formatRTCDateTimeStamp() == satData.rtcSyncDatetimeStamp) {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_blue);}
-        // else {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_red);}
-      // }
-      // ------------------------------------------------
-      // signal indicator
-      // else {
-      //   if (atoi(gnggaData.satellite_count_gngga)==0) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_red_signal);}
-      //   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_green_signal);}
-      //   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_blue_signal);}
-      // }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10181,7 +10169,12 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.printFixed(1, 1, formatRTCDateAbbreviated().c_str(), STYLE_BOLD );
       display.drawCanvas(39, 14, canvas60x8);
       // ------------------------------------------------
-      menuHome.show( display );
+      // performace/efficiency: draw conditionally
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_content);
+        menuHome.show(display);
+      }
       // ------------------------------------------------
     }
 
@@ -10189,20 +10182,21 @@ void UpdateUI(void * pvParamters) {
     //                                    SETTINGS PAGE
 
     else if (menu_page==page_main_menu) {
-      display.setColor(systemData.color_content);
       // ------------------------------------------------
+      // performace/efficiency: draw conditionally 
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
         drawGeneralTitle("SETTINGS", systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_content);
-        // ------------------------------------------------
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      menuMain.show( display );
+      // performace/efficiency: draw conditionally 
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_content);
+        menuMain.show(display);
+      }
       // ------------------------------------------------
     }
 
@@ -10211,14 +10205,11 @@ void UpdateUI(void * pvParamters) {
 
     else if (menu_page==page_matrix_logic_main) {
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      // performace/efficiency: draw conditionally 
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MATRIX SWITCH LOGIC", systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_content);
-        // ------------------------------------------------
       }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -10337,7 +10328,7 @@ void UpdateUI(void * pvParamters) {
 
       // ------------------------------------------------
       // highlight matrix switch select menu
-      if (menu_column_selection == 0) {menuMatrixSwitchSelect.show( display );}
+      if (menu_column_selection == 0) {menuMatrixSwitchSelect.show(display);}
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -10444,7 +10435,7 @@ void UpdateUI(void * pvParamters) {
 
       // ------------------------------------------------
       // highlight matrix switch function select menu
-      if (menu_column_selection == 4) {menuMatrixFunctionSelect.show( display );}
+      if (menu_column_selection == 4) {menuMatrixFunctionSelect.show(display);}
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -10715,7 +10706,7 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 56, canvas120x8);
       // ------------------------------------------------
-      menuMatrixConfigureFunction.show( display );
+      menuMatrixConfigureFunction.show(display);
       // ------------------------------------------------
     }
 
@@ -10753,7 +10744,7 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 36, canvas120x8);
-      menuMatrixSetFunctionName.show( display );
+      menuMatrixSetFunctionName.show(display);
       // ------------------------------------------------
     }
 
@@ -10791,7 +10782,7 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1,TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_1, canvas120x8);
       // ------------------------------------------------
-      menuFile.show( display );
+      menuFile.show(display);
       // ------------------------------------------------
     }
 
@@ -10814,7 +10805,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
-      menuMatrixFilepath.show( display );
+      menuMatrixFilepath.show(display);
       // ------------------------------------------------
       
     }
@@ -10839,7 +10830,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
-      menuMatrixFilepath.show( display );
+      menuMatrixFilepath.show(display);
       // ------------------------------------------------
     }
 
@@ -10863,7 +10854,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
-      menuMatrixFilepath.show( display );
+      menuMatrixFilepath.show(display);
       // ------------------------------------------------
     }
 
@@ -10987,7 +10978,7 @@ void UpdateUI(void * pvParamters) {
       menuGPSItems[7]                                                                   ="VIEW    GPATT";
       menuGPSItems[8]                                                                   ="VIEW    SATIO";
       // ------------------------------------------------
-      menuGPS.show( display );
+      menuGPS.show(display);
       // ------------------------------------------------
     }
 
@@ -11044,7 +11035,7 @@ void UpdateUI(void * pvParamters) {
       if (systemData.debug==true) {menuSerialItems[15]                  ="DEBUG   ENABLED";}
       else {menuSerialItems[15]                                         ="DEBUG   DISABLED";}
       // ------------------------------------------------
-      menuSerial.show( display );
+      menuSerial.show(display);
       // ------------------------------------------------
     }
 
@@ -11096,7 +11087,7 @@ void UpdateUI(void * pvParamters) {
       menuUniverseItems[16]                                              ="VIEW    URANUS";
       menuUniverseItems[17]                                              ="VIEW    NEPTUNE";
       // ------------------------------------------------
-      menuUniverse.show( display );
+      menuUniverse.show(display);
       // ------------------------------------------------
     }
 
@@ -11123,7 +11114,7 @@ void UpdateUI(void * pvParamters) {
       // color
       menuDisplayItems[2] = systemData.char_display_color[systemData.index_display_color];
       // ------------------------------------------------
-      menuDisplay.show( display );
+      menuDisplay.show(display);
       // ------------------------------------------------
     }
 
@@ -11154,7 +11145,7 @@ void UpdateUI(void * pvParamters) {
       // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
       // else {menuSystemItems[2]="PORT.CON DISABLED";}
       // ------------------------------------------------
-      menuSystem.show( display );
+      menuSystem.show(display);
       // ------------------------------------------------
     }
 
@@ -12536,6 +12527,7 @@ void readI2C() {
 
     if (I2CLink.MESSAGE_RECEIVED==true) {
       I2CLink.MESSAGE_RECEIVED=false;
+      updateui_content = true;
 
       // record time of any activity from the i2c control panel.
       unixtime_control_panel_request = rtc.now().unixtime();
@@ -13431,12 +13423,6 @@ void loop() {
   timeData.mainLoopTimeStart = micros();
   systemData.t_bench = true; // uncomment to observe timings
   // count_faster_loops++;
-
-  // ---------------------------------------------------------------------
-  //                                                            IC2 CHECKS
-  // t0 = micros();
-  // readI2C();
-  // bench("[readI2C] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ------------------------------------------------------------------------------------------
   //                                                                                        GPS
