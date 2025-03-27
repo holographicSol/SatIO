@@ -10450,8 +10450,6 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                        OVERVIEW MATRIX SWITCHING
 
-    /* the rgb 16 bit color values have been fixed for this page to resolve a color issue. there is still a stray pixel issue remaining */
-
     else if (menu_page==page_overview_matrix_switching) {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
@@ -10465,7 +10463,7 @@ void UpdateUI(void * pvParamters) {
       int start = 2;
       int off_col = RGB_COLOR16(64,64,64); // ensure number used can be equally divided by 8 unless 255 or 0
       for (int i=0; i<5; i++) {
-        // delay(10);
+
         // ------------------------------------------------
 
         // 0-4 switch number
