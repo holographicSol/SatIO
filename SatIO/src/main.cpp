@@ -280,6 +280,7 @@ void endSSD1351();
 bool sdcardCheck();
 // void UpdateUI();
 void readI2C();
+void UIIndicators();
 
 bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
 
@@ -654,6 +655,11 @@ static int page_save_matrix_file_indicator       = 86;
 static int page_load_matrix_file_indicator       = 87;
 static int page_delete_matrix_file_indicator     = 88;
 static int page_restore_default_matrix_indicator = 89;
+// bool bool_save_system_config_indicator     = false; // flag indicating indicator has been displayed
+// bool bool_save_matrix_file_indicator       = false;
+// bool bool_load_matrix_file_indicator       = false;
+// bool bool_delete_matrix_file_indicator     = false;
+// bool bool_restore_default_matrix_indicator = false;
 /* GPS */
 static int page_gps_main                         = 100;
 static int page_gps_view_gngga                   = 101;
@@ -9403,6 +9409,7 @@ void menuEnter() {
 
       // GO TO
       menu_page=page_save_system_config_indicator;
+      UIIndicators();
 
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
@@ -9428,6 +9435,7 @@ void menuEnter() {
 
       // GO TO
       menu_page=page_restore_default_matrix_indicator;
+      UIIndicators();
 
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
@@ -9462,6 +9470,7 @@ void menuEnter() {
 
     // GO TO
     menu_page=page_save_matrix_file_indicator;
+    UIIndicators();
 
     // END SPI DEVICE
     endSPIDevice(SSD1351_CS);
@@ -9496,6 +9505,7 @@ void menuEnter() {
 
       // GO TO
       menu_page=page_load_matrix_file_indicator;
+      UIIndicators();
 
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
@@ -9530,6 +9540,7 @@ void menuEnter() {
       
       // GO TO
       menu_page=page_delete_matrix_file_indicator;
+      UIIndicators();
 
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
@@ -10005,6 +10016,102 @@ void setMenuMatrixFilePathItems() {
     menuMatrixFilepathItems[19] = sdcardData.matrix_filenames[19];
 }
 
+void UIIndicators() {
+
+  /*
+  usefull for if we are going to indicate something before SPI switching where we will loose the display temporarily until we are finished with another SPI device.
+  these pages should be written procedurally unlike UpdateUI task.
+  should not be ran while UpdateUI is writing to display.
+  */
+
+  // ------------------------------------------------
+  //                            SAVE MATRIX INDICATOR
+
+  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+  if (menu_page==page_save_matrix_file_indicator) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      previous_menu_page=menu_page; display.clear();
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+    // ------------------------------------------------
+  }
+
+  // ------------------------------------------------
+  //                            LOAD MATRIX INDICATOR
+
+  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+  else if (menu_page==page_load_matrix_file_indicator) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      previous_menu_page=menu_page; display.clear();
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+    // ------------------------------------------------
+  }
+
+  // ------------------------------------------------
+  //                          DELETE MATRIX INDICATOR
+
+  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+  else if (menu_page==page_delete_matrix_file_indicator) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      previous_menu_page=menu_page; display.clear();
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+    // ------------------------------------------------
+  }
+
+  // ------------------------------------------------
+  //                   SAVING SYSTEM CONFIG INDICATOR
+
+  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+  else if (menu_page==page_save_system_config_indicator) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      previous_menu_page=menu_page; display.clear();
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+    // ------------------------------------------------
+  }
+
+  // ------------------------------------------------
+  //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
+
+  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+  else if (menu_page==page_restore_default_matrix_indicator) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      previous_menu_page=menu_page; display.clear();
+      canvas120x120.clear();
+      canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+      display.drawCanvas(5, 5, canvas120x120);
+      drawMainBorderGreen();
+    }
+    // ------------------------------------------------
+  }
+}
+
 // ------------------------------------------------
 //                                               UI
 
@@ -10015,7 +10122,8 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  readI2C(); // this not should not happen while ui is being updated so currently the call is here.
+  // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display. 
+  readI2C();
 
   // ------------------------------------------------
   //                                  OLED PROTECTION
@@ -10761,92 +10869,92 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
     }
 
-    // ------------------------------------------------
-    //                            SAVE MATRIX INDICATOR
+    // // ------------------------------------------------
+    // //                            SAVE MATRIX INDICATOR
 
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==page_save_matrix_file_indicator) {
-      display.setColor(RGB_COLOR16(0,255,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x120.clear();
-        canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-        display.drawCanvas(5, 5, canvas120x120);
-        drawMainBorderGreen();
-      }
-      // ------------------------------------------------
-    }
+    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    // else if (menu_page==page_save_matrix_file_indicator) {
+    //   display.setColor(RGB_COLOR16(0,255,0));
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     canvas120x120.clear();
+    //     canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+    //     display.drawCanvas(5, 5, canvas120x120);
+    //     drawMainBorderGreen();
+    //   }
+    //   // ------------------------------------------------
+    // }
 
-    // ------------------------------------------------
-    //                            LOAD MATRIX INDICATOR
+    // // ------------------------------------------------
+    // //                            LOAD MATRIX INDICATOR
 
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==page_load_matrix_file_indicator) {
-      display.setColor(RGB_COLOR16(0,255,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x120.clear();
-        canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
-        display.drawCanvas(5, 5, canvas120x120);
-        drawMainBorderGreen();
-      }
-      // ------------------------------------------------
-    }
+    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    // else if (menu_page==page_load_matrix_file_indicator) {
+    //   display.setColor(RGB_COLOR16(0,255,0));
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     canvas120x120.clear();
+    //     canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
+    //     display.drawCanvas(5, 5, canvas120x120);
+    //     drawMainBorderGreen();
+    //   }
+    //   // ------------------------------------------------
+    // }
 
-    // ------------------------------------------------
-    //                          DELETE MATRIX INDICATOR
+    // // ------------------------------------------------
+    // //                          DELETE MATRIX INDICATOR
 
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==page_delete_matrix_file_indicator) {
-      display.setColor(RGB_COLOR16(0,255,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x120.clear();
-        canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
-        display.drawCanvas(5, 5, canvas120x120);
-        drawMainBorderGreen();
-      }
-      // ------------------------------------------------
-    }
+    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    // else if (menu_page==page_delete_matrix_file_indicator) {
+    //   display.setColor(RGB_COLOR16(0,255,0));
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     canvas120x120.clear();
+    //     canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
+    //     display.drawCanvas(5, 5, canvas120x120);
+    //     drawMainBorderGreen();
+    //   }
+    //   // ------------------------------------------------
+    // }
 
-    // ------------------------------------------------
-    //                   SAVING SYSTEM CONFIG INDICATOR
+    // // ------------------------------------------------
+    // //                   SAVING SYSTEM CONFIG INDICATOR
 
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==page_save_system_config_indicator) {
-      display.setColor(RGB_COLOR16(0,255,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x120.clear();
-        canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-        canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-        display.drawCanvas(5, 5, canvas120x120);
-        drawMainBorderGreen();
-      }
-      // ------------------------------------------------
-    }
+    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    // else if (menu_page==page_save_system_config_indicator) {
+    //   display.setColor(RGB_COLOR16(0,255,0));
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     canvas120x120.clear();
+    //     canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+    //     canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+    //     display.drawCanvas(5, 5, canvas120x120);
+    //     drawMainBorderGreen();
+    //   }
+    //   // ------------------------------------------------
+    // }
 
-    // ------------------------------------------------
-    //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
+    // // ------------------------------------------------
+    // //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
 
-    // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    else if (menu_page==page_restore_default_matrix_indicator) {
-      display.setColor(RGB_COLOR16(0,255,0));
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x120.clear();
-        canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
-        canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-        display.drawCanvas(5, 5, canvas120x120);
-        drawMainBorderGreen();
-      }
-      // ------------------------------------------------
-    }
+    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
+    // else if (menu_page==page_restore_default_matrix_indicator) {
+    //   display.setColor(RGB_COLOR16(0,255,0));
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     canvas120x120.clear();
+    //     canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
+    //     canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+    //     display.drawCanvas(5, 5, canvas120x120);
+    //     drawMainBorderGreen();
+    //   }
+    //   // ------------------------------------------------
+    // }
 
     // ------------------------------------------------
     //                                         GPS MENU
