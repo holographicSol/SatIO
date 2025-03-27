@@ -9330,7 +9330,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
 
-      // GOT TO
+      // GO TO
       menu_page=page_file_save_matrix;
     }
 
@@ -9352,7 +9352,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
 
-      // GOT TO
+      // GO TO
       menu_page=page_file_load_matrix;
     }
 
@@ -9374,7 +9374,7 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
 
-      // GOT TO
+      // GO TO
       menu_page=page_file_delete_matrix;
     }
 
@@ -9397,14 +9397,14 @@ void menuEnter() {
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
 
-      // GOT TO
+      // GO TO
       menu_page=page_file_main;
     }
 
     // restore default system settings
     else if (menuFile.selection()==5) {
 
-      // GOT TO
+      // GO TO
       menu_page=page_restore_default_matrix_indicator;
 
       // END SPI DEVICE
@@ -9434,23 +9434,23 @@ void menuEnter() {
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
 
-    // set notification page
+    // GO TO
     menu_page=page_save_matrix_file_indicator;
 
-    // switch spi devices
+    // END SPI DEVICE
     endSPIDevice(SSD1351_CS);
-    // vTaskSuspend(Task1); // suspend
 
+    // SDCARD
     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
     sdcard_save_matrix(sdcardData.newfilename);
     sd.end();
     endSPIDevice(SD_CS);
 
+    // BEGIN SPI DEVICE
     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
     display.begin();
-    // vTaskResume(Task1); // resume
 
-    // return to previous page
+    // GO TO
     menu_page=page_file_main;
   }
 
@@ -9466,23 +9466,23 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
 
-      // set notification page
+      // GO TO
       menu_page=page_load_matrix_file_indicator;
 
-      // switch spi devices
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-      // vTaskSuspend(Task1); // suspend
 
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_load_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
 
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      // vTaskResume(Task1); // resume
     }
-    // return to previous page
+    // GO TO
     menu_page=page_file_main;
   }
 
@@ -9498,22 +9498,23 @@ void menuEnter() {
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
       
-      // set notification page
+      // GO TO
       menu_page=page_delete_matrix_file_indicator;
 
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-      // vTaskSuspend(Task1); // suspend
 
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_delete_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
 
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      // vTaskResume(Task1); // resume
     }
-    // return to previous page
+    // GO TO
     menu_page=page_file_main;
   }
 
