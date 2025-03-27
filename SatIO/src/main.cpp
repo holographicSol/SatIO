@@ -10461,7 +10461,7 @@ void UpdateUI(void * pvParamters) {
 
       int size = 23;
       int start = 2;
-      int off_col = RGB_COLOR16(68,68,68);
+      int off_col = RGB_COLOR16(64,64,64);
       for (int i=0; i<5; i++) {
         // delay(10);
         // ------------------------------------------------
