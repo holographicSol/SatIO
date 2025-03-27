@@ -10450,7 +10450,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                        OVERVIEW MATRIX SWITCHING
 
-    /* this page needs some alteration after migrating UpdateUI to. there are artifacts to resolve */
+    /* this page needs some alteration after migrating UpdateUI to task. there are artifacts to resolve */
 
     else if (menu_page==page_overview_matrix_switching) {
       // ------------------------------------------------
