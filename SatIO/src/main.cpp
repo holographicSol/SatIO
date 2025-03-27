@@ -10450,6 +10450,8 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                        OVERVIEW MATRIX SWITCHING
 
+    /* this page needs some alteration after migrating UpdateUI to. there are artifacts to resolve */
+
     else if (menu_page==page_overview_matrix_switching) {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
@@ -10460,9 +10462,9 @@ void UpdateUI(void * pvParamters) {
       }
       int size = 23;
       int start = 2;
-
+      engine.refresh();
       for (int i=0; i<5; i++) {
-        delay(10);
+        // delay(10);
         // ------------------------------------------------
 
         // 0-4 switch number
@@ -12325,7 +12327,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(0, 0, canvas128x128);
     ui_cleared=true;
   }
-  delay(10);
+  delay(1);
   }
 }
 
