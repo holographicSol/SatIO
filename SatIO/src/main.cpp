@@ -10451,82 +10451,100 @@ void UpdateUI(void * pvParamters) {
     //                        OVERVIEW MATRIX SWITCHING
 
     else if (menu_page==page_overview_matrix_switching) {
-      display.setColor(systemData.color_content);
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        canvas120x8.clear();
+        previous_menu_page=menu_page;
+        display.clear();
         drawGeneralTitle("MATRIX OVERVIEW", systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
-        // ------------------------------------------------
       }
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
       int size = 23;
       int start = 2;
+
       for (int i=0; i<5; i++) {
+        delay(10);
         // ------------------------------------------------
+
         // 0-4 switch number
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 28, canvas19x8);
+
         // 0-4 port number
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 39, canvas19x8);
+        
         // 0-4 border
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         display.drawRect(start, 27, start+size, 27+size);
 
         // ------------------------------------------------
+
         // 5-9 switch number
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 53, canvas19x8);
+
         // 5-9 port number
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 64, canvas19x8);
+
         // 5-9 border
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         display.drawRect(start, 52, start+size, 52+size);
 
         // ------------------------------------------------
+
         // 10-14 switch number
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 78, canvas19x8);
+
         // 10-14 port number
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 89, canvas19x8);
+        
         // 10-14 border
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         display.drawRect(start, 77, start+size, 77+size);
 
         // ------------------------------------------------
+
         // 15-19 switch number
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 103, canvas19x8);
+
         // 15-19 port number
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
+        display.setColor(RGB_COLOR16(50,50,50));
+        if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_NORMAL );
         display.drawCanvas(start+1, 114, canvas19x8);
+
         // 15-19 border
+        canvas19x8.clear();
         display.setColor(RGB_COLOR16(50,50,50));
         if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         display.drawRect(start, 102, start+size, 102+size);
@@ -10857,93 +10875,6 @@ void UpdateUI(void * pvParamters) {
       menuMatrixFilepath.show(display);
       // ------------------------------------------------
     }
-
-    // // ------------------------------------------------
-    // //                            SAVE MATRIX INDICATOR
-
-    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    // else if (menu_page==page_save_matrix_file_indicator) {
-    //   display.setColor(RGB_COLOR16(0,255,0));
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     canvas120x120.clear();
-    //     canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-    //     display.drawCanvas(5, 5, canvas120x120);
-    //     drawMainBorderGreen();
-    //   }
-    //   // ------------------------------------------------
-    // }
-
-    // // ------------------------------------------------
-    // //                            LOAD MATRIX INDICATOR
-
-    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    // else if (menu_page==page_load_matrix_file_indicator) {
-    //   display.setColor(RGB_COLOR16(0,255,0));
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     canvas120x120.clear();
-    //     canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
-    //     display.drawCanvas(5, 5, canvas120x120);
-    //     drawMainBorderGreen();
-    //   }
-    //   // ------------------------------------------------
-    // }
-
-    // // ------------------------------------------------
-    // //                          DELETE MATRIX INDICATOR
-
-    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    // else if (menu_page==page_delete_matrix_file_indicator) {
-    //   display.setColor(RGB_COLOR16(0,255,0));
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     canvas120x120.clear();
-    //     canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
-    //     display.drawCanvas(5, 5, canvas120x120);
-    //     drawMainBorderGreen();
-    //   }
-    //   // ------------------------------------------------
-    // }
-
-    // // ------------------------------------------------
-    // //                   SAVING SYSTEM CONFIG INDICATOR
-
-    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    // else if (menu_page==page_save_system_config_indicator) {
-    //   display.setColor(RGB_COLOR16(0,255,0));
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     canvas120x120.clear();
-    //     canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-    //     canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-    //     display.drawCanvas(5, 5, canvas120x120);
-    //     drawMainBorderGreen();
-    //   }
-    //   // ------------------------------------------------
-    // }
-
-    // // ------------------------------------------------
-    // //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
-
-    // // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
-    // else if (menu_page==page_restore_default_matrix_indicator) {
-    //   display.setColor(RGB_COLOR16(0,255,0));
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     canvas120x120.clear();
-    //     canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
-    //     canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
-    //     display.drawCanvas(5, 5, canvas120x120);
-    //     drawMainBorderGreen();
-    //   }
-    //   // ------------------------------------------------
-    // }
 
     // ------------------------------------------------
     //                                         GPS MENU
@@ -12394,7 +12325,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(0, 0, canvas128x128);
     ui_cleared=true;
   }
-  delay(1);
+  delay(10);
   }
 }
 
