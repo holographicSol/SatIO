@@ -10462,7 +10462,6 @@ void UpdateUI(void * pvParamters) {
       }
       int size = 23;
       int start = 2;
-      engine.refresh();
       for (int i=0; i<5; i++) {
         // delay(10);
         // ------------------------------------------------
