@@ -278,7 +278,8 @@ void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
 bool sdcardCheck();
-void UpdateUI();
+// void UpdateUI();
+void readI2C();
 
 bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
 
@@ -861,6 +862,7 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 
 /* ESP32 has 2 cores. initiate task handles */
 TaskHandle_t GPSTask;
+TaskHandle_t Task1;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -4835,8 +4837,10 @@ bool sdcard_load_matrix(char * file) {
       }
     }
     // update filename and file path
-    Serial.println("[sdcard] loaded file successfully: " + String(sdcardData.matrix_filepath));
+    Serial.println("[sdcard] loaded file successfully: " + String(file));
     exfile.close();
+    // update filename and file path
+    UpdateMatrixFileNameFilePath(file);
     return true;
   }
   // update matrix filepath (clear)
@@ -9311,72 +9315,111 @@ void menuEnter() {
     // goto save matrix page
     else if (menuFile.selection()==1) {
 
-      // create list of matrix filespaths and go to save page
+      /* create list of matrix filespaths and go to save page */
+
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
+
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
+
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+
+      // GOT TO
       menu_page=page_file_save_matrix;
     }
 
     // goto load matrix page
     else if (menuFile.selection()==2) {
 
-      // create list of matrix filespaths and go to load page
+      /* create list of matrix filespaths and go to load page */
+
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
+
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
+
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+
+      // GOT TO
       menu_page=page_file_load_matrix;
     }
 
     // goto delete matrix page
     else if (menuFile.selection()==3) {
 
-      // create list of matrix filespaths and go to delete page
+      /* create list of matrix filespaths and go to delete page */
+
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
+
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
+
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+
+      // GOT TO
       menu_page=page_file_delete_matrix;
     }
 
     // save system settings
     else if (menuFile.selection()==4) {
+
+      // GO TO
       menu_page=page_save_system_config_indicator;
-      UpdateUI();
+
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
+
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      // setupSDCard();
       sdcard_save_system_configuration(sdcardData.sysconf);
       sd.end();
       endSPIDevice(SD_CS);
+
+      // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-      delay(2000);
+
+      // GOT TO
       menu_page=page_file_main;
     }
 
     // restore default system settings
     else if (menuFile.selection()==5) {
+
+      // GOT TO
       menu_page=page_restore_default_matrix_indicator;
-      UpdateUI();
+
+      // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
+
+      // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      // ToDo: restore defaults and save
+      // ToDo:
       sd.end();
       endSPIDevice(SD_CS);
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      delay(2000);
+
+      // BEGIN SPI DEVICE
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+
+      // GO TO
       menu_page=page_file_main;
     }
   }
@@ -9390,24 +9433,22 @@ void menuEnter() {
     itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
-    // debug("[saving] " + String(sdcardData.newfilename));
 
     // set notification page
     menu_page=page_save_matrix_file_indicator;
-    UpdateUI();
 
     // switch spi devices
     endSPIDevice(SSD1351_CS);
+    // vTaskSuspend(Task1); // suspend
+
     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-
-    // save
     sdcard_save_matrix(sdcardData.newfilename);
-
-    // switch spi devices
     sd.end();
     endSPIDevice(SD_CS);
+
     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
     display.begin();
+    // vTaskResume(Task1); // resume
 
     // return to previous page
     menu_page=page_file_main;
@@ -9424,27 +9465,23 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      // debug("[loading] " + String(sdcardData.newfilename));
 
       // set notification page
       menu_page=page_load_matrix_file_indicator;
-      UpdateUI();
 
       // switch spi devices
       endSPIDevice(SSD1351_CS);
+      // vTaskSuspend(Task1); // suspend
+
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-
-      // load
       sdcard_load_matrix(sdcardData.newfilename);
-
-      // switch spi devices
       sd.end();
       endSPIDevice(SD_CS);
+
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+      // vTaskResume(Task1); // resume
     }
-    // else {debug("[loading] aborting! cannot load empty slot.");}
-
     // return to previous page
     menu_page=page_file_main;
   }
@@ -9460,27 +9497,22 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      // debug("[deleting] " + String(sdcardData.newfilename));
       
       // set notification page
       menu_page=page_delete_matrix_file_indicator;
-      UpdateUI();
 
-      // switch spi devices
       endSPIDevice(SSD1351_CS);
+      // vTaskSuspend(Task1); // suspend
+
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-
-      // delete
       sdcard_delete_matrix(sdcardData.newfilename);
-
-      // switch spi devices
       sd.end();
       endSPIDevice(SD_CS);
+
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+      // vTaskResume(Task1); // resume
     }
-    // else {debug("[deleting] aborting! cannot delete empty slot.");}
-
     // return to previous page
     menu_page=page_file_main;
   }
@@ -9935,7 +9967,12 @@ void setMenuMatrixFilePathItems() {
 
 bool display_sync;
 
-void UpdateUI() {
+// void UpdateUI() {
+void UpdateUI(void * pvParamters) {
+
+  while (1) {
+
+  readI2C(); // this not should not happen while ui is being updated so currently the call is here.
 
   // ------------------------------------------------
   //                                  OLED PROTECTION
@@ -9972,18 +10009,18 @@ void UpdateUI() {
       }
       // ------------------------------------------------
       // syncronized rtc indicator
-      int iconsize = 16;
-      if (rtc.now().second()==0) {
-        if (formatRTCDateTimeStamp() == satData.rtcSyncDatetimeStamp) {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_blue);}
-        else {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_red);}
-      }
+      // int iconsize = 16;
+      // if (rtc.now().second()==0) {
+        // if (formatRTCDateTimeStamp() == satData.rtcSyncDatetimeStamp) {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_blue);}
+        // else {display.drawBitmap16(104, 4, iconsize, iconsize, rtcsync_red);}
+      // }
       // ------------------------------------------------
       // signal indicator
-      else {
-        if (atoi(gnggaData.satellite_count_gngga)==0) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_red_signal);}
-        else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_green_signal);}
-        else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_blue_signal);}
-      }
+      // else {
+      //   if (atoi(gnggaData.satellite_count_gngga)==0) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_red_signal);}
+      //   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_green_signal);}
+      //   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {display.drawBitmap16(104, 4, iconsize, iconsize, sat16x16_blue_signal);}
+      // }
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10006,7 +10043,8 @@ void UpdateUI() {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
+        previous_menu_page=menu_page;
+        display.clear();
         drawMainBorder();
         drawGeneralTitle("SETTINGS", systemData.color_border);
         // ------------------------------------------------
@@ -12216,6 +12254,8 @@ void UpdateUI() {
     display.drawCanvas(0, 0, canvas128x128);
     ui_cleared=true;
   }
+  delay(1);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -13202,11 +13242,21 @@ void setup() {
   xTaskCreatePinnedToCore(
       readGPS, /* Function to implement the task */
       "GPSTask", /* Name of the task */
-      5120,    /* Stack size in words */
+      10240,    /* Stack size in words */
       NULL,    /* Task input parameter */
       2,       /* Priority of the task */
       &GPSTask,  /* Task handle. */
       0);      /* Core where the task should run */
+  
+  // Create task to increase performance
+  xTaskCreatePinnedToCore(
+    UpdateUI, /* Function to implement the task */
+    "Task1", /* Name of the task */
+    102400,    /* Stack size in words */
+    NULL,    /* Task input parameter */
+    2,       /* Priority of the task */
+    &Task1,  /* Task handle. */
+    0);      /* Core where the task should run */
   
   // wait a moment before entering main loop
   delay(3000);
@@ -13229,7 +13279,7 @@ void loop() {
   // ---------------------------------------------------------------------
   //                                                            IC2 CHECKS
   // t0 = micros();
-  readI2C();
+  // readI2C();
   // bench("[readI2C] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ------------------------------------------------------------------------------------------
@@ -13373,16 +13423,16 @@ void loop() {
   if (longer_loop==false) {
 
     // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
-    if (loop_distribution==0) {
-      loop_distribution=1;
-      t0 = micros();
-      UpdateUI();
-      bench("[UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    }
+    // if (loop_distribution==0) {
+    //   loop_distribution=1;
+    //   t0 = micros();
+    //   // UpdateUI();
+    //   bench("[// UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // }
 
     // track planets
-    else if (loop_distribution==1) {
-      loop_distribution=0;
+    // else if (loop_distribution==1) {
+    //   loop_distribution=0;
       if (track_planets_period == true) {
         track_planets_period = false;
         t0 = micros();
@@ -13392,7 +13442,7 @@ void loop() {
         trackPlanets();
         bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
-    }
+    // }
   }
   // ---------------------------------------------------------------------
 
