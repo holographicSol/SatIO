@@ -10458,45 +10458,6 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("MATRIX OVERVIEW", systemData.color_border);
         // ------------------------------------------------
       }
-      // // 0 switch number
-      // canvas19x8.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
-      // if (matrixData.matrix_switch_state[0][0]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // canvas19x8.printFixed(1, 1, "S0", STYLE_NORMAL );
-      // display.drawCanvas(4, 29, canvas19x8);
-
-      // // 0 port number
-      // canvas19x8.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
-      // if (matrixData.matrix_switch_state[0][0]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][0]).c_str(), STYLE_NORMAL );
-      // display.drawCanvas(4, 39, canvas19x8);
-      
-      // // 0 border
-      // // display.setColor(RGB_COLOR16(50,50,50));
-      // // if (matrixData.matrix_switch_enabled[0][0]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // // display.drawRect(2, 27, 2+size, 27+size);
-
-      // // ------------------------------------------------
-
-      // // 19 switch number
-      // canvas19x8.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
-      // if (matrixData.matrix_switch_state[0][19]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // canvas19x8.printFixed(1, 1, "S19", STYLE_NORMAL );
-      // display.drawCanvas(4, 104, canvas19x8);
-
-      // // 0 port number
-      // canvas19x8.clear();
-      // display.setColor(RGB_COLOR16(255,0,0));
-      // if (matrixData.matrix_switch_state[0][19]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][19]).c_str(), STYLE_NORMAL );
-      // display.drawCanvas(4, 114, canvas19x8);
-      
-      // // 0 border
-      // // display.setColor(RGB_COLOR16(50,50,50));
-      // // if (matrixData.matrix_switch_enabled[0][19]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-      // // display.drawRect(2, 102, 2+size, 102+size);
 
       int size = 23;
       int start = 2;
