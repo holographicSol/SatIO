@@ -10462,7 +10462,7 @@ void UpdateUI(void * pvParamters) {
 
       int size = 23;
       int start = 2;
-      int off_col = RGB_COLOR16(64,64,64); // ensure rgb16 values can be equally divided by 8 unless 255 or 0
+      int off_col = RGB_COLOR16(64,64,64);
       for (int i=0; i<5; i++) {
 
         // ------------------------------------------------
