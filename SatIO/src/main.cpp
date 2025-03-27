@@ -699,7 +699,7 @@ static int ui_content_8 = 96;
 static int ui_content_9 = 106;
 static int ui_content_10 = 116;
 
-bool updateui_content = true;
+bool updateui_content = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
