@@ -13418,7 +13418,7 @@ int t0 = millis();
 bool track_planets_period = false;
 bool check_sdcard = false;
 bool longer_loop = false;
-int loop_distribution = 0;
+// int loop_distribution = 0;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -13430,7 +13430,7 @@ void loop() {
   bench("-----");
   timeData.mainLoopTimeStart = micros();
   systemData.t_bench = true; // uncomment to observe timings
-  count_faster_loops++;
+  // count_faster_loops++;
 
   // ---------------------------------------------------------------------
   //                                                            IC2 CHECKS
@@ -13469,8 +13469,8 @@ void loop() {
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
 
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
-    bench("[count_faster_loops] " + String(count_faster_loops));
-    count_faster_loops=0;
+    // bench("[count_faster_loops] " + String(count_faster_loops));
+    // count_faster_loops=0;
     // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
