@@ -722,15 +722,15 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 const int max_main_menu_items = 9;
 const char *menuMainItems[max_main_menu_items] =
 {
-    "    MATRIX        ", // allows matrix configuration
-    "    VIEW MATRIX   ", // overview matrix switching
-    "    FILE          ", // load/save/delete system and matrix configurations
-    "    GPS           ", // enable/disable parsing of sentences from the gps module
-    "    SERIAL        ", // enable/disable output of various comma delimited sentences
-    "    SYSTEM        ",
-    "    UNIVERSE      ", // enable/disable solar tracking, planet tracking and or other celestial calculations
-    "    DISPLAY       ",
-    "    CD74HC4067    ",
+    "    MATRIX       ", // allows matrix configuration
+    "    VIEW MATRIX  ", // overview matrix switching
+    "    FILE         ", // load/save/delete system and matrix configurations
+    "    GPS          ", // enable/disable parsing of sentences from the gps module
+    "    SERIAL       ", // enable/disable output of various comma delimited sentences
+    "    SYSTEM       ",
+    "    UNIVERSE     ", // enable/disable solar tracking, planet tracking and or other celestial calculations
+    "    DISPLAY      ",
+    "    CD74HC4067   ",
 };
 //  "                  "
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 38}, {125, 125}} );
@@ -4854,8 +4854,8 @@ bool sdcard_load_matrix(char * file) {
     exfile.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
     // update filename and file path
-    memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-    memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+    // memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    // memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     return false;
     }
 }
@@ -4899,13 +4899,11 @@ bool sdcard_save_matrix(char * file) {
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-
-        // // inverted function logic
+        // inverted function logic
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         itoa(matrixData.matrix_switch_inverted_logic[Mi][Fi], sdcardData.tmp, 10);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
-        
-        // // write line
+        // write line
         Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
         exfile.println(sdcardData.file_data);
       }
