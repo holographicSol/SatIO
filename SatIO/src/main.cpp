@@ -13470,7 +13470,7 @@ void loop() {
 
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
     bench("[count_faster_loops] " + String(count_faster_loops));
-    count_faster_loops=0
+    count_faster_loops=0;
     // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
