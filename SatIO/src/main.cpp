@@ -9141,12 +9141,16 @@ void menuBack() {
 
 void menuEnter() {
 
+  // ----------------------------------------------------------------
+
   // home page
   if (menu_page==page_home) {
 
     // go to main menu
     if (menuHome.selection()==0) {menu_page=page_main_menu;}
   }
+
+  // ----------------------------------------------------------------
 
   // main menu
   else if (menu_page==page_main_menu) {
@@ -9198,6 +9202,8 @@ void menuEnter() {
 
   }
 
+  // ----------------------------------------------------------------
+
   // matrix switch configuration
   else if (menu_page==page_matrix_logic_main) {
 
@@ -9224,6 +9230,8 @@ void menuEnter() {
       menu_page=page_matrix_logic_select_setup;
     }
   }
+
+  // ----------------------------------------------------------------
 
   // set digits
   else if (menu_page==page_input_data) {
@@ -9290,12 +9298,16 @@ void menuEnter() {
     }
   }
 
+  // ----------------------------------------------------------------
+
   // matrix switch set function name
   else if (menu_page==page_matrix_logic_setup_function) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
     strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
     menu_page=page_matrix_logic_select_setup;
   }
+
+  // ----------------------------------------------------------------
 
   // file menu
   else if (menu_page==page_file_main) {
@@ -9311,6 +9323,8 @@ void menuEnter() {
       memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
       memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     }
+
+    // ----------------------------------------------------------------
 
     // goto save matrix page
     else if (menuFile.selection()==1) {
@@ -9334,6 +9348,8 @@ void menuEnter() {
       menu_page=page_file_save_matrix;
     }
 
+    // ----------------------------------------------------------------
+
     // goto load matrix page
     else if (menuFile.selection()==2) {
 
@@ -9356,6 +9372,8 @@ void menuEnter() {
       menu_page=page_file_load_matrix;
     }
 
+    // ----------------------------------------------------------------
+
     // goto delete matrix page
     else if (menuFile.selection()==3) {
 
@@ -9377,6 +9395,8 @@ void menuEnter() {
       // GO TO
       menu_page=page_file_delete_matrix;
     }
+
+    // ----------------------------------------------------------------
 
     // save system settings
     else if (menuFile.selection()==4) {
@@ -9401,6 +9421,8 @@ void menuEnter() {
       menu_page=page_file_main;
     }
 
+    // ----------------------------------------------------------------
+
     // restore default system settings
     else if (menuFile.selection()==5) {
 
@@ -9422,7 +9444,11 @@ void menuEnter() {
       // GO TO
       menu_page=page_file_main;
     }
+
+    // ----------------------------------------------------------------
   }
+
+  // ----------------------------------------------------------------
 
   // save matrix menu
   else if (menu_page==page_file_save_matrix) {
@@ -9453,6 +9479,8 @@ void menuEnter() {
     // GO TO
     menu_page=page_file_main;
   }
+
+  // ----------------------------------------------------------------
 
   // load matrix menu
   else if (menu_page==page_file_load_matrix) {
@@ -9486,6 +9514,8 @@ void menuEnter() {
     menu_page=page_file_main;
   }
 
+  // ----------------------------------------------------------------
+
   // delete matrix menu
   else if (menu_page==page_file_delete_matrix) {
     // handle empty slots
@@ -9518,6 +9548,8 @@ void menuEnter() {
     menu_page=page_file_main;
   }
 
+  // ----------------------------------------------------------------
+
   // gps page
   else if (menu_page==page_gps_main) {
     if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
@@ -9540,6 +9572,8 @@ void menuEnter() {
     else if (menuGPS.selection()==8) {menu_page=page_gps_view_satio;}
   }
 
+  // ----------------------------------------------------------------
+
   // serial page
   else if (menu_page==page_serial_main) {
     if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
@@ -9559,6 +9593,8 @@ void menuEnter() {
     else if (menuSerial.selection()==14) {systemData.output_neptune_enabled^=true;}
     else if (menuSerial.selection()==15) {systemData.debug^=true;}
   }
+
+  // ----------------------------------------------------------------
 
   // universe page
   else if (menu_page==page_universe_main) {
@@ -9582,6 +9618,8 @@ void menuEnter() {
     else if (menuUniverse.selection()==17) {menu_page=page_universe_view_neptune;}
   }
 
+  // ----------------------------------------------------------------
+
   // dispaly page
   else if (menu_page==page_display_main) {
 
@@ -9603,6 +9641,8 @@ void menuEnter() {
     }
   }
 
+  // ----------------------------------------------------------------
+
   // system page
   else if (menu_page==page_system_main) {
 
@@ -9613,6 +9653,8 @@ void menuEnter() {
     // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
     // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
   }
+
+  // ----------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
