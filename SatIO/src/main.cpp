@@ -10450,6 +10450,8 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                        OVERVIEW MATRIX SWITCHING
 
+    /* the rgb 16 bit color values have been fixed for this page to resolve a color issue. there is still a stray pixel issue remaining */
+
     else if (menu_page==page_overview_matrix_switching) {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
@@ -10471,7 +10473,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 28, canvas19x8);
+        display.drawCanvas(start+1, 29, canvas19x8);
 
         // 0-4 port number
         canvas19x8.clear();
@@ -10492,7 +10494,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 53, canvas19x8);
+        display.drawCanvas(start+1, 54, canvas19x8);
 
         // 5-9 port number
         canvas19x8.clear();
@@ -10514,7 +10516,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 78, canvas19x8);
+        display.drawCanvas(start+1, 79, canvas19x8);
 
         // 10-14 port number
         canvas19x8.clear();
@@ -10535,7 +10537,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 103, canvas19x8);
+        display.drawCanvas(start+1, 104, canvas19x8);
 
         // 15-19 port number
         canvas19x8.clear();
