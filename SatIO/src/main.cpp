@@ -13424,7 +13424,7 @@ determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
 every second that may be utilized for other things. like a seperate sensor matrix for example.
 */
-int count_faster_loops = 0;
+long count_faster_loops = 0;
 
 void loop() {
   bench("-----");
