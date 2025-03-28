@@ -1095,13 +1095,13 @@ struct systemStruct {
     "TITLE     WHITE",
   };
   char char_display_subtitle_color[7][56] = {
-    "SUBTITLE   RED",
-    "SUBTITLE   YELLOW",
-    "SUBTITLE   GREEN",
-    "SUBTITLE   BLUE",
-    "SUBTITLE   L.BLUE",
-    "SUBTITLE   PURPLE",
-    "SUBTITLE   WHITE",
+    "SUBTITLE  RED",
+    "SUBTITLE  YELLOW",
+    "SUBTITLE  GREEN",
+    "SUBTITLE  BLUE",
+    "SUBTITLE  L.BLUE",
+    "SUBTITLE  PURPLE",
+    "SUBTITLE  WHITE",
   };
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
