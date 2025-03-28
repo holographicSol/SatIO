@@ -801,7 +801,7 @@ const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items
     "ENTER  VALUE Z",
     "CHANGE EXPRESSION",
 };
-LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 64}, {125, 125}} );
+LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_matrix_function_configure_items, {{2, 70}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU FILE
@@ -10974,11 +10974,13 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 28, 127);
         // ------------------------------------------------
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
@@ -10989,36 +10991,40 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, " / P");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 16, canvas120x8);
+      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
+      display.drawCanvas(1, ui_content_0, canvas120x8);
+
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, 26, canvas120x8);
+      display.drawCanvas(3, ui_content_2-2, canvas120x8);
       // function x
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 36, canvas120x8);
+      display.drawCanvas(3, ui_content_3-2, canvas120x8);
       // function y
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 46, canvas120x8);
+      display.drawCanvas(3, ui_content_4-2, canvas120x8);
       // function z
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 56, canvas120x8);
+      display.drawCanvas(3, ui_content_5-2, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixConfigureFunction.showMenuBorder(display);
