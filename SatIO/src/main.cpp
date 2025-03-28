@@ -1022,12 +1022,12 @@ struct systemStruct {
   int max_display_autooff_times = 6; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
-    "AUTO-OFF 3",
-    "AUTO-OFF 5",
-    "AUTO-OFF 10",
-    "AUTO-OFF 15",
-    "AUTO-OFF 30",
-    "AUTO-OFF 60",
+    "AUTO-OFF   3",
+    "AUTO-OFF   5",
+    "AUTO-OFF   10",
+    "AUTO-OFF   15",
+    "AUTO-OFF   30",
+    "AUTO-OFF   60",
   };
   int display_timeout = display_autooff_times[index_display_autooff_times];
   
@@ -11278,8 +11278,8 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       // auto off
-      if (systemData.display_auto_off==true) {menuDisplayItems[0] ="AUTO-OFF ENABLED";}
-      else {menuDisplayItems[0]                                   ="AUTO-OFF DISABLED";}
+      if (systemData.display_auto_off==true) {menuDisplayItems[0] ="AUTO-OFF   ENABLED";}
+      else {menuDisplayItems[0]                                   ="AUTO-OFF   DISABLED";}
       // auto off time
       menuDisplayItems[1] = systemData.char_display_autooff_times[systemData.index_display_autooff_times];
       // border color
