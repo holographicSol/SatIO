@@ -11096,7 +11096,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         // ------------------------------------------------
         display.drawHLine(1, 28, 127);
-        display.drawHLine(60, 13, 26);
+        display.drawVLine(60, 13, 26);
         // ------------------------------------------------
       }
       // ------------------------------------------------
