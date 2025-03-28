@@ -10068,7 +10068,7 @@ void drawGeneralTitle(String title, int color1, int color2) {
   display.setColor(color1);
   canvas120x8.clear();
   // center the title at top of screen
-  canvas120x8.printFixed((120/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD );
+  canvas120x8.printFixed((127/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD );
   display.drawCanvas(1, 2, canvas120x8);
   // border the title
   display.setColor(color2);
