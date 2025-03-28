@@ -10652,7 +10652,7 @@ void UpdateUI(void * pvParamters) {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorderRed();
-          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255, 0, 0), systemData.color_border);
+          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255, 0, 0), RGB_COLOR16(255, 0, 0));
         }
         // ------------------------------------------------
         display.setColor(RGB_COLOR16(255,0,0));
