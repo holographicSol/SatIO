@@ -10620,13 +10620,13 @@ void UpdateUI(void * pvParamters) {
 
         // enabled/disabled
         canvas60x8.clear();
-        display.setColor(RGB_COLOR16(0,255,0));
+        display.setColor(systemData.color_content);
         canvas60x8.printFixed((60/2)-((strlen(String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str())/2)*6), 1, String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str(), STYLE_BOLD );
         display.drawCanvas(1, 15, canvas60x8);
 
         // on/off
         canvas60x8.clear();
-        display.setColor(RGB_COLOR16(0,255,0));
+        display.setColor(systemData.color_content);
         canvas60x8.printFixed((60/2)-((strlen(String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str())/2)*6), 1, String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str(), STYLE_BOLD );
         display.drawCanvas(65, 15, canvas60x8);
 
