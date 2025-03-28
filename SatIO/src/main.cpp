@@ -10219,6 +10219,11 @@ void drawMainBorderGreen() {
 }
 
 void drawGeneralTitle(String title, int color1, int color2) {
+  /*
+  Prints String title to top horizontal centre of display.
+  Color1: Text color.
+  Color2: Border coler. 
+  */
   display.setColor(color1);
   canvas120x8.clear();
   // center the title at top of screen
@@ -10820,18 +10825,42 @@ void UpdateUI(void * pvParamters) {
       if (enter_digits_key==1) {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
-          drawMainBorderRed();
-          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255, 0, 0), RGB_COLOR16(255, 0, 0));
+          drawMainBorder();
+          // ------------------------------------------------
+          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255,0,0), systemData.color_border);
+          // ------------------------------------------------
+          display.setColor(systemData.color_border);
+          // ------------------------------------------------
+          display.drawHLine(1, 108, 127);
+          display.drawVLine(90, 13, 35);
+          display.drawHLine(1, 36, 127);
+          // ------------------------------------------------
         }
         // ------------------------------------------------
-        display.setColor(RGB_COLOR16(255,0,0));
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
-        canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, String("MATRIX SWITCH: " + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
-        display.drawCanvas(3, ui_content_0, canvas120x8);
-        canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, String("CURRENT PORT: " + String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()])).c_str(), STYLE_BOLD );
-        display.drawCanvas(3, ui_content_1, canvas120x8);
+        canvas80x8.clear();
+        canvas80x8.printFixed(1, 1, String("MATRIX SWITCH" + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
+        display.drawCanvas(3, ui_content_0, canvas80x8);
+        // ------------------------------------------------
+        display.setColor(systemData.color_content);
+        // ------------------------------------------------
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(menuMatrixSwitchSelect.selection()).c_str(), STYLE_BOLD );
+        display.drawCanvas(100, ui_content_0, canvas19x8);
+
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas80x8.clear();
+        canvas80x8.printFixed(1, 1, "CURRENT PORT", STYLE_BOLD );
+        display.drawCanvas(3, ui_content_1, canvas80x8);
+        // ------------------------------------------------
+        display.setColor(systemData.color_content);
+        // ------------------------------------------------
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str(), STYLE_BOLD );
+        display.drawCanvas(100, ui_content_1, canvas19x8);
       }
 
       // ------------------------------------------------
@@ -10908,10 +10937,12 @@ void UpdateUI(void * pvParamters) {
         canvas120x8.clear();
         canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(3, ui_content_7, canvas120x8);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 108, 127);
+        // ------------------------------------------------
       }
-      // ------------------------------------------------
-      display.drawHLine(1, 108, 127);
-      // ------------------------------------------------
       // draw input data
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
