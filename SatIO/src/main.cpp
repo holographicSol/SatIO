@@ -10957,7 +10957,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // draw input data
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
+      canvas120x8.printFixed((125/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
       display.drawCanvas(2, 112, canvas120x8);
       // ------------------------------------------------
     }
