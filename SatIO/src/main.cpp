@@ -392,6 +392,7 @@ NanoCanvas<128,128,1> canvas128x128;
 NanoCanvas<28,8,1> canvas28x8;
 NanoCanvas<21,8,1> canvas21x8;
 NanoCanvas<42,8,1> canvas42x8;
+NanoCanvas<54,8,1> canvas54x8;
 NanoCanvas<36,8,1> canvas36x8;
 NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
@@ -11092,28 +11093,25 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("FILE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 28, 127);
+        display.drawHLine(60, 13, 26);
         // ------------------------------------------------
       }
       // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas54x8.clear();
+      canvas54x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_0, canvas54x8);
+      // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // sdcard
-      // if (sdcard_initialized==true) {display.setColor(RGB_COLOR16(0,0,255));}
-      // else {display.setColor(RGB_COLOR16(255,0,0));}
-      // canvas19x8.clear();
-      // canvas19x8.printFixed(1, 1, "SD", STYLE_BOLD);
-      // display.drawCanvas(109, ui_content_2, canvas19x8);
-      // // ------------------------------------------------
-      // display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      // matrix file
-      canvas120x8.clear();
-      memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-      strcpy(TMP_UI_DATA_0, "MATRIX: ");
-      strcat(TMP_UI_DATA_0, String(String(sdcardData.matrix_filename).c_str()).c_str());
-      canvas120x8.printFixed(1, 1,TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, ui_content_1, canvas120x8);
+      canvas60x8.clear();
+      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD );
+      display.drawCanvas(64, ui_content_0, canvas60x8);
+
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuFile.showMenuBorder(display);
@@ -13691,6 +13689,7 @@ void setup() {
   canvas21x8.setFixedFont(ssd1306xled_font6x8);
   canvas36x8.setFixedFont(ssd1306xled_font6x8);
   canvas42x8.setFixedFont(ssd1306xled_font6x8);
+  canvas54x8.setFixedFont(ssd1306xled_font6x8);
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
   display.clear();
