@@ -3711,6 +3711,17 @@ void UpdateMatrixFileNameFilePath(char * filepath) {
     Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
     Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
   }
+  Serial.println("[UpdateMatrixFileNameFilePath] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
+}
+
+void UpdateMatrixFileName(char * filepath) {
+  if (strlen(sdcardData.matrix_filepath)>8) {
+    memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+    strncpy(sdcardData.matrix_filename, sdcardData.matrix_filepath + 8, strlen(sdcardData.matrix_filepath));
+    Serial.println("[sdcardData.matrix_filepath] " + String(sdcardData.matrix_filepath));
+    Serial.println("[sdcardData.matrix_filename] " + String(sdcardData.matrix_filename));
+  }
+  Serial.println("[UpdateMatrixFileNameFilePath] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3731,6 +3742,7 @@ void sdcard_save_system_configuration(char * file) {
   if (exfile) {
 
     // ------------------------------------------------
+    Serial.println("[sdcard_save_system_configuration] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_FILEPATH,");
@@ -4872,10 +4884,13 @@ bool sdcard_load_matrix(char * file) {
       }
     }
     // update filename and file path
-    Serial.println("[sdcard] loaded file successfully: " + String(file));
+    strcpy(sdcardData.tempmatrixfilepath, file);
+    memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+    strcpy(sdcardData.matrix_filepath, sdcardData.tempmatrixfilepath);
+    Serial.println("[sdcard] loaded file successfully:   " + String(file));
+    Serial.println("[sdcard] sdcardData.matrix_filepath: " + String(sdcardData.matrix_filepath));
+    UpdateMatrixFileName(sdcardData.matrix_filepath);
     exfile.close();
-    // update filename and file path
-    UpdateMatrixFileNameFilePath(file);
     return true;
   }
   // update matrix filepath (clear)
