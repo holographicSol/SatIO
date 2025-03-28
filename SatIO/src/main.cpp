@@ -10986,9 +10986,9 @@ void UpdateUI(void * pvParamters) {
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "M");
       strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
-      strcat(TMP_UI_DATA_0, " / F");
+      strcat(TMP_UI_DATA_0, "   F");
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
-      strcat(TMP_UI_DATA_0, " / P");
+      strcat(TMP_UI_DATA_0, "   P");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
