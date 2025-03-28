@@ -11527,17 +11527,25 @@ void UpdateUI(void * pvParamters) {
       canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
       display.drawCanvas(32, ui_content_0, canvas92x8);
       // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ----------------------------------------------------------
       canvas21x8.clear();
       canvas21x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
       display.drawCanvas(4, ui_content_1, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
       display.drawCanvas(32, ui_content_1, canvas92x8);
       // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ----------------------------------------------------------
       canvas21x8.clear();
       canvas21x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
       display.drawCanvas(4, ui_content_2, canvas21x8);
+      // ------------------------------------------------
+       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
@@ -11621,18 +11629,26 @@ void UpdateUI(void * pvParamters) {
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
       display.drawCanvas(32, ui_content_0, canvas92x8);
-      // ----------------------------------------------------------
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
       canvas21x8.clear();
       canvas21x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
       display.drawCanvas(4, ui_content_1, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
       display.drawCanvas(32, ui_content_1, canvas92x8);
       // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
       canvas21x8.clear();
       canvas21x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
       display.drawCanvas(4, ui_content_2, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
