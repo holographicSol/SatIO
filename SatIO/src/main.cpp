@@ -11049,17 +11049,21 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       // matrix switch number 
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "M");
       strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
-      strcat(TMP_UI_DATA_0, " / F");
+      strcat(TMP_UI_DATA_0, "      F");
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(3, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 26, canvas120x8);
+
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       // function name
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
