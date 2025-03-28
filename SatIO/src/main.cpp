@@ -849,7 +849,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
 
-const int max_display_items = 7;
+const int max_display_items = 8;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
@@ -1037,6 +1037,7 @@ struct systemStruct {
   int index_display_menu_content_color = 2;
   int index_display_menu_border_color = 2;
   int index_display_title_color = 2;
+  int index_display_color_subtitle = 2;
   int max_color_index = 6;
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
   int display_color[7] = {
@@ -1098,6 +1099,7 @@ struct systemStruct {
   int color_menu_content = display_color[index_display_menu_content_color];
   int color_menu_border = display_color[index_display_menu_border_color];
   int color_title = display_color[index_display_title_color];
+  int color_subtitle = display_color[index_display_color_subtitle];
 
   // conversion maps
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
@@ -3899,6 +3901,18 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_color_subtitle,");
+    itoa(systemData.index_display_color_subtitle, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -4426,6 +4440,21 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_title_color = atoi(sdcardData.token);
           systemData.color_title = systemData.display_color[systemData.index_display_title_color];
+          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
+        }
+      }
+
+      // ------------------------------------------------
+
+      // display title color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_color_subtitle", strlen("INDEX_DISPLAY_color_subtitle")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          systemData.index_display_color_subtitle = atoi(sdcardData.token);
+          systemData.color_subtitle = systemData.display_color[systemData.index_display_color_subtitle];
           // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
@@ -9842,6 +9871,12 @@ void menuEnter() {
       if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
       systemData.color_title=systemData.display_color[systemData.index_display_title_color];
     }
+
+    // iter display subtitle color
+    if (menuDisplay.selection()==7) {systemData.index_display_color_subtitle++;
+      if (systemData.index_display_color_subtitle>systemData.max_color_index) {systemData.index_display_color_subtitle=0;}
+      systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
+    }
   }
 
   // ----------------------------------------------------------------
@@ -11292,6 +11327,8 @@ void UpdateUI(void * pvParamters) {
       menuDisplayItems[5] = systemData.char_display_menu_content_color[systemData.index_display_menu_content_color];
       // title color
       menuDisplayItems[6] = systemData.char_display_title_color[systemData.index_display_title_color];
+      // subtitle color
+      menuDisplayItems[7] = systemData.char_display_title_color[systemData.index_display_color_subtitle];
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuDisplay.showMenuBorder(display);
