@@ -11337,7 +11337,7 @@ void UpdateUI(void * pvParamters) {
       // title color
       menuDisplayItems[6] = systemData.char_display_title_color[systemData.index_display_title_color];
       // subtitle color
-      menuDisplayItems[7] = systemData.char_display_title_color[systemData.index_display_color_subtitle];
+      menuDisplayItems[7] = systemData.char_display_subtitle_color[systemData.index_display_color_subtitle];
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuDisplay.showMenuBorder(display);
