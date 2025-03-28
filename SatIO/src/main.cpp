@@ -11490,7 +11490,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("UTC").c_str());
@@ -11585,7 +11585,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("UTC").c_str());
@@ -11680,7 +11680,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("p").c_str());
@@ -11783,7 +11783,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawVLine(41, 13, 127);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("RTCT").c_str());
@@ -11894,7 +11894,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -11947,7 +11947,7 @@ void UpdateUI(void * pvParamters) {
         // make two columns (because of long string moon phase we cannot have 3 columns like the others)
         display.drawVLine(35, 24, 127); // vertical seperator 0
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12012,7 +12012,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12101,7 +12101,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12190,7 +12190,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12279,7 +12279,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12368,7 +12368,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12457,7 +12457,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
@@ -12546,7 +12546,7 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
         canvas28x8.printFixed(1, 1, String("RA").c_str());
