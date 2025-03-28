@@ -10456,6 +10456,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
+        // drawMainBorder();
         drawGeneralTitle("MATRIX OVERVIEW", systemData.color_border);
         // ------------------------------------------------
       }
@@ -10472,19 +10473,19 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 29, canvas19x8);
+        display.drawCanvas(start+1, 26, canvas19x8);
 
         // 0-4 port number
         canvas19x8.clear();
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 39, canvas19x8);
+        display.drawCanvas(start+1, 36, canvas19x8);
         
         // 0-4 border
-        display.setColor(off_col);
-        if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        display.drawRect(start, 27, start+size, 27+size);
+        // display.setColor(off_col);
+        // if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        // display.drawRect(start, 24, start+size, 24+size);
 
         // ------------------------------------------------
 
@@ -10493,20 +10494,19 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 54, canvas19x8);
+        display.drawCanvas(start+1, 51, canvas19x8);
 
         // 5-9 port number
         canvas19x8.clear();
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 64, canvas19x8);
+        display.drawCanvas(start+1, 61, canvas19x8);
 
         // 5-9 border
-        canvas19x8.clear();
-        display.setColor(off_col);
-        if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        display.drawRect(start, 52, start+size, 52+size);
+        // display.setColor(off_col);
+        // if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        // display.drawRect(start, 49, start+size, 49+size);
 
         // ------------------------------------------------
 
@@ -10515,19 +10515,19 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 79, canvas19x8);
+        display.drawCanvas(start+1, 77, canvas19x8);
 
         // 10-14 port number
         canvas19x8.clear();
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 89, canvas19x8);
+        display.drawCanvas(start+1, 87, canvas19x8);
         
         // 10-14 border
-        display.setColor(off_col);
-        if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        display.drawRect(start, 77, start+size, 77+size);
+        // display.setColor(off_col);
+        // if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        // display.drawRect(start, 75, start+size, 75+size);
 
         // ------------------------------------------------
 
@@ -10536,20 +10536,19 @@ void UpdateUI(void * pvParamters) {
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 104, canvas19x8);
+        display.drawCanvas(start+1, 102, canvas19x8);
 
         // 15-19 port number
         canvas19x8.clear();
         display.setColor(off_col);
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
         canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_NORMAL );
-        display.drawCanvas(start+1, 114, canvas19x8);
+        display.drawCanvas(start+1, 112, canvas19x8);
 
         // 15-19 border
-        canvas19x8.clear();
-        display.setColor(off_col);
-        if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        display.drawRect(start, 102, start+size, 102+size);
+        // display.setColor(off_col);
+        // if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
+        // display.drawRect(start, 100, start+size, 100+size);
 
         // ------------------------------------------------
         // adjust x
