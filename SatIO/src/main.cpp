@@ -11942,11 +11942,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_4, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12001,11 +12004,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_6, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12078,11 +12084,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12167,11 +12176,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12256,11 +12268,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12345,11 +12360,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12434,11 +12452,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12523,11 +12544,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
@@ -12612,11 +12636,14 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str(), STYLE_BOLD );
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ra).c_str());
       display.drawCanvas(40, ui_content_1, canvas42x8);
