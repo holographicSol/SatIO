@@ -11072,7 +11072,7 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, ui_content_2, canvas120x8);
+      display.drawCanvas(3, ui_content_2-1, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixSetFunctionName.showMenuBorder(display);
