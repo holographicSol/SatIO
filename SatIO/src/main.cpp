@@ -11417,6 +11417,7 @@ void UpdateUI(void * pvParamters) {
       // looptime min
       // looptime max
       // looptime current
+      // uptime
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
