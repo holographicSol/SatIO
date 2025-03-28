@@ -13622,28 +13622,6 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                   SETUP: SPI
 
-  // VSPI: SDCARD
-  // SD_SCLK = 18;  // default esp32 VSPI
-  // SD_MISO = 19;  // default esp32 VSPI
-  // SD_MOSI = 23;  // default esp32 VSPI
-  // SD_CS   = 5;   // default esp32 VSPI
-  // pinMode(SD_CS, OUTPUT);
-  // digitalWrite(SD_CS, HIGH);
-
-  // HSPI: SSD1351 OLED DISPLAY
-  // SSD1351_SCLK = 14; // (SCL) default esp32 HSPI
-  // SSD1351_MISO = 12; // (DC)  default esp32 HSPI
-  // SSD1351_MOSI = 13; // (SDA) default esp32 HSPI
-  // SSD1351_CS   = 26; // (CS)   custom esp32 HSPI
-  // pinMode(SSD1351_CS, OUTPUT);
-  // digitalWrite(SSD1351_CS, HIGH);
-
-  // VSPI: SDCARD
-  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  setupSDCard();
-  sd.end();
-  endSPIDevice(SD_CS);
-
   // HSPI: SSD1351 OLED DISPLAY
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
@@ -13661,11 +13639,26 @@ void setup() {
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
   display.clear();
+  display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
+
   // uncomment to test display
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
-  // delay(2000);
   // display.clear();
+
+  // END SPI DEVICE
+  endSPIDevice(SSD1351_CS);
+
+  // VSPI: SDCARD
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  setupSDCard();
+  sd.end();
+  endSPIDevice(SD_CS);
+
+  // BEGIN SPI DEVICE
+  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+  display.begin();
+  display.clear();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      SETUP: SIDEREAL PLANETS
