@@ -11045,7 +11045,9 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("SELECT FUNCTION", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 28, 127);
         // ------------------------------------------------
       }
       // ------------------------------------------------
@@ -11059,7 +11061,7 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, 26, canvas120x8);
+      display.drawCanvas(3, ui_content_0, canvas120x8);
 
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -11070,7 +11072,7 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, 36, canvas120x8);
+      display.drawCanvas(3, ui_content_2-4, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixSetFunctionName.showMenuBorder(display);
