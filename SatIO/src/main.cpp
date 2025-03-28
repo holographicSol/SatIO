@@ -238,7 +238,7 @@
   Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
   part, subsystem or standalone device.
 
-  Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+  Whats the point? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
   as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
 
   Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
@@ -246,6 +246,10 @@
   Additions: 1: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
              2: inRange60(). Ensures minutes and second values are wihin 0-59 for planet/object rise, set times.
              3: inRange24(). Ensures hour values are wihin 0-23 for planet/object rise, set times.
+  
+  Writes to SSD1351 are now performed on a xTask, allowing for up to around 100 <10ms loops per second that can be utilized
+  for other things. There are some pixel artifacts to deal with since migrating updateui to xTask, which were not noticeable when
+  updating ui more slowly in main loop.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
