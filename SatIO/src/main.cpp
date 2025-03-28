@@ -10952,6 +10952,9 @@ void UpdateUI(void * pvParamters) {
         display.drawHLine(1, 108, 127);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      display.setColor(RGB_COLOR16(0,255,0));
+      // ------------------------------------------------
       // draw input data
       canvas120x8.clear();
       canvas120x8.printFixed((120/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
