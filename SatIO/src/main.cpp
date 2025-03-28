@@ -11842,13 +11842,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
         canvas36x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
         display.drawCanvas(4, ui_content_2, canvas36x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
         canvas36x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
         display.drawCanvas(4, ui_content_2, canvas36x8);
       }
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
@@ -11856,13 +11864,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
         canvas36x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
         display.drawCanvas(4, ui_content_3, canvas36x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
         canvas36x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
         display.drawCanvas(4, ui_content_3, canvas36x8);
       }
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
