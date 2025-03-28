@@ -1032,10 +1032,10 @@ struct systemStruct {
   int display_timeout = display_autooff_times[index_display_autooff_times];
   
   // personalization: color
-  int index_display_border_color = 6;
-  int index_display_content_color = 6;
-  int index_display_menu_color = 6;
-  int index_display_title_color = 6;
+  int index_display_border_color = 3;
+  int index_display_content_color = 4;
+  int index_display_menu_color = 2;
+  int index_display_title_color = 2;
   int max_color_index = 6;
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
   int display_color[7] = {
