@@ -11397,7 +11397,7 @@ void UpdateUI(void * pvParamters) {
         display.drawHLine(1, 36, 127);
         display.drawVLine(64, 16, 127);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         /* sensor value column 0 */
         canvas60x8.clear();
