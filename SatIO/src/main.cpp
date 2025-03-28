@@ -10297,7 +10297,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("MATRIX SWITCH LOGIC", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MATRIX LOGIC", systemData.color_content, systemData.color_border);
       }
       // ------------------------------------------------
       display.setColor(systemData.color_border);
