@@ -849,7 +849,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
 
-const int max_display_items = 6;
+const int max_display_items = 7;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
@@ -1034,7 +1034,8 @@ struct systemStruct {
   // personalization: color
   int index_display_border_color = 3;
   int index_display_content_color = 4;
-  int index_display_menu_color = 2;
+  int index_display_menu_content_color = 2;
+  int index_display_menu_border_color = 2;
   int index_display_title_color = 2;
   int max_color_index = 6;
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
@@ -1065,14 +1066,23 @@ struct systemStruct {
     "C.CONTENT  PURPLE",
     "C.CONTENT  WHITE",
   };
-  char char_display_menu_color[7][56] = {
-    "C.MENU     RED",
-    "C.MENU     YELLOW",
-    "C.MENU     GREEN",
-    "C.MENU     BLUE",
-    "C.MENU     L.BLUE",
-    "C.MENU     PURPLE",
-    "C.MENU     WHITE",
+  char char_display_menu_border_color[7][56] = {
+    "C.MENUB    RED",
+    "C.MENUB    YELLOW",
+    "C.MENUB    GREEN",
+    "C.MENUB    BLUE",
+    "C.MENUB    L.BLUE",
+    "C.MENUB    PURPLE",
+    "C.MENUB    WHITE",
+  };
+  char char_display_menu_content_color[7][56] = {
+    "C.MENUC    RED",
+    "C.MENUC    YELLOW",
+    "C.MENUC    GREEN",
+    "C.MENUC    BLUE",
+    "C.MENUC    L.BLUE",
+    "C.MENUC    PURPLE",
+    "C.MENUC    WHITE",
   };
   char char_display_title_color[7][56] = {
     "C.TITLE    RED",
@@ -1085,7 +1095,8 @@ struct systemStruct {
   };
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
-  int color_menu = display_color[index_display_menu_color];
+  int color_menu_content = display_color[index_display_menu_content_color];
+  int color_menu_border = display_color[index_display_menu_border_color];
   int color_title = display_color[index_display_title_color];
 
   // conversion maps
@@ -3852,14 +3863,26 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "INDEX_DISPLAY_MENU_COLOR,");
-    itoa(systemData.index_display_menu_color, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_MENU_BORDER_COLOR,");
+    itoa(systemData.index_display_menu_border_color, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
     exfile.println("");
     exfile.println(sdcardData.file_data);
     exfile.println("");
+
+      // ------------------------------------------------
+
+      memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+      strcat(sdcardData.file_data, "INDEX_DISPLAY_MENU_CONTENT_COLOR,");
+      itoa(systemData.index_display_menu_content_color, sdcardData.tmp, 10);
+      strcat(sdcardData.file_data, sdcardData.tmp);
+      strcat(sdcardData.file_data, ",");
+      Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+      exfile.println("");
+      exfile.println(sdcardData.file_data);
+      exfile.println("");
 
     // ------------------------------------------------
 
@@ -4364,16 +4387,31 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display menu color index
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_COLOR", strlen("INDEX_DISPLAY_MENU_COLOR")) == 0) {
+      // display menu border color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_BORDER_COLOR", strlen("INDEX_DISPLAY_MENU_BORDER_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token = strtok(NULL, ",");
         if (is_all_digits(sdcardData.token) == true) {
           PrintFileToken();
-          systemData.index_display_menu_color = atoi(sdcardData.token);
-          systemData.color_menu = systemData.display_color[systemData.index_display_menu_color];
-          // Serial.println("[color_menu] " + String(systemData.color_menu));
+          systemData.index_display_menu_border_color= atoi(sdcardData.token);
+          systemData.color_menu_border = systemData.display_color[systemData.index_display_menu_border_color];
+          // Serial.println("[color_menu_border] " + String(systemData.color_menu_border));
+        }
+      }
+
+      // ------------------------------------------------
+
+      // display menu content color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_CONTENT_COLOR", strlen("INDEX_DISPLAY_MENU_CONTENT_COLOR")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          systemData.index_display_menu_content_color = atoi(sdcardData.token);
+          systemData.color_menu_content = systemData.display_color[systemData.index_display_menu_content_color];
+          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
@@ -4388,7 +4426,7 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_title_color = atoi(sdcardData.token);
           systemData.color_title = systemData.display_color[systemData.index_display_title_color];
-          // Serial.println("[color_menu] " + String(systemData.color_menu));
+          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
@@ -9787,14 +9825,20 @@ void menuEnter() {
       systemData.color_content=systemData.display_color[systemData.index_display_content_color];
     }
 
-    // iter display menu color
-    if (menuDisplay.selection()==4) {systemData.index_display_menu_color++;
-      if (systemData.index_display_menu_color>systemData.max_color_index) {systemData.index_display_menu_color=0;}
-      systemData.color_menu=systemData.display_color[systemData.index_display_menu_color];
+    // iter display menu border color
+    if (menuDisplay.selection()==4) {systemData.index_display_menu_border_color++;
+      if (systemData.index_display_menu_border_color>systemData.max_color_index) {systemData.index_display_menu_border_color=0;}
+      systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
+    }
+
+    // iter display menu content color
+    if (menuDisplay.selection()==5) {systemData.index_display_menu_content_color++;
+      if (systemData.index_display_menu_content_color>systemData.max_color_index) {systemData.index_display_menu_content_color=0;}
+      systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
     }
 
     // iter display title color
-    if (menuDisplay.selection()==5) {systemData.index_display_title_color++;
+    if (menuDisplay.selection()==6) {systemData.index_display_title_color++;
       if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
       systemData.color_title=systemData.display_color[systemData.index_display_title_color];
     }
@@ -10322,9 +10366,11 @@ void UpdateUI(void * pvParamters) {
       if (updateui_content==true) {
         updateui_content=false;
         // ------------------------------------------------
-        display.setColor(systemData.color_menu);
-        // ------------------------------------------------
-        menuHome.show(display);
+        display.setColor(systemData.color_menu_border);
+        menuHome.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuHome.showMenuContent(display);
+      // ------------------------------------------------
       }
       // ------------------------------------------------
     }
@@ -10347,9 +10393,10 @@ void UpdateUI(void * pvParamters) {
         updateui_content=false;
         display.setColor(systemData.color_content);
         // ------------------------------------------------
-        display.setColor(systemData.color_menu);
-        // ------------------------------------------------
-        menuMain.show(display);
+        display.setColor(systemData.color_menu_border);
+        menuMain.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMain.showMenuContent(display);
       }
       // ------------------------------------------------
     }
@@ -10485,14 +10532,16 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // highlight matrix switch select menu
       if (menu_column_selection == 0) {
-        display.setColor(systemData.color_menu);
-        menuMatrixSwitchSelect.show(display);
+        display.setColor(systemData.color_menu_border);
+        menuMatrixSwitchSelect.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixSwitchSelect.showMenuContent(display);
       }
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
-        display.setColor(systemData.color_menu);
+        display.setColor(systemData.color_menu_content);
         strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
@@ -10513,7 +10562,7 @@ void UpdateUI(void * pvParamters) {
         else {display.setColor(RGB_COLOR16(255,0,0));}
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 19, canvas19x8);
-        display.setColor(systemData.color_menu);
+        display.setColor(systemData.color_menu_content);
         display.drawRect(35, 15, 62, 15+15);
       }
       else {
@@ -10543,7 +10592,7 @@ void UpdateUI(void * pvParamters) {
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL ); // disabled
         }
         display.drawCanvas(68, 19, canvas8x8);
-        display.setColor(systemData.color_menu);
+        display.setColor(systemData.color_menu_content);
         display.drawRect(66, 15, 79, 15+15);
       }
       else {
@@ -10575,7 +10624,7 @@ void UpdateUI(void * pvParamters) {
           canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(84, 19, canvas8x8);
-        display.setColor(systemData.color_menu);
+        display.setColor(systemData.color_menu_content);
         display.drawRect(83, 15, 93, 15+15);
       }
       else {
@@ -10596,8 +10645,10 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // highlight matrix switch function select menu
       if (menu_column_selection == 4) {
-        display.setColor(systemData.color_menu);
-        menuMatrixFunctionSelect.show(display);
+        display.setColor(systemData.color_menu_border);
+        menuMatrixFunctionSelect.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixFunctionSelect.showMenuContent(display);
       }
       else {
         // draw currently selected menu item when menu not highlighted
@@ -10605,7 +10656,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]);
         canvas19x8.clear();
-        display.setColor(systemData.color_menu);
+        display.setColor(systemData.color_menu_content);
         canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(91+4, 19, canvas19x8);
       }
@@ -10882,9 +10933,10 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 56, canvas120x8);
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuMatrixConfigureFunction.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuMatrixConfigureFunction.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuMatrixConfigureFunction.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -10923,9 +10975,10 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 36, canvas120x8);
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuMatrixSetFunctionName.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuMatrixSetFunctionName.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuMatrixSetFunctionName.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -10963,9 +11016,10 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1,TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_1, canvas120x8);
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuFile.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuFile.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuFile.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -10989,9 +11043,10 @@ void UpdateUI(void * pvParamters) {
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuMatrixFilepath.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuMatrixFilepath.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuMatrixFilepath.showMenuContent(display);
       // ------------------------------------------------
       
     }
@@ -11017,9 +11072,10 @@ void UpdateUI(void * pvParamters) {
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuMatrixFilepath.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuMatrixFilepath.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuMatrixFilepath.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11044,9 +11100,10 @@ void UpdateUI(void * pvParamters) {
       // set items each iteration so that if changed anywhere will be reflected in ui
       setMenuMatrixFilePathItems();
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuMatrixFilepath.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuMatrixFilepath.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuMatrixFilepath.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11083,9 +11140,10 @@ void UpdateUI(void * pvParamters) {
       menuGPSItems[7]                                                                   ="VIEW    GPATT";
       menuGPSItems[8]                                                                   ="VIEW    SATIO";
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuGPS.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuGPS.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuGPS.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11142,9 +11200,10 @@ void UpdateUI(void * pvParamters) {
       if (systemData.debug==true) {menuSerialItems[15]                  ="DEBUG   ENABLED";}
       else {menuSerialItems[15]                                         ="DEBUG   DISABLED";}
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuSerial.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuSerial.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuSerial.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11196,9 +11255,10 @@ void UpdateUI(void * pvParamters) {
       menuUniverseItems[16]                                              ="VIEW    URANUS";
       menuUniverseItems[17]                                              ="VIEW    NEPTUNE";
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuUniverse.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuUniverse.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuUniverse.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11226,14 +11286,17 @@ void UpdateUI(void * pvParamters) {
       menuDisplayItems[2] = systemData.char_display_border_color[systemData.index_display_border_color];
       // content color
       menuDisplayItems[3] = systemData.char_display_content_color[systemData.index_display_content_color];
-      // menu color
-      menuDisplayItems[4] = systemData.char_display_menu_color[systemData.index_display_menu_color];
+      // menu border color
+      menuDisplayItems[4] = systemData.char_display_menu_border_color[systemData.index_display_menu_border_color];
+      // menu content color
+      menuDisplayItems[5] = systemData.char_display_menu_content_color[systemData.index_display_menu_content_color];
       // title color
-      menuDisplayItems[5] = systemData.char_display_title_color[systemData.index_display_title_color];
+      menuDisplayItems[6] = systemData.char_display_title_color[systemData.index_display_title_color];
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuDisplay.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuDisplay.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuDisplay.showMenuContent(display);
       // ------------------------------------------------
     }
 
@@ -11264,9 +11327,10 @@ void UpdateUI(void * pvParamters) {
       // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
       // else {menuSystemItems[2]="PORT.CON DISABLED";}
       // ------------------------------------------------
-      display.setColor(systemData.color_menu);
-      // ------------------------------------------------
-      menuSystem.show(display);
+      display.setColor(systemData.color_menu_border);
+      menuSystem.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuSystem.showMenuContent(display);
       // ------------------------------------------------
     }
 
