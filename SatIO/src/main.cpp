@@ -11418,8 +11418,8 @@ void UpdateUI(void * pvParamters) {
       // looptime max
       // looptime current
       // uptime
-      // set overload time
-      // set rtc
+      // manually set overload time
+      // manually set rtc
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
