@@ -9740,31 +9740,31 @@ void menuEnter() {
     // iter display auto off timing
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
-      if (systemData.index_display_autooff_times>systemData.max_display_autooff_times-1) {systemData.index_display_autooff_times=0;}
+      if (systemData.index_display_autooff_times>systemData.max_display_autooff_times) {systemData.index_display_autooff_times=0;}
       systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
     }
 
     // iter display border color
     if (menuDisplay.selection()==2) {systemData.index_display_border_color++;
-      if (systemData.index_display_border_color>systemData.max_color_index-1) {systemData.index_display_border_color=0;}
+      if (systemData.index_display_border_color>systemData.max_color_index) {systemData.index_display_border_color=0;}
       systemData.color_border=systemData.display_color[systemData.index_display_border_color];
     }
 
     // iter display border color
     if (menuDisplay.selection()==3) {systemData.index_display_content_color++;
-      if (systemData.index_display_content_color>systemData.max_color_index-1) {systemData.index_display_content_color=0;}
+      if (systemData.index_display_content_color>systemData.max_color_index) {systemData.index_display_content_color=0;}
       systemData.color_content=systemData.display_color[systemData.index_display_content_color];
     }
 
     // iter display menu color
     if (menuDisplay.selection()==4) {systemData.index_display_menu_color++;
-      if (systemData.index_display_menu_color>systemData.max_color_index-1) {systemData.index_display_menu_color=0;}
+      if (systemData.index_display_menu_color>systemData.max_color_index) {systemData.index_display_menu_color=0;}
       systemData.color_menu=systemData.display_color[systemData.index_display_menu_color];
     }
 
     // iter display title color
     if (menuDisplay.selection()==5) {systemData.index_display_title_color++;
-      if (systemData.index_display_title_color>systemData.max_color_index-1) {systemData.index_display_title_color=0;}
+      if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
       systemData.color_title=systemData.display_color[systemData.index_display_title_color];
     }
   }
