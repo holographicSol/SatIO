@@ -1086,6 +1086,15 @@ struct systemStruct {
     "MENUC     WHITE",
   };
   char char_display_title_color[7][56] = {
+    "TITLE     RED",
+    "TITLE     YELLOW",
+    "TITLE     GREEN",
+    "TITLE     BLUE",
+    "TITLE     L.BLUE",
+    "TITLE     PURPLE",
+    "TITLE     WHITE",
+  };
+  char char_display_subtitle_color[7][56] = {
     "SUBTITLE   RED",
     "SUBTITLE   YELLOW",
     "SUBTITLE   GREEN",
@@ -3901,7 +3910,7 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "INDEX_DISPLAY_color_subtitle,");
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_COLOR_SUBTITLE,");
     itoa(systemData.index_display_color_subtitle, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
@@ -4446,8 +4455,8 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display title color index
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_color_subtitle", strlen("INDEX_DISPLAY_color_subtitle")) == 0) {
+      // display subtitle color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_COLOR_SUBTITLE", strlen("INDEX_DISPLAY_COLOR_SUBTITLE")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token = strtok(NULL, ",");
