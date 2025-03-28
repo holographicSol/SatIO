@@ -10484,14 +10484,19 @@ void UpdateUI(void * pvParamters) {
 
       // ------------------------------------------------
       // highlight matrix switch select menu
-      if (menu_column_selection == 0) {menuMatrixSwitchSelect.show(display);}
+      if (menu_column_selection == 0) {
+        display.setColor(systemData.color_menu);
+        menuMatrixSwitchSelect.show(display);
+      }
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
+        display.setColor(systemData.color_menu);
         strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        display.setColor(systemData.color_border);
         display.drawCanvas(10, 19, canvas19x8);
       }
 
@@ -10508,7 +10513,7 @@ void UpdateUI(void * pvParamters) {
         else {display.setColor(RGB_COLOR16(255,0,0));}
         canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
         display.drawCanvas(39, 19, canvas19x8);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_menu);
         display.drawRect(35, 15, 62, 15+15);
       }
       else {
@@ -10538,7 +10543,7 @@ void UpdateUI(void * pvParamters) {
           canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL ); // disabled
         }
         display.drawCanvas(68, 19, canvas8x8);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_menu);
         display.drawRect(66, 15, 79, 15+15);
       }
       else {
@@ -10570,7 +10575,7 @@ void UpdateUI(void * pvParamters) {
           canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(84, 19, canvas8x8);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_menu);
         display.drawRect(83, 15, 93, 15+15);
       }
       else {
@@ -10586,18 +10591,21 @@ void UpdateUI(void * pvParamters) {
           canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
         }
         display.drawCanvas(83, 19, canvas8x8);
-        display.setColor(systemData.color_content);
       }
 
       // ------------------------------------------------
       // highlight matrix switch function select menu
-      if (menu_column_selection == 4) {menuMatrixFunctionSelect.show(display);}
+      if (menu_column_selection == 4) {
+        display.setColor(systemData.color_menu);
+        menuMatrixFunctionSelect.show(display);
+      }
       else {
         // draw currently selected menu item when menu not highlighted
         memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
         strcpy(TMP_UI_DATA_0, "");
         strcat(TMP_UI_DATA_0, menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]);
         canvas19x8.clear();
+        display.setColor(systemData.color_menu);
         canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(91+4, 19, canvas19x8);
       }
