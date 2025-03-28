@@ -1086,13 +1086,13 @@ struct systemStruct {
     "MENUC     WHITE",
   };
   char char_display_title_color[7][56] = {
-    "TITLE     RED",
-    "TITLE     YELLOW",
-    "TITLE     GREEN",
-    "TITLE     BLUE",
-    "TITLE     L.BLUE",
-    "TITLE     PURPLE",
-    "TITLE     WHITE",
+    "SUBTITLE   RED",
+    "SUBTITLE   YELLOW",
+    "SUBTITLE   GREEN",
+    "SUBTITLE   BLUE",
+    "SUBTITLE   L.BLUE",
+    "SUBTITLE   PURPLE",
+    "SUBTITLE   WHITE",
   };
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
