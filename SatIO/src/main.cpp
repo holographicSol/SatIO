@@ -1022,12 +1022,12 @@ struct systemStruct {
   int max_display_autooff_times = 6; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
-    "AUTO-OFF   3",
-    "AUTO-OFF   5",
-    "AUTO-OFF   10",
-    "AUTO-OFF   15",
-    "AUTO-OFF   30",
-    "AUTO-OFF   60",
+    "AUTO-OFF  3",
+    "AUTO-OFF  5",
+    "AUTO-OFF  10",
+    "AUTO-OFF  15",
+    "AUTO-OFF  30",
+    "AUTO-OFF  60",
   };
   int display_timeout = display_autooff_times[index_display_autooff_times];
   
@@ -1049,49 +1049,49 @@ struct systemStruct {
     RGB_COLOR16(255,255,255), // white
   };
   char char_display_border_color[7][56] = {
-    "C.BORDER   RED",
-    "C.BORDER   YELLOW",
-    "C.BORDER   GREEN",
-    "C.BORDER   BLUE",
-    "C.BORDER   L.BLUE",
-    "C.BORDER   PURPLE",
-    "C.BORDER   WHITE",
+    "BORDER     RED",
+    "BORDER     YELLOW",
+    "BORDER     GREEN",
+    "BORDER     BLUE",
+    "BORDER     L.BLUE",
+    "BORDER     PURPLE",
+    "BORDER     WHITE",
   };
   char char_display_content_color[7][56] = {
-    "C.CONTENT  RED",
-    "C.CONTENT  YELLOW",
-    "C.CONTENT  GREEN",
-    "C.CONTENT  BLUE",
-    "C.CONTENT  L.BLUE",
-    "C.CONTENT  PURPLE",
-    "C.CONTENT  WHITE",
+    "CONTENT    RED",
+    "CONTENT    YELLOW",
+    "CONTENT    GREEN",
+    "CONTENT    BLUE",
+    "CONTENT    L.BLUE",
+    "CONTENT    PURPLE",
+    "CONTENT    WHITE",
   };
   char char_display_menu_border_color[7][56] = {
-    "C.MENUB    RED",
-    "C.MENUB    YELLOW",
-    "C.MENUB    GREEN",
-    "C.MENUB    BLUE",
-    "C.MENUB    L.BLUE",
-    "C.MENUB    PURPLE",
-    "C.MENUB    WHITE",
+    "MENUB      RED",
+    "MENUB      YELLOW",
+    "MENUB      GREEN",
+    "MENUB      BLUE",
+    "MENUB      L.BLUE",
+    "MENUB      PURPLE",
+    "MENUB      WHITE",
   };
   char char_display_menu_content_color[7][56] = {
-    "C.MENUC    RED",
-    "C.MENUC    YELLOW",
-    "C.MENUC    GREEN",
-    "C.MENUC    BLUE",
-    "C.MENUC    L.BLUE",
-    "C.MENUC    PURPLE",
-    "C.MENUC    WHITE",
+    "MENUC      RED",
+    "MENUC      YELLOW",
+    "MENUC      GREEN",
+    "MENUC      BLUE",
+    "MENUC      L.BLUE",
+    "MENUC      PURPLE",
+    "MENUC      WHITE",
   };
   char char_display_title_color[7][56] = {
-    "C.TITLE    RED",
-    "C.TITLE    YELLOW",
-    "C.TITLE    GREEN",
-    "C.TITLE    BLUE",
-    "C.TITLE    L.BLUE",
-    "C.TITLE    PURPLE",
-    "C.TITLE    WHITE",
+    "TITLE      RED",
+    "TITLE      YELLOW",
+    "TITLE      GREEN",
+    "TITLE      BLUE",
+    "TITLE      L.BLUE",
+    "TITLE      PURPLE",
+    "TITLE      WHITE",
   };
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
