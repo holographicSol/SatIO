@@ -11096,7 +11096,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         // ------------------------------------------------
         display.drawHLine(1, 28, 127);
-        display.drawVLine(45, 13, 26);
+        display.drawVLine(46, 13, 26);
         // ------------------------------------------------
       }
       // ------------------------------------------------
@@ -11110,7 +11110,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD );
-      display.drawCanvas(43, ui_content_0, canvas60x8);
+      display.drawCanvas(48, ui_content_0, canvas60x8);
 
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
