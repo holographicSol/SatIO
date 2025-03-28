@@ -11096,21 +11096,21 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         // ------------------------------------------------
         display.drawHLine(1, 28, 127);
-        display.drawVLine(60, 13, 26);
+        display.drawVLine(41, 13, 26);
         // ------------------------------------------------
       }
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
-      canvas54x8.clear();
-      canvas54x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
-      display.drawCanvas(3, ui_content_0, canvas54x8);
+      canvas36x8.clear();
+      canvas36x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_0, canvas36x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD );
-      display.drawCanvas(64, ui_content_0, canvas60x8);
+      display.drawCanvas(43, ui_content_0, canvas60x8);
 
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
