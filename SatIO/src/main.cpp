@@ -11096,15 +11096,15 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         // ------------------------------------------------
         display.drawHLine(1, 28, 127);
-        display.drawVLine(41, 13, 26);
+        display.drawVLine(45, 13, 26);
         // ------------------------------------------------
       }
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
-      canvas36x8.clear();
-      canvas36x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
-      display.drawCanvas(3, ui_content_0, canvas36x8);
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_0, canvas42x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
