@@ -1043,14 +1043,41 @@ struct systemStruct {
     RGB_COLOR16(255,0,255), // purple
     RGB_COLOR16(255,255,255), // white
   };
-  char char_display_color[7][56] = {
-    "COLOR    RED",
-    "COLOR    YELLOW",
-    "COLOR    GREEN",
-    "COLOR    BLUE",
-    "COLOR    L.BLUE",
-    "COLOR    PURPLE",
-    "COLOR    WHITE",
+  char char_display_border_color[7][56] = {
+    "C.BORDER   RED",
+    "C.BORDER   YELLOW",
+    "C.BORDER   GREEN",
+    "C.BORDER   BLUE",
+    "C.BORDER   L.BLUE",
+    "C.BORDER   PURPLE",
+    "C.BORDER   WHITE",
+  };
+  char char_display_content_color[7][56] = {
+    "C.CONTENT  RED",
+    "C.CONTENT  YELLOW",
+    "C.CONTENT  GREEN",
+    "C.CONTENT  BLUE",
+    "C.CONTENT  L.BLUE",
+    "C.CONTENT  PURPLE",
+    "C.CONTENT  WHITE",
+  };
+  char char_display_menu_color[7][56] = {
+    "C.MENU     RED",
+    "C.MENU     YELLOW",
+    "C.MENU     GREEN",
+    "C.MENU     BLUE",
+    "C.MENU     L.BLUE",
+    "C.MENU     PURPLE",
+    "C.MENU     WHITE",
+  };
+  char char_display_title_color[7][56] = {
+    "C.TITLE    RED",
+    "C.TITLE    YELLOW",
+    "C.TITLE    GREEN",
+    "C.TITLE    BLUE",
+    "C.TITLE    L.BLUE",
+    "C.TITLE    PURPLE",
+    "C.TITLE    WHITE",
   };
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
@@ -11184,13 +11211,13 @@ void UpdateUI(void * pvParamters) {
       // auto off time
       menuDisplayItems[1] = systemData.char_display_autooff_times[systemData.index_display_autooff_times];
       // border color
-      menuDisplayItems[2] = systemData.char_display_color[systemData.index_display_border_color];
+      menuDisplayItems[2] = systemData.char_display_border_color[systemData.index_display_border_color];
       // content color
-      menuDisplayItems[3] = systemData.char_display_color[systemData.index_display_content_color];
+      menuDisplayItems[3] = systemData.char_display_content_color[systemData.index_display_content_color];
       // menu color
-      menuDisplayItems[4] = systemData.char_display_color[systemData.index_display_menu_color];
+      menuDisplayItems[4] = systemData.char_display_menu_color[systemData.index_display_menu_color];
       // title color
-      menuDisplayItems[5] = systemData.char_display_color[systemData.index_display_title_color];
+      menuDisplayItems[5] = systemData.char_display_title_color[systemData.index_display_title_color];
       // ------------------------------------------------
       display.setColor(systemData.color_menu);
       // ------------------------------------------------
