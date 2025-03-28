@@ -859,7 +859,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125
 
 const int max_system_items = 1;
 const char *menuSystemItems[max_system_items];
-LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 38}, {125, 125}} );
+LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 78}, {125, 125}} );
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
