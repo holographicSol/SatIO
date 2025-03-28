@@ -845,7 +845,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
 
-const int max_display_items = 5;
+const int max_display_items = 6;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
@@ -1031,6 +1031,7 @@ struct systemStruct {
   int index_display_border_color = 6;
   int index_display_content_color = 6;
   int index_display_menu_color = 6;
+  int index_display_title_color = 6;
   int max_color_index = 6;
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
   int display_color[7] = {
@@ -1054,6 +1055,7 @@ struct systemStruct {
   int color_border = display_color[index_display_border_color];
   int color_content = display_color[index_display_content_color];
   int color_menu = display_color[index_display_menu_color];
+  int color_title = display_color[index_display_title_color];
 
   // conversion maps
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
@@ -3831,6 +3833,18 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_DISPLAY_TITLE_COLOR,");
+    itoa(systemData.index_display_title_color, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
@@ -4319,7 +4333,7 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display content color index
+      // display menu color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_COLOR", strlen("INDEX_DISPLAY_MENU_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4328,6 +4342,21 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_menu_color = atoi(sdcardData.token);
           systemData.color_menu = systemData.display_color[systemData.index_display_menu_color];
+          // Serial.println("[color_menu] " + String(systemData.color_menu));
+        }
+      }
+
+      // ------------------------------------------------
+
+      // display title color index
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_TITLE_COLOR", strlen("INDEX_DISPLAY_TITLE_COLOR")) == 0) {
+        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token = strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token) == true) {
+          PrintFileToken();
+          systemData.index_display_title_color = atoi(sdcardData.token);
+          systemData.color_title = systemData.display_color[systemData.index_display_title_color];
           // Serial.println("[color_menu] " + String(systemData.color_menu));
         }
       }
@@ -9732,6 +9761,12 @@ void menuEnter() {
       if (systemData.index_display_menu_color>systemData.max_color_index-1) {systemData.index_display_menu_color=0;}
       systemData.color_menu=systemData.display_color[systemData.index_display_menu_color];
     }
+
+    // iter display title color
+    if (menuDisplay.selection()==5) {systemData.index_display_title_color++;
+      if (systemData.index_display_title_color>systemData.max_color_index-1) {systemData.index_display_title_color=0;}
+      systemData.color_title=systemData.display_color[systemData.index_display_title_color];
+    }
   }
 
   // ----------------------------------------------------------------
@@ -10273,7 +10308,7 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
-        drawGeneralTitle("SETTINGS", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SETTINGS", systemData.color_title, systemData.color_border);
       }
       // ------------------------------------------------
       // performace/efficiency: draw conditionally 
@@ -10297,7 +10332,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("MATRIX LOGIC", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MATRIX LOGIC", systemData.color_title, systemData.color_border);
       }
       // ------------------------------------------------
       display.setColor(systemData.color_border);
@@ -10546,7 +10581,7 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
-        drawGeneralTitle("MATRIX OVERVIEW", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MATRIX OVERVIEW", systemData.color_title, systemData.color_border);
         display.drawRect(0, 12, 127, 26);
         display.drawVLine(64, 13, 25);
         // ------------------------------------------------
@@ -10672,9 +10707,9 @@ void UpdateUI(void * pvParamters) {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", systemData.color_content, systemData.color_border);;}
-          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", systemData.color_content, systemData.color_border);;}
-          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", systemData.color_content, systemData.color_border);;}
+          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", systemData.color_title, systemData.color_border);;}
+          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", systemData.color_title, systemData.color_border);;}
+          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", systemData.color_title, systemData.color_border);;}
         }
         // ------------------------------------------------
         display.setColor(systemData.color_content);
@@ -10760,7 +10795,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10824,7 +10859,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SELECT FUNCTION", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SELECT FUNCTION", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10864,7 +10899,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("FILE", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("FILE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10904,7 +10939,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SAVE", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SAVE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10932,7 +10967,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("LOAD", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("LOAD", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10959,7 +10994,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("DELETE", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("DELETE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -10985,7 +11020,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("GPS", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11026,7 +11061,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SERIAL", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SERIAL", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11085,7 +11120,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("UNIVERSE", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("UNIVERSE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11139,7 +11174,7 @@ void UpdateUI(void * pvParamters) {
       }
       // this page currently has border and title drawn every frame in case the color is changed
       drawMainBorder();
-      drawGeneralTitle("DISPLAY", systemData.color_content, systemData.color_border);
+      drawGeneralTitle("DISPLAY", systemData.color_title, systemData.color_border);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11154,6 +11189,8 @@ void UpdateUI(void * pvParamters) {
       menuDisplayItems[3] = systemData.char_display_color[systemData.index_display_content_color];
       // menu color
       menuDisplayItems[4] = systemData.char_display_color[systemData.index_display_menu_color];
+      // title color
+      menuDisplayItems[5] = systemData.char_display_color[systemData.index_display_title_color];
       // ------------------------------------------------
       display.setColor(systemData.color_menu);
       // ------------------------------------------------
@@ -11170,7 +11207,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SYSTEM", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SYSTEM", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
@@ -11205,7 +11242,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("CD74HC4067", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("CD74HC4067", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 36, 127);
@@ -11299,7 +11336,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("GNGGA", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
@@ -11394,7 +11431,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("GNRMC", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
@@ -11489,7 +11526,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("GPATT", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawVLine(28, 13, 127);
@@ -11592,7 +11629,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SATIO", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SATIO", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawVLine(41, 13, 127);
@@ -11699,7 +11736,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SUN", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SUN", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -11753,7 +11790,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("MOON", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MOON", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -11817,7 +11854,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("MERCURY", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MERCURY", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -11906,7 +11943,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("VENUS", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("VENUS", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -11995,7 +12032,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("MARS", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("MARS", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -12084,7 +12121,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("JUPITER", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("JUPITER", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -12173,7 +12210,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SATURN", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("SATURN", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -12262,7 +12299,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("URANUS", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("URANUS", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
@@ -12351,7 +12388,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("NEPTUNE", systemData.color_content, systemData.color_border);
+        drawGeneralTitle("NEPTUNE", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
