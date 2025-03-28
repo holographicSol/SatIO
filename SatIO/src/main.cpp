@@ -11979,7 +11979,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make two columns (because of long string moon phase we cannot have 3 columns like the others)
         display.drawVLine(35, 24, 127); // vertical seperator 0
         // ------------------------------------------------
         display.setColor(systemData.color_subtitle);
@@ -12046,7 +12045,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12138,7 +12136,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12230,7 +12227,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12322,7 +12318,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12414,7 +12409,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12506,7 +12500,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
@@ -12598,7 +12591,6 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 24, 127); // seperate rise and set from rest of content
         // ------------------------------------------------
-        // make three columns
         display.drawVLine(35, 24, 127); // vertical seperator 0
         display.drawVLine(84, 24, 127); // vertical seperator 1
         // ------------------------------------------------
