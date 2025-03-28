@@ -11003,28 +11003,28 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-      display.drawCanvas(3, ui_content_2-2, canvas120x8);
+      display.drawCanvas(3, ui_content_2-4, canvas120x8);
       // function x
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, ui_content_3-2, canvas120x8);
+      display.drawCanvas(3, ui_content_3-4, canvas120x8);
       // function y
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, ui_content_4-2, canvas120x8);
+      display.drawCanvas(3, ui_content_4-4, canvas120x8);
       // function z
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
-      display.drawCanvas(3, ui_content_5-2, canvas120x8);
+      display.drawCanvas(3, ui_content_5-4, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixConfigureFunction.showMenuBorder(display);
