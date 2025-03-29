@@ -5679,7 +5679,6 @@ void trackPlanets() {
   // do planet elements and do sun before doing other plans
   myAstro.doPlanetElements();
   myAstro.doSun();
-
   // now do other plans
   if (systemData.sidereal_track_sun == true) {trackSun();}
   else {
@@ -5809,24 +5808,11 @@ void trackPlanets() {
 }
 
 void setTrackPlanets() {
-  
-  // int t0 = millis();
   myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
-  // bench("[setLatLong]" + String(millis()-t0));
-
   myAstro.rejectDST();
-
-  // t0 = millis();
   myAstro.setGMTdate(rtc.now().year(), rtc.now().month(), rtc.now().day());
-  // bench("[setGMTdate]" + String(millis()-t0));
-
-  // t0 = millis();
   myAstro.setGMTtime(rtc.now().hour(), rtc.now().minute(), rtc.now().second());
-  // bench("[setGMTtime]" + String(millis()-t0));
-
-  // t0 = millis();
   myAstro.setLocalTime(rtc.now().hour(), rtc.now().minute(), rtc.now().second());
-  // bench("[setLocalTime]" + String(millis()-t0));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
