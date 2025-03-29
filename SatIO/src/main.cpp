@@ -10449,8 +10449,6 @@ void UpdateUI(void * pvParamters) {
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
       display.drawVLine(64, 37, 49); // seperate enabled/disabled from high/low
       // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
       // ENABLED
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
