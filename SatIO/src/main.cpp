@@ -6072,7 +6072,7 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                              TIME DATA
+        //                                                                                                           SECOND TIMER
         
         /*
         allows modulation with an approximate resolution of 1 second.
@@ -6083,6 +6083,9 @@ void matrixSwitch() {
           tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
         }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                    RTC
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
