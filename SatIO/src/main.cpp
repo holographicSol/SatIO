@@ -984,7 +984,7 @@ struct systemStruct {
 
   bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   int i_overload = 0;                // count overloads
-  int overload_thresh=100000;        // main loop overload time in micros (default 1/10th of a second)
+  int overload_max=100000;        // main loop overload time in micros (default 1/10th of a second)
   int index_overload_times = 10;     // index of currently used time
   int max_overload_times = 11;
   int overload_times[12] = {
@@ -4249,6 +4249,18 @@ void sdcard_save_system_configuration(char * file) {
 
     // ------------------------------------------------
 
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_OVERLOAD_MAX,");
+    itoa(systemData.index_overload_times, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
     exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
 
@@ -4800,6 +4812,19 @@ bool sdcard_load_system_configuration(char * file) {
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
             if (atoi(sdcardData.token) == 0) {systemData.output_neptune_enabled = false;} else {systemData.output_neptune_enabled = true;}
+          }
+        }
+
+        // ------------------------------------------------
+
+        if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX")) == 0) {
+          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+          PrintFileToken();
+          sdcardData.token = strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token) == true) {
+            PrintFileToken();
+            systemData.index_overload_times = atoi(sdcardData.token);
+            systemData.overload_max = systemData.overload_times[systemData.index_overload_times];
           }
         }
 
@@ -9831,7 +9856,7 @@ void menuEnter() {
     // iter overload times
     if (menuSystem.selection()==1) {systemData.index_overload_times++;
       if (systemData.index_overload_times>systemData.max_overload_times) {systemData.index_overload_times=0;}
-      systemData.overload_thresh=systemData.overload_times[systemData.index_overload_times];
+      systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
     }
     // consider matrix switch state handling before allowing the below two values to be changed after flashing
     // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
@@ -13990,7 +14015,7 @@ void loop() {
   //                                                               TIMINGS
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=systemData.overload_thresh) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
+  if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
