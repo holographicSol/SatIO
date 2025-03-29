@@ -6012,7 +6012,7 @@ void matrixSwitch() {
   /*
   compound condition checks, each resulting in zero/one at the final_bool.
   */
- // ------------------------------------------------
+  // ------------------------------------------------
   // iterate through matrices
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
