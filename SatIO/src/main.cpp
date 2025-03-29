@@ -9123,11 +9123,9 @@ void matrixSwitch() {
           for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
         }
 
-        // ------------------------------------------------
         /*
         WARNING: why do you think you can trust the data you are receiving?
                  once you plug something into this, the 'satellites' are in control unless you have a way to override.
-
                  critical systems: arduino is neither medical nor military grade.
         */
 
