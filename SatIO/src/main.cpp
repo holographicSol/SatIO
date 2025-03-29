@@ -5962,23 +5962,20 @@ bool check_bool_false(bool _bool) {
 }
 
 bool SecondsTimer(double n0, double n1, int Mi) {
-
   /*
-
   seconds accumulated by an isr alarm. this does not use satellite data. 
-  
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
 
   */
-
+ // ------------------------------------------------
   // turn on or remain off
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
     else {false;}
   }
-
+  // ------------------------------------------------
   // turn off or remain on
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
@@ -5999,8 +5996,11 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
+    // ------------------------------------------------
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
+    // ------------------------------------------------
     else {true;}
+    // ------------------------------------------------
   }
   return false;
 }
@@ -6009,51 +6009,55 @@ bool SecondsTimer(double n0, double n1, int Mi) {
 //                                                                                                                 MATRIX: SWITCH
 
 void matrixSwitch() {
-
   /*
   compound condition checks, each resulting in zero/one at the final_bool.
   */
-
+ // ------------------------------------------------
   // iterate through matrices
   for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
     // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
-
-      /*
-      temporary switch must be zero each time
-      */
+      // ------------------------------------------------
+      // temporary switch must be zero each time
       bool tmp_matrix[matrixData.max_matrix_functions] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       int count_none_function = 0;
-
+      // ------------------------------------------------
       // iterate over each function name in the current matrix
       for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
-
         // uncomment to debug
         // debug("[Mi] " + String(Mi));
         // debug("[Fi] " + String(Fi));
         // debug("[matrixData.matrix_function[Mi][Fi]] " + String(matrixData.matrix_function[Mi][Fi]));
 
-        /*
-        perfromance and logic prefers adding functions from position zero else if position zero None then break.
-        */
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                          FIRST IS NONE
+        // perfromance and logic prefers adding functions from position zero else if position zero None then break.
         if ((strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) && (Fi == 0)) {break;}
 
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                   NONE
         /*
         put true in temporary matrix for functions after position zero that are set to None. allows for 1-10 functions to be set.
         */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) {
           tmp_matrix[Fi] = 1; count_none_function++;}
 
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                                ENABLED
         /*
         put true in temporary matrix if switch is Enabled (different from enabling disabling) regardless of data. if used,
         function name Enabled will always return true.
         */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Enabled") == 0) {tmp_matrix[Fi] = 1;}
 
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                               OVERLOAD
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload") == 0) {
           tmp_matrix[Fi] = check_bool_true(systemData.overload);}
 
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                             SWITCHLINK
         /*
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
          gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
