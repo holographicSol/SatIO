@@ -4329,6 +4329,8 @@ bool sdcard_load_system_configuration(char * file) {
 
     while (exfile.available()) {
 
+      // ------------------------------------------------
+
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
@@ -4873,7 +4875,6 @@ bool sdcard_load_system_configuration(char * file) {
 /* creates a single directory */
 
 void sdcard_mkdir(char * dir){
-
   if (!sd.exists(dir)) {
     Serial.println("[sdcard] attempting to create directory: " + String(dir));
     if (!sd.mkdir(dir)) {Serial.println("[sdcard] failed to create directory: " + String(dir));}
@@ -4961,28 +4962,41 @@ void zero_matrix() {
 /* loads tagged, comma delimited data from a matrix file */
 
 bool sdcard_load_matrix(char * file) {
-  
   Serial.println("[sdcard] attempting to load file: " + String(file));
   exfile.flush();
   exfile = sd.open(file); 
   if (exfile) {
     while (exfile.available()) {
+
+      // ------------------------------------------------
+
       // read line
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER = exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+
+      // ------------------------------------------------
+
       // tag: r
       if (strncmp(sdcardData.BUFFER, sdcardData.tag_0, 1) == 0) {
+
+        // ------------------------------------------------
         // ensure cleared
         memset(sdcardData.data_0, 0, sizeof(sdcardData.data_0)); memset(sdcardData.data_1, 0, sizeof(sdcardData.data_1)); memset(sdcardData.data_2, 0, sizeof(sdcardData.data_2));
         memset(sdcardData.data_3, 0, sizeof(sdcardData.data_3)); memset(sdcardData.data_4, 0, sizeof(sdcardData.data_4)); memset(sdcardData.data_5, 0, sizeof(sdcardData.data_5));
         memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7)); memset(sdcardData.data_8, 0, sizeof(sdcardData.data_8));
         validData.bool_data_0 = false;
         validData.bool_data_1 = false;
+
+        // ------------------------------------------------
+
         // split line on delimiter
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
+
+        // ------------------------------------------------
+
         // matrix index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
@@ -4990,6 +5004,9 @@ bool sdcard_load_matrix(char * file) {
           Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
         }
         else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
+
+        // ------------------------------------------------
+
         // matrix function index
         sdcardData.token = strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
@@ -4997,14 +5014,23 @@ bool sdcard_load_matrix(char * file) {
           Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
         }
         else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
+
+        // ------------------------------------------------
+
         // continue if we have valid index numbers
         if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
+
+          // ------------------------------------------------
+
           // matrix function name
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, sizeof(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
           Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
+
+          // ------------------------------------------------
+
           // matrix function data: x
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
@@ -5013,6 +5039,9 @@ bool sdcard_load_matrix(char * file) {
             Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
           else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
+
+          // ------------------------------------------------
+
           // matrix function data: y
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
@@ -5021,6 +5050,9 @@ bool sdcard_load_matrix(char * file) {
             Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
           else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
+
+          // ------------------------------------------------
+
           // matrix function data: z
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
@@ -5029,17 +5061,27 @@ bool sdcard_load_matrix(char * file) {
             Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
           else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
+
+          // ------------------------------------------------
+
           // matrix function data: inverted logic
           sdcardData.token = strtok(NULL, ",");
           strcpy(sdcardData.data_8, sdcardData.token);
           if (is_all_digits(sdcardData.data_8) == true) {matrixData.matrix_switch_inverted_logic[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_8);}
+
+          // ------------------------------------------------
         }
       }
+      // ------------------------------------------------
+
       // tag: e
       else if (strncmp(sdcardData.BUFFER, sdcardData.tag_1, 1) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         sdcardData.token = strtok(NULL, ",");
         sdcardData.token = strtok(NULL, ",");
+
+        // ------------------------------------------------
+
         // enabled/disabled
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6) == true) {
@@ -5047,6 +5089,9 @@ bool sdcard_load_matrix(char * file) {
           Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
           }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
+
+        // ------------------------------------------------
+
         // port
         sdcardData.token = strtok(NULL, ",");
         // check
@@ -5056,8 +5101,13 @@ bool sdcard_load_matrix(char * file) {
           Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
           }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
+
+        // ------------------------------------------------
       }
     }
+
+    // ------------------------------------------------
+
     // update filename and file path (this has to work for loading on boot and for any following matrix load file calls)
     strcpy(sdcardData.tempmatrixfilepath, file);
     memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
@@ -5067,15 +5117,22 @@ bool sdcard_load_matrix(char * file) {
     UpdateMatrixFileName(sdcardData.matrix_filepath);
     exfile.close();
     return true;
+
+    // ------------------------------------------------
   }
   // update matrix filepath (clear)
   else {
+
+    // ------------------------------------------------
+
     exfile.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
     // update filename and file path
     // memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
     // memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     return false;
+
+    // ------------------------------------------------
     }
 }
 
