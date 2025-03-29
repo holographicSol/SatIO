@@ -385,6 +385,7 @@ NanoCanvas<8,8,1> canvas8x8;
 NanoCanvas<19,8,1> canvas19x8;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
+NanoCanvas<76,8,1> canvas76x8;
 NanoCanvas<80,8,1> canvas80x8;
 NanoCanvas<126,24,1> canvas126x24;
 NanoCanvas<120,120,1> canvas120x120;
@@ -11457,8 +11458,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String(
+      canvas76x8.clear();
+      canvas76x8.printFixed(1, 1, String(
         String(timeData.uptime_hours) + ":" +
         String(timeData.uptime_minutes) + ":" +
         String(timeData.uptime_seconds) + " " +
@@ -11466,7 +11467,7 @@ void UpdateUI(void * pvParamters) {
         String(timeData.uptime_months) + "." +
         String(timeData.uptime_years) + ".")
         .c_str(), STYLE_BOLD );
-      display.drawCanvas(50, ui_content_1, canvas60x8);
+      display.drawCanvas(50, ui_content_1, canvas76x8);
 
       // // overload
       // // looptime min
@@ -13748,6 +13749,7 @@ void setup() {
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
   canvas60x8.setFixedFont(ssd1306xled_font6x8);
+  canvas76x8.setFixedFont(ssd1306xled_font6x8);
   canvas28x8.setFixedFont(ssd1306xled_font6x8);
   canvas21x8.setFixedFont(ssd1306xled_font6x8);
   canvas36x8.setFixedFont(ssd1306xled_font6x8);
