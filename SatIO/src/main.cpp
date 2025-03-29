@@ -984,7 +984,7 @@ struct systemStruct {
 
   bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   int i_overload = 0;                // count overloads
-  int overload_max=100000;        // main loop overload time in micros (default 1/10th of a second)
+  int overload_max=100000;           // main loop overload time in micros (default 1/10th of a second)
   int index_overload_times = 10;     // index of currently used time
   int max_overload_times = 11;
   int overload_times[12] = {
@@ -1002,18 +1002,18 @@ struct systemStruct {
     1000000,
   };
   char char_overload_times[12][56] = {
-    "OLOAD uS 1",
-    "OLOAD uS 2",
-    "OLOAD uS 3",
-    "OLOAD uS 4",
-    "OLOAD uS 5",
-    "OLOAD uS 10",
-    "OLOAD uS 50",
-    "OLOAD uS 100",
-    "OLOAD ms 1",
-    "OLOAD ms 10",
-    "OLOAD ms 100",
-    "OLOAD    1 Second",
+    "OLOAD uS    1",
+    "OLOAD uS    2",
+    "OLOAD uS    3",
+    "OLOAD uS    4",
+    "OLOAD uS    5",
+    "OLOAD uS    10",
+    "OLOAD uS    50",
+    "OLOAD uS    100",
+    "OLOAD ms    1",
+    "OLOAD ms    10",
+    "OLOAD ms    100",
+    "OLOAD       1 Second",
   };
 
   bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
