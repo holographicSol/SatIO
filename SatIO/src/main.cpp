@@ -9320,7 +9320,6 @@ void menuRight() {
   if (menu_page==page_home) {}
   else if (menu_page==page_main_menu) {}
   else if (menu_page==page_matrix_logic_main) {menu_column_selection++; if (menu_column_selection>4) {menu_column_selection=0;}}
-
   // debug("[menu_column_selection] " + String(menu_column_selection));
 }
 
@@ -9363,7 +9362,6 @@ void menuBack() {
   else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gpatt) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_satio) {menu_page=page_gps_main;}
-
   else if (menu_page==page_universe_view_sun) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_moon) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_mercury) {menu_page=page_universe_main;}
@@ -9373,7 +9371,6 @@ void menuBack() {
   else if (menu_page==page_universe_view_saturn) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
-
   // debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
@@ -9395,59 +9392,56 @@ void menuEnter() {
 
   // main menu
   else if (menu_page==page_main_menu) {
-
+    // ------------------------------------------------
     // go to matrix menu
     if (menuMain.selection()==0) {
       menu_page=page_matrix_logic_main;
     }
-
+    // ------------------------------------------------
     // go to matrix menu
     if (menuMain.selection()==1) {
       menu_page=page_overview_matrix_switching;
     }
-
+    // ------------------------------------------------
     // go to file menu
     else if (menuMain.selection()==2) {
       menu_page=page_file_main;
     }
-
+    // ------------------------------------------------
     // go to gps menu
     else if (menuMain.selection()==3) {
       menu_page=page_gps_main;
     }
-
+    // ------------------------------------------------
     // go to serial menu
     else if (menuMain.selection()==4) {
       menu_page=page_serial_main;
     }
-
+    // ------------------------------------------------
     // go to system menu
     else if (menuMain.selection()==5) {
       menu_page=page_system_main;
     }
-
+    // ------------------------------------------------
     // go to universe menu
     else if (menuMain.selection()==6) {
       menu_page=page_universe_main;
     }
-
+    // ------------------------------------------------
     // go to display menu
     else if (menuMain.selection()==7) {
       menu_page=page_display_main;
     }
-
+    // ------------------------------------------------
     // go to CD74HC4067 menu
     else if (menuMain.selection()==8) {
       menu_page=page_CD74HC4067_main;
     }
-
   }
-
   // ----------------------------------------------------------------
-
   // matrix switch configuration
   else if (menu_page==page_matrix_logic_main) {
-
+    // ------------------------------------------------
     // go to set port page
     if (menu_column_selection==1) {
       memset(input_data, 0, sizeof(input_data));
@@ -9455,25 +9449,25 @@ void menuEnter() {
       enter_digits_key = 1;
       menu_page=page_input_data;
     }
-
+    // ------------------------------------------------
+    // toggle enable/disable matrix switch: also turns switch off
     else if (menu_column_selection==2) {
-      // enable matrix switch: also turns switch off
       matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]^=true;
       matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]^=true;
     }
-
+    // ------------------------------------------------
+    // toggle standard/inverted function logic
     else if (menu_column_selection==3) {
       matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]^=true;
     }
-
+    // ------------------------------------------------
+    // go to function name selection
     else if (menu_column_selection==4) {
-      // go to function name selection
       menu_page=page_matrix_logic_select_setup;
     }
   }
 
   // ----------------------------------------------------------------
-
   // set digits
   else if (menu_page==page_input_data) {
     allow_input_data=false;
@@ -9484,10 +9478,11 @@ void menuEnter() {
     enter_digits_key = -1;
   }
 
+  // ----------------------------------------------------------------
   // matrix switch select function name, x, y, or z
   else if (menu_page==page_matrix_logic_select_setup) {
     if (menuMatrixConfigureFunction.selection()==0) {menu_page=page_matrix_logic_setup_function;}
-
+    // ------------------------------------------------
     // go to set function value x page
     if (menuMatrixConfigureFunction.selection()==1) {
       memset(input_data, 0, sizeof(input_data));
@@ -9495,6 +9490,7 @@ void menuEnter() {
       enter_digits_key = 2;
       menu_page=page_input_data;
     }
+    // ------------------------------------------------
     // go to set function value y page
     else if (menuMatrixConfigureFunction.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
@@ -9502,6 +9498,7 @@ void menuEnter() {
       enter_digits_key = 3;
       menu_page=page_input_data;
     }
+    // ------------------------------------------------
     // go to set function value z page
     else if (menuMatrixConfigureFunction.selection()==3) {
       memset(input_data, 0, sizeof(input_data));
@@ -9509,30 +9506,28 @@ void menuEnter() {
       enter_digits_key = 4;
       menu_page=page_input_data;
     }
+    // ------------------------------------------------
     // set expression
     else if (menuMatrixConfigureFunction.selection()==4) {
-
+      // ------------------------------------------------
       // iterate over expression
       matrixData.i_expression++;
       if (matrixData.i_expression > 4) {matrixData.i_expression=0;}
-      // debug("[expression]" + String(matrixData.expression[matrixData.i_expression]));
-
+      // ------------------------------------------------
       // put current str in temp
       memset(matrixData.temp, 0, sizeof(matrixData.temp));
       strcpy(matrixData.temp, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
-      
+      // ------------------------------------------------
       // remove expression
       matrixData.tempStr = String(matrixData.temp);
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
       matrixData.tempStr.replace("Range", "");
-      // debug("[temp 0] " + matrixData.tempStr);
-
+      // ------------------------------------------------
       // concatinate base function name with expression
       matrixData.tempStr = matrixData.tempStr + matrixData.expression[matrixData.i_expression];
-      // debug("[temp 1] " + matrixData.tempStr);
-
+      // ------------------------------------------------
       // copy new name into matrix
       memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
       strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.tempStr.c_str());
@@ -9540,7 +9535,6 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // matrix switch set function name
   else if (menu_page==page_matrix_logic_setup_function) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
@@ -9549,10 +9543,9 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // file menu
   else if (menu_page==page_file_main) {
-
+    // ------------------------------------------------
     // new matrix
     if (menuFile.selection()==0) {
       // disable and turn off all matrix switches
@@ -9566,124 +9559,101 @@ void menuEnter() {
     }
 
     // ----------------------------------------------------------------
-
     // goto save matrix page
     else if (menuFile.selection()==1) {
-
-      /* create list of matrix filespaths and go to save page */
-
+      // ------------------------------------------------
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_file_save_matrix;
     }
 
     // ----------------------------------------------------------------
-
     // goto load matrix page
     else if (menuFile.selection()==2) {
-
-      /* create list of matrix filespaths and go to load page */
-
+      // ------------------------------------------------
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_file_load_matrix;
     }
 
     // ----------------------------------------------------------------
-
     // goto delete matrix page
     else if (menuFile.selection()==3) {
-
-      /* create list of matrix filespaths and go to delete page */
-
+      // ------------------------------------------------
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_file_delete_matrix;
     }
 
     // ----------------------------------------------------------------
-
     // save system settings
     else if (menuFile.selection()==4) {
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_save_system_config_indicator;
       UIIndicators();
-
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_save_system_configuration(sdcardData.sysconf);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_file_main;
     }
 
     // ----------------------------------------------------------------
-
     // restore default system settings
     else if (menuFile.selection()==5) {
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_restore_default_matrix_indicator;
       UIIndicators();
-
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       // ToDo:
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_file_main;
     }
@@ -9692,9 +9662,9 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // save matrix menu
   else if (menu_page==page_file_save_matrix) {
+    // ------------------------------------------------
     // generate filename according to selection index
     memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
     strcpy(sdcardData.newfilename, "/MATRIX/M_");
@@ -9702,34 +9672,31 @@ void menuEnter() {
     itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
-
+    // ------------------------------------------------
     // GO TO
     menu_page=page_save_matrix_file_indicator;
     UIIndicators();
-
     // END SPI DEVICE
     endSPIDevice(SSD1351_CS);
-
     // SDCARD
     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
     sdcard_save_matrix(sdcardData.newfilename);
     sd.end();
     endSPIDevice(SD_CS);
-
     // BEGIN SPI DEVICE
     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
     display.begin();
-
+    // ------------------------------------------------
     // GO TO
     menu_page=page_file_main;
   }
 
   // ----------------------------------------------------------------
-
   // load matrix menu
   else if (menu_page==page_file_load_matrix) {
     // handle empty slots
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+      // ------------------------------------------------
       // generate filename according to selection index
       memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
       strcpy(sdcardData.newfilename, "/MATRIX/M_");
@@ -9737,34 +9704,33 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-
+      // ------------------------------------------------
       // GO TO
       menu_page=page_load_matrix_file_indicator;
       UIIndicators();
-
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_load_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+      // ------------------------------------------------
     }
     // GO TO
     menu_page=page_file_main;
   }
 
   // ----------------------------------------------------------------
-
   // delete matrix menu
   else if (menu_page==page_file_delete_matrix) {
+    // ------------------------------------------------
     // handle empty slots
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+      // ------------------------------------------------
       // generate filename according to selection index
       memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
       strcpy(sdcardData.newfilename, "/MATRIX/M_");
@@ -9772,30 +9738,27 @@ void menuEnter() {
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      
+      // ------------------------------------------------
       // GO TO
       menu_page=page_delete_matrix_file_indicator;
       UIIndicators();
-
       // END SPI DEVICE
       endSPIDevice(SSD1351_CS);
-
       // SDCARD
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_delete_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
-
       // BEGIN SPI DEVICE
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
+      // ------------------------------------------------
     }
     // GO TO
     menu_page=page_file_main;
   }
 
   // ----------------------------------------------------------------
-
   // gps page
   else if (menu_page==page_gps_main) {
     if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
@@ -9819,7 +9782,6 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // serial page
   else if (menu_page==page_serial_main) {
     if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
@@ -9841,7 +9803,6 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // universe page
   else if (menu_page==page_universe_main) {
     if (menuUniverse.selection()==0) {systemData.sidereal_track_sun^=true;}
@@ -9865,50 +9826,49 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // dispaly page
   else if (menu_page==page_display_main) {
-
+     // ------------------------------------------------
     // display auto off
     if (menuDisplay.selection()==0)  {systemData.display_auto_off^=true;}
-    
+    // ------------------------------------------------
     // iter display auto off timing
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
       if (systemData.index_display_autooff_times>systemData.max_display_autooff_times) {systemData.index_display_autooff_times=0;}
       systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
     }
-
+    // ------------------------------------------------
     // iter display border color
     if (menuDisplay.selection()==2) {systemData.index_display_border_color++;
       if (systemData.index_display_border_color>systemData.max_color_index) {systemData.index_display_border_color=0;}
       systemData.color_border=systemData.display_color[systemData.index_display_border_color];
     }
-
+    // ------------------------------------------------
     // iter display border color
     if (menuDisplay.selection()==3) {systemData.index_display_content_color++;
       if (systemData.index_display_content_color>systemData.max_color_index) {systemData.index_display_content_color=0;}
       systemData.color_content=systemData.display_color[systemData.index_display_content_color];
     }
-
+    // ------------------------------------------------
     // iter display menu border color
     if (menuDisplay.selection()==4) {systemData.index_display_menu_border_color++;
       if (systemData.index_display_menu_border_color>systemData.max_color_index) {systemData.index_display_menu_border_color=0;}
       systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
     }
-
+    // ------------------------------------------------
     // iter display menu content color
     if (menuDisplay.selection()==5) {systemData.index_display_menu_content_color++;
       if (systemData.index_display_menu_content_color>systemData.max_color_index) {systemData.index_display_menu_content_color=0;}
       systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
     }
-
+    // ------------------------------------------------
     // iter display title color
     if (menuDisplay.selection()==6) {systemData.index_display_title_color++;
       if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
       systemData.color_title=systemData.display_color[systemData.index_display_title_color];
     }
-
+    // ------------------------------------------------
     // iter display subtitle color
     if (menuDisplay.selection()==7) {systemData.index_display_color_subtitle++;
       if (systemData.index_display_color_subtitle>systemData.max_color_index) {systemData.index_display_color_subtitle=0;}
@@ -9917,13 +9877,10 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // system page
   else if (menu_page==page_system_main) {
-
     // startup run matrix
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
-
     // consider matrix switch state handling before allowing the below two values to be changed after flashing
     // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
     // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
