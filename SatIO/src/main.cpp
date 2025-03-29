@@ -11457,8 +11457,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(
+      canvas60x8.clear();
+      canvas60x8.printFixed(1, 1, String(
         String(timeData.uptime_hours) + ":" +
         String(timeData.uptime_minutes) + ":" +
         String(timeData.uptime_seconds) + " " +
@@ -11466,7 +11466,7 @@ void UpdateUI(void * pvParamters) {
         String(timeData.uptime_months) + "." +
         String(timeData.uptime_years) + ".")
         .c_str(), STYLE_BOLD );
-      display.drawCanvas(50, ui_content_1, canvas80x8);
+      display.drawCanvas(50, ui_content_1, canvas60x8);
 
       // // overload
       // // looptime min
