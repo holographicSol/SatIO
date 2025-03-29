@@ -982,6 +982,7 @@ struct systemStruct {
   bool debug = false;                // print verbose information over serial
   bool t_bench = false;              // prints bennchmark information for tuning
   bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
+  int i_overload = 0;                // count overloads
   bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
 
   // performace: turn on/off what you need
@@ -11466,7 +11467,7 @@ void UpdateUI(void * pvParamters) {
       // limit digits to 10 for available screen space. (currently uptime_seconds is itself is reset to zero, this can be changed later if we need)
       canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
-      // overload
+      // overload i_overload
       // manually set overload time
       // manually set rtc
       // ------------------------------------------------
@@ -13931,7 +13932,7 @@ void loop() {
   //                                                               TIMINGS
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true;} // gps module outputs every 100ms (100,000uS)
+  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>99) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
