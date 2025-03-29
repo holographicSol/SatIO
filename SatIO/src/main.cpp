@@ -255,6 +255,8 @@
         adjustable output modulation in the micros/millis depending on chosen IIC capable 'intermediary' output MCU's.
         intermediary output MCU's receive high/low, output high/low according to delay value >=0 received over IIC.
         currently stacked logic can be modulated to every second as a minimum.
+  
+  ToDo: Terrain elevation: Experiments have been made decompressing NASA's SRTMGL1 (Shuttle Radar Topography Mission) files quickly.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
