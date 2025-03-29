@@ -13515,7 +13515,7 @@ void getSensorData() {
   // set multiplexer channel back to zeroa
   // --------------------------------------------------
   setMultiplexChannel_CD74HC4067(0);
-  
+
   // ----------------------------------------------------------------------------------------------------------------------------
   // step over each I2C multiplexer channel
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -13565,114 +13565,81 @@ void getSensorData() {
     else if (i_chan==7) {
     }
   }
-  // set multiplexer channel back to zero
+  // --------------------------------------------------
+  // set multiplexer channel back to zeroa
+  // --------------------------------------------------
   setMultiplexChannel_TCA9548A(0);
 
-  // build sensory data sentence
+  // --------------------------------------------------
+  // output sentence
+  // --------------------------------------------------
   if (systemData.output_sensors_enabled==true) {
-    // Serial.println(
-    //   "$SENSORS," +
-    //   String(sensorData.sensor_0) + "," +
-    //   String(sensorData.sensor_1) + "," +
-    //   String(sensorData.sensor_2) + "," +
-    //   String(sensorData.sensor_3) + "," +
-    //   String(sensorData.sensor_4) + "," +
-    //   String(sensorData.sensor_5) + "," +
-    //   String(sensorData.sensor_6) + "," +
-    //   String(sensorData.sensor_7) + "," +
-    //   String(sensorData.sensor_8) + "," +
-    //   String(sensorData.sensor_9) + "," +
-    //   String(sensorData.sensor_10) + "," +
-    //   String(sensorData.sensor_10) + "," +
-    //   String(sensorData.sensor_11) + "," +
-    //   String(sensorData.sensor_12) + "," +
-    //   String(sensorData.sensor_13) + "," +
-    //   String(sensorData.sensor_14) + "," +
-    //   String(sensorData.sensor_15)
-    // );
     memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
     strcat(sensorData.sensor_sentence, "$SENSORS,");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_0, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_1, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_2, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_3, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_4, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_5, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_6, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_7, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_8, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_9, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_10, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_11, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_12, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_13, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_14, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
     ltoa(sensorData.sensor_15, sensorData.TMP, 10);
     strcat(sensorData.sensor_sentence, sensorData.TMP);
     strcat(sensorData.sensor_sentence, ",");
-
     // append checksum
     createChecksum(sensorData.sensor_sentence);
     strcat(sensorData.sensor_sentence, "*");
