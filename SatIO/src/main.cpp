@@ -862,7 +862,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU SYSTEM
 
-const int max_system_items = 1;
+const int max_system_items = 2;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} );
 
@@ -981,8 +981,41 @@ char cwd[1024] = "/";
 struct systemStruct {
   bool debug = false;                // print verbose information over serial
   bool t_bench = false;              // prints bennchmark information for tuning
+
   bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
   int i_overload = 0;                // count overloads
+  int overload_thresh=100000;        // main loop overload time in micros (default 1/10th of a second)
+  int index_overload_times = 10;     // index of currently used time
+  int max_overload_times = 11;
+  int overload_times[12] = {
+    1,
+    2,
+    3,
+    4,
+    5,
+    10,
+    50,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000,
+  };
+  char char_overload_times[12][56] = {
+    "OLOAD uS 1", // 1uS
+    "OLOAD uS 2",
+    "OLOAD uS 3",
+    "OLOAD uS 4",
+    "OLOAD uS 5",
+    "OLOAD uS 10",
+    "OLOAD uS 50",
+    "OLOAD uS 100",
+    "OLOAD ms 10",  // 1000 uS (10 ms)
+    "OLOAD ms 50",  // 1/5th of a second (50 ms)
+    "OLOAD ms 100", // 1/10th of a second (100 ms)
+    "OLOAD    1 Second",   // 1 second
+  };
+
   bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
 
   // performace: turn on/off what you need
@@ -1026,15 +1059,15 @@ struct systemStruct {
   // oled protection
   bool display_auto_off = true; // recommended
   int index_display_autooff_times = 5; // index of currently used time 
-  int max_display_autooff_times = 6; // max available times
+  int max_display_autooff_times = 5; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
-    "AUTO-OFF  3",
-    "AUTO-OFF  5",
-    "AUTO-OFF  10",
-    "AUTO-OFF  15",
-    "AUTO-OFF  30",
-    "AUTO-OFF  60",
+    "AUTO-OFF     3",
+    "AUTO-OFF     5",
+    "AUTO-OFF     10",
+    "AUTO-OFF     15",
+    "AUTO-OFF     30",
+    "AUTO-OFF     60",
   };
   int display_timeout = display_autooff_times[index_display_autooff_times];
   
@@ -9794,6 +9827,12 @@ void menuEnter() {
   else if (menu_page==page_system_main) {
     // startup run matrix
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
+    // ------------------------------------------------
+    // iter overload times
+    if (menuSystem.selection()==1) {systemData.index_overload_times++;
+      if (systemData.index_overload_times>systemData.max_overload_times) {systemData.index_overload_times=0;}
+      systemData.overload_thresh=systemData.overload_times[systemData.index_overload_times];
+    }
     // consider matrix switch state handling before allowing the below two values to be changed after flashing
     // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
     // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
@@ -11477,26 +11516,30 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas60x8.clear();
-      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas60x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
-      else {canvas60x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
-      display.drawCanvas(50, ui_content_2, canvas60x8);
+      canvas76x8.clear();
+      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas76x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
+      else {canvas76x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
+      display.drawCanvas(50, ui_content_2, canvas76x8);
       // ------------------------------------------------
 
-      // manually set overload time
-      // manually set rtc
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // run matrix on startup
+      // set run matrix on startup
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
       else {menuSystemItems[0]="AUTO MATRIX OFF";}
+      // set overload time
+      menuSystemItems[1]=systemData.char_overload_times[systemData.index_overload_times];
+
+      // toDo:
+      // manually set rtc
       // // enable/disable matrix
       // if (systemData.matrix_enabled==true) {menuSystemItems[1]="MATRIX ENABLED";}
       // else {menuSystemItems[1]="MATRIX DISABLED";}
       // // enable/disable port controller
       // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
       // else {menuSystemItems[2]="PORT.CON DISABLED";}
+
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -13947,7 +13990,7 @@ void loop() {
   //                                                               TIMINGS
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
+  if (timeData.mainLoopTimeTaken>=systemData.overload_thresh) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
