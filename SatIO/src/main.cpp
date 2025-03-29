@@ -1002,7 +1002,7 @@ struct systemStruct {
     1000000,
   };
   char char_overload_times[12][56] = {
-    "OLOAD uS 1", // 1uS
+    "OLOAD uS 1",
     "OLOAD uS 2",
     "OLOAD uS 3",
     "OLOAD uS 4",
@@ -1010,10 +1010,10 @@ struct systemStruct {
     "OLOAD uS 10",
     "OLOAD uS 50",
     "OLOAD uS 100",
-    "OLOAD ms 10",  // 1000 uS (10 ms)
-    "OLOAD ms 50",  // 1/5th of a second (50 ms)
-    "OLOAD ms 100", // 1/10th of a second (100 ms)
-    "OLOAD    1 Second",   // 1 second
+    "OLOAD ms 1",
+    "OLOAD ms 10",
+    "OLOAD ms 100",
+    "OLOAD    1 Second",
   };
 
   bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
