@@ -13652,82 +13652,34 @@ void getSensorData() {
 //                                                                                                                          SETUP
 
 void setup() {
-  
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Watchdog Timer
+  // ----------------------------------------------------------------------------------------------------------------------------
   // rtc_wdt_protect_off();
   // rtc_wdt_disable();
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                SETUP: SERIAL
-
-  Serial.println("[setup] serial");
-
+  // Serial 0
+  // ----------------------------------------------------------------------------------------------------------------------------
   Serial.setRxBufferSize(2000); // ensure this is set before begin()
   Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200); while(!Serial);
+  Serial.println("[setup] serial");
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Serial 1
+  // ----------------------------------------------------------------------------------------------------------------------------
   // ESP32 can map hardware serial to alternative pins.
   Serial2.setPins(27, -1, ctsPin, rtsPin); // serial to gps module. ensure this is set before begin()
   Serial2.setRxBufferSize(2000); // ensure this is set before begin()
   Serial2.setTimeout(10); // ensure this is set before begin()
   Serial2.begin(115200);
+  Serial.println("[setup] serial1 (hardware serial remap)");
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SETUP: PINS
-
-  Serial.println("[setup] pins");
-
-  pinMode(CD74HC4067_S0, OUTPUT); 
-  pinMode(CD74HC4067_S1, OUTPUT); 
-  pinMode(CD74HC4067_S2, OUTPUT); 
-  pinMode(CD74HC4067_S3, OUTPUT); 
-  pinMode(CD74HC4067_SIG, INPUT); 
-  digitalWrite(CD74HC4067_S0, LOW);
-  digitalWrite(CD74HC4067_S1, LOW);
-  digitalWrite(CD74HC4067_S2, LOW);
-  digitalWrite(CD74HC4067_S3, LOW);
-
+  // System Information
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                       SETUP: PORT CONTROLLER
-  // setPortControllerReadMode(0); // put port controller in read mode
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                          SETUP: SECOND TIMER
-
-  Serial.println("[setup] second timer");
-
-  // to do: sync second timer with rtc
-  second_timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(second_timer, &isr_second_timer, true);
-  timerAlarmWrite(second_timer, 1000000, true);
-  timerAlarmEnable(second_timer);
-
-  /*
-  Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
-  */
-  pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
-  attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SETUP: WIRE 
-
-  
-  setMultiplexChannel_CD74HC4067(0);
-  
-  Serial.println("[setup] wire");
-  Wire.begin();  // sets up the I2C  
-
-  Serial.println("[setup] selecting i2C channel: 0");
-  setMultiplexChannel_TCA9548A(0);  // set i2c multiplexer channel
-
-  Serial.println("[setup] rtc");
-  rtc.begin();   // initializes the I2C device
-
-  dht.begin();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                           SETUP: SYSTEM INFO
-
-  delay(1000);
   Serial.println("[xPortGetCoreID] " + String(xPortGetCoreID()));
   Serial.println("[ESP_PM_CPU_FREQ_MAX] " + String(ESP_PM_CPU_FREQ_MAX));
   Serial.println("[ESP_PM_APB_FREQ_MAX] " + String(ESP_PM_APB_FREQ_MAX));
@@ -13739,14 +13691,61 @@ void setup() {
   Serial.println("[CONFIG_BOOTLOADER_LOG_LEVEL] " + String(CONFIG_BOOTLOADER_LOG_LEVEL));
   Serial.println("[CONFIG_ESP_CONSOLE_UART_BAUDRATE] " + String(CONFIG_ESP_CONSOLE_UART_BAUDRATE));
   Serial.println("[CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL] " + String(CONFIG_COMPILER_OPTIMIZATION_ASSERTION_LEVEL));
-  // IRAM https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/memory-types.html#iram
   Serial.println("[getCpuFrequencyMhz] " + String(getCpuFrequencyMhz()));
   Serial.println("[APB_CLK_FREQ] " + String(getApbFrequency()));
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                   SETUP: SPI
+  // Pins
+  // ----------------------------------------------------------------------------------------------------------------------------
+  pinMode(CD74HC4067_S0, OUTPUT); 
+  pinMode(CD74HC4067_S1, OUTPUT); 
+  pinMode(CD74HC4067_S2, OUTPUT); 
+  pinMode(CD74HC4067_S3, OUTPUT); 
+  pinMode(CD74HC4067_SIG, INPUT); 
+  digitalWrite(CD74HC4067_S0, LOW);
+  digitalWrite(CD74HC4067_S1, LOW);
+  digitalWrite(CD74HC4067_S2, LOW);
+  digitalWrite(CD74HC4067_S3, LOW);
 
-  // HSPI: SSD1351 OLED DISPLAY
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Second Timer Interrupt
+  // ----------------------------------------------------------------------------------------------------------------------------
+  second_timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(second_timer, &isr_second_timer, true);
+  timerAlarmWrite(second_timer, 1000000, true);
+  timerAlarmEnable(second_timer);
+  // Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
+  pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // I2C
+  // ----------------------------------------------------------------------------------------------------------------------------
+  Wire.begin();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // I2C Multiplexer CD74HC4067
+  // ----------------------------------------------------------------------------------------------------------------------------
+  setMultiplexChannel_CD74HC4067(0);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // I2C Multiplexer TCA9548A
+  // ----------------------------------------------------------------------------------------------------------------------------
+  setMultiplexChannel_TCA9548A(0);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // RTC
+  // ----------------------------------------------------------------------------------------------------------------------------
+  rtc.begin();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // DHT Sensor
+  // ----------------------------------------------------------------------------------------------------------------------------
+  dht.begin();
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // HSPI: SSD1351 OLED Display
+  // ----------------------------------------------------------------------------------------------------------------------------
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
   display.setFixedFont(ssd1306xled_font6x8);
@@ -13765,54 +13764,55 @@ void setup() {
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
   display.clear();
+  // display unidentified studios before loading sdcard data
   display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
-
   // uncomment to test display
   // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
   // display.drawCanvas(1, 1, canvas);
   // display.clear();
-
-  // END SPI DEVICE
   endSPIDevice(SSD1351_CS);
 
+  // ----------------------------------------------------------------------------------------------------------------------------
   // VSPI: SDCARD
+  // ----------------------------------------------------------------------------------------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
   setupSDCard();
   sd.end();
   endSPIDevice(SD_CS);
 
-  // BEGIN SPI DEVICE
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // HSPI: SSD1351 OLED Display
+  // ----------------------------------------------------------------------------------------------------------------------------
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
   display.clear();
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                      SETUP: SIDEREAL PLANETS
-
+  // Sidereal Planets
+  // ----------------------------------------------------------------------------------------------------------------------------
   myAstro.begin();
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                            SETUP: CORE TASKS
+  // xTasks
+  // ----------------------------------------------------------------------------------------------------------------------------
 
-  // Create task to increase performance
   xTaskCreatePinnedToCore(
-      readGPS, /* Function to implement the task */
+      readGPS,   /* Function to implement the task */
       "GPSTask", /* Name of the task */
-      10240,    /* Stack size in words */
-      NULL,    /* Task input parameter */
-      2,       /* Priority of the task */
+      10240,     /* Stack size in words */
+      NULL,      /* Task input parameter */
+      2,         /* Priority of the task */
       &GPSTask,  /* Task handle. */
-      0);      /* Core where the task should run */
-  
-  // Create task to increase performance
+      0);        /* Core where the task should run */
+
   xTaskCreatePinnedToCore(
     UpdateUI, /* Function to implement the task */
-    "Task1", /* Name of the task */
-    102400,    /* Stack size in words */
-    NULL,    /* Task input parameter */
-    2,       /* Priority of the task */
-    &Task1,  /* Task handle. */
-    0);      /* Core where the task should run */
+    "Task1",  /* Name of the task */
+    102400,   /* Stack size in words */
+    NULL,     /* Task input parameter */
+    2,        /* Priority of the task */
+    &Task1,   /* Task handle. */
+    0);       /* Core where the task should run */
   
   // wait a moment before entering main loop
   delay(3000);
