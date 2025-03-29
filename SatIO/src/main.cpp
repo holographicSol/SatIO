@@ -10400,6 +10400,8 @@ void UpdateUI(void * pvParamters) {
       if (updateui_content==true) {
         updateui_content=false;
         // ------------------------------------------------
+        // menu
+        // ------------------------------------------------
         display.setColor(systemData.color_menu_border);
         menuHome.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -10430,6 +10432,8 @@ void UpdateUI(void * pvParamters) {
       if (updateui_content==true) {
         updateui_content=false;
         display.setColor(systemData.color_content);
+        // ------------------------------------------------
+        // menu
         // ------------------------------------------------
         display.setColor(systemData.color_menu_border);
         menuMain.showMenuBorder(display);
@@ -11082,6 +11086,8 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, ui_content_5-4, canvas120x8);
       // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixConfigureFunction.showMenuBorder(display);
       display.setColor(systemData.color_menu_content);
@@ -11112,6 +11118,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       // matrix switch number 
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "M");
       strcat(TMP_UI_DATA_0, String(menuMatrixSwitchSelect.selection()).c_str());
@@ -11125,12 +11132,15 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       // function name
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_2-1, canvas120x8);
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixSetFunctionName.showMenuBorder(display);
@@ -11171,7 +11181,8 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
-
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuFile.showMenuBorder(display);
@@ -11200,8 +11211,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
+      // get file path items
+      // ------------------------------------------------
       setMenuMatrixFilePathItems();
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixFilepath.showMenuBorder(display);
@@ -11231,8 +11245,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
+      // get file path items
+      // ------------------------------------------------
       setMenuMatrixFilePathItems();
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixFilepath.showMenuBorder(display);
@@ -11261,8 +11278,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
+      // get file path items
+      // ------------------------------------------------
       setMenuMatrixFilePathItems();
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuMatrixFilepath.showMenuBorder(display);
@@ -11291,7 +11311,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
       if (systemData.satio_enabled==true) {menuGPSItems[0 ]                             ="SATIO   ENABLED";}
       else {menuGPSItems[0]                                                             ="SATIO   DISABLED";}
       if (systemData.gngga_enabled==true) {menuGPSItems[1]                              ="GNGGA   ENABLED";}
@@ -11306,6 +11325,8 @@ void UpdateUI(void * pvParamters) {
       menuGPSItems[6]                                                                   ="VIEW    GNRMC";
       menuGPSItems[7]                                                                   ="VIEW    GPATT";
       menuGPSItems[8]                                                                   ="VIEW    SATIO";
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuGPS.showMenuBorder(display);
@@ -11336,7 +11357,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
       if (systemData.output_satio_enabled==true) {menuSerialItems[0]    ="SATIO   ENABLED";}
       else {menuSerialItems[0]                                          ="SATIO   DISABLED";}
       if (systemData.output_gngga_enabled==true) {menuSerialItems[1]    ="GNGGA   ENABLED";}
@@ -11370,6 +11390,8 @@ void UpdateUI(void * pvParamters) {
       if (systemData.debug==true) {menuSerialItems[15]                  ="DEBUG   ENABLED";}
       else {menuSerialItems[15]                                         ="DEBUG   DISABLED";}
       // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuSerial.showMenuBorder(display);
       display.setColor(systemData.color_menu_content);
@@ -11399,7 +11421,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set items each iteration so that if changed anywhere will be reflected in ui
       if (systemData.sidereal_track_sun==true) {menuUniverseItems[0]     ="SUN     ENABLED";} 
       else {menuUniverseItems[0]                                         ="SUN     DISABLED";}
       if (systemData.sidereal_track_mercury==true) {menuUniverseItems[1] ="MERCURY ENABLED";}
@@ -11428,6 +11449,8 @@ void UpdateUI(void * pvParamters) {
       menuUniverseItems[16]                                              ="VIEW    URANUS";
       menuUniverseItems[17]                                              ="VIEW    NEPTUNE";
       // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuUniverse.showMenuBorder(display);
       display.setColor(systemData.color_menu_content);
@@ -11440,12 +11463,14 @@ void UpdateUI(void * pvParamters) {
 
     else if (menu_page==page_display_main) {
       // ------------------------------------------------
-      // dynamic data: all data on this page should be dynamically set
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
       }
-      // this page currently has border and title drawn every frame in case the color is changed
+      // ------------------------------------------------
+      // dynamic data: all data on this page should be dynamically set
+      // ------------------------------------------------
       drawMainBorder();
       drawGeneralTitle("DISPLAY", systemData.color_title, systemData.color_border);
       // ------------------------------------------------
@@ -11468,6 +11493,8 @@ void UpdateUI(void * pvParamters) {
       menuDisplayItems[6] = systemData.char_display_title_color[systemData.index_display_title_color];
       // subtitle color
       menuDisplayItems[7] = systemData.char_display_subtitle_color[systemData.index_display_color_subtitle];
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuDisplay.showMenuBorder(display);
@@ -11537,6 +11564,8 @@ void UpdateUI(void * pvParamters) {
       // // enable/disable port controller
       // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
       // else {menuSystemItems[2]="PORT.CON DISABLED";}
+      // ------------------------------------------------
+      // menu
       // ------------------------------------------------
       display.setColor(systemData.color_menu_border);
       menuSystem.showMenuBorder(display);
@@ -11645,8 +11674,6 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                                       GNGGA MENU
 
-    /* this may be a menu and is currently a view */
-
     else if (menu_page==page_gps_view_gngga) {
       // ------------------------------------------------
       // static data
@@ -11750,8 +11777,6 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       GNRMC MENU
-
-    /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gnrmc) {
       // ------------------------------------------------
@@ -11857,8 +11882,6 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                                       GPATT MENU
 
-    /* this may be a menu and is currently a view */
-
     else if (menu_page==page_gps_view_gpatt) {
       // ------------------------------------------------
       // static data
@@ -11962,8 +11985,6 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       SATIO MENU
-
-    /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_satio) {
       // ------------------------------------------------
@@ -12079,7 +12100,6 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
       display.drawCanvas(45, ui_content_7, canvas80x8);
-      // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day())).c_str());
       display.drawCanvas(45, ui_content_8, canvas80x8);
