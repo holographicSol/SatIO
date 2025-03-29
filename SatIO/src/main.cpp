@@ -3642,11 +3642,7 @@ void convertUTCToLocal() {
       }
     }
   }
-
   // debug("[rtc time] " + formatRTCDateTime()); // debug
-
-  /*    now we can do things with time (using rtc time)     */
-
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3674,26 +3670,11 @@ void buildSatIOSentence() {
   // sun set time
   strcat(satData.satio_sentence, String(siderealPlanetData.sun_s).c_str());
   strcat(satData.satio_sentence, ",");
-
-  // coordinate conversion mode
-  // if (satData.convert_coordinates == true) {
-  //   if (String(satData.coordinate_conversion_mode) == "GNGGA") {
-      // append to satio sentence
+  // coordinates degrees
   strcat(satData.satio_sentence, String(satData.degrees_latitude, 7).c_str());
   strcat(satData.satio_sentence, ",");
   strcat(satData.satio_sentence, String(satData.degrees_longitude, 7).c_str());
   strcat(satData.satio_sentence, ",");
-    // }
-    // else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
-    //   // append to satio sentence
-    //   strcat(satData.satio_sentence, String(satData.degrees_latitude, 7).c_str());
-    //   strcat(satData.satio_sentence, ",");
-    //   strcat(satData.satio_sentence, String(satData.degrees_longitude, 7).c_str());
-    //   strcat(satData.satio_sentence, ",");
-    // }
-  // }
-  // else {strcat(satData.satio_sentence, "0.0,0.0,");}
-
   // append checksum
   createChecksum(satData.satio_sentence);
   strcat(satData.satio_sentence, "*");
@@ -3701,70 +3682,6 @@ void buildSatIOSentence() {
   if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
   // debug(satData.satio_sentence);
 }
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                          SDCARD: PRINT FILE CONTENTS TO SERIAL
-
-// ls, cat, etc
-
-// void cd(char * data) {
-//   memset(cwd, 0, sizeof(cwd));
-//   strcpy(cwd, data);
-// }
-
-// void printDirectory(File dir) {
-
-//   /* prints files and dirs in current working directory */
-
-//   Serial.println();
-//   Serial.println("[ls] " + String(cwd));
-//   Serial.println();
-
-//   while (true) {
-
-//     entry =  dir.openNextFile();
-    
-//     // no more files
-//     if (! entry) {break;}
-
-//     // print dirs
-//     if (entry.isDirectory()) {
-//       Serial.print(entry.name());
-//       Serial.println("/");
-//     }
-//     // print files (files have sizes, directories do not)
-//     else {
-//       Serial.print(entry.name());
-//       Serial.print(" ");
-//       Serial.println(entry.size(), DEC);
-//     }
-//     entry.close();
-//   }
-
-//   Serial.println();
-// }
-
-// void ls() {
-//   endSSD1351();
-//   beginSDCARD();
-//   root = sd.open(cwd);
-//   printDirectory(root);
-//   endSDCARD();
-//   beginSSD1351();
-// }
-
-// bool sdcard_read_to_serial(fs::FS &fs, char * file) {
-
-//   /* prints the contents of a file to serial  */
-
-//   sdcardData.current_file.flush();
-//   sdcardData.current_file = exfile.open(file);
-//   if (sdcardData.current_file) {
-//     while (sdcardData.current_file.available()) {Serial.write(sdcardData.current_file.read());}
-//     sdcardData.current_file.close(); return true;
-//   }
-//   else {sdcardData.current_file.close(); return false;}
-// }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                    SDCARD: UPDATE MATRIX FILEPATH AND FILENAME
