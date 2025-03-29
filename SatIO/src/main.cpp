@@ -12869,10 +12869,9 @@ void UpdateUI(void * pvParamters) {
     }
     
     // ------------------------------------------------
-
-    // set this flag last so that we can use it to update static ui data upon waking up from oled protection mode
+    // set flag last
+    // ------------------------------------------------
     ui_cleared = false;
-
     // ------------------------------------------------
   }
 
@@ -12890,6 +12889,10 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(0, 0, canvas128x128);
     ui_cleared=true;
   }
+  
+  // ------------------------------------------------
+  // delay next iteration of task
+  // ------------------------------------------------
   delay(1);
   }
 }
