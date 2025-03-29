@@ -11459,14 +11459,16 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(
-        String(timeData.uptime_hours) + ":" +
-        String(timeData.uptime_minutes) + ":" +
-        String(timeData.uptime_seconds) + " " +
-        String(timeData.uptime_days) + "." +
-        String(timeData.uptime_months) + "." +
-        String(timeData.uptime_years))
-        .c_str(), STYLE_BOLD );
+      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds).c_str());
+      // uncomment if modifying the below in accordance with a given screen size
+      // canvas76x8.printFixed(1, 1, String(
+      //   String(timeData.uptime_hours) + ":" +
+      //   String(timeData.uptime_minutes) + ":" +
+      //   String(timeData.uptime_seconds) + " " +
+      //   String(timeData.uptime_days) + "." +
+      //   String(timeData.uptime_months) + "." +
+      //   String(timeData.uptime_years))
+      //   .c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_1, canvas76x8);
 
       // // overload
