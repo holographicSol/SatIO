@@ -3247,13 +3247,13 @@ struct SatDatatruct {
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
 
   /* TEMPORARY TIME VALUES */
-  signed int tmp_year_int;        // temp current year
-  signed int tmp_month_int;       // temp current month
-  signed int tmp_day_int;         // temp current day
-  signed int tmp_hour_int;        // temp current hour
-  signed int tmp_minute_int;      // temp current minute
-  signed int tmp_second_int;      // temp current second
-  signed int tmp_millisecond_int; // temp current millisecond
+  signed int tmp_year_int;         // temp current year
+  signed int tmp_month_int;        // temp current month
+  signed int tmp_day_int;          // temp current day
+  signed int tmp_hour_int;         // temp current hour
+  signed int tmp_minute_int;       // temp current minute
+  signed int tmp_second_int;       // temp current second
+  signed int tmp_millisecond_int;  // temp current millisecond
   char tmp_year[56];               // temp current year
   char tmp_month[56];              // temp current month
   char tmp_day[56];                // temp current day
