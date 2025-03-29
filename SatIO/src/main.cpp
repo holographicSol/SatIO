@@ -6018,7 +6018,7 @@ void matrixSwitch() {
     // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
       // ------------------------------------------------
-      // temporary switch must be zero each time
+      // temporary switch must be zero each time (each switch has 0 to 10 functions that must all be true for the switch to turn high/low).
       bool tmp_matrix[matrixData.max_matrix_functions] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       int count_none_function = 0;
       // ------------------------------------------------
