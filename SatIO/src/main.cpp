@@ -9221,12 +9221,9 @@ void setAllMatrixSwitchesStateTrue() {
 //                                                                                                                     INPUT DATA
 
 void inputChar(char * data) {
-
   // allow signing as first char
   if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
-
   else {
-
     // port
     if (enter_digits_key==1) {
       if (allow_input_data==true) {
@@ -9241,7 +9238,6 @@ void inputChar(char * data) {
         }
       }
     }
-
     // <= long
     else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
       if (allow_input_data==true) {
@@ -9256,7 +9252,6 @@ void inputChar(char * data) {
         }
       }
     }
-
   }
 }
 
