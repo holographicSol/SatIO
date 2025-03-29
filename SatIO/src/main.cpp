@@ -1119,6 +1119,7 @@ struct systemStruct {
 
   // conversion maps
   char translate_enable_bool[2][10] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
+  char translate_true_false[2][10] = {"FALSE", "TRUE"}; // bool used as index selects bool translation
   char translate_plus_minus[2][2]  = {"+", "-"}; // bool used as index selects bool translation
   char translate_am_pm[2][4]  = {"AM", "PM"}; // bool used as index selects bool translation
 
@@ -11442,6 +11443,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas42x8.clear();
@@ -11453,6 +11456,8 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
+      // ------------------------------------------------
+      
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11467,7 +11472,22 @@ void UpdateUI(void * pvParamters) {
       // limit digits to 10 for available screen space. (currently uptime_seconds is itself is reset to zero, this can be changed later if we need)
       canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
-      // overload i_overload
+      // ------------------------------------------------
+
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_2, canvas42x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas60x8.clear();
+      canvas60x8.printFixed(1, 1, String(String(systemData.translate_true_false[systemData.i_overload]) + String(" (" + String(systemData.i_overload) + ")")).c_str(), STYLE_BOLD );
+      display.drawCanvas(50, ui_content_2, canvas60x8);
+      // ------------------------------------------------
+
       // manually set overload time
       // manually set rtc
       // ------------------------------------------------
