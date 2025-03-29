@@ -670,11 +670,6 @@ static int page_save_matrix_file_indicator       = 86;
 static int page_load_matrix_file_indicator       = 87;
 static int page_delete_matrix_file_indicator     = 88;
 static int page_restore_default_matrix_indicator = 89;
-// bool bool_save_system_config_indicator     = false; // flag indicating indicator has been displayed
-// bool bool_save_matrix_file_indicator       = false;
-// bool bool_load_matrix_file_indicator       = false;
-// bool bool_delete_matrix_file_indicator     = false;
-// bool bool_restore_default_matrix_indicator = false;
 /* GPS */
 static int page_gps_main                         = 100;
 static int page_gps_view_gngga                   = 101;
