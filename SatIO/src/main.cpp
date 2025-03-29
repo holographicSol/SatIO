@@ -745,7 +745,7 @@ const char *menuMainItems[max_main_menu_items] =
     "    CD74HC4067   ",
 };
 //  "                  "
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 34}, {125, 121}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 34}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
@@ -10372,8 +10372,6 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.printFixed(1, 1, formatRTCDateAbbreviated().c_str(), STYLE_BOLD );
       display.drawCanvas(39, 14, canvas60x8);
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally
-      // ------------------------------------------------
       if (updateui_content==true) {
         updateui_content=false;
         // ------------------------------------------------
@@ -10383,7 +10381,7 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
-      // ------------------------------------------------
+        // ------------------------------------------------
       }
     }
 
@@ -10403,9 +10401,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-      // ------------------------------------------------
-      // performace/efficiency: draw conditionally
-      // ------------------------------------------------
       if (updateui_content==true) {
         updateui_content=false;
         display.setColor(systemData.color_content);
@@ -10416,8 +10411,8 @@ void UpdateUI(void * pvParamters) {
         menuMain.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
         menuMain.showMenuContent(display);
+        // ------------------------------------------------
       }
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10561,10 +10556,13 @@ void UpdateUI(void * pvParamters) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
-        display.setColor(systemData.color_menu_border);
-        menuMatrixSwitchSelect.showMenuBorder(display);
-        display.setColor(systemData.color_menu_content);
-        menuMatrixSwitchSelect.showMenuContent(display);
+        if (updateui_content==true) {
+          updateui_content=false;
+          display.setColor(systemData.color_menu_border);
+          menuMatrixSwitchSelect.showMenuBorder(display);
+          display.setColor(systemData.color_menu_content);
+          menuMatrixSwitchSelect.showMenuContent(display);
+        }
       }
       else {
         // --------------------------------------------------------------
@@ -10703,10 +10701,13 @@ void UpdateUI(void * pvParamters) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
-        display.setColor(systemData.color_menu_border);
-        menuMatrixFunctionSelect.showMenuBorder(display);
-        display.setColor(systemData.color_menu_content);
-        menuMatrixFunctionSelect.showMenuContent(display);
+        if (updateui_content==true) {
+          updateui_content=false;
+          display.setColor(systemData.color_menu_border);
+          menuMatrixFunctionSelect.showMenuBorder(display);
+          display.setColor(systemData.color_menu_content);
+          menuMatrixFunctionSelect.showMenuContent(display);
+        }
       }
       // ----------------------------------------------------------------
       else {
@@ -11065,10 +11066,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuMatrixConfigureFunction.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuMatrixConfigureFunction.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuMatrixConfigureFunction.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixConfigureFunction.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11119,10 +11123,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuMatrixSetFunctionName.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuMatrixSetFunctionName.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuMatrixSetFunctionName.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixSetFunctionName.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11161,10 +11168,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuFile.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuFile.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuFile.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuFile.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11194,10 +11204,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuMatrixFilepath.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuMatrixFilepath.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuMatrixFilepath.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixFilepath.showMenuContent(display);
+      }
       // ------------------------------------------------
       
     }
@@ -11228,10 +11241,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuMatrixFilepath.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuMatrixFilepath.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuMatrixFilepath.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixFilepath.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11261,10 +11277,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuMatrixFilepath.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuMatrixFilepath.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuMatrixFilepath.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuMatrixFilepath.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11305,10 +11324,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuGPS.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuGPS.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuGPS.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuGPS.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11369,10 +11391,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuSerial.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuSerial.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuSerial.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuSerial.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11428,10 +11453,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuUniverse.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuUniverse.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuUniverse.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuUniverse.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11473,10 +11501,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuDisplay.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuDisplay.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuDisplay.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuDisplay.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
@@ -11568,10 +11599,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      display.setColor(systemData.color_menu_border);
-      menuSystem.showMenuBorder(display);
-      display.setColor(systemData.color_menu_content);
-      menuSystem.showMenuContent(display);
+      if (updateui_content==true) {
+        updateui_content=false;
+        display.setColor(systemData.color_menu_border);
+        menuSystem.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuSystem.showMenuContent(display);
+      }
       // ------------------------------------------------
     }
 
