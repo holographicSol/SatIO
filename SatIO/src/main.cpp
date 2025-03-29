@@ -964,7 +964,7 @@ char hyphen_char[2] = "-";
 char period_char[2] = ".";
 
 bool make_i2c_request = false;
-int unixtime_control_panel_request;
+int unixtime_i2C_reponse;
 int previous_menu_page;
 char input_data[128];
 char tmp_input_data[128];
@@ -10352,7 +10352,7 @@ void UpdateUI(void * pvParamters) {
 
   // oled protection: enable/disable ui updates
   if (systemData.display_auto_off==true) {
-    if (rtc.now().unixtime() >= unixtime_control_panel_request+systemData.display_timeout) {update_ui=false;}
+    if (rtc.now().unixtime() >= unixtime_i2C_reponse+systemData.display_timeout) {update_ui=false;}
     else {update_ui=true;}
   }
   else {update_ui=true;}
@@ -13017,11 +13017,13 @@ void readI2C() {
     if (I2CLink.MESSAGE_RECEIVED==true) {
       I2CLink.MESSAGE_RECEIVED=false;
       updateui_content = true;
+
       // ------------------------------------------------
-      // record activity time from control pad
+      // record activity time
       // ------------------------------------------------
-      unixtime_control_panel_request = rtc.now().unixtime();
-      Serial.println("[unixtime_control_panel_request] " + String(unixtime_control_panel_request));
+      unixtime_i2C_reponse = rtc.now().unixtime();
+      Serial.println("[unixtime_i2C_reponse] " + String(unixtime_i2C_reponse));
+
       // ------------------------------------------------
       // blind button press protection
       // ------------------------------------------------
