@@ -253,6 +253,7 @@
 
   ToDo: 20 IIC capable MCU's on the end of each of the 20 matrix switch output ports on the port controller. this will allow
         adjustable output modulation in the micros/millis depending on chosen IIC capable 'intermediary' output MCU's.
+        intermediary output MCU's receive high/low, output high/low according to delay value >=0 received over IIC.
         currently stacked logic can be modulated to every second as a minimum.
 */
 
