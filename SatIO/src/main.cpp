@@ -11532,7 +11532,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-
+      // speed
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11546,9 +11546,9 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
       // ------------------------------------------------
-      
-      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      // uptime 
       // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD );
@@ -11558,13 +11558,12 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas76x8.clear();
       ScreenSafeUptime(timeData.uptime_seconds);
-      // limit digits to 10 for available screen space. (currently uptime_seconds is itself is reset to zero, this can be changed later if we need)
       canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
       // ------------------------------------------------
-
-      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      // overload 
       // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD );
@@ -11577,14 +11576,15 @@ void UpdateUI(void * pvParamters) {
       else {canvas76x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
       display.drawCanvas(50, ui_content_2, canvas76x8);
       // ------------------------------------------------
-
-      // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // set run matrix on startup
+      // set run matrix on startup 
+      // ------------------------------------------------
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
       else {menuSystemItems[0]="AUTO MATRIX OFF";}
+      // ------------------------------------------------
       // set overload time
+      // ------------------------------------------------
       menuSystemItems[1]=systemData.char_overload_times[systemData.index_overload_times];
 
       // toDo:
