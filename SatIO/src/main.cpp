@@ -11617,8 +11617,9 @@ void UpdateUI(void * pvParamters) {
       like in the case of a digital sensor providing values accurate to N decimal places for example.
       this allows uniformity as default.
       */
-     // ------------------------------------------------
-      /* sensor value column 0 */
+      // ------------------------------------------------
+      // sensor value column 0
+      // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_0, 4).c_str());
       display.drawCanvas(3, 42, canvas60x8);
@@ -11643,7 +11644,9 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_7, 4).c_str());
       display.drawCanvas(3, 112, canvas60x8);
-      /* sensor value column 1 */
+      // ------------------------------------------------
+      // sensor value column 1
+      // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_8, 4).c_str());
       display.drawCanvas(67, 42, canvas60x8);
@@ -11691,27 +11694,21 @@ void UpdateUI(void * pvParamters) {
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("UTC").c_str());
         display.drawCanvas(4, ui_content_0, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("SS").c_str());
         display.drawCanvas(4, ui_content_3, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("SC").c_str());
         display.drawCanvas(4, ui_content_4, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("PF").c_str());
         display.drawCanvas(4, ui_content_5, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("A").c_str());
         display.drawCanvas(4, ui_content_6, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("GEO").c_str());
         display.drawCanvas(4, ui_content_7, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("DD").c_str());
         display.drawCanvas(4, ui_content_8, canvas21x8);
@@ -11795,27 +11792,21 @@ void UpdateUI(void * pvParamters) {
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("UTC").c_str());
         display.drawCanvas(4, ui_content_0, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("GS").c_str());
         display.drawCanvas(4, ui_content_3, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("GH").c_str());
         display.drawCanvas(4, ui_content_4, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("UTC").c_str());
         display.drawCanvas(4, ui_content_5, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("IA").c_str());
         display.drawCanvas(4, ui_content_6, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("IAD").c_str());
         display.drawCanvas(4, ui_content_7, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("MI").c_str());
         display.drawCanvas(4, ui_content_8, canvas21x8);
@@ -11899,39 +11890,30 @@ void UpdateUI(void * pvParamters) {
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("p").c_str());
         display.drawCanvas(4, ui_content_0, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("R").c_str());
         display.drawCanvas(4, ui_content_1, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("Y").c_str());
         display.drawCanvas(4, ui_content_2, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("INS").c_str());
         display.drawCanvas(4, ui_content_3, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("RSF").c_str());
         display.drawCanvas(4, ui_content_4, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("RIF").c_str());
         display.drawCanvas(4, ui_content_5, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("SF").c_str());
         display.drawCanvas(4, ui_content_6, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("GST").c_str());
         display.drawCanvas(4, ui_content_7, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("LF").c_str());
         display.drawCanvas(4, ui_content_8, canvas21x8);
-        // ------------------------------------------------
         canvas21x8.clear();
         canvas21x8.printFixed(1, 1, String("M").c_str());
         display.drawCanvas(4, ui_content_9, canvas21x8);
@@ -12003,27 +11985,21 @@ void UpdateUI(void * pvParamters) {
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("RTCT").c_str());
         display.drawCanvas(4, ui_content_0, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("RTCD").c_str());
         display.drawCanvas(4, ui_content_1, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("SRTCT").c_str());
         display.drawCanvas(4, ui_content_4, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("SRTCD").c_str());
         display.drawCanvas(4, ui_content_5, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("SUNR").c_str());
         display.drawCanvas(4, ui_content_6, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("SUNS").c_str());
         display.drawCanvas(4, ui_content_7, canvas36x8);
-        // ------------------------------------------------
         canvas36x8.clear();
         canvas36x8.printFixed(1, 1, String("DAY").c_str());
         display.drawCanvas(4, ui_content_8, canvas36x8);
@@ -12103,13 +12079,10 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(rtc.now().year(), rtc.now().month(), rtc.now().day())).c_str());
       display.drawCanvas(45, ui_content_8, canvas80x8);
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
     //                              UNIVERSE VIEWS: SUN
-
-    /* currently solar system tracking */
 
     else if (menu_page==page_universe_view_sun) {
       // ------------------------------------------------
