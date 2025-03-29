@@ -6223,12 +6223,9 @@ void matrixSwitch() {
           }
         }
 
-
-
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  SATIO
 
-        // over
         if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(satData.degrees_latitude,
@@ -6251,7 +6248,6 @@ void matrixSwitch() {
           }
         }
 
-        // under
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonUnder") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_under_true(satData.degrees_longitude,
@@ -6274,7 +6270,6 @@ void matrixSwitch() {
           }
         }
 
-        // equal
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatEqual") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_equal_true(satData.degrees_latitude,
@@ -6297,7 +6292,6 @@ void matrixSwitch() {
           }
         }
 
-        // range
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = in_range_check_true(satData.degrees_latitude,
@@ -6321,7 +6315,6 @@ void matrixSwitch() {
           }
         }
 
-        // ranges
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = in_square_range_check_true(satData.degrees_latitude,
