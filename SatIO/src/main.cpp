@@ -258,7 +258,7 @@
   
   ToDo: Terrain elevation: Experiments have been made decompressing NASA's SRTMGL1 (Shuttle Radar Topography Mission) files quickly.
 
-  ToDo: More data / calculate more data frfom existing data.
+  ToDo: More data / calculate more data from existing data.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
