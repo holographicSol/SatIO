@@ -11466,7 +11466,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas76x8.clear();
       ScreenSafeUptime(timeData.uptime_seconds);
-      // limit digits to 10 for available screen space. (currently uptime_seconds is itself reset to zero, this can be changed later if we need)
+      // limit digits to 10 for available screen space. (currently uptime_seconds is itself is reset to zero, this can be changed later if we need)
       canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
 
