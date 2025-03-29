@@ -1215,6 +1215,11 @@ struct TimeStruct {
   unsigned long t0;                    // micros time 0
   unsigned long t1;                    // micros time 1
   uint32_t uptime_seconds;
+  uint32_t uptime_years;
+  uint32_t uptime_months;
+  uint32_t uptime_days;
+  uint32_t uptime_hours;
+  uint32_t uptime_minutes;
 };
 TimeStruct timeData;
 
@@ -1228,6 +1233,20 @@ void isr_second_timer() {      //Defining Inerrupt function with for faster acce
   interrupt_second_counter++;
   timeData.seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
+}
+
+void UptimeSecondsToDateTime(uint32_t sec) {
+  // Calculate years, months, days, hours, minutes, seconds
+  timeData.uptime_years = sec / 31536000; // Approximate seconds in a year
+  sec %= 31536000;
+  timeData.uptime_months = sec / 2629743; // Approximate seconds in a month
+  sec %= 2629743;
+  timeData.uptime_days = sec / 86400;
+  sec %= 86400;
+  timeData.uptime_hours= sec / 3600;
+  sec %= 3600;
+  timeData.uptime_minutes = sec / 60;
+  timeData.uptime_seconds = sec % 60;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -11438,9 +11457,16 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String(timeData.uptime_seconds).c_str(), STYLE_BOLD );
-      display.drawCanvas(50, ui_content_1, canvas60x8);
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(
+        String(timeData.uptime_hours) + ":" +
+        String(timeData.uptime_minutes) + ":" +
+        String(timeData.uptime_seconds) + " " +
+        String(timeData.uptime_days) + "." +
+        String(timeData.uptime_months) + "." +
+        String(timeData.uptime_years) + ".")
+        .c_str(), STYLE_BOLD );
+      display.drawCanvas(50, ui_content_1, canvas80x8);
 
       // // overload
       // // looptime min
@@ -13981,6 +14007,7 @@ void loop() {
     timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
   }
+  UptimeSecondsToDateTime(timeData.uptime_seconds);
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
