@@ -13824,7 +13824,7 @@ int t0 = millis();
 bool track_planets_period = false;
 bool check_sdcard = false;
 bool longer_loop = false;
-// int loop_distribution = 0;
+int load_distribution = 0;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -13979,18 +13979,9 @@ void loop() {
   Run every loop.
   */
   if (longer_loop==false) {
-
-    // update ui: where possible try to avoid writing a lot of pixels, or take a performance hit
-    // if (loop_distribution==0) {
-    //   loop_distribution=1;
-    //   t0 = micros();
-    //   // UpdateUI();
-    //   bench("[// UpdateUI] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    // }
-
     // track planets
-    // else if (loop_distribution==1) {
-    //   loop_distribution=0;
+    if (load_distribution==0) {
+      load_distribution=1;
       if (track_planets_period == true) {
         track_planets_period = false;
         t0 = micros();
@@ -14000,7 +13991,11 @@ void loop() {
         trackPlanets();
         bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
-    // }
+    }
+    // other load
+    else if (load_distribution==0) {
+      load_distribution=1;
+    }
   }
   // ---------------------------------------------------------------------
 
