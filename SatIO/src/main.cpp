@@ -3613,17 +3613,13 @@ void convertUTCToLocal() {
       if (satData.tmp_millisecond_int==00) {
         first_gps_pass=false; // dont drop in here next time
         syncRTCOnDownlink();  // sync rtc
-
         // set last sync datetime
         memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
         strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
-
         memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetime));
         strcpy(satData.rtcSyncDatetime, formatRTCDateTime().c_str());
-
         memset(satData.rtcSyncTime, 0, sizeof(satData.rtcSyncTime));
         strcpy(satData.rtcSyncTime, formatRTCTime().c_str());
-
         memset(satData.rtcSyncDate, 0, sizeof(satData.rtcSyncDate));
         strcpy(satData.rtcSyncDate, formatRTCDate().c_str());
       }
@@ -3633,17 +3629,13 @@ void convertUTCToLocal() {
       if (satData.lt_second_int == 0) {
         if (satData.tmp_millisecond_int==00) {
           syncRTCOnDownlink(); // sync rtc
-
           // set last sync datetime
           memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
           strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
-
           memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetime));
           strcpy(satData.rtcSyncDatetime, formatRTCDateTime().c_str());
-
           memset(satData.rtcSyncTime, 0, sizeof(satData.rtcSyncTime));
           strcpy(satData.rtcSyncTime, formatRTCTime().c_str());
-
           memset(satData.rtcSyncDate, 0, sizeof(satData.rtcSyncDate));
           strcpy(satData.rtcSyncDate, formatRTCDate().c_str());
         }
@@ -3667,23 +3659,18 @@ void buildSatIOSentence() {
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
-
   // current rtc unixtime
   strcat(satData.satio_sentence, String(formatRTCDateTimeStamp()).c_str());
   strcat(satData.satio_sentence, ",");
-
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeStamp);
   strcat(satData.satio_sentence, ",");
-
   // system uptime in seconds (may be preferrable than system startup datetime because datetime is local)
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
   strcat(satData.satio_sentence, ",");
-
   // sun rise time
   strcat(satData.satio_sentence, String(siderealPlanetData.sun_r).c_str());
   strcat(satData.satio_sentence, ",");
-
   // sun set time
   strcat(satData.satio_sentence, String(siderealPlanetData.sun_s).c_str());
   strcat(satData.satio_sentence, ",");
