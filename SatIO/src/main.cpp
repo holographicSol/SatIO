@@ -250,6 +250,10 @@
   Writes to SSD1351 are now performed on a xTask, allowing for up to around 100 <10ms loops per second that can be utilized
   for other things. There are some pixel artifacts to deal with since migrating updateui to xTask, which were not noticeable when
   updating ui more slowly in main loop.
+
+  ToDo: 20 IIC capable MCU's on the end of each of the 20 matrix switch output ports on the port controller. this will allow
+        adjustable output modulation in the micros/millis depending on chosen IIC capable 'intermediary' output MCU's.
+        currently stacked logic can be modulated to every second as a minimum.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
