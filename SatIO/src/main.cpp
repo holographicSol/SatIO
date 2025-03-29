@@ -11466,24 +11466,12 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas76x8.clear();
       ScreenSafeUptime(timeData.uptime_seconds);
-      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str()); // this we will see stop counting after n time unless ScreenSafeUptime is ran
-      // uncomment if modifying the below in accordance with a given screen size
-      // canvas76x8.printFixed(1, 1, String(
-      //   String(timeData.uptime_hours) + ":" +
-      //   String(timeData.uptime_minutes) + ":" +
-      //   String(timeData.uptime_seconds) + " " +
-      //   String(timeData.uptime_days) + "." +
-      //   String(timeData.uptime_months) + "." +
-      //   String(timeData.uptime_years))
-      //   .c_str(), STYLE_BOLD );
+      // limit digits to 10 for available screen space. (currently uptime_seconds is itself reset to zero, this can be changed later if we need)
+      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
 
-      // // overload
-      // // looptime min
-      // // looptime max
-      // // looptime current
-      // // uptime
-      // // manually set overload time
+      // overload
+      // manually set overload time
       // manually set rtc
 
       // ------------------------------------------------
