@@ -5356,24 +5356,13 @@ void trackSun() {
 void trackMoon() {
   siderealPlanetData.moon_ra  = myAstro.getRAdec();
   siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
-  // bench("[ra dec]" + String(millis()-t0));
-  // t0 = millis();
   myAstro.doRAdec2AltAz();
-  // bench("[doRAdec2AltAz]" + String(millis()-t0));
-  // t0 = millis();
   siderealPlanetData.moon_az  = myAstro.getAzimuth();
   siderealPlanetData.moon_alt = myAstro.getAltitude();
-  // bench("[azalt]" + String(millis()-t0));
-  // t0 = millis();
   myAstro.doMoonRiseSetTimes();
-  // bench("[doMoonRiseSetTimes]" + String(millis()-t0));
-  // t0 = millis();
   siderealPlanetData.moon_r  = myAstro.getMoonriseTime();
   siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
-  // bench("[rs]" + String(millis()-t0));
-  // t0 = millis();
   siderealPlanetData.moon_p  = myAstro.getMoonPhase();
-  // bench("[p]" + String(millis()-t0));
   siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
   // create and ouptput lunar tracking information
   if (systemData.output_moon_enabled==true) {
