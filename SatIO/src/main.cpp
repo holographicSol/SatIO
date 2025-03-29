@@ -10375,12 +10375,14 @@ void UpdateUI(void * pvParamters) {
 
     if (menu_page==page_home) {
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -10411,7 +10413,7 @@ void UpdateUI(void * pvParamters) {
 
     else if (menu_page==page_main_menu) {
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally 
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
@@ -10419,6 +10421,9 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("SETTINGS", systemData.color_title, systemData.color_border);
       }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       // ------------------------------------------------
       // performace/efficiency: draw conditionally
       // ------------------------------------------------
@@ -10439,12 +10444,15 @@ void UpdateUI(void * pvParamters) {
 
     else if (menu_page==page_matrix_logic_main) {
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally 
+      // static data
+      // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MATRIX LOGIC", systemData.color_title, systemData.color_border);
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_border);
       // ------------------------------------------------
@@ -10545,7 +10553,6 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 106, canvas120x8);
-
       // ------------------------------------------------
       // real z: display functions associated Z
       // ------------------------------------------------
@@ -10557,7 +10564,6 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(3, 116, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
-      // ------------------------------------------------
       // ------------------------------------------------------------------------------------------------------------
       // clear any previously highlighted menus
       // ------------------------------------------------------------------------------------------------------------
@@ -10566,7 +10572,6 @@ void UpdateUI(void * pvParamters) {
         canvas126x24.clear();
         display.drawCanvas(1, 13, canvas126x24);
         previous_menu_column_selection=menu_column_selection;
-        // --------------------------------------------------------------
       }
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch select menu
@@ -10748,13 +10753,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
-        // ------------------------------------------------
         display.clear();
         drawMainBorder();
         drawGeneralTitle("MATRIX OVERVIEW", systemData.color_title, systemData.color_border);
         display.drawRect(0, 12, 127, 26);
         display.drawVLine(64, 13, 25);
-        // ------------------------------------------------
       }
       // ------------------------------------------------
       // dynamic data
@@ -10858,7 +10861,6 @@ void UpdateUI(void * pvParamters) {
       if (enter_digits_key==1) {
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
-          // ------------------------------------------------
           drawMainBorder();
           drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255,0,0), systemData.color_border);
           // ------------------------------------------------
@@ -10867,7 +10869,6 @@ void UpdateUI(void * pvParamters) {
           display.drawHLine(1, 108, 127);
           display.drawVLine(90, 13, 37);
           display.drawHLine(1, 38, 127);
-          // ------------------------------------------------
         }
         // ------------------------------------------------
         // dynamic data
@@ -10910,7 +10911,6 @@ void UpdateUI(void * pvParamters) {
           display.setColor(systemData.color_border);
           // ------------------------------------------------
           display.drawHLine(1, 28, 127);
-          // ------------------------------------------------
         }
         // ------------------------------------------------
         display.setColor(systemData.color_subtitle);
@@ -11018,16 +11018,16 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     else if (menu_page==page_matrix_logic_select_setup) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        // ------------------------------------------------       
+        previous_menu_page=menu_page; display.clear();  
         drawMainBorder();
         drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         // ------------------------------------------------
         display.drawHLine(1, 28, 127);
-        // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11092,9 +11092,9 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                        SELECT FUNCTION NAME PAGE
 
-    // matrix switch set function name
     else if (menu_page==page_matrix_logic_setup_function) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11106,6 +11106,8 @@ void UpdateUI(void * pvParamters) {
         display.drawHLine(1, 28, 127);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11139,9 +11141,10 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                        FILE MENU
-
+    
     else if (menu_page==page_file_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11154,6 +11157,8 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(46, 13, 26);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11179,7 +11184,8 @@ void UpdateUI(void * pvParamters) {
     //                                 SAVE MATRIX MENU
 
     else if (menu_page==page_file_save_matrix) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11189,6 +11195,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11206,9 +11214,9 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                                 LOAD MATRIX MENU
 
-    // load matrix
     else if (menu_page==page_file_load_matrix) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11218,6 +11226,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11234,9 +11244,9 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                               DELETE MATRIX MENU
 
-    // delete matrix
     else if (menu_page==page_file_delete_matrix) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11246,6 +11256,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11263,7 +11275,8 @@ void UpdateUI(void * pvParamters) {
     //                                         GPS MENU
 
     else if (menu_page==page_gps_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11273,6 +11286,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11305,7 +11320,8 @@ void UpdateUI(void * pvParamters) {
     /* output data to be parsed by other systems or to be read by humans */
 
     else if (menu_page==page_serial_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11315,6 +11331,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11365,7 +11383,8 @@ void UpdateUI(void * pvParamters) {
     /* currently solar system tracking */
 
     else if (menu_page==page_universe_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11375,6 +11394,8 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11418,7 +11439,8 @@ void UpdateUI(void * pvParamters) {
     //                                     DISPLAY MENU
 
     else if (menu_page==page_display_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // dynamic data: all data on this page should be dynamically set
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11458,7 +11480,8 @@ void UpdateUI(void * pvParamters) {
     //                                      SYSTEM MENU
 
     else if (menu_page==page_system_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11472,6 +11495,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas42x8.clear();
@@ -11483,7 +11508,6 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
-
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
@@ -11498,11 +11522,9 @@ void UpdateUI(void * pvParamters) {
       // limit digits to 10 for available screen space. (currently uptime_seconds is itself is reset to zero, this can be changed later if we need)
       canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
-
       // overload
       // manually set overload time
       // manually set rtc
-
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11529,7 +11551,8 @@ void UpdateUI(void * pvParamters) {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_CD74HC4067_main) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11553,6 +11576,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(66, 22, canvas60x8);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11623,7 +11648,8 @@ void UpdateUI(void * pvParamters) {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gngga) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11663,6 +11689,8 @@ void UpdateUI(void * pvParamters) {
         canvas21x8.printFixed(1, 1, String("DD").c_str());
         display.drawCanvas(4, ui_content_8, canvas21x8);
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11726,7 +11754,8 @@ void UpdateUI(void * pvParamters) {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gnrmc) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11766,6 +11795,8 @@ void UpdateUI(void * pvParamters) {
         canvas21x8.printFixed(1, 1, String("MI").c_str());
         display.drawCanvas(4, ui_content_8, canvas21x8);
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -11829,7 +11860,8 @@ void UpdateUI(void * pvParamters) {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_gpatt) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11882,6 +11914,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_9, canvas21x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas92x8.clear();
@@ -11932,7 +11966,8 @@ void UpdateUI(void * pvParamters) {
     /* this may be a menu and is currently a view */
 
     else if (menu_page==page_gps_view_satio) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -11972,6 +12007,8 @@ void UpdateUI(void * pvParamters) {
         canvas36x8.printFixed(1, 1, String("DAY").c_str());
         display.drawCanvas(4, ui_content_8, canvas36x8);
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -12055,7 +12092,8 @@ void UpdateUI(void * pvParamters) {
     /* currently solar system tracking */
 
     else if (menu_page==page_universe_view_sun) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12085,6 +12123,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_4, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12112,7 +12152,8 @@ void UpdateUI(void * pvParamters) {
     //                             UNIVERSE VIEWS: MOON
 
     else if (menu_page==page_universe_view_moon) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12146,6 +12187,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_6, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12178,7 +12221,8 @@ void UpdateUI(void * pvParamters) {
     //                          UNIVERSE VIEWS: MERCURY
 
     else if (menu_page==page_universe_view_mercury) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12225,6 +12269,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12269,7 +12315,8 @@ void UpdateUI(void * pvParamters) {
     //                            UNIVERSE VIEWS: VENUS
 
     else if (menu_page==page_universe_view_venus) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12316,6 +12363,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12360,7 +12409,8 @@ void UpdateUI(void * pvParamters) {
     //                             UNIVERSE VIEWS: MARS
 
     else if (menu_page==page_universe_view_mars) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12407,6 +12457,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12451,7 +12503,8 @@ void UpdateUI(void * pvParamters) {
     //                          UNIVERSE VIEWS: JUPITER
 
     else if (menu_page==page_universe_view_jupiter) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12498,6 +12551,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12542,7 +12597,8 @@ void UpdateUI(void * pvParamters) {
     //                           UNIVERSE VIEWS: SATURN
 
     else if (menu_page==page_universe_view_saturn) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12589,6 +12645,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12633,7 +12691,8 @@ void UpdateUI(void * pvParamters) {
     //                           UNIVERSE VIEWS: URANUS
 
     else if (menu_page==page_universe_view_uranus) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12680,6 +12739,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
       // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -12724,7 +12785,8 @@ void UpdateUI(void * pvParamters) {
     //                          UNIVERSE VIEWS: NEPTUNE
 
     else if (menu_page==page_universe_view_neptune) {
-      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page; display.clear();
@@ -12770,6 +12832,8 @@ void UpdateUI(void * pvParamters) {
         canvas28x8.printFixed(1, 1, String("ELON").c_str());
         display.drawCanvas(4, ui_content_10, canvas28x8);
       }
+      // ------------------------------------------------
+      // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
