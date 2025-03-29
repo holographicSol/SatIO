@@ -13188,34 +13188,27 @@ void writeToPortController() {
 //                                                                                                        SDCARD: FULL INITIALIZE
 
 void setupSDCard() {
-
   /*
   initializes sdcard, attempts to load saved system configuration file and saved matrix file. creates new directory tree, system file
   and matrix file if not exists.
   */
-  
   if (!sd.begin(SD_CONFIG)) {
     Serial.println("[sdcard] failed to initialize");
   }
   else {
-    // debug("[sdcard] initialized");
-
+    Serial.println("[sdcard] initialized");
     // create/load system files
     sdcard_mkdirs();
-
     // load system configuration file
     if (!sdcard_load_system_configuration(sdcardData.sysconf)) {
       sdcard_save_system_configuration(sdcardData.sysconf);
     }
-
     // load matrix file specified by configuration file
     if (!sdcard_load_matrix(sdcardData.matrix_filepath)) {
       Serial.println("[sdcard] specified matrix file not found!");
-
       // is it the the default matrix file that is missing?
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
         Serial.println("[sdcard] default matrix file not found!");
-        
         // create default matrix file
         if (!sdcard_save_matrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
         else if (!sdcard_load_matrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
@@ -13272,57 +13265,16 @@ bool sdcardCheck() {
 //   }
 // }
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  READ GPS DATA
-
-// void check_gngga() {
-//   // debug("[check_gngga]");
-//   if (systemData.gngga_enabled == true){
-//     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.sentence);}
-//     gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
-//     // debug("[gnggaData.sentence] " + String(gnggaData.sentence));
-//     // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-//     if (gnggaData.valid_checksum == true) {GNGGA();}
-//     else {gnggaData.bad_checksum_validity++;}
-//   }
-// }
-
-// void check_gnrmc() {
-//   // debug("[check_gnrmc]");
-//   if (systemData.gnrmc_enabled == true) {
-//     if (systemData.output_gnrmc_enabled == true) {Serial.println(gnrmcData.sentence);}
-//     gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
-//     // debug("[gnrmcData.sentence] " + String(gnrmcData.sentence));
-//     // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-//     if (gnrmcData.valid_checksum == true) {GNRMC();}
-//     else {gnrmcData.bad_checksum_validity++;}
-//   }
-// }
-
-// void check_gpatt() {
-//   // debug("[check_gpatt]");
-//   if (systemData.gpatt_enabled == true) {
-//     if (systemData.output_gpatt_enabled == true) {Serial.println(gpattData.sentence);}
-//     gpattData.valid_checksum = validateChecksum(gpattData.sentence);
-//     // debug("[gpattData.sentence] " + String(gpattData.sentence));
-//     // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-//     if (gpattData.valid_checksum == true) {GPATT();}
-//     else {gpattData.bad_checksum_validity++;}
-//   }
-// }
-
 int gps_done_t0;
 int gps_done_t1;
 
 void readGPS(void * pvParameters) {
-
   while (1) {
-
-    // lock to avoid potential race conditions for yeilded gps data
+    // ------------------------------------------------------------
+    // lock to avoid potential race conditions when using gps data
+    // ------------------------------------------------------------
     if (gps_done==false) {
-
-      // ----------------------------------------------------------------------------------------------------------------------
-      
+      // ------------------------------------------------------------
       gps_done_t0 = micros();
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
@@ -13330,32 +13282,25 @@ void readGPS(void * pvParameters) {
       memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-
-      // ----------------------------------------------------------------------------------------------------------------------
-
-      /* this setup should read every sentence (gngga, desbi, gpatt, gnrmc) coming from the WTGPS300P once every 100ms. */
-
-      // read up until attempt limit is reached. the aim here is to keep looping really fast for just what we need before handling the data later.
-      // a while loop could be used with clauses to break.
-      // for (int i_gps = 0; i_gps < 1000000000; i_gps++) {
+      // ------------------------------------------------------------
+      // read sentences coming from the WTGPS300P. (WTGPS300P outputs every 100ms).
+      // ------------------------------------------------------------
       while (1) {
-      // while (!serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         if (Serial2.available()) {
-
-          // first check break for if we have everything we need
+          // ---------------------------------------------------------------
+          // leave immediately if everything of interest has been collected
+          // ---------------------------------------------------------------
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-          // if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true) {break;}
-
-          // read gps module to either terminating character or until the buffer is full
+          // ---------------------------------------------------------------
+          // read serial into buffer until buffer max or special char
+          // ---------------------------------------------------------------
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-          // Serial.println(SerialLink.BUFFER);
-
-          // eliminate potential partial reads
+          // ---------------------------------------------------------------
+          // exclude partial reads
+          // ---------------------------------------------------------------
           if (SerialLink.nbytes>10) {
-
             // ----------------------------------------------------------------------------------------------------------------------
-
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
                 if (systemData.gngga_enabled == true){
@@ -13366,7 +13311,6 @@ void readGPS(void * pvParameters) {
               }
             }
             // ----------------------------------------------------------------------------------------------------------------------
-
             if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
@@ -13377,7 +13321,6 @@ void readGPS(void * pvParameters) {
               }
             }
             // ----------------------------------------------------------------------------------------------------------------------
-
             if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
@@ -13391,14 +13334,11 @@ void readGPS(void * pvParameters) {
           }
         }
       }
-
-      /* parse the above sentences fast so as not to miss each next sentence. then we can drop in here afterwards if we collected all the sentences */
-
+      // ---------------------------------------------------------------
+      // parse data if all sentences have been collected
+      // ---------------------------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
-      // if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true) {
-
         // ----------------------------------------------------------------------------------------------------------------------
-
         if (systemData.gngga_enabled == true){
           if (systemData.output_gngga_enabled==true) {
             // store a copy before tokenization since this is a task we may prefer not to print here
@@ -13410,9 +13350,7 @@ void readGPS(void * pvParameters) {
           if (gnggaData.valid_checksum == true) {GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
-
         // ----------------------------------------------------------------------------------------------------------------------
-        
         if (systemData.gnrmc_enabled == true) {
           if (systemData.output_gnrmc_enabled == true) {
             // store a copy before tokenization since this is a task we may prefer not to print here
@@ -13424,9 +13362,7 @@ void readGPS(void * pvParameters) {
           if (gnrmcData.valid_checksum == true) {GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
-
         // ----------------------------------------------------------------------------------------------------------------------
-
         if (systemData.gpatt_enabled == true) {
           if (systemData.output_gpatt_enabled == true) {
             // store a copy before tokenization since this is a task we may prefer not to print here
@@ -13438,20 +13374,19 @@ void readGPS(void * pvParameters) {
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
-
-        // ----------------------------------------------------------------------------------------------------------------------
-
-        // is everything collected and validated? if so then reset the lock ready for other functions to use the data before going again
+        // ---------------------------------------------------------------
+        // set flag
+        // ---------------------------------------------------------------
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
-        // if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true)) {
           // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t1 = micros();
           gps_done=true;
         }
-
-        // ----------------------------------------------------------------------------------------------------------------------
       }
     }
+    // ------------------------------------------------
+    // delay next iteration of task
+    // ------------------------------------------------
     delay(1);
   }
 }
