@@ -1117,12 +1117,6 @@ struct systemStruct {
   int color_title = display_color[index_display_title_color];
   int color_subtitle = display_color[index_display_color_subtitle];
 
-  // conversion maps
-  char translate_enable_bool[2][16] = {"DISABLED", "ENABLED"}; // bool used as index selects bool translation
-  char translate_true_false[2][16] = {"FALSE", "TRUE",}; // bool used as index selects bool translation
-  char translate_plus_minus[2][16]  = {"+", "-"}; // bool used as index selects bool translation
-  char translate_am_pm[2][16]  = {"AM", "PM"}; // bool used as index selects bool translation
-
   char tmp0[56];
   char tmp1[56];
 };
