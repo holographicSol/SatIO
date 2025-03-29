@@ -9094,12 +9094,14 @@ void matrixSwitch() {
       // ----------------------------------------------------------------------------------------------------------------------
       //                                                                                                           FINAL SWITCH
       
+      // ------------------------------------------------
       /*
       safety layer: disengage if all entries are None.
       this is a second layer on top of initial check for None set at position zero, function 0.
       */
       if (count_none_function <= matrixData.max_matrix_functions-1) {
 
+        // ------------------------------------------------
         /*
         it all comes down to this, the final switch.
         default final bool default is true: if a single false is found then final bool should be set to false and remain false.
@@ -9107,17 +9109,21 @@ void matrixSwitch() {
         */
         bool final_bool = true;
         
-        // debug (same as line below but with output)
+        // ------------------------------------------------
+        // create a final bool with debug (same as line below but with output)
         if (systemData.debug==true) {
           for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
             Serial.println ("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}
           }
         }
 
+        // ------------------------------------------------
+        // create a final bool
         else {
           for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
         }
 
+        // ------------------------------------------------
         /*
         WARNING: why do you think you can trust the data you are receiving?
                  once you plug something into this, the 'satellites' are in control unless you have a way to override.
@@ -9125,48 +9131,50 @@ void matrixSwitch() {
                  critical systems: arduino is neither medical nor military grade.
         */
 
-        // debug (same as line below but with output)
+        // ------------------------------------------------
+        // set switch as on/off according to final bool with debug (same as line below but with output)
         if (systemData.debug==true) {
           if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
           else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
         }
-        /* a short call to the port controller each iteration may be made here */
+
+        // ------------------------------------------------
+        // set switch as on/off according to final bool
         else {
           if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
           else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
         }
       }
-      // else {debug("[matrix " + String(Mi) + "] WARNING: Matrix checks are enabled for an non configured matrix!");}
+      // else {debug("[matrix " + String(Mi) + "] WARNING: Matrix switch enabled enabled for unconfigured matrix switch!");}
     }
-    // handle Mi's that are disbaled.
+    // ------------------------------------------------
+    // handle matrix switches that are disbaled.
     else {matrixData.matrix_switch_state[0][Mi] = 0;}
   }
 
+  // ------------------------------------------------
+  // serial sentence
   if (systemData.output_matrix_enabled == true) {
-
     // start building matrix sentence
     memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
     strcpy(matrixData.matrix_sentence, "$MATRIX,");
-
     // append port mapping data
     for (int i=0; i < matrixData.max_matrices; i++) {
       strcat(matrixData.matrix_sentence, String(String(matrixData.matrix_port_map[0][i])+",").c_str());
       }
-    
     // append matrix switch state data
     for (int i=0; i < matrixData.max_matrices; i++) {
       strcat(matrixData.matrix_sentence, String(String(matrixData.matrix_switch_state[0][i])+",").c_str());
     }
-
     // append checksum
     createChecksum(matrixData.matrix_sentence);
     strcat(matrixData.matrix_sentence, "*");
     strcat(matrixData.matrix_sentence, SerialLink.checksum);
-
     // serial output: switch states.
     Serial.println(matrixData.matrix_sentence);
+    debug(matrixData.matrix_sentence);
   }
-  debug(matrixData.matrix_sentence);
+  // ------------------------------------------------
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
