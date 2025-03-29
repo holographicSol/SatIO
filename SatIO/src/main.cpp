@@ -8059,11 +8059,9 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD") == 0) {
           tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
 
-
-        /* run the following logic checks providing the sensor data has already been collected (sensor data must be called manually before calling matrix switch) */
-
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
+
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
@@ -8162,6 +8160,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     DHT11_0 FAHRENHEIT
+
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_f_0,
@@ -8210,6 +8209,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                             DHT11_0 HEAT INDEX CELSIUS
+
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_hic_0,
@@ -8258,6 +8258,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
+        
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(sensorData.dht11_hif_0,
