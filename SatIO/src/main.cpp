@@ -6073,8 +6073,12 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                              TIME DATA
-
-        /* allows modulation with an approximate resolution of 1 second: while other stacked logic true, switch state is true/false every Xsec for Ysec */
+        
+        /*
+        allows modulation with an approximate resolution of 1 second.
+        while other stacked logic true, switch state is true/false every Xsec for Ysec.
+        can also be used independantly as a switches only set function.
+        */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SecondsTimer") == 0) {
           tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
