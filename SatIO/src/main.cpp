@@ -11426,8 +11426,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas60x8.clear();
-      float speed_sec = timeData.mainLoopTimeTaken/1000000;
-      canvas60x8.printFixed(1, 1, String(speed_sec, 6).c_str(), STYLE_BOLD );
+      canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
 
       // // overload
