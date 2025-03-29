@@ -6335,7 +6335,6 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
 
-
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time),
@@ -7310,7 +7309,6 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     SIDEREAL TIME: SUN
         
-        // sun azimuth:
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
@@ -7324,7 +7322,6 @@ void matrixSwitch() {
           }
         }
 
-        // sun altitude:
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
