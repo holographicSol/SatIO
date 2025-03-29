@@ -11410,9 +11410,25 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("SYSTEM", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 62, 127);
+        display.drawVLine(46, 13, 61);
         // ------------------------------------------------
       }
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_0, canvas42x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas60x8.clear();
+      canvas60x8.printFixed(1, 1, String((float)(timeData.mainLoopTimeTaken)/1000000, 4).c_str(), STYLE_BOLD );
+      display.drawCanvas(50, ui_content_0, canvas60x8);
+
       // overload
       // looptime min
       // looptime max
@@ -11420,6 +11436,7 @@ void UpdateUI(void * pvParamters) {
       // uptime
       // manually set overload time
       // manually set rtc
+
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
