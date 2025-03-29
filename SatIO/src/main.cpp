@@ -10175,11 +10175,8 @@ String getRelatedX(char * data) {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           UI
-
 /*
-
 IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
-
 */
 
 // ------------------------------------------------
@@ -10244,7 +10241,6 @@ void setMenuMatrixFilePathItems() {
 }
 
 void UIIndicators() {
-
   /*
   usefull for if we are going to indicate something before SPI switching where we will loose the display temporarily until we are finished with another SPI device.
   these pages should be written procedurally unlike UpdateUI task.
@@ -10253,7 +10249,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //                            SAVE MATRIX INDICATOR
-
+  
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   if (menu_page==page_save_matrix_file_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
@@ -10344,7 +10340,6 @@ void UIIndicators() {
 
 bool display_sync;
 
-// void UpdateUI() {
 void UpdateUI(void * pvParamters) {
 
   while (1) {
