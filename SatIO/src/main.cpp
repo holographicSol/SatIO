@@ -11465,7 +11465,7 @@ void UpdateUI(void * pvParamters) {
         String(timeData.uptime_seconds) + " " +
         String(timeData.uptime_days) + "." +
         String(timeData.uptime_months) + "." +
-        String(timeData.uptime_years) + ".")
+        String(timeData.uptime_years))
         .c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_1, canvas76x8);
 
