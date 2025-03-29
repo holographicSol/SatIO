@@ -11426,15 +11426,16 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String((float)(timeData.mainLoopTimeTaken)/1000000, 4).c_str(), STYLE_BOLD );
+      float speed_sec = timeData.mainLoopTimeTaken/1000000;
+      canvas60x8.printFixed(1, 1, String(speed_sec, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
 
-      // overload
-      // looptime min
-      // looptime max
-      // looptime current
-      // uptime
-      // manually set overload time
+      // // overload
+      // // looptime min
+      // // looptime max
+      // // looptime current
+      // // uptime
+      // // manually set overload time
       // manually set rtc
 
       // ------------------------------------------------
