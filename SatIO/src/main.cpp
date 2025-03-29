@@ -1457,34 +1457,26 @@ uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
 bool validateChecksum(char * buffer) {
   /* validate a sentence appended with a checksum */
-
   // debug("[validateChecksum]");
   // debug("[validateChecksum] " + String(buffer));
-
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
-  
   SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
-
   // debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
-
   SerialLink.checksum_of_buffer =  getCheckSum(buffer);
   // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
   // debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
   SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   // debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
-
   if (SerialLink.checksum_in_buffer == SerialLink.checksum_of_buffer) {return true;}
   return false;
 }
 
 void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer = getCheckSum(buffer);
-
   // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // debug("[hexadecimal number] " + String("%X", SerialLink.checksum_of_buffer)); todo
-
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
 
   // debug("[checksum] " + String(SerialLink.checksum));
