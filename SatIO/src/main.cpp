@@ -13105,19 +13105,17 @@ void readI2C() {
 //                                                                                                                PORT CONTROLLER
 
 void writeToPortController() {
-
-  // debug("[writeToPortController]");
-
-  // Port Map: $P,X,Y
+  // ------------------------------------------------
+  // Send Port Map
+  // ------------------------------------------------
   for (int i=0; i < 20; i++) {
     // debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
     // check for change
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
       matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
-
-      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
+      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
       // index
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
@@ -13126,23 +13124,21 @@ void writeToPortController() {
       // port number
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-
       // debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
-
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
-
-  // Matrix Switch True/False: $M,X,Y
+  // ------------------------------------------------
+  // Send Switch State
+  // ------------------------------------------------
   for (int i=0; i < 20; i++) {
     // debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
     // check for change
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
       matrixData.tmp_matrix_switch_state[0][i] = matrixData.matrix_switch_state[0][i];
-
-      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       // tag
+      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$M,");
       // index
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
@@ -13151,14 +13147,13 @@ void writeToPortController() {
       // true/false
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-
       // debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
-
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
-
-  // Satellite Count and HDOP Precision Factor Indicator
+  // ------------------------------------------------
+  // Send Abstract GPS Signal Value
+  // ------------------------------------------------
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   // tag
   strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
@@ -13167,19 +13162,20 @@ void writeToPortController() {
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
-
-  // Overload Indicator
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  // ------------------------------------------------
+  // Send Overload Value
+  // ------------------------------------------------
   // tag
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
   // data
   if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-
   // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
-
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
-
+  // ------------------------------------------------
+  // Receive Back After Sending
+  // ------------------------------------------------
   // Uncomment if and when hearing back from the peripheral is required
   // Serial.println("[master] read data");
   // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER_0,sizeof(input_buffer));
