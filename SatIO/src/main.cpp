@@ -1250,6 +1250,12 @@ void UptimeSecondsToDateTime(uint32_t sec) {
   timeData.uptime_seconds = sec % 60;
 }
 
+void ScreenSafeUptime(uint32_t sec) {
+  /* modify this according to required/available screen dimensions */
+  // 76px avaliable for font 6px wide + 1px space = approx. 10 digit number all consisting of 9 (316.9 years before each reset)
+  if (sec > 9999999999) {timeData.uptime_seconds=0;}
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     MATRIX FUNCTIONS: ADVANCED
 
@@ -11459,7 +11465,8 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds).c_str());
+      ScreenSafeUptime(timeData.uptime_seconds);
+      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str()); // this we will see stop counting after n time unless ScreenSafeUptime is ran
       // uncomment if modifying the below in accordance with a given screen size
       // canvas76x8.printFixed(1, 1, String(
       //   String(timeData.uptime_hours) + ":" +
@@ -14011,7 +14018,7 @@ void loop() {
     timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
   }
-  UptimeSecondsToDateTime(timeData.uptime_seconds);
+  // UptimeSecondsToDateTime(timeData.uptime_seconds);
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
