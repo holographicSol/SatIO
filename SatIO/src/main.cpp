@@ -11484,8 +11484,8 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas60x8.clear();
-      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas42x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
-      else {canvas42x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
+      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas60x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
+      else {canvas60x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
       display.drawCanvas(50, ui_content_2, canvas60x8);
       // ------------------------------------------------
 
