@@ -10375,7 +10375,8 @@ void UpdateUI(void * pvParamters) {
 
     if (menu_page==page_home) {
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally 
+      // performace/efficiency: draw conditionally
+      // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
@@ -10384,6 +10385,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       // show datetime
+      // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
       display.drawCanvas(39, 4, canvas60x8);
@@ -10392,6 +10394,7 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(39, 14, canvas60x8);
       // ------------------------------------------------
       // performace/efficiency: draw conditionally
+      // ------------------------------------------------
       if (updateui_content==true) {
         updateui_content=false;
         // ------------------------------------------------
@@ -10401,7 +10404,6 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
       // ------------------------------------------------
       }
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -10410,6 +10412,7 @@ void UpdateUI(void * pvParamters) {
     else if (menu_page==page_main_menu) {
       // ------------------------------------------------
       // performace/efficiency: draw conditionally 
+      // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
@@ -10417,7 +10420,8 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("SETTINGS", systemData.color_title, systemData.color_border);
       }
       // ------------------------------------------------
-      // performace/efficiency: draw conditionally 
+      // performace/efficiency: draw conditionally
+      // ------------------------------------------------
       if (updateui_content==true) {
         updateui_content=false;
         display.setColor(systemData.color_content);
@@ -10449,7 +10453,8 @@ void UpdateUI(void * pvParamters) {
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
       display.drawVLine(64, 37, 49); // seperate enabled/disabled from high/low
       // ------------------------------------------------
-      // ENABLED
+      // enabled
+      // ------------------------------------------------
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
@@ -10457,7 +10462,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(1, 39, canvas60x8);
       }
       // ------------------------------------------------
-     
+      // disabled
+      // ------------------------------------------------
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
@@ -10466,7 +10472,8 @@ void UpdateUI(void * pvParamters) {
       }
 
       // ------------------------------------------------
-      // ACTIVE
+      // active
+      // ------------------------------------------------
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
@@ -10474,7 +10481,8 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
-      // INACTIVE
+      // inactive
+      // ------------------------------------------------
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
@@ -10485,51 +10493,52 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       // function name
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
       strcat(TMP_UI_DATA_0, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 52, canvas120x8);
-
       // ------------------------------------------------
       // function x
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 62, canvas120x8);
-
       // ------------------------------------------------
       // function y
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 72, canvas120x8);
-
       // ------------------------------------------------
       // function z
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 82, canvas120x8);
-
       // ------------------------------------------------
       // real x: display functions associated X
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
       display.drawCanvas(3, 96, canvas120x8);
-
       // ------------------------------------------------
       // real y: display functions associated Y
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
@@ -10539,6 +10548,7 @@ void UpdateUI(void * pvParamters) {
 
       // ------------------------------------------------
       // real z: display functions associated Z
+      // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
