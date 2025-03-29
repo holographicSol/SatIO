@@ -10448,9 +10448,8 @@ void UpdateUI(void * pvParamters) {
       display.drawHLine(1, 49, 127); // seperate content 0 from content 1
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
       display.drawVLine(64, 37, 49); // seperate enabled/disabled from high/low
-
+      // ------------------------------------------------
       display.setColor(systemData.color_content);
-
       // ------------------------------------------------
       // ENABLED
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
@@ -10459,6 +10458,7 @@ void UpdateUI(void * pvParamters) {
         canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD );
         display.drawCanvas(1, 39, canvas60x8);
       }
+      // ------------------------------------------------
       // DISABLED
       else {
         canvas60x8.clear();
@@ -10475,6 +10475,7 @@ void UpdateUI(void * pvParamters) {
         canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD );
         display.drawCanvas(66, 39, canvas60x8);
       }
+      // ------------------------------------------------
       // INACTIVE
       else {
         canvas60x8.clear();
