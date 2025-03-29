@@ -14010,7 +14010,6 @@ void loop() {
     timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
   }
-  // UptimeSecondsToDateTime(timeData.uptime_seconds);
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
@@ -14023,6 +14022,6 @@ void loop() {
   bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
-  // bench("[Looptime Min] " + String(timeData.mainLoopTimeTakenMin, 6) + " uS");
+  // bench("[Looptime Min] " + String((float)(timeData.mainLoopTimeTakenMin)/1000000, 4) + "s");
   // ---------------------------------------------------------------------
 }
