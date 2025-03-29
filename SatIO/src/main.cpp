@@ -5237,13 +5237,11 @@ void sdcard_delete_matrix(char * file) {
 //                                                                                                                   TRACK OBJECT
 
 void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i) {
-
   /*
   requires time, location, object table number and object number.
   sets time and location specific values pertaining to an object.
   object will first need to be identified.
   */
-
   myAstro.setLatLong(latitude, longitude);
   myAstro.rejectDST();
   myAstro.setGMTdate(year, month, day);
@@ -5271,21 +5269,16 @@ void trackObject(double latitude, double longitude, int year, int month, int day
 //                                                                                                                IDENTIFY OBJECT
 
 void IdentifyObject(double object_ra, double object_dec) {
-
   /*
   requires RA and DEC.
   sets object values according to identified object table and identified object number.
   once we have the object number we can track the object if required.
   */
-
   // -------------------------------------------------------
-
   myAstroObj.setRAdec(object_ra, object_dec);
   myAstro.doRAdec2AltAz();
   myAstroObj.identifyObject();
-
   // -------------------------------------------------------
-
   // scan tables for the object
   switch(myAstroObj.getIdentifiedObjectTable()) {
     case(1):
@@ -5298,7 +5291,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     siderealObjectData.object_table_i = 3;  break; // Other
   }
   // -------------------------------------------------------
-
   // object tables
   if (myAstroObj.getIdentifiedObjectTable() == 1) {
     // set table name
@@ -5311,7 +5303,6 @@ void IdentifyObject(double object_ra, double object_dec) {
     siderealObjectData.object_number = myAstroObj.getIdentifiedObjectNumber();
   }
   // -------------------------------------------------------
-
   // alternate object tables
   if (myAstroObj.getAltIdentifiedObjectTable()) {
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
