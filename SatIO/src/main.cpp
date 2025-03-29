@@ -13952,7 +13952,7 @@ void loop() {
   //                                                               TIMINGS
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>99) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
+  if (timeData.mainLoopTimeTaken>=100000) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
