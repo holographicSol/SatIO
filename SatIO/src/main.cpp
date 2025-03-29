@@ -11429,6 +11429,19 @@ void UpdateUI(void * pvParamters) {
       canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
       display.drawCanvas(50, ui_content_0, canvas60x8);
 
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_1, canvas42x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas60x8.clear();
+      canvas60x8.printFixed(1, 1, String(timeData.uptime_seconds).c_str(), STYLE_BOLD );
+      display.drawCanvas(50, ui_content_1, canvas60x8);
+
       // // overload
       // // looptime min
       // // looptime max
