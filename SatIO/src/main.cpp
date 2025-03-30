@@ -10342,12 +10342,12 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // show datetime (currently UTC)
       // ------------------------------------------------
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, satData.rtcSyncTime, STYLE_BOLD );
-      display.drawCanvas(39, 4, canvas60x8);
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, satData.rtcSyncDate, STYLE_BOLD );
-      display.drawCanvas(39, 14, canvas60x8);
+      canvas76x8.clear();
+      canvas76x8.printFixed(1, 1, satData.rtcSyncTime, STYLE_BOLD );
+      display.drawCanvas(39, 4, canvas76x8);
+      canvas76x8.clear();
+      canvas76x8.printFixed(1, 1, satData.rtcSyncDate, STYLE_BOLD );
+      display.drawCanvas(39, 14, canvas76x8);
       // ------------------------------------------------
       if (interaction_updateui==true) {
         interaction_updateui=false;
