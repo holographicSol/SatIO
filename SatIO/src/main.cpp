@@ -13984,7 +13984,9 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                             CONVERT UTC TO LOCAL TIME
     // Only run if new GPS data has been collected.
-    // Currently limited to once per second because local time is onky displayed.
+    // Currently limited to once per second because:
+    //   1: local time is onky displayed.
+    //   2: DS3231 has a resolution of second.
     if ((update_local_time == true) || (first_gps_pass==true)) {
       first_gps_pass=false;
       update_local_time = false;
