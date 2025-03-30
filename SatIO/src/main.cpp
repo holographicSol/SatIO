@@ -3637,16 +3637,6 @@ void syncUTCTime() {
   satData.rtc_now_month = rtc.now().month();
   satData.rtc_now_day = rtc.now().day();
   satData.rtc_now_unixtime = rtc.now().unixtime();
-  // ----------------------------------------------------------------------------------------------
-  // uncomment to test
-  // ----------------------------------------------------------------------------------------------
-  // Serial.println("[rtc_year] " + String(satData.rtc_now_year));
-  // Serial.println("[rtc_month] " + String(satData.rtc_now_month));
-  // Serial.println("[rtc_day] " + String(satData.rtc_now_day));
-  // Serial.println("[rtc_hour] " + String(rtc.now().hour()));
-  // Serial.println("[rtc_minute] " + String(satData.rtc_now_minute));
-  // Serial.println("[rtc_second] " + String(satData.rtc_now_second));
-  // ----------------------------------------------------------------------------------------------
 }
 
 void convertUTCTimeToLocalTime() {
@@ -3665,23 +3655,10 @@ void convertUTCTimeToLocalTime() {
     rtc.now().year());
   tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
   satData.local_time = makeTime(make_local_time_elements);
-
-  // ----------------------------------------------------------------------------------------------
-  // uncomment to test
-  // ----------------------------------------------------------------------------------------------
-  // Serial.println("[year] " + String(year()));
-  // Serial.println("[month] " + String(month()));
-  // Serial.println("[day] " + String(day()));
-  // Serial.println("[hour] " + String(hour()));
-  // Serial.println("[minute] " + String(minute()));
-  // Serial.println("[second] " + String(second()));
-
   // ----------------------------------------------------------------------------------------------
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
-
-  // time adjustment in development for local time
-
+  // is setup and ready for dev
   // (+)
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   // (-)
@@ -3693,17 +3670,6 @@ void convertUTCTimeToLocalTime() {
   satData.local_hour = hour();
   satData.local_minute = minute();
   satData.local_second = second();
-  
-  // ----------------------------------------------------------------------------------------------
-  // uncomment to test
-  // ----------------------------------------------------------------------------------------------
-  // Serial.println("[satData.local_year] " + String(satData.local_year));
-  // Serial.println("[satData.local_month] " + String(satData.local_month));
-  // Serial.println("[satData.local_day] " + String(satData.local_day));
-  // Serial.println("[satData.local_hour] " + String(satData.local_hour));
-  // Serial.println("[satData.local_minute] " + String(satData.local_minute));
-  // Serial.println("[satData.local_second] " + String(satData.local_second));
-  // ----------------------------------------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
