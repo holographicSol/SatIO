@@ -695,6 +695,8 @@ static int page_universe_view_neptune            = 169;
 static int page_display_main                     = 180;
 /* CD74HC4067 */
 static int page_CD74HC4067_main                  = 200;
+/* TIME AND DATE */
+// static int page_timeanddate_main                 = 300;
 
 /* compact ui content vertical spacing */
 static int ui_content_0 = 16;
@@ -743,6 +745,7 @@ const char *menuMainItems[max_main_menu_items] =
     "    UNIVERSE     ", // enable/disable solar tracking, planet tracking and or other celestial calculations
     "    DISPLAY      ",
     "    CD74HC4067   ",
+    // "    Time & Date  ",
 };
 //  "                  "
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 34}, {125, 125}} );
@@ -865,6 +868,13 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125
 const int max_system_items = 2;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               MENU TIME & DATE
+
+// const int max_timeanddate_items = 2;
+// const char *menuTimeAndDateItems[max_timeanddate_items];
+// LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
@@ -3520,7 +3530,7 @@ void calculateLocation(){
 //                                                                                                        SET LAST SATELLITE TIME
 
 void syncRTCOnDownlink() {
-  rtc.adjust(DateTime(satData.lt_year_int, satData.lt_month_int, satData.lt_day_int, satData.lt_hour_int, satData.lt_minute_int, satData.lt_second_int));
+  rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
   // debug("[synchronized] " + formatRTCDateTime());
 }
 
@@ -3546,41 +3556,26 @@ bool isOneDiff(int a, int b) {
   return abs(a - b) <= 1;
 }
 
-void convertUTCToLocal() {
+void syncUTCTime() {
 
-  // live data from satellites
-  // debug("[utc_time] " + String(gnrmcData.utc_time));
-  // debug("[utc_date] " + String(gnrmcData.utc_date));
+  // ----------------------------------------------------------------------------------------------
+  /*                                     EXTRACT UTC TIME                                        */
+  // ----------------------------------------------------------------------------------------------
 
-  /*                                     TEMPORARY TIME                                        */
-  /* make temporary values that will not disturb final values untiil values whole and complete */
-
-  // temp store date
   satData.tmp_day[0] = gnrmcData.utc_date[0];
   satData.tmp_day[1] = gnrmcData.utc_date[1];
-  // debug("[tmp_day] " + String(satData.tmp_day));
   satData.tmp_month[0] = gnrmcData.utc_date[2];
   satData.tmp_month[1] = gnrmcData.utc_date[3];
-  // debug("[tmp_month] " + String(satData.tmp_month));
   satData.tmp_year[0] = gnrmcData.utc_date[4];
   satData.tmp_year[1] = gnrmcData.utc_date[5];
-  // debug("[tmp_year] " + String(satData.tmp_year));
-
-  // temp store time
   satData.tmp_hour[0] = gnrmcData.utc_time[0];
   satData.tmp_hour[1] = gnrmcData.utc_time[1];
-  // debug("[tmp_hour] " + String(satData.tmp_hour));
   satData.tmp_minute[0] = gnrmcData.utc_time[2];
   satData.tmp_minute[1] = gnrmcData.utc_time[3];
-  // debug("[tmp_minute] " + String(satData.tmp_minute));
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
-  // debug("[tmp_second] " + String(satData.tmp_second));
   satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
   satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
-  // debug("[tmp_second] " + String(satData.tmp_millisecond));
-
-  // temporary int time values so that we do not disturb the primary values while converting.
   satData.tmp_day_int = atoi(satData.tmp_day);
   satData.tmp_month_int = atoi(satData.tmp_month);
   satData.tmp_year_int = atoi(satData.tmp_year);
@@ -3589,11 +3584,10 @@ void convertUTCToLocal() {
   satData.tmp_second_int = atoi(satData.tmp_second);
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
 
-  // before conversion
-  // debug("[temp time] " + String(satData.tmp_hour_int) + ":" + String(satData.tmp_minute_int) + "." + String(satData.tmp_second_int));
-  // debug("[temp date] " + String(satData.tmp_day_int) + "." + String(satData.tmp_month_int) + "." + String(satData.tmp_year_int));
+  // ----------------------------------------------------------------------------------------------
+  /*                                        SET UTC TIME                                         */
+  // ----------------------------------------------------------------------------------------------
 
-  // set time using time elements with 2 digit year
   setTime(
     satData.tmp_hour_int,
     satData.tmp_minute_int,
@@ -3601,48 +3595,19 @@ void convertUTCToLocal() {
     satData.tmp_day_int,
     satData.tmp_month_int,
     satData.tmp_year_int);
-
-  // set elements as time return functions
   tmElements_t tm_return = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-
-  // return time
   time_t tmp_makeTime = makeTime(tm_return);
-  // debug("[tmp_makeTime] " + String(tmp_makeTime));
 
-  // adjust tmp_makeTime back/forward according to UTC offset
-  if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
-  else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
+  // ----------------------------------------------------------------------------------------------
+  /*                                      SET RTC UTC TIME                                       */
+  // ----------------------------------------------------------------------------------------------
 
-  // before conversion
-  // debug("[temp time  +- offset] " + String(hour()) + ":" + String(minute()) + "." + String(second()));
-  // debug("[temp date +- offset] " + String(day()) + "." + String(month()) + "." + String(year()));
-
-  /*                        RTC TIME                        */
-  /* store current local time on RTC if we have a downlink  */
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
 
-    // update last possible downlink time
-    satData.lt_year_int = year();
-    satData.lt_month_int = month();
-    satData.lt_day_int = day();
-    satData.lt_hour_int = hour();
-    satData.lt_minute_int = minute();
-    satData.lt_second_int = second();
-    satData.lt_millisecond_int = satData.tmp_millisecond_int;
-
-    /*
-    adjust rtc while we appear to have a downlink and allow for a certain amount of drift (hardware/software depending)
-    to avoid setting the RTC too often so that we should have a stable, steady and predictable RTC time where
-    otherwise time from the RTC if set too often would be as useful (and equal to) any time calculated live from the
-    downlink which would defeat the point of having an RTC and depending on certain conditions may not be suitable at all
-    for steady timings.
-    to do: when synchronizing RTC, only synchronize RTC within a 10th of a second of live GPS data. example gnrmc_utc=01.03.00=sync, gnrmc_utc=01.03.10=dont sync.
-    */
     if ((first_gps_pass==true) ) {
       if (satData.tmp_millisecond_int==00) {
-        first_gps_pass=false; // dont drop in here next time
-        syncRTCOnDownlink();  // sync rtc
-        // set last sync datetime
+        first_gps_pass=false;
+        syncRTCOnDownlink();
         memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
         strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
         memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetime));
@@ -3654,11 +3619,9 @@ void convertUTCToLocal() {
       }
     }
     else {
-      // sync every minute according to downlinked time. 
       if (satData.lt_second_int == 0) {
         if (satData.tmp_millisecond_int==00) {
-          syncRTCOnDownlink(); // sync rtc
-          // set last sync datetime
+          syncRTCOnDownlink();
           memset(satData.rtcSyncDatetimeStamp, 0, sizeof(satData.rtcSyncDatetimeStamp));
           strcpy(satData.rtcSyncDatetimeStamp, formatRTCDateTimeStamp().c_str());
           memset(satData.rtcSyncDatetime, 0, sizeof(satData.rtcSyncDatetime));
@@ -3671,7 +3634,15 @@ void convertUTCToLocal() {
       }
     }
   }
-  // debug("[rtc time] " + formatRTCDateTime()); // debug
+}
+
+void convertUTCTimeToLocalTime() {
+  // ----------------------------------------------------------------------------------------------
+  /*                                      ADJUST DISPLAYED TIME                                  */
+  // ----------------------------------------------------------------------------------------------
+  
+  if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
+  else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3690,7 +3661,7 @@ void buildSatIOSentence() {
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeStamp);
   strcat(satData.satio_sentence, ",");
-  // system uptime in seconds (may be preferrable than system startup datetime because datetime is local)
+  // system uptime in seconds
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
   strcat(satData.satio_sentence, ",");
   // sun rise time
@@ -9329,6 +9300,7 @@ void menuBack() {
   else if (menu_page==page_display_main) {menu_page=page_main_menu;}
   else if (menu_page==page_system_main) {menu_page=page_main_menu;}
   else if (menu_page==page_CD74HC4067_main) {menu_page=page_main_menu;}
+  // else if (menu_page==page_timeanddate_main) {menu_page=page_main_menu;}
   else if (menu_page==page_gps_view_gngga) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gpatt) {menu_page=page_gps_main;}
@@ -9408,6 +9380,11 @@ void menuEnter() {
     else if (menuMain.selection()==8) {
       menu_page=page_CD74HC4067_main;
     }
+    // ------------------------------------------------
+    // go to time and date menu
+    // else if (menuMain.selection()==9) {
+    //   menu_page=page_timeanddate_main;
+    // }
   }
   // ----------------------------------------------------------------
   // matrix switch configuration
@@ -11709,6 +11686,39 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
     }
 
+
+    // ------------------------------------------------
+    //                                 TIME & DATE MENU
+
+    // else if (menu_page==page_timeanddate_main) {
+    //   // ------------------------------------------------
+    //   // static data
+    //   // ------------------------------------------------
+    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    //     previous_menu_page=menu_page; display.clear();
+    //     drawMainBorder();
+    //     drawGeneralTitle("TIME & DATE", systemData.color_title, systemData.color_border);
+    //   }
+    //   // ------------------------------------------------
+    //   // dynamic data
+    //   // ------------------------------------------------
+    //   display.setColor(systemData.color_content);
+    //   // ------------------------------------------------
+
+    //   // ------------------------------------------------
+    //   // menu
+    //   // ------------------------------------------------
+    //   if (interaction_updateui==true) {
+    //     interaction_updateui=false;
+    //     display.setColor(systemData.color_menu_border);
+    //     menuTimeAndDate.showMenuBorder(display);
+    //     display.setColor(systemData.color_menu_content);
+    //     menuTimeAndDate.showMenuContent(display);
+    //   }
+    //   // ------------------------------------------------
+    // }
+
+
     // ------------------------------------------------
     //                                       GNGGA MENU
 
@@ -13917,8 +13927,8 @@ void loop() {
     Only run if new GPS data has been collected.
     */
     t0 = micros();
-    convertUTCToLocal();
-    bench("[convertUTCToLocal] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    syncUTCTime();
+    bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     t0 = micros();
     calculateLocation();
