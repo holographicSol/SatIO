@@ -3631,7 +3631,7 @@ void syncUTCTime() {
       }
     }
     else {
-      // sync every minute within the first 100 milliseconds of any minute
+      // sync within the first 100 milliseconds of any minute
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (everty minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
