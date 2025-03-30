@@ -3541,7 +3541,7 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                       SYNC UTC
+//                                                                                                              SYNC RTC WITH UTC
 
 // temporary char time values so that we do not disturb the primary values while converting.
 bool first_gps_pass = true;
@@ -3638,6 +3638,9 @@ void syncUTCTime() {
   satData.rtc_now_day = rtc.now().day();
   satData.rtc_now_unixtime = rtc.now().unixtime();
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              CONVERT UTC TO TIME TO LOCAL TIME
 
 void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
