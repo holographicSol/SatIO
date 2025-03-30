@@ -3661,6 +3661,9 @@ void convertUTCTimeToLocalTime() {
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
   // is setup and ready for dev
+  // auto offset: curewntly requires politics and or tz and dst.
+  // manual offset: ultimate manual offset requires a very large number in seconds with a plus/misnus flag.
+  // 
   // (+)
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   // (-)
