@@ -3615,7 +3615,7 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
     if ((first_gps_pass==true) ) {
-      // sync with the first opportunity of the first 100 milliseconds of a second
+      // sync at first opportunity within the first 100 milliseconds of any second
       if (satData.tmp_millisecond_int==0) {
         Serial.println("[rtc] synchronizing (first opportunity)");
         first_gps_pass=false;
@@ -3631,7 +3631,7 @@ void syncUTCTime() {
       }
     }
     else {
-      // sync every minute within the first 100 milliseconds of a second
+      // sync every minute within the first 100 milliseconds of any minute
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (everty minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
