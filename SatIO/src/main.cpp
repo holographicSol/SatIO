@@ -3640,7 +3640,7 @@ void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                      ADJUST DISPLAYED TIME                                  */
   // ----------------------------------------------------------------------------------------------
-  
+
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
 }
@@ -3656,7 +3656,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
   // current rtc unixtime
-  strcat(satData.satio_sentence, String(formatRTCDateTimeStamp()).c_str());
+  strcat(satData.satio_sentence, satData.rtcSyncDatetimeStamp);
   strcat(satData.satio_sentence, ",");
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeStamp);
@@ -10343,10 +10343,10 @@ void UpdateUI(void * pvParamters) {
       // show datetime
       // ------------------------------------------------
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
+      canvas60x8.printFixed(1, 1, satData.rtcSyncTime, STYLE_BOLD );
       display.drawCanvas(39, 4, canvas60x8);
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, formatRTCDateAbbreviated().c_str(), STYLE_BOLD );
+      canvas60x8.printFixed(1, 1, satData.rtcSyncDate, STYLE_BOLD );
       display.drawCanvas(39, 14, canvas60x8);
       // ------------------------------------------------
       if (interaction_updateui==true) {
