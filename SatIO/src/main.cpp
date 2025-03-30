@@ -3505,7 +3505,7 @@ String formatTime(int hour, int minute, int second) {
   /* returns period delimited string */
   return String(padDigitsZero(hour)) + ":" + String(padDigitsZero(minute)) + ":" + String(padDigitsZero(second));
 }
-String formatTimeStamp(int hour, int minute, int second, int day, int month, int year) {
+String formatTimeStamp(int hour, int minute, int second) {
   /* return string without delimiters */
   return  String(padDigitsZero(hour)) + String(padDigitsZero(minute)) + String(padDigitsZero(second));
 }
@@ -12161,10 +12161,10 @@ void UpdateUI(void * pvParamters) {
       // time adjustment in development for local time
       // -----------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.rtcSyncTimeUTC).c_str());
+      canvas80x8.printFixed(1, 1, String(formatTime(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second)).c_str());
       display.drawCanvas(45, ui_content_4, canvas80x8);
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.rtcSyncDateUTC).c_str());
+      canvas80x8.printFixed(1, 1, String(formatDate(satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
       display.drawCanvas(45, ui_content_5, canvas80x8);
       // -----------------------------------------------------
 
