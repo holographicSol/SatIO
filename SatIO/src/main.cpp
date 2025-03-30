@@ -13919,8 +13919,8 @@ void setup() {
 //                                                                                                                      MAIN LOOP
 
 int t0 = millis();
-bool track_planets_period = true;
-bool update_local_time = true;
+bool track_planets_period = false;
+bool update_local_time = false;
 bool check_sdcard = false;
 bool longer_loop = false;
 int load_distribution = 0;
