@@ -3592,9 +3592,8 @@ void syncUTCTime() {
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
     if ((first_gps_pass==true) ) {
       // sync at first opportunity within the first 100 milliseconds of any second
-      if (satData.tmp_millisecond_int==0) {
+      if (satData.tmp_millisecond_int==00) {
         Serial.println("[rtc] synchronizing (first opportunity)");
-        first_gps_pass=false;
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
@@ -13986,7 +13985,8 @@ void loop() {
     //                                             CONVERT UTC TO LOCAL TIME
     // Only run if new GPS data has been collected.
     // Currently limited to once per second because local time is onky displayed.
-    if (update_local_time == true) {
+    if ((update_local_time == true) || (first_gps_pass==true)) {
+      first_gps_pass=false;
       update_local_time = false;
       t0 = micros();
       convertUTCTimeToLocalTime();
