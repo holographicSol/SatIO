@@ -3275,16 +3275,7 @@ struct SatDatatruct {
   double millisecondsLat;                                          // used for converting absolute latitude and longitude
   double millisecondsLong;                                         // used for converting absolute latitude and longitude
 
-  int local_year = 0;
-  int local_month = 0;
-  int local_day = 0;
-  int local_hour = 0;
-  int local_minute = 0;
-  int local_second = 0;
-  char rtcDatetimeLocalStamp[56]       = "0.0"; // record last time satellites were seen
-  char rtcDatetimeLocal[56]            = "0.0"; // record last time satellites were seen
-  char rtcTimeLocal[56]                = "0.0"; // record last time satellites were seen
-  char rtcDateLocal[56]                = "0.0"; // record last time satellites were seen
+  time_t local_time;
 
   signed int utc_offset = 0; // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
   bool utc_offset_flag = 0;  // 0: add hours to time; 1: deduct hours from time
@@ -3656,7 +3647,7 @@ void convertUTCTimeToLocalTime() {
     rtc.now().month(),
     rtc.now().year());
   tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  time_t make_local_time = makeTime(make_local_time_elements);
+  satData.local_time = makeTime(make_local_time_elements);
   // ----------------------------------------------------------------------------------------------
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
@@ -3667,24 +3658,8 @@ void convertUTCTimeToLocalTime() {
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
   // (-)
   else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
-  
-  // ----------------------------------------------------------------------------------------------
-  /*                               SET LOCAL TIME & DATE FROM RTC                                */
-  // ----------------------------------------------------------------------------------------------
-  satData.local_year   = year();
-  satData.local_month  = month();
-  satData.local_day    = day();
-  satData.local_hour   = hour();
-  satData.local_minute = minute();
-  satData.local_second = second();
-  memset(satData.rtcDatetimeLocalStamp, 0, sizeof(satData.rtcDatetimeLocalStamp));
-  strcpy(satData.rtcDatetimeLocalStamp, formatRTCDateTimeStamp().c_str());
-  memset(satData.rtcDatetimeLocal, 0, sizeof(satData.rtcDatetimeLocal));
-  strcpy(satData.rtcDatetimeLocal, formatRTCDateTime().c_str());
-  memset(satData.rtcTimeLocal, 0, sizeof(satData.rtcTimeLocal));
-  strcpy(satData.rtcTimeLocal, formatRTCTime().c_str());
-  memset(satData.rtcDateLocal, 0, sizeof(satData.rtcDateLocal));
-  strcpy(satData.rtcDateLocal, formatRTCDate().c_str());
+  // set
+  satData.local_time = now();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3703,11 +3678,9 @@ void buildSatIOSentence() {
   // --------------------------------------------------------------------------------------------------------
   // current rtc unixtime
   strcat(satData.satio_sentence, String(rtc.now().unixtime()).c_str());
-  // strcat(satData.satio_sentence, satData.rtcDatetimeLocalStamp);
   strcat(satData.satio_sentence, ",");
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeUTCStamp);
-  // strcat(satData.satio_sentence, satData.rtcDatetimeLocalStamp);
   strcat(satData.satio_sentence, ",");
   // --------------------------------------------------------------------------------------------------------
 
@@ -10395,11 +10368,9 @@ void UpdateUI(void * pvParamters) {
       // -----------------------------------------------------
       canvas76x8.clear();
       canvas76x8.printFixed(1, 1, formatRTCTime().c_str(), STYLE_BOLD );
-      // canvas76x8.printFixed(1, 1, satData.rtcTimeLocal, STYLE_BOLD );
       display.drawCanvas(39, 4, canvas76x8);
       canvas76x8.clear();
       canvas76x8.printFixed(1, 1, formatRTCDate().c_str(), STYLE_BOLD );
-      // canvas76x8.printFixed(1, 1, satData.rtcDateLocal, STYLE_BOLD );
       display.drawCanvas(39, 14, canvas76x8);
       // -----------------------------------------------------
 
@@ -12166,11 +12137,9 @@ void UpdateUI(void * pvParamters) {
       // -----------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncTimeUTC).c_str());
-      // canvas80x8.printFixed(1, 1, String(satData.rtcTimeLocal).c_str());
       display.drawCanvas(45, ui_content_4, canvas80x8);
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.rtcSyncDateUTC).c_str());
-      // canvas80x8.printFixed(1, 1, String(satData.rtcDateLocal).c_str());
       display.drawCanvas(45, ui_content_5, canvas80x8);
       // -----------------------------------------------------
 
