@@ -3615,8 +3615,9 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
     if ((first_gps_pass==true) ) {
+      // sync with the first opportunity of the first 100 milliseconds of a second
       if (satData.tmp_millisecond_int==0) {
-        Serial.println("[rtc] synchronizing");
+        Serial.println("[rtc] synchronizing (first opportunity)");
         first_gps_pass=false;
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         memset(satData.rtcSyncDatetimeUTCStamp, 0, sizeof(satData.rtcSyncDatetimeUTCStamp));
@@ -3630,19 +3631,18 @@ void syncUTCTime() {
       }
     }
     else {
-      if (satData.lt_second_int == 0) {
-        if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
-          Serial.println("[rtc] synchronizing");
-          rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
-          memset(satData.rtcSyncDatetimeUTCStamp, 0, sizeof(satData.rtcSyncDatetimeUTCStamp));
-          strcpy(satData.rtcSyncDatetimeUTCStamp, formatRTCDateTimeStamp().c_str());
-          memset(satData.rtcSyncDatetimeUTC, 0, sizeof(satData.rtcSyncDatetimeUTC));
-          strcpy(satData.rtcSyncDatetimeUTC, formatRTCDateTime().c_str());
-          memset(satData.rtcSyncTimeUTC, 0, sizeof(satData.rtcSyncTimeUTC));
-          strcpy(satData.rtcSyncTimeUTC, formatRTCTime().c_str());
-          memset(satData.rtcSyncDateUTC, 0, sizeof(satData.rtcSyncDateUTC));
-          strcpy(satData.rtcSyncDateUTC, formatRTCDate().c_str());
-        }
+      // sync every minute within the first 100 milliseconds of a second
+      if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
+        Serial.println("[rtc] synchronizing (everty minute)");
+        rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        memset(satData.rtcSyncDatetimeUTCStamp, 0, sizeof(satData.rtcSyncDatetimeUTCStamp));
+        strcpy(satData.rtcSyncDatetimeUTCStamp, formatRTCDateTimeStamp().c_str());
+        memset(satData.rtcSyncDatetimeUTC, 0, sizeof(satData.rtcSyncDatetimeUTC));
+        strcpy(satData.rtcSyncDatetimeUTC, formatRTCDateTime().c_str());
+        memset(satData.rtcSyncTimeUTC, 0, sizeof(satData.rtcSyncTimeUTC));
+        strcpy(satData.rtcSyncTimeUTC, formatRTCTime().c_str());
+        memset(satData.rtcSyncDateUTC, 0, sizeof(satData.rtcSyncDateUTC));
+        strcpy(satData.rtcSyncDateUTC, formatRTCDate().c_str());
       }
     }
   }
