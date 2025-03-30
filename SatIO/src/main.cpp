@@ -3291,6 +3291,7 @@ struct SatDatatruct {
   int rtcsync_day = 0;
   uint32_t rtc_now_unixtime;
 
+  // task safe rtc time now can be used instead of directly calling rtc.now()
   int rtc_now_hour = 0;
   int rtc_now_minute = 0;
   int rtc_now_second = 0;
