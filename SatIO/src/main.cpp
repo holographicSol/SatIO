@@ -12105,6 +12105,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
+
+
+      // -----------------------------------------------------
+      // time adjustment in development for local time
+      // -----------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatTime(rtc.now().hour(),rtc.now().minute(), rtc.now().second())).c_str());
       display.drawCanvas(45, ui_content_0, canvas80x8);
@@ -12112,6 +12117,9 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatDate(rtc.now().day(),rtc.now().month(), rtc.now().year())).c_str());
       display.drawCanvas(45, ui_content_1, canvas80x8);
+      // -----------------------------------------------------
+
+
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -12157,6 +12165,7 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
       display.drawCanvas(45, ui_content_3, canvas80x8);
 
+
       // -----------------------------------------------------
       // time adjustment in development for local time
       // -----------------------------------------------------
@@ -12168,6 +12177,7 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(45, ui_content_5, canvas80x8);
       // -----------------------------------------------------
 
+      
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
