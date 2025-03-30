@@ -13919,7 +13919,8 @@ void setup() {
 //                                                                                                                      MAIN LOOP
 
 int t0 = millis();
-bool track_planets_period = false;
+bool track_planets_period = true;
+bool update_local_time = true;
 bool check_sdcard = false;
 bool longer_loop = false;
 int load_distribution = 0;
@@ -13972,21 +13973,29 @@ void loop() {
     // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
-    //                                                           CONVERSIONS
+    //                                                     SYNC RTC WITH UTC
     /*
     Convert absolute latitude and longitude to degrees.
-    convert UTC to local time.
-    Sync RTC.
     Only run if new GPS data has been collected.
     */
     t0 = micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-    t0 = micros();
-    convertUTCTimeToLocalTime();
-    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // ---------------------------------------------------------------------
+    //                                             CONVERT UTC TO LOCAL TIME
+    // Only run if new GPS data has been collected.
+    // Currently limited to once per second because local time is onky displayed.
+    if (update_local_time == true) {
+      update_local_time = false;
+      t0 = micros();
+      convertUTCTimeToLocalTime();
+      bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
 
+    // ---------------------------------------------------------------------
+    //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
+    // Only run if new GPS data has been collected.
     t0 = micros();
     calculateLocation();
     bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -14107,6 +14116,7 @@ void loop() {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
     track_planets_period = true;
+    update_local_time = true;
     check_sdcard = true;
     timeData.uptime_seconds++;
     portEXIT_CRITICAL(&second_timer_mux);
