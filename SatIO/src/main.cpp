@@ -10340,7 +10340,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      // show datetime
+      // show datetime (currently UTC)
       // ------------------------------------------------
       canvas60x8.clear();
       canvas60x8.printFixed(1, 1, satData.rtcSyncTime, STYLE_BOLD );
