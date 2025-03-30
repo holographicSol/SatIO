@@ -3663,7 +3663,7 @@ void convertUTCTimeToLocalTime() {
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
 
-  // adjustment in development with automatic and manual adjustments being considered.
+  // time adjustment in development for local time
 
   // (+)
   if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
@@ -3699,16 +3699,20 @@ void buildSatIOSentence() {
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
+
   // --------------------------------------------------------------------------------------------------------
-  // curerntly serial outputs UTC until considerations have been made regarding serial output utc vs. local.
+  // time adjustment in development for local time
   // --------------------------------------------------------------------------------------------------------
   // current rtc unixtime
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeUTCStamp);
+  // strcat(satData.satio_sentence, satData.rtcSyncDatetimeLocalStamp);
   strcat(satData.satio_sentence, ",");
   // last downlink sync rtc
   strcat(satData.satio_sentence, satData.rtcSyncDatetimeUTCStamp);
+  // strcat(satData.satio_sentence, satData.rtcSyncDatetimeLocalStamp);
   strcat(satData.satio_sentence, ",");
-  // ----------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------
+
   // system uptime in seconds
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
   strcat(satData.satio_sentence, ",");
@@ -10387,15 +10391,20 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
+      
       // -----------------------------------------------------
-      // show local datetime (time adjustment in development)
+      // time adjustment in development for local time
       // -----------------------------------------------------
       canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, satData.rtcSyncTimeLocal, STYLE_BOLD );
+      canvas76x8.printFixed(1, 1, satData.rtcSyncTimeUTC, STYLE_BOLD );
+      // canvas76x8.printFixed(1, 1, satData.rtcSyncTimeLocal, STYLE_BOLD );
       display.drawCanvas(39, 4, canvas76x8);
       canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, satData.rtcSyncDateLocal, STYLE_BOLD );
+      canvas76x8.printFixed(1, 1, satData.rtcSyncDateUTC, STYLE_BOLD );
+      // canvas76x8.printFixed(1, 1, satData.rtcSyncDateLocal, STYLE_BOLD );
       display.drawCanvas(39, 14, canvas76x8);
+      // -----------------------------------------------------
+
       // ------------------------------------------------
       if (interaction_updateui==true) {
         interaction_updateui=false;
@@ -12153,15 +12162,20 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
       display.drawCanvas(45, ui_content_3, canvas80x8);
+
       // -----------------------------------------------------
-      // show local datetime (time adjustment in development)
+      // time adjustment in development for local time
       // -----------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.rtcSyncTimeLocal).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.rtcSyncTimeUTC).c_str());
+      // canvas80x8.printFixed(1, 1, String(satData.rtcSyncTimeLocal).c_str());
       display.drawCanvas(45, ui_content_4, canvas80x8);
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.rtcSyncDateLocal).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.rtcSyncDateUTC).c_str());
+      // canvas80x8.printFixed(1, 1, String(satData.rtcSyncDateLocal).c_str());
       display.drawCanvas(45, ui_content_5, canvas80x8);
+      // -----------------------------------------------------
+
       // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
@@ -13978,6 +13992,10 @@ void loop() {
     t0 = micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+    t0 = micros();
+    convertUTCTimeToLocalTime();
+    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     t0 = micros();
     calculateLocation();
