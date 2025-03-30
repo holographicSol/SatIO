@@ -3246,9 +3246,6 @@ struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
   char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
-  char rtcSyncDatetimeUTCStamp[56]       = "0.0";                  // record last time satellites were seen
-  char rtcSyncTimeUTC[56]                = "0.0";                  // record last time satellites were seen
-  char rtcSyncDateUTC[56]                = "0.0";                  // record last time satellites were seen
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
   double latitude_meter               = 0.0000100;                 // one meter (tune)
@@ -3274,6 +3271,7 @@ struct SatDatatruct {
   double millisecondsLat;                                          // used for converting absolute latitude and longitude
   double millisecondsLong;                                         // used for converting absolute latitude and longitude
 
+  // local time converted from rtc utc time
   time_t local_time;
   int local_hour = 0;
   int local_minute = 0;
@@ -3282,6 +3280,7 @@ struct SatDatatruct {
   int local_month = 0;
   int local_day = 0;
 
+  // last time rtc synced with utc
   time_t rtcsync_time;
   int rtcsync_hour = 0;
   int rtcsync_minute = 0;
