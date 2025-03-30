@@ -3247,7 +3247,6 @@ struct SatDatatruct {
   char satio_sentence[200];                                        // buffer
   char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
   char rtcSyncDatetimeUTCStamp[56]       = "0.0";                  // record last time satellites were seen
-  char rtcSyncDatetimeUTC[56]            = "0.0";                  // record last time satellites were seen
   char rtcSyncTimeUTC[56]                = "0.0";                  // record last time satellites were seen
   char rtcSyncDateUTC[56]                = "0.0";                  // record last time satellites were seen
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
@@ -3283,6 +3282,14 @@ struct SatDatatruct {
   int local_month = 0;
   int local_day = 0;
 
+  time_t rtcsync_time;
+  int rtcsync_hour = 0;
+  int rtcsync_minute = 0;
+  int rtcsync_second = 0;
+  int rtcsync_year = 0;
+  int rtcsync_month = 0;
+  int rtcsync_day = 0;
+
   signed int utc_offset = 0; // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
   bool utc_offset_flag = 0;  // 0: add hours to time; 1: deduct hours from time
 
@@ -3304,15 +3311,6 @@ struct SatDatatruct {
   char tmp_minute[56];             // temp current minute
   char tmp_second[56];             // temp current second
   char tmp_millisecond[56];        // temp current millisecond
-
-  /* TIME VALUES FOR RTC AND OTHER USE */
-  signed int lt_year_int = 0;        // last year satellite count > zero
-  signed int lt_month_int = 0;       // last month satellite count > zero
-  signed int lt_day_int = 0;         // last day satellite count > zero
-  signed int lt_hour_int = 0;        // last hour satellite count > zero
-  signed int lt_minute_int = 0;      // last minute satellite count > zero
-  signed int lt_second_int = 0;      // last second satellite count > zero
-  signed int lt_millisecond_int = 0; // last millisecond satellite count > zero
 
   // long current_unixtime;
 };
@@ -3352,71 +3350,6 @@ struct SensorDataStruct {
   char TMP[1024];
 };
 SensorDataStruct sensorData;
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 SATIO SENTENCE
-
-String padDigitsZero(int digits) {
-  /* preappends char 0 to pad string of digits evenly */
-  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
-  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
-  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
-  itoa(digits, satData.pad_current_digits, 10);
-  strcat(satData.pad_digits_new, satData.pad_current_digits);
-  return satData.pad_digits_new;
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                       RTC TIME
-
-
-String formatRTCDateTime() {
-  return 
-  String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())) + " " +
-  String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year())));
-}
-
-String formatRTCDate() {
-  return 
-  String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year()));
-}
-
-String formatRTCDateAbbreviated() {
-  return 
-  String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year())[2]) + String(padDigitsZero(rtc.now().year())[3]);
-}
-
-String formatRTCTime() {
-  return 
-  String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())));
-}
-
-String formatRTCDateTimeStamp() {
-  /* decend units of time for timestamp */
-  return 
-  String(padDigitsZero(rtc.now().year())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().day())) +
-  String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
-}
-
-String formatRTCDateStamp() {
-   /* decend units of time for timestamp */
-  return String(padDigitsZero(rtc.now().day())) + String(padDigitsZero(rtc.now().month())) + String(padDigitsZero(rtc.now().year()));
-}
-
-String formatRTCTImeStamp() {
-   /* decend units of time for timestamp */
-  return String(String(padDigitsZero( rtc.now().hour())) + String(padDigitsZero(rtc.now().minute())) + String(padDigitsZero(rtc.now().second())));
-}
-
-String formatLocalDate() {
-  return 
-  String(padDigitsZero(rtc.now().day())) + "." + String(padDigitsZero(rtc.now().month())) + "." + String(padDigitsZero(rtc.now().year()));
-}
-
-String formatLocalTime() {
-  return 
-  String(String(padDigitsZero( rtc.now().hour())) + ":" + String(padDigitsZero(rtc.now().minute())) + ":" + String(padDigitsZero(rtc.now().second())));
-}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         CONVERT COORDINTE DATA
@@ -3541,34 +3474,69 @@ void calculateLocation(){
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                       SET TIME
+//                                                                                                                      PAD ZEROS
 
-void syncRTCOnDownlink() {
-  rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
-  // debug("[synchronized] " + formatRTCDateTime());
+String padDigitsZero(int digits) {
+  /* preappends char 0 to pad string of digits evenly */
+  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
+  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
+  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
+  itoa(digits, satData.pad_current_digits, 10);
+  strcat(satData.pad_digits_new, satData.pad_current_digits);
+  return satData.pad_digits_new;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                           CONVERT UTC TO LOCAL
+//                                                                                                                    FORMAT DATE
 
+String formatDate(int day, int month, int year) {
+  /* returns period delimited string */
+  return String(padDigitsZero(day)) + "." + String(padDigitsZero(month)) + "." + String(padDigitsZero(year));
+}
+String formatDateStamp(int day, int month, int year) {
+  /* return string without delimiters */
+  return String(padDigitsZero(year)) + String(padDigitsZero(month)) + String(padDigitsZero(day));
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    FORMAT TIME
+
+String formatTime(int hour, int minute, int second) {
+  /* returns period delimited string */
+  return String(padDigitsZero(hour)) + ":" + String(padDigitsZero(minute)) + ":" + String(padDigitsZero(second));
+}
+String formatTimeStamp(int hour, int minute, int second, int day, int month, int year) {
+  /* return string without delimiters */
+  return  String(padDigitsZero(hour)) + String(padDigitsZero(minute)) + String(padDigitsZero(second));
+}
 int hoursMinutesSecondsToInt(int hours, int minutes, int seconds) {
   return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes) + padDigitsZero(seconds)).c_str());
 }
-
 int hoursMinutesToInt(int hours, int minutes) {
   return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes)).c_str());
 }
 
-// temporary char time values so that we do not disturb the primary values while converting.
-char temp_sat_time_stamp_string[128];
-bool first_gps_pass = true;
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                FORMAT DATETIME
 
-bool isTwoDiff(int a, int b) {
-  return abs(a - b) <= 2;
+String formatDateTime(int hour, int minute, int second, int day, int month, int year) {
+  /* returns period delimited string */
+  return 
+  String(padDigitsZero(hour)) + ":" + String(padDigitsZero(minute)) + ":" + String(padDigitsZero(second)) + " " +
+  String(padDigitsZero(day))  + "." + String(padDigitsZero(month))  + "." + String(padDigitsZero(year));
 }
-bool isOneDiff(int a, int b) {
-  return abs(a - b) <= 1;
+String formatDateTimeStamp(int hour, int minute, int second, int day, int month, int year) {
+  /* return string without delimiters */
+  return 
+  String(padDigitsZero(year)) + String(padDigitsZero(month))  + String(padDigitsZero(day)) +
+  String(padDigitsZero(hour)) + String(padDigitsZero(minute)) + String(padDigitsZero(second));
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                       SYNC UTC
+
+// temporary char time values so that we do not disturb the primary values while converting.
+bool first_gps_pass = true;
 
 void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
@@ -3620,14 +3588,16 @@ void syncUTCTime() {
         Serial.println("[rtc] synchronizing (first opportunity)");
         first_gps_pass=false;
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
-        memset(satData.rtcSyncDatetimeUTCStamp, 0, sizeof(satData.rtcSyncDatetimeUTCStamp));
-        strcpy(satData.rtcSyncDatetimeUTCStamp, formatRTCDateTimeStamp().c_str());
-        memset(satData.rtcSyncDatetimeUTC, 0, sizeof(satData.rtcSyncDatetimeUTC));
-        strcpy(satData.rtcSyncDatetimeUTC, formatRTCDateTime().c_str());
-        memset(satData.rtcSyncTimeUTC, 0, sizeof(satData.rtcSyncTimeUTC));
-        strcpy(satData.rtcSyncTimeUTC, formatRTCTime().c_str());
-        memset(satData.rtcSyncDateUTC, 0, sizeof(satData.rtcSyncDateUTC));
-        strcpy(satData.rtcSyncDateUTC, formatRTCDate().c_str());
+        // ----------------------------------------------------------------------------------------
+        /*                              SET SYNC TIME FROM GPS                                   */
+        // ----------------------------------------------------------------------------------------
+        satData.rtcsync_time = make_utc_time;
+        satData.rtcsync_hour = hour();
+        satData.rtcsync_minute = minute();
+        satData.rtcsync_second = second();
+        satData.rtcsync_year = year();
+        satData.rtcsync_month = month();
+        satData.rtcsync_day = day();
       }
     }
     else {
@@ -3635,14 +3605,16 @@ void syncUTCTime() {
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (everty minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
-        memset(satData.rtcSyncDatetimeUTCStamp, 0, sizeof(satData.rtcSyncDatetimeUTCStamp));
-        strcpy(satData.rtcSyncDatetimeUTCStamp, formatRTCDateTimeStamp().c_str());
-        memset(satData.rtcSyncDatetimeUTC, 0, sizeof(satData.rtcSyncDatetimeUTC));
-        strcpy(satData.rtcSyncDatetimeUTC, formatRTCDateTime().c_str());
-        memset(satData.rtcSyncTimeUTC, 0, sizeof(satData.rtcSyncTimeUTC));
-        strcpy(satData.rtcSyncTimeUTC, formatRTCTime().c_str());
-        memset(satData.rtcSyncDateUTC, 0, sizeof(satData.rtcSyncDateUTC));
-        strcpy(satData.rtcSyncDateUTC, formatRTCDate().c_str());
+        // ----------------------------------------------------------------------------------------
+        /*                              SET SYNC TIME FROM GPS                                   */
+        // ----------------------------------------------------------------------------------------
+        satData.rtcsync_time = make_utc_time;
+        satData.rtcsync_hour = hour();
+        satData.rtcsync_minute = minute();
+        satData.rtcsync_second = second();
+        satData.rtcsync_year = year();
+        satData.rtcsync_month = month();
+        satData.rtcsync_day = day();
       }
     }
   }
@@ -3674,6 +3646,7 @@ void convertUTCTimeToLocalTime() {
     rtc.now().year());
   tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
   satData.local_time = makeTime(make_local_time_elements);
+
   // ----------------------------------------------------------------------------------------------
   // uncomment to test
   // ----------------------------------------------------------------------------------------------
@@ -3683,6 +3656,7 @@ void convertUTCTimeToLocalTime() {
   // Serial.println("[hour] " + String(hour()));
   // Serial.println("[minute] " + String(minute()));
   // Serial.println("[second] " + String(second()));
+
   // ----------------------------------------------------------------------------------------------
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
@@ -3700,6 +3674,7 @@ void convertUTCTimeToLocalTime() {
   satData.local_hour = hour();
   satData.local_minute = minute();
   satData.local_second = second();
+  
   // ----------------------------------------------------------------------------------------------
   // uncomment to test
   // ----------------------------------------------------------------------------------------------
@@ -3730,7 +3705,7 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, String(rtc.now().unixtime()).c_str());
   strcat(satData.satio_sentence, ",");
   // last downlink sync rtc
-  strcat(satData.satio_sentence, satData.rtcSyncDatetimeUTCStamp);
+  strcat(satData.satio_sentence, String(formatDateTimeStamp(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second, satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
   strcat(satData.satio_sentence, ",");
   // --------------------------------------------------------------------------------------------------------
 
@@ -12131,11 +12106,11 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(formatRTCTime()).c_str());
+      canvas80x8.printFixed(1, 1, String(formatTime(rtc.now().hour(),rtc.now().minute(), rtc.now().second())).c_str());
       display.drawCanvas(45, ui_content_0, canvas80x8);
       // ------------------------------------------------
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(formatRTCDate()).c_str());
+      canvas80x8.printFixed(1, 1, String(formatDate(rtc.now().day(),rtc.now().month(), rtc.now().year())).c_str());
       display.drawCanvas(45, ui_content_1, canvas80x8);
       // ------------------------------------------------
       canvas36x8.clear();
