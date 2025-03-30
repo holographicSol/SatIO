@@ -1068,12 +1068,12 @@ struct systemStruct {
   int max_display_autooff_times = 5; // max available times
   int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56] = {
-    "AUTO-OFF     3",
-    "AUTO-OFF     5",
-    "AUTO-OFF     10",
-    "AUTO-OFF     15",
-    "AUTO-OFF     30",
-    "AUTO-OFF     60",
+    "AUTO-OFF  3",
+    "AUTO-OFF  5",
+    "AUTO-OFF  10",
+    "AUTO-OFF  15",
+    "AUTO-OFF  30",
+    "AUTO-OFF  60",
   };
   int display_timeout = display_autooff_times[index_display_autooff_times];
   
