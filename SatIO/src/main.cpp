@@ -3312,7 +3312,7 @@ struct SatDatatruct {
   4: allow negative and positive value for offset. 
   */
   long utc_second_offset = 0;
-  int utc_auto_offset_flag = 0;  // automatically aquire an offset value
+  int utc_auto_offset_flag = false;  // automatically aquire an offset value: true=auto, false=manual
 
   char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
