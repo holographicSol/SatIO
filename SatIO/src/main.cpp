@@ -264,6 +264,7 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      LIBRARIES
+// ------------------------------------------------------------------------------------------------------------------------------
 
 #include <Arduino.h>
 #include "soc/rtc_wdt.h"
@@ -300,6 +301,7 @@ bool gps_done = false; // helps avoid any potential race conditions where gps da
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int8_t ctsPin = -1;  // remap hardware serial TXD
 const int8_t rtsPin = -1;  // remap hardware serial RXD
@@ -310,6 +312,7 @@ const byte rxd_from_gps = 26;  //
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MULTIPLEXERS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /* i2c multiplexer */
 
@@ -358,6 +361,7 @@ void setMultiplexChannel_CD74HC4067(int channel) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            SPI
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void beginSPIDevice(int SCLK, int MISO, int MOSI, int SS) {
   /*
@@ -378,6 +382,7 @@ void endSPIDevice(int SS) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY WIRING
+// ------------------------------------------------------------------------------------------------------------------------------
 
 // SSD1351 HSPI pins on esp32 with custom CS
 int SSD1351_SCLK = 14; // (SCL)
@@ -390,6 +395,7 @@ DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD13
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DISPLAY CANVAS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 NanoCanvas<8,8,1> canvas8x8; 
 NanoCanvas<19,8,1> canvas19x8;
@@ -643,6 +649,7 @@ const uint8_t rtcsync_red[] = {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              DISPLAY VARIABLES
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /* try to ensure space for developments by leaving a space of 20 pages between each page group */
 
@@ -715,7 +722,8 @@ static int ui_content_10 = 116;
 bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             DISPLAY MENU SETUP
+//                                                                                                                MENU HOME SETUP
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*
 1x1 menu blended into border in top left corner. this allows this menu to take up no space on the home screen.
@@ -732,7 +740,8 @@ const char *menuHomeItems[max_home_items] =
 LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             DISPLAY MENU SETUP
+//                                                                                                                      MENU MAIN
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_main_menu_items = 10;
 const char *menuMainItems[max_main_menu_items] =
@@ -752,7 +761,8 @@ const char *menuMainItems[max_main_menu_items] =
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 30}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
+//                                                                                                      MENU MATRIX SWITCH SELECT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_matrix_switch_items = 20;
 const char *menuMatrixSwitchSelectItems[max_matrix_switch_items] =
@@ -781,7 +791,8 @@ const char *menuMatrixSwitchSelectItems[max_matrix_switch_items] =
 LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, max_matrix_switch_items, {{0, 12}, {39, 35}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                     DISPLAY MENU MATRIX SWITCH FUNCTION SELECT
+//                                                                                             MENU MATRIX SWITCH FUNCTION SELECT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_function_menu_items = 10;
 const char *menuMatrixFunctionSelectItems[max_function_menu_items] =
@@ -801,6 +812,7 @@ LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                               MENU MATRIX SWITCH CONFIGURATION
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_matrix_function_configure_items = 5;
 const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items] =
@@ -815,6 +827,7 @@ LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_ma
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU FILE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_file_items = 6;
 const char *menuFileItems[max_file_items] =
@@ -830,6 +843,7 @@ LcdGfxMenu menuFile( menuFileItems, max_file_items, {{2, 62}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                MENU FILE NAMES
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_filepath_items = 20;
 const char *menuMatrixFilepathItems[max_filepath_items];
@@ -837,6 +851,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       MENU GPS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_gps_items = 9;
 const char *menuGPSItems[max_gps_items];
@@ -844,6 +859,7 @@ LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_serial_items = 16;
 const char *menuSerialItems[max_serial_items];
@@ -851,6 +867,7 @@ LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 14}, {125, 125}} 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  MENU UNIVERSE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_universe_items = 18;
 const char *menuUniverseItems[max_universe_items];
@@ -858,13 +875,15 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   MENU DISPLAY 
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_display_items = 8;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      MENU SYSTEM
+//                                                                                                                    MENU SYSTEM
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_system_items = 2;
 const char *menuSystemItems[max_system_items];
@@ -872,6 +891,7 @@ LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MENU TIME & DATE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const int max_timeanddate_items = 2;
 const char *menuTimeAndDateItems[max_timeanddate_items];
@@ -888,6 +908,7 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          TASKS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /* ESP32 has 2 cores. initiate task handles */
 TaskHandle_t GPSTask;
@@ -895,17 +916,20 @@ TaskHandle_t Task1;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
+// ------------------------------------------------------------------------------------------------------------------------------
 
 RTC_DS3231 rtc;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               SIDEREAL PLANETS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 SiderealPlanets myAstro;    // for calculating azimuth and altitude
 SiderealObjects myAstroObj; // for getting right ascension and declination of objects from star table
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         SDCARD
+// ------------------------------------------------------------------------------------------------------------------------------
 
 // sd VSPI pins on esp32
 int SD_SCLK = 18;  // default esp32 VSPI
@@ -928,6 +952,7 @@ bool sdcard_initialized = false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SPI SWITCHING
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void beginSDCARD() {
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
@@ -950,6 +975,7 @@ void beginSDCARD() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          CHARS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
@@ -988,6 +1014,7 @@ char cwd[1024] = "/";
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct systemStruct {
   bool debug = false;                // print verbose information over serial
@@ -1172,6 +1199,7 @@ void bench(String x) {if (systemData.t_bench==true) {Serial.println(x);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 DATA: SERIAL 1
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct Serial1Struct {
   unsigned long nbytes;                // number of bytes read by serial
@@ -1187,6 +1215,7 @@ Serial1Struct serial1Data;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             SERIAL LINK STRUCT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct SerialLinkStruct {
   char BUFFER[2000];
@@ -1208,6 +1237,7 @@ SerialLinkStruct SerialLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SDCARD
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct SDCardStruct {
   int max_matrix_filenames = 20; // max matrix file names available 
@@ -1250,6 +1280,7 @@ SDCardStruct sdcardData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     DATA: TIME
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct TimeStruct {
   double seconds;                      // seconds accumulated since startup
@@ -1302,6 +1333,7 @@ void ScreenSafeUptime(uint32_t sec) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     MATRIX FUNCTIONS: ADVANCED
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*
 Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
@@ -1454,6 +1486,7 @@ SiderealObjectStruct siderealObjectData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               DATA: VALIDATION
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct validationStruct {
   int  valid_i = 0;           // validation counter
@@ -1467,6 +1500,7 @@ validationStruct validData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           VALIDATION: CHECKSUM
+// ------------------------------------------------------------------------------------------------------------------------------
 
 
 int getCheckSum(char * string) {
@@ -1524,6 +1558,7 @@ void createChecksum(char * buffer) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               VALIDATION: DATA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*
 checks can be tuned and ellaborated upon individually.
@@ -2262,6 +2297,7 @@ bool val_scalable(char * data) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct MatrixStruct {
 
@@ -2696,8 +2732,11 @@ struct MatrixStruct {
 };
 MatrixStruct matrixData;
 
-// note that we could work out of this item list entirely to be more efficient but then our function name items would have a
-// display driver dependency so for now we have two instances and with the menu items depending on our actual item list.
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            MENU FUNCTION NAMES
+// ------------------------------------------------------------------------------------------------------------------------------
+// this list is currently seperate from matrix_function_names in matrixData so that function names are not dependant on lcdgfx.
+// the lists would be preferrably merged (providing function names are still not tied to any particular display driver). 
 const char *menuMatrixSetFunctionNameItems[134] =
 {
   matrixData.matrix_function_names[0],
@@ -2961,6 +3000,7 @@ LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 134, {{2, 
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct GNGGAStruct {
   char sentence[200];
@@ -2987,6 +3027,7 @@ GNGGAStruct gnggaData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          GNGGA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void GNGGA() {
   gnggaData.check_data = 0;
@@ -3034,6 +3075,7 @@ void GNGGA() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNRMC
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct GNRMCStruct {
   char sentence[200];
@@ -3058,6 +3100,7 @@ GNRMCStruct gnrmcData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          GNRMC
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void GNRMC() {
   gnrmcData.check_data = 0;
@@ -3100,6 +3143,7 @@ void GNRMC() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GPATT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct GPATTStruct {
   char sentence[200];
@@ -3151,6 +3195,7 @@ GPATTStruct gpattData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          GPATT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void GPATT() {
   gpattData.check_data = 0;
@@ -3246,6 +3291,7 @@ void GPATT() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: SATIO
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct SatDatatruct {
   int checksum_i;                                                  // checksum int
@@ -3376,10 +3422,13 @@ SensorDataStruct sensorData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         CONVERT COORDINTE DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+
 void calculateLocation(){
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                  GNGGA COORDINATE CONVERSION
+  // ----------------------------------------------------------------------------------------------------------------------------
 
   /*
   Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
@@ -3439,6 +3488,7 @@ void calculateLocation(){
 
   // ------------------------------------------------------------------------------------------------------------------------
   //                                                                                              GNRMC COORDINATE CONVERSION
+  // ------------------------------------------------------------------------------------------------------------------------
 
   /*
   Convert GNRMC latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
@@ -3498,6 +3548,7 @@ void calculateLocation(){
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      PAD ZEROS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String padDigitsZero(int digits) {
   /* preappends char 0 to pad string of digits evenly */
@@ -3511,6 +3562,7 @@ String padDigitsZero(int digits) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    FORMAT DATE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String formatDate(int day, int month, int year) {
   /* returns period delimited string */
@@ -3523,6 +3575,7 @@ String formatDateStamp(int day, int month, int year) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    FORMAT TIME
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String formatTime(int hour, int minute, int second) {
   /* returns period delimited string */
@@ -3541,6 +3594,7 @@ int hoursMinutesToInt(int hours, int minutes) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                FORMAT DATETIME
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String formatDateTime(int hour, int minute, int second, int day, int month, int year) {
   /* returns period delimited string */
@@ -3557,6 +3611,7 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SYNC RTC WITH UTC
+// ------------------------------------------------------------------------------------------------------------------------------
 
 // temporary char time values so that we do not disturb the primary values while converting.
 bool first_gps_pass = true;
@@ -3655,6 +3710,7 @@ void syncUTCTime() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              CONVERT UTC TO TIME TO LOCAL TIME
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
@@ -3693,6 +3749,7 @@ void convertUTCTimeToLocalTime() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                           BUILD SATIO SENTENCE
+// ------------------------------------------------------------------------------------------------------------------------------
 void buildSatIOSentence() {
 
   /* create a comma delimited sentence of new data, to print over serial that can be parsed by other systems */
@@ -3737,6 +3794,7 @@ void buildSatIOSentence() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                    SDCARD: UPDATE MATRIX FILEPATH AND FILENAME
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void UpdateMatrixFileNameFilePath(char * filepath) {
   memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
@@ -3762,6 +3820,7 @@ void UpdateMatrixFileName(char * filepath) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              SDCARD: SAVE SYSTEM CONFIGURATION
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void sdcard_save_system_configuration(char * file) {
 
@@ -4300,7 +4359,8 @@ void sdcard_save_system_configuration(char * file) {
 void PrintFileToken() {Serial.println("[sdcard] [reading] " +  String(sdcardData.token));}
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION 
+//                                                                                              SDCARD: LOAD SYSTEM CONFIGURATION
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 bool sdcard_load_system_configuration(char * file) {
 
@@ -4311,8 +4371,8 @@ bool sdcard_load_system_configuration(char * file) {
     while (exfile.available()) {
 
       // ------------------------------------------------
-
       // read line
+      // ------------------------------------------------
       sdcardData.SBUFFER = "";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER = exfile.readStringUntil('\n');
@@ -4321,7 +4381,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // check matrix filepath
       if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4333,7 +4392,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // check auto resume
       if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4346,7 +4404,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display auto off
       if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4359,7 +4416,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display auto off time index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_AUTO_OFF", strlen("INDEX_DISPLAY_AUTO_OFF")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4373,7 +4429,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display border color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_BORDER_COLOR", strlen("INDEX_DISPLAY_BORDER_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4388,7 +4443,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display content color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_CONTENT_COLOR", strlen("INDEX_DISPLAY_CONTENT_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4403,7 +4457,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display menu border color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_BORDER_COLOR", strlen("INDEX_DISPLAY_MENU_BORDER_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4418,7 +4471,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display menu content color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_CONTENT_COLOR", strlen("INDEX_DISPLAY_MENU_CONTENT_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4433,7 +4485,6 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      // display title color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_TITLE_COLOR", strlen("INDEX_DISPLAY_TITLE_COLOR")) == 0) {
         sdcardData.token = strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4461,9 +4512,9 @@ bool sdcard_load_system_configuration(char * file) {
         }
       }
 
-      // ------------------------------------------------
-
+      // ------------------------------------------------------
       // continue to enable/disable only if auto resume is true
+      // ------------------------------------------------------
       if (systemData.matrix_run_on_startup == true) {
 
         // ------------------------------------------------
@@ -4865,6 +4916,7 @@ bool sdcard_load_system_configuration(char * file) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                         SDCARD: MAKE DIRECTORY
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* creates a single directory */
 
@@ -4878,6 +4930,7 @@ void sdcard_mkdir(char * dir){
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                       SDCARD: MAKE DIRECTORIES
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* creates root directories required by the system to work properly */
 
@@ -4885,6 +4938,7 @@ void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(sdcardData.syste
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* discovers and compiles an array of matrix filenames */
 
@@ -4918,6 +4972,7 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    ZERO MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
 
@@ -4951,7 +5006,8 @@ void zero_matrix() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            SDCARD: LOAD MATRIX 
+//                                                                                                            SDCARD: LOAD MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* loads tagged, comma delimited data from a matrix file */
 
@@ -5106,6 +5162,7 @@ bool sdcard_load_matrix(char * file) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                            SDCARD: SAVE MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* saves tagged, comma delimited data to a matrix file */
 
@@ -5205,6 +5262,7 @@ bool sdcard_save_matrix(char * file) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                     SDCARD: DELETE MATRIX FILE
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void sdcard_delete_matrix(char * file) {
   if (sd.exists(file)) {
@@ -5229,6 +5287,7 @@ void sdcard_delete_matrix(char * file) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   TRACK OBJECT
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void trackObject(double latitude, double longitude, int year, int month, int day, int hour, int minute, int second, int object_table_i, int object_i) {
   /*
@@ -5261,6 +5320,7 @@ void trackObject(double latitude, double longitude, int year, int month, int day
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                IDENTIFY OBJECT
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void IdentifyObject(double object_ra, double object_dec) {
   /*
@@ -5668,6 +5728,7 @@ void trackNeptune() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   TASK: PLANETARY CALCULATIONS
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void trackPlanets() {
   // do planet elements and do sun before doing other plans
@@ -5810,7 +5871,8 @@ void setTrackPlanets() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   MATRIX FUNCTIONS: EXPRESSIONS
+//                                                                                                   MATRIX FUNCTIONS EXPRESSIONS
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 /*
 matrix switch requires all checks to return true for a matrix to be active, therefore checks can be inverted as required, to
@@ -6001,6 +6063,7 @@ bool SecondsTimer(double n0, double n1, int Mi) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 MATRIX: SWITCH
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void matrixSwitch() {
   /*
@@ -6025,11 +6088,13 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                          FIRST IS NONE
+        // ----------------------------------------------------------------------------------------------------------------------
         // perfromance and logic prefers adding functions from position zero else if position zero None then break.
         if ((strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) && (Fi == 0)) {break;}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                   NONE
+        // ----------------------------------------------------------------------------------------------------------------------
         /*
         put true in temporary matrix for functions after position zero that are set to None. allows for 1-10 functions to be set.
         */
@@ -6038,6 +6103,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                ENABLED
+        // ----------------------------------------------------------------------------------------------------------------------
         /*
         put true in temporary matrix if switch is Enabled (different from enabling disabling) regardless of data. if used,
         function name Enabled will always return true.
@@ -6046,12 +6112,14 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               OVERLOAD
+        // ----------------------------------------------------------------------------------------------------------------------
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload") == 0) {
           tmp_matrix[Fi] = check_bool_true(systemData.overload);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                             SWITCHLINK
+        // ----------------------------------------------------------------------------------------------------------------------
         /*
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
          gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
@@ -6067,6 +6135,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                           SECOND TIMER
+        // ----------------------------------------------------------------------------------------------------------------------
         
         /*
         allows modulation with an approximate resolution of 1 second.
@@ -6080,6 +6149,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                    RTC
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -6219,6 +6289,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  SATIO
+        // ----------------------------------------------------------------------------------------------------------------------
 
         if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -6328,6 +6399,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNGGA
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -6562,6 +6634,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GNRMC
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -6839,6 +6912,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                  GPATT
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTOver") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7302,6 +7376,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     SIDEREAL TIME: SUN
+        // ----------------------------------------------------------------------------------------------------------------------
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7375,8 +7450,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                                 SIDEREAL TIME: MOON
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                    SIDEREAL TIME: MOON
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7498,8 +7574,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                              SIDEREAL TIME: MERCURY
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                 SIDEREAL TIME: MERCURY
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7575,8 +7652,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                                SIDEREAL TIME: VENUS
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                   SIDEREAL TIME: VENUS
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7652,8 +7730,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                                 SIDEREAL TIME: MARS
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                    SIDEREAL TIME: MARS
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7729,8 +7808,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                              SIDEREAL TIME: JUPITER
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                 SIDEREAL TIME: JUPITER
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7806,8 +7886,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                               SIDEREAL TIME: SATURN
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                  SIDEREAL TIME: SATURN
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7883,8 +7964,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                               SIDEREAL TIME: URANUS
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                  SIDEREAL TIME: URANUS
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -7960,8 +8042,9 @@ void matrixSwitch() {
           }
         }
 
-        // -------------------------------------------------------------------------------------------------------------------
-        //                                                                                              SIDEREAL TIME: NEPTUNE
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                 SIDEREAL TIME: NEPTUNE
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzRange") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8039,6 +8122,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               VALIDITY
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS") == 0) {
           tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
@@ -8055,6 +8139,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8105,6 +8190,7 @@ void matrixSwitch() {
       
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                        DHT11_0 CELSIUS
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8154,6 +8240,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                     DHT11_0 FAHRENHEIT
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8203,6 +8290,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                             DHT11_0 HEAT INDEX CELSIUS
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8252,6 +8340,7 @@ void matrixSwitch() {
         
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
+        // ----------------------------------------------------------------------------------------------------------------------
         
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8301,6 +8390,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 0
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8350,6 +8440,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 1
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8399,6 +8490,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 2
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8448,6 +8540,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 3
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8497,6 +8590,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 4
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8546,6 +8640,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 5
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8595,6 +8690,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 6
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8644,6 +8740,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 7
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8693,6 +8790,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 8
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8742,6 +8840,7 @@ void matrixSwitch() {
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               SENSOR 9
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8790,7 +8889,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 10
+        //                                                                                                              SENSOR 10
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8839,7 +8939,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 11
+        //                                                                                                              SENSOR 11
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8888,7 +8989,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 12
+        //                                                                                                              SENSOR 12
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8937,7 +9039,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 13
+        //                                                                                                              SENSOR 13
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8986,7 +9089,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 14
+        //                                                                                                              SENSOR 14
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9035,7 +9139,8 @@ void matrixSwitch() {
         }
 
         // ----------------------------------------------------------------------------------------------------------------------
-        //                                                                                                               SENSOR 15
+        //                                                                                                              SENSOR 15
+        // ----------------------------------------------------------------------------------------------------------------------
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Over") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9087,6 +9192,7 @@ void matrixSwitch() {
 
       // ----------------------------------------------------------------------------------------------------------------------
       //                                                                                                           FINAL SWITCH
+      // ----------------------------------------------------------------------------------------------------------------------
       
       // ------------------------------------------------
       /*
@@ -9171,6 +9277,7 @@ void matrixSwitch() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 STATS COUNTERS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void CountMatrixEnabled() {
   matrixData.matrix_enabled_i = 0;
@@ -9194,6 +9301,7 @@ void MatrixStatsCounter() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        MATRIX SWITCH FUNCTIONS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void setAllMatrixSwitchesEnabledFalse() {
   for (int i=0; i<matrixData.max_matrices; i++) {matrixData.matrix_switch_enabled[0][i]=false;}
@@ -9213,6 +9321,7 @@ void setAllMatrixSwitchesStateTrue() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     INPUT DATA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void inputChar(char * data) {
   // allow signing as first char
@@ -9251,12 +9360,14 @@ void inputChar(char * data) {
 
 // ------------------------------------------------
 //                                          UI DATA
+// ------------------------------------------------
 
 char TMP_UI_DATA_0[56];
 char TMP_UI_DATA_1[56];
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        MENU UP
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuUp() {
   if (menu_page==page_home) {menuHome.up();}
@@ -9285,6 +9396,7 @@ void menuUp() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU DOWN
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuDown() {
   if (menu_page==page_home) {menuHome.down();}
@@ -9312,6 +9424,7 @@ void menuDown() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU RIGHT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuRight() {
   if (menu_page==page_home) {}
@@ -9322,6 +9435,7 @@ void menuRight() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU LEFT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuLeft() {
   if (menu_page==page_home) {}
@@ -9331,6 +9445,7 @@ void menuLeft() {
 }
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MENU BACK
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
@@ -9378,6 +9493,7 @@ void menuBack() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU ENTER
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void menuEnter() {
 
@@ -9923,7 +10039,8 @@ void menuEnter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                Crude Function Name to Associated Value Mapping 
+//                                                                                                FUNCTION NAMES MAPPED TO VALUES 
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String getRelatedY(char * data) {
   /*
@@ -10206,22 +10323,21 @@ String getRelatedX(char * data) {
   return String("");
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                           UI
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                             UI
+// ------------------------------------------------------------------------------------------------------------------------------
 /*
 IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
 */
 
 // ------------------------------------------------
 //                                        UI BORDER
+// ------------------------------------------------
 
 void drawMainBorder() {
   display.setColor(systemData.color_border);
   display.drawRect(0, 0, 127, 127);
 }
-
-// ------------------------------------------------
-//                                    UI BORDER RED
 
 void drawMainBorderRed() {
   display.setColor(RGB_COLOR16(255,0,0));
@@ -10232,6 +10348,10 @@ void drawMainBorderGreen() {
   display.setColor(RGB_COLOR16(0,255,0));
   display.drawRect(0, 0, 127, 127);
 }
+
+// ------------------------------------------------
+//                                         UI TITLE
+// ------------------------------------------------
 
 void drawGeneralTitle(String title, int color1, int color2) {
   /*
@@ -10248,6 +10368,10 @@ void drawGeneralTitle(String title, int color1, int color2) {
   display.setColor(color2);
   display.drawRect(0, 0, 127, 12);
 }
+
+// ------------------------------------------------
+//                                     UI FILENAMES
+// ------------------------------------------------
 
 void setMenuMatrixFilePathItems() {
     // set menu items
@@ -10273,6 +10397,10 @@ void setMenuMatrixFilePathItems() {
     menuMatrixFilepathItems[19] = sdcardData.matrix_filenames[19];
 }
 
+// ------------------------------------------------
+//                                    UI INDICATORS
+// ------------------------------------------------
+
 void UIIndicators() {
   /*
   usefull for if we are going to indicate something before SPI switching where we will loose the display temporarily until we are finished with another SPI device.
@@ -10282,6 +10410,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //                            SAVE MATRIX INDICATOR
+  // ------------------------------------------------
   
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   if (menu_page==page_save_matrix_file_indicator) {
@@ -10299,6 +10428,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //                            LOAD MATRIX INDICATOR
+  // ------------------------------------------------
 
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_load_matrix_file_indicator) {
@@ -10316,6 +10446,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //                          DELETE MATRIX INDICATOR
+  // ------------------------------------------------
 
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_delete_matrix_file_indicator) {
@@ -10333,6 +10464,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //                   SAVING SYSTEM CONFIG INDICATOR
+  // ------------------------------------------------
 
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_save_system_config_indicator) {
@@ -10351,6 +10483,7 @@ void UIIndicators() {
 
   // ------------------------------------------------
   //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
+  // ------------------------------------------------
 
   // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_restore_default_matrix_indicator) {
@@ -10368,8 +10501,10 @@ void UIIndicators() {
   }
 }
 
+
 // ------------------------------------------------
-//                                               UI
+//                                       UPDATE UI
+// ------------------------------------------------
 
 bool display_sync;
 
@@ -10382,6 +10517,7 @@ void UpdateUI(void * pvParamters) {
 
   // ------------------------------------------------
   //                                  OLED PROTECTION
+  // ------------------------------------------------
 
   // oled protection: enable/disable ui updates
   if (systemData.display_auto_off==true) {
@@ -10392,12 +10528,14 @@ void UpdateUI(void * pvParamters) {
 
   // ------------------------------------------------
   //                                DEVELOPER OPTIONS
+  // ------------------------------------------------
 
   // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=page_CD74HC4067_main; // uncomment to debug
 
   // ------------------------------------------------
   //                                  UPDATE UI PAGES
+  // ------------------------------------------------
 
   if (update_ui==true) {
     // debug("[oled protection] allowing ui update");
@@ -10405,6 +10543,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                        HOME PAGE
+    // ------------------------------------------------
 
     if (menu_page==page_home) {
       // ------------------------------------------------
@@ -10446,6 +10585,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                    SETTINGS PAGE
+    // ------------------------------------------------
 
     else if (menu_page==page_main_menu) {
       // ------------------------------------------------
@@ -10476,6 +10616,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                         MATRIX SWITCH LOGIC PAGE
+    // ------------------------------------------------
 
     else if (menu_page==page_matrix_logic_main) {
       // ------------------------------------------------
@@ -10894,6 +11035,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                ENTER DIGITS PAGE
+    // ------------------------------------------------
 
     else if (menu_page==page_input_data) {
       // ------------------------------------------------
@@ -11090,6 +11232,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                     SELECT FUNCTION OPTIONS PAGE
+    // ------------------------------------------------
 
     // ------------------------------------------------
     // static data
@@ -11174,6 +11317,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                        SELECT FUNCTION NAME PAGE
+    // ------------------------------------------------
 
     else if (menu_page==page_matrix_logic_setup_function) {
       // ------------------------------------------------
@@ -11231,6 +11375,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                        FILE MENU
+    // ------------------------------------------------
     
     else if (menu_page==page_file_main) {
       // ------------------------------------------------
@@ -11276,6 +11421,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                 SAVE MATRIX MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_file_save_matrix) {
       // ------------------------------------------------
@@ -11313,6 +11459,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                 LOAD MATRIX MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_file_load_matrix) {
       // ------------------------------------------------
@@ -11349,6 +11496,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                               DELETE MATRIX MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_file_delete_matrix) {
       // ------------------------------------------------
@@ -11385,6 +11533,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                         GPS MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_gps_main) {
       // ------------------------------------------------
@@ -11432,6 +11581,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                      SERIAL MENU
+    // ------------------------------------------------
 
     /* output data to be parsed by other systems or to be read by humans */
 
@@ -11499,6 +11649,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                         UNIVERSE
+    // ------------------------------------------------
 
     /* currently solar system tracking */
 
@@ -11561,6 +11712,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                     DISPLAY MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_display_main) {
       // ------------------------------------------------
@@ -11609,6 +11761,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                      SYSTEM MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_system_main) {
       // ------------------------------------------------
@@ -11707,6 +11860,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                  CD74HC4067 MENU
+    // ------------------------------------------------
 
     /* this may be a menu and is currently a view */
 
@@ -11808,6 +11962,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                 TIME & DATE MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_timeanddate_main) {
       // ------------------------------------------------
@@ -11877,6 +12032,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       GNGGA MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_gps_view_gngga) {
       // ------------------------------------------------
@@ -11975,6 +12131,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       GNRMC MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_gps_view_gnrmc) {
       // ------------------------------------------------
@@ -12073,6 +12230,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       GPATT MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_gps_view_gpatt) {
       // ------------------------------------------------
@@ -12168,6 +12326,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                                       SATIO MENU
+    // ------------------------------------------------
 
     else if (menu_page==page_gps_view_satio) {
       // ------------------------------------------------
@@ -12298,6 +12457,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                              UNIVERSE VIEWS: SUN
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_sun) {
       // ------------------------------------------------
@@ -12358,6 +12518,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                             UNIVERSE VIEWS: MOON
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_moon) {
       // ------------------------------------------------
@@ -12427,6 +12588,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                          UNIVERSE VIEWS: MERCURY
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_mercury) {
       // ------------------------------------------------
@@ -12521,6 +12683,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                            UNIVERSE VIEWS: VENUS
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_venus) {
       // ------------------------------------------------
@@ -12615,6 +12778,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                             UNIVERSE VIEWS: MARS
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_mars) {
       // ------------------------------------------------
@@ -12709,6 +12873,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                          UNIVERSE VIEWS: JUPITER
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_jupiter) {
       // ------------------------------------------------
@@ -12803,6 +12968,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                           UNIVERSE VIEWS: SATURN
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_saturn) {
       // ------------------------------------------------
@@ -12897,6 +13063,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                           UNIVERSE VIEWS: URANUS
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_uranus) {
       // ------------------------------------------------
@@ -12991,6 +13158,7 @@ void UpdateUI(void * pvParamters) {
 
     // ------------------------------------------------
     //                          UNIVERSE VIEWS: NEPTUNE
+    // ------------------------------------------------
 
     else if (menu_page==page_universe_view_neptune) {
       // ------------------------------------------------
@@ -13092,6 +13260,7 @@ void UpdateUI(void * pvParamters) {
 
   // ------------------------------------------------
   //                                  OLED PROTECTION
+  // ------------------------------------------------
 
   if ((ui_cleared == false) && (update_ui == false)) {
     // debug("[oled protection] clearing ui");
@@ -13114,6 +13283,7 @@ void UpdateUI(void * pvParamters) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C DATA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 #define I2C_ADDR_PORTCONTROLLER_0 9
 
@@ -13132,6 +13302,7 @@ I2CLinkStruct I2CLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  I2C INTERRUPT
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*
 [this setup is for custom i2c peripherals]
@@ -13166,6 +13337,7 @@ void ISR_I2C_PERIPHERAL() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      I2C WRITE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void writeI2C(int I2C_Address) {
   // compile bytes array
@@ -13181,6 +13353,7 @@ void writeI2C(int I2C_Address) {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C READ
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void readI2C() {
   // ------------------------------------------------
@@ -13244,9 +13417,9 @@ void readI2C() {
       // ------------------------------------------------
       if (update_ui==true) {
 
-        // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // Control Pad
-        // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // -----------------
+        // CONTROL PAD START
+        // -----------------
 
         // ------------------------------------------------
         // parse special interrupt buttons
@@ -13300,24 +13473,29 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
 
-        // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------
+        // CONTROL PAD END
+        // ---------------
       }
 
-      // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      // Object Detection AI
-      // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // -------------------------
+      // OBJECT DETECTION AI START
+      // -------------------------
 
       // example: tag,id
       // if      (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,1")==0) {Serial.println("[object detection ai] object 0: true"); object_0=true;}
       // else if (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,0")==0) {Serial.println("[object detection ai] object 0: false"); object_0=false;}
 
-      // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // -----------------------
+      // OBJECT DETECTION AI END
+      // -----------------------
     }
   }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PORT CONTROLLER
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void writeToPortController() {
   // ------------------------------------------------
@@ -13401,6 +13579,7 @@ void writeToPortController() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        SDCARD: FULL INITIALIZE
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void setupSDCard() {
   /*
@@ -13434,6 +13613,7 @@ void setupSDCard() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SDCARD: CHECK
+// ------------------------------------------------------------------------------------------------------------------------------
 
 bool sdcardCheck() {
   /* a quick check to see if card can begin. cardBegin should return 1 or 0 */
@@ -13450,6 +13630,7 @@ bool sdcardCheck() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                SERIAL COMMANDS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /* this is where we can accept input over serial in order to program the device or simply return information */
 
@@ -13608,6 +13789,7 @@ void readGPS(void * pvParameters) {
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      SENSORS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /* Sensors are mostly intentionally left blank for system specific configurations */
 
@@ -13865,6 +14047,7 @@ void getSensorData() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -14034,6 +14217,7 @@ void setup() {
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
+// ------------------------------------------------------------------------------------------------------------------------------
 
 int t0 = millis();
 bool track_planets_period = false;
@@ -14055,7 +14239,8 @@ void loop() {
   // count_faster_loops++;
 
   // ----------------------------------------------------------------------------------------------------------
-  //                                                                                                        GPS
+  //                                                                                                  GPS START
+  // ----------------------------------------------------------------------------------------------------------
   /*
   Efficiency and performance.
   Only run the following block when new GPS data has been collected.
@@ -14067,15 +14252,16 @@ void loop() {
     
     // ---------------------------------------------------------------------
     //                                                 SUSPEND READ GPS TASK
+    // ---------------------------------------------------------------------
     /*
     Do not allow values to be changed while we use the GPS data!
     Avert race conditions while using GPS data.
     */
     vTaskSuspend(GPSTask);
-    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                   GPS SENTENCE OUTPUT
+    // ---------------------------------------------------------------------
     /*
     Read GPS is running on a task so print the data here for safe output.
     Only run if new GPS data has been collected.
@@ -14087,10 +14273,10 @@ void loop() {
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
     // bench("[count_faster_loops] " + String(count_faster_loops));
     // count_faster_loops=0;
-    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                     SYNC RTC WITH UTC
+    // ---------------------------------------------------------------------
     /*
     Convert absolute latitude and longitude to degrees.
     Only run if new GPS data has been collected.
@@ -14101,6 +14287,7 @@ void loop() {
 
     // ---------------------------------------------------------------------
     //                                             CONVERT UTC TO LOCAL TIME
+    // ---------------------------------------------------------------------
     // Only run if new GPS data has been collected.
     // Currently limited to once per second because:
     //   1: local time is onky displayed.
@@ -14115,14 +14302,15 @@ void loop() {
 
     // ---------------------------------------------------------------------
     //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
+    // ---------------------------------------------------------------------
     // Only run if new GPS data has been collected.
     t0 = micros();
     calculateLocation();
     bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                         MATRIX SWITCH
+    // ---------------------------------------------------------------------
     /*
     Check users programmable logic.
     Never run while values are being updated.
@@ -14132,20 +14320,20 @@ void loop() {
     if (systemData.matrix_enabled == true) {matrixSwitch();}
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                  RESUME READ GPS TASK
+    // ---------------------------------------------------------------------
     /*
     Aim to set this true as soon as possible and never before we are
     finished using the GPS data.
     */
     gps_done = false;
     vTaskResume(GPSTask);
-    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     //                                                        SATIO SENTENCE
+    // ---------------------------------------------------------------------
     /*
     Create and output special SatIO sentence over serial.
     Only run if new GPS data has been collected.
@@ -14156,10 +14344,13 @@ void loop() {
     // ---------------------------------------------------------------------
   }
   // ----------------------------------------------------------------------------------------------------------
+  //                                                                                                    GPS END
+  // ----------------------------------------------------------------------------------------------------------
 
   
   // ---------------------------------------------------------------------
   //                                                           SENSOR DATA
+  // ---------------------------------------------------------------------
   /*
   Collect sensor data that could be utilized every loop.
   Run every loop.
@@ -14167,10 +14358,10 @@ void loop() {
   t0 = micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
   //                                                       PORT CONTROLLER
+  // ---------------------------------------------------------------------
   /*
   Port controller to be utilized every loop.
   Run every loop.
@@ -14178,10 +14369,10 @@ void loop() {
   t0 = micros();
   if (systemData.port_controller_enabled == true) {writeToPortController();}
   bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
   //                                                                SDCARD
+  // ---------------------------------------------------------------------
   /*
   Check if sd card is present.
   Currently commented because we are so extensible that we will literally see
@@ -14198,10 +14389,10 @@ void loop() {
   // display.begin();
   // bench("[sdcardCheck] " + String((float)(micros()-t0)/1000000, 4) + "s");
   // delay(50);
-  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
   //                                                     LOAD DISTRIBUTION
+  // ---------------------------------------------------------------------
   /*
   Efficiency and performance.
   Distribute functions between faster loops.
@@ -14228,10 +14419,10 @@ void loop() {
       load_distribution=0;
     }
   }
-  // ---------------------------------------------------------------------
 
   // ---------------------------------------------------------------------
   //                                                    ISR SECOND COUNTER
+  // ---------------------------------------------------------------------
   if (interrupt_second_counter > 0) {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter--;
@@ -14244,6 +14435,7 @@ void loop() {
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
+  // ---------------------------------------------------------------------
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
