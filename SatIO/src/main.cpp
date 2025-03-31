@@ -11858,7 +11858,7 @@ void UpdateUI(void * pvParamters) {
       // -----------------------------------------------------
 
       // ------------------------------------------------
-      menuTimeAndDateItems[0] = "ENTER OFFSET";
+      menuTimeAndDateItems[0] = "ENTER UTC OFFSET";
       if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1] = "OFFSET (AUTO)";}
       else {menuTimeAndDateItems[1] = "OFFSET (MANUAL)";}
       // ------------------------------------------------
