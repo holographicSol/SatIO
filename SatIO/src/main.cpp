@@ -13720,23 +13720,23 @@ void readGPS(void * pvParameters) {
       memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
-      // ------------------------------------------------------------
+      // --------------------------------------------------------------------------
       // read sentences coming from the WTGPS300P. (WTGPS300P outputs every 100ms).
-      // ------------------------------------------------------------
+      // --------------------------------------------------------------------------
       while (1) {
         if (Serial2.available()) {
           // ---------------------------------------------------------------
           // leave immediately if everything of interest has been collected
           // ---------------------------------------------------------------
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-          // ---------------------------------------------------------------
+          // --------------------------------------------------------
           // read serial into buffer until buffer max or special char
-          // ---------------------------------------------------------------
+          // --------------------------------------------------------
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-          // ---------------------------------------------------------------
+          // ---------------------
           // exclude partial reads
-          // ---------------------------------------------------------------
+          //----------------------
           if (SerialLink.nbytes>10) {
             // ----------------------------------------------------------------------------------------------------------------------
             if (serial1Data.gngga_bool==false) {
@@ -13772,14 +13772,16 @@ void readGPS(void * pvParameters) {
           }
         }
       }
-      // ---------------------------------------------------------------
+      // -----------------------------------------------
       // parse data if all sentences have been collected
-      // ---------------------------------------------------------------
+      // -----------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         // ----------------------------------------------------------------------------------------------------------------------
         if (systemData.gngga_enabled == true){
           if (systemData.output_gngga_enabled==true) {
+            // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
+            // -------------------------------------------------------------------------------------
             memset(gnggaData.outsentence, 0, sizeof(gnggaData.outsentence));
             strcpy(gnggaData.outsentence, gnggaData.sentence);
           }
@@ -13791,7 +13793,9 @@ void readGPS(void * pvParameters) {
         // ----------------------------------------------------------------------------------------------------------------------
         if (systemData.gnrmc_enabled == true) {
           if (systemData.output_gnrmc_enabled == true) {
+            // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
+            // -------------------------------------------------------------------------------------
             memset(gnrmcData.outsentence, 0, sizeof(gnrmcData.outsentence));
             strcpy(gnrmcData.outsentence, gnrmcData.sentence);
           }
@@ -13803,7 +13807,9 @@ void readGPS(void * pvParameters) {
         // ----------------------------------------------------------------------------------------------------------------------
         if (systemData.gpatt_enabled == true) {
           if (systemData.output_gpatt_enabled == true) {
+            // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
+            // -------------------------------------------------------------------------------------
             memset(gpattData.outsentence, 0, sizeof(gpattData.outsentence));
             strcpy(gpattData.outsentence, gpattData.sentence);
           }
@@ -13812,9 +13818,9 @@ void readGPS(void * pvParameters) {
           if (gpattData.valid_checksum == true) {GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
-        // ---------------------------------------------------------------
-        // set flag
-        // ---------------------------------------------------------------
+        // -------------------
+        // set completion flag
+        // -------------------
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
           // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t1 = micros();
