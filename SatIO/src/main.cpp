@@ -3675,9 +3675,9 @@ void convertUTCTimeToLocalTime() {
   //                currently offset is in hours multiplied by seconds per hour.
   // 
   // (+)
-  if      (satData.utc_second_offset_flag==0) {adjustTime(satData.utc_second_offset);}
+  if      (satData.utc_second_offset_flag==0) {adjustTime(-satData.utc_second_offset);}
   // (-)
-  else                                 {adjustTime(-satData.utc_second_offset);}
+  else {adjustTime(satData.utc_second_offset);}
   // set
   satData.local_year = year();
   satData.local_month = month();
