@@ -3675,9 +3675,7 @@ void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
   // is setup and ready for dev
   // auto offset: requires politics and or tz and dst.
-  // manual offset: initially ignoring time politics we can first focus on an ultimate manual offset. requires a very large number (for offeset range) in seconds with a plus/misnus flag.
-  //                extra ultimata: an even larger number for offeset (for offeset range) in a smaller unit of resolution than seconds, like milliseconds, micros.. etc.
-  //                currently offset is in hours multiplied by seconds per hour.
+  // manual offset: via ui.
   // auto
   if (satData.utc_auto_offset_flag==true) {}
   // adjust
