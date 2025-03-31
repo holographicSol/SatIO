@@ -243,6 +243,14 @@
 
 -----
 
+[LIBRARIES]
+
+Some libraries have been modified and the PlatformIO projects require the modified versions of the libraries.
+Projects complete with all libraries and PlatformIO settings and configuration files can be downloaded here:
+https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
+    
+-----
+
 ![plot](./Extras/images/DSC_0001_BURST20250312163521251_COVER_Doc.JPG)
 
 -----
@@ -790,15 +798,7 @@
     Track Uranus: Enable/disable.
 
     Track Neptune: Enable/disable.
-
-
------
-
-    [LIBRARIES]
-
-    Some libraries have been modified and the PlatformIO projects require the modified versions of the libraries.
-    Projects complete with all libraries and PlatformIO settings and configuration files can be downloaded here:
-    <https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing>
+    
 
 -----
 
