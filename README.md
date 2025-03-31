@@ -243,10 +243,8 @@
 
 -----
 
-[LIBRARIES]
+[COMPLETE PLATFORMIO PROJECT FILES INCLUDING LIBRARIES & MODIFIED LIBRARIES]
 
-Some libraries have been modified and the PlatformIO projects require the modified versions of the libraries.
-Projects complete with all libraries and PlatformIO settings and configuration files can be downloaded here:
 https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
     
 -----
