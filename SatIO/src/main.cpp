@@ -955,7 +955,7 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 //                                                                                                                         SDCARD
 // ------------------------------------------------------------------------------------------------------------------------------
 
-// sd VSPI pins on esp32
+// SDCARD VSPI pins on esp32
 int SD_SCLK = 18;  // default esp32 VSPI
 int SD_MISO = 19;  // default esp32 VSPI
 int SD_MOSI = 23;  // default esp32 VSPI
@@ -12039,8 +12039,8 @@ void UpdateUI(void * pvParamters) {
 
       // ------------------------------------------------
       menuTimeAndDateItems[0] =                                          "ENTER UTC OFFSET";
-      if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1] = "UTC OFFSET (AUTO)";}
-      else {menuTimeAndDateItems[1] =                                    "UTC OFFSET (MANUAL)";}
+      if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1] = "UTC OFFSET AUTO";}
+      else {menuTimeAndDateItems[1] =                                    "UTC OFFSET MANUAL";}
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
