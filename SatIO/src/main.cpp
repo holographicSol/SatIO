@@ -692,7 +692,7 @@ static int page_display_main                     = 180;
 /* CD74HC4067 */
 static int page_CD74HC4067_main                  = 200;
 /* TIME AND DATE */
-// static int page_timeanddate_main                 = 300;
+static int page_timeanddate_main                 = 300;
 
 /* compact ui content vertical spacing */
 static int ui_content_0 = 16;
@@ -729,7 +729,7 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             DISPLAY MENU SETUP
 
-const int max_main_menu_items = 9;
+const int max_main_menu_items = 10;
 const char *menuMainItems[max_main_menu_items] =
 {
     "    MATRIX       ", // allows matrix configuration
@@ -741,7 +741,7 @@ const char *menuMainItems[max_main_menu_items] =
     "    UNIVERSE     ", // enable/disable solar tracking, planet tracking and or other celestial calculations
     "    DISPLAY      ",
     "    CD74HC4067   ",
-    // "    Time & Date  ",
+    "    Time & Date  ",
 };
 //  "                  "
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 34}, {125, 125}} );
@@ -868,9 +868,9 @@ LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MENU TIME & DATE
 
-// const int max_timeanddate_items = 2;
-// const char *menuTimeAndDateItems[max_timeanddate_items];
-// LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
+const int max_timeanddate_items = 2;
+const char *menuTimeAndDateItems[max_timeanddate_items];
+LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
 
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
@@ -3301,13 +3301,13 @@ struct SatDatatruct {
   /*
   utc second offset:
   1: offset UTC (+/-) in seconds, for daylight saving and or timezones.
-  2: offset up to LONG_LONG_MAX = 18446744073709551615 seconds = 584942417355.07202148 gregorian years.
+  2: offset up to LONG_MAX = 2147483647 seconds = 2,147,483,647 gregorian years.
   3: this values type may account for both political and not political ammendments to dst
      and tz by having a very large range and by having a 1 second resolution.
-  4: requires modified Time.cpp adjustTime(long adjustment) to adjustTime(long long adjustment).
+  4: allow negative and positive value for offset. 
   */
-  long long utc_second_offset = 0;
-  int utc_second_offset_flag = 0;  // 0: deduct hours from time; 1: add hours to time
+  long utc_second_offset = 0;
+  int utc_auto_offset_flag = 0;  // automatically aquire an offset value
 
   char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
@@ -3669,15 +3669,12 @@ void convertUTCTimeToLocalTime() {
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
   // is setup and ready for dev
-  // auto offset: curewntly requires politics and or tz and dst.
+  // auto offset: requires politics and or tz and dst.
   // manual offset: initially ignoring time politics we can first focus on an ultimate manual offset. requires a very large number (for offeset range) in seconds with a plus/misnus flag.
   //                extra ultimata: an even larger number for offeset (for offeset range) in a smaller unit of resolution than seconds, like milliseconds, micros.. etc.
   //                currently offset is in hours multiplied by seconds per hour.
   // 
-  // (+)
-  if      (satData.utc_second_offset_flag==0) {adjustTime(-satData.utc_second_offset);}
-  // (-)
-  else {adjustTime(satData.utc_second_offset);}
+  adjustTime(satData.utc_second_offset);
   // set
   satData.local_year = year();
   satData.local_month = month();
@@ -4041,8 +4038,8 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "UTC_SECOND_OFFSET_FLAG,");
-    itoa(satData.utc_second_offset_flag, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, "UTC_AUTO_OFFSET_FLAG,");
+    itoa(satData.utc_auto_offset_flag, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -4608,13 +4605,13 @@ bool sdcard_load_system_configuration(char * file) {
 
         // ------------------------------------------------
         
-        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET_FLAG", strlen("UTC_SECOND_OFFSET_FLAG")) == 0) {
+        else if (strncmp(sdcardData.BUFFER, "UTC_AUTO_OFFSET_FLAG", strlen("UTC_AUTO_OFFSET_FLAG")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {satData.utc_second_offset_flag = false;} else {satData.utc_second_offset_flag = true;}
+            if (atoi(sdcardData.token) == 0) {satData.utc_auto_offset_flag = false;} else {satData.utc_auto_offset_flag = true;}
           }
         }
 
@@ -9229,14 +9226,14 @@ void inputChar(char * data) {
       }
     }
     // <= long
-    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4) || (enter_digits_key==5)) {
       if (allow_input_data==true) {
         // create temporary data to concat and test
         memset(tmp_input_data, 0, sizeof(tmp_input_data));
         strcpy(tmp_input_data, input_data);
         strcat(tmp_input_data, data);
         // test range
-        if ((atoi(tmp_input_data) <= 179769313486232) && (atoi(tmp_input_data) >= -179769313486232)) {
+        if ((atol(tmp_input_data) <= 179769313486232) && (atol(tmp_input_data) >= -179769313486232)) {
           memset(input_data, 0, sizeof(input_data));
           strcpy(input_data, tmp_input_data);
         }
@@ -9275,6 +9272,8 @@ void menuUp() {
   else if (menu_page==page_universe_main) {menuUniverse.up();}
   else if (menu_page==page_display_main) {menuDisplay.up();}
   else if (menu_page==page_system_main) {menuSystem.up();}
+  else if (menu_page==page_timeanddate_main) {menuTimeAndDate.up();}
+  
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9301,6 +9300,7 @@ void menuDown() {
   else if (menu_page==page_universe_main) {menuUniverse.down();}
   else if (menu_page==page_display_main) {menuDisplay.down();}
   else if (menu_page==page_system_main) {menuSystem.down();}
+  else if (menu_page==page_timeanddate_main) {menuTimeAndDate.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -9322,6 +9322,8 @@ void menuLeft() {
   else if (menu_page==page_matrix_logic_main) {menu_column_selection--; if (menu_column_selection<0) {menu_column_selection=4;}}
   // debug("[menu_column_selection] " + String(menu_column_selection));
 }
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                      MENU BACK
 
 void menuBack() {
   /* specify explicity which page to go from each given page */
@@ -9334,6 +9336,8 @@ void menuBack() {
     if (enter_digits_key == 1) {menu_page=page_matrix_logic_main;}
     // enter function x, enter function y, enter function z
     else if ((enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=page_matrix_logic_select_setup;}
+    // enter utc offset seconds
+    else if (enter_digits_key == 5) {menu_page=page_timeanddate_main;}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
   else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
@@ -9348,7 +9352,7 @@ void menuBack() {
   else if (menu_page==page_display_main) {menu_page=page_main_menu;}
   else if (menu_page==page_system_main) {menu_page=page_main_menu;}
   else if (menu_page==page_CD74HC4067_main) {menu_page=page_main_menu;}
-  // else if (menu_page==page_timeanddate_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_timeanddate_main) {menu_page=page_main_menu;}
   else if (menu_page==page_gps_view_gngga) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gpatt) {menu_page=page_gps_main;}
@@ -9430,9 +9434,9 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // go to time and date menu
-    // else if (menuMain.selection()==9) {
-    //   menu_page=page_timeanddate_main;
-    // }
+    else if (menuMain.selection()==9) {
+      menu_page=page_timeanddate_main;
+    }
   }
   // ----------------------------------------------------------------
   // matrix switch configuration
@@ -9471,6 +9475,7 @@ void menuEnter() {
     else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==5) {satData.utc_second_offset=atol(input_data); menu_page=page_timeanddate_main;}
     enter_digits_key = -1;
   }
 
@@ -9875,17 +9880,36 @@ void menuEnter() {
   // ----------------------------------------------------------------
   // system page
   else if (menu_page==page_system_main) {
+    // ------------------------------------------------
     // startup run matrix
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
     // ------------------------------------------------
     // iter overload times
-    if (menuSystem.selection()==1) {systemData.index_overload_times++;
+    else if (menuSystem.selection()==1) {systemData.index_overload_times++;
       if (systemData.index_overload_times>systemData.max_overload_times) {systemData.index_overload_times=0;}
       systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
     }
+    // ------------------------------------------------
     // consider matrix switch state handling before allowing the below two values to be changed after flashing
     // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
     // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
+  }
+
+  // ----------------------------------------------------------------
+  // time and date page
+  else if (menu_page==page_timeanddate_main) {
+    // ------------------------------------------------
+    // go to enter offset value page
+    if (menuTimeAndDate.selection()==0) {
+      memset(input_data, 0, sizeof(input_data));
+      allow_input_data=true;
+      enter_digits_key = 5;
+      menu_page=page_input_data;
+    }
+    // ------------------------------------------------
+    // enable/disable auto offset
+    else if (menuTimeAndDate.selection()==1) {satData.utc_auto_offset_flag^=true;}
+    // ------------------------------------------------
   }
 
   // ----------------------------------------------------------------
@@ -10911,6 +10935,9 @@ void UpdateUI(void * pvParamters) {
       // enter function x,y,z
       // ------------------------------------------------
       else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {
+        // ------------------------------------------------
+        // static data
+        // ------------------------------------------------
         if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
@@ -11010,9 +11037,43 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
       }
       // ------------------------------------------------
-      display.setColor(RGB_COLOR16(0,255,0));
+      // enter utc offset
+      // ------------------------------------------------
+      else if (enter_digits_key==5) {
+        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+          // ------------------------------------------------
+          // static data
+          // ------------------------------------------------
+          previous_menu_page=menu_page; display.clear();
+          drawMainBorder();
+          drawGeneralTitle("ENTER OFFSET", systemData.color_title, systemData.color_border);
+          // ------------------------------------------------
+          display.setColor(systemData.color_border);
+          // ------------------------------------------------
+          display.drawHLine(1, 28, 127);
+          display.drawHLine(1, 108, 127);
+          display.drawVLine(25, 13, 27);
+        }
+        // ------------------------------------------------
+        // dynamic data
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, "SEC", STYLE_BOLD );
+        display.drawCanvas(3, ui_content_0, canvas19x8);
+        // ------------------------------------------------
+        display.setColor(systemData.color_content);
+        // ------------------------------------------------
+        canvas92x8.clear();
+        canvas92x8.printFixed(1, 1, String(satData.utc_second_offset).c_str(), STYLE_BOLD );
+        display.drawCanvas(28, ui_content_0, canvas92x8);
+        // ------------------------------------------------
+      }
       // ------------------------------------------------
       // draw input data
+      // ------------------------------------------------
+      display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
       canvas120x8.clear();
       canvas120x8.printFixed((125/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
@@ -11741,33 +11802,70 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     //                                 TIME & DATE MENU
 
-    // else if (menu_page==page_timeanddate_main) {
-    //   // ------------------------------------------------
-    //   // static data
-    //   // ------------------------------------------------
-    //   if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-    //     previous_menu_page=menu_page; display.clear();
-    //     drawMainBorder();
-    //     drawGeneralTitle("TIME & DATE", systemData.color_title, systemData.color_border);
-    //   }
-    //   // ------------------------------------------------
-    //   // dynamic data
-    //   // ------------------------------------------------
-    //   display.setColor(systemData.color_content);
-    //   // ------------------------------------------------
+    else if (menu_page==page_timeanddate_main) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("TIME & DATE", systemData.color_title, systemData.color_border);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        display.drawHLine(1, 38, 127);
+        display.drawVLine(34, 13, 35);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
 
-    //   // ------------------------------------------------
-    //   // menu
-    //   // ------------------------------------------------
-    //   if (interaction_updateui==true) {
-    //     interaction_updateui=false;
-    //     display.setColor(systemData.color_menu_border);
-    //     menuTimeAndDate.showMenuBorder(display);
-    //     display.setColor(systemData.color_menu_content);
-    //     menuTimeAndDate.showMenuContent(display);
-    //   }
-    //   // ------------------------------------------------
-    // }
+      // -----------------------------------------------------
+      // time adjustment in development for local time
+      // -----------------------------------------------------
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas28x8.clear();
+      canvas28x8.printFixed(1, 1, "TIME", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_0, canvas28x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas76x8.clear();
+      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+      display.drawCanvas(37, ui_content_0, canvas76x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas28x8.clear();
+      canvas28x8.printFixed(1, 1, "DATE", STYLE_BOLD );
+      display.drawCanvas(3, ui_content_1, canvas28x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas76x8.clear();
+      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
+      display.drawCanvas(37, ui_content_1, canvas76x8);
+      // -----------------------------------------------------
+
+      // ------------------------------------------------
+      menuTimeAndDateItems[0] = "ENTER OFFSET";
+      if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1] = "OFFSET (AUTO)";}
+      else {menuTimeAndDateItems[1] = "OFFSET (MANUAL)";}
+      // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
+      if (interaction_updateui==true) {
+        interaction_updateui=false;
+        display.setColor(systemData.color_menu_border);
+        menuTimeAndDate.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuTimeAndDate.showMenuContent(display);
+      }
+      // ------------------------------------------------
+    }
 
 
     // ------------------------------------------------
