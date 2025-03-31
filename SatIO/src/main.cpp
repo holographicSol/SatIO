@@ -3253,10 +3253,10 @@ struct SatDatatruct {
   char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
   bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
-  double latitude_meter               = 0.0000100;                 // one meter (tune)
-  double longitude_meter              = 0.0000100;                 // one meter (tune)
-  double latitude_mile                = latitude_meter  * 1609.34; // one mile
-  double longitude_mile               = longitude_meter * 1609.34; // one mile
+  double latitude_meter               = 0.0000100;                 // one meter (needs tuning)
+  double longitude_meter              = 0.0000100;                 // one meter (needs tuning)
+  double latitude_mile                = latitude_meter  * 1609.34; // one mile (needs tuning)
+  double longitude_mile               = longitude_meter * 1609.34; // one mile (needs tuning)
   double abs_latitude_gngga_0         = 0.0;                       // absolute latitude from $ sentence
   double abs_longitude_gngga_0        = 0.0;                       // absolute longditude from $ sentence
   double abs_latitude_gnrmc_0         = 0.0;                       // absolute latitude from $ sentence
@@ -3313,8 +3313,8 @@ struct SatDatatruct {
      and tz by having a very large range and by having a 1 second resolution.
   4: allow negative and positive value for offset. 
   */
-  long utc_second_offset = 0;
-  int utc_auto_offset_flag = false;  // automatically aquire an offset value: true=auto, false=manual
+  long int utc_second_offset = 0;
+  bool utc_auto_offset_flag = false;  // automatically aquire an offset value: true=auto, false=manual
 
   char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
