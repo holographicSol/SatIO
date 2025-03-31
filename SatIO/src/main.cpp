@@ -274,10 +274,10 @@
 #include <limits.h>
 #include <string.h>
 #include <iostream>
-#include "SdFat.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <assert.h>
+#include "SdFat.h"            // https://github.com/greiman/SdFat
 #include <RTClib.h>           // https://github.com/adafruit/RTClib
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
