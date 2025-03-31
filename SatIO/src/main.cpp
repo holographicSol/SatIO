@@ -3276,7 +3276,7 @@ struct SatDatatruct {
   double millisecondsLat;                                          // used for converting absolute latitude and longitude
   double millisecondsLong;                                         // used for converting absolute latitude and longitude
 
-  // local time converted from rtc utc time (currently for displaying only)
+  // local time converted from rtc utc time (currently only used for display purposes)
   time_t local_time;
   int local_hour = 0;
   int local_minute = 0;
