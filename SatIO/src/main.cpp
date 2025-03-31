@@ -655,19 +655,31 @@ const uint8_t rtcsync_red[] = {
 bool update_ui = true;
 bool ui_cleared = false;
 int menu_page = 0;
-/* HOME */
+bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
+
+// ----------------------------------------------------
+// HOME
+// ----------------------------------------------------
 static int page_home                             = 0;
-/* INPUT DATA */
+// ----------------------------------------------------
+// INPUT DATA
+// ----------------------------------------------------
 static int page_input_data                       = 20;
-/* MAIN MENU */
+// ----------------------------------------------------
+// MAIN MENU
+// ----------------------------------------------------
 static int page_main_menu                        = 40;
 /* MATRIX LOGIC */
 static int page_matrix_logic_main                = 60;
 static int page_matrix_logic_select_setup        = 61;
 static int page_matrix_logic_setup_function      = 62;
-/* OVERVIEW MATRIX SWITCHING */
+// ----------------------------------------------------
+// MATRIX SWITCHING OVERVIEW 
+// ----------------------------------------------------
 static int page_overview_matrix_switching        = 63;
-/* FILE */
+// ----------------------------------------------------
+// FILE
+// ----------------------------------------------------
 static int page_file_main                        = 80;
 static int page_file_save_matrix                 = 81;
 static int page_file_load_matrix                 = 83;
@@ -677,17 +689,25 @@ static int page_save_matrix_file_indicator       = 86;
 static int page_load_matrix_file_indicator       = 87;
 static int page_delete_matrix_file_indicator     = 88;
 static int page_restore_default_matrix_indicator = 89;
-/* GPS */
+// ----------------------------------------------------
+// GPS
+// ----------------------------------------------------
 static int page_gps_main                         = 100;
 static int page_gps_view_gngga                   = 101;
 static int page_gps_view_gnrmc                   = 102;
 static int page_gps_view_gpatt                   = 103;
 static int page_gps_view_satio                   = 104;
-/* SERIAL */
+// ----------------------------------------------------
+// SERIAL
+// ----------------------------------------------------
 static int page_serial_main                      = 120;
-/* SYSTEM */
+// ----------------------------------------------------
+// SYSTEM
+// ----------------------------------------------------
 static int page_system_main                      = 140;
-/* UNIVERSE */
+// ----------------------------------------------------
+// UNIVERSE
+// ----------------------------------------------------
 static int page_universe_main                    = 160;
 static int page_universe_view_sun                = 161;
 static int page_universe_view_moon               = 162;
@@ -698,14 +718,21 @@ static int page_universe_view_jupiter            = 166;
 static int page_universe_view_saturn             = 167;
 static int page_universe_view_uranus             = 168;
 static int page_universe_view_neptune            = 169;
-/* DISPLAY */
+// ----------------------------------------------------
+// DISPLAY
+// ----------------------------------------------------
 static int page_display_main                     = 180;
-/* CD74HC4067 */
+// ----------------------------------------------------
+// CD74HC4067
+// ----------------------------------------------------
 static int page_CD74HC4067_main                  = 200;
-/* TIME AND DATE */
+// ----------------------------------------------------
+// TIME & DATE
+// ----------------------------------------------------
 static int page_timeanddate_main                 = 300;
-
-/* compact ui content vertical spacing */
+// ----------------------------------------------------
+// COMPACT VERTICAL UI SPACING
+// ----------------------------------------------------
 static int ui_content_0 = 16;
 static int ui_content_1 = 26;
 static int ui_content_2 = 36;
@@ -717,8 +744,6 @@ static int ui_content_7 = 86;
 static int ui_content_8 = 96;
 static int ui_content_9 = 106;
 static int ui_content_10 = 116;
-
-bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                MENU HOME SETUP
