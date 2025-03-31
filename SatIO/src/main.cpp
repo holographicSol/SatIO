@@ -3783,13 +3783,12 @@ void buildSatIOSentence() {
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
 
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the 'absolutes', so this perhaps should be local)
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // current rtc unixtime
+  // current rtc unixtime (utc)
   strcat(satData.satio_sentence, String(satData.rtc_unixtime).c_str());
   strcat(satData.satio_sentence, ",");
-  // last downlink sync rtc
+  // ------------------
+  // last rtc sync (utc)
+  // ------------------
   strcat(satData.satio_sentence, String(formatDateTimeStamp(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second, satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
   strcat(satData.satio_sentence, ",");
   // --------------------------------------------------------------------------------------------------------
@@ -12398,14 +12397,15 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       // ------------------------------------------------
 
-
-      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the 'absolutes', so this perhaps should be local)
-      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // ------------------
+      // rtc time (utc)
+      // ------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1,formatTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second).c_str());
       display.drawCanvas(45, ui_content_0, canvas80x8);
-      // ------------------------------------------------
+      // ------------------
+      // rtc date (utc)
+      // ------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, formatDate(satData.rtc_day, satData.rtc_month, satData.rtc_year).c_str());
       display.drawCanvas(45, ui_content_1, canvas80x8);
@@ -12457,18 +12457,19 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
       display.drawCanvas(45, ui_content_3, canvas80x8);
 
-
-      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the 'absolutes', so this perhaps should be local)
-      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // ------------------
+      // rtc sync time (utc)
+      // ------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatTime(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second)).c_str());
       display.drawCanvas(45, ui_content_4, canvas80x8);
+      // ------------------
+      // rtc sync date (utc)
+      // ------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatDate(satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
       display.drawCanvas(45, ui_content_5, canvas80x8);
       // -----------------------------------------------------
-
 
       // ------------------------------------------------
       canvas80x8.clear();
