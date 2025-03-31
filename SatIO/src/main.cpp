@@ -6089,7 +6089,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                          FIRST IS NONE
         // ----------------------------------------------------------------------------------------------------------------------
-        // perfromance and logic prefers adding functions from position zero else if position zero None then break.
+        // perfromance and logic prefers adding function names in matrix from index zero else if index zero None then break.
         if ((strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) && (Fi == 0)) {break;}
 
         // ----------------------------------------------------------------------------------------------------------------------
