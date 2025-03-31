@@ -3296,6 +3296,8 @@ struct SatDatatruct {
   uint32_t rtc_now_unixtime;
 
   // task safe rtc time now can be used instead of directly calling rtc.now()
+  // rtc time is utc.
+  // all programmable logic uses rtc time (currently safer and faster than converting).
   int rtc_now_hour = 0;
   int rtc_now_minute = 0;
   int rtc_now_second = 0;
