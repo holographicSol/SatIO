@@ -13749,7 +13749,7 @@ void readGPS(void * pvParameters) {
               }
             }
             // ----------------------------------------------------------------------------------------------------------------------
-            if (serial1Data.gnrmc_bool==false) {
+            else if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
                 if (systemData.gnrmc_enabled == true){
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
@@ -13759,7 +13759,7 @@ void readGPS(void * pvParameters) {
               }
             }
             // ----------------------------------------------------------------------------------------------------------------------
-            if (serial1Data.gpatt_bool==false) {
+            else if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
                 if (systemData.gpatt_enabled == true){
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
