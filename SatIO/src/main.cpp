@@ -3298,8 +3298,16 @@ struct SatDatatruct {
   int rtc_now_month = 0;
   int rtc_now_day = 0;
 
-  signed int utc_offset = 0; // can be used to offset UTC (+/-), to account for daylight saving and or timezones.
-  bool utc_offset_flag = 0;  // 0: add hours to time; 1: deduct hours from time
+  /*
+  utc second offset:
+  1: offset UTC (+/-) in seconds, for daylight saving and or timezones.
+  2: offset up to LONG_LONG_MAX = 18446744073709551615 seconds = 584942417355.07202148 gregorian years.
+  3: this values type may account for both political and not political ammendments to dst
+     and tz by having a very large range and by having a 1 second resolution.
+  4: requires modified Time.cpp adjustTime(long adjustment) to adjustTime(long long adjustment).
+  */
+  long long utc_second_offset = 0;
+  int utc_second_offset_flag = 0;  // 0: deduct hours from time; 1: add hours to time
 
   char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
@@ -3667,9 +3675,9 @@ void convertUTCTimeToLocalTime() {
   //                currently offset is in hours multiplied by seconds per hour.
   // 
   // (+)
-  if      (satData.utc_offset_flag==0) {adjustTime(satData.utc_offset*SECS_PER_HOUR);}
+  if      (satData.utc_second_offset_flag==0) {adjustTime(satData.utc_second_offset);}
   // (-)
-  else                                 {adjustTime(-satData.utc_offset*SECS_PER_HOUR);}
+  else                                 {adjustTime(-satData.utc_second_offset);}
   // set
   satData.local_year = year();
   satData.local_month = month();
@@ -4021,8 +4029,8 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "UTC_OFFSET,");
-    itoa(satData.utc_offset, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, "UTC_SECOND_OFFSET,");
+    itoa(satData.utc_second_offset, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -4033,8 +4041,8 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "UTC_OFFSET_FLAG,");
-    itoa(satData.utc_offset_flag, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, "UTC_SECOND_OFFSET_FLAG,");
+    itoa(satData.utc_second_offset_flag, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -4588,25 +4596,25 @@ bool sdcard_load_system_configuration(char * file) {
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET,", strlen("UTC_OFFSET,")) == 0) {
+        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET,", strlen("UTC_SECOND_OFFSET,")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
-            satData.utc_offset = atoi(sdcardData.token);
+            satData.utc_second_offset = atoi(sdcardData.token);
           }
         }
 
         // ------------------------------------------------
         
-        else if (strncmp(sdcardData.BUFFER, "UTC_OFFSET_FLAG", strlen("UTC_OFFSET_FLAG")) == 0) {
+        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET_FLAG", strlen("UTC_SECOND_OFFSET_FLAG")) == 0) {
           sdcardData.token = strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
           sdcardData.token = strtok(NULL, ",");
           if (is_all_digits(sdcardData.token) == true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {satData.utc_offset_flag = false;} else {satData.utc_offset_flag = true;}
+            if (atoi(sdcardData.token) == 0) {satData.utc_second_offset_flag = false;} else {satData.utc_second_offset_flag = true;}
           }
         }
 
