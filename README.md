@@ -243,7 +243,7 @@
 
 -----
 
-[COMPLETE PLATFORMIO PROJECT FILES INCLUDING LIBRARIES & MODIFIED LIBRARIES]
+Complete PlatformIO project files, libraries and modified libraries:
 
 https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
     
