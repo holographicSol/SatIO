@@ -3791,7 +3791,8 @@ void buildSatIOSentence() {
   // ------------------
   strcat(satData.satio_sentence, String(formatDateTimeStamp(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second, satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
   strcat(satData.satio_sentence, ",");
-  // --------------------------------------------------------------------------------------------------------
+
+  // add local time as seperate element
 
   // system uptime in seconds
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
