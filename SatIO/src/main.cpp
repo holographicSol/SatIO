@@ -741,10 +741,10 @@ const char *menuMainItems[max_main_menu_items] =
     "    UNIVERSE     ", // enable/disable solar tracking, planet tracking and or other celestial calculations
     "    DISPLAY      ",
     "    CD74HC4067   ",
-    "    Time & Date  ",
+    "    TIME & DATE  ",
 };
 //  "                  "
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 34}, {125, 125}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 30}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                              DISPLAY MENU MATRIX SWITCH SELECT
