@@ -12399,9 +12399,9 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
 
 
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the absolutes, so this perhaps should be local)
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the absolutes, so this perhaps should be local)
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1,formatTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second).c_str());
       display.drawCanvas(45, ui_content_0, canvas80x8);
@@ -12458,9 +12458,9 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(45, ui_content_3, canvas80x8);
 
 
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the absolutes, so this perhaps should be local)
-  // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      // use utc or local? either way should reflect any other usage. (really the whole point of satio data is to provide converted data from the absolutes, so this perhaps should be local)
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(formatTime(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second)).c_str());
       display.drawCanvas(45, ui_content_4, canvas80x8);
