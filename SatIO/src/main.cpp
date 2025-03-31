@@ -11053,7 +11053,7 @@ void UpdateUI(void * pvParamters) {
           // ------------------------------------------------
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          drawGeneralTitle("ENTER OFFSET", systemData.color_title, systemData.color_border);
+          drawGeneralTitle("ENTER UTC OFFSET", systemData.color_title, systemData.color_border);
           // ------------------------------------------------
           display.setColor(systemData.color_border);
           // ------------------------------------------------
