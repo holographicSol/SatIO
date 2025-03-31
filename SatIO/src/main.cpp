@@ -277,23 +277,22 @@
 #include "SdFat.h"
 #include <SPI.h>
 #include <Wire.h>
-#include <RTClib.h>
+#include <assert.h>
+#include <RTClib.h>           // https://github.com/adafruit/RTClib
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
 #include <Timezone.h>         // https://github.com/JChristensen/Timezone
 #include <SiderealPlanets.h>  // https://github.com/DavidArmstrong/SiderealPlanets
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
-#include <DHT.h>
-#include <CD74HC4067.h>
-#include "lcdgfx.h"
-#include "lcdgfx_gui.h"
-#include <assert.h>
+#include <DHT.h>              // https://github.com/adafruit/DHT-sensor-library
+#include <CD74HC4067.h>       // https://github.com/waspinator/CD74HC4067
+#include "lcdgfx.h"           // https://github.com/lexus2k/lcdgfx
+#include "lcdgfx_gui.h"       // https://github.com/lexus2k/lcdgfx
 
 void beginSDCARD();
 void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
 bool sdcardCheck();
-// void UpdateUI();
 void readI2C();
 void UIIndicators();
 
