@@ -255,6 +255,11 @@
   ToDo: Terrain elevation: Experiments have been made decompressing NASA's SRTMGL1 (Shuttle Radar Topography Mission) files quickly.
 
   ToDo: More data / calculate more data from existing data.
+
+  Complete PlatformIO project files, libraries and modified libraries:
+  https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
+
+
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
