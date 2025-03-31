@@ -13702,9 +13702,21 @@ void readGPS(void * pvParameters) {
     if (gps_done==false) {
       // ------------------------------------------------------------
       gps_done_t0 = micros();
+      // --------
+      // defaults
+      // --------
       serial1Data.gngga_bool = false;
       serial1Data.gnrmc_bool = false;
       serial1Data.gpatt_bool = false;
+      // --------
+      // override
+      // --------
+      if (systemData.gngga_enabled==false) {serial1Data.gngga_bool=true;}
+      if (systemData.gnrmc_enabled==false) {serial1Data.gnrmc_bool=true;}
+      if (systemData.gpatt_enabled==false) {serial1Data.gpatt_bool=true;}
+      // -----
+      // clear
+      // -----
       memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
