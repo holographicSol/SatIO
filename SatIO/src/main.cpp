@@ -1315,12 +1315,12 @@ struct TimeStruct {
   signed long mainLoopTimeTakenMin; // current record of shortest main loop time
   unsigned long t0;                 // micros time 0
   unsigned long t1;                 // micros time 1
-  uint32_t uptime_seconds;
-  uint32_t uptime_years;
-  uint32_t uptime_months;
-  uint32_t uptime_days;
-  uint32_t uptime_hours;
-  uint32_t uptime_minutes;
+  long uptime_seconds;
+  long uptime_years;
+  long uptime_months;
+  long uptime_days;
+  long uptime_hours;
+  long uptime_minutes;
 };
 TimeStruct timeData;
 
@@ -1328,6 +1328,7 @@ TimeStruct timeData;
 //                                                                                                       INTERRUPT SECOND COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
+static int INTERVAL_TIME;
 volatile int interrupt_interval_counter; // for counting interrupt
 hw_timer_t * interval_timer = NULL;      // H/W timer defining (Pointer to the Structure)
 portMUX_TYPE interval_timer_mux = portMUX_INITIALIZER_UNLOCKED;
@@ -1336,7 +1337,6 @@ void isr_interval_timer() {
   portENTER_CRITICAL_ISR(&interval_timer_mux);
   interrupt_interval_counter++;
   timeData.accumulated_intervals++;
-  timeData.uptime_seconds++;
   portEXIT_CRITICAL_ISR(&interval_timer_mux);
 }
 
@@ -1344,7 +1344,7 @@ void isr_interval_timer() {
 //                                                                                                          SYSTEM UPTIME COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-void UptimeSecondsToDateTime(uint32_t sec) {
+void UptimeSecondsToDateTime(long sec) {
   // Calculate years, months, days, hours, minutes, seconds
   timeData.uptime_years = sec / 31536000; // Approximate seconds in a year
   sec %= 31536000;
@@ -1359,7 +1359,7 @@ void UptimeSecondsToDateTime(uint32_t sec) {
 }
 
 // todo: no reset uptime_seconds
-void ScreenSafeUptime(uint32_t sec) {
+void ScreenSafeUptime(long sec) {
   /* modify this according to required/available screen dimensions */
   // 76px avaliable for font 6px wide + 1px space = approx. 10 digit number all consisting of 9 (316.9 years before each reset)
   if (sec > 9999999999) {timeData.uptime_seconds=0;}
@@ -14164,13 +14164,21 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // Interval Timer Interrupt
   // ----------------------------------------------------------------------------------------------------------------------------
-  // WARNING: Changing interval time will effect all matrix timers. this is desirable behaviour while any other usage of interval
-  // timer should be built to work as expected (timing wise) regardless of interval value.
+
+  /*
+  WARNING: Changing INTERVAL_TIME will effect all matrix timers.
+           This is desirable behaviour while any other usage of INTERVAL_TIME should be carefully considered to work as expected
+           accross different INTERVAL_TIME values.
+  
+  Decreasing INTERVAL_TIME increases matrix timer resolution and changes values required for matrix timers.
+  */
+
+  INTERVAL_TIME = 1000000; // one second timer (use this timer) (good for loop speeds < 1 second)
+  // INTERVAL_TIME = 1000;    // one millisecond timer (do not enable this until further development) (good for loop speeds < 1 millisecond)
+  // INTERVAL_TIME = 1;       // one microsecond timer (do not enable this until further development) (good for loop speeds < 1 microsecond)
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
-  timerAlarmWrite(interval_timer, 1000000, true); // one second timer (use this timer) (good for loop speeds < 1 second)
-  // timerAlarmWrite(interval_timer, 1000, true);    // one millisecond timer (do not enable this until further development) (good for loop speeds < 1 millisecond)
-  // timerAlarmWrite(interval_timer, 1, true);       // one microsecond timer (do not enable this until further development) (good for loop speeds < 1 microsecond)
+  timerAlarmWrite(interval_timer, INTERVAL_TIME, true);     
   timerAlarmEnable(interval_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -14489,23 +14497,35 @@ void loop() {
   //                                                      ISR TIME COUNTER
   // ---------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
-    // ---------------------
-    // start second handling
-    // ---------------------
+    // ------------------------------------
+    // start handling
+    // ------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
-    //----------------------------------------------------
-    // interrupt_interval_counter should be either 1 or 0.
-    //----------------------------------------------------
-    interrupt_interval_counter--;
+
+    // ------------------------------------
+    // reset interrupt_interval_counter
+    // ------------------------------------
+    interrupt_interval_counter=0;
+
+    // ---------------------------------------------------------------------
+    // OPERATIONS A SECOND
+    // ---------------------------------------------------------------------
+    // ToDo: run operations every second regardless of INTERVAL_TIME value
     // ---------
     // set flags
     // ---------
     track_planets_period = true;
     update_local_time = true;
     check_sdcard = true;
-    // -------------------------------------------------------------
-    // handle accumulator and accumulator dependencies
-    // -------------------------------------------------------------
+    // ------
+    // uptime
+    // ------
+    timeData.uptime_seconds++;
+    if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
+
+    // ---------------------------------------------------------------------
+    // OPERATIONS PER INTERVAL
+    // ---------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
       Serial.println("[reset second accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
       // ------------------
@@ -14517,9 +14537,10 @@ void loop() {
       // ------------------
       for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
-    // -------------------
-    // end second handling
-    // -------------------
+
+    // ------------------------------------
+    // end handling
+    // ------------------------------------
     portEXIT_CRITICAL(&interval_timer_mux);
   }
 
