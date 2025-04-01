@@ -1308,7 +1308,7 @@ SDCardStruct sdcardData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct TimeStruct {
-  double seconds;                   // seconds accumulated since startup
+  double accumulated_intervals;     // time (units defined by alarm) accumulated by isr timer
   signed long mainLoopTimeTaken;    // current main loop time
   signed long mainLoopTimeStart;    // time recorded at the start of each iteration of main loop
   signed long mainLoopTimeTakenMax; // current record of longest main loop time
@@ -1328,16 +1328,16 @@ TimeStruct timeData;
 //                                                                                                       INTERRUPT SECOND COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-volatile int interrupt_second_counter; // for counting interrupt
-hw_timer_t * second_timer = NULL;      // H/W timer defining (Pointer to the Structure)
-portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
+volatile int interrupt_interval_counter; // for counting interrupt
+hw_timer_t * interval_timer = NULL;      // H/W timer defining (Pointer to the Structure)
+portMUX_TYPE interval_timer_mux = portMUX_INITIALIZER_UNLOCKED;
 
-void isr_second_timer() {
-  portENTER_CRITICAL_ISR(&second_timer_mux);
-  interrupt_second_counter++;
-  timeData.seconds++;
+void isr_interval_timer() {
+  portENTER_CRITICAL_ISR(&interval_timer_mux);
+  interrupt_interval_counter++;
+  timeData.accumulated_intervals++;
   timeData.uptime_seconds++;
-  portEXIT_CRITICAL_ISR(&second_timer_mux);
+  portEXIT_CRITICAL_ISR(&interval_timer_mux);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6053,23 +6053,24 @@ bool check_bool_false(bool _bool) {
 
 bool MatrixTimer(double n0, double n1, int Mi) {
   /*
-  seconds accumulated by an isr alarm. this does not use satellite data. 
+  units of time accumulated by an isr alarm.
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
+  example: x=1, y=1 = on for 1 unit of time, off for 1 unit of time
   */
   // ---------------------
   // turn on or remain off
   // ---------------------
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
-    if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
+    if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
+    if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals; return true;}
     else {false;}
   }
   // ---------------------
   // turn off or remain on
   // ---------------------
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
-    if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
+    if      ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
     /*
     timer style: stacked time: y on time period is stacked on top of x time interval.
                  (1) total off time is x (x time interval effectively becomes an off time period).
@@ -6077,7 +6078,7 @@ bool MatrixTimer(double n0, double n1, int Mi) {
                  (3) total on off time is x+y.
                  (4) considerations: harder to predict because on and off times will creep.
     */
-    // else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return false;}
+    // else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals; return false;}
 
     /*
     timer style: integrated time: y on time occurrs for a period within x time interval.
@@ -6087,7 +6088,7 @@ bool MatrixTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
-    else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
+    else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals-n1; return false;}
     else {true;}
   }
   return false;
@@ -14161,12 +14162,13 @@ void setup() {
   digitalWrite(CD74HC4067_S3, LOW);
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  // Second Timer Interrupt
+  // Interval Timer Interrupt
   // ----------------------------------------------------------------------------------------------------------------------------
-  second_timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(second_timer, &isr_second_timer, true);
-  timerAlarmWrite(second_timer, 1000000, true);
-  timerAlarmEnable(second_timer);
+  interval_timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
+  timerAlarmWrite(interval_timer, 1000000, true); // one second timer
+  // timerAlarmWrite(interval_timer, 1000, true);    // one millisecond timer
+  timerAlarmEnable(interval_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // I2C Interrupts
@@ -14481,17 +14483,17 @@ void loop() {
   }
 
   // ---------------------------------------------------------------------
-  //                                                    ISR SECOND COUNTER
+  //                                                      ISR TIME COUNTER
   // ---------------------------------------------------------------------
-  if (interrupt_second_counter > 0) {
+  if (interrupt_interval_counter > 0) {
     // ---------------------
     // start second handling
     // ---------------------
-    portENTER_CRITICAL(&second_timer_mux);
+    portENTER_CRITICAL(&interval_timer_mux);
     //--------------------------------------------------
-    // interrupt_second_counter should be either 1 or 0.
+    // interrupt_interval_counter should be either 1 or 0.
     //--------------------------------------------------
-    interrupt_second_counter--;
+    interrupt_interval_counter--;
     // ---------
     // set flags
     // ---------
@@ -14501,12 +14503,12 @@ void loop() {
     // -------------------------------------------------------------
     // handle second accumulator and second accumulator dependencies
     // -------------------------------------------------------------
-    if (timeData.seconds>DBL_MAX-1) {
-      Serial.println("[reset second accumulator] timeData.seconds: " + String(timeData.seconds));
+    if (timeData.accumulated_intervals>DBL_MAX-1) {
+      Serial.println("[reset second accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
       // ------------------
       // reset accumulator
       // ------------------
-      timeData.seconds=0;
+      timeData.accumulated_intervals=0;
       // ------------------
       // reset dependencies
       // ------------------
@@ -14515,7 +14517,7 @@ void loop() {
     // -------------------
     // end second handling
     // -------------------
-    portEXIT_CRITICAL(&second_timer_mux);
+    portEXIT_CRITICAL(&interval_timer_mux);
   }
 
   // ---------------------------------------------------------------------
