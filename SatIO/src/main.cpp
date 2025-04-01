@@ -14177,7 +14177,7 @@ void setup() {
 
   CONCLUSION: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers.
               Changing INTERVAL_TIME outside of given hardware capabilities will have adverse and unpredictable effects.
-              The ability to change INTERVAL_TIME without having to refactor anything is included with different hardware in mind.
+              Variable names and functions depending on INTERVAL_TIME are agnostic to any specific unit of time.
 
   Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off Matrix Timer = matrix timer x=1, matrix timer y=1.       SECOND TIMER
   Example INTERVAL_TIME = 1000:    1 Second on 1 Second off Matrix Timer = matrix timer x=2000, matrix timer y=1000. MILLISECOND TIMER
