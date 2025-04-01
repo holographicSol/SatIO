@@ -14554,7 +14554,6 @@ void loop() {
   // update timer micros
   // ------------------------------------
   interrupt_timer_micros = timerReadMicros(interval_timer);
-
   // Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
 
 
