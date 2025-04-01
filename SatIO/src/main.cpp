@@ -14191,7 +14191,7 @@ void setup() {
   // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)        MICROSECOND TIMER
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
-  timerAlarmWrite(interval_timer, INTERVAL_TIME, true);     
+  timerAlarmWrite(interval_timer, INTERVAL_TIME, true);
   timerAlarmEnable(interval_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -14514,14 +14514,12 @@ void loop() {
     // reset interrupt_interval_counter
     // ------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
-    interrupt_interval_counter=0;
-    portEXIT_CRITICAL(&interval_timer_mux);
 
     // ---------------------------------------------------------------------
     // OPERATIONS PER INTERVAL
     // ---------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
-      Serial.println("[reset second accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
+      Serial.println("[reset interval accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
       // ------------------
       // reset accumulator
       // ------------------
@@ -14531,27 +14529,32 @@ void loop() {
       // ------------------
       for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
-    // ---------------------------------------------------------------------
-    // OPERATIONS A SECOND
-    // ---------------------------------------------------------------------
-    if (timerReadMicros(interval_timer)<interrupt_timer_micros) {
-      // -------------------------
-      // set flags
-      // -------------------------
-      track_planets_period = true;
-      update_local_time = true;
-      check_sdcard = true;
-      // -------------------------
-      // uptime
-      // -------------------------
-      timeData.uptime_seconds++;
-      if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
-    }
-    // ------------------------------------
-    // update timer micros
-    // ------------------------------------
-    interrupt_timer_micros = timerReadMicros(interval_timer);
+    interrupt_interval_counter=0;
+    portEXIT_CRITICAL(&interval_timer_mux);
   }
+
+  // ---------------------------------------------------------------------
+  // OPERATIONS A SECOND
+  // ---------------------------------------------------------------------
+  if (timerReadMicros(interval_timer)<interrupt_timer_micros) {
+    Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
+    // -------------------------
+    // set flags
+    // -------------------------
+    track_planets_period = true;
+    update_local_time = true;
+    check_sdcard = true;
+    // -------------------------
+    // uptime
+    // -------------------------
+    timeData.uptime_seconds++;
+    if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
+  }
+  // ------------------------------------
+  // update timer micros
+  // ------------------------------------
+  interrupt_timer_micros = timerReadMicros(interval_timer);
+
   Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
 
 
