@@ -1328,6 +1328,7 @@ TimeStruct timeData;
 //                                                                                                       INTERRUPT SECOND COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
+volatile int interrupt_timer_micros; 
 static int INTERVAL_TIME;
 volatile int interrupt_interval_counter; // for counting interrupt
 hw_timer_t * interval_timer = NULL;      // H/W timer defining (Pointer to the Structure)
@@ -14173,13 +14174,21 @@ void setup() {
            4: Timer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed (There's no good
            trying to interrupt every millisecond if loop time exceeds a millisecond, so the system would suffer a performance hit
            and at no gain of any extra functionality).
-  
-  Summary: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers.
-  */
 
-  INTERVAL_TIME = 1000000; // one second timer (use this timer) (good for loop speeds < 1 second)
-  // INTERVAL_TIME = 1000;    // one millisecond timer (do not enable this until further development) (good for loop speeds < 1 millisecond)
-  // INTERVAL_TIME = 1;       // one microsecond timer (do not enable this until further development) (good for loop speeds < 1 microsecond)
+  CONCLUSION: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers.
+              Changing INTERVAL_TIME outside of given hardware capabilities will have adverse and unpredictable effects.
+              The ability to change INTERVAL_TIME without having to refactor anything is included with different hardware in mind.
+
+  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off Matrix Timer = matrix timer x=1, matrix timer y=1.       SECOND TIMER
+  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off Matrix Timer = matrix timer x=2000, matrix timer y=1000. MILLISECOND TIMER
+  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off Matrix Timer = matrix timer x=4, matrix timer y=2.       HALF SECOND TIMER
+  */
+ 
+  INTERVAL_TIME = 1000000; // one second timer (use this timer) (good for loop speeds < 1 second) SECOND TIMER
+  // INTERVAL_TIME = 500000;     // 500 millisecond timer (good for loop speeds < 500 milliseconds)  HALF SECOND TIMER
+  // INTERVAL_TIME = 100000;     // 100 millisecond timer (good for loop speeds < 100 milliseconds)  100 MILLISECOND TIMER
+  // INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)        MILLISECOND TIMER
+  // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)        MICROSECOND TIMER
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, INTERVAL_TIME, true);     
@@ -14502,30 +14511,11 @@ void loop() {
   // ---------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
     // ------------------------------------
-    // start handling
-    // ------------------------------------
-    portENTER_CRITICAL(&interval_timer_mux);
-
-    // ------------------------------------
     // reset interrupt_interval_counter
     // ------------------------------------
+    portENTER_CRITICAL(&interval_timer_mux);
     interrupt_interval_counter=0;
-
-    // ---------------------------------------------------------------------
-    // OPERATIONS A SECOND
-    // ---------------------------------------------------------------------
-    // ToDo: run operations every second regardless of INTERVAL_TIME value
-    // ---------
-    // set flags
-    // ---------
-    track_planets_period = true;
-    update_local_time = true;
-    check_sdcard = true;
-    // ------
-    // uptime
-    // ------
-    timeData.uptime_seconds++;
-    if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
+    portEXIT_CRITICAL(&interval_timer_mux);
 
     // ---------------------------------------------------------------------
     // OPERATIONS PER INTERVAL
@@ -14541,12 +14531,29 @@ void loop() {
       // ------------------
       for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
-
+    // ---------------------------------------------------------------------
+    // OPERATIONS A SECOND
+    // ---------------------------------------------------------------------
+    if (timerReadMicros(interval_timer)<interrupt_timer_micros) {
+      // -------------------------
+      // set flags
+      // -------------------------
+      track_planets_period = true;
+      update_local_time = true;
+      check_sdcard = true;
+      // -------------------------
+      // uptime
+      // -------------------------
+      timeData.uptime_seconds++;
+      if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
+    }
     // ------------------------------------
-    // end handling
+    // update timer micros
     // ------------------------------------
-    portEXIT_CRITICAL(&interval_timer_mux);
+    interrupt_timer_micros = timerReadMicros(interval_timer);
   }
+  Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
+
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
