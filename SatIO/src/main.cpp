@@ -14501,7 +14501,7 @@ void loop() {
     update_local_time = true;
     check_sdcard = true;
     // -------------------------------------------------------------
-    // handle second accumulator and second accumulator dependencies
+    // handle accumulator and accumulator dependencies
     // -------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
       Serial.println("[reset second accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
