@@ -14170,13 +14170,14 @@ void setup() {
   WARNING: 1: Changing INTERVAL_TIME will effect all matrix timers.
            2: This is desirable behaviour while any other usage of INTERVAL_TIME should be carefully considered to work as expected
            accross different INTERVAL_TIME values.
-           3: Hardware & performace should also be considered if reducing INTERVAL_TIME.
+           3: Hardware & performace should also be considered if reducing INTERVAL_TIME below 1 second.
            4: Timer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed (There's no good
            trying to interrupt every millisecond if loop time exceeds a millisecond, so the system would suffer a performance hit
            and at no gain of any extra functionality).
 
-  CONCLUSION: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers.
-              Changing INTERVAL_TIME outside of given hardware capabilities will have adverse and unpredictable effects.
+  CONCLUSION: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers by a factor of INTERVAL_TIME.
+              This allows for increasing matrix timer resolution without the need for more timers, timer functions and timer values.
+              Changing INTERVAL_TIME outside of given hardware capabilities may have adverse and unpredictable effects.
               Variable names and functions depending on INTERVAL_TIME are agnostic to any specific unit of time.
 
   Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off Matrix Timer = matrix timer x=1, matrix timer y=1.       SECOND TIMER
