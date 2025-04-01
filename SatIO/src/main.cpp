@@ -936,7 +936,8 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 
 /* ESP32 has 2 cores. initiate task handles */
 TaskHandle_t GPSTask;
-TaskHandle_t Task1;
+TaskHandle_t UpdateUITask;
+TaskHandle_t SecondCounterTask;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -14101,6 +14102,29 @@ void getSensorData() {
   }
 }
 
+bool track_planets_period = false;
+bool update_local_time = false;
+bool check_sdcard = false;
+
+void SecondCounter(void * pvParamaters) {
+  // ---------------------------------------------------------------------
+  //                                                    ISR SECOND COUNTER
+  // ---------------------------------------------------------------------
+  while (1) {
+    if (interrupt_second_counter > 0) {
+      portENTER_CRITICAL(&second_timer_mux);
+      interrupt_second_counter--;
+      track_planets_period = true;
+      update_local_time = true;
+      check_sdcard = true;
+      timeData.uptime_seconds++;
+      portEXIT_CRITICAL(&second_timer_mux);
+    }
+    // Serial.println("[second_timer millis] " + String(timerReadMilis(second_timer)));
+    delay(1);
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -14264,11 +14288,20 @@ void setup() {
 
   xTaskCreatePinnedToCore(
     UpdateUI, /* Function to implement the task */
-    "Task1",  /* Name of the task */
+    "UpdateUITask",  /* Name of the task */
     102400,   /* Stack size in words */
     NULL,     /* Task input parameter */
     2,        /* Priority of the task */
-    &Task1,   /* Task handle. */
+    &UpdateUITask,   /* Task handle. */
+    0);       /* Core where the task should run */
+  
+  xTaskCreatePinnedToCore(
+    SecondCounter, /* Function to implement the task */
+    "SecondCounterTask",  /* Name of the task */
+    1024,   /* Stack size in words */
+    NULL,     /* Task input parameter */
+    2,        /* Priority of the task */
+    &SecondCounterTask,   /* Task handle. */
     0);       /* Core where the task should run */
   
   // wait a moment before entering main loop
@@ -14280,9 +14313,6 @@ void setup() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 int t0 = millis();
-bool track_planets_period = false;
-bool update_local_time = false;
-bool check_sdcard = false;
 bool longer_loop = false;
 int load_distribution = 0;
 /*
@@ -14478,19 +14508,6 @@ void loop() {
     else if (load_distribution==1) {
       load_distribution=0;
     }
-  }
-
-  // ---------------------------------------------------------------------
-  //                                                    ISR SECOND COUNTER
-  // ---------------------------------------------------------------------
-  if (interrupt_second_counter > 0) {
-    portENTER_CRITICAL(&second_timer_mux);
-    interrupt_second_counter--;
-    track_planets_period = true;
-    update_local_time = true;
-    check_sdcard = true;
-    timeData.uptime_seconds++;
-    portEXIT_CRITICAL(&second_timer_mux);
   }
 
   // ---------------------------------------------------------------------
