@@ -14164,6 +14164,8 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // Interval Timer Interrupt
   // ----------------------------------------------------------------------------------------------------------------------------
+  // WARNING: Changing interval time will effect all matrix timers. this is desirable behaviour while any other usage of interval
+  // timer should be built to work as expected (timing wise) regardless of interval value.
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, 1000000, true); // one second timer (use this timer) (good for loop speeds < 1 second)
@@ -14491,9 +14493,9 @@ void loop() {
     // start second handling
     // ---------------------
     portENTER_CRITICAL(&interval_timer_mux);
-    //--------------------------------------------------
+    //----------------------------------------------------
     // interrupt_interval_counter should be either 1 or 0.
-    //--------------------------------------------------
+    //----------------------------------------------------
     interrupt_interval_counter--;
     // ---------
     // set flags
