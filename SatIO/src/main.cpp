@@ -14171,25 +14171,23 @@ void setup() {
            2: This is desirable behaviour while any other usage of INTERVAL_TIME should be carefully considered to work as expected
            accross different INTERVAL_TIME values.
            3: Hardware & performace should also be considered if reducing INTERVAL_TIME below 1 second.
-           4: Timer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed (There's no good
-           trying to interrupt every millisecond if loop time exceeds a millisecond, so the system would suffer a performance hit
-           and at no gain of any extra functionality).
+           4: MatrixTimer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed.
 
-  CONCLUSION: Decreasing INTERVAL_TIME increases matrix timer resolution and changes required values for matrix timers by a factor of INTERVAL_TIME.
-              This allows for increasing matrix timer resolution without the need for more timers, timer functions and timer values.
+  CONCLUSION: Decreasing INTERVAL_TIME increases MatrixTimer resolution and changes required values for matrix timers by a factor of INTERVAL_TIME.
+              This allows for increasing MatrixTimer resolution without the need for more timers, timer functions and timer values.
               Changing INTERVAL_TIME outside of given hardware capabilities may have adverse and unpredictable effects.
               Variable names and functions depending on INTERVAL_TIME are agnostic to any specific unit of time.
 
-  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off Matrix Timer = matrix timer x=1, matrix timer y=1.       SECOND TIMER
-  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off Matrix Timer = matrix timer x=2000, matrix timer y=1000. MILLISECOND TIMER
-  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off Matrix Timer = matrix timer x=4, matrix timer y=2.       HALF SECOND TIMER
+  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off MatrixTimer = MatrixTimer x=1,    y=1.    SECOND TIMER
+  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000, y=1000. MILLISECOND TIMER
+  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,    y=2.    HALF SECOND TIMER
   */
  
   INTERVAL_TIME = 1000000; // one second timer (use this timer) (good for loop speeds < 1 second) SECOND TIMER
-  // INTERVAL_TIME = 500000;     // 500 millisecond timer (good for loop speeds < 500 milliseconds)  HALF SECOND TIMER
-  // INTERVAL_TIME = 100000;     // 100 millisecond timer (good for loop speeds < 100 milliseconds)  100 MILLISECOND TIMER
-  // INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)        MILLISECOND TIMER
-  // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)        MICROSECOND TIMER
+  // INTERVAL_TIME = 500000;  // 500 millisecond timer (good for loop speeds < 500 milliseconds)  HALF SECOND TIMER
+  // INTERVAL_TIME = 100000;  // 100 millisecond timer (good for loop speeds < 100 milliseconds)  100 MILLISECOND TIMER
+  // INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)     MILLISECOND TIMER
+  // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)     MICROSECOND TIMER
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, INTERVAL_TIME, true);
