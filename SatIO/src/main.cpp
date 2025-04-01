@@ -277,6 +277,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <assert.h>
+#include <float.h>
 #include "SdFat.h"            // https://github.com/greiman/SdFat
 #include <RTClib.h>           // https://github.com/adafruit/RTClib
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
@@ -937,7 +938,6 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 /* ESP32 has 2 cores. initiate task handles */
 TaskHandle_t GPSTask;
 TaskHandle_t UpdateUITask;
-TaskHandle_t SecondCounterTask;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -2632,7 +2632,7 @@ struct MatrixStruct {
     "Enabled",
     "Overload",
     "SwitchLink",
-    "SecondsTimer",
+    "MatrixTimer",
     "RTCTime",
     "DaySunday",
     "DayMonday",
@@ -6051,22 +6051,23 @@ bool check_bool_false(bool _bool) {
   if (_bool == false) {return true;} else {return false;}
 }
 
-bool SecondsTimer(double n0, double n1, int Mi) {
+bool MatrixTimer(double n0, double n1, int Mi) {
   /*
   seconds accumulated by an isr alarm. this does not use satellite data. 
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
-
   */
- // ------------------------------------------------
+  // ---------------------
   // turn on or remain off
+  // ---------------------
   if (matrixData.matrix_switch_state[0][Mi] == 0) {
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
     if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.seconds; return true;}
     else {false;}
   }
-  // ------------------------------------------------
+  // ---------------------
   // turn off or remain on
+  // ---------------------
   else if (matrixData.matrix_switch_state[0][Mi] == 1) {
     if      ((timeData.seconds - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
     /*
@@ -6086,11 +6087,8 @@ bool SecondsTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
-    // ------------------------------------------------
     else if ((timeData.seconds - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.seconds-n1; return false;}
-    // ------------------------------------------------
     else {true;}
-    // ------------------------------------------------
   }
   return false;
 }
@@ -6176,8 +6174,8 @@ void matrixSwitch() {
         while other stacked logic true, switch state is true/false every Xsec for Ysec.
         can also be used independantly as a switches only set function.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SecondsTimer") == 0) {
-          tmp_matrix[Fi] = SecondsTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MatrixTimer") == 0) {
+          tmp_matrix[Fi] = MatrixTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
         }
 
@@ -10095,7 +10093,7 @@ String getRelatedX(char * data) {
   // if (strcmp("Enabled", data)==0) {return String();}
   if (strcmp("Overload", data)==0) {return String(systemData.overload);}
   // if (strcmp("SwitchLink", data)==0) {return String();}
-  // if (strcmp("SecondsTimer", data)==0) {return String();}
+  // if (strcmp("MatrixTimer", data)==0) {return String();}
   if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
@@ -14104,32 +14102,6 @@ void getSensorData() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            SECOND COUNTER TASK
-// ------------------------------------------------------------------------------------------------------------------------------
-
-bool track_planets_period = false;
-bool update_local_time = false;
-bool check_sdcard = false;
-
-void SecondCounter(void * pvParamaters) {
-  while (1) {
-    // ---------------------------------------------------------------------
-    // SECONDS
-    // ---------------------------------------------------------------------
-    if (interrupt_second_counter > 0) {
-      portENTER_CRITICAL(&second_timer_mux);
-      interrupt_second_counter--;
-      track_planets_period = true;
-      update_local_time = true;
-      check_sdcard = true;
-      portEXIT_CRITICAL(&second_timer_mux);
-    }
-    // Serial.println("[second_timer millis] " + String(timerReadMilis(second_timer)));
-    delay(1);
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          SETUP
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -14299,15 +14271,6 @@ void setup() {
     &UpdateUITask,   /* Task handle. */
     0);       /* Core where the task should run */
   
-  xTaskCreatePinnedToCore(
-    SecondCounter, /* Function to implement the task */
-    "SecondCounterTask",  /* Name of the task */
-    1024,   /* Stack size in words */
-    NULL,     /* Task input parameter */
-    2,        /* Priority of the task */
-    &SecondCounterTask,   /* Task handle. */
-    0);       /* Core where the task should run */
-  
   // wait a moment before entering main loop
   delay(3000);
 }
@@ -14319,6 +14282,9 @@ void setup() {
 int t0 = millis();
 bool longer_loop = false;
 int load_distribution = 0;
+bool track_planets_period = false;
+bool update_local_time = false;
+bool check_sdcard = false;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -14512,6 +14478,44 @@ void loop() {
     else if (load_distribution==1) {
       load_distribution=0;
     }
+  }
+
+  // ---------------------------------------------------------------------
+  //                                                    ISR SECOND COUNTER
+  // ---------------------------------------------------------------------
+  if (interrupt_second_counter > 0) {
+    // ---------------------
+    // start second handling
+    // ---------------------
+    portENTER_CRITICAL(&second_timer_mux);
+    //--------------------------------------------------
+    // interrupt_second_counter should be either 1 or 0.
+    //--------------------------------------------------
+    interrupt_second_counter--;
+    // ---------
+    // set flags
+    // ---------
+    track_planets_period = true;
+    update_local_time = true;
+    check_sdcard = true;
+    // -------------------------------------------------------------
+    // handle second accumulator and second accumulator dependencies
+    // -------------------------------------------------------------
+    if (timeData.seconds>DBL_MAX-1) {
+      Serial.println("[reset second accumulator] timeData.seconds: " + String(timeData.seconds));
+      // ------------------
+      // reset accumulator
+      // ------------------
+      timeData.seconds=0;
+      // ------------------
+      // reset dependencies
+      // ------------------
+      for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
+    }
+    // -------------------
+    // end second handling
+    // -------------------
+    portEXIT_CRITICAL(&second_timer_mux);
   }
 
   // ---------------------------------------------------------------------
