@@ -1336,6 +1336,7 @@ void isr_second_timer() {
   portENTER_CRITICAL_ISR(&second_timer_mux);
   interrupt_second_counter++;
   timeData.seconds++;
+  timeData.uptime_seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
 
@@ -14121,7 +14122,6 @@ void SecondCounter(void * pvParamaters) {
       track_planets_period = true;
       update_local_time = true;
       check_sdcard = true;
-      timeData.uptime_seconds++;
       portEXIT_CRITICAL(&second_timer_mux);
     }
     // Serial.println("[second_timer millis] " + String(timerReadMilis(second_timer)));
