@@ -14537,7 +14537,7 @@ void loop() {
   // OPERATIONS A SECOND
   // ---------------------------------------------------------------------
   if (timerReadMicros(interval_timer)<interrupt_timer_micros) {
-    Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
+    // Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
     // -------------------------
     // set flags
     // -------------------------
@@ -14555,7 +14555,7 @@ void loop() {
   // ------------------------------------
   interrupt_timer_micros = timerReadMicros(interval_timer);
 
-  Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
+  // Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
 
 
   // ---------------------------------------------------------------------
