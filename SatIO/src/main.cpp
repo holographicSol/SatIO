@@ -1308,6 +1308,7 @@ SDCardStruct sdcardData;
 
 struct TimeStruct {
   double seconds;                   // seconds accumulated since startup
+  long milliseconds;
   signed long mainLoopTimeTaken;    // current main loop time
   signed long mainLoopTimeStart;    // time recorded at the start of each iteration of main loop
   signed long mainLoopTimeTakenMax; // current record of longest main loop time
@@ -1323,6 +1324,9 @@ struct TimeStruct {
 };
 TimeStruct timeData;
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       INTERRUPT SECOND COUNTER
+// ------------------------------------------------------------------------------------------------------------------------------
 
 volatile int interrupt_second_counter; // for counting interrupt
 hw_timer_t * second_timer = NULL;      // H/W timer defining (Pointer to the Structure)
@@ -1334,6 +1338,25 @@ void isr_second_timer() {
   timeData.seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                  INTERRUPT MILLISECOND COUNTER
+// ------------------------------------------------------------------------------------------------------------------------------
+
+volatile int interrupt_millisecond_counter; // for counting interrupt
+hw_timer_t * millisecond_timer = NULL;      // H/W timer defining (Pointer to the Structure)
+portMUX_TYPE millisecond_timer_mux = portMUX_INITIALIZER_UNLOCKED;
+
+void isr_millisecond_timer() {
+  portENTER_CRITICAL_ISR(&millisecond_timer_mux);
+  interrupt_millisecond_counter++;
+  timeData.milliseconds++;
+  portEXIT_CRITICAL_ISR(&millisecond_timer_mux);
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          SYSTEM UPTIME COUNTER
+// ------------------------------------------------------------------------------------------------------------------------------
 
 void UptimeSecondsToDateTime(uint32_t sec) {
   // Calculate years, months, days, hours, minutes, seconds
@@ -14160,6 +14183,8 @@ void setup() {
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
   timerAlarmEnable(second_timer);
+
+  millisecond_timer = timerBegin(0, 80, true);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // I2C Interrupts
