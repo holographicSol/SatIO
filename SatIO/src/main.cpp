@@ -14166,8 +14166,8 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
-  timerAlarmWrite(interval_timer, 1000000, true); // one second timer
-  // timerAlarmWrite(interval_timer, 1000, true);    // one millisecond timer
+  timerAlarmWrite(interval_timer, 1000000, true); // one second timer (use this timer)
+  // timerAlarmWrite(interval_timer, 1000, true);    // one millisecond timer (do not enable this until further development)
   timerAlarmEnable(interval_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
