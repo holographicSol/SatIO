@@ -1307,13 +1307,13 @@ SDCardStruct sdcardData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct TimeStruct {
-  double seconds;                      // seconds accumulated since startup
-  signed long mainLoopTimeTaken;     // current main loop time
-  signed long mainLoopTimeStart;     // time recorded at the start of each iteration of main loop
-  signed long mainLoopTimeTakenMax;  // current record of longest main loop time
-  signed long mainLoopTimeTakenMin;  // current record of shortest main loop time
-  unsigned long t0;                    // micros time 0
-  unsigned long t1;                    // micros time 1
+  double seconds;                   // seconds accumulated since startup
+  signed long mainLoopTimeTaken;    // current main loop time
+  signed long mainLoopTimeStart;    // time recorded at the start of each iteration of main loop
+  signed long mainLoopTimeTakenMax; // current record of longest main loop time
+  signed long mainLoopTimeTakenMin; // current record of shortest main loop time
+  unsigned long t0;                 // micros time 0
+  unsigned long t1;                 // micros time 1
   uint32_t uptime_seconds;
   uint32_t uptime_years;
   uint32_t uptime_months;
@@ -1324,11 +1324,11 @@ struct TimeStruct {
 TimeStruct timeData;
 
 
-volatile int interrupt_second_counter;  //for counting interrupt
-hw_timer_t * second_timer = NULL;      //H/W timer defining (Pointer to the Structure)
+volatile int interrupt_second_counter; // for counting interrupt
+hw_timer_t * second_timer = NULL;      // H/W timer defining (Pointer to the Structure)
 portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
 
-void isr_second_timer() {      //Defining Inerrupt function with for faster access
+void isr_second_timer() {
   portENTER_CRITICAL_ISR(&second_timer_mux);
   interrupt_second_counter++;
   timeData.seconds++;
@@ -1349,6 +1349,7 @@ void UptimeSecondsToDateTime(uint32_t sec) {
   timeData.uptime_seconds = sec % 60;
 }
 
+// todo: no reset uptime_seconds
 void ScreenSafeUptime(uint32_t sec) {
   /* modify this according to required/available screen dimensions */
   // 76px avaliable for font 6px wide + 1px space = approx. 10 digit number all consisting of 9 (316.9 years before each reset)
@@ -14159,7 +14160,11 @@ void setup() {
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
   timerAlarmEnable(second_timer);
-  // Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request.
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // I2C Interrupts
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Interrupt line: connects one or more I2C peripherals so they can tell us when to make a request (instead of switching between master slave).
   pinMode(ISR_I2C_PERIPHERAL_PIN, INPUT_PULLDOWN);
   attachInterrupt(digitalPinToInterrupt(ISR_I2C_PERIPHERAL_PIN), ISR_I2C_PERIPHERAL, FALLING);
 
