@@ -1362,6 +1362,7 @@ void IRAM_ATTR isr_second_timer() {
   portENTER_CRITICAL_ISR(&second_timer_mux);
   interrupt_second_counter++;
   timeData.accumulated_seconds++;
+  timeData.uptime_seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
 
@@ -14548,24 +14549,20 @@ void loop() {
     interrupt_interval_counter=0;
     portEXIT_CRITICAL(&interval_timer_mux);
     // ---------------------------------------------------------------------
-    // OPERATIONS PER INTERVAL
+    // HANDLE ACCUMULATORS
     // ---------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
-      Serial.println("[reset interval accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
       // ------------------
       // reset accumulator
       // ------------------
       timeData.accumulated_intervals=0;
+      Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
       // ------------------
       // reset dependencies
       // ------------------
       for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
-
   }
-  // Serial.println("[interrupt_interval_counter] " + String(interrupt_interval_counter));
-  // Serial.println("[interval accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
-  // Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
 
   // ---------------------------------------------------------------------
   //                                                    ISR SECOND COUNTER
@@ -14585,17 +14582,29 @@ void loop() {
     track_planets_period = true;
     update_local_time = true;
     check_sdcard = true;
-    // -------------------------
-    // uptime
-    // -------------------------
-    timeData.uptime_seconds++;
-    if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
-    // Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
+    // ---------------------------------------------------------------------
+    // HANDLE ACCUMULATORS
+    // ---------------------------------------------------------------------
+    // uptime accumulator
+    // ------------------
+    if (timeData.uptime_seconds>LONG_MAX-1) {
+      // ------------------
+      // reset accumulator
+      // ------------------
+      timeData.uptime_seconds=0;
+      Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
+    }
+    // -------------------
+    // seconds accumulator
+    // -------------------
+    if (timeData.accumulated_seconds>LONG_MAX-1) {
+      // ------------------
+      // reset accumulator
+      // ------------------
+      timeData.accumulated_seconds=0;
+      Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
+    }
   }
-  // Serial.println("[interrupt_second_counter] " + String(interrupt_second_counter));
-  // Serial.println("[second accumulator] timeData.accumulated_seconds: " + String(timeData.accumulated_seconds));
-  // Serial.println("[second_timer micos] " + String(timerReadMicros(second_timer)));
-
 
   // ---------------------------------------------------------------------
   //                                                               TIMINGS
