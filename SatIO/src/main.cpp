@@ -11624,13 +11624,26 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
         // ------------------------------------------------
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        // ------------------------------------------------
+        display.drawHLine(1, 28, 127);
+        display.drawVLine(67, 13, 26);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas60x8.clear();
+        canvas60x8.printFixed(1, 1, String("SATELLITES").c_str());
+        display.drawCanvas(3, ui_content_0, canvas60x8);
         // ------------------------------------------------
       }
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
+      display.drawCanvas(71, ui_content_0, canvas42x8);
       // ------------------------------------------------
       if (systemData.satio_enabled==true) {menuGPSItems[0 ]                             ="SATIO   ENABLED";}
       else {menuGPSItems[0]                                                             ="SATIO   DISABLED";}
@@ -11657,6 +11670,433 @@ void UpdateUI(void * pvParamters) {
         menuGPS.showMenuContent(display);
       }
       // ------------------------------------------------
+    }
+
+    // ------------------------------------------------
+    //                                       GNGGA MENU
+    // ------------------------------------------------
+
+    else if (menu_page==page_gps_view_gngga) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        display.drawVLine(28, 13, 127);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(4, ui_content_0, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("SS").c_str());
+        display.drawCanvas(4, ui_content_3, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("SC").c_str());
+        display.drawCanvas(4, ui_content_4, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("PF").c_str());
+        display.drawCanvas(4, ui_content_5, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("A").c_str());
+        display.drawCanvas(4, ui_content_6, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("GEO").c_str());
+        display.drawCanvas(4, ui_content_7, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("DD").c_str());
+        display.drawCanvas(4, ui_content_8, canvas21x8);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
+      display.drawCanvas(32, ui_content_0, canvas92x8);
+      // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ----------------------------------------------------------
+      canvas21x8.clear();
+      canvas21x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
+      display.drawCanvas(4, ui_content_1, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
+      display.drawCanvas(32, ui_content_1, canvas92x8);
+      // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ----------------------------------------------------------
+      canvas21x8.clear();
+      canvas21x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
+      display.drawCanvas(4, ui_content_2, canvas21x8);
+      // ------------------------------------------------
+       display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
+      display.drawCanvas(32, ui_content_2, canvas92x8);
+      // ----------------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str());
+      display.drawCanvas(32, ui_content_3, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
+      display.drawCanvas(32, ui_content_4, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
+      display.drawCanvas(32, ui_content_5, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.altitude).c_str());
+      display.drawCanvas(32, ui_content_6, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.geoidal).c_str());
+      display.drawCanvas(32, ui_content_7, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str());
+      display.drawCanvas(32, ui_content_8, canvas92x8);
+      // ------------------------------------------------
+    }
+
+    // ------------------------------------------------
+    //                                       GNRMC MENU
+    // ------------------------------------------------
+
+    else if (menu_page==page_gps_view_gnrmc) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        display.drawVLine(28, 13, 127);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(4, ui_content_0, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("GS").c_str());
+        display.drawCanvas(4, ui_content_3, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("GH").c_str());
+        display.drawCanvas(4, ui_content_4, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(4, ui_content_5, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("IA").c_str());
+        display.drawCanvas(4, ui_content_6, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("IAD").c_str());
+        display.drawCanvas(4, ui_content_7, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("MI").c_str());
+        display.drawCanvas(4, ui_content_8, canvas21x8);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
+      display.drawCanvas(32, ui_content_0, canvas92x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas21x8.clear();
+      canvas21x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
+      display.drawCanvas(4, ui_content_1, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
+      display.drawCanvas(32, ui_content_1, canvas92x8);
+      // ----------------------------------------------------------
+      display.setColor(systemData.color_subtitle);
+      // ------------------------------------------------
+      canvas21x8.clear();
+      canvas21x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
+      display.drawCanvas(4, ui_content_2, canvas21x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
+      display.drawCanvas(32, ui_content_2, canvas92x8);
+      // ----------------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str());
+      display.drawCanvas(32, ui_content_3, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str());
+      display.drawCanvas(32, ui_content_4, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str());
+      display.drawCanvas(32, ui_content_5, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str());
+      display.drawCanvas(32, ui_content_6, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str());
+      display.drawCanvas(32, ui_content_7, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str());
+      display.drawCanvas(32, ui_content_8, canvas92x8);
+      // ------------------------------------------------
+    }
+
+    // ------------------------------------------------
+    //                                       GPATT MENU
+    // ------------------------------------------------
+
+    else if (menu_page==page_gps_view_gpatt) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        display.drawVLine(28, 13, 127);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("p").c_str());
+        display.drawCanvas(4, ui_content_0, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("R").c_str());
+        display.drawCanvas(4, ui_content_1, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("Y").c_str());
+        display.drawCanvas(4, ui_content_2, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("INS").c_str());
+        display.drawCanvas(4, ui_content_3, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("RSF").c_str());
+        display.drawCanvas(4, ui_content_4, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("RIF").c_str());
+        display.drawCanvas(4, ui_content_5, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("SF").c_str());
+        display.drawCanvas(4, ui_content_6, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("GST").c_str());
+        display.drawCanvas(4, ui_content_7, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("LF").c_str());
+        display.drawCanvas(4, ui_content_8, canvas21x8);
+        canvas21x8.clear();
+        canvas21x8.printFixed(1, 1, String("M").c_str());
+        display.drawCanvas(4, ui_content_9, canvas21x8);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
+      display.drawCanvas(32, ui_content_0, canvas92x8);
+      // ----------------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
+      display.drawCanvas(32, ui_content_1, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
+      display.drawCanvas(32, ui_content_2, canvas92x8);
+      // ----------------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.ins).c_str());
+      display.drawCanvas(32, ui_content_3, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
+      display.drawCanvas(32, ui_content_4, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
+      display.drawCanvas(32, ui_content_5, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
+      display.drawCanvas(32, ui_content_6, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
+      display.drawCanvas(32, ui_content_7, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
+      display.drawCanvas(32, ui_content_8, canvas92x8);
+      // ------------------------------------------------
+      canvas92x8.clear();
+      canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
+      display.drawCanvas(32, ui_content_9, canvas92x8);
+      // ------------------------------------------------
+    }
+
+    // ------------------------------------------------
+    //                                       SATIO MENU
+    // ------------------------------------------------
+
+    else if (menu_page==page_gps_view_satio) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("SATIO", systemData.color_title, systemData.color_border);
+        // ------------------------------------------------
+        display.setColor(systemData.color_border);
+        display.drawVLine(41, 13, 127);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("RTCT").c_str());
+        display.drawCanvas(4, ui_content_0, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("RTCD").c_str());
+        display.drawCanvas(4, ui_content_1, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SRTCT").c_str());
+        display.drawCanvas(4, ui_content_4, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SRTCD").c_str());
+        display.drawCanvas(4, ui_content_5, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SUNR").c_str());
+        display.drawCanvas(4, ui_content_6, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("SUNS").c_str());
+        display.drawCanvas(4, ui_content_7, canvas36x8);
+        canvas36x8.clear();
+        canvas36x8.printFixed(1, 1, String("DAY").c_str());
+        display.drawCanvas(4, ui_content_8, canvas36x8);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+
+      // ------------------
+      // rtc time (utc)
+      // ------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1,formatTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second).c_str());
+      display.drawCanvas(45, ui_content_0, canvas80x8);
+      // ------------------
+      // rtc date (utc)
+      // ------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, formatDate(satData.rtc_day, satData.rtc_month, satData.rtc_year).c_str());
+      display.drawCanvas(45, ui_content_1, canvas80x8);
+      // -----------------------------------------------------
+
+
+      // ------------------------------------------------
+      canvas36x8.clear();
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas36x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_2, canvas36x8);
+      }
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas36x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_2, canvas36x8);
+      }
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
+      display.drawCanvas(45, ui_content_2, canvas80x8);
+      // ------------------------------------------------
+      canvas36x8.clear();
+      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas36x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_3, canvas36x8);
+      }
+      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas36x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
+        display.drawCanvas(4, ui_content_3, canvas36x8);
+      }
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
+      // ------------------------------------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
+      display.drawCanvas(45, ui_content_3, canvas80x8);
+
+      // ------------------
+      // rtc sync time (utc)
+      // ------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(formatTime(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second)).c_str());
+      display.drawCanvas(45, ui_content_4, canvas80x8);
+      // ------------------
+      // rtc sync date (utc)
+      // ------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(formatDate(satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
+      display.drawCanvas(45, ui_content_5, canvas80x8);
+      // -----------------------------------------------------
+
+      // ------------------------------------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
+      display.drawCanvas(45, ui_content_6, canvas80x8);
+      // ------------------------------------------------
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
+      display.drawCanvas(45, ui_content_7, canvas80x8);
+      canvas80x8.clear();
+      canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(satData.rtcsync_year, satData.rtcsync_month, satData.rtcsync_day)).c_str());
+      display.drawCanvas(45, ui_content_8, canvas80x8);
     }
 
     // ------------------------------------------------
@@ -12112,434 +12552,6 @@ void UpdateUI(void * pvParamters) {
         menuTimeAndDate.showMenuContent(display);
       }
       // ------------------------------------------------
-    }
-
-
-    // ------------------------------------------------
-    //                                       GNGGA MENU
-    // ------------------------------------------------
-
-    else if (menu_page==page_gps_view_gngga) {
-      // ------------------------------------------------
-      // static data
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SC").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("PF").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("A").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GEO").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("DD").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
-      }
-      // ------------------------------------------------
-      // dynamic data
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
-      // ----------------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ----------------------------------------------------------
-      canvas21x8.clear();
-      canvas21x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_1, canvas21x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
-      // ----------------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ----------------------------------------------------------
-      canvas21x8.clear();
-      canvas21x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_2, canvas21x8);
-      // ------------------------------------------------
-       display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
-      // ----------------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.altitude).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.geoidal).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
-      // ------------------------------------------------
-    }
-
-    // ------------------------------------------------
-    //                                       GNRMC MENU
-    // ------------------------------------------------
-
-    else if (menu_page==page_gps_view_gnrmc) {
-      // ------------------------------------------------
-      // static data
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GH").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("IA").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("IAD").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("MI").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
-      }
-      // ------------------------------------------------
-      // dynamic data
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ------------------------------------------------
-      canvas21x8.clear();
-      canvas21x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_1, canvas21x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
-      // ----------------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ------------------------------------------------
-      canvas21x8.clear();
-      canvas21x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_2, canvas21x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
-      // ----------------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
-      // ------------------------------------------------
-    }
-
-    // ------------------------------------------------
-    //                                       GPATT MENU
-    // ------------------------------------------------
-
-    else if (menu_page==page_gps_view_gpatt) {
-      // ------------------------------------------------
-      // static data
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("p").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("R").c_str());
-        display.drawCanvas(4, ui_content_1, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("Y").c_str());
-        display.drawCanvas(4, ui_content_2, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("INS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("RSF").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("RIF").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SF").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GST").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("LF").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("M").c_str());
-        display.drawCanvas(4, ui_content_9, canvas21x8);
-      }
-      // ------------------------------------------------
-      // dynamic data
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
-      // ----------------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
-      // ----------------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.ins).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
-      // ------------------------------------------------
-      canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
-      display.drawCanvas(32, ui_content_9, canvas92x8);
-      // ------------------------------------------------
-    }
-
-    // ------------------------------------------------
-    //                                       SATIO MENU
-    // ------------------------------------------------
-
-    else if (menu_page==page_gps_view_satio) {
-      // ------------------------------------------------
-      // static data
-      // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("SATIO", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_border);
-        display.drawVLine(41, 13, 127);
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("RTCT").c_str());
-        display.drawCanvas(4, ui_content_0, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("RTCD").c_str());
-        display.drawCanvas(4, ui_content_1, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("SRTCT").c_str());
-        display.drawCanvas(4, ui_content_4, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("SRTCD").c_str());
-        display.drawCanvas(4, ui_content_5, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("SUNR").c_str());
-        display.drawCanvas(4, ui_content_6, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("SUNS").c_str());
-        display.drawCanvas(4, ui_content_7, canvas36x8);
-        canvas36x8.clear();
-        canvas36x8.printFixed(1, 1, String("DAY").c_str());
-        display.drawCanvas(4, ui_content_8, canvas36x8);
-      }
-      // ------------------------------------------------
-      // dynamic data
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-
-      // ------------------
-      // rtc time (utc)
-      // ------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1,formatTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second).c_str());
-      display.drawCanvas(45, ui_content_0, canvas80x8);
-      // ------------------
-      // rtc date (utc)
-      // ------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, formatDate(satData.rtc_day, satData.rtc_month, satData.rtc_year).c_str());
-      display.drawCanvas(45, ui_content_1, canvas80x8);
-      // -----------------------------------------------------
-
-
-      // ------------------------------------------------
-      canvas36x8.clear();
-      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas36x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_2, canvas36x8);
-      }
-      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas36x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_2, canvas36x8);
-      }
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
-      display.drawCanvas(45, ui_content_2, canvas80x8);
-      // ------------------------------------------------
-      canvas36x8.clear();
-      if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas36x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_3, canvas36x8);
-      }
-      else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas36x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
-        display.drawCanvas(4, ui_content_3, canvas36x8);
-      }
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
-      display.drawCanvas(45, ui_content_3, canvas80x8);
-
-      // ------------------
-      // rtc sync time (utc)
-      // ------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(formatTime(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second)).c_str());
-      display.drawCanvas(45, ui_content_4, canvas80x8);
-      // ------------------
-      // rtc sync date (utc)
-      // ------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(formatDate(satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
-      display.drawCanvas(45, ui_content_5, canvas80x8);
-      // -----------------------------------------------------
-
-      // ------------------------------------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
-      display.drawCanvas(45, ui_content_6, canvas80x8);
-      // ------------------------------------------------
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
-      display.drawCanvas(45, ui_content_7, canvas80x8);
-      canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(satData.rtcsync_year, satData.rtcsync_month, satData.rtcsync_day)).c_str());
-      display.drawCanvas(45, ui_content_8, canvas80x8);
     }
 
     // ------------------------------------------------
