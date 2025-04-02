@@ -14688,6 +14688,7 @@ void loop() {
   //                                                                                               GPS DISABLED
   // ----------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
+    vTaskSuspend(GPSTask); gps_done=false; // do this again just in case we're late to the party.
     // ---------------------------------------------------------------------
     //                                                MATRIX SWITCH ZERO GPS
     // ---------------------------------------------------------------------
