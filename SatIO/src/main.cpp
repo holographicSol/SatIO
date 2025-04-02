@@ -3728,8 +3728,6 @@ void syncUTCTime() {
         Serial.println("[rtc] synchronizing (first opportunity)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // sync timers?
-        timerStop(interval_timer); timerStart(interval_timer);
-        timerStop(second_timer); timerStart(second_timer);
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3751,8 +3749,6 @@ void syncUTCTime() {
         Serial.println("[rtc] synchronizing (every minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // sync timers?
-        timerStop(interval_timer); timerStart(interval_timer);
-        timerStop(second_timer); timerStart(second_timer);
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -10656,8 +10652,7 @@ void UpdateUI(void * pvParamters) {
         String(
           String(padDigitsZero(satData.local_hour)) + ":" +
           String(padDigitsZero(satData.local_minute)) + ":" +
-          String(padDigitsZero(satData.local_second)) + "." +
-          String(timerReadMilis(second_timer))[0]).c_str(),
+          String(padDigitsZero(satData.local_second))).c_str(),
           STYLE_BOLD );
       display.drawCanvas(34, 5, canvas69x8);
       // ------------------------------------------------
@@ -10680,7 +10675,6 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
         // ------------------------------------------------
       }
-      // delay(200);
     }
 
     // ------------------------------------------------
