@@ -3672,6 +3672,58 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                           SYNC TIMERS WITH UTC
+// ------------------------------------------------------------------------------------------------------------------------------
+
+// IN DEVELOPMENT
+
+void syncTimers() {
+  Serial.println("[satData.tmp_millisecond_int] " + String(satData.tmp_millisecond_int));
+
+  if (satData.tmp_millisecond_int==0) {
+    isr_second_timer();
+    timerWrite(second_timer, 0);
+    // timerWrite(interval_timer, 0);
+  }
+  else if (satData.tmp_millisecond_int==10) {
+    timerWrite(second_timer, 100000);
+    // timerWrite(interval_timer, 10000);
+  }
+  else if (satData.tmp_millisecond_int==20) {
+    timerWrite(second_timer, 200000);
+    // timerWrite(interval_timer, 20000);
+  }
+  else if (satData.tmp_millisecond_int==30) {
+    timerWrite(second_timer, 300000);
+    // timerWrite(interval_timer, 30000);
+  }
+  else if (satData.tmp_millisecond_int==40) {
+    timerWrite(second_timer, 400000);
+    // timerWrite(interval_timer, 30000);
+  }
+  else if (satData.tmp_millisecond_int==50) {
+    timerWrite(second_timer, 500000);
+    // timerWrite(interval_timer, 30000);
+  }
+  else if (satData.tmp_millisecond_int==60) {
+    timerWrite(second_timer, 600000);
+    // timerWrite(interval_timer, 10000);
+  }
+  else if (satData.tmp_millisecond_int==70) {
+    timerWrite(second_timer, 700000);
+    // timerWrite(interval_timer, 20000);
+  }
+  else if (satData.tmp_millisecond_int==80) {
+    timerWrite(second_timer, 800000);
+    // timerWrite(interval_timer, 30000);
+  }
+  else if (satData.tmp_millisecond_int==90) {
+    timerWrite(second_timer, 900000);
+    // timerWrite(interval_timer, 30000);
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SYNC RTC WITH UTC
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -3728,6 +3780,7 @@ void syncUTCTime() {
         Serial.println("[rtc] synchronizing (first opportunity)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // sync timers?
+        // syncTimers();
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3738,17 +3791,19 @@ void syncUTCTime() {
         satData.rtcsync_year = year();
         satData.rtcsync_month = month();
         satData.rtcsync_day = day();
-        
+      }
+      else {
+        // sync timers?
+        // syncTimers();
       }
     }
     else {
       // sync within the first 100 milliseconds of any minute
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
-        timerStop(interval_timer); timerStart(interval_timer);
-        timerStop(second_timer); timerStart(second_timer);
         Serial.println("[rtc] synchronizing (every minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // sync timers?
+        // syncTimers();
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3759,6 +3814,10 @@ void syncUTCTime() {
         satData.rtcsync_year = year();
         satData.rtcsync_month = month();
         satData.rtcsync_day = day();
+      }
+      else {
+        // sync timers?
+        // syncTimers();
       }
     }
   }
@@ -10645,16 +10704,33 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_title);
       // ------------------------------------------------
-      // local time
+      // local time seconds
       // ------------------------------------------------
       canvas69x8.clear();
-      canvas69x8.printFixed(6, 1,
+      canvas69x8.printFixed(1, 1,
         String(
           String(padDigitsZero(satData.local_hour)) + ":" +
           String(padDigitsZero(satData.local_minute)) + ":" +
           String(padDigitsZero(satData.local_second))).c_str(),
           STYLE_BOLD );
       display.drawCanvas(34, 5, canvas69x8);
+      // ------------------------------------------------
+      // local time 100 milliseconds
+      // ------------------------------------------------
+      // canvas69x8.clear();
+      // canvas69x8.printFixed(1, 1,
+      //   String(
+      //     String(padDigitsZero(satData.local_hour)) + ":" +
+      //     String(padDigitsZero(satData.local_minute)) + ":" +
+      //     String(padDigitsZero(satData.local_second)) + "." +
+      //     String(timerReadMilis(second_timer))[0]).c_str(),
+      //     STYLE_BOLD );
+      // display.drawCanvas(34, 5, canvas69x8);
+      // Serial.println(        String(
+      //   String(padDigitsZero(satData.local_hour)) + ":" +
+      //   String(padDigitsZero(satData.local_minute)) + ":" +
+      //   String(padDigitsZero(satData.local_second)) + "." +
+      //   String(timerReadMilis(second_timer))[0]).c_str());
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
