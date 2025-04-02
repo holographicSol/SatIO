@@ -3538,13 +3538,13 @@ void clearSATIO() {
   satData.minutesLat = NAN;
   satData.minutesLong = NAN;
 
-  // coordinate conversions remain (useful for a manual sync button where performance can be gained by disabling GPS and time and coordinates can be synced manually)
+  // coordinate conversions remain (useful for a manual sync button where performance can be gained by disabling GPS, then time and coordinates can be synced manually as required)
   // satData.degrees_latitude = NAN;
   // satData.degrees_longitude = NAN;
   // satData.degreesLat = NAN;
   // satData.degreesLong = NAN;
 
-  // time conversions remain (useful for a manual sync button where performance can be gained by disabling GPS and time and coordinates can be synced manually)
+  // time conversions remain (useful for a manual sync button where performance can be gained by disabling GPS, then time and coordinates can be synced manually as required)
   // memset(satData.weekday, 0, sizeof(satData.weekday));
   // satData.local_time = NAN;
   // satData.local_hour = NAN;
