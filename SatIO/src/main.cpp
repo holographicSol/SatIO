@@ -10698,43 +10698,6 @@ void UpdateUI(void * pvParamters) {
       display.drawHLine(1, 49, 127); // seperate content 0 from content 1
       display.drawHLine(1, 93, 127); // seperate content 1 from content 2
       display.drawVLine(64, 37, 49); // seperate enabled/disabled from high/low
-      // ------------------------------------------------
-      // enabled
-      // ------------------------------------------------
-      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-        canvas60x8.clear();
-        display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD );
-        display.drawCanvas(1, 39, canvas60x8);
-      }
-      // ------------------------------------------------
-      // disabled
-      // ------------------------------------------------
-      else {
-        canvas60x8.clear();
-        display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD );
-        display.drawCanvas(1, 39, canvas60x8);
-      }
-
-      // ------------------------------------------------
-      // active
-      // ------------------------------------------------
-      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-        canvas60x8.clear();
-        display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD );
-        display.drawCanvas(66, 39, canvas60x8);
-      }
-      // ------------------------------------------------
-      // inactive
-      // ------------------------------------------------
-      else {
-        canvas60x8.clear();
-        display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD );
-        display.drawCanvas(66, 39, canvas60x8);
-      }
 
       // ------------------------------------------------------------------------------------------------------------
       // clear any previously highlighted menus
@@ -10923,12 +10886,51 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
         display.drawCanvas(91+4, 19, canvas19x8);
       }
+
+      // ------------------------------------------------
+      // enabled
+      // ------------------------------------------------
+      if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(0,0,255));
+        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD );
+        display.drawCanvas(1, 39, canvas60x8);
+      }
+      // ------------------------------------------------
+      // disabled
+      // ------------------------------------------------
+      else {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(255,0,0));
+        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD );
+        display.drawCanvas(1, 39, canvas60x8);
+      }
+
+      // ------------------------------------------------
+      // active
+      // ------------------------------------------------
+      if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(0,0,255));
+        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD );
+        display.drawCanvas(66, 39, canvas60x8);
+      }
+      // ------------------------------------------------
+      // inactive
+      // ------------------------------------------------
+      else {
+        canvas60x8.clear();
+        display.setColor(RGB_COLOR16(255,0,0));
+        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD );
+        display.drawCanvas(66, 39, canvas60x8);
+      }
+
       // ------------------------------------------------------------------------------------------------------------
       // content
       // ------------------------------------------------------------------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
       // function name
+      // ------------------------------------------------
+      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
       strcpy(TMP_UI_DATA_0, "");
@@ -10936,6 +10938,8 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.clear();
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 52, canvas120x8);
+      // ------------------------------------------------
+      display.setColor(systemData.color_content);
       // ------------------------------------------------
       // function x
       // ------------------------------------------------
