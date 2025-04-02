@@ -3401,6 +3401,7 @@ struct SatDatatruct {
   int rtcsync_month = 0;
   int rtcsync_day = 0;
   uint32_t rtc_unixtime;
+  int timer_millisecond = 0; // milliseconds synced to within 100ms range of rtc sync time
 
   // task safe rtc time now can be used instead of directly calling rtc.now()
   // rtc time is utc.
@@ -3726,6 +3727,9 @@ void syncUTCTime() {
       if (satData.tmp_millisecond_int==00) {
         Serial.println("[rtc] synchronizing (first opportunity)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        // sync timers?
+        timerStop(interval_timer); timerStart(interval_timer);
+        timerStop(second_timer); timerStart(second_timer);
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3742,8 +3746,13 @@ void syncUTCTime() {
     else {
       // sync within the first 100 milliseconds of any minute
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
+        timerStop(interval_timer); timerStart(interval_timer);
+        timerStop(second_timer); timerStart(second_timer);
         Serial.println("[rtc] synchronizing (every minute)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        // sync timers?
+        timerStop(interval_timer); timerStart(interval_timer);
+        timerStop(second_timer); timerStart(second_timer);
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -10629,11 +10638,11 @@ void UpdateUI(void * pvParamters) {
         display.setColor(RGB_COLOR16(0,255,0));
         display.drawRect(0, 0, 127, 127);
         // title H border
-        display.drawHLine(1, 27, 126);
+        display.drawHLine(1, 28, 126);
         // left V border time
-        display.drawVLine(24, 1, 26);
+        display.drawVLine(24, 1, 27);
         // right V border time
-        display.drawVLine(display.width()-24, 1, 26);
+        display.drawVLine(display.width()-23, 1, 27);
       }
       // ------------------------------------------------
       // dynamic data
@@ -10643,7 +10652,13 @@ void UpdateUI(void * pvParamters) {
       // local time
       // ------------------------------------------------
       canvas69x8.clear();
-      canvas69x8.printFixed(6, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+      canvas69x8.printFixed(1, 1,
+        String(
+          String(padDigitsZero(satData.local_hour)) + ":" +
+          String(padDigitsZero(satData.local_minute)) + ":" +
+          String(padDigitsZero(satData.local_second)) + "." +
+          String(timerReadMilis(second_timer))[0]).c_str(),
+          STYLE_BOLD );
       display.drawCanvas(34, 5, canvas69x8);
       // ------------------------------------------------
       // local date
@@ -10665,6 +10680,7 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
         // ------------------------------------------------
       }
+      delay(99);
     }
 
     // ------------------------------------------------
