@@ -14208,11 +14208,11 @@ void setup() {
   Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,    y=2.    HALF SECOND TIMER
   */
  
-  // INTERVAL_TIME = 1000000; // one second timer (good for loop speeds < 1 second) SECOND TIMER
-  // INTERVAL_TIME = 500000;  // 500 millisecond timer (good for loop speeds < 500 milliseconds)  HALF SECOND TIMER
-  // INTERVAL_TIME = 100000;  // 100 millisecond timer (good for loop speeds < 100 milliseconds)  100 MILLISECOND TIMER
-  INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)     MILLISECOND TIMER
-  // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)     MICROSECOND TIMER
+  // INTERVAL_TIME = 1000000; // SECOND TIMER
+  // INTERVAL_TIME = 500000;  // HALF SECOND TIMER
+  // INTERVAL_TIME = 100000;  // 100 MILLISECOND TIMER
+  INTERVAL_TIME = 1000;    // MILLISECOND TIMER
+  // INTERVAL_TIME = 1;       // MICROSECOND TIMER
 
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
