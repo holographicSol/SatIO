@@ -10680,7 +10680,7 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
         // ------------------------------------------------
       }
-      delay(99);
+      // delay(200);
     }
 
     // ------------------------------------------------
