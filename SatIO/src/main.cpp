@@ -10648,7 +10648,7 @@ void UpdateUI(void * pvParamters) {
       // local time
       // ------------------------------------------------
       canvas69x8.clear();
-      canvas69x8.printFixed(1, 1,
+      canvas69x8.printFixed(6, 1,
         String(
           String(padDigitsZero(satData.local_hour)) + ":" +
           String(padDigitsZero(satData.local_minute)) + ":" +
