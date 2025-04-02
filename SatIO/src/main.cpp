@@ -10624,7 +10624,7 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
-        display.drawHLine(1, 27, 126);
+        display.drawHLine(1, 26, 126);
       }
       // ------------------------------------------------
       // dynamic data
