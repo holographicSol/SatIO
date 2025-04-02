@@ -1309,6 +1309,7 @@ SDCardStruct sdcardData;
 
 struct TimeStruct {
   double accumulated_intervals;     // time (units defined by alarm) accumulated by isr timer
+  double accumulated_seconds;
   signed long mainLoopTimeTaken;    // current main loop time
   signed long mainLoopTimeStart;    // time recorded at the start of each iteration of main loop
   signed long mainLoopTimeTakenMax; // current record of longest main loop time
@@ -1325,20 +1326,43 @@ struct TimeStruct {
 TimeStruct timeData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                       INTERRUPT SECOND COUNTER
+//                                                                                                     INTERRUPT INTERVAL COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-volatile int interrupt_timer_micros; 
+/*
+HWTimer designed to be agnostic to any specific unit of time so that interval time can be adjusted according to a given system.
+*/
+
 static int INTERVAL_TIME;
 volatile int interrupt_interval_counter; // for counting interrupt
 hw_timer_t * interval_timer = NULL;      // H/W timer defining (Pointer to the Structure)
 portMUX_TYPE interval_timer_mux = portMUX_INITIALIZER_UNLOCKED;
 
-void isr_interval_timer() {
+void IRAM_ATTR  isr_interval_timer() {
   portENTER_CRITICAL_ISR(&interval_timer_mux);
   interrupt_interval_counter++;
   timeData.accumulated_intervals++;
   portEXIT_CRITICAL_ISR(&interval_timer_mux);
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       INTERRUPT SECOND COUNTER
+// ------------------------------------------------------------------------------------------------------------------------------
+
+/*
+HWTimer designed to specifically count seconds.
+*/
+
+static int SECOND_TIME;
+volatile int interrupt_second_counter; // for counting interrupt
+hw_timer_t * second_timer = NULL;      // H/W timer defining (Pointer to the Structure)
+portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
+
+void IRAM_ATTR isr_second_timer() {
+  portENTER_CRITICAL_ISR(&second_timer_mux);
+  interrupt_second_counter++;
+  timeData.accumulated_seconds++;
+  portEXIT_CRITICAL_ISR(&second_timer_mux);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -14183,15 +14207,21 @@ void setup() {
   Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,    y=2.    HALF SECOND TIMER
   */
  
-  INTERVAL_TIME = 1000000; // one second timer (use this timer) (good for loop speeds < 1 second) SECOND TIMER
+  // INTERVAL_TIME = 1000000; // one second timer (good for loop speeds < 1 second) SECOND TIMER
   // INTERVAL_TIME = 500000;  // 500 millisecond timer (good for loop speeds < 500 milliseconds)  HALF SECOND TIMER
   // INTERVAL_TIME = 100000;  // 100 millisecond timer (good for loop speeds < 100 milliseconds)  100 MILLISECOND TIMER
-  // INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)     MILLISECOND TIMER
+  INTERVAL_TIME = 1000;    // one millisecond timer (good for loop speeds < 1 millisecond)     MILLISECOND TIMER
   // INTERVAL_TIME = 1;       // one microsecond timer (good for loop speeds < 1 microsecond)     MICROSECOND TIMER
+
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, INTERVAL_TIME, true);
   timerAlarmEnable(interval_timer);
+
+  second_timer = timerBegin(2, 80, true);
+  timerAttachInterrupt(second_timer, &isr_second_timer, true);
+  timerAlarmWrite(second_timer, 1000000, true);
+  timerAlarmEnable(second_timer);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // I2C Interrupts
@@ -14506,14 +14536,17 @@ void loop() {
   }
 
   // ---------------------------------------------------------------------
-  //                                                      ISR TIME COUNTER
+  //                                                  ISR INTERVAL COUNTER
+  // ---------------------------------------------------------------------
+  // OPERATIONS PER INTERVAL
   // ---------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
     // ------------------------------------
     // reset interrupt_interval_counter
     // ------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
-
+    interrupt_interval_counter=0;
+    portEXIT_CRITICAL(&interval_timer_mux);
     // ---------------------------------------------------------------------
     // OPERATIONS PER INTERVAL
     // ---------------------------------------------------------------------
@@ -14528,15 +14561,24 @@ void loop() {
       // ------------------
       for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
-    interrupt_interval_counter=0;
-    portEXIT_CRITICAL(&interval_timer_mux);
+
   }
+  // Serial.println("[interrupt_interval_counter] " + String(interrupt_interval_counter));
+  // Serial.println("[interval accumulator] timeData.accumulated_intervals: " + String(timeData.accumulated_intervals));
+  // Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
 
   // ---------------------------------------------------------------------
-  // OPERATIONS A SECOND
+  //                                                    ISR SECOND COUNTER
   // ---------------------------------------------------------------------
-  if (timerReadMicros(interval_timer)<interrupt_timer_micros) {
-    // Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
+  // OPERATIONS PER SECOND
+  // ---------------------------------------------------------------------
+  if (interrupt_second_counter>0) {
+    // ------------------------------------
+    // reset interrupt_interval_counter
+    // ------------------------------------
+    portENTER_CRITICAL(&second_timer_mux);
+    interrupt_second_counter=0;
+    portEXIT_CRITICAL(&second_timer_mux);
     // -------------------------
     // set flags
     // -------------------------
@@ -14548,12 +14590,11 @@ void loop() {
     // -------------------------
     timeData.uptime_seconds++;
     if (timeData.uptime_seconds>LONG_MAX-1) {timeData.uptime_seconds=0;}
+    // Serial.println("[timeData.uptime_seconds] " + String(timeData.uptime_seconds));
   }
-  // ------------------------------------
-  // update timer micros
-  // ------------------------------------
-  interrupt_timer_micros = timerReadMicros(interval_timer);
-  // Serial.println("[interval_timer micos] " + String(timerReadMicros(interval_timer)));
+  // Serial.println("[interrupt_second_counter] " + String(interrupt_second_counter));
+  // Serial.println("[second accumulator] timeData.accumulated_seconds: " + String(timeData.accumulated_seconds));
+  // Serial.println("[second_timer micos] " + String(timerReadMicros(second_timer)));
 
 
   // ---------------------------------------------------------------------
