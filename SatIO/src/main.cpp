@@ -14209,7 +14209,10 @@ void setup() {
 
   PERFORMANCE: If looptime is always under say 50 milliseconds, then an INTERVAL_TIME of 1000 (1 millisecond) may be preffered (dedpending
   on hardware and other requirements) in which case a MatrixTimer could easily have a maximum modulation resolution of say x=100 and y=50.
-  This would modulate a MatrixTimer 10 times a second with on time equal to off time. 
+  This would modulate a MatrixTimer 10 times a second with on time equal to off time.
+  This setup allows for pushing the current architecture further and flexibly while intermediary output MCU's are being considered which
+  would also only benefit from this setup, because although the intermediary output MCU's could modulate independantly, the resolution of
+  their receipt of any pin high/low instruction will be more precise (as hardware/loop time) will allow.
   */
  
   // INTERVAL_TIME = 1000000; // SECOND TIMER
