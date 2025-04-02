@@ -14638,7 +14638,7 @@ void loop() {
     // ---------------------------------------------------------------------
     /*
     Check users programmable logic.
-    Never run while values are being updated.
+    Never run while values are being updated (never when gps task is running).
     Only run if new GPS data has been collected.
     */
     t0 = micros();
@@ -14683,6 +14683,25 @@ void loop() {
   t0 = micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+  // ----------------------------------------------------------------------------------------------------------
+  //                                                                                               GPS DISABLED
+  // ----------------------------------------------------------------------------------------------------------
+  if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
+    // ---------------------------------------------------------------------
+    //                                                MATRIX SWITCH ZERO GPS
+    // ---------------------------------------------------------------------
+    /*
+    Check users programmable logic.
+    Never run while values are being updated.
+    If GPS parsing is entirely disabled then allow running matrixSwitch here.
+    This may be useful for a user if the system is setup for anything that does not require GPS.
+    */
+   t0 = micros();
+   if (systemData.matrix_enabled == true) {matrixSwitch();}
+   MatrixStatsCounter();
+   bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  }
 
   // ---------------------------------------------------------------------
   //                                                       PORT CONTROLLER
