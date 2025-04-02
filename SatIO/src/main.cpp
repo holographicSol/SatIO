@@ -14530,7 +14530,9 @@ void loop() {
   Run every loop.
   */
   if (longer_loop==false) {
+    // --------------------------------------------------------------------
     // track planets
+    // --------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
       if (track_planets_period == true) {
@@ -14543,7 +14545,9 @@ void loop() {
         bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
       }
     }
+    // --------------------------------------------------------------------
     // other load
+    // --------------------------------------------------------------------
     else if (load_distribution==1) {
       load_distribution=0;
     }
