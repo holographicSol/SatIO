@@ -10622,13 +10622,13 @@ void UpdateUI(void * pvParamters) {
       // -----------------------------------------------------
       canvas76x8.clear();
       canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-      display.drawCanvas(39, 4, canvas76x8);
+      display.drawCanvas(40, 44, canvas76x8);
       // -----------------------------------------------------
       // local date
       // -----------------------------------------------------
       canvas76x8.clear();
       canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
-      display.drawCanvas(39, 14, canvas76x8);
+      display.drawCanvas(35, 54, canvas76x8);
       // -----------------------------------------------------
 
       // ------------------------------------------------
