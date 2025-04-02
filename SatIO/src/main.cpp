@@ -3723,6 +3723,7 @@ void syncUTCTime() {
     if ((first_gps_pass==true) ) {
       // sync at first opportunity within the first 100 milliseconds of any second
       if (satData.tmp_millisecond_int==00) {
+        first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
         rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
         // ----------------------------------------------------------------------------------------
@@ -14364,7 +14365,6 @@ int t0 = millis();
 bool longer_loop = false;
 int load_distribution = 0;
 bool track_planets_period = false;
-bool update_local_time = false;
 bool check_sdcard = false;
 
 /*
@@ -14428,21 +14428,6 @@ void loop() {
     t0 = micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-    // ---------------------------------------------------------------------
-    //                                             CONVERT UTC TO LOCAL TIME
-    // ---------------------------------------------------------------------
-    // Only run if new GPS data has been collected.
-    // Currently limited to once per second because:
-    //   1: local time is onky displayed.
-    //   2: DS3231 has a resolution of second.
-    if ((update_local_time == true) || (first_gps_pass==true)) {
-      first_gps_pass=false;
-      update_local_time = false;
-      t0 = micros();
-      convertUTCTimeToLocalTime();
-      bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    }
 
     // ---------------------------------------------------------------------
     //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
@@ -14565,19 +14550,17 @@ void loop() {
   }
 
   // ---------------------------------------------------------------------
-  //                                                  ISR INTERVAL COUNTER
-  // ---------------------------------------------------------------------
-  // OPERATIONS PER INTERVAL
+  //                                               OPERATIONS PER INTERVAL
   // ---------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
-    // ------------------------------------
+    // ---------------------------------
     // reset interrupt_interval_counter
-    // ------------------------------------
+    // ---------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
     interrupt_interval_counter=0;
     portEXIT_CRITICAL(&interval_timer_mux);
     // ---------------------------------------------------------------------
-    // HANDLE ACCUMULATORS
+    //                                                  INTERVAL ACCUMULATOR
     // ---------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
       // ------------------
@@ -14593,28 +14576,23 @@ void loop() {
   }
 
   // ---------------------------------------------------------------------
-  //                                                    ISR SECOND COUNTER
-  // ---------------------------------------------------------------------
-  // OPERATIONS PER SECOND
+  //                                                 OPERATIONS PER SECOND
   // ---------------------------------------------------------------------
   if (interrupt_second_counter>0) {
-    // ------------------------------------
-    // reset interrupt_interval_counter
-    // ------------------------------------
+    // ---------------------------------
+    // reset interrupt_second_counter
+    // ---------------------------------
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    // -------------------------
+    // ----------
     // set flags
-    // -------------------------
+    // ----------
     track_planets_period = true;
-    update_local_time = true;
     check_sdcard = true;
     // ---------------------------------------------------------------------
-    // HANDLE ACCUMULATORS
+    //                                                    UPTIME ACCUMULATOR
     // ---------------------------------------------------------------------
-    // uptime accumulator
-    // ------------------
     if (timeData.uptime_seconds>LONG_MAX-1) {
       // ------------------
       // reset accumulator
@@ -14622,9 +14600,9 @@ void loop() {
       timeData.uptime_seconds=0;
       Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
     }
-    // -------------------
-    // seconds accumulator
-    // -------------------
+    // ---------------------------------------------------------------------
+    //                                                    SECOND ACCUMULATOR
+    // ---------------------------------------------------------------------
     if (timeData.accumulated_seconds>LONG_MAX-1) {
       // ------------------
       // reset accumulator
@@ -14632,6 +14610,15 @@ void loop() {
       timeData.accumulated_seconds=0;
       Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
     }
+    // ---------------------------------------------------------------------
+    //                                             CONVERT UTC TO LOCAL TIME
+    // ---------------------------------------------------------------------
+    // Currently limited to once per second because:
+    //   1: local time is onky displayed.
+    //   2: DS3231 has a resolution of second.
+      t0 = micros();
+      convertUTCTimeToLocalTime();
+      bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
   // ---------------------------------------------------------------------
