@@ -14192,40 +14192,35 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
 
   /*
-  WARNING: 1: Changing INTERVAL_TIME will effect all matrix timers.
+  WARNING: 1: Changing INTERVAL_TIME will effect all MatrixTimers.
            2: This is desirable behaviour while any other usage of INTERVAL_TIME should be carefully considered to work as expected
            accross different INTERVAL_TIME values.
            3: Hardware & performace should also be considered if reducing INTERVAL_TIME below 1 second.
            4: MatrixTimer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed.
 
+  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off MatrixTimer = MatrixTimer x=1,       y=1.       SECOND TIMER
+  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,       y=2.       HALF SECOND TIMER
+  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000,    y=1000.    MILLISECOND TIMER
+  Example INTERVAL_TIME = 1:       1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000000, y=1000000. MICROSECOND TIMER
+
   CONCLUSION: Decreasing INTERVAL_TIME increases MatrixTimer resolution and changes required values for matrix timers by a factor of INTERVAL_TIME.
               This allows for increasing MatrixTimer resolution without the need for more timers, timer functions and timer values.
               Changing INTERVAL_TIME outside of given hardware capabilities may have adverse and unpredictable effects.
               Variable names and functions depending on INTERVAL_TIME are agnostic to any specific unit of time.
-
-  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off MatrixTimer = MatrixTimer x=1,    y=1.    SECOND TIMER
-  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000, y=1000. MILLISECOND TIMER
-  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,    y=2.    HALF SECOND TIMER
-
-  PERFORMANCE: If looptime is always under say 50 milliseconds, then an INTERVAL_TIME of 1000 (1 millisecond) may be preffered (dedpending
-  on hardware and other requirements) in which case a MatrixTimer could easily have a maximum modulation resolution of say x=100 and y=50.
-  This would modulate a MatrixTimer 10 times a second with on time equal to off time.
-  This setup allows for pushing the current architecture further and flexibly while intermediary output MCU's are being considered which
-  would also only benefit from this setup, because although the intermediary output MCU's could modulate independantly, the resolution of
-  their receipt of any pin high/low instruction will be more precise (as hardware/loop time) will allow.
   */
- 
-  // INTERVAL_TIME = 1000000; // SECOND TIMER
+  INTERVAL_TIME = 1000000; // SECOND TIMER
   // INTERVAL_TIME = 500000;  // HALF SECOND TIMER
-  // INTERVAL_TIME = 100000;  // 100 MILLISECOND TIMER
-  INTERVAL_TIME = 1000;    // MILLISECOND TIMER
+  // INTERVAL_TIME = 1000;    // MILLISECOND TIMER
   // INTERVAL_TIME = 1;       // MICROSECOND TIMER
-
+  Serial.println("[INTERVAL_TIME] " + String(INTERVAL_TIME));
   interval_timer = timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, INTERVAL_TIME, true);
   timerAlarmEnable(interval_timer);
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Second Timer Interrupt
+  // ----------------------------------------------------------------------------------------------------------------------------
   second_timer = timerBegin(2, 80, true);
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
