@@ -655,7 +655,7 @@ const uint8_t rtcsync_red[] = {
 
 bool update_ui = true;
 bool ui_cleared = false;
-int menu_page = 0;
+signed int menu_page = 0;
 bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ----------------------------------------------------
@@ -14289,6 +14289,7 @@ void setup() {
   canvas80x8.setFixedFont(ssd1306xled_font6x8);
   canvas92x8.setFixedFont(ssd1306xled_font6x8);
   display.clear();
+  menu_page=-1; // none
   // display unidentified studios before loading sdcard data
   display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
   // uncomment to test display
@@ -14304,13 +14305,6 @@ void setup() {
   setupSDCard();
   sd.end();
   endSPIDevice(SD_CS);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // HSPI: SSD1351 OLED Display
-  // ----------------------------------------------------------------------------------------------------------------------------
-  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-  display.begin();
-  display.clear();
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // Sidereal Planets
@@ -14338,9 +14332,19 @@ void setup() {
     2,        /* Priority of the task */
     &UpdateUITask,   /* Task handle. */
     0);       /* Core where the task should run */
-  
+
+  // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
+  // ----------------------------------------------------------------------------------------------------------------------------
   delay(3000);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // HSPI: SSD1351 OLED Display
+  // ----------------------------------------------------------------------------------------------------------------------------
+  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+  display.begin();
+  display.clear();
+  menu_page = 0;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
