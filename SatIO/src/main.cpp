@@ -3541,7 +3541,7 @@ void clearSATIO() {
   satData.degrees_longitude = NAN;
   satData.degreesLat = NAN;
   satData.degreesLong = NAN;
-  // time
+  // time conversion remains enabled
   // memset(satData.weekday, 0, sizeof(satData.weekday));
   // satData.local_time = NAN;
   // satData.local_hour = NAN;
