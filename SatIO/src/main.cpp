@@ -14697,10 +14697,10 @@ void loop() {
     If GPS parsing is entirely disabled then allow running matrixSwitch here.
     This may be useful for a user if the system is setup for anything that does not require GPS.
     */
-   t0 = micros();
-   if (systemData.matrix_enabled == true) {matrixSwitch();}
-   MatrixStatsCounter();
-   bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    t0 = micros();
+    if (systemData.matrix_enabled == true) {matrixSwitch();}
+    MatrixStatsCounter();
+    bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
   // ---------------------------------------------------------------------
