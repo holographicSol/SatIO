@@ -3089,6 +3089,22 @@ GNGGAStruct gnggaData;
 //                                                                                                                          GNGGA
 // ------------------------------------------------------------------------------------------------------------------------------
 
+void clearGNGGA() {
+  memset(gnggaData.utc_time, 0, 56);
+  memset(gnggaData.latitude, 0, 56);
+  memset(gnggaData.latitude_hemisphere, 0, 56);
+  memset(gnggaData.longitude, 0, 56);
+  memset(gnggaData.longitude_hemisphere, 0, 56);
+  memset(gnggaData.solution_status, 0, 56);
+  memset(gnggaData.satellite_count_gngga, 0, 56);
+  memset(gnggaData.hdop_precision_factor, 0, 56);
+  memset(gnggaData.altitude, 0, 56);
+  memset(gnggaData.altitude_units, 0, 56);
+  memset(gnggaData.geoidal, 0, 56);
+  memset(gnggaData.geoidal_units, 0, 56);
+  memset(gnggaData.differential_delay, 0, 56);
+}
+
 void GNGGA() {
   gnggaData.check_data = 0;
   memset(gnggaData.tag, 0, 56);
@@ -3096,19 +3112,19 @@ void GNGGA() {
   serial1Data.token = strtok(gnggaData.sentence, ",");
   while( serial1Data.token != NULL ) {
     if     (serial1Data.iter_token == 0)                                                                {strcpy(gnggaData.tag, "GNGGA");                                                                             gnggaData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                 {memset(gnggaData.utc_time, 0, 56);              strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time = false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time = true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token) == true)                 {memset(gnggaData.latitude, 0, 56);              strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude = false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude = true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token) == true)               {memset(gnggaData.latitude_hemisphere, 0, 56);   strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere = false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token) == true)                {memset(gnggaData.longitude, 0, 56);             strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude = false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude = true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token) == true)              {memset(gnggaData.longitude_hemisphere, 0, 56);  strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere = false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token) == true) {memset(gnggaData.solution_status, 0, 56);       strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status = false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status = true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token) == true)          {memset(gnggaData.satellite_count_gngga, 0, 56); strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga = false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga = true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token) == true)    {memset(gnggaData.hdop_precision_factor, 0, 56); strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor = false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor = true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token) == true)                 {memset(gnggaData.altitude, 0, 56);              strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude = false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude = true;}}
-    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token) == true)           {memset(gnggaData.altitude_units, 0, 56);        strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.check_data++; gnggaData.bad_altitude_units = false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units = true;}}
-    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token) == true)                  {memset(gnggaData.geoidal, 0, 56);               strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal = false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal = true;}}
-    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token) == true)            {memset(gnggaData.geoidal_units, 0, 56);         strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units = false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units = true;}}
-    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token) == true)       {memset(gnggaData.differential_delay, 0, 56);    strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay = false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay = true;}}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time = false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time = true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token) == true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude = false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude = true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token) == true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere = false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere = true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token) == true)                {strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude = false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude = true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token) == true)              {strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere = false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere = true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token) == true) {strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status = false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status = true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token) == true)          {strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga = false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga = true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token) == true)    {strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor = false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor = true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token) == true)                 {strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude = false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude = true;}}
+    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token) == true)           {strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.check_data++; gnggaData.bad_altitude_units = false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units = true;}}
+    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token) == true)                  {strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal = false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal = true;}}
+    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token) == true)            {strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units = false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units = true;}}
+    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token) == true)       {strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay = false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -3162,23 +3178,37 @@ GNRMCStruct gnrmcData;
 //                                                                                                                          GNRMC
 // ------------------------------------------------------------------------------------------------------------------------------
 
+void clearGNRMC() {
+  memset(gnrmcData.utc_time, 0, 56);
+  memset(gnrmcData.positioning_status, 0, 56);
+  memset(gnrmcData.latitude, 0, 56);
+  memset(gnrmcData.latitude_hemisphere, 0, 56);
+  memset(gnrmcData.longitude, 0, 56);
+  memset(gnrmcData.longitude_hemisphere, 0, 56);
+  memset(gnrmcData.ground_speed, 0, 56);
+  memset(gnrmcData.ground_heading, 0, 56);
+  memset(gnrmcData.utc_date, 0, 56);
+  memset(gnrmcData.installation_angle, 0, 56);
+  memset(gnrmcData.installation_angle_direction, 0, 56);
+} 
+
 void GNRMC() {
   gnrmcData.check_data = 0;
   serial1Data.iter_token = 0;
   serial1Data.token = strtok(gnrmcData.sentence, ",");
   while( serial1Data.token != NULL ) {
     if      (serial1Data.iter_token == 0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                                                                           gnrmcData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                     {memset(gnrmcData.utc_time, 0, 56);                     strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time = false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time = true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token) == true)     {memset(gnrmcData.positioning_status, 0, 56);           strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status = false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status = true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token) == true)                     {memset(gnrmcData.latitude, 0, 56);                     strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude = false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude = true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token) == true)                   {memset(gnrmcData.latitude_hemisphere, 0, 56);          strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.check_data++; gnrmcData.bad_latitude_hemisphere = false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token) == true)                    {memset(gnrmcData.longitude, 0, 56);                    strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.check_data++; gnrmcData.bad_longitude = false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude = true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token) == true)                  {memset(gnrmcData.longitude_hemisphere, 0, 56);         strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.check_data++; gnrmcData.bad_longitude_hemisphere = false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token) == true)                 {memset(gnrmcData.ground_speed, 0, 56);                 strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.check_data++; gnrmcData.bad_ground_speed = false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed = true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token) == true)               {memset(gnrmcData.ground_heading, 0, 56);               strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.check_data++; gnrmcData.bad_ground_heading = false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading = true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token) == true)                     {memset(gnrmcData.utc_date, 0, 56);                     strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date = false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date = true;}}
-    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token) == true)           {memset(gnrmcData.installation_angle, 0, 56);           strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle = false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle = true;}}
-    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token) == true) {memset(gnrmcData.installation_angle_direction, 0, 56); strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction = false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction = true;}}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time = false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time = true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token) == true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status = false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status = true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token) == true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude = false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude = true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token) == true)                   {strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.check_data++; gnrmcData.bad_latitude_hemisphere = false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere = true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token) == true)                    {strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.check_data++; gnrmcData.bad_longitude = false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude = true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token) == true)                  {strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.check_data++; gnrmcData.bad_longitude_hemisphere = false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere = true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token) == true)                 {strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.check_data++; gnrmcData.bad_ground_speed = false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed = true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token) == true)               {strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.check_data++; gnrmcData.bad_ground_heading = false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading = true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token) == true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date = false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date = true;}}
+    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token) == true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle = false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle = true;}}
+    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token) == true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction = false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -3256,6 +3286,47 @@ GPATTStruct gpattData;
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          GPATT
 // ------------------------------------------------------------------------------------------------------------------------------
+
+void clearGPATT() {
+memset(gpattData.pitch, 0, 56);
+memset(gpattData.angle_channel_0, 0, 56);
+memset(gpattData.roll, 0, 56);
+memset(gpattData.angle_channel_1, 0, 56);
+memset(gpattData.yaw, 0, 56);
+memset(gpattData.angle_channel_2, 0, 56);
+memset(gpattData.software_version, 0, 56);
+memset(gpattData.version_channel, 0, 56);
+memset(gpattData.product_id, 0, 56);
+memset(gpattData.id_channel, 0, 56);
+memset(gpattData.ins, 0, 56);
+memset(gpattData.ins_channel, 0, 56);
+memset(gpattData.hardware_version, 0, 56);
+memset(gpattData.run_state_flag, 0, 56);
+memset(gpattData.mis_angle_num, 0, 56);
+memset(gpattData.custom_logo_0, 0, 56);
+memset(gpattData.custom_logo_1, 0, 56);
+memset(gpattData.custom_logo_2, 0, 56);
+memset(gpattData.static_flag, 0, 56);
+memset(gpattData.user_code, 0, 56);
+memset(gpattData.gst_data, 0, 56);
+memset(gpattData.line_flag, 0, 56);
+memset(gpattData.custom_logo_3, 0, 56);
+memset(gpattData.mis_att_flag, 0, 56);
+memset(gpattData.imu_kind, 0, 56);
+memset(gpattData.ubi_car_kind, 0, 56);
+memset(gpattData.mileage, 0, 56);
+memset(gpattData.custom_logo_4, 0, 56);
+memset(gpattData.custom_logo_5, 0, 56);
+memset(gpattData.run_inetial_flag, 0, 56);
+memset(gpattData.custom_logo_6, 0, 56);
+memset(gpattData.custom_logo_7, 0, 56);
+memset(gpattData.custom_logo_8, 0, 56);
+memset(gpattData.custom_logo_9, 0, 56);
+memset(gpattData.speed_enable, 0, 56);
+memset(gpattData.custom_logo_10, 0, 56); 
+memset(gpattData.custom_logo_11, 0, 56);
+memset(gpattData.speed_num, 0, 56);
+}
 
 void GPATT() {
   gpattData.check_data = 0;
@@ -3371,16 +3442,16 @@ struct SatDatatruct {
   double temp_longitude_gngga;                                     // degrees converted from absolute
   double temp_latitude_gnrmc;                                      // degrees converted from absolute
   double temp_longitude_gnrmc;                                     // degrees converted from absolute
-  double degrees_latitude;                                         // degrees converted from absolute
-  double degrees_longitude;                                        // degrees converted from absolute
   double minutesLat;                                               // used for converting absolute latitude and longitude
   double minutesLong;                                              // used for converting absolute latitude and longitude
-  double degreesLat;                                               // used for converting absolute latitude and longitude
-  double degreesLong;                                              // used for converting absolute latitude and longitude
   double secondsLat;                                               // used for converting absolute latitude and longitude
   double secondsLong;                                              // used for converting absolute latitude and longitude
   double millisecondsLat;                                          // used for converting absolute latitude and longitude
   double millisecondsLong;                                         // used for converting absolute latitude and longitude
+  double degrees_latitude;                                         // degrees converted from absolute
+  double degrees_longitude;                                        // degrees converted from absolute
+  double degreesLat;                                               // used for converting absolute latitude and longitude
+  double degreesLong;                                              // used for converting absolute latitude and longitude
 
   // local time converted from rtc utc time (currently only used for display purposes)
   time_t local_time;
@@ -3410,6 +3481,8 @@ struct SatDatatruct {
   int rtc_year = 0;
   int rtc_month = 0;
   int rtc_day = 0;
+
+  char weekday[56];
 
   /*
   utc second offset:
@@ -3444,6 +3517,58 @@ struct SatDatatruct {
   // long current_unixtime;
 };
 SatDatatruct satData;
+
+void clearSATIO() {
+  satData.checksum_i = 0;
+  memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
+  // coordinates
+  satData.convert_coordinates = false;
+  satData.abs_latitude_gngga_0 = NAN;
+  satData.abs_longitude_gngga_0 = NAN;
+  satData.abs_latitude_gnrmc_0 = NAN;
+  satData.abs_longitude_gnrmc_0 = NAN;
+  satData.temp_latitude_gngga = NAN;
+  satData.temp_longitude_gngga = NAN;
+  satData.temp_latitude_gnrmc = NAN;
+  satData.temp_longitude_gnrmc = NAN;
+  satData.secondsLat = NAN;
+  satData.secondsLong = NAN;
+  satData.millisecondsLat = NAN;
+  satData.millisecondsLong = NAN;
+  satData.minutesLat = NAN;
+  satData.minutesLong = NAN;
+  satData.degrees_latitude = NAN;
+  satData.degrees_longitude = NAN;
+  satData.degreesLat = NAN;
+  satData.degreesLong = NAN;
+  // time
+  // memset(satData.weekday, 0, sizeof(satData.weekday));
+  // satData.local_time = NAN;
+  // satData.local_hour = NAN;
+  // satData.local_minute = NAN;
+  // satData.local_second = NAN;
+  // satData.local_year = NAN;
+  // satData.local_month = NAN;
+  // satData.local_day = NAN;
+  // satData.rtcsync_time = NAN;
+  // satData.rtcsync_hour = NAN;
+  // satData.rtcsync_minute = NAN;
+  // satData.rtcsync_second = NAN;
+  // satData.rtcsync_year = NAN;
+  // satData.rtcsync_month = NAN;
+  // satData.rtcsync_day = NAN;
+  // satData.rtc_unixtime = NAN;
+  // satData.rtc_hour = NAN;
+  // satData.rtc_minute = NAN;
+  // satData.rtc_second = NAN;
+  // satData.rtc_year = NAN;
+  // satData.rtc_month = NAN;
+  // satData.rtc_day = NAN;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  DATA: SENSORS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct SensorDataStruct {
 
@@ -3767,6 +3892,8 @@ void syncUTCTime() {
   satData.rtc_month = rtc.now().month();
   satData.rtc_day = rtc.now().day();
   satData.rtc_unixtime = rtc.now().unixtime();
+  memset(satData.weekday, 0, sizeof(satData.weekday));
+  strcpy(satData.weekday, String(myAstro.HumanDayOfTheWeek(satData.rtcsync_year, satData.rtcsync_month, satData.rtcsync_day)).c_str());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5791,136 +5918,190 @@ void trackNeptune() {
 //                                                                                                   TASK: PLANETARY CALCULATIONS
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
+void clearSun() {
+  siderealPlanetData.sun_ra=NAN;
+  siderealPlanetData.sun_dec=NAN;
+  siderealPlanetData.sun_az=NAN;
+  siderealPlanetData.sun_alt=NAN;
+  siderealPlanetData.sun_r=NAN;
+  siderealPlanetData.sun_s=NAN;
+}
+
+void clearMoon() {
+  siderealPlanetData.moon_ra=NAN;
+  siderealPlanetData.moon_dec=NAN;
+  siderealPlanetData.moon_az=NAN;
+  siderealPlanetData.moon_alt=NAN;
+  siderealPlanetData.moon_r=NAN;
+  siderealPlanetData.moon_s=NAN;
+  siderealPlanetData.moon_p=NAN;
+  siderealPlanetData.moon_lum=NAN;
+}
+
+void clearMercury() {
+  siderealPlanetData.mercury_ra=NAN;
+  siderealPlanetData.mercury_dec=NAN;
+  siderealPlanetData.mercury_az=NAN;
+  siderealPlanetData.mercury_alt=NAN;
+  siderealPlanetData.mercury_r=NAN;
+  siderealPlanetData.mercury_s=NAN;
+  siderealPlanetData.mercury_helio_ecliptic_lat=NAN;
+  siderealPlanetData.mercury_helio_ecliptic_long=NAN;
+  siderealPlanetData.mercury_radius_vector=NAN;
+  siderealPlanetData.mercury_distance=NAN;
+  siderealPlanetData.mercury_ecliptic_lat=NAN;
+  siderealPlanetData.mercury_ecliptic_long=NAN;
+}
+
+void clearVenus() {
+  siderealPlanetData.venus_ra=NAN;
+  siderealPlanetData.venus_dec=NAN;
+  siderealPlanetData.venus_az=NAN;
+  siderealPlanetData.venus_alt=NAN;
+  siderealPlanetData.venus_r=NAN;
+  siderealPlanetData.venus_s=NAN;
+  siderealPlanetData.venus_helio_ecliptic_lat=NAN;
+  siderealPlanetData.venus_helio_ecliptic_long=NAN;
+  siderealPlanetData.venus_radius_vector=NAN;
+  siderealPlanetData.venus_distance=NAN;
+  siderealPlanetData.venus_ecliptic_lat=NAN;
+  siderealPlanetData.venus_ecliptic_long=NAN;
+}
+
+void clearMars() {
+  siderealPlanetData.mars_ra=NAN;
+  siderealPlanetData.mars_dec=NAN;
+  siderealPlanetData.mars_az=NAN;
+  siderealPlanetData.mars_alt=NAN;
+  siderealPlanetData.mars_r=NAN;
+  siderealPlanetData.mars_s=NAN;
+  siderealPlanetData.mars_helio_ecliptic_lat=NAN;
+  siderealPlanetData.mars_helio_ecliptic_long=NAN;
+  siderealPlanetData.mars_radius_vector=NAN;
+  siderealPlanetData.mars_distance=NAN;
+  siderealPlanetData.mars_ecliptic_lat=NAN;
+  siderealPlanetData.mars_ecliptic_long=NAN;
+}
+
+void clearJupiter() {
+  siderealPlanetData.jupiter_ra=NAN;
+  siderealPlanetData.jupiter_dec=NAN;
+  siderealPlanetData.jupiter_az=NAN;
+  siderealPlanetData.jupiter_alt=NAN;
+  siderealPlanetData.jupiter_r=NAN;
+  siderealPlanetData.jupiter_s=NAN;
+  siderealPlanetData.jupiter_helio_ecliptic_lat=NAN;
+  siderealPlanetData.jupiter_helio_ecliptic_long=NAN;
+  siderealPlanetData.jupiter_radius_vector=NAN;
+  siderealPlanetData.jupiter_distance=NAN;
+  siderealPlanetData.jupiter_ecliptic_lat=NAN;
+  siderealPlanetData.jupiter_ecliptic_long=NAN;
+}
+
+void clearSaturn() {
+  siderealPlanetData.saturn_ra=NAN;
+  siderealPlanetData.saturn_dec=NAN;
+  siderealPlanetData.saturn_az=NAN;
+  siderealPlanetData.saturn_alt=NAN;
+  siderealPlanetData.saturn_r=NAN;
+  siderealPlanetData.saturn_s=NAN;
+  siderealPlanetData.saturn_helio_ecliptic_lat=NAN;
+  siderealPlanetData.saturn_helio_ecliptic_long=NAN;
+  siderealPlanetData.saturn_radius_vector=NAN;
+  siderealPlanetData.saturn_distance=NAN;
+  siderealPlanetData.saturn_ecliptic_lat=NAN;
+  siderealPlanetData.saturn_ecliptic_long=NAN;
+}
+
+void clearUranus() {
+  siderealPlanetData.uranus_ra=NAN;
+  siderealPlanetData.uranus_dec=NAN;
+  siderealPlanetData.uranus_az=NAN;
+  siderealPlanetData.uranus_alt=NAN;
+  siderealPlanetData.uranus_r=NAN;
+  siderealPlanetData.uranus_s=NAN;
+  siderealPlanetData.uranus_helio_ecliptic_lat=NAN;
+  siderealPlanetData.uranus_helio_ecliptic_long=NAN;
+  siderealPlanetData.uranus_radius_vector=NAN;
+  siderealPlanetData.uranus_distance=NAN;
+  siderealPlanetData.uranus_ecliptic_lat=NAN;
+  siderealPlanetData.uranus_ecliptic_long=NAN;
+}
+
+void clearNeptune() {
+  siderealPlanetData.neptune_ra=NAN;
+  siderealPlanetData.neptune_dec=NAN;
+  siderealPlanetData.neptune_az=NAN;
+  siderealPlanetData.neptune_alt=NAN;
+  siderealPlanetData.neptune_r=NAN;
+  siderealPlanetData.neptune_s=NAN;
+  siderealPlanetData.neptune_helio_ecliptic_lat=NAN;
+  siderealPlanetData.neptune_helio_ecliptic_long=NAN;
+  siderealPlanetData.neptune_radius_vector=NAN;
+  siderealPlanetData.neptune_distance=NAN;
+  siderealPlanetData.neptune_ecliptic_lat=NAN;
+  siderealPlanetData.neptune_ecliptic_long=NAN;
+}
+
+void clearTrackPlanets() {
+  clearSun();
+  clearMoon();
+  clearMercury();
+  clearVenus();
+  clearMars();
+  clearJupiter();
+  clearSaturn();
+  clearUranus();
+  clearNeptune();
+}
+
+void setTrackPlanetsFalse() {
+  systemData.sidereal_track_sun = false;
+  systemData.sidereal_track_moon = false;
+  systemData.sidereal_track_mercury = false;
+  systemData.sidereal_track_venus = false;
+  systemData.sidereal_track_mars = false;
+  systemData.sidereal_track_jupiter = false;
+  systemData.sidereal_track_saturn = false;
+  systemData.sidereal_track_uranus = false;
+  systemData.sidereal_track_neptune = false;
+}
+
+void setTrackPlanetsTrue() {
+  systemData.sidereal_track_sun = true;
+  systemData.sidereal_track_moon = true;
+  systemData.sidereal_track_mercury = true;
+  systemData.sidereal_track_venus = true;
+  systemData.sidereal_track_mars = true;
+  systemData.sidereal_track_jupiter = true;
+  systemData.sidereal_track_saturn = true;
+  systemData.sidereal_track_uranus = true;
+  systemData.sidereal_track_neptune = true;
+}
+
 void trackPlanets() {
   // do planet elements and do sun before doing other plans
   myAstro.doPlanetElements();
   myAstro.doSun();
   // now do other plans
   if (systemData.sidereal_track_sun == true) {trackSun();}
-  else {
-    siderealPlanetData.sun_ra=NAN;
-    siderealPlanetData.sun_dec=NAN;
-    siderealPlanetData.sun_az=NAN;
-    siderealPlanetData.sun_alt=NAN;
-    siderealPlanetData.sun_r=NAN;
-    siderealPlanetData.sun_s=NAN;
-  }
+  else {clearSun();}
   if (systemData.sidereal_track_moon == true) {trackMoon();}
-  else {
-    siderealPlanetData.moon_ra=NAN;
-    siderealPlanetData.moon_dec=NAN;
-    siderealPlanetData.moon_az=NAN;
-    siderealPlanetData.moon_alt=NAN;
-    siderealPlanetData.moon_r=NAN;
-    siderealPlanetData.moon_s=NAN;
-    siderealPlanetData.moon_p=NAN;
-    siderealPlanetData.moon_lum=NAN;
-  }
+  else {clearMoon();}
   if (systemData.sidereal_track_mercury == true) {trackMercury();}
-  else {
-    siderealPlanetData.mercury_ra=NAN;
-    siderealPlanetData.mercury_dec=NAN;
-    siderealPlanetData.mercury_az=NAN;
-    siderealPlanetData.mercury_alt=NAN;
-    siderealPlanetData.mercury_r=NAN;
-    siderealPlanetData.mercury_s=NAN;
-    siderealPlanetData.mercury_helio_ecliptic_lat=NAN;
-    siderealPlanetData.mercury_helio_ecliptic_long=NAN;
-    siderealPlanetData.mercury_radius_vector=NAN;
-    siderealPlanetData.mercury_distance=NAN;
-    siderealPlanetData.mercury_ecliptic_lat=NAN;
-    siderealPlanetData.mercury_ecliptic_long=NAN;
-  }
+  else {clearMercury();}
   if (systemData.sidereal_track_venus == true) {trackVenus();}
-  else {
-    siderealPlanetData.venus_ra=NAN;
-    siderealPlanetData.venus_dec=NAN;
-    siderealPlanetData.venus_az=NAN;
-    siderealPlanetData.venus_alt=NAN;
-    siderealPlanetData.venus_r=NAN;
-    siderealPlanetData.venus_s=NAN;
-    siderealPlanetData.venus_helio_ecliptic_lat=NAN;
-    siderealPlanetData.venus_helio_ecliptic_long=NAN;
-    siderealPlanetData.venus_radius_vector=NAN;
-    siderealPlanetData.venus_distance=NAN;
-    siderealPlanetData.venus_ecliptic_lat=NAN;
-    siderealPlanetData.venus_ecliptic_long=NAN;
-  }
+  else {clearVenus();}
   if (systemData.sidereal_track_mars == true) {trackMars();}
-  else {
-    siderealPlanetData.mars_ra=NAN;
-    siderealPlanetData.mars_dec=NAN;
-    siderealPlanetData.mars_az=NAN;
-    siderealPlanetData.mars_alt=NAN;
-    siderealPlanetData.mars_r=NAN;
-    siderealPlanetData.mars_s=NAN;
-    siderealPlanetData.mars_helio_ecliptic_lat=NAN;
-    siderealPlanetData.mars_helio_ecliptic_long=NAN;
-    siderealPlanetData.mars_radius_vector=NAN;
-    siderealPlanetData.mars_distance=NAN;
-    siderealPlanetData.mars_ecliptic_lat=NAN;
-    siderealPlanetData.mars_ecliptic_long=NAN;
-  }
+  else {clearMars();}
   if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
-  else {
-    siderealPlanetData.jupiter_ra=NAN;
-    siderealPlanetData.jupiter_dec=NAN;
-    siderealPlanetData.jupiter_az=NAN;
-    siderealPlanetData.jupiter_alt=NAN;
-    siderealPlanetData.jupiter_r=NAN;
-    siderealPlanetData.jupiter_s=NAN;
-    siderealPlanetData.jupiter_helio_ecliptic_lat=NAN;
-    siderealPlanetData.jupiter_helio_ecliptic_long=NAN;
-    siderealPlanetData.jupiter_radius_vector=NAN;
-    siderealPlanetData.jupiter_distance=NAN;
-    siderealPlanetData.jupiter_ecliptic_lat=NAN;
-    siderealPlanetData.jupiter_ecliptic_long=NAN;
-  }
+  else {clearJupiter();}
   if (systemData.sidereal_track_saturn == true) {trackSaturn();}
-  else {
-    siderealPlanetData.saturn_ra=NAN;
-    siderealPlanetData.saturn_dec=NAN;
-    siderealPlanetData.saturn_az=NAN;
-    siderealPlanetData.saturn_alt=NAN;
-    siderealPlanetData.saturn_r=NAN;
-    siderealPlanetData.saturn_s=NAN;
-    siderealPlanetData.saturn_helio_ecliptic_lat=NAN;
-    siderealPlanetData.saturn_helio_ecliptic_long=NAN;
-    siderealPlanetData.saturn_radius_vector=NAN;
-    siderealPlanetData.saturn_distance=NAN;
-    siderealPlanetData.saturn_ecliptic_lat=NAN;
-    siderealPlanetData.saturn_ecliptic_long=NAN;
-  }
+  else {clearSaturn();}
   if (systemData.sidereal_track_uranus == true) {trackUranus();}
-  else {
-    siderealPlanetData.uranus_ra=NAN;
-    siderealPlanetData.uranus_dec=NAN;
-    siderealPlanetData.uranus_az=NAN;
-    siderealPlanetData.uranus_alt=NAN;
-    siderealPlanetData.uranus_r=NAN;
-    siderealPlanetData.uranus_s=NAN;
-    siderealPlanetData.uranus_helio_ecliptic_lat=NAN;
-    siderealPlanetData.uranus_helio_ecliptic_long=NAN;
-    siderealPlanetData.uranus_radius_vector=NAN;
-    siderealPlanetData.uranus_distance=NAN;
-    siderealPlanetData.uranus_ecliptic_lat=NAN;
-    siderealPlanetData.uranus_ecliptic_long=NAN;
-  }
+  else {clearUranus();}
   if (systemData.sidereal_track_neptune == true) {trackNeptune();}
-  else {
-    siderealPlanetData.neptune_ra=NAN;
-    siderealPlanetData.neptune_dec=NAN;
-    siderealPlanetData.neptune_az=NAN;
-    siderealPlanetData.neptune_alt=NAN;
-    siderealPlanetData.neptune_r=NAN;
-    siderealPlanetData.neptune_s=NAN;
-    siderealPlanetData.neptune_helio_ecliptic_lat=NAN;
-    siderealPlanetData.neptune_helio_ecliptic_long=NAN;
-    siderealPlanetData.neptune_radius_vector=NAN;
-    siderealPlanetData.neptune_distance=NAN;
-    siderealPlanetData.neptune_ecliptic_lat=NAN;
-    siderealPlanetData.neptune_ecliptic_long=NAN;
-  }
+  else {clearNeptune();}
 }
 
 void setTrackPlanets() {
@@ -6259,64 +6440,64 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day).c_str(), "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
@@ -9945,10 +10126,10 @@ void menuEnter() {
   // ----------------------------------------------------------------
   // gps page
   else if (menu_page==page_gps_main) {
-    if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
-    else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
-    else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
-    else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
+    if (menuGPS.selection()==0) {systemData.satio_enabled^=true; if (systemData.satio_enabled==false) {clearSATIO(); clearTrackPlanets();}}
+    else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true; if (systemData.gngga_enabled==false) {clearGNGGA();}}
+    else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true; if (systemData.gnrmc_enabled==false) {clearGNRMC();}}
+    else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true; if (systemData.gpatt_enabled==false) {clearGPATT();}}
     else if (menuGPS.selection()==4) {
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
         memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
@@ -10126,13 +10307,13 @@ String getRelatedX(char * data) {
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("DaySunday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DayMonday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DayTuesday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DayWednesday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DayThursday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DayFriday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
-  if (strcmp("DaySaturday", data)==0) {return String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month,satData.rtc_day));}
+  if (strcmp("DaySunday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DayMonday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DayTuesday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DayWednesday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DayThursday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DayFriday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DaySaturday", data)==0) {return String(satData.weekday);}
   if (strcmp("DateDayX", data)==0) {return String(satData.rtc_day);}
   if (strcmp("DateMonthX", data)==0) {return String(satData.rtc_month);}
   if (strcmp("DateYearX", data)==0) {return String(satData.rtc_year);}
@@ -12011,8 +12192,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-
-      // ------------------
       // rtc time (utc)
       // ------------------
       canvas80x8.clear();
@@ -12024,9 +12203,6 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, formatDate(satData.rtc_day, satData.rtc_month, satData.rtc_year).c_str());
       display.drawCanvas(45, ui_content_1, canvas80x8);
-      // -----------------------------------------------------
-
-
       // ------------------------------------------------
       canvas36x8.clear();
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
@@ -12071,7 +12247,6 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
       display.drawCanvas(45, ui_content_3, canvas80x8);
-
       // ------------------
       // rtc sync time (utc)
       // ------------------
@@ -12085,8 +12260,6 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.printFixed(1, 1, String(formatDate(satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
       display.drawCanvas(45, ui_content_5, canvas80x8);
       // -----------------------------------------------------
-
-      // ------------------------------------------------
       canvas80x8.clear();
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_r).c_str());
       display.drawCanvas(45, ui_content_6, canvas80x8);
@@ -12095,7 +12268,7 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
       display.drawCanvas(45, ui_content_7, canvas80x8);
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(myAstro.HumanDayOfTheWeek(satData.rtcsync_year, satData.rtcsync_month, satData.rtcsync_day)).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.weekday).c_str());
       display.drawCanvas(45, ui_content_8, canvas80x8);
     }
 
@@ -13856,7 +14029,7 @@ void readGPS(void * pvParameters) {
           }
           gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
           // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-          if (gnggaData.valid_checksum == true) {GNGGA();}
+          if (gnggaData.valid_checksum == true) {clearGNGGA(); GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
         // ----------------------------------------------------------------------------------------------------------------------
@@ -13870,7 +14043,7 @@ void readGPS(void * pvParameters) {
           }
           gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
           // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-          if (gnrmcData.valid_checksum == true) {GNRMC();}
+          if (gnrmcData.valid_checksum == true) {clearGNRMC(); GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
         // ----------------------------------------------------------------------------------------------------------------------
@@ -13884,7 +14057,7 @@ void readGPS(void * pvParameters) {
           }
           gpattData.valid_checksum = validateChecksum(gpattData.sentence);
           // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-          if (gpattData.valid_checksum == true) {GPATT();}
+          if (gpattData.valid_checksum == true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
         // -------------------
@@ -14442,12 +14615,17 @@ void loop() {
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
-    //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
+    // SATIO GPS CALCULATIONS
     // ---------------------------------------------------------------------
-    // Only run if new GPS data has been collected.
-    t0 = micros();
-    calculateLocation();
-    bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    if (systemData.satio_enabled == true) {
+      // ---------------------------------------------------------------------
+      //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
+      // ---------------------------------------------------------------------
+      // Only run if new GPS data has been collected.
+      t0 = micros();
+      calculateLocation();
+      bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
 
     // ---------------------------------------------------------------------
     //                                                         MATRIX SWITCH
@@ -14542,19 +14720,24 @@ void loop() {
   Run every loop.
   */
   if (longer_loop==false) {
+    // ---------------------------------------------------------------------
+    // SATIO GPS CALCULATIONS
+    // ---------------------------------------------------------------------
     // --------------------------------------------------------------------
     // track planets
     // --------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
-      if (track_planets_period == true) {
-        track_planets_period = false;
-        t0 = micros();
-        setTrackPlanets();
-        bench("[setTrackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
-        t0 = micros();
-        trackPlanets();
-        bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      if (systemData.satio_enabled == true) {
+        if (track_planets_period == true) {
+          track_planets_period = false;
+          t0 = micros();
+          setTrackPlanets();
+          bench("[setTrackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
+          t0 = micros();
+          trackPlanets();
+          bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
+        }
       }
     }
     // --------------------------------------------------------------------
@@ -14632,9 +14815,9 @@ void loop() {
     // Currently limited to once per second because:
     //   1: local time is onky displayed.
     //   2: DS3231 has a resolution of second.
-      t0 = micros();
-      convertUTCTimeToLocalTime();
-      bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    t0 = micros();
+    convertUTCTimeToLocalTime();
+    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
   // ---------------------------------------------------------------------
