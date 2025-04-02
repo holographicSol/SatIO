@@ -10566,6 +10566,7 @@ void UIIndicators() {
 // ------------------------------------------------
 
 bool display_sync;
+bool crunching_gps_data = false; // a flag intended for aesthetics, to be used when updating ui.
 
 void UpdateUI(void * pvParamters) {
 
@@ -10630,31 +10631,34 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_title);
-      // ------------------------------------------------
-      // local time
-      // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(6, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-      display.drawCanvas(35, 4, canvas76x8);
-      // ------------------------------------------------
-      // local date
-      // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "/" + String(padDigitsZero(satData.local_month)) + "/" + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
-      display.drawCanvas(35, 14, canvas76x8);
-      // ------------------------------------------------
 
-      // ------------------------------------------------
-      if (interaction_updateui==true) {
-        interaction_updateui=false;
+      if (crunching_gps_data==false) {
         // ------------------------------------------------
-        // menu
+        // local time
         // ------------------------------------------------
-        display.setColor(systemData.color_menu_border);
-        menuHome.showMenuBorder(display);
-        display.setColor(systemData.color_menu_content);
-        menuHome.showMenuContent(display);
+        canvas76x8.clear();
+        canvas76x8.printFixed(6, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+        display.drawCanvas(35, 4, canvas76x8);
         // ------------------------------------------------
+        // local date
+        // ------------------------------------------------
+        canvas76x8.clear();
+        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "/" + String(padDigitsZero(satData.local_month)) + "/" + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
+        display.drawCanvas(35, 14, canvas76x8);
+        // ------------------------------------------------
+
+        // ------------------------------------------------
+        if (interaction_updateui==true) {
+          interaction_updateui=false;
+          // ------------------------------------------------
+          // menu
+          // ------------------------------------------------
+          display.setColor(systemData.color_menu_border);
+          menuHome.showMenuBorder(display);
+          display.setColor(systemData.color_menu_content);
+          menuHome.showMenuContent(display);
+          // ------------------------------------------------
+        }
       }
     }
 
@@ -12069,9 +12073,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-      display.drawCanvas(37, ui_content_0, canvas76x8);
+      if (crunching_gps_data==false) {
+        canvas76x8.clear();
+        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+        display.drawCanvas(37, ui_content_0, canvas76x8);
+      }
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
@@ -12083,9 +12089,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
-      display.drawCanvas(37, ui_content_1, canvas76x8);
+      if (crunching_gps_data==false) {
+        canvas76x8.clear();
+        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
+        display.drawCanvas(37, ui_content_1, canvas76x8);
+      }
       // ------------------------------------------------
 
       // ------------------------------------------------
@@ -14358,6 +14366,7 @@ int load_distribution = 0;
 bool track_planets_period = false;
 bool update_local_time = false;
 bool check_sdcard = false;
+
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -14380,7 +14389,9 @@ void loop() {
   GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
   */
   longer_loop = false;
+  crunching_gps_data = false;
   if (gps_done==true) {
+    crunching_gps_data = true;
     longer_loop = true; // set load distribution flag
     
     // ---------------------------------------------------------------------
