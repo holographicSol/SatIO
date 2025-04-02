@@ -402,6 +402,7 @@ NanoCanvas<19,8,1> canvas19x8;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
 NanoCanvas<76,8,1> canvas76x8;
+NanoCanvas<69,8,1> canvas69x8;
 NanoCanvas<80,8,1> canvas80x8;
 NanoCanvas<126,24,1> canvas126x24;
 NanoCanvas<120,120,1> canvas120x120;
@@ -10601,6 +10602,19 @@ void UpdateUI(void * pvParamters) {
     // debug("[menu page] " + String(menu_page));
 
     // ------------------------------------------------
+    //                                             NONE
+    // ------------------------------------------------
+    if (menu_page==-1) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        previous_menu_page=menu_page;
+        display.clear();
+      }
+    }
+
+    // ------------------------------------------------
     //                                        HOME PAGE
     // ------------------------------------------------
 
@@ -10611,6 +10625,15 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
         previous_menu_page=menu_page;
         display.clear();
+        // main border
+        display.setColor(RGB_COLOR16(0,255,0));
+        display.drawRect(0, 0, 127, 127);
+        // title H border
+        display.drawHLine(1, 27, 126);
+        // left V border time
+        display.drawVLine(24, 1, 26);
+        // right V border time
+        display.drawVLine(display.width()-24, 1, 26);
       }
       // ------------------------------------------------
       // dynamic data
@@ -10619,15 +10642,15 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-      display.drawCanvas(40, 44, canvas76x8);
+      canvas69x8.clear();
+      canvas69x8.printFixed(6, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+      display.drawCanvas(34, 5, canvas69x8);
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
-      canvas76x8.clear();
-      canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
-      display.drawCanvas(35, 54, canvas76x8);
+      canvas69x8.clear();
+      canvas69x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "/" + String(padDigitsZero(satData.local_month)) + "/" + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
+      display.drawCanvas(34, 15, canvas69x8);
       // ------------------------------------------------
 
       // ------------------------------------------------
@@ -14280,6 +14303,7 @@ void setup() {
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
   canvas60x8.setFixedFont(ssd1306xled_font6x8);
   canvas76x8.setFixedFont(ssd1306xled_font6x8);
+  canvas69x8.setFixedFont(ssd1306xled_font6x8);
   canvas28x8.setFixedFont(ssd1306xled_font6x8);
   canvas21x8.setFixedFont(ssd1306xled_font6x8);
   canvas36x8.setFixedFont(ssd1306xled_font6x8);
@@ -14342,7 +14366,6 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
   display.begin();
-  display.clear();
   menu_page = 0;
 }
 
