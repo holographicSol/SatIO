@@ -10781,7 +10781,7 @@ void UIIndicators() {
 // ------------------------------------------------
 
 bool display_sync;
-bool crunching_gps_data = false; // a flag intended for aesthetics, to be used when updating ui.
+bool crunching_time_data = false; // a flag intended for aesthetics, to be used when updating ui.
 
 void UpdateUI(void * pvParamters) {
 
@@ -10847,7 +10847,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_title);
 
-      if (crunching_gps_data==false) {
+      if (crunching_time_data==false) {
         // ------------------------------------------------
         // local time
         // ------------------------------------------------
@@ -12727,7 +12727,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (crunching_gps_data==false) {
+      if (crunching_time_data==false) {
         canvas76x8.clear();
         canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_0, canvas76x8);
@@ -12743,7 +12743,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
-      if (crunching_gps_data==false) {
+      if (crunching_time_data==false) {
         canvas76x8.clear();
         canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_1, canvas76x8);
@@ -14636,9 +14636,9 @@ void loop() {
   GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
   */
   longer_loop = false;
-  crunching_gps_data = false;
+  crunching_time_data = false;
   if (gps_done==true && suspended_gps_task==false)  {
-    crunching_gps_data = true;
+    crunching_time_data = true;
     longer_loop = true; // set load distribution flag
     
     // -----------------------------------------------------------------------
@@ -14869,10 +14869,12 @@ void loop() {
     // Currently limited to once per second because:
     //   1: local time is onky displayed.
     //   2: DS3231 has a resolution of second.
+    crunching_time_data = true;
     t0 = micros();
     convertUTCTimeToLocalTime();
     syncTaskSafeRTCTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data = false;
   }
 
   // ---------------------------------------------------------------------
