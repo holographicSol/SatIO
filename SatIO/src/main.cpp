@@ -3860,6 +3860,9 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                  MAKE TIME & DATE FROM GPS                                  */
   // ----------------------------------------------------------------------------------------------
+  // ------------------------------------------
+  // update time with gps time
+  // ------------------------------------------
   setTime(
     satData.tmp_hour_int,
     satData.tmp_minute_int,
@@ -3919,6 +3922,10 @@ void syncTaskSafeRTCTime() {
   // a frame or snapshot of time to be used until syncTaskSafeRTCTime is called again.
   // this so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
   // downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
+
+  // ------------------------------------------
+  // update task safe rtc time
+  // ------------------------------------------
   satData.rtc_hour = rtc.now().hour();
   satData.rtc_minute = rtc.now().minute();
   satData.rtc_second = rtc.now().second();
@@ -3928,6 +3935,19 @@ void syncTaskSafeRTCTime() {
   satData.rtc_unixtime = rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
+
+  // ------------------------------------------
+  // update time with task safe rtc time
+  // ------------------------------------------
+  setTime(
+    satData.rtc_hour,
+    satData.rtc_minute,
+    satData.rtc_second,
+    satData.rtc_day,
+    satData.rtc_month,
+    satData.rtc_year);
+  tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
+  time_t make_utc_time = makeTime(make_utc_time_elements);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3939,22 +3959,13 @@ void convertUTCTimeToLocalTime() {
   /*                                   DISPLAYED TIME & DATE                                     */
   // ----------------------------------------------------------------------------------------------
   // ----------------------------------------------------------------------------------------------
-  /*                                 MAKE TIME & DATE FROM RTC                                   */
+  /*                            ADJUST TIME & DATE FROM SYSTEM TIME                              */
   // ----------------------------------------------------------------------------------------------
-  // use task safe rtc time (accurate to syncTaskSafeRTCTime, to within the last time syncTaskSafeRTCTime was called).
-  // this can be commented if certain syncTaskSafeRTCTime was called immediately first
-  // setTime(
-  //   satData.rtc_hour,
-  //   satData.rtc_minute,
-  //   satData.rtc_second,
-  //   satData.rtc_day,
-  //   satData.rtc_month,
-  //   satData.rtc_year);
-  // tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  // satData.local_time = makeTime(make_local_time_elements);
-  // ----------------------------------------------------------------------------------------------
-  /*                                 ADJUST TIME & DATE FROM RTC                                 */
-  // ----------------------------------------------------------------------------------------------
+  // Time should be set before calling this function.
+  // We could set time here but it may be less efficient and less flexible considering we could
+  // currently set from either GPS or RTC, while GPS may not be available and RTC may not be
+  // synchronized with UTC due to GPS availability. Therefore time is set when GPS is available,
+  // and is also set from RTC, so that time can be set both ways and converted here if required.
   // auto
   if (satData.utc_auto_offset_flag==true) {}
   // adjust
