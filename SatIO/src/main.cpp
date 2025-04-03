@@ -3921,7 +3921,7 @@ void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   // We do not want to adjust RTC time unless we synchronize RTC with UTC.
   // ----------------------------------------------------------------------------------------
-  // TimeLib is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535).
+  // TimeLib year is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535).
   // ----------------------------------------------------------------------------------------
   satData.tmp_year[0] = String(satData.rtc_year).c_str()[2];
   satData.tmp_year[1] = String(satData.rtc_year).c_str()[3];
