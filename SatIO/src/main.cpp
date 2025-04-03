@@ -14590,7 +14590,6 @@ int t0 = millis();
 bool longer_loop = false;
 int load_distribution = 0;
 bool track_planets_period = false;
-bool check_sdcard = false;
 bool suspended_gps_task = false;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
@@ -14609,6 +14608,9 @@ void loop() {
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
   // clear gps data that is not enabled while retaining some data that may be static (running as a station)
+  // this allows for running off the RTC and with data like coordinates preserved for advanced calculations while not syncronizing.
+  // enabling gngga/gnrmc again manually will syncronize the RTC and is recommended periodically in order to circumvent drift.
+  // manual sync may be preferrable if 'running as a station', because a dramatic performance increase can be gained when gps task is not running.
   if (systemData.satio_enabled==false) {clearDynamicSATIO();}
   if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
   if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
@@ -14638,18 +14640,18 @@ void loop() {
     crunching_gps_data = true;
     longer_loop = true; // set load distribution flag
     
-    // ---------------------------------------------------------------------
-    //                                                 SUSPEND READ GPS TASK
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                   SUSPEND READ GPS TASK
+    // -----------------------------------------------------------------------
     /*
     Do not allow values to be changed while we use the GPS data!
     Avert race conditions while using GPS data.
     */
     vTaskSuspend(GPSTask);
 
-    // ---------------------------------------------------------------------
-    //                                                   GPS SENTENCE OUTPUT
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                     GPS SENTENCE OUTPUT
+    // -----------------------------------------------------------------------
     /*
     Read GPS is running on a task so print the data here for safe output.
     Only run if new GPS data has been collected.
@@ -14662,9 +14664,9 @@ void loop() {
     // bench("[count_faster_loops] " + String(count_faster_loops));
     // count_faster_loops=0;
 
-    // ---------------------------------------------------------------------
-    //                                                     SYNC RTC WITH UTC
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                       SYNC RTC WITH UTC
+    // -----------------------------------------------------------------------
     /*
     Convert absolute latitude and longitude to degrees.
     Only run if new GPS data has been collected.
@@ -14674,9 +14676,9 @@ void loop() {
     syncTaskSafeRTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-    // ---------------------------------------------------------------------
-    // SATIO GPS CALCULATIONS
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                  SATIO GPS CALCULATIONS
+    // -----------------------------------------------------------------------
     if (systemData.satio_enabled == true) {
       // ---------------------------------------------------------------------
       //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
@@ -14687,9 +14689,9 @@ void loop() {
       bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
 
-    // ---------------------------------------------------------------------
-    //                                                         MATRIX SWITCH
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                           MATRIX SWITCH
+    // -----------------------------------------------------------------------
     /*
     Check users programmable logic.
     Never run while values are being updated (never when gps task is running).
@@ -14700,36 +14702,24 @@ void loop() {
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-    // ---------------------------------------------------------------------
-    //                                                  RESUME READ GPS TASK
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                    RESUME READ GPS TASK
+    // -----------------------------------------------------------------------
     /*
     Aim to set this true as soon as possible and never before we are
     finished using the GPS data.
     */
     gps_done = false;
     vTaskResume(GPSTask);
-
-    // ---------------------------------------------------------------------
-    //                                                        SATIO SENTENCE
-    // ---------------------------------------------------------------------
-    /*
-    Create and output special SatIO sentence over serial.
-    Only run if new GPS data has been collected.
-    */
-    t0 = micros();
-    if (systemData.satio_enabled == true) {buildSatIOSentence();}
-    bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    // ---------------------------------------------------------------------
   }
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                                    GPS END
   // ----------------------------------------------------------------------------------------------------------
 
   
-  // ---------------------------------------------------------------------
-  //                                                           SENSOR DATA
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------
+  //                                                                                                SENSOR DATA
+  // ----------------------------------------------------------------------------------------------------------
   /*
   Collect sensor data that could be utilized every loop.
   Run every loop.
@@ -14759,40 +14749,19 @@ void loop() {
     }
   }
 
-  // ---------------------------------------------------------------------
-  //                                                       PORT CONTROLLER
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------
+  //                                                                                            PORT CONTROLLER
+  // ----------------------------------------------------------------------------------------------------------
   /*
-  Port controller to be utilized every loop.
   Run every loop.
   */
   t0 = micros();
   if (systemData.port_controller_enabled == true) {writeToPortController();}
   bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-  // ---------------------------------------------------------------------
-  //                                                                SDCARD
-  // ---------------------------------------------------------------------
-  /*
-  Check if sd card is present.
-  Currently commented because we are so extensible that we will literally see
-  this check happening (ui ending/beginning) due to SPI switching.
-  */
-  // t0 = micros();
-  // endSPIDevice(SSD1351_CS);
-  // display.end();
-  // beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  // sdcard_initialized = sdcardCheck();
-  // sd.end();
-  // endSPIDevice(SD_CS);
-  // beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-  // display.begin();
-  // bench("[sdcardCheck] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // delay(50);
-
-  // ---------------------------------------------------------------------
-  //                                                     LOAD DISTRIBUTION
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------
+  //                                                                                          LOAD DISTRIBUTION
+  // ----------------------------------------------------------------------------------------------------------
   /*
   Efficiency and performance.
   Distribute functions between faster loops.
@@ -14802,11 +14771,8 @@ void loop() {
   */
   if (longer_loop==false) {
     // ---------------------------------------------------------------------
-    // SATIO GPS CALCULATIONS
+    // TRACK PLANETS
     // ---------------------------------------------------------------------
-    // --------------------------------------------------------------------
-    // track planets
-    // --------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
       if (systemData.satio_enabled == true) {
@@ -14822,16 +14788,23 @@ void loop() {
       }
     }
     // --------------------------------------------------------------------
-    // other load
+    // SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
       load_distribution=0;
+      /*
+      Create and output special SatIO sentence over serial.
+      */
+      t0 = micros();
+      if (systemData.satio_enabled == true) {buildSatIOSentence();}
+      bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // ---------------------------------------------------------------------
     }
   }
 
-  // ---------------------------------------------------------------------
-  //                                               OPERATIONS PER INTERVAL
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------
+  //                                                                                    OPERATIONS PER INTERVAL
+  // ----------------------------------------------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
     // ---------------------------------
     // reset interrupt_interval_counter
@@ -14869,7 +14842,6 @@ void loop() {
     // set flags
     // ----------
     track_planets_period = true;
-    check_sdcard = true;
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
     // ---------------------------------------------------------------------
