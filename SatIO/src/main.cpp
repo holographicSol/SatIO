@@ -3866,7 +3866,7 @@ void syncUTCTime() {
       if (satData.tmp_millisecond_int==00) {
         first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
-        rtc.adjust(DateTime((uint32_t)satData.tmp_year_int, (uint32_t)satData.tmp_month_int, (uint32_t)satData.tmp_day_int, (uint32_t)satData.tmp_hour_int, (uint32_t)satData.tmp_minute_int, (uint32_t)satData.tmp_second_int));
+        rtc.adjust(DateTime((uint16_t)satData.tmp_year_int, (uint8_t)satData.tmp_month_int, (uint8_t)satData.tmp_day_int, (uint8_t)satData.tmp_hour_int, (uint8_t)satData.tmp_minute_int, (uint8_t)satData.tmp_second_int));
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3884,7 +3884,7 @@ void syncUTCTime() {
       // -------------------------------------------------------------------------
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (every minute)");
-        rtc.adjust(DateTime((uint32_t)satData.tmp_year_int, (uint32_t)satData.tmp_month_int, (uint32_t)satData.tmp_day_int, (uint32_t)satData.tmp_hour_int, (uint32_t)satData.tmp_minute_int, (uint32_t)satData.tmp_second_int));
+        rtc.adjust(DateTime((uint16_t)satData.tmp_year_int, (uint8_t)satData.tmp_month_int, (uint8_t)satData.tmp_day_int, (uint8_t)satData.tmp_hour_int, (uint8_t)satData.tmp_minute_int, (uint8_t)satData.tmp_second_int));
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
@@ -3927,7 +3927,7 @@ void syncTaskSafeRTCTime() {
     satData.rtc_day,
     satData.rtc_month,
     satData.rtc_year);
-  tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
+  tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint16_t)year()};
   time_t make_utc_time = makeTime(make_utc_time_elements);
 }
 
