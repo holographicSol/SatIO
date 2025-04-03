@@ -112,7 +112,7 @@ void receiveEvent(int) {
   // Serial.println("[slave] read data");
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[received] " + String(INPUT_BUFFER)); // (avg. 333 messages a second???)
+  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // get tag token
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
