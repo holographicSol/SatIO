@@ -3940,7 +3940,8 @@ void convertUTCTimeToLocalTime() {
   /*                             ADJUST LOCAL TIME & DATE FROM TIME                              */
   // ----------------------------------------------------------------------------------------------
   // Time should be set before calling this function.
-  // GPS and RTC are set to UTC, make local time from RTC, regardless of synchronization.
+  // GPS and RTC are UTC.
+  // Make local time from RTC, regardless of synchronization.
   // ----------------------------------------------------------------------------------------------
 
   // --------------------------------------------------------
