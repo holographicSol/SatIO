@@ -3824,13 +3824,9 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 //                                                                                                              SYNC RTC FROM GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-// temporary char time values so that we do not disturb the primary values while converting.
 bool first_gps_pass = true;
 
 void syncUTCTime() {
-  // ----------------------------------------------------------------------------------------------
-  /*                                   SYSTEM TIME & DATE                                        */
-  // ----------------------------------------------------------------------------------------------
   // ----------------------------------------------------------------------------------------------
   /*                             EXTRACT UTC TIME & DATE FROM GPS                                */
   // ----------------------------------------------------------------------------------------------
@@ -3856,20 +3852,23 @@ void syncUTCTime() {
   satData.tmp_second_int = atoi(satData.tmp_second);
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
   // ----------------------------------------------------------------------------------------------
-  /*                                  SET RTC TIME & DATE FROM GPS                               */
+  /*                                 SYNC RTC TIME & DATE FROM GPS                               */
   // ----------------------------------------------------------------------------------------------
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
     if ((first_gps_pass==true) ) {
-      // -------------------------------------------------------------------------
-      // Sync at first opportunity within the first 100 milliseconds of any second
-      // -------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------
+      /* Sync at first opportunity within the first 100 milliseconds of any second */
+      // ----------------------------------------------------------------------------
       if (satData.tmp_millisecond_int==00) {
         first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
+        // --------------------------------------------------------------------------
+        /* Sync RTC to UTC                                                         */ 
+        // --------------------------------------------------------------------------
         rtc.adjust(DateTime((uint16_t)satData.tmp_year_int, (uint8_t)satData.tmp_month_int, (uint8_t)satData.tmp_day_int, (uint8_t)satData.tmp_hour_int, (uint8_t)satData.tmp_minute_int, (uint8_t)satData.tmp_second_int));
-        // ----------------------------------------------------------------------------------------
-        /*                              SET SYNC TIME FROM GPS                                   */
-        // ----------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------
+        /* Record Sync time                                                        */
+        // --------------------------------------------------------------------------
         satData.rtcsync_hour = rtc.now().hour();
         satData.rtcsync_minute = rtc.now().minute();
         satData.rtcsync_second = rtc.now().second();
@@ -3879,15 +3878,18 @@ void syncUTCTime() {
       }
     }
     else {
-      // -------------------------------------------------------------------------
-      // Sync within the first 100 milliseconds of any minute
-      // -------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------
+      /* Sync within the first 100 milliseconds of any minute                      */
+      // ----------------------------------------------------------------------------
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (every minute)");
+        // --------------------------------------------------------------------------
+        /* Sync RTC to UTC                                                         */ 
+        // --------------------------------------------------------------------------
         rtc.adjust(DateTime((uint16_t)satData.tmp_year_int, (uint8_t)satData.tmp_month_int, (uint8_t)satData.tmp_day_int, (uint8_t)satData.tmp_hour_int, (uint8_t)satData.tmp_minute_int, (uint8_t)satData.tmp_second_int));
-        // ----------------------------------------------------------------------------------------
-        /*                              SET SYNC TIME FROM GPS                                   */
-        // ----------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------
+        /* Record Sync time                                                        */
+        // --------------------------------------------------------------------------
         satData.rtcsync_hour = rtc.now().hour();
         satData.rtcsync_minute = rtc.now().minute();
         satData.rtcsync_second = rtc.now().second();
