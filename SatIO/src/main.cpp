@@ -3483,6 +3483,8 @@ struct SatDatatruct {
   uint8_t local_month = 0;
   uint8_t local_day = 0;
   char local_weekday[56];
+  String formatted_local_time = "00:00:00";
+  String formatted_local_date = "00/00/00";
 
   // last time rtc synced with utc
   uint8_t rtcsync_hour = 0;
@@ -3988,6 +3990,10 @@ void convertUTCTimeToLocalTime() {
   satData.local_second = second();
   memset(satData.local_weekday, 0, sizeof(satData.local_weekday));
   strcpy(satData.local_weekday, String(myAstro.HumanDayOfTheWeek(satData.local_year, satData.local_month, satData.local_day)).c_str());
+
+  satData.formatted_local_time = String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second));
+  satData.formatted_local_date = String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year));
+  
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
@@ -10844,7 +10850,7 @@ void UIIndicators() {
 // ------------------------------------------------
 
 bool display_sync;
-bool crunching_time_data = false; // a flag intended for aesthetics, to be used when updating ui.
+bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
 
 void UpdateUI(void * pvParamters) {
 
@@ -10909,27 +10915,22 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       display.setColor(systemData.color_title);
-
+      // ------------------------------------------------
+      // local time
+      // ------------------------------------------------
       canvas120x8.clear();
       if (crunching_time_data==false) {
-        // ------------------------------------------------
-        // local time
-        // ------------------------------------------------
-        // canvas120x8.printFixed(1, 1, String(String(satData.local_hour) + ":" + String(satData.local_minute) + ":" + String(satData.local_second)).c_str(), STYLE_BOLD );
-        canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD );
         display.drawCanvas(3, 4, canvas120x8);
       }
+      // ------------------------------------------------
+      // local date
+      // ------------------------------------------------
       canvas120x8.clear();
       if (crunching_time_data==false) {
-        // ------------------------------------------------
-        // local date
-        // ------------------------------------------------
-        // canvas120x8.printFixed(1, 1, String(String(satData.local_day) + "/" + String(satData.local_month) + "/" + String(satData.local_year)).c_str(), STYLE_BOLD );
-        canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD );
         display.drawCanvas(3, 14, canvas120x8);
       }
-      // ------------------------------------------------
-
       // ------------------------------------------------
       if (interaction_updateui==true) {
         interaction_updateui=false;
@@ -12793,11 +12794,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (crunching_time_data==false) {
         canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "." + padDigitsZero(satData.local_month) + "." + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
-        display.drawCanvas(37, ui_content_1, canvas76x8);
-        canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_0, canvas76x8);
+        canvas76x8.clear();
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD );
+        display.drawCanvas(37, ui_content_1, canvas76x8);
       }
       // ------------------------------------------------
 
@@ -14922,12 +14923,12 @@ void loop() {
     // Currently limited to once per second because:
     //   1: local time is onky displayed.
     //   2: DS3231 has a resolution of second.
-    crunching_time_data = true;
+    crunching_time_data=true;
     t0 = micros();
     syncTaskSafeRTCTime();
     convertUTCTimeToLocalTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data = false;
+    crunching_time_data=false;
   }
 
   // ---------------------------------------------------------------------
