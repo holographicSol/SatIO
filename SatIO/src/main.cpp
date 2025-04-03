@@ -3520,20 +3520,20 @@ struct SatDatatruct {
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
 
   /* TEMPORARY TIME VALUES */
-  signed int tmp_year_int;         // temp current year
-  signed int tmp_month_int;        // temp current month
-  signed int tmp_day_int;          // temp current day
-  signed int tmp_hour_int;         // temp current hour
-  signed int tmp_minute_int;       // temp current minute
-  signed int tmp_second_int;       // temp current second
-  signed int tmp_millisecond_int;  // temp current millisecond
-  char tmp_year[56];               // temp current year
-  char tmp_month[56];              // temp current month
-  char tmp_day[56];                // temp current day
-  char tmp_hour[56];               // temp current hour
-  char tmp_minute[56];             // temp current minute
-  char tmp_second[56];             // temp current second
-  char tmp_millisecond[56];        // temp current millisecond
+  int tmp_year_int;         // temp current year
+  int tmp_month_int;        // temp current month
+  int tmp_day_int;          // temp current day
+  int tmp_hour_int;         // temp current hour
+  int tmp_minute_int;       // temp current minute
+  int tmp_second_int;       // temp current second
+  int tmp_millisecond_int;  // temp current millisecond
+  char tmp_year[56];        // temp current year
+  char tmp_month[56];       // temp current month
+  char tmp_day[56];         // temp current day
+  char tmp_hour[56];        // temp current hour
+  char tmp_minute[56];      // temp current minute
+  char tmp_second[56];      // temp current second
+  char tmp_millisecond[56]; // temp current millisecond
 
   // long current_unixtime;
 };
@@ -3831,20 +3831,29 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                             EXTRACT UTC TIME & DATE FROM GPS                                */
   // ----------------------------------------------------------------------------------------------
+
+  memset(satData.tmp_day, 0, sizeof(satData.tmp_day));
   satData.tmp_day[0] = gnrmcData.utc_date[0];
   satData.tmp_day[1] = gnrmcData.utc_date[1];
+  memset(satData.tmp_month, 0, sizeof(satData.tmp_month));
   satData.tmp_month[0] = gnrmcData.utc_date[2];
   satData.tmp_month[1] = gnrmcData.utc_date[3];
+  memset(satData.tmp_year, 0, sizeof(satData.tmp_year));
   satData.tmp_year[0] = gnrmcData.utc_date[4];
   satData.tmp_year[1] = gnrmcData.utc_date[5];
+  memset(satData.tmp_hour, 0, sizeof(satData.tmp_hour));
   satData.tmp_hour[0] = gnrmcData.utc_time[0];
   satData.tmp_hour[1] = gnrmcData.utc_time[1];
+  memset(satData.tmp_minute, 0, sizeof(satData.tmp_minute));
   satData.tmp_minute[0] = gnrmcData.utc_time[2];
   satData.tmp_minute[1] = gnrmcData.utc_time[3];
+  memset(satData.tmp_second, 0, sizeof(satData.tmp_second));
   satData.tmp_second[0] = gnrmcData.utc_time[4];
   satData.tmp_second[1] = gnrmcData.utc_time[5];
+  memset(satData.tmp_millisecond, 0, sizeof(satData.tmp_millisecond));
   satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
   satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
+
   satData.tmp_day_int = atoi(satData.tmp_day);
   satData.tmp_month_int = atoi(satData.tmp_month);
   satData.tmp_year_int = atoi(satData.tmp_year);
@@ -3855,7 +3864,7 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                 SYNC RTC TIME & DATE FROM GPS                               */
   // ----------------------------------------------------------------------------------------------
-  if (atoi(gnggaData.satellite_count_gngga)>3 && atof(gnggaData.hdop_precision_factor)<=1.0) {
+  if ((atoi(gnggaData.satellite_count_gngga)>3) && (atoi(gnggaData.hdop_precision_factor)<=1)) {
     if ((first_gps_pass==true) ) {
       // ----------------------------------------------------------------------------
       /* Sync at first opportunity within the first 100 milliseconds of any second */
@@ -3930,6 +3939,7 @@ void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   // tmElements_t year is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535).
   // ----------------------------------------------------------------------------------------
+  memset(satData.tmp_year, 0, sizeof(satData.tmp_year));
   satData.tmp_year[0] = String(satData.rtc_year).c_str()[2];
   satData.tmp_year[1] = String(satData.rtc_year).c_str()[3];
   satData.tmp_year_int = atoi(satData.tmp_year);
@@ -3981,7 +3991,7 @@ void convertUTCTimeToLocalTime() {
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
-  // printAllTimes();
+  printAllTimes();
 }
 
 void printAllTimes() {
