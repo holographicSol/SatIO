@@ -3906,7 +3906,7 @@ void syncTaskSafeRTCTime() {
   // Set a snapshot of RTC time.
   // This so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
   // Downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
-  // ------------------------------------------
+  // ----------------------------------------------------------------------------------------
   satData.rtc_hour = rtc.now().hour();
   satData.rtc_minute = rtc.now().minute();
   satData.rtc_second = rtc.now().second();
@@ -3916,10 +3916,10 @@ void syncTaskSafeRTCTime() {
   satData.rtc_unixtime = rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
-  // ------------------------------------------
+  // ---------------------------------------------------------------------
   // We do not want to adjust RTC time unless we synchronize RTC with UTC.
-  // Set time that can be adjusted independantly of RTC.
-  // ------------------------------------------
+  // Set a time that can be adjusted independantly of RTC, from RTC time.
+  // ---------------------------------------------------------------------
   setTime(
     satData.rtc_hour,
     satData.rtc_minute,
