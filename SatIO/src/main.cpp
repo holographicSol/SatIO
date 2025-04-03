@@ -3938,7 +3938,7 @@ void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                 MAKE TIME & DATE FROM RTC                                   */
   // ----------------------------------------------------------------------------------------------
-  // use task safe rtc time (this will be accurate to within the last time syncTaskSafeRTCTime was called).
+  // use task safe rtc time (accurate to syncTaskSafeRTCTime, to within the last time syncTaskSafeRTCTime was called).
   setTime(
     satData.rtc_hour,
     satData.rtc_minute,
