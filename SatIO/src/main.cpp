@@ -12760,7 +12760,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
     }
 
-
     // ------------------------------------------------
     //                                 TIME & DATE MENU
     // ------------------------------------------------
@@ -13653,10 +13652,10 @@ void UpdateUI(void * pvParamters) {
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[20]; // bytes to be sent
-  char INPUT_BUFFER[20];  // chars received
-  char TMP_BUFFER_0[20];  // chars of bytes to be sent
-  char TMP_BUFFER_1[20];  // some space for type conversions
+  byte OUTPUT_BUFFER[10]; // bytes to be sent
+  char INPUT_BUFFER[10];  // chars received
+  char TMP_BUFFER_0[10];  // chars of bytes to be sent
+  char TMP_BUFFER_1[10];  // some space for type conversions
   int I2CADDRESSINDEX = 0;
   int I2CADDRESSRANGEMIN = 0;   // for performance this should be modifiable, can be min zero
   int I2CADDRESSRANGEMAX = 50; // for performance this should be modifiable, can be max 127
@@ -13892,6 +13891,7 @@ void writeToPortController() {
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
       // index
+      memset(I2CLink.TMP_BUFFER_1, 0, sizeof(I2CLink.TMP_BUFFER_1));
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
       strcat(I2CLink.TMP_BUFFER_0, ",");
@@ -13915,6 +13915,7 @@ void writeToPortController() {
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$M,");
       // index
+      memset(I2CLink.TMP_BUFFER_1, 0, sizeof(I2CLink.TMP_BUFFER_1));
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
       strcat(I2CLink.TMP_BUFFER_0, ",");
@@ -13936,6 +13937,7 @@ void writeToPortController() {
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+
   // ------------------------------------------------
   // Send Overload Value
   // ------------------------------------------------
