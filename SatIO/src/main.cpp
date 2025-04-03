@@ -3916,19 +3916,6 @@ void syncTaskSafeRTCTime() {
   satData.rtc_unixtime = rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                              CONVERT UTC TO TIME TO LOCAL TIME
-// ------------------------------------------------------------------------------------------------------------------------------
-
-void convertUTCTimeToLocalTime() {
-  // ----------------------------------------------------------------------------------------------
-  /*                             ADJUST LOCAL TIME & DATE FROM TIME                              */
-  // ----------------------------------------------------------------------------------------------
-  // Time should be set before calling this function.
-  // GPS and RTC are set to UTC, make local time from RTC, regardless of synchronization.
-  // ----------------------------------------------------------------------------------------------
   // ------------------------------------------
   // We do not want to adjust RTC time unless we synchronize RTC with UTC.
   // Set time that can be adjusted independantly of RTC.
@@ -3942,6 +3929,20 @@ void convertUTCTimeToLocalTime() {
     satData.rtc_year);
   tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
   time_t make_utc_time = makeTime(make_utc_time_elements);
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              CONVERT UTC TO TIME TO LOCAL TIME
+// ------------------------------------------------------------------------------------------------------------------------------
+
+void convertUTCTimeToLocalTime() {
+  // ----------------------------------------------------------------------------------------------
+  /*                             ADJUST LOCAL TIME & DATE FROM TIME                              */
+  // ----------------------------------------------------------------------------------------------
+  // Time should be set before calling this function.
+  // GPS and RTC are set to UTC, make local time from RTC, regardless of synchronization.
+  // ----------------------------------------------------------------------------------------------
+
   // --------------------------------------------------------
   // Auto UTC offset: automatically modify utc_second_offset
   // --------------------------------------------------------
