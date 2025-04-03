@@ -880,7 +880,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 
 const int max_gps_items = 9;
 const char *menuGPSItems[max_gps_items];
-LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 38}, {125, 125}} );
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 41}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
@@ -11810,14 +11810,18 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         display.setColor(systemData.color_border);
         // ------------------------------------------------
-        display.drawHLine(1, 28, 127);
-        display.drawVLine(67, 13, 26);
+        display.drawHLine(1, 38, 127);
+        display.drawVLine(67, 37, 26);
         // ------------------------------------------------
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas60x8.clear();
         canvas60x8.printFixed(1, 1, String("SATELLITES").c_str());
         display.drawCanvas(3, ui_content_0, canvas60x8);
+
+        canvas60x8.clear();
+        canvas60x8.printFixed(1, 1, String("PRECISION").c_str());
+        display.drawCanvas(3, ui_content_1, canvas60x8);
         // ------------------------------------------------
       }
       // ------------------------------------------------
@@ -11828,6 +11832,10 @@ void UpdateUI(void * pvParamters) {
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
       display.drawCanvas(71, ui_content_0, canvas42x8);
+
+      canvas42x8.clear();
+      canvas42x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
+      display.drawCanvas(71, ui_content_1, canvas42x8);
       // ------------------------------------------------
       if (systemData.satio_enabled==true) {menuGPSItems[0 ]                             ="SATIO   ENABLED";}
       else {menuGPSItems[0]                                                             ="SATIO   DISABLED";}
@@ -14813,7 +14821,7 @@ void loop() {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    // ----------
+    // ----------me
     // set flags
     // ----------
     track_planets_period = true;
