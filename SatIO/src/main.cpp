@@ -3916,21 +3916,26 @@ void syncTaskSafeRTCTime() {
   satData.rtc_unixtime = rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------
+  /*                               SYNC TIMELIB WITH RTC                                   */
+  // ----------------------------------------------------------------------------------------
   // We do not want to adjust RTC time unless we synchronize RTC with UTC.
-  // Set a time that can be adjusted independantly of RTC, from RTC time.
-  // ---------------------------------------------------------------------
-  // TimeLib is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535). make abbreviated year:
+  // ----------------------------------------------------------------------------------------
+  // TimeLib is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535).
+  // ----------------------------------------------------------------------------------------
   satData.tmp_year[0] = String(satData.rtc_year).c_str()[2];
   satData.tmp_year[1] = String(satData.rtc_year).c_str()[3];
   satData.tmp_year_int = atoi(satData.tmp_year);
+  // ---------------------------------------------------------------------
+  // Set a time that can be adjusted independantly of RTC, from RTC time.
+  // ---------------------------------------------------------------------
   setTime(
-    (int)satData.rtc_hour,
-    (int)satData.rtc_minute,
-    (int)satData.rtc_second,
-    (int)satData.rtc_day,
-    (int)satData.rtc_month,
-    (int)satData.tmp_year_int);
+    satData.rtc_hour,
+    satData.rtc_minute,
+    satData.rtc_second,
+    satData.rtc_day,
+    satData.rtc_month,
+    satData.tmp_year_int);
   tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
   time_t make_utc_time = makeTime(make_utc_time_elements);
 }
