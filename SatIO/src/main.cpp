@@ -3942,15 +3942,16 @@ void convertUTCTimeToLocalTime() {
   /*                                 MAKE TIME & DATE FROM RTC                                   */
   // ----------------------------------------------------------------------------------------------
   // use task safe rtc time (accurate to syncTaskSafeRTCTime, to within the last time syncTaskSafeRTCTime was called).
-  setTime(
-    satData.rtc_hour,
-    satData.rtc_minute,
-    satData.rtc_second,
-    satData.rtc_day,
-    satData.rtc_month,
-    satData.rtc_year);
-  tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  satData.local_time = makeTime(make_local_time_elements);
+  // this can be commented if certain syncTaskSafeRTCTime was called immediately first
+  // setTime(
+  //   satData.rtc_hour,
+  //   satData.rtc_minute,
+  //   satData.rtc_second,
+  //   satData.rtc_day,
+  //   satData.rtc_month,
+  //   satData.rtc_year);
+  // tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
+  // satData.local_time = makeTime(make_local_time_elements);
   // ----------------------------------------------------------------------------------------------
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
@@ -12712,37 +12713,18 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 38, 127);
         display.drawVLine(34, 13, 35);
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        // ------------------------------------------------
+        canvas28x8.clear();
+        canvas28x8.printFixed(1, 1, "TIME", STYLE_BOLD );
+        display.drawCanvas(3, ui_content_0, canvas28x8);
+        canvas28x8.clear();
+        canvas28x8.printFixed(1, 1, "DATE", STYLE_BOLD );
+        display.drawCanvas(3, ui_content_1, canvas28x8);
       }
       // ------------------------------------------------
       // dynamic data
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-
-      // ------------------------------------------------
-      // local time
-      // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ------------------------------------------------
-      canvas28x8.clear();
-      canvas28x8.printFixed(1, 1, "TIME", STYLE_BOLD );
-      display.drawCanvas(3, ui_content_0, canvas28x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      if (crunching_time_data==false) {
-        canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-        display.drawCanvas(37, ui_content_0, canvas76x8);
-      }
-      // ------------------------------------------------
-      // local date
-      // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ------------------------------------------------
-      canvas28x8.clear();
-      canvas28x8.printFixed(1, 1, "DATE", STYLE_BOLD );
-      display.drawCanvas(3, ui_content_1, canvas28x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
@@ -12750,6 +12732,9 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.clear();
         canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_1, canvas76x8);
+        canvas76x8.clear();
+        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+        display.drawCanvas(37, ui_content_0, canvas76x8);
       }
       // ------------------------------------------------
 
@@ -14639,7 +14624,6 @@ void loop() {
   GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
   */
   longer_loop = false;
-  crunching_time_data = false;
   if (gps_done==true && suspended_gps_task==false)  {
     longer_loop = true; // set load distribution flag
     
