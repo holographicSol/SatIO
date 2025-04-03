@@ -3821,7 +3821,7 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              SYNC RTC WITH UTC
+//                                                                                                              SYNC RTC FROM GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
 // temporary char time values so that we do not disturb the primary values while converting.
@@ -3900,12 +3900,12 @@ void syncUTCTime() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                   SYNC TASK SAFE RTC TIME AND TIMELIB WITH RTC
+//                                                                                   SYNC TASK SAFE RTC TIME AND TIMELIB FROM RTC
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
-  /*                              TASK SAFE RTC TIME NOW                                   */
+  /*                               SYNC TASK SAFE RTC TIME                                 */
   // ----------------------------------------------------------------------------------------
   // Set a snapshot of RTC time.
   // This so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
