@@ -14657,7 +14657,6 @@ void loop() {
   timeData.mainLoopTimeStart = micros();
   systemData.t_bench = true; // uncomment to observe timings
   // count_faster_loops++;
-  crunching_time_data = false;
 
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
@@ -14928,6 +14927,7 @@ void loop() {
     syncTaskSafeRTCTime();
     convertUTCTimeToLocalTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data = false;
   }
 
   // ---------------------------------------------------------------------
