@@ -3090,11 +3090,20 @@ GNGGAStruct gnggaData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearGNGGA() {
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
   memset(gnggaData.utc_time, 0, 56);
-  memset(gnggaData.latitude, 0, 56);
-  memset(gnggaData.latitude_hemisphere, 0, 56);
-  memset(gnggaData.longitude, 0, 56);
-  memset(gnggaData.longitude_hemisphere, 0, 56);
+  // --------------------------
+  // keep potential static data  (if stationary then we can still use coordinates)
+  // --------------------------
+  // memset(gnggaData.latitude, 0, 56);
+  // memset(gnggaData.latitude_hemisphere, 0, 56);
+  // memset(gnggaData.longitude, 0, 56);
+  // memset(gnggaData.longitude_hemisphere, 0, 56);
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
   memset(gnggaData.solution_status, 0, 56);
   memset(gnggaData.satellite_count_gngga, 0, 56);
   memset(gnggaData.hdop_precision_factor, 0, 56);
@@ -3179,12 +3188,21 @@ GNRMCStruct gnrmcData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearGNRMC() {
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
   memset(gnrmcData.utc_time, 0, 56);
   memset(gnrmcData.positioning_status, 0, 56);
-  memset(gnrmcData.latitude, 0, 56);
-  memset(gnrmcData.latitude_hemisphere, 0, 56);
-  memset(gnrmcData.longitude, 0, 56);
-  memset(gnrmcData.longitude_hemisphere, 0, 56);
+  // --------------------------
+  // keep potential static data (if stationary then we can still use coordinates)
+  // --------------------------
+  // memset(gnrmcData.latitude, 0, 56);
+  // memset(gnrmcData.latitude_hemisphere, 0, 56);
+  // memset(gnrmcData.longitude, 0, 56);
+  // memset(gnrmcData.longitude_hemisphere, 0, 56);
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
   memset(gnrmcData.ground_speed, 0, 56);
   memset(gnrmcData.ground_heading, 0, 56);
   memset(gnrmcData.utc_date, 0, 56);
@@ -3288,6 +3306,9 @@ GPATTStruct gpattData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearGPATT() {
+// --------------------------
+// clear dynamic data
+// --------------------------
 memset(gpattData.pitch, 0, 56);
 memset(gpattData.angle_channel_0, 0, 56);
 memset(gpattData.roll, 0, 56);
@@ -3519,9 +3540,11 @@ struct SatDatatruct {
 SatDatatruct satData;
 
 void clearSATIO() {
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
   satData.checksum_i = 0;
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
-  // coordinates
   satData.convert_coordinates = false;
   satData.abs_latitude_gngga_0 = NAN;
   satData.abs_longitude_gngga_0 = NAN;
@@ -3537,14 +3560,16 @@ void clearSATIO() {
   satData.millisecondsLong = NAN;
   satData.minutesLat = NAN;
   satData.minutesLong = NAN;
-
-  // coordinate conversions remain (useful for a manual sync button where performance can be gained by disabling GPS, then time and coordinates can be synced manually as required)
+  // --------------------------
+  // keep potential static data (if stationary then we can still use coordinates)
+  // --------------------------
   // satData.degrees_latitude = NAN;
   // satData.degrees_longitude = NAN;
   // satData.degreesLat = NAN;
   // satData.degreesLong = NAN;
-
-  // time conversions remain (useful for a manual sync button where performance can be gained by disabling GPS, then time and coordinates can be synced manually as required)
+  // --------------------------
+  // keep potential static data (if stationary then we can still use time)
+  // --------------------------
   // memset(satData.weekday, 0, sizeof(satData.weekday));
   // satData.local_time = NAN;
   // satData.local_hour = NAN;
@@ -3885,6 +3910,9 @@ void syncUTCTime() {
       }
     }
   }
+}
+
+void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   /*                              TASK SAFE RTC TIME NOW                                   */
   // ----------------------------------------------------------------------------------------
@@ -10128,6 +10156,7 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // gps page
+  // ----------------------------------------------------------------
   else if (menu_page==page_gps_main) {
     if (menuGPS.selection()==0) {systemData.satio_enabled^=true; if (systemData.satio_enabled==false) {clearSATIO(); clearTrackPlanets();}}
     else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true; if (systemData.gngga_enabled==false) {clearGNGGA();}}
@@ -10151,6 +10180,7 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // serial page
+  // ----------------------------------------------------------------
   else if (menu_page==page_serial_main) {
     if (menuSerial.selection()==0) {systemData.output_satio_enabled^=true;}
     else if (menuSerial.selection()==1) {systemData.output_gngga_enabled^=true;}
@@ -11804,25 +11834,24 @@ void UpdateUI(void * pvParamters) {
       // static data
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-        previous_menu_page=menu_page; display.clear();
-        drawMainBorder();
-        drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
-        display.setColor(systemData.color_border);
-        // ------------------------------------------------
-        display.drawHLine(1, 38, 127);
-        display.drawVLine(67, 13, 37);
-        // ------------------------------------------------
-        display.setColor(systemData.color_subtitle);
-        // ------------------------------------------------
-        canvas60x8.clear();
-        canvas60x8.printFixed(1, 1, String("SATELLITES").c_str());
-        display.drawCanvas(3, ui_content_0, canvas60x8);
-
-        canvas60x8.clear();
-        canvas60x8.printFixed(1, 1, String("PRECISION").c_str());
-        display.drawCanvas(3, ui_content_1, canvas60x8);
-        // ------------------------------------------------
+          previous_menu_page = menu_page; display.clear();
+          drawMainBorder();
+          drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
+          // ------------------------------------------------
+          display.setColor(systemData.color_border);
+          // ------------------------------------------------
+          display.drawHLine(1, 38, 127);
+          display.drawVLine(67, 13, 37);
+          // ------------------------------------------------
+          display.setColor(systemData.color_subtitle);
+          // ------------------------------------------------
+          canvas60x8.clear();
+          canvas60x8.printFixed(1, 1, String("SATELLITES").c_str());
+          display.drawCanvas(3, ui_content_0, canvas60x8);
+          canvas60x8.clear();
+          canvas60x8.printFixed(1, 1, String("PRECISION").c_str());
+          display.drawCanvas(3, ui_content_1, canvas60x8);
+          // ------------------------------------------------
       }
       // ------------------------------------------------
       // dynamic data
@@ -11832,7 +11861,7 @@ void UpdateUI(void * pvParamters) {
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
       display.drawCanvas(71, ui_content_0, canvas42x8);
-
+      // ------------------------------------------------
       canvas42x8.clear();
       canvas42x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
       display.drawCanvas(71, ui_content_1, canvas42x8);
@@ -14629,6 +14658,7 @@ void loop() {
     */
     t0 = micros();
     syncUTCTime();
+    syncTaskSafeRTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // ---------------------------------------------------------------------
@@ -14821,7 +14851,7 @@ void loop() {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    // ----------me
+    // ----------
     // set flags
     // ----------
     track_planets_period = true;
@@ -14854,6 +14884,7 @@ void loop() {
     //   2: DS3231 has a resolution of second.
     t0 = micros();
     convertUTCTimeToLocalTime();
+    syncTaskSafeRTCTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
 
