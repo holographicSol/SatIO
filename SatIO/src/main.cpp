@@ -14608,19 +14608,20 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
+  // clear gps data that is not enabled while retaining some data that may be static
   if (systemData.satio_enabled==false) {clearDynamicSATIO();}
   if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
   if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
   if (systemData.gpatt_enabled==false) {clearGPATT();}
-
+  // suspend task if no gps data is enabled
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
-    suspended_gps_task=true;
-    first_gps_pass=true;
+    if (suspended_gps_task==false) {vTaskSuspend(GPSTask);} // do this if we have not done it already
+    suspended_gps_task=true; // set suspension flag
+    first_gps_pass=true; // ensure we can sync on first opportunity if task is resumed
   }
   else {
-    if (suspended_gps_task==true) {vTaskResume(GPSTask);}
-    suspended_gps_task=false;
+    if (suspended_gps_task==true) {vTaskResume(GPSTask);} // do this if we have not done it already
+    suspended_gps_task=false; // set suspension flag
   }
 
   // ----------------------------------------------------------------------------------------------------------
