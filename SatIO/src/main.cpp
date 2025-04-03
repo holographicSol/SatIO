@@ -3853,7 +3853,6 @@ void syncUTCTime() {
   memset(satData.tmp_millisecond, 0, sizeof(satData.tmp_millisecond));
   satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
   satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
-
   satData.tmp_day_int = atoi(satData.tmp_day);
   satData.tmp_month_int = atoi(satData.tmp_month);
   satData.tmp_year_int = atoi(satData.tmp_year);
