@@ -3609,21 +3609,21 @@ struct SensorDataStruct {
 
   // general analog/digital sensor: can be refactored
   float sensor_0 = 0.0;
-  float sensor_1 = 0.0;
-  float sensor_2 = 0.0;
-  float sensor_3 = 0.0;
-  float sensor_4 = 0.0;
-  float sensor_5 = 0.0;
-  float sensor_6 = 0.0;
-  float sensor_7 = 0.0;
-  float sensor_8 = 0.0;
-  float sensor_9 = 0.0;
-  float sensor_10 = 0.0;
-  float sensor_11 = 0.0;
-  float sensor_12 = 0.0;
-  float sensor_13 = 0.0;
-  float sensor_14 = 0.0;
-  float sensor_15 = 0.0;
+  uint16_t sensor_1 = 0.0;
+  uint16_t sensor_2 = 0.0;
+  uint16_t sensor_3 = 0.0;
+  uint16_t sensor_4 = 0.0;
+  uint16_t sensor_5 = 0.0;
+  uint16_t sensor_6 = 0.0;
+  uint16_t sensor_7 = 0.0;
+  uint16_t sensor_8 = 0.0;
+  uint16_t sensor_9 = 0.0;
+  uint16_t sensor_10 = 0.0;
+  uint16_t sensor_11 = 0.0;
+  uint16_t sensor_12 = 0.0;
+  uint16_t sensor_13 = 0.0;
+  uint16_t sensor_14 = 0.0;
+  uint16_t sensor_15 = 0.0;
 
   char sensor_sentence[1024];
   char TMP[1024];
@@ -10942,7 +10942,6 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
         // ------------------------------------------------
       }
-      delay(50);
     }
 
     // ------------------------------------------------
@@ -14190,7 +14189,7 @@ void readGPS(void * pvParameters) {
 //                                                                                                                      SENSORS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-/* Sensors are mostly intentionally left blank for system specific configurations */
+/* Sensors are mostly intentionally left blank for custum configurations */
 
 void getSensorData() {
   
@@ -14308,9 +14307,9 @@ void getSensorData() {
     }
   }
   // --------------------------------------------------
-  // set multiplexer channel back to zeroa
+  // set multiplexer channel back to zero
   // --------------------------------------------------
-  setMultiplexChannel_CD74HC4067(0);
+  // setMultiplexChannel_CD74HC4067(0);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // step over each I2C multiplexer channel
@@ -14372,70 +14371,55 @@ void getSensorData() {
   if (systemData.output_sensors_enabled==true) {
     memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
     strcat(sensorData.sensor_sentence, "$SENSORS,");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_0, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_0).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_1, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_1).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_2, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_2).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_3, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_3).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_4, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_4).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_5, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_5).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_6, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_6).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_7, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_7).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_8, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_8).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_9, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_9).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_10, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_10).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_11, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_11).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_12, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_12).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_13, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_13).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_14, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_14).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    memset(sensorData.TMP, 0, sizeof(sensorData.TMP));
-    ltoa(sensorData.sensor_15, sensorData.TMP, 10);
-    strcat(sensorData.sensor_sentence, sensorData.TMP);
+
+    strcat(sensorData.sensor_sentence, String(sensorData.sensor_15).c_str());
     strcat(sensorData.sensor_sentence, ",");
+    
     // append checksum
     createChecksum(sensorData.sensor_sentence);
     strcat(sensorData.sensor_sentence, "*");
@@ -14646,7 +14630,8 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // HSPI: SSD1351 OLED Display
   // ----------------------------------------------------------------------------------------------------------------------------
-  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+
+  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
   display.begin();
   menu_page=0;
 }
@@ -14790,10 +14775,10 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                                SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------
-  /*
-  Collect sensor data that could be utilized every loop.
-  Run every loop.
-  */
+  // /*
+  // Collect sensor data that could be utilized every loop.
+  // Run every loop.
+  // */
   t0 = micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -14813,7 +14798,7 @@ void loop() {
     */
     if (suspended_gps_task==true) {
       t0 = micros();
-      if (systemData.matrix_enabled == true) {matrixSwitch();}
+      if (systemData.matrix_enabled==true) {matrixSwitch();}
       MatrixStatsCounter();
       bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
