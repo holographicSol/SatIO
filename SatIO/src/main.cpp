@@ -296,6 +296,7 @@ void endSSD1351();
 bool sdcardCheck();
 void readI2C();
 void UIIndicators();
+void printAllTimes();
 
 bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
 
@@ -3977,6 +3978,45 @@ void convertUTCTimeToLocalTime() {
   satData.local_second = second();
   memset(satData.local_weekday, 0, sizeof(satData.local_weekday));
   strcpy(satData.local_weekday, String(myAstro.HumanDayOfTheWeek(satData.local_year, satData.local_month, satData.local_day)).c_str());
+  // --------------------------------------------------------
+  // uncomment to debug
+  // --------------------------------------------------------
+  // printAllTimes();
+}
+
+void printAllTimes() {
+  Serial.println("-----------------------------------------");
+  Serial.println("[gnrmcData.utc_date]     " + String(gnrmcData.utc_date));
+  Serial.println("[gnrmcData.utc_time]     " + String(gnrmcData.utc_time));
+  Serial.println("-----------------------------------------");
+  Serial.println("[satData.tmp_year_int]   " + String(satData.tmp_year_int));
+  Serial.println("[satData.tmp_month_int]  " + String(satData.tmp_month_int));
+  Serial.println("[satData.tmp_day_int]    " + String(satData.tmp_day_int));
+  Serial.println("[satData.tmp_hour_int]   " + String(satData.tmp_hour_int));
+  Serial.println("[satData.tmp_minute_int] " + String(satData.tmp_minute_int));
+  Serial.println("[satData.tmp_second_int] " + String(satData.tmp_second_int));
+  Serial.println("-----------------------------------------");
+  Serial.println("[satData.rtc_year]       " + String(satData.rtc_year));
+  Serial.println("[satData.rtc_month]      " + String(satData.rtc_month));
+  Serial.println("[satData.rtc_day]        " + String(satData.rtc_day));
+  Serial.println("[satData.rtc_hour]       " + String(satData.rtc_hour));
+  Serial.println("[satData.rtc_minute]     " + String(satData.rtc_minute));
+  Serial.println("[satData.rtc_second]     " + String(satData.rtc_second));
+  Serial.println("-----------------------------------------");
+  Serial.println("[time lib year]          " + String(year()));
+  Serial.println("[time lib month]         " + String(month()));
+  Serial.println("[time lib day]           " + String(day()));
+  Serial.println("[time lib hour]          " + String(hour()));
+  Serial.println("[time lib minute]        " + String(minute()));
+  Serial.println("[time lib second]        " + String(second()));
+  Serial.println("-----------------------------------------");
+  Serial.println("[satData.local_year]     " + String(satData.local_year));
+  Serial.println("[satData.local_month]    " + String(satData.local_month));
+  Serial.println("[satData.local_day]      " + String(satData.local_day));
+  Serial.println("[satData.local_hour]     " + String(satData.local_hour));
+  Serial.println("[satData.local_minute]   " + String(satData.local_minute));
+  Serial.println("[satData.local_second]   " + String(satData.local_second));
+  Serial.println("-----------------------------------------");
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
