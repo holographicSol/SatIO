@@ -14858,8 +14858,8 @@ void loop() {
     //   2: DS3231 has a resolution of second.
     crunching_time_data = true;
     t0 = micros();
-    convertUTCTimeToLocalTime();
     syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
     crunching_time_data = false;
   }
