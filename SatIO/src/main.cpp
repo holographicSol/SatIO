@@ -3089,23 +3089,21 @@ GNGGAStruct gnggaData;
 //                                                                                                                          GNGGA
 // ------------------------------------------------------------------------------------------------------------------------------
 
+void clearDynamicGNGGA() {
+  memset(gnggaData.solution_status, 0, 56);
+  memset(gnggaData.satellite_count_gngga, 0, 56);
+  memset(gnggaData.hdop_precision_factor, 0, 56);
+  memset(gnggaData.geoidal, 0, 56);
+  memset(gnggaData.geoidal_units, 0, 56);
+  memset(gnggaData.differential_delay, 0, 56);
+}
+
 void clearGNGGA() {
-  // --------------------------
-  // keep potential static data (if stationary then we can still use coordinates)
-  // --------------------------
-  // reflects last sync time
-  // --------------------------
-  // memset(gnggaData.utc_time, 0, 56);
-  // --------------------------
-  // reflects last known coordinates
-  // --------------------------
-  // memset(gnggaData.latitude, 0, 56);
-  // memset(gnggaData.latitude_hemisphere, 0, 56);
-  // memset(gnggaData.longitude, 0, 56);
-  // memset(gnggaData.longitude_hemisphere, 0, 56);
-  // --------------------------
-  // clear dynamic data
-  // --------------------------
+  memset(gnggaData.utc_time, 0, 56);
+  memset(gnggaData.latitude, 0, 56);
+  memset(gnggaData.latitude_hemisphere, 0, 56);
+  memset(gnggaData.longitude, 0, 56);
+  memset(gnggaData.longitude_hemisphere, 0, 56);
   memset(gnggaData.solution_status, 0, 56);
   memset(gnggaData.satellite_count_gngga, 0, 56);
   memset(gnggaData.hdop_precision_factor, 0, 56);
@@ -3189,23 +3187,21 @@ GNRMCStruct gnrmcData;
 //                                                                                                                          GNRMC
 // ------------------------------------------------------------------------------------------------------------------------------
 
+void clearDynamicGNRMC() {
+  memset(gnrmcData.positioning_status, 0, 56);
+  memset(gnrmcData.ground_speed, 0, 56);
+  memset(gnrmcData.ground_heading, 0, 56);
+  memset(gnrmcData.utc_date, 0, 56);
+  memset(gnrmcData.installation_angle, 0, 56);
+  memset(gnrmcData.installation_angle_direction, 0, 56);
+}
+
 void clearGNRMC() {
-  // --------------------------
-  // keep potential static data (if stationary then we can still use coordinates)
-  // --------------------------
-  // reflects last sync time
-  // --------------------------
-  // memset(gnrmcData.utc_time, 0, 56);
-  // --------------------------
-  // reflects last known coordinates
-  // --------------------------
-  // memset(gnrmcData.latitude, 0, 56);
-  // memset(gnrmcData.latitude_hemisphere, 0, 56);
-  // memset(gnrmcData.longitude, 0, 56);
-  // memset(gnrmcData.longitude_hemisphere, 0, 56);
-  // --------------------------
-  // clear dynamic data
-  // --------------------------
+  memset(gnrmcData.utc_time, 0, 56);
+  memset(gnrmcData.latitude, 0, 56);
+  memset(gnrmcData.latitude_hemisphere, 0, 56);
+  memset(gnrmcData.longitude, 0, 56);
+  memset(gnrmcData.longitude_hemisphere, 0, 56);
   memset(gnrmcData.positioning_status, 0, 56);
   memset(gnrmcData.ground_speed, 0, 56);
   memset(gnrmcData.ground_heading, 0, 56);
@@ -3310,47 +3306,47 @@ GPATTStruct gpattData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearGPATT() {
-// --------------------------
-// clear dynamic data
-// --------------------------
-memset(gpattData.pitch, 0, 56);
-memset(gpattData.angle_channel_0, 0, 56);
-memset(gpattData.roll, 0, 56);
-memset(gpattData.angle_channel_1, 0, 56);
-memset(gpattData.yaw, 0, 56);
-memset(gpattData.angle_channel_2, 0, 56);
-memset(gpattData.software_version, 0, 56);
-memset(gpattData.version_channel, 0, 56);
-memset(gpattData.product_id, 0, 56);
-memset(gpattData.id_channel, 0, 56);
-memset(gpattData.ins, 0, 56);
-memset(gpattData.ins_channel, 0, 56);
-memset(gpattData.hardware_version, 0, 56);
-memset(gpattData.run_state_flag, 0, 56);
-memset(gpattData.mis_angle_num, 0, 56);
-memset(gpattData.custom_logo_0, 0, 56);
-memset(gpattData.custom_logo_1, 0, 56);
-memset(gpattData.custom_logo_2, 0, 56);
-memset(gpattData.static_flag, 0, 56);
-memset(gpattData.user_code, 0, 56);
-memset(gpattData.gst_data, 0, 56);
-memset(gpattData.line_flag, 0, 56);
-memset(gpattData.custom_logo_3, 0, 56);
-memset(gpattData.mis_att_flag, 0, 56);
-memset(gpattData.imu_kind, 0, 56);
-memset(gpattData.ubi_car_kind, 0, 56);
-memset(gpattData.mileage, 0, 56);
-memset(gpattData.custom_logo_4, 0, 56);
-memset(gpattData.custom_logo_5, 0, 56);
-memset(gpattData.run_inetial_flag, 0, 56);
-memset(gpattData.custom_logo_6, 0, 56);
-memset(gpattData.custom_logo_7, 0, 56);
-memset(gpattData.custom_logo_8, 0, 56);
-memset(gpattData.custom_logo_9, 0, 56);
-memset(gpattData.speed_enable, 0, 56);
-memset(gpattData.custom_logo_10, 0, 56); 
-memset(gpattData.custom_logo_11, 0, 56);
-memset(gpattData.speed_num, 0, 56);
+  // --------------------------
+  // clear dynamic data
+  // --------------------------
+  memset(gpattData.pitch, 0, 56);
+  memset(gpattData.angle_channel_0, 0, 56);
+  memset(gpattData.roll, 0, 56);
+  memset(gpattData.angle_channel_1, 0, 56);
+  memset(gpattData.yaw, 0, 56);
+  memset(gpattData.angle_channel_2, 0, 56);
+  memset(gpattData.software_version, 0, 56);
+  memset(gpattData.version_channel, 0, 56);
+  memset(gpattData.product_id, 0, 56);
+  memset(gpattData.id_channel, 0, 56);
+  memset(gpattData.ins, 0, 56);
+  memset(gpattData.ins_channel, 0, 56);
+  memset(gpattData.hardware_version, 0, 56);
+  memset(gpattData.run_state_flag, 0, 56);
+  memset(gpattData.mis_angle_num, 0, 56);
+  memset(gpattData.custom_logo_0, 0, 56);
+  memset(gpattData.custom_logo_1, 0, 56);
+  memset(gpattData.custom_logo_2, 0, 56);
+  memset(gpattData.static_flag, 0, 56);
+  memset(gpattData.user_code, 0, 56);
+  memset(gpattData.gst_data, 0, 56);
+  memset(gpattData.line_flag, 0, 56);
+  memset(gpattData.custom_logo_3, 0, 56);
+  memset(gpattData.mis_att_flag, 0, 56);
+  memset(gpattData.imu_kind, 0, 56);
+  memset(gpattData.ubi_car_kind, 0, 56);
+  memset(gpattData.mileage, 0, 56);
+  memset(gpattData.custom_logo_4, 0, 56);
+  memset(gpattData.custom_logo_5, 0, 56);
+  memset(gpattData.run_inetial_flag, 0, 56);
+  memset(gpattData.custom_logo_6, 0, 56);
+  memset(gpattData.custom_logo_7, 0, 56);
+  memset(gpattData.custom_logo_8, 0, 56);
+  memset(gpattData.custom_logo_9, 0, 56);
+  memset(gpattData.speed_enable, 0, 56);
+  memset(gpattData.custom_logo_10, 0, 56); 
+  memset(gpattData.custom_logo_11, 0, 56);
+  memset(gpattData.speed_num, 0, 56);
 }
 
 void GPATT() {
@@ -3358,45 +3354,45 @@ void GPATT() {
   serial1Data.iter_token = 0;
   serial1Data.token = strtok(gpattData.sentence, ",");
   while( serial1Data.token != NULL ) { 
-    if      (serial1Data.iter_token == 0)                                                              {strcpy(gpattData.tag, "GPATT");                                                                   gpattData.check_data++;}
-    else if (serial1Data.iter_token == 1) {if (val_pitch_gpatt(serial1Data.token) == true)             {memset(gpattData.pitch, 0, 56); strcpy(gpattData.pitch, serial1Data.token);                       gpattData.check_data++; gpattData.bad_pitch = false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch = true;}}
-    else if (serial1Data.iter_token == 2) {if (val_angle_channle_p_gpatt(serial1Data.token) == true)   {memset(gpattData.angle_channel_0, 0, 56); strcpy(gpattData.angle_channel_0, serial1Data.token);   gpattData.check_data++; gpattData.bad_angle_channel_0 = false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0 = true;}}
-    else if (serial1Data.iter_token == 3) {if (val_roll_gpatt(serial1Data.token) == true)              {memset(gpattData.roll, 0, 56); strcpy(gpattData.roll, serial1Data.token);                         gpattData.check_data++; gpattData.bad_roll = false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll = true;}}
-    else if (serial1Data.iter_token == 4) {if (val_angle_channle_r_gpatt(serial1Data.token) == true)   {memset(gpattData.angle_channel_1, 0, 56); strcpy(gpattData.angle_channel_1, serial1Data.token);   gpattData.check_data++; gpattData.bad_angle_channel_1 = false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1 = true;}}
-    else if (serial1Data.iter_token == 5) {if (val_yaw_gpatt(serial1Data.token) == true)               {memset(gpattData.yaw, 0, 56); strcpy(gpattData.yaw, serial1Data.token);                           gpattData.check_data++; gpattData.bad_yaw = false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw = true;}}
-    else if (serial1Data.iter_token == 6) {if (val_angle_channle_y_gpatt(serial1Data.token) == true)   {memset(gpattData.angle_channel_2, 0, 56); strcpy(gpattData.angle_channel_2, serial1Data.token);   gpattData.check_data++; gpattData.bad_angle_channel_2 = false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2 = true;}}
-    else if (serial1Data.iter_token == 7) {if (val_software_version_gpatt(serial1Data.token) == true)  {memset(gpattData.software_version, 0, 56); strcpy(gpattData.software_version, serial1Data.token); gpattData.check_data++; gpattData.bad_software_version = false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version = true;}}
-    else if (serial1Data.iter_token == 8) {if (val_version_channel_s_gpatt(serial1Data.token) == true) {memset(gpattData.version_channel, 0, 56); strcpy(gpattData.version_channel, serial1Data.token);   gpattData.check_data++; gpattData.bad_version_channel = false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel = true;}}
-    else if (serial1Data.iter_token == 9) {if (val_product_id_gpatt(serial1Data.token) == true)        {memset(gpattData.product_id, 0, 56); strcpy(gpattData.product_id, serial1Data.token);             gpattData.check_data++; gpattData.bad_product_id = false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id = true;}}
-    else if (serial1Data.iter_token == 10) {if (val_id_channel_gpatt(serial1Data.token) == true)       {memset(gpattData.id_channel, 0, 56); strcpy(gpattData.id_channel, serial1Data.token);             gpattData.check_data++; gpattData.bad_id_channel = false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel = true;}}
-    else if (serial1Data.iter_token == 11) {if (val_ins_gpatt(serial1Data.token) == true)              {memset(gpattData.ins, 0, 56); strcpy(gpattData.ins, serial1Data.token);                           gpattData.check_data++; gpattData.bad_ins = false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins = true;}}
-    else if (serial1Data.iter_token == 12) {if (val_ins_channel_gpatt(serial1Data.token) == true)      {memset(gpattData.ins_channel, 0, 56); strcpy(gpattData.ins_channel, serial1Data.token);           gpattData.check_data++; gpattData.bad_ins_channel = false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel = true;}}
-    else if (serial1Data.iter_token == 13) {if (val_hardware_version_gpatt(serial1Data.token) == true) {memset(gpattData.hardware_version, 0, 56); strcpy(gpattData.hardware_version, serial1Data.token); gpattData.check_data++; gpattData.bad_hardware_version = false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version = true;}}
-    else if (serial1Data.iter_token == 14) {if (val_run_state_flag_gpatt(serial1Data.token) == true)   {memset(gpattData.run_state_flag, 0, 56); strcpy(gpattData.run_state_flag, serial1Data.token);     gpattData.check_data++; gpattData.bad_run_state_flag = false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag = true;}}
-    else if (serial1Data.iter_token == 15) {if (val_mis_angle_num_gpatt(serial1Data.token) == true)    {memset(gpattData.mis_angle_num, 0, 56); strcpy(gpattData.mis_angle_num, serial1Data.token);       gpattData.check_data++; gpattData.bad_mis_angle_num = false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num = true;}}
-    else if (serial1Data.iter_token == 16) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_0, 0, 56); strcpy(gpattData.custom_logo_0, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_0 = false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0 = true;}}
-    else if (serial1Data.iter_token == 17) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_1, 0, 56); strcpy(gpattData.custom_logo_1, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_1 = false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1 = true;}}
-    else if (serial1Data.iter_token == 18) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_2, 0, 56); strcpy(gpattData.custom_logo_2, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_2 = false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2 = true;}}
-    else if (serial1Data.iter_token == 19) {if (val_static_flag_gpatt(serial1Data.token) == true)      {memset(gpattData.static_flag, 0, 56); strcpy(gpattData.static_flag, serial1Data.token);           gpattData.check_data++; gpattData.bad_static_flag = false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag = true;}}
-    else if (serial1Data.iter_token == 20) {if (val_user_code_gpatt(serial1Data.token) == true)        {memset(gpattData.user_code, 0, 56); strcpy(gpattData.user_code, serial1Data.token);               gpattData.check_data++; gpattData.bad_user_code = false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code = true;}}
-    else if (serial1Data.iter_token == 21) {if (val_gst_data_gpatt(serial1Data.token) == true)         {memset(gpattData.gst_data, 0, 56); strcpy(gpattData.gst_data, serial1Data.token);                 gpattData.check_data++; gpattData.bad_gst_data = false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data = true;}}
-    else if (serial1Data.iter_token == 22) {if (val_line_flag_gpatt(serial1Data.token) == true)        {memset(gpattData.line_flag, 0, 56); strcpy(gpattData.line_flag, serial1Data.token);               gpattData.check_data++; gpattData.bad_line_flag = false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag = true;}}
-    else if (serial1Data.iter_token == 23) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_3, 0, 56); strcpy(gpattData.custom_logo_3, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_3 = false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3 = true;}}
-    else if (serial1Data.iter_token == 24) {if (val_mis_att_flag_gpatt(serial1Data.token) == true)     {memset(gpattData.mis_att_flag, 0, 56); strcpy(gpattData.mis_att_flag, serial1Data.token);         gpattData.check_data++; gpattData.bad_mis_att_flag = false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag = true;}}
-    else if (serial1Data.iter_token == 25) {if (val_imu_kind_gpatt(serial1Data.token) == true)         {memset(gpattData.imu_kind, 0, 56); strcpy(gpattData.imu_kind, serial1Data.token);                 gpattData.check_data++; gpattData.bad_imu_kind = false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind = true;}}
-    else if (serial1Data.iter_token == 26) {if (val_ubi_car_kind_gpatt(serial1Data.token) == true)     {memset(gpattData.ubi_car_kind, 0, 56); strcpy(gpattData.ubi_car_kind, serial1Data.token);         gpattData.check_data++; gpattData.bad_ubi_car_kind = false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind = true;}}
-    else if (serial1Data.iter_token == 27) {if (val_mileage_gpatt(serial1Data.token) == true)          {memset(gpattData.mileage, 0, 56); strcpy(gpattData.mileage, serial1Data.token);                   gpattData.check_data++; gpattData.bad_mileage = false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage = true;}}
-    else if (serial1Data.iter_token == 28) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_4, 0, 56); strcpy(gpattData.custom_logo_4, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_4 = false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4 = true;}}
-    else if (serial1Data.iter_token == 29) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_5, 0, 56); strcpy(gpattData.custom_logo_5, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_5 = false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5 = true;}}
-    else if (serial1Data.iter_token == 30) {if (val_run_inetial_flag_gpatt(serial1Data.token) == true) {memset(gpattData.run_inetial_flag, 0, 56); strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.check_data++; gpattData.bad_run_inetial_flag = false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag = true;}}
-    else if (serial1Data.iter_token == 31) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_6, 0, 56); strcpy(gpattData.custom_logo_6, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_6 = false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6 = true;}}
-    else if (serial1Data.iter_token == 32) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_7, 0, 56); strcpy(gpattData.custom_logo_7, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_7 = false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7 = true;}}
-    else if (serial1Data.iter_token == 33) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_8, 0, 56); strcpy(gpattData.custom_logo_8, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_8 = false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8 = true;}}
-    else if (serial1Data.iter_token == 34) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_9, 0, 56); strcpy(gpattData.custom_logo_9, serial1Data.token);       gpattData.check_data++; gpattData.bad_custom_logo_9 = false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9 = true;}}
-    else if (serial1Data.iter_token == 35) {if (val_speed_enable_gpatt(serial1Data.token) == true)     {memset(gpattData.speed_enable, 0, 56); strcpy(gpattData.speed_enable, serial1Data.token);         gpattData.check_data++; gpattData.bad_speed_enable = false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable = true;}}
-    else if (serial1Data.iter_token == 36) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_10, 0, 56); strcpy(gpattData.custom_logo_10, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_10 = false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10 = true;}}
-    else if (serial1Data.iter_token == 37) {if (val_custom_flag(serial1Data.token) == true)            {memset(gpattData.custom_logo_11, 0, 56); strcpy(gpattData.custom_logo_11, serial1Data.token);     gpattData.check_data++; gpattData.bad_custom_logo_11 = false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11 = true;}}
-    else if (serial1Data.iter_token == 38) {if (val_speed_num_gpatt(serial1Data.token) == true)        {memset(gpattData.speed_num, 0, 56); strcpy(gpattData.speed_num, serial1Data.token);               gpattData.check_data++; gpattData.bad_speed_num = false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num = true;}}
+    if      (serial1Data.iter_token == 0)                                                              {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
+    else if (serial1Data.iter_token == 1) {if (val_pitch_gpatt(serial1Data.token) == true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.check_data++; gpattData.bad_pitch = false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch = true;}}
+    else if (serial1Data.iter_token == 2) {if (val_angle_channle_p_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_0 = false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0 = true;}}
+    else if (serial1Data.iter_token == 3) {if (val_roll_gpatt(serial1Data.token) == true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.check_data++; gpattData.bad_roll = false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll = true;}}
+    else if (serial1Data.iter_token == 4) {if (val_angle_channle_r_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_1, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_1 = false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1 = true;}}
+    else if (serial1Data.iter_token == 5) {if (val_yaw_gpatt(serial1Data.token) == true)               {strcpy(gpattData.yaw, serial1Data.token);              gpattData.check_data++; gpattData.bad_yaw = false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw = true;}}
+    else if (serial1Data.iter_token == 6) {if (val_angle_channle_y_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_2, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_2 = false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2 = true;}}
+    else if (serial1Data.iter_token == 7) {if (val_software_version_gpatt(serial1Data.token) == true)  {strcpy(gpattData.software_version, serial1Data.token); gpattData.check_data++; gpattData.bad_software_version = false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version = true;}}
+    else if (serial1Data.iter_token == 8) {if (val_version_channel_s_gpatt(serial1Data.token) == true) {strcpy(gpattData.version_channel, serial1Data.token);  gpattData.check_data++; gpattData.bad_version_channel = false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel = true;}}
+    else if (serial1Data.iter_token == 9) {if (val_product_id_gpatt(serial1Data.token) == true)        {strcpy(gpattData.product_id, serial1Data.token);       gpattData.check_data++; gpattData.bad_product_id = false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id = true;}}
+    else if (serial1Data.iter_token == 10) {if (val_id_channel_gpatt(serial1Data.token) == true)       {strcpy(gpattData.id_channel, serial1Data.token);       gpattData.check_data++; gpattData.bad_id_channel = false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel = true;}}
+    else if (serial1Data.iter_token == 11) {if (val_ins_gpatt(serial1Data.token) == true)              {strcpy(gpattData.ins, serial1Data.token);              gpattData.check_data++; gpattData.bad_ins = false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins = true;}}
+    else if (serial1Data.iter_token == 12) {if (val_ins_channel_gpatt(serial1Data.token) == true)      {strcpy(gpattData.ins_channel, serial1Data.token);      gpattData.check_data++; gpattData.bad_ins_channel = false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel = true;}}
+    else if (serial1Data.iter_token == 13) {if (val_hardware_version_gpatt(serial1Data.token) == true) {strcpy(gpattData.hardware_version, serial1Data.token); gpattData.check_data++; gpattData.bad_hardware_version = false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version = true;}}
+    else if (serial1Data.iter_token == 14) {if (val_run_state_flag_gpatt(serial1Data.token) == true)   {strcpy(gpattData.run_state_flag, serial1Data.token);   gpattData.check_data++; gpattData.bad_run_state_flag = false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag = true;}}
+    else if (serial1Data.iter_token == 15) {if (val_mis_angle_num_gpatt(serial1Data.token) == true)    {strcpy(gpattData.mis_angle_num, serial1Data.token);    gpattData.check_data++; gpattData.bad_mis_angle_num = false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num = true;}}
+    else if (serial1Data.iter_token == 16) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_0, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_0 = false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0 = true;}}
+    else if (serial1Data.iter_token == 17) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_1, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_1 = false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1 = true;}}
+    else if (serial1Data.iter_token == 18) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_2, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_2 = false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2 = true;}}
+    else if (serial1Data.iter_token == 19) {if (val_static_flag_gpatt(serial1Data.token) == true)      {strcpy(gpattData.static_flag, serial1Data.token);      gpattData.check_data++; gpattData.bad_static_flag = false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag = true;}}
+    else if (serial1Data.iter_token == 20) {if (val_user_code_gpatt(serial1Data.token) == true)        {strcpy(gpattData.user_code, serial1Data.token);        gpattData.check_data++; gpattData.bad_user_code = false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code = true;}}
+    else if (serial1Data.iter_token == 21) {if (val_gst_data_gpatt(serial1Data.token) == true)         {strcpy(gpattData.gst_data, serial1Data.token);         gpattData.check_data++; gpattData.bad_gst_data = false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data = true;}}
+    else if (serial1Data.iter_token == 22) {if (val_line_flag_gpatt(serial1Data.token) == true)        {strcpy(gpattData.line_flag, serial1Data.token);        gpattData.check_data++; gpattData.bad_line_flag = false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag = true;}}
+    else if (serial1Data.iter_token == 23) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_3, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_3 = false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3 = true;}}
+    else if (serial1Data.iter_token == 24) {if (val_mis_att_flag_gpatt(serial1Data.token) == true)     {strcpy(gpattData.mis_att_flag, serial1Data.token);     gpattData.check_data++; gpattData.bad_mis_att_flag = false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag = true;}}
+    else if (serial1Data.iter_token == 25) {if (val_imu_kind_gpatt(serial1Data.token) == true)         {strcpy(gpattData.imu_kind, serial1Data.token);         gpattData.check_data++; gpattData.bad_imu_kind = false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind = true;}}
+    else if (serial1Data.iter_token == 26) {if (val_ubi_car_kind_gpatt(serial1Data.token) == true)     {strcpy(gpattData.ubi_car_kind, serial1Data.token);     gpattData.check_data++; gpattData.bad_ubi_car_kind = false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind = true;}}
+    else if (serial1Data.iter_token == 27) {if (val_mileage_gpatt(serial1Data.token) == true)          {strcpy(gpattData.mileage, serial1Data.token);          gpattData.check_data++; gpattData.bad_mileage = false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage = true;}}
+    else if (serial1Data.iter_token == 28) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_4, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_4 = false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4 = true;}}
+    else if (serial1Data.iter_token == 29) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_5, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_5 = false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5 = true;}}
+    else if (serial1Data.iter_token == 30) {if (val_run_inetial_flag_gpatt(serial1Data.token) == true) {strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.check_data++; gpattData.bad_run_inetial_flag = false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag = true;}}
+    else if (serial1Data.iter_token == 31) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_6, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_6 = false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6 = true;}}
+    else if (serial1Data.iter_token == 32) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_7, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_7 = false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7 = true;}}
+    else if (serial1Data.iter_token == 33) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_8, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_8 = false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8 = true;}}
+    else if (serial1Data.iter_token == 34) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_9, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_9 = false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9 = true;}}
+    else if (serial1Data.iter_token == 35) {if (val_speed_enable_gpatt(serial1Data.token) == true)     {strcpy(gpattData.speed_enable, serial1Data.token);     gpattData.check_data++; gpattData.bad_speed_enable = false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable = true;}}
+    else if (serial1Data.iter_token == 36) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_10, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_10 = false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10 = true;}}
+    else if (serial1Data.iter_token == 37) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_11, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_11 = false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11 = true;}}
+    else if (serial1Data.iter_token == 38) {if (val_speed_num_gpatt(serial1Data.token) == true)        {strcpy(gpattData.speed_num, serial1Data.token);        gpattData.check_data++; gpattData.bad_speed_num = false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num = true;}}
     serial1Data.token = strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -3543,7 +3539,7 @@ struct SatDatatruct {
 };
 SatDatatruct satData;
 
-void clearSATIO() {
+void clearDynamicSATIO() {
   // --------------------------
   // clear dynamic data
   // --------------------------
@@ -14612,9 +14608,9 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
-  if (systemData.satio_enabled==false) {clearSATIO();}
-  if (systemData.gngga_enabled==false) {clearGNGGA();}
-  if (systemData.gnrmc_enabled==false) {clearGNRMC();}
+  if (systemData.satio_enabled==false) {clearDynamicSATIO();}
+  if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
+  if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
   if (systemData.gpatt_enabled==false) {clearGPATT();}
 
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
