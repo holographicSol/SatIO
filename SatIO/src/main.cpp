@@ -3990,7 +3990,7 @@ void convertUTCTimeToLocalTime() {
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
-  // printAllTimes();
+  printAllTimes();
 }
 
 void printAllTimes() {
@@ -10909,19 +10909,23 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       display.setColor(systemData.color_title);
 
+      canvas120x8.clear();
       if (crunching_time_data==false) {
         // ------------------------------------------------
         // local time
         // ------------------------------------------------
-        canvas76x8.clear();
-        canvas76x8.printFixed(6, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
-        display.drawCanvas(35, 4, canvas76x8);
+        canvas120x8.printFixed(1, 1, String(String(satData.local_hour) + ":" + String(satData.local_minute) + ":" + String(satData.local_second)).c_str(), STYLE_BOLD );
+        // canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
+        display.drawCanvas(3, 4, canvas120x8);
+      }
+      canvas120x8.clear();
+      if (crunching_time_data==false) {
         // ------------------------------------------------
         // local date
         // ------------------------------------------------
-        canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "/" + String(padDigitsZero(satData.local_month)) + "/" + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
-        display.drawCanvas(35, 14, canvas76x8);
+        canvas120x8.printFixed(1, 1, String(String(satData.local_day) + "/" + String(satData.local_month) + "/" + String(satData.local_year)).c_str(), STYLE_BOLD );
+        // canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
+        display.drawCanvas(3, 14, canvas120x8);
       }
       // ------------------------------------------------
 
@@ -12788,10 +12792,10 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (crunching_time_data==false) {
         canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "." + String(padDigitsZero(satData.local_month)) + "." + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
+        canvas76x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "." + padDigitsZero(satData.local_month) + "." + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_1, canvas76x8);
         canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_hour)) + ":" + String(padDigitsZero(satData.local_minute)) + ":" + String(padDigitsZero(satData.local_second))).c_str(), STYLE_BOLD );
+        canvas76x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
         display.drawCanvas(37, ui_content_0, canvas76x8);
       }
       // ------------------------------------------------
@@ -13647,13 +13651,13 @@ void UpdateUI(void * pvParamters) {
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[10]; // bytes to be sent
-  char INPUT_BUFFER[10];  // chars received
-  char TMP_BUFFER_0[10];  // chars of bytes to be sent
-  char TMP_BUFFER_1[10];  // some space for type conversions
+  byte OUTPUT_BUFFER[20]; // bytes to be sent
+  char INPUT_BUFFER[20];  // chars received
+  char TMP_BUFFER_0[20];  // chars of bytes to be sent
+  char TMP_BUFFER_1[20];  // some space for type conversions
   int I2CADDRESSINDEX = 0;
   int I2CADDRESSRANGEMIN = 0;   // for performance this should be modifiable, can be min zero
-  int I2CADDRESSRANGEMAX = 127; // for performance this should be modifiable, can be max 127
+  int I2CADDRESSRANGEMAX = 100; // for performance this should be modifiable, can be max 127
   bool MESSAGE_RECEIVED = false;
 };
 I2CLinkStruct I2CLink;
@@ -13735,6 +13739,7 @@ void readI2C() {
       Wire.beginTransmission(I2CLink.I2CADDRESSINDEX);
       // write bytes array
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+      memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
       for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
       Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
       // end test
@@ -13753,6 +13758,10 @@ void readI2C() {
         Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
         Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
         // break if message or keep scanning if message empty (and dont parse the message in loop)
+        // uncomment to break regardless of message content
+        // I2CLink.MESSAGE_RECEIVED=true;
+        // break;
+        // uncomment to break on non empty message
         if (!strcmp(I2CLink.INPUT_BUFFER, "")==0) {I2CLink.MESSAGE_RECEIVED=true; break;}
       }
     }
@@ -14649,6 +14658,7 @@ void loop() {
   timeData.mainLoopTimeStart = micros();
   systemData.t_bench = true; // uncomment to observe timings
   // count_faster_loops++;
+  crunching_time_data = false;
 
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
@@ -14919,7 +14929,6 @@ void loop() {
     syncTaskSafeRTCTime();
     convertUTCTimeToLocalTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data = false;
   }
 
   // ---------------------------------------------------------------------
