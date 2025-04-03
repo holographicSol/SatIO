@@ -14608,7 +14608,7 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
-  // clear gps data that is not enabled while retaining some data that may be static
+  // clear gps data that is not enabled while retaining some data that may be static (running as a station)
   if (systemData.satio_enabled==false) {clearDynamicSATIO();}
   if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
   if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
