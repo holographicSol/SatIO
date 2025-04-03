@@ -14611,6 +14611,7 @@ void loop() {
   // this allows for running off the RTC and with data like coordinates preserved for advanced calculations while not syncronizing.
   // enabling gngga/gnrmc again manually will syncronize the RTC and is recommended periodically in order to circumvent drift.
   // manual sync may be preferrable if 'running as a station', because a dramatic performance increase can be gained when gps task is not running.
+  // manual sync may be preferrable if system does not use gps data (perhaps only using other sensor data).
   if (systemData.satio_enabled==false) {clearDynamicSATIO();}
   if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
   if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
