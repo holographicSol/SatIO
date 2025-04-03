@@ -3091,11 +3091,13 @@ GNGGAStruct gnggaData;
 
 void clearGNGGA() {
   // --------------------------
-  // clear dynamic data
+  // keep potential static data (if stationary then we can still use coordinates)
   // --------------------------
-  memset(gnggaData.utc_time, 0, 56);
+  // reflects last sync time
   // --------------------------
-  // keep potential static data  (if stationary then we can still use coordinates)
+  // memset(gnggaData.utc_time, 0, 56);
+  // --------------------------
+  // reflects last known coordinates
   // --------------------------
   // memset(gnggaData.latitude, 0, 56);
   // memset(gnggaData.latitude_hemisphere, 0, 56);
@@ -3189,12 +3191,13 @@ GNRMCStruct gnrmcData;
 
 void clearGNRMC() {
   // --------------------------
-  // clear dynamic data
-  // --------------------------
-  memset(gnrmcData.utc_time, 0, 56);
-  memset(gnrmcData.positioning_status, 0, 56);
-  // --------------------------
   // keep potential static data (if stationary then we can still use coordinates)
+  // --------------------------
+  // reflects last sync time
+  // --------------------------
+  // memset(gnrmcData.utc_time, 0, 56);
+  // --------------------------
+  // reflects last known coordinates
   // --------------------------
   // memset(gnrmcData.latitude, 0, 56);
   // memset(gnrmcData.latitude_hemisphere, 0, 56);
@@ -3203,6 +3206,7 @@ void clearGNRMC() {
   // --------------------------
   // clear dynamic data
   // --------------------------
+  memset(gnrmcData.positioning_status, 0, 56);
   memset(gnrmcData.ground_speed, 0, 56);
   memset(gnrmcData.ground_heading, 0, 56);
   memset(gnrmcData.utc_date, 0, 56);
@@ -10158,7 +10162,7 @@ void menuEnter() {
   // gps page
   // ----------------------------------------------------------------
   else if (menu_page==page_gps_main) {
-    if (menuGPS.selection()==0) {systemData.satio_enabled^=true; if (systemData.satio_enabled==false) {clearSATIO(); clearTrackPlanets(); first_gps_pass=true;}}
+    if (menuGPS.selection()==0) {systemData.satio_enabled^=true; if (systemData.satio_enabled==false) {clearSATIO(); first_gps_pass=true;}}
     else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true; if (systemData.gngga_enabled==false) {clearGNGGA(); first_gps_pass=true;}}
     else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true; if (systemData.gnrmc_enabled==false) {clearGNRMC(); first_gps_pass=true;}}
     else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true; if (systemData.gpatt_enabled==false) {clearGPATT(); first_gps_pass=true;}}
@@ -14591,7 +14595,7 @@ bool longer_loop = false;
 int load_distribution = 0;
 bool track_planets_period = false;
 bool check_sdcard = false;
-
+bool suspended_gps_task = false;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -14608,8 +14612,14 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
-  if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {vTaskSuspend(GPSTask); gps_done=false;}
-  else {vTaskResume(GPSTask);}
+  if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
+    vTaskSuspend(GPSTask);
+    suspended_gps_task=true;
+  }
+  else {
+    vTaskResume(GPSTask);
+    suspended_gps_task=false;
+  }
 
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                                  GPS START
@@ -14621,7 +14631,7 @@ void loop() {
   */
   longer_loop = false;
   crunching_gps_data = false;
-  if (gps_done==true) {
+  if (gps_done==true && suspended_gps_task==false)  {
     crunching_gps_data = true;
     longer_loop = true; // set load distribution flag
     
@@ -14729,7 +14739,6 @@ void loop() {
   //                                                                                               GPS DISABLED
   // ----------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    vTaskSuspend(GPSTask); gps_done=false; // do this again just in case we're late to the party.
     // ---------------------------------------------------------------------
     //                                                MATRIX SWITCH ZERO GPS
     // ---------------------------------------------------------------------
@@ -14739,10 +14748,12 @@ void loop() {
     If GPS parsing is entirely disabled then allow running matrixSwitch here.
     This may be useful for a user if the system is setup for anything that does not require GPS.
     */
-    t0 = micros();
-    if (systemData.matrix_enabled == true) {matrixSwitch();}
-    MatrixStatsCounter();
-    bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    if (suspended_gps_task==true) {
+      t0 = micros();
+      if (systemData.matrix_enabled == true) {matrixSwitch();}
+      MatrixStatsCounter();
+      bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
   }
 
   // ---------------------------------------------------------------------
@@ -14901,4 +14912,6 @@ void loop() {
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   // bench("[Looptime Min] " + String((float)(timeData.mainLoopTimeTakenMin)/1000000, 4) + "s");
+
+  delay(1);
 }
