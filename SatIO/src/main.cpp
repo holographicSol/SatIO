@@ -14740,7 +14740,7 @@ void loop() {
     Check users programmable logic.
     Never run while values are being updated.
     If GPS parsing is entirely disabled then allow running matrixSwitch here.
-    This may be useful for a user if the system is setup for anything that does not require GPS.
+    This may be useful for a user if the system is setup for anything that does not require GPS task to be currently running.
     */
     if (suspended_gps_task==true) {
       t0 = micros();
