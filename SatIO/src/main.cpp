@@ -3990,7 +3990,7 @@ void convertUTCTimeToLocalTime() {
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
-  printAllTimes();
+  // printAllTimes();
 }
 
 void printAllTimes() {
