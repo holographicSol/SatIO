@@ -3965,7 +3965,7 @@ void convertUTCTimeToLocalTime() {
   // We could set time here but it may be less efficient and less flexible considering we could
   // currently set from either GPS or RTC, while GPS may not be available and RTC may not be
   // synchronized with UTC due to GPS availability. Therefore time is set when GPS is available,
-  // and is also set from RTC, so that time can be set both ways and converted here if required.
+  // and is also set from RTC, so that time can be set both ways and convert here if also required.
   // auto
   if (satData.utc_auto_offset_flag==true) {}
   // adjust
