@@ -3916,6 +3916,8 @@ void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   /*                              TASK SAFE RTC TIME NOW                                   */
   // ----------------------------------------------------------------------------------------
+  // a frame or snapshot of time to be used until syncTaskSafeRTCTime is called again.
+  // this so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
   satData.rtc_hour = rtc.now().hour();
   satData.rtc_minute = rtc.now().minute();
   satData.rtc_second = rtc.now().second();
