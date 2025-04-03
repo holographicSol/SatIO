@@ -3860,7 +3860,9 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
     if ((first_gps_pass==true) ) {
-      // sync at first opportunity within the first 100 milliseconds of any second
+      // -------------------------------------------------------------------------
+      // Sync at first opportunity within the first 100 milliseconds of any second
+      // -------------------------------------------------------------------------
       if (satData.tmp_millisecond_int==00) {
         first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
@@ -3874,11 +3876,12 @@ void syncUTCTime() {
         satData.rtcsync_year = rtc.now().year();
         satData.rtcsync_month = rtc.now().month();
         satData.rtcsync_day = rtc.now().day();
-        
       }
     }
     else {
-      // sync within the first 100 milliseconds of any minute
+      // -------------------------------------------------------------------------
+      // Sync within the first 100 milliseconds of any minute
+      // -------------------------------------------------------------------------
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (every minute)");
         rtc.adjust(DateTime((uint32_t)satData.tmp_year_int, (uint32_t)satData.tmp_month_int, (uint32_t)satData.tmp_day_int, (uint32_t)satData.tmp_hour_int, (uint32_t)satData.tmp_minute_int, (uint32_t)satData.tmp_second_int));
@@ -3900,9 +3903,9 @@ void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   /*                              TASK SAFE RTC TIME NOW                                   */
   // ----------------------------------------------------------------------------------------
-  // a frame or snapshot of time to be used until syncTaskSafeRTCTime is called again.
-  // this so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
-  // downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
+  // A frame or snapshot of time to be used until syncTaskSafeRTCTime is called again.
+  // This so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
+  // Downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
   // ------------------------------------------
   // update task safe rtc time
   // ------------------------------------------
