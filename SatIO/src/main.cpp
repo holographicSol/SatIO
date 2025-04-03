@@ -3854,7 +3854,7 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                 SYNC RTC TIME & DATE FROM GPS                               */
   // ----------------------------------------------------------------------------------------------
-  if (atoi(gnggaData.satellite_count_gngga) > 3 && atof(gnggaData.hdop_precision_factor) <=1.0) {
+  if (atoi(gnggaData.satellite_count_gngga)>3 && atof(gnggaData.hdop_precision_factor)<=1.0) {
     if ((first_gps_pass==true) ) {
       // ----------------------------------------------------------------------------
       /* Sync at first opportunity within the first 100 milliseconds of any second */
