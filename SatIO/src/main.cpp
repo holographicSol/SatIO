@@ -656,7 +656,7 @@ const uint8_t rtcsync_red[] = {
 
 bool update_ui = true;
 bool ui_cleared = false;
-int menu_page = 0;
+signed int menu_page = 0;
 bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ----------------------------------------------------
@@ -3476,33 +3476,32 @@ struct SatDatatruct {
   double degreesLong;                                              // used for converting absolute latitude and longitude
 
   // local time converted from rtc utc time (currently only used for display purposes)
-  time_t local_time;
-  int local_hour = 0;
-  int local_minute = 0;
-  int local_second = 0;
-  int local_year = 0;
-  int local_month = 0;
-  int local_day = 0;
+  uint8_t local_hour = 0;
+  uint8_t local_minute = 0;
+  uint8_t local_second = 0;
+  uint16_t local_year = 0;
+  uint8_t local_month = 0;
+  uint8_t local_day = 0;
   char local_weekday[56];
 
   // last time rtc synced with utc
-  int rtcsync_hour = 0;
-  int rtcsync_minute = 0;
-  int rtcsync_second = 0;
-  int rtcsync_year = 0;
-  int rtcsync_month = 0;
-  int rtcsync_day = 0;
+  uint8_t rtcsync_hour = 0;
+  uint8_t rtcsync_minute = 0;
+  uint8_t rtcsync_second = 0;
+  uint16_t rtcsync_year = 0;
+  uint8_t rtcsync_month = 0;
+  uint8_t rtcsync_day = 0;
   uint32_t rtc_unixtime;
 
   // task safe rtc time now can be used instead of directly calling rtc.now()
   // rtc time is utc.
   // all programmable logic uses task safe rtc time (currently safer and faster than converting to local time).
-  int rtc_hour = 0;
-  int rtc_minute = 0;
-  int rtc_second = 0;
-  int rtc_year = 0;
-  int rtc_month = 0;
-  int rtc_day = 0;
+  uint8_t rtc_hour = 0;
+  uint8_t rtc_minute = 0;
+  uint8_t rtc_second = 0;
+  uint16_t rtc_year = 0;
+  uint8_t rtc_month = 0;
+  uint8_t rtc_day = 0;
   char rtc_weekday[56];
 
   /*
@@ -3520,13 +3519,13 @@ struct SatDatatruct {
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
 
   /* TEMPORARY TIME VALUES */
-  int tmp_year_int;         // temp current year
-  int tmp_month_int;        // temp current month
-  int tmp_day_int;          // temp current day
-  int tmp_hour_int;         // temp current hour
-  int tmp_minute_int;       // temp current minute
-  int tmp_second_int;       // temp current second
-  int tmp_millisecond_int;  // temp current millisecond
+  uint16_t tmp_year_int=0;        // temp current year
+  uint8_t tmp_month_int=0;        // temp current month
+  uint8_t tmp_day_int=0;          // temp current day
+  uint8_t tmp_hour_int=0;         // temp current hour
+  uint8_t tmp_minute_int=0;       // temp current minute
+  uint8_t tmp_second_int=0;       // temp current second
+  uint8_t tmp_millisecond_int=0;  // temp current millisecond
   char tmp_year[56];        // temp current year
   char tmp_month[56];       // temp current month
   char tmp_day[56];         // temp current day
@@ -3571,7 +3570,6 @@ void clearDynamicSATIO() {
   // keep potential static data (if stationary then we can still use time)
   // --------------------------
   // memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
-  // satData.local_time = NAN;
   // satData.local_hour = NAN;
   // satData.local_minute = NAN;
   // satData.local_second = NAN;
@@ -3868,7 +3866,7 @@ void syncUTCTime() {
       // ----------------------------------------------------------------------------
       /* Sync at first opportunity within the first 100 milliseconds of any second */
       // ----------------------------------------------------------------------------
-      if (satData.tmp_millisecond_int==00) {
+      if (satData.tmp_millisecond_int==0) {
         first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
         // --------------------------------------------------------------------------
@@ -3914,6 +3912,9 @@ void syncUTCTime() {
 //                                                                                   SYNC TASK SAFE RTC TIME AND TIMELIB FROM RTC
 // ------------------------------------------------------------------------------------------------------------------------------
 
+tmElements_t make_utc_time_elements;
+time_t make_utc_time;
+
 void syncTaskSafeRTCTime() {
   // ----------------------------------------------------------------------------------------
   /*                               SYNC TASK SAFE RTC TIME                                 */
@@ -3952,8 +3953,8 @@ void syncTaskSafeRTCTime() {
     satData.rtc_day,
     satData.rtc_month,
     satData.tmp_year_int);
-  tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  time_t make_utc_time = makeTime(make_utc_time_elements);
+  make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
+  make_utc_time = makeTime(make_utc_time_elements);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -10914,8 +10915,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // local time
         // ------------------------------------------------
-        canvas120x8.printFixed(1, 1, String(String(satData.local_hour) + ":" + String(satData.local_minute) + ":" + String(satData.local_second)).c_str(), STYLE_BOLD );
-        // canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
+        // canvas120x8.printFixed(1, 1, String(String(satData.local_hour) + ":" + String(satData.local_minute) + ":" + String(satData.local_second)).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second)).c_str(), STYLE_BOLD );
         display.drawCanvas(3, 4, canvas120x8);
       }
       canvas120x8.clear();
@@ -10923,8 +10924,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // local date
         // ------------------------------------------------
-        canvas120x8.printFixed(1, 1, String(String(satData.local_day) + "/" + String(satData.local_month) + "/" + String(satData.local_year)).c_str(), STYLE_BOLD );
-        // canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
+        // canvas120x8.printFixed(1, 1, String(String(satData.local_day) + "/" + String(satData.local_month) + "/" + String(satData.local_year)).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year)).c_str(), STYLE_BOLD );
         display.drawCanvas(3, 14, canvas120x8);
       }
       // ------------------------------------------------
@@ -10941,6 +10942,7 @@ void UpdateUI(void * pvParamters) {
         menuHome.showMenuContent(display);
         // ------------------------------------------------
       }
+      delay(50);
     }
 
     // ------------------------------------------------
@@ -13724,6 +13726,18 @@ void readI2C() {
   if (make_i2c_request == true) {
     make_i2c_request = false;
     // ------------------------------------------------
+
+    // ------------------------------------------------
+    // request from specific address
+    // ------------------------------------------------
+    // make a request
+    // Serial.println("[master] requesting from address: " + String(I2C_ADDR_PORTCONTROLLER_0));
+    // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER_0, sizeof(I2CLink.INPUT_BUFFER));
+    // // receive from
+    // memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+    // Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    // if (!strcmp(I2CLink.INPUT_BUFFER, "")==0) {I2CLink.MESSAGE_RECEIVED=true;}
 
     // ------------------------------------------------
     // scan I2C address range
