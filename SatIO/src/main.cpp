@@ -3482,6 +3482,7 @@ struct SatDatatruct {
   int local_year = 0;
   int local_month = 0;
   int local_day = 0;
+  char local_weekday[56];
 
   // last time rtc synced with utc
   time_t rtcsync_time;
@@ -3502,8 +3503,7 @@ struct SatDatatruct {
   int rtc_year = 0;
   int rtc_month = 0;
   int rtc_day = 0;
-
-  char weekday[56];
+  char rtc_weekday[56];
 
   /*
   utc second offset:
@@ -3570,7 +3570,7 @@ void clearDynamicSATIO() {
   // --------------------------
   // keep potential static data (if stationary then we can still use time)
   // --------------------------
-  // memset(satData.weekday, 0, sizeof(satData.weekday));
+  // memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   // satData.local_time = NAN;
   // satData.local_hour = NAN;
   // satData.local_minute = NAN;
@@ -3923,8 +3923,8 @@ void syncTaskSafeRTCTime() {
   satData.rtc_month = rtc.now().month();
   satData.rtc_day = rtc.now().day();
   satData.rtc_unixtime = rtc.now().unixtime();
-  memset(satData.weekday, 0, sizeof(satData.weekday));
-  strcpy(satData.weekday, String(myAstro.HumanDayOfTheWeek(satData.rtcsync_year, satData.rtcsync_month, satData.rtcsync_day)).c_str());
+  memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
+  strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3938,21 +3938,19 @@ void convertUTCTimeToLocalTime() {
   // ----------------------------------------------------------------------------------------------
   /*                                 MAKE TIME & DATE FROM RTC                                   */
   // ----------------------------------------------------------------------------------------------
+  // use task safe rtc time (this will be accurate to within the last time syncTaskSafeRTCTime was called).
   setTime(
-    rtc.now().hour(),
-    rtc.now().minute(),
-    rtc.now().second(),
-    rtc.now().day(),
-    rtc.now().month(),
-    rtc.now().year());
+    satData.rtc_hour,
+    satData.rtc_minute,
+    satData.rtc_second,
+    satData.rtc_day,
+    satData.rtc_month,
+    satData.rtc_year);
   tmElements_t make_local_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
   satData.local_time = makeTime(make_local_time_elements);
   // ----------------------------------------------------------------------------------------------
   /*                                 ADJUST TIME & DATE FROM RTC                                 */
   // ----------------------------------------------------------------------------------------------
-  // is setup and ready for dev
-  // auto offset: requires politics and or tz and dst.
-  // manual offset: via ui.
   // auto
   if (satData.utc_auto_offset_flag==true) {}
   // adjust
@@ -3964,6 +3962,8 @@ void convertUTCTimeToLocalTime() {
   satData.local_hour = hour();
   satData.local_minute = minute();
   satData.local_second = second();
+  memset(satData.local_weekday, 0, sizeof(satData.local_weekday));
+  strcpy(satData.local_weekday, String(myAstro.HumanDayOfTheWeek(satData.local_year, satData.local_month, satData.local_day)).c_str());
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -6471,64 +6471,64 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday") == 0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
           }
         }
 
@@ -10340,13 +10340,13 @@ String getRelatedX(char * data) {
   if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
   if (strcmp("RTCTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("DaySunday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DayMonday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DayTuesday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DayWednesday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DayThursday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DayFriday", data)==0) {return String(satData.weekday);}
-  if (strcmp("DaySaturday", data)==0) {return String(satData.weekday);}
+  if (strcmp("DaySunday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DayMonday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DayTuesday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DayWednesday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DayThursday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DayFriday", data)==0) {return String(satData.rtc_weekday);}
+  if (strcmp("DaySaturday", data)==0) {return String(satData.rtc_weekday);}
   if (strcmp("DateDayX", data)==0) {return String(satData.rtc_day);}
   if (strcmp("DateMonthX", data)==0) {return String(satData.rtc_month);}
   if (strcmp("DateYearX", data)==0) {return String(satData.rtc_year);}
@@ -10860,20 +10860,20 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.clear();
         canvas76x8.printFixed(1, 1, String(String(padDigitsZero(satData.local_day)) + "/" + String(padDigitsZero(satData.local_month)) + "/" + String(padDigitsZero(satData.local_year))).c_str(), STYLE_BOLD );
         display.drawCanvas(35, 14, canvas76x8);
-        // ------------------------------------------------
+      }
+      // ------------------------------------------------
 
+      // ------------------------------------------------
+      if (interaction_updateui==true) {
+        interaction_updateui=false;
         // ------------------------------------------------
-        if (interaction_updateui==true) {
-          interaction_updateui=false;
-          // ------------------------------------------------
-          // menu
-          // ------------------------------------------------
-          display.setColor(systemData.color_menu_border);
-          menuHome.showMenuBorder(display);
-          display.setColor(systemData.color_menu_content);
-          menuHome.showMenuContent(display);
-          // ------------------------------------------------
-        }
+        // menu
+        // ------------------------------------------------
+        display.setColor(systemData.color_menu_border);
+        menuHome.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuHome.showMenuContent(display);
+        // ------------------------------------------------
       }
     }
 
@@ -12308,7 +12308,7 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.printFixed(1, 1, String(siderealPlanetData.sun_s).c_str());
       display.drawCanvas(45, ui_content_7, canvas80x8);
       canvas80x8.clear();
-      canvas80x8.printFixed(1, 1, String(satData.weekday).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.rtc_weekday).c_str());
       display.drawCanvas(45, ui_content_8, canvas80x8);
     }
 
@@ -14638,7 +14638,6 @@ void loop() {
   longer_loop = false;
   crunching_time_data = false;
   if (gps_done==true && suspended_gps_task==false)  {
-    crunching_time_data = true;
     longer_loop = true; // set load distribution flag
     
     // -----------------------------------------------------------------------
@@ -14672,10 +14671,11 @@ void loop() {
     Convert absolute latitude and longitude to degrees.
     Only run if new GPS data has been collected.
     */
+    crunching_time_data = true;
     t0 = micros();
     syncUTCTime();
-    syncTaskSafeRTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data = false;
 
     // -----------------------------------------------------------------------
     //                                                  SATIO GPS CALCULATIONS
