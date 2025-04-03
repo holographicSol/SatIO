@@ -3485,7 +3485,6 @@ struct SatDatatruct {
   char local_weekday[56];
 
   // last time rtc synced with utc
-  time_t rtcsync_time;
   int rtcsync_hour = 0;
   int rtcsync_minute = 0;
   int rtcsync_second = 0;
@@ -3578,7 +3577,6 @@ void clearDynamicSATIO() {
   // satData.local_year = NAN;
   // satData.local_month = NAN;
   // satData.local_day = NAN;
-  // satData.rtcsync_time = NAN;
   // satData.rtcsync_hour = NAN;
   // satData.rtcsync_minute = NAN;
   // satData.rtcsync_second = NAN;
@@ -3858,21 +3856,6 @@ void syncUTCTime() {
   satData.tmp_second_int = atoi(satData.tmp_second);
   satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
   // ----------------------------------------------------------------------------------------------
-  /*                                  MAKE TIME & DATE FROM GPS                                  */
-  // ----------------------------------------------------------------------------------------------
-  // ------------------------------------------
-  // update time with gps time
-  // ------------------------------------------
-  setTime(
-    satData.tmp_hour_int,
-    satData.tmp_minute_int,
-    satData.tmp_second_int,
-    satData.tmp_day_int,
-    satData.tmp_month_int,
-    satData.tmp_year_int);
-  tmElements_t make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  time_t make_utc_time = makeTime(make_utc_time_elements);
-  // ----------------------------------------------------------------------------------------------
   /*                                  SET RTC TIME & DATE FROM GPS                               */
   // ----------------------------------------------------------------------------------------------
   if (atoi(gnggaData.satellite_count_gngga) > 3) {
@@ -3881,17 +3864,16 @@ void syncUTCTime() {
       if (satData.tmp_millisecond_int==00) {
         first_gps_pass = false;
         Serial.println("[rtc] synchronizing (first opportunity)");
-        rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        rtc.adjust(DateTime((uint32_t)satData.tmp_year_int, (uint32_t)satData.tmp_month_int, (uint32_t)satData.tmp_day_int, (uint32_t)satData.tmp_hour_int, (uint32_t)satData.tmp_minute_int, (uint32_t)satData.tmp_second_int));
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
-        satData.rtcsync_time = make_utc_time;
-        satData.rtcsync_hour = hour();
-        satData.rtcsync_minute = minute();
-        satData.rtcsync_second = second();
-        satData.rtcsync_year = year();
-        satData.rtcsync_month = month();
-        satData.rtcsync_day = day();
+        satData.rtcsync_hour = rtc.now().hour();
+        satData.rtcsync_minute = rtc.now().minute();
+        satData.rtcsync_second = rtc.now().second();
+        satData.rtcsync_year = rtc.now().year();
+        satData.rtcsync_month = rtc.now().month();
+        satData.rtcsync_day = rtc.now().day();
         
       }
     }
@@ -3899,17 +3881,16 @@ void syncUTCTime() {
       // sync within the first 100 milliseconds of any minute
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
         Serial.println("[rtc] synchronizing (every minute)");
-        rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        rtc.adjust(DateTime((uint32_t)satData.tmp_year_int, (uint32_t)satData.tmp_month_int, (uint32_t)satData.tmp_day_int, (uint32_t)satData.tmp_hour_int, (uint32_t)satData.tmp_minute_int, (uint32_t)satData.tmp_second_int));
         // ----------------------------------------------------------------------------------------
         /*                              SET SYNC TIME FROM GPS                                   */
         // ----------------------------------------------------------------------------------------
-        satData.rtcsync_time = make_utc_time;
-        satData.rtcsync_hour = hour();
-        satData.rtcsync_minute = minute();
-        satData.rtcsync_second = second();
-        satData.rtcsync_year = year();
-        satData.rtcsync_month = month();
-        satData.rtcsync_day = day();
+        satData.rtcsync_hour = rtc.now().hour();
+        satData.rtcsync_minute = rtc.now().minute();
+        satData.rtcsync_second = rtc.now().second();
+        satData.rtcsync_year = rtc.now().year();
+        satData.rtcsync_month = rtc.now().month();
+        satData.rtcsync_day = rtc.now().day();
       }
     }
   }
@@ -3922,7 +3903,6 @@ void syncTaskSafeRTCTime() {
   // a frame or snapshot of time to be used until syncTaskSafeRTCTime is called again.
   // this so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
   // downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
-
   // ------------------------------------------
   // update task safe rtc time
   // ------------------------------------------
@@ -3935,10 +3915,11 @@ void syncTaskSafeRTCTime() {
   satData.rtc_unixtime = rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
-
   // ------------------------------------------
   // update time with task safe rtc time
   // ------------------------------------------
+  // We do not want to adjust rtc time unless we synchronize rtc with utc.
+  // Set time that can be adjusted:
   setTime(
     satData.rtc_hour,
     satData.rtc_minute,
@@ -3959,18 +3940,24 @@ void convertUTCTimeToLocalTime() {
   /*                                   DISPLAYED TIME & DATE                                     */
   // ----------------------------------------------------------------------------------------------
   // ----------------------------------------------------------------------------------------------
-  /*                            ADJUST TIME & DATE FROM SYSTEM TIME                              */
+  /*                             ADJUST LOCAL TIME & DATE FROM TIME                              */
   // ----------------------------------------------------------------------------------------------
   // Time should be set before calling this function.
   // We could set time here but it may be less efficient and less flexible considering we could
   // currently set from either GPS or RTC, while GPS may not be available and RTC may not be
   // synchronized with UTC due to GPS availability. Therefore time is set when GPS is available,
-  // and is also set from RTC, so that time can be set both ways and convert here if also required.
+  // and is also set from RTC, so that time can be set both ways and be converted here if also required.
+  // --------------------------------------------------------
   // auto utc offset: automatically modify utc_second_offset
+  // --------------------------------------------------------
   if (satData.utc_auto_offset_flag==true) {}
+  // --------------------------------------------------------
   // adjust time: adjust time according to utc_second_offset
+  // --------------------------------------------------------
   adjustTime(satData.utc_second_offset);
-  // set
+  // --------------------------------------------------------
+  // set local time
+  // --------------------------------------------------------
   satData.local_year = year();
   satData.local_month = month();
   satData.local_day = day();
