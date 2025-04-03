@@ -10162,10 +10162,10 @@ void menuEnter() {
   // gps page
   // ----------------------------------------------------------------
   else if (menu_page==page_gps_main) {
-    if (menuGPS.selection()==0) {systemData.satio_enabled^=true; if (systemData.satio_enabled==false) {clearSATIO();} first_gps_pass=true;}
-    else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true; if (systemData.gngga_enabled==false) {clearGNGGA();} first_gps_pass=true;}
-    else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true; if (systemData.gnrmc_enabled==false) {clearGNRMC();} first_gps_pass=true;}
-    else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true; if (systemData.gpatt_enabled==false) {clearGPATT();} first_gps_pass=true;}
+    if (menuGPS.selection()==0) {systemData.satio_enabled^=true;}
+    else if (menuGPS.selection()==1) {systemData.gngga_enabled^=true;}
+    else if (menuGPS.selection()==2) {systemData.gnrmc_enabled^=true;}
+    else if (menuGPS.selection()==3) {systemData.gpatt_enabled^=true;}
     else if (menuGPS.selection()==4) {
       if (strcmp(satData.coordinate_conversion_mode, "GNGGA")==0) {
         memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
@@ -14612,13 +14612,18 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------
   //                                                                                  SUSPEND GPS IF NOT IN USE 
   // ----------------------------------------------------------------------------------------------------------
+  if (systemData.satio_enabled==false) {clearSATIO();}
+  if (systemData.gngga_enabled==false) {clearGNGGA();}
+  if (systemData.gnrmc_enabled==false) {clearGNRMC();}
+  if (systemData.gpatt_enabled==false) {clearGPATT();}
+
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    vTaskSuspend(GPSTask);
+    if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
     suspended_gps_task=true;
     first_gps_pass=true;
   }
   else {
-    vTaskResume(GPSTask);
+    if (suspended_gps_task==true) {vTaskResume(GPSTask);}
     suspended_gps_task=false;
   }
 
