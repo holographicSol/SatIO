@@ -2376,7 +2376,9 @@ struct MatrixStruct {
   char matrix_sentence[256];      // an NMEA inspired sentence reflecting matrix switch states
   String tempStr="";
 
+  // -------------------------------------------------------------------------------------------------------
   // reflects matrix switch active/inactive states each loop of matrix switch function
+  // -------------------------------------------------------------------------------------------------------
   bool matrix_switch_state[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2384,7 +2386,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // reflects matrix switch active/inactive states each loop of matrix switch function
+  // -------------------------------------------------------------------------------------------------------
   bool tmp_matrix_switch_state[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2392,7 +2396,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // reflects matrix switch enabled/disabled
+  // -------------------------------------------------------------------------------------------------------
   int matrix_switch_enabled[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2400,7 +2406,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // reflects matrix switch output mode: 0=high/low
+  // -------------------------------------------------------------------------------------------------------
   int matrix_switch_output_mode[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2408,7 +2416,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // reflects matrix switch inverted logic bool (per function)
+  // -------------------------------------------------------------------------------------------------------
   bool matrix_switch_inverted_logic[20][10]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
@@ -2472,11 +2482,13 @@ struct MatrixStruct {
     },
   };
 
+  // -------------------------------------------------------------------------------------------------------
   /*
   a placeholder for timings when timer functions are selected for a matrix switch.
   allows modulation with second resolution.
   currently intended as one timer per switch so be careful.
   */
+ // -------------------------------------------------------------------------------------------------------
   unsigned long matrix_timers[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2484,7 +2496,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // a placeholder for matrix switch ports (default no port)
+  // -------------------------------------------------------------------------------------------------------
   signed int matrix_port_map[1][20]={
     {
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2492,7 +2506,9 @@ struct MatrixStruct {
     }
   };
 
+  // -------------------------------------------------------------------------------------------------------
   // a placeholder for matrix switch ports (default no port)
+  // -------------------------------------------------------------------------------------------------------
   signed int tmp_matrix_port_map[1][20]={
     {
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2500,7 +2516,9 @@ struct MatrixStruct {
     }
   };
 
-  // a placeholder for matrix switch ports (default ATMEGA2560 digital)
+  // -------------------------------------------------------------------------------------------------------
+  // a placeholder for hardcoded matrix switch ports (default ATMEGA2560 digital)
+  // -------------------------------------------------------------------------------------------------------
   // signed int matrix_port_map[1][20]={
   //   {
   //     23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -2508,7 +2526,9 @@ struct MatrixStruct {
   //   }
   // };
 
-  // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default None)
+  // -------------------------------------------------------------------------------------------------------
+  // store up to 10 functions names per switch (default None)
+  // -------------------------------------------------------------------------------------------------------
   char matrix_function[20][10][25]={
     {"None", "None", "None", "None", "None", "None", "None", "None", "None", "None", // 1
      },
@@ -2552,12 +2572,15 @@ struct MatrixStruct {
      },
     };
 
+  // -------------------------------------------------------------------------------------------------------
   /*
-  a matrix max_matrices by max_matrix_functions storing function values for each matrix switch
-          0     1     2     
-          X     Y     Z    
-  {  {   0.0,  0.0,  0.0   } }
+  store up to 3 values for each matrix switch function:
+
+                                      0     1     2     
+                                      X     Y     Z    
+                              {  {   0.0,  0.0,  0.0   } }
   */
+  // -------------------------------------------------------------------------------------------------------
   double matrix_function_xyz[20][10][3]={
     {
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
@@ -2641,8 +2664,9 @@ struct MatrixStruct {
     },
   };
 
-  /* function names for function name matrix */
-
+  // -------------------------------------------------------------------------------------------------------
+  // function expressions
+  // -------------------------------------------------------------------------------------------------------
   char expression[5][16] =
   {
     "", // empty for functions that take no expression
@@ -2653,8 +2677,14 @@ struct MatrixStruct {
   };
   int i_expression=0;
 
+  // -------------------------------------------------------------------------------------------------------
   // number of available base function names that can be used to program a matrix switch
+  // -------------------------------------------------------------------------------------------------------
   int max_matrix_function_names=134;
+
+  // -------------------------------------------------------------------------------------------------------
+  // function names for function name matrix
+  // -------------------------------------------------------------------------------------------------------
   char matrix_function_names[134][25]=
   {
     "None",
@@ -2800,6 +2830,7 @@ MatrixStruct matrixData;
 // ------------------------------------------------------------------------------------------------------------------------------
 // this list is currently seperate from matrix_function_names in matrixData so that function names are not dependant on lcdgfx.
 // the lists would be preferrably merged (providing function names are still not tied to any particular display driver). 
+// ------------------------------------------------------------------------------------------------------------------------------
 const char *menuMatrixSetFunctionNameItems[134] =
 {
   matrixData.matrix_function_names[0],
