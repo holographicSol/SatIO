@@ -14265,7 +14265,6 @@ Note:
 */
 
 void ISR_I2C_PERIPHERAL() {
-  // Serial.println("[ISR] ISR_I2C_PERIPHERAL"); // do not ever uncomment this unless when absolutely necessary (no stuff in isr)
   make_i2c_request=true;
 }
 
@@ -14274,14 +14273,22 @@ void ISR_I2C_PERIPHERAL() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void writeI2C(int I2C_Address) {
+  // --------------------
   // compile bytes array
+  // --------------------
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER_0[i];}
+  // --------------------
   // begin
+  // --------------------
   Wire.beginTransmission(I2C_Address);
+  // --------------------
   // write bytes array
+  // --------------------
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+  // --------------------
   // end
+  // --------------------
   Wire.endTransmission();
 }
 
@@ -14290,16 +14297,16 @@ void writeI2C(int I2C_Address) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void readI2C() {
-  // ------------------------------------------------
+  // ---------------------------------------
+  // make i2c request if interrupt flag true
+  // --------------------------------------- 
   I2CLink.MESSAGE_RECEIVED=false;
-  // make i2c request if interrupt flag true 
   if (make_i2c_request==true) {
     make_i2c_request=false;
-    // ------------------------------------------------
 
-    // ------------------------------------------------
-    // request from specific address
-    // ------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // REQUEST FROM SPECIFIC DEVICE
+    // ------------------------------------------------------------------------------------------------------------------------------
     // make a request
     // Serial.println("[master] requesting from address: " + String(I2C_ADDR_PORTCONTROLLER_0));
     // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER_0, sizeof(I2CLink.INPUT_BUFFER));
@@ -14309,69 +14316,69 @@ void readI2C() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     // if (!strcmp(I2CLink.INPUT_BUFFER, "")==0) {I2CLink.MESSAGE_RECEIVED=true;}
 
-    // ------------------------------------------------
-    // scan I2C address range
-    // ------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // SCAN I2C ADDRESS RANGE
+    // ------------------------------------------------------------------------------------------------------------------------------
     I2CLink.I2CADDRESSINDEX=I2CLink.I2CADDRESSRANGEMIN;
     for (I2CLink.I2CADDRESSINDEX; I2CLink.I2CADDRESSINDEX<I2CLink.I2CADDRESSRANGEMAX; I2CLink.I2CADDRESSINDEX++) {
-
       // ------------------------------------------------
       // test each device with empty message.
-      // custom peripherals are designed to readBytesUnitl() so send them something or they will hang.
+      // custom peripherals are designed to readBytesUnitl() so send them something or we will hang on a timeout.
       // ------------------------------------------------
       // begin test
+      // ------------------------------------------------
       Wire.beginTransmission(I2CLink.I2CADDRESSINDEX);
+      // ------------------------------------------------
       // write bytes array
+      // ------------------------------------------------
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
       for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER_0[i];}
       Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+      // ------------------------------------------------
       // end test
+      // ------------------------------------------------
       int error=Wire.endTransmission();
-
       // ------------------------------------------------
       // make request
       // ------------------------------------------------
       if (error==0){
         Serial.println("[I2C] address found: " + String(I2CLink.I2CADDRESSINDEX));
+        // ----------------------------------------------
         // make a request from found device
+        // ----------------------------------------------
         Serial.println("[master] requesting from address: " + String(I2CLink.I2CADDRESSINDEX));
         Wire.requestFrom(I2CLink.I2CADDRESSINDEX, sizeof(I2CLink.INPUT_BUFFER));
+        // ----------------------------------------------
         // receive from found device
+        // ----------------------------------------------
         memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
         Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
         Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+        // ---------------------------------------------------------------------------------------
         // break if message or keep scanning if message empty (and dont parse the message in loop)
-        // uncomment to break regardless of message content
-        // I2CLink.MESSAGE_RECEIVED=true;
-        // break;
-        // uncomment to break on non empty message
+        // ---------------------------------------------------------------------------------------
         if (!strcmp(I2CLink.INPUT_BUFFER, "")==0) {I2CLink.MESSAGE_RECEIVED=true; break;}
       }
     }
-
-    // ------------------------------------------------
-    // read response
-    // ------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // READ RESPONSE
+    // ------------------------------------------------------------------------------------------------------------------------------
     if (I2CLink.MESSAGE_RECEIVED==true) {
       I2CLink.MESSAGE_RECEIVED=false;
       interaction_updateui=true;
-
       // ------------------------------------------------
       // record activity time
       // ------------------------------------------------
       unixtime_i2C_reponse=satData.rtc_unixtime;
       Serial.println("[unixtime_i2C_reponse] " + String(unixtime_i2C_reponse));
-
       // ------------------------------------------------
       // blind button press protection
       // ------------------------------------------------
       if (update_ui==true) {
-
-        // -----------------
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
         // CONTROL PAD START
-        // -----------------
-
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
         // ------------------------------------------------
         // parse special interrupt buttons
         // ------------------------------------------------
@@ -14379,7 +14386,6 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I1")==0) {Serial.println("[button] ISR1");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I2")==0) {Serial.println("[button] ISR2");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,I3")==0) {Serial.println("[button] ISR3");}
-
         // ------------------------------------------------
         // parse numpad buttons
         // ------------------------------------------------
@@ -14395,7 +14401,6 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,9")==0) {Serial.println("[button] 9"); inputChar(digit_9);}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,10")==0) {Serial.println("[button] 10: ."); inputChar(period_char);}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,11")==0) {Serial.println("[button] 11: -"); inputChar(hyphen_char);}
-
         // ------------------------------------------------
         // parse navigation buttons
         // ------------------------------------------------
@@ -14407,7 +14412,6 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,17")==0) {Serial.println("[button] 17: enter"); menuEnter();}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,18")==0) {Serial.println("[button] 18: delete"); if (allow_input_data==true) {input_data[strlen(input_data)-1]='\0';}}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,19")==0) {Serial.println("[button] 19: back"); menuBack();}
-
         // ------------------------------------------------
         // current spares
         // ------------------------------------------------
@@ -14423,23 +14427,19 @@ void readI2C() {
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,29")==0) {Serial.println("[button] 29");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
         else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
-
-        // ---------------
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
         // CONTROL PAD END
-        // ---------------
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
       }
-
-      // -------------------------
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
       // OBJECT DETECTION AI START
-      // -------------------------
-
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
       // example: tag,id
       // if      (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,1")==0) {Serial.println("[object detection ai] object 0: true"); object_0=true;}
       // else if (strcmp(I2CLink.INPUT_BUFFER, "$OD,0,0")==0) {Serial.println("[object detection ai] object 0: false"); object_0=false;}
-
-      // -----------------------
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
       // OBJECT DETECTION AI END
-      // -----------------------
+      // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
     }
   }
 }
