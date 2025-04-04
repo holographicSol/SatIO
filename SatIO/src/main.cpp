@@ -11268,10 +11268,6 @@ String getRelatedX(char * data) {
 //                                                                                                                             UI
 // ------------------------------------------------------------------------------------------------------------------------------
 
-/*
-IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
-*/
-
 char TMP_UI_DATA_0[56];
 
 // ------------------------------------------------
