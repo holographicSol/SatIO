@@ -1045,13 +1045,15 @@ char cwd[1024]="/";
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct systemStruct {
-  bool debug=false;                // print verbose information over serial
-  bool t_bench=false;              // prints bennchmark information for tuning
+  bool DISPLAY_ENABLED=true; // enable/disable headless mode (currently in firmware only).
 
-  bool overload=false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  int i_overload=0;                // count overloads
-  int overload_max=100000;           // main loop overload time in micros (default 1/10th of a second)
-  int index_overload_times=10;     // index of currently used time
+  bool debug=false; // print verbose information over serial
+  bool t_bench=false; // prints bennchmark information for tuning
+
+  bool overload=false; // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
+  int i_overload=0; // count overloads
+  int overload_max=100000; // main loop overload time in micros (default 1/10th of a second)
+  int index_overload_times=10; // index of currently used time
   int max_overload_times=11;
   int overload_times[12]={
     1,
@@ -9853,8 +9855,8 @@ void menuBack() {
 void menuEnter() {
 
   // ----------------------------------------------------------------
-
   // home page
+  // ----------------------------------------------------------------
   if (menu_page==page_home) {
 
     // go to main menu
@@ -9862,65 +9864,77 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-
   // main menu
+  // ----------------------------------------------------------------
   else if (menu_page==page_main_menu) {
     // ------------------------------------------------
     // go to matrix menu
+    // ------------------------------------------------
     if (menuMain.selection()==0) {
       menu_page=page_matrix_logic_main;
     }
     // ------------------------------------------------
     // go to matrix menu
+    // ------------------------------------------------
     if (menuMain.selection()==1) {
       menu_page=page_overview_matrix_switching;
     }
     // ------------------------------------------------
     // go to file menu
+    // ------------------------------------------------
     else if (menuMain.selection()==2) {
       menu_page=page_file_main;
     }
     // ------------------------------------------------
     // go to gps menu
+    // ------------------------------------------------
     else if (menuMain.selection()==3) {
       menu_page=page_gps_main;
     }
     // ------------------------------------------------
     // go to serial menu
+    // ------------------------------------------------
     else if (menuMain.selection()==4) {
       menu_page=page_serial_main;
     }
     // ------------------------------------------------
     // go to system menu
+    // ------------------------------------------------
     else if (menuMain.selection()==5) {
       menu_page=page_system_main;
     }
     // ------------------------------------------------
     // go to universe menu
+    // ------------------------------------------------
     else if (menuMain.selection()==6) {
       menu_page=page_universe_main;
     }
     // ------------------------------------------------
     // go to display menu
+    // ------------------------------------------------
     else if (menuMain.selection()==7) {
       menu_page=page_display_main;
     }
     // ------------------------------------------------
     // go to CD74HC4067 menu
+    // ------------------------------------------------
     else if (menuMain.selection()==8) {
       menu_page=page_CD74HC4067_main;
     }
     // ------------------------------------------------
     // go to time and date menu
+    // ------------------------------------------------
     else if (menuMain.selection()==9) {
       menu_page=page_timeanddate_main;
     }
   }
   // ----------------------------------------------------------------
   // matrix switch configuration
+  // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_main) {
     // ------------------------------------------------
     // go to set port page
+    // ------------------------------------------------
     if (menu_column_selection==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
@@ -9928,18 +9942,21 @@ void menuEnter() {
       menu_page=page_input_data;
     }
     // ------------------------------------------------
-    // toggle enable/disable matrix switch: also turns switch off
+    // enable/disable matrix switch (& turn switch off)
+    // ------------------------------------------------
     else if (menu_column_selection==2) {
       matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]^=true;
       matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]^=true;
     }
     // ------------------------------------------------
     // toggle standard/inverted function logic
+    // ------------------------------------------------
     else if (menu_column_selection==3) {
       matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]^=true;
     }
     // ------------------------------------------------
     // go to function name selection
+    // ------------------------------------------------
     else if (menu_column_selection==4) {
       menu_page=page_matrix_logic_select_setup;
     }
@@ -9947,6 +9964,7 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // set digits
+  // ----------------------------------------------------------------
   else if (menu_page==page_input_data) {
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=page_matrix_logic_main;}
@@ -9959,10 +9977,12 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // matrix switch select function name, x, y, or z
+  // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_select_setup) {
     if (menuMatrixConfigureFunction.selection()==0) {menu_page=page_matrix_logic_setup_function;}
     // ------------------------------------------------
     // go to set function value x page
+    // ------------------------------------------------
     if (menuMatrixConfigureFunction.selection()==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
@@ -9971,6 +9991,7 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // go to set function value y page
+    // ------------------------------------------------
     else if (menuMatrixConfigureFunction.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
@@ -9979,6 +10000,7 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // go to set function value z page
+    // ------------------------------------------------
     else if (menuMatrixConfigureFunction.selection()==3) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
@@ -9987,17 +10009,21 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // set expression
+    // ------------------------------------------------
     else if (menuMatrixConfigureFunction.selection()==4) {
       // ------------------------------------------------
       // iterate over expression
+      // ------------------------------------------------
       matrixData.i_expression++;
       if (matrixData.i_expression > 4) {matrixData.i_expression=0;}
       // ------------------------------------------------
       // put current str in temp
+      // ------------------------------------------------
       memset(matrixData.temp, 0, sizeof(matrixData.temp));
       strcpy(matrixData.temp, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       // ------------------------------------------------
       // remove expression
+      // ------------------------------------------------
       matrixData.tempStr=String(matrixData.temp);
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
@@ -10005,9 +10031,11 @@ void menuEnter() {
       matrixData.tempStr.replace("Range", "");
       // ------------------------------------------------
       // concatinate base function name with expression
+      // ------------------------------------------------
       matrixData.tempStr=matrixData.tempStr + matrixData.expression[matrixData.i_expression];
       // ------------------------------------------------
       // copy new name into matrix
+      // ------------------------------------------------
       memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
       strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.tempStr.c_str());
     }
@@ -10015,6 +10043,7 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // matrix switch set function name
+  // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_setup_function) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
     strcpy(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], matrixData.matrix_function_names[menuMatrixSetFunctionName.selection()]);
@@ -10023,217 +10052,374 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // file menu
+  // ----------------------------------------------------------------
   else if (menu_page==page_file_main) {
+
     // ------------------------------------------------
     // new matrix
+    // ------------------------------------------------
     if (menuFile.selection()==0) {
+      // ----------------------------------------------
       // disable and turn off all matrix switches
+      // ----------------------------------------------
       setAllMatrixSwitchesEnabledFalse();
       setAllMatrixSwitchesStateFalse();
+      // ----------------------------------------------
       // zero the matrix and clear current matrix file path
+      // ----------------------------------------------
       zero_matrix();
+      // ----------------------------------------------
       // update filename and file path
+      // ----------------------------------------------
       memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
       memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     }
 
-    // ----------------------------------------------------------------
+    // ------------------------------------------------
     // goto save matrix page
+    // ------------------------------------------------
     else if (menuFile.selection()==1) {
-      // ------------------------------------------------
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // END SPI DEVICE
+        // --------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_file_save_matrix;
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+        // --------------------------------------------
+        // GO TO
+        // ---------------- ----------------------------
+        menu_page=page_file_save_matrix;
+      }
     }
 
-    // ----------------------------------------------------------------
+    // ------------------------------------------------
     // goto load matrix page
+    // ------------------------------------------------
     else if (menuFile.selection()==2) {
-      // ------------------------------------------------
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // END SPI DEVICE
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_file_load_matrix;
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_file_load_matrix;
+      }
     }
 
-    // ----------------------------------------------------------------
+    // ------------------------------------------------
     // goto delete matrix page
+    // ------------------------------------------------
     else if (menuFile.selection()==3) {
-      // ------------------------------------------------
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // END SPI DEVICE
+        // --------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_list_matrix_files(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_file_delete_matrix;
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_file_delete_matrix;
+      }
     }
 
-    // ----------------------------------------------------------------
+    // ----------------------------------------------
     // save system settings
+    // ----------------------------------------------
     else if (menuFile.selection()==4) {
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_save_system_config_indicator;
-      UIIndicators();
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // --------------------------------------------
+      // DISPLAY
+      // --------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // ------------------------------------------
+        // GO TO
+        // ------------------------------------------
+        menu_page=page_save_system_config_indicator;
+        UIIndicators();
+        // ------------------------------------------
+        // END SPI DEVICE
+        // ------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // --------------------------------------------
       // SDCARD
+      // --------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_save_system_configuration(sdcardData.sysconf);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_file_main;
+      // --------------------------------------------
+      // DISPLAY
+      // --------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // ------------------------------------------
+        // BEGIN SPI DEVICE
+        // ------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_file_main;
+      }
     }
 
-    // ----------------------------------------------------------------
+    // ------------------------------------------------
     // restore default system settings
+    // ------------------------------------------------
     else if (menuFile.selection()==5) {
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_restore_default_matrix_indicator;
-      UIIndicators();
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_restore_default_matrix_indicator;
+        UIIndicators();
+        // --------------------------------------------
+        // END SPI DEVICE
+        // --------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       // ToDo:
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_file_main;
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+        display.begin();
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_file_main;
+      }
     }
-
-    // ----------------------------------------------------------------
   }
 
-  // ----------------------------------------------------------------
+  // ------------------------------------------------
   // save matrix menu
+  // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
-    // ------------------------------------------------
+    // ----------------------------------------------
     // generate filename according to selection index
+    // ----------------------------------------------
     memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
     strcpy(sdcardData.newfilename, "/MATRIX/M_");
     memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
     itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
     strcat(sdcardData.newfilename, sdcardData.tmp);
     strcat(sdcardData.newfilename, ".SAVE");
-    // ------------------------------------------------
-    // GO TO
-    menu_page=page_save_matrix_file_indicator;
-    UIIndicators();
-    // END SPI DEVICE
-    endSPIDevice(SSD1351_CS);
+    // ----------------------------------------------
+    // DISPLAY
+    // ----------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // --------------------------------------------
+      // GO TO
+      // --------------------------------------------
+      menu_page=page_save_matrix_file_indicator;
+      UIIndicators();
+      // --------------------------------------------
+      // END SPI DEVICE
+      // --------------------------------------------
+      endSPIDevice(SSD1351_CS);
+    }
+    // ----------------------------------------------
     // SDCARD
+    // ----------------------------------------------
     beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
     sdcard_save_matrix(sdcardData.newfilename);
     sd.end();
     endSPIDevice(SD_CS);
-    // BEGIN SPI DEVICE
-    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-    display.begin();
     // ------------------------------------------------
-    // GO TO
-    menu_page=page_file_main;
+    // DISPLAY
+    // ------------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // ----------------------------------------------
+      // BEGIN SPI DEVICE
+      // ----------------------------------------------
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
+      // ----------------------------------------------
+      // GO TO
+      // ----------------------------------------------
+      menu_page=page_file_main;
+    }
   }
 
-  // ----------------------------------------------------------------
+  // --------------------------------------------------
   // load matrix menu
+  // --------------------------------------------------
   else if (menu_page==page_file_load_matrix) {
+    // ------------------------------------------------
     // handle empty slots
+    // ------------------------------------------------
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
-      // ------------------------------------------------
+      // ----------------------------------------------
       // generate filename according to selection index
+      // ----------------------------------------------
       memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
       strcpy(sdcardData.newfilename, "/MATRIX/M_");
       memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_load_matrix_file_indicator;
-      UIIndicators();
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_load_matrix_file_indicator;
+        UIIndicators();
+        // --------------------------------------------
+        // END SPI DEVICE
+        // --------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_load_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+      }
     }
+    // ------------------------------------------------
     // GO TO
+    // ------------------------------------------------
     menu_page=page_file_main;
   }
 
-  // ----------------------------------------------------------------
+  // --------------------------------------------------
   // delete matrix menu
+  // --------------------------------------------------
   else if (menu_page==page_file_delete_matrix) {
     // ------------------------------------------------
     // handle empty slots
     if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
-      // ------------------------------------------------
+      // ----------------------------------------------
       // generate filename according to selection index
+      // ----------------------------------------------
       memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
       strcpy(sdcardData.newfilename, "/MATRIX/M_");
       memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
       itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
       strcat(sdcardData.newfilename, sdcardData.tmp);
       strcat(sdcardData.newfilename, ".SAVE");
-      // ------------------------------------------------
-      // GO TO
-      menu_page=page_delete_matrix_file_indicator;
-      UIIndicators();
-      // END SPI DEVICE
-      endSPIDevice(SSD1351_CS);
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // GO TO
+        // --------------------------------------------
+        menu_page=page_delete_matrix_file_indicator;
+        UIIndicators();
+        // --------------------------------------------
+        // END SPI DEVICE
+        // --------------------------------------------
+        endSPIDevice(SSD1351_CS);
+      }
+      // ----------------------------------------------
       // SDCARD
+      // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
       sdcard_delete_matrix(sdcardData.newfilename);
       sd.end();
       endSPIDevice(SD_CS);
-      // BEGIN SPI DEVICE
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ------------------------------------------------
+      // ----------------------------------------------
+      // DISPLAY
+      // ----------------------------------------------
+      if (systemData.DISPLAY_ENABLED==true) {
+        // --------------------------------------------
+        // BEGIN SPI DEVICE
+        // --------------------------------------------
+        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+        display.begin();
+      }
     }
+    // ------------------------------------------------
     // GO TO
+    // ------------------------------------------------
     menu_page=page_file_main;
   }
 
@@ -10285,6 +10471,7 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // universe page
+  // ----------------------------------------------------------------
   else if (menu_page==page_universe_main) {
     if (menuUniverse.selection()==0) {systemData.sidereal_track_sun^=true;}
     else if (menuUniverse.selection()==1) {systemData.sidereal_track_mercury^=true;}
@@ -10308,12 +10495,15 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // dispaly page
+  // ----------------------------------------------------------------
   else if (menu_page==page_display_main) {
      // ------------------------------------------------
     // display auto off
+    // ------------------------------------------------
     if (menuDisplay.selection()==0)  {systemData.display_auto_off^=true;}
     // ------------------------------------------------
     // iter display auto off timing
+    // ------------------------------------------------
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
       if (systemData.index_display_autooff_times>systemData.max_display_autooff_times) {systemData.index_display_autooff_times=0;}
@@ -10321,36 +10511,42 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // iter display border color
+    // ------------------------------------------------
     if (menuDisplay.selection()==2) {systemData.index_display_border_color++;
       if (systemData.index_display_border_color>systemData.max_color_index) {systemData.index_display_border_color=0;}
       systemData.color_border=systemData.display_color[systemData.index_display_border_color];
     }
     // ------------------------------------------------
     // iter display border color
+    // ------------------------------------------------
     if (menuDisplay.selection()==3) {systemData.index_display_content_color++;
       if (systemData.index_display_content_color>systemData.max_color_index) {systemData.index_display_content_color=0;}
       systemData.color_content=systemData.display_color[systemData.index_display_content_color];
     }
     // ------------------------------------------------
     // iter display menu border color
+    // ------------------------------------------------
     if (menuDisplay.selection()==4) {systemData.index_display_menu_border_color++;
       if (systemData.index_display_menu_border_color>systemData.max_color_index) {systemData.index_display_menu_border_color=0;}
       systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
     }
     // ------------------------------------------------
     // iter display menu content color
+    // ------------------------------------------------
     if (menuDisplay.selection()==5) {systemData.index_display_menu_content_color++;
       if (systemData.index_display_menu_content_color>systemData.max_color_index) {systemData.index_display_menu_content_color=0;}
       systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
     }
     // ------------------------------------------------
     // iter display title color
+    // ------------------------------------------------
     if (menuDisplay.selection()==6) {systemData.index_display_title_color++;
       if (systemData.index_display_title_color>systemData.max_color_index) {systemData.index_display_title_color=0;}
       systemData.color_title=systemData.display_color[systemData.index_display_title_color];
     }
     // ------------------------------------------------
     // iter display subtitle color
+    // ------------------------------------------------
     if (menuDisplay.selection()==7) {systemData.index_display_color_subtitle++;
       if (systemData.index_display_color_subtitle>systemData.max_color_index) {systemData.index_display_color_subtitle=0;}
       systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
@@ -10359,27 +10555,36 @@ void menuEnter() {
 
   // ----------------------------------------------------------------
   // system page
+  // ----------------------------------------------------------------
   else if (menu_page==page_system_main) {
     // ------------------------------------------------
     // startup run matrix
+    // ------------------------------------------------
     if (menuSystem.selection()==0) {systemData.matrix_run_on_startup^=true;}
     // ------------------------------------------------
     // iter overload times
+    // ------------------------------------------------
     else if (menuSystem.selection()==1) {systemData.index_overload_times++;
       if (systemData.index_overload_times>systemData.max_overload_times) {systemData.index_overload_times=0;}
       systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
     }
     // ------------------------------------------------
-    // consider matrix switch state handling before allowing the below two values to be changed after flashing
+    // enable/disable matrix switching
+    // ------------------------------------------------
     else if (menuSystem.selection()==2) {systemData.matrix_enabled^=true;}
+    // ------------------------------------------------
+    // enable/disable port controller
+    // ------------------------------------------------
     else if (menuSystem.selection()==3) {systemData.port_controller_enabled^=true;}
   }
 
   // ----------------------------------------------------------------
   // time and date page
+  // ----------------------------------------------------------------
   else if (menu_page==page_timeanddate_main) {
     // ------------------------------------------------
     // go to enter offset value page
+    // ------------------------------------------------
     if (menuTimeAndDate.selection()==0) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
@@ -10388,8 +10593,8 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // enable/disable auto offset
-    else if (menuTimeAndDate.selection()==1) {satData.utc_auto_offset_flag^=true;}
     // ------------------------------------------------
+    else if (menuTimeAndDate.selection()==1) {satData.utc_auto_offset_flag^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -14552,33 +14757,35 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // HSPI: SSD1351 OLED Display
   // ----------------------------------------------------------------------------------------------------------------------------
-  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-  display.begin();
-  display.setFixedFont(ssd1306xled_font6x8);
-  display.fill( 0x0000 );
-  canvas8x8.setFixedFont(ssd1306xled_font6x8);
-  canvas19x8.setFixedFont(ssd1306xled_font6x8);
-  canvas120x8.setFixedFont(ssd1306xled_font6x8);
-  canvas120x120.setFixedFont(ssd1306xled_font6x8);
-  canvas60x8.setFixedFont(ssd1306xled_font6x8);
-  canvas74x8.setFixedFont(ssd1306xled_font6x8);
-  canvas76x8.setFixedFont(ssd1306xled_font6x8);
-  canvas28x8.setFixedFont(ssd1306xled_font6x8);
-  canvas21x8.setFixedFont(ssd1306xled_font6x8);
-  canvas36x8.setFixedFont(ssd1306xled_font6x8);
-  canvas42x8.setFixedFont(ssd1306xled_font6x8);
-  canvas54x8.setFixedFont(ssd1306xled_font6x8);
-  canvas80x8.setFixedFont(ssd1306xled_font6x8);
-  canvas92x8.setFixedFont(ssd1306xled_font6x8);
-  display.clear();
-  menu_page=-1; // none
-  // display unidentified studios before loading sdcard data
-  display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
-  // uncomment to test display
-  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD);
-  // display.drawCanvas(1, 1, canvas);
-  // display.clear();
-  endSPIDevice(SSD1351_CS);
+  if (systemData.DISPLAY_ENABLED==true) {
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+    display.setFixedFont(ssd1306xled_font6x8);
+    display.fill( 0x0000 );
+    canvas8x8.setFixedFont(ssd1306xled_font6x8);
+    canvas19x8.setFixedFont(ssd1306xled_font6x8);
+    canvas120x8.setFixedFont(ssd1306xled_font6x8);
+    canvas120x120.setFixedFont(ssd1306xled_font6x8);
+    canvas60x8.setFixedFont(ssd1306xled_font6x8);
+    canvas74x8.setFixedFont(ssd1306xled_font6x8);
+    canvas76x8.setFixedFont(ssd1306xled_font6x8);
+    canvas28x8.setFixedFont(ssd1306xled_font6x8);
+    canvas21x8.setFixedFont(ssd1306xled_font6x8);
+    canvas36x8.setFixedFont(ssd1306xled_font6x8);
+    canvas42x8.setFixedFont(ssd1306xled_font6x8);
+    canvas54x8.setFixedFont(ssd1306xled_font6x8);
+    canvas80x8.setFixedFont(ssd1306xled_font6x8);
+    canvas92x8.setFixedFont(ssd1306xled_font6x8);
+    display.clear();
+    menu_page=-1; // none
+    // display unidentified studios before loading sdcard data
+    display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
+    // uncomment to test display
+    // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD);
+    // display.drawCanvas(1, 1, canvas);
+    // display.clear();
+    endSPIDevice(SSD1351_CS);
+  }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // VSPI: SDCARD
@@ -14594,9 +14801,8 @@ void setup() {
   myAstro.begin();
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  // xTasks
+  // xTask GPS
   // ----------------------------------------------------------------------------------------------------------------------------
-
   xTaskCreatePinnedToCore(
       readGPS,   /* Function to implement the task */
       "GPSTask", /* Name of the task */
@@ -14605,15 +14811,20 @@ void setup() {
       2,         /* Priority of the task */
       &GPSTask,  /* Task handle. */
       0);        /* Core where the task should run */
-
-  xTaskCreatePinnedToCore(
-    UpdateUI, /* Function to implement the task */
-    "UpdateUITask",  /* Name of the task */
-    102400,   /* Stack size in words */
-    NULL,     /* Task input parameter */
-    2,        /* Priority of the task */
-    &UpdateUITask,   /* Task handle. */
-    0);       /* Core where the task should run */
+  
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // xTask Update UI
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    xTaskCreatePinnedToCore(
+      UpdateUI, /* Function to implement the task */
+      "UpdateUITask",  /* Name of the task */
+      102400,   /* Stack size in words */
+      NULL,     /* Task input parameter */
+      2,        /* Priority of the task */
+      &UpdateUITask,   /* Task handle. */
+      0);       /* Core where the task should run */
+  }
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
@@ -14623,10 +14834,11 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // HSPI: SSD1351 OLED Display
   // ----------------------------------------------------------------------------------------------------------------------------
-
-  beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-  display.begin();
-  menu_page=0;
+  if (systemData.DISPLAY_ENABLED==true) {
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+    display.begin();
+    menu_page=0;
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
