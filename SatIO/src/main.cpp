@@ -293,7 +293,7 @@ void beginSDCARD();
 void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
-bool sdcardCheck();
+bool sdcardQuickCheck();
 void readI2C();
 void UIIndicators();
 void printAllTimes();
@@ -14644,19 +14644,13 @@ void setupSDCard() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                  SDCARD: CHECK
+//                                                                                                            SDCARD: QUICK CHECK
 // ------------------------------------------------------------------------------------------------------------------------------
 
-bool sdcardCheck() {
-  /* a quick check to see if card can begin. cardBegin should return 1 or 0 */
+bool sdcardQuickCheck() {
   Serial.println("[sdcard] cardBegin: " + String(sd.cardBegin(SD_CONFIG)));
-  if (!sd.cardBegin(SD_CONFIG)) {
-    Serial.println("[sdcard] could not begin card");
-  }
-  else {
-    Serial.println("[sdcard] sdcard began");
-    return true;
-  }
+  if (!sd.cardBegin(SD_CONFIG)) {Serial.println("[sdcard] could not begin card");}
+  else {Serial.println("[sdcard] sdcard began"); return true;}
   return false;
 }
 
@@ -14687,9 +14681,9 @@ void readGPS(void * pvParameters) {
       if (systemData.gngga_enabled==false) {serial1Data.gngga_bool=true;}
       if (systemData.gnrmc_enabled==false) {serial1Data.gnrmc_bool=true;}
       if (systemData.gpatt_enabled==false) {serial1Data.gpatt_bool=true;}
-      // -----
+      // --------
       // clear
-      // -----
+      // --------
       memset(gnggaData.sentence, 0, sizeof(gnggaData.sentence));
       memset(gnrmcData.sentence, 0, sizeof(gnrmcData.sentence));
       memset(gpattData.sentence, 0, sizeof(gpattData.sentence));
@@ -14698,20 +14692,22 @@ void readGPS(void * pvParameters) {
       // --------------------------------------------------------------------------
       while (1) {
         if (Serial2.available()) {
-          // ---------------------------------------------------------------
+          // ----------------------------------------------------------------------
           // leave immediately if everything of interest has been collected
-          // ---------------------------------------------------------------
+          // ----------------------------------------------------------------------
           if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
-          // --------------------------------------------------------
+          // ----------------------------------------------------------------------
           // read serial into buffer until buffer max or special char
-          // --------------------------------------------------------
+          // ----------------------------------------------------------------------
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
           SerialLink.nbytes=Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-          // ---------------------
+          // ----------------------------------------------------------------------
           // exclude partial reads
-          //----------------------
+          // ----------------------------------------------------------------------   
           if (SerialLink.nbytes>10) {
-            // ------------------------------------------------------------------------------------------------------------------
+            // -------------------------------------------------
+            // read GNGGA
+            // -------------------------------------------------   
             if (serial1Data.gngga_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNGGA", 6)==0) {
                 if (systemData.gngga_enabled==true){
@@ -14721,7 +14717,9 @@ void readGPS(void * pvParameters) {
                 }
               }
             }
-            // ------------------------------------------------------------------------------------------------------------------
+            // -------------------------------------------------
+            // read GNRMC
+            // -------------------------------------------------   
             else if (serial1Data.gnrmc_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GNRMC", 6)==0) {
                 if (systemData.gnrmc_enabled==true){
@@ -14731,7 +14729,9 @@ void readGPS(void * pvParameters) {
                 }
               }
             }
-            // ------------------------------------------------------------------------------------------------------------------
+            // -------------------------------------------------
+            // read GPATT
+            // -------------------------------------------------   
             else if (serial1Data.gpatt_bool==false) {
               if (strncmp(SerialLink.BUFFER, "$GPATT", 6)==0) {
                 if (systemData.gpatt_enabled==true){
@@ -14741,7 +14741,6 @@ void readGPS(void * pvParameters) {
                 }
               }
             }
-            // ------------------------------------------------------------------------------------------------------------------
           }
         }
       }
@@ -14749,53 +14748,46 @@ void readGPS(void * pvParameters) {
       // parse data if all sentences have been collected
       // -----------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
-        // ----------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------
+        // check GNGGA
+        // -------------------------------------------------   
         if (systemData.gngga_enabled==true){
           if (systemData.output_gngga_enabled==true) {
-            // -------------------------------------------------------------------------------------
-            // store a copy before tokenization since this is a task we may prefer not to print here
-            // -------------------------------------------------------------------------------------
             memset(gnggaData.outsentence, 0, sizeof(gnggaData.outsentence));
             strcpy(gnggaData.outsentence, gnggaData.sentence);
           }
           gnggaData.valid_checksum=validateChecksum(gnggaData.sentence);
-          // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
           if (gnggaData.valid_checksum==true) {clearGNGGA(); GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
-        // ----------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------
+        // read GNRMC
+        // -------------------------------------------------   
         if (systemData.gnrmc_enabled==true) {
           if (systemData.output_gnrmc_enabled==true) {
-            // -------------------------------------------------------------------------------------
-            // store a copy before tokenization since this is a task we may prefer not to print here
-            // -------------------------------------------------------------------------------------
             memset(gnrmcData.outsentence, 0, sizeof(gnrmcData.outsentence));
             strcpy(gnrmcData.outsentence, gnrmcData.sentence);
           }
           gnrmcData.valid_checksum=validateChecksum(gnrmcData.sentence);
-          // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
           if (gnrmcData.valid_checksum==true) {clearGNRMC(); GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
-        // ----------------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------
+        // read GPATT
+        // -------------------------------------------------
         if (systemData.gpatt_enabled==true) {
           if (systemData.output_gpatt_enabled==true) {
-            // -------------------------------------------------------------------------------------
-            // store a copy before tokenization since this is a task we may prefer not to print here
-            // -------------------------------------------------------------------------------------
             memset(gpattData.outsentence, 0, sizeof(gpattData.outsentence));
             strcpy(gpattData.outsentence, gpattData.sentence);
           }
           gpattData.valid_checksum=validateChecksum(gpattData.sentence);
-          // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
           if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
-        // -------------------
+        // -------------------------------------------------
         // set completion flag
-        // -------------------
+        // -------------------------------------------------
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
-          // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
           gps_done_t1=micros();
           gps_done=true;
         }
@@ -14808,17 +14800,16 @@ void readGPS(void * pvParameters) {
   }
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                      SENSORS
 // ------------------------------------------------------------------------------------------------------------------------------
-
-/* Sensors are mostly intentionally left blank for custum configurations */
-
+//                                                                                                                        SENSORS
+// ------------------------------------------------------------------------------------------------------------------------------
+// Sensors are mostly intentionally left blank for custum configurations.
+// ------------------------------------------------------------------------------------------------------------------------------
 void getSensorData() {
-  
-  // ----------------------------------------------------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------------------
   // step over each multiplexer analog/digital channel
-  // ----------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------
   for (int i_chan=0; i_chan < 16; i_chan++) {
     // --------------------------------------------------
     // set multiplexer channel
@@ -14934,9 +14925,9 @@ void getSensorData() {
   // --------------------------------------------------
   // setMultiplexChannel_CD74HC4067(0);
 
-  // ----------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------
   // step over each I2C multiplexer channel
-  // ----------------------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------
   for (int i_chan=0; i_chan < 8; i_chan++) {
     // --------------------------------------------------
     // set multiplexer channel
