@@ -1594,7 +1594,7 @@ struct SiderealObjectStruct {
   double object_mag;
   double object_r;
   double object_s;
-  // double objects_data[609][7];
+  // double objects_data[609][7]; // memory limitation. exploring alternate options for storing object data.
   char object_table[7][20] =
   {
     "Star Table",          // 0
@@ -1613,12 +1613,12 @@ SiderealObjectStruct siderealObjectData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct validationStruct {
-  int  valid_i=0;           // validation counter
-  bool valid_b=true;        // validation bool
-  char *find_char;            // validation pointer
-  int  index;                 // a placeholder for char index
-  bool bool_data_0=false;   // load matrix values validation bool
-  bool bool_data_1=false;   // load matrix values validation bool
+  int  valid_i=0;         // validation counter
+  bool valid_b=true;      // validation bool
+  char *find_char;        // validation pointer
+  int  index;             // a placeholder for char index
+  bool bool_data_0=false; // load matrix values validation bool
+  bool bool_data_1=false; // load matrix values validation bool
 };
 validationStruct validData;
 
