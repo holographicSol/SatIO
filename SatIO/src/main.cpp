@@ -14454,23 +14454,39 @@ void readI2C() {
 void writePortControllerPortMap() {
   for (int i=0; i < 20; i++) {
     // debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
+    // -----------------------
     // check for change
+    // -----------------------
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
+      // -----------------------
       // update
+      // -----------------------
       matrixData.tmp_matrix_port_map[0][i]=matrixData.matrix_port_map[0][i];
+      // -----------------------
       // tag
+      // -----------------------
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
-      // index
+      // -----------------------
+      // matrix switch index
+      // -----------------------
       memset(I2CLink.TMP_BUFFER_1, 0, sizeof(I2CLink.TMP_BUFFER_1));
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
       strcat(I2CLink.TMP_BUFFER_0, ",");
-      // port number
+      // -----------------------
+      // data
+      // -----------------------
       itoa(matrixData.matrix_port_map[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-      // debug("[matrix_port_map writing] " + String( I2CLink.TMP_BUFFER_0));
+      // -----------------------
+      // write instruction
+      // -----------------------
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+      // -----------------------
+      // debug
+      // -----------------------
+      // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
     }
   }
 }
@@ -14481,23 +14497,39 @@ void writePortControllerPortMap() {
 void writePortControllerSwitchState() {
   for (int i=0; i < 20; i++) {
     // debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
+    // -----------------------
     // check for change
+    // -----------------------
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
+      // -----------------------
       // update
+      // -----------------------
       matrixData.tmp_matrix_switch_state[0][i]=matrixData.matrix_switch_state[0][i];
+      // -----------------------
       // tag
+      // -----------------------
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$M,");
-      // index
+      // -----------------------
+      // matrix switch index
+      // -----------------------
       memset(I2CLink.TMP_BUFFER_1, 0, sizeof(I2CLink.TMP_BUFFER_1));
       itoa(i, I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
       strcat(I2CLink.TMP_BUFFER_0, ",");
-      // true/false
+      // -----------------------
+      // data
+      // -----------------------
       itoa(matrixData.matrix_switch_state[0][i], I2CLink.TMP_BUFFER_1, 10);
       strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
-      // debug("[matrix_switch_state writing] " + String(I2CLink.TMP_BUFFER_0));
+      // -----------------------
+      // write instruction
+      // -----------------------
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+      // -----------------------
+      // debug
+      // -----------------------
+      // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
     }
   }
 }
@@ -14507,27 +14539,48 @@ void writePortControllerSwitchState() {
 // ------------------------------------------------
 void writePortControllerGPSSignalLED() {
     memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+    // -----------------------
     // tag
+    // -----------------------
     strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
+    // -----------------------
     // data
+    // -----------------------
     if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
     else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
     else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+    // -----------------------
+    // write instruction
+    // -----------------------
     writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+    // -----------------------
+    // debug
+    // -----------------------
+    // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
 }
 
 // ------------------------------------------------
 // Write Overload Value
 // ------------------------------------------------
 void writePortControllerOverloadValue() {
+    // -----------------------
     // tag
+    // -----------------------
     memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
     strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
+    // -----------------------
     // data
+    // -----------------------
     if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
     else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-    // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
+    // -----------------------
+    // write instruction
+    // -----------------------
     writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+    // -----------------------
+    // debug
+    // -----------------------
+    // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
 }
 
 // ------------------------------------------------
@@ -14540,9 +14593,9 @@ void writeToEnabledPortController() {
   writePortControllerOverloadValue();
 }
 
-// ------------------------------------------------
-// Disable Port Controller
-// ------------------------------------------------
+// ---------------------------------------------------------------
+// Write To Semi-Disabled Port Controller (No Matrix Instructions)
+// ---------------------------------------------------------------
 void writeToSemiDisabledPortController() {
   writePortControllerGPSSignalLED();
   writePortControllerOverloadValue();
