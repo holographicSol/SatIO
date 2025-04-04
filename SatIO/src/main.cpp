@@ -6515,10 +6515,14 @@ void clearTrackPlanets() {
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
 void trackPlanets() {
-  // do planet elements and do sun before doing other plans
+  // -------------------------------------------------------
+  // do planet elements sun, once before doing other planets
+  // -------------------------------------------------------
   myAstro.doPlanetElements();
   myAstro.doSun();
+  // -------------------------------------------------------
   // now do other plans
+  // -------------------------------------------------------
   if (systemData.sidereal_track_sun==true) {trackSun();}
   else {clearSun();}
   if (systemData.sidereal_track_moon==true) {trackMoon();}
