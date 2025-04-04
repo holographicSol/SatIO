@@ -1056,6 +1056,9 @@ char digit_8[2]="8";
 char digit_9[2]="9";
 char hyphen_char[2]="-";
 char period_char[2]=".";
+  
+char pad_digits_new[56];     // a placeholder for digits preappended with zero's.
+char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
@@ -1704,7 +1707,7 @@ bool is_all_digits(char * data) {
 }
 
 bool is_all_digits_plus_char(char * data, char find_char) {
-  /* designed to check all chars are digits except one period and is more general purpose than just accepting a period */
+  /* designed to check all chars are digits except one find_char */
   validData.valid_b=true;
   validData.find_char=strchr(data, find_char);
   validData.index=(int)(validData.find_char - data);
@@ -3154,23 +3157,23 @@ LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 134, {{2, 
 struct GNGGAStruct {
   char sentence[200];
   char outsentence[200];
-  char tag[56];                                                                                                            // <0> Log header
-  char utc_time[56];                     unsigned long bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
-  char latitude[56];                     unsigned long bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                    unsigned long bad_longitude_i;             bool bad_longitude=true;             // <4> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere=true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char solution_status[56];              unsigned long bad_solution_status_i;       bool bad_solution_status=true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
-  char satellite_count_gngga[56]="0";  unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga=true; // <7> Number of satellites used
-  char hdop_precision_factor[56];        unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor=true; // <8> HDOP level precision factor
-  char altitude[56];                     unsigned long bad_altitude_i;              bool bad_altitude=true;              // <9> Altitude
-  char altitude_units[56];               unsigned long bad_altitude_units_i;        bool bad_altitude_units=true;        // <10> 
-  char geoidal[56];                      unsigned long bad_geoidal_i;               bool bad_geoidal=true;               // <11> The height of the earth ellipsoid relative to the geoid 
-  char geoidal_units[56];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units=true;         // <12> 
-  char differential_delay[56];           unsigned long bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
-  char id[56];                           unsigned long bad_id_i;                    bool bad_id=true;                    // <14> base station ID
-  char check_sum[56];                    unsigned long bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
-  int check_data=0;                    unsigned long bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
+  char tag[56];                                                                                                       // <0> Log header
+  char utc_time[56];                  unsigned long bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
+  char latitude[56];                  unsigned long bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];       unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                 unsigned long bad_longitude_i;             bool bad_longitude=true;             // <4> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];      unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere=true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
+  char solution_status[56];           unsigned long bad_solution_status_i;       bool bad_solution_status=true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char satellite_count_gngga[56]="0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga=true; // <7> Number of satellites used
+  char hdop_precision_factor[56];     unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor=true; // <8> HDOP level precision factor
+  char altitude[56];                  unsigned long bad_altitude_i;              bool bad_altitude=true;              // <9> Altitude
+  char altitude_units[56];            unsigned long bad_altitude_units_i;        bool bad_altitude_units=true;        // <10> 
+  char geoidal[56];                   unsigned long bad_geoidal_i;               bool bad_geoidal=true;               // <11> The height of the earth ellipsoid relative to the geoid 
+  char geoidal_units[56];             unsigned long bad_geoidal_units_i;         bool bad_geoidal_units=true;         // <12> 
+  char differential_delay[56];        unsigned long bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
+  char id[56];                        unsigned long bad_id_i;                    bool bad_id=true;                    // <14> base station ID
+  char check_sum[56];                 unsigned long bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
+  int check_data=0;                   unsigned long bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
 };
 GNGGAStruct gnggaData;
 
@@ -3179,6 +3182,9 @@ GNGGAStruct gnggaData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearDynamicGNGGA() {
+  // ---------------------------------------------------------------------------------------
+  // clear dynamic data while retaining data that may stay the same if running as a station
+  // ---------------------------------------------------------------------------------------
   memset(gnggaData.solution_status, 0, 56);
   memset(gnggaData.satellite_count_gngga, 0, 56);
   memset(gnggaData.hdop_precision_factor, 0, 56);
@@ -3188,6 +3194,9 @@ void clearDynamicGNGGA() {
 }
 
 void clearGNGGA() {
+  // -------------------------------
+  // clear all data
+  // -------------------------------
   memset(gnggaData.utc_time, 0, 56);
   memset(gnggaData.latitude, 0, 56);
   memset(gnggaData.latitude_hemisphere, 0, 56);
@@ -3209,7 +3218,7 @@ void GNGGA() {
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gnggaData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if     (serial1Data.iter_token==0)                                                                {strcpy(gnggaData.tag, "GNGGA");                                                                             gnggaData.check_data++;}
+    if     (serial1Data.iter_token==0)                                                                {strcpy(gnggaData.tag, "GNGGA");                             gnggaData.check_data++;}
     else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time=false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time=true;}}
     else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token)==true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude=false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude=true;}}
     else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token)==true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere=false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere=true;}}
@@ -3227,23 +3236,23 @@ void GNGGA() {
     serial1Data.iter_token++;
   }
   if (systemData.debug==true) {
-    Serial.println("[gnggaData.tag] "                     + String(gnggaData.tag));
-    Serial.println("[gnggaData.utc_time] "                + String(gnggaData.utc_time));
-    Serial.println("[gnggaData.latitude] "                + String(gnggaData.latitude));
-    Serial.println("[gnggaData.latitude_hemisphere] "     + String(gnggaData.latitude_hemisphere));
-    Serial.println("[gnggaData.longitude] "               + String(gnggaData.longitude));
-    Serial.println("[gnggaData.longitude_hemisphere] "    + String(gnggaData.longitude_hemisphere));
-    Serial.println("[gnggaData.solution_status] "         + String(gnggaData.solution_status));
-    Serial.println("[gnggaData.satellite_count_gngga] "   + String(gnggaData.satellite_count_gngga));
-    Serial.println("[gnggaData.hdop_precision_factor] "   + String(gnggaData.hdop_precision_factor));
-    Serial.println("[gnggaData.altitude] "                + String(gnggaData.altitude));
-    Serial.println("[gnggaData.altitude_units] "          + String(gnggaData.altitude_units));
-    Serial.println("[gnggaData.geoidal] "                 + String(gnggaData.geoidal));
-    Serial.println("[gnggaData.geoidal_units] "           + String(gnggaData.geoidal_units));
-    Serial.println("[gnggaData.differential_delay] "      + String(gnggaData.differential_delay));
-    Serial.println("[gnggaData.id] "                      + String(gnggaData.id));
-    Serial.println("[gnggaData.check_sum] "               + String(gnggaData.check_sum));
-    Serial.println("[gnggaData.check_data] "              + String(gnggaData.check_data));
+    Serial.println("[gnggaData.tag] "                   + String(gnggaData.tag));
+    Serial.println("[gnggaData.utc_time] "              + String(gnggaData.utc_time));
+    Serial.println("[gnggaData.latitude] "              + String(gnggaData.latitude));
+    Serial.println("[gnggaData.latitude_hemisphere] "   + String(gnggaData.latitude_hemisphere));
+    Serial.println("[gnggaData.longitude] "             + String(gnggaData.longitude));
+    Serial.println("[gnggaData.longitude_hemisphere] "  + String(gnggaData.longitude_hemisphere));
+    Serial.println("[gnggaData.solution_status] "       + String(gnggaData.solution_status));
+    Serial.println("[gnggaData.satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
+    Serial.println("[gnggaData.hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
+    Serial.println("[gnggaData.altitude] "              + String(gnggaData.altitude));
+    Serial.println("[gnggaData.altitude_units] "        + String(gnggaData.altitude_units));
+    Serial.println("[gnggaData.geoidal] "               + String(gnggaData.geoidal));
+    Serial.println("[gnggaData.geoidal_units] "         + String(gnggaData.geoidal_units));
+    Serial.println("[gnggaData.differential_delay] "    + String(gnggaData.differential_delay));
+    Serial.println("[gnggaData.id] "                    + String(gnggaData.id));
+    Serial.println("[gnggaData.check_sum] "             + String(gnggaData.check_sum));
+    Serial.println("[gnggaData.check_data] "            + String(gnggaData.check_data));
   }
 }
 
@@ -3254,7 +3263,7 @@ void GNGGA() {
 struct GNRMCStruct {
   char sentence[200];
   char outsentence[200];
-  char tag[56];                                                                                                                          // <0> Log header
+  char tag[56];                                                                                                                        // <0> Log header
   char utc_time[56];                     unsigned long bad_utc_time_i;                     bool bad_utc_time=true;                     // <1> UTC time, the format is hhmmss.sss
   char positioning_status[56];           unsigned long bad_positioning_status_i;           bool bad_positioning_status=true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
   char latitude[56];                     unsigned long bad_latitude_i;                     bool bad_latitude=true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
@@ -3268,7 +3277,7 @@ struct GNRMCStruct {
   char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction=true; // <11> Magnetic declination direction, E (east) or W (west)
   char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication=true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
   char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum=true;                    // <13> XOR check value of all bytes starting from $ to *
-  int check_data=0;                    unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
+  int check_data=0;                      unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
 };
 GNRMCStruct gnrmcData;
 
@@ -3277,6 +3286,9 @@ GNRMCStruct gnrmcData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearDynamicGNRMC() {
+  // ---------------------------------------------------------------------------------------
+  // clear dynamic data while retaining data that may stay the same if running as a station
+  // ---------------------------------------------------------------------------------------
   memset(gnrmcData.positioning_status, 0, 56);
   memset(gnrmcData.ground_speed, 0, 56);
   memset(gnrmcData.ground_heading, 0, 56);
@@ -3286,6 +3298,9 @@ void clearDynamicGNRMC() {
 }
 
 void clearGNRMC() {
+  // -------------------------------
+  // clear all data
+  // -------------------------------
   memset(gnrmcData.utc_time, 0, 56);
   memset(gnrmcData.latitude, 0, 56);
   memset(gnrmcData.latitude_hemisphere, 0, 56);
@@ -3304,7 +3319,7 @@ void GNRMC() {
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gnrmcData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if      (serial1Data.iter_token==0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                                                                           gnrmcData.check_data++;}
+    if      (serial1Data.iter_token==0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                    gnrmcData.check_data++;}
     else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time=false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time=true;}}
     else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token)==true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status=false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status=true;}}
     else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token)==true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude=false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude=true;}}
@@ -3386,7 +3401,7 @@ struct GPATTStruct {
   char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num=true;        // <38> 1：fixed setting，0：Self adaptive installation
   char scalable[56];          unsigned long bad_scalable_i;         bool bad_scalable=true;         // <39> 
   char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum=true;        // <40> XOR check value of all bytes starting from $ to *
-  int check_data=0;         unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
+  int check_data=0;           unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
 };
 GPATTStruct gpattData;
 
@@ -3395,9 +3410,9 @@ GPATTStruct gpattData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void clearGPATT() {
-  // --------------------------
-  // clear dynamic data
-  // --------------------------
+  // -------------------------------
+  // clear all data
+  // -------------------------------
   memset(gpattData.pitch, 0, 56);
   memset(gpattData.angle_channel_0, 0, 56);
   memset(gpattData.roll, 0, 56);
@@ -3443,7 +3458,7 @@ void GPATT() {
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gpattData.sentence, ",");
   while( serial1Data.token != NULL ) { 
-    if      (serial1Data.iter_token==0)                                                              {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
+    if      (serial1Data.iter_token==0)                                                            {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
     else if (serial1Data.iter_token==1) {if (val_pitch_gpatt(serial1Data.token)==true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.check_data++; gpattData.bad_pitch=false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch=true;}}
     else if (serial1Data.iter_token==2) {if (val_angle_channle_p_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_0=false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0=true;}}
     else if (serial1Data.iter_token==3) {if (val_roll_gpatt(serial1Data.token)==true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.check_data++; gpattData.bad_roll=false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll=true;}}
@@ -3535,8 +3550,8 @@ void GPATT() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SatDatatruct {
-  int checksum_i;                                                  // checksum int
-  char satio_sentence[200];                                        // buffer
+  int checksum_i;                                                // checksum int
+  char satio_sentence[200];                                      // buffer
   char satDataTag[56]                ="$SATIO";                  // satio sentence tag
   bool convert_coordinates           =true;                      // enables/disables coordinate conversion to degrees
   char coordinate_conversion_mode[56]="GNGGA";                   // sentence coordinates degrees created from
@@ -3548,22 +3563,42 @@ struct SatDatatruct {
   double abs_longitude_gngga_0       =0.0;                       // absolute longditude from $ sentence
   double abs_latitude_gnrmc_0        =0.0;                       // absolute latitude from $ sentence
   double abs_longitude_gnrmc_0       =0.0;                       // absolute longditude from $ sentence
-  double temp_latitude_gngga;                                      // degrees converted from absolute
-  double temp_longitude_gngga;                                     // degrees converted from absolute
-  double temp_latitude_gnrmc;                                      // degrees converted from absolute
-  double temp_longitude_gnrmc;                                     // degrees converted from absolute
-  double minutesLat;                                               // used for converting absolute latitude and longitude
-  double minutesLong;                                              // used for converting absolute latitude and longitude
-  double secondsLat;                                               // used for converting absolute latitude and longitude
-  double secondsLong;                                              // used for converting absolute latitude and longitude
-  double millisecondsLat;                                          // used for converting absolute latitude and longitude
-  double millisecondsLong;                                         // used for converting absolute latitude and longitude
-  double degrees_latitude;                                         // degrees converted from absolute
-  double degrees_longitude;                                        // degrees converted from absolute
-  double degreesLat;                                               // used for converting absolute latitude and longitude
-  double degreesLong;                                              // used for converting absolute latitude and longitude
+  double temp_latitude_gngga;                                    // degrees converted from absolute
+  double temp_longitude_gngga;                                   // degrees converted from absolute
+  double temp_latitude_gnrmc;                                    // degrees converted from absolute
+  double temp_longitude_gnrmc;                                   // degrees converted from absolute
+  double minutesLat;                                             // used for converting absolute latitude and longitude
+  double minutesLong;                                            // used for converting absolute latitude and longitude
+  double secondsLat;                                             // used for converting absolute latitude and longitude
+  double secondsLong;                                            // used for converting absolute latitude and longitude
+  double millisecondsLat;                                        // used for converting absolute latitude and longitude
+  double millisecondsLong;                                       // used for converting absolute latitude and longitude
+  double degrees_latitude;                                       // degrees converted from absolute
+  double degrees_longitude;                                      // degrees converted from absolute
+  double degreesLat;                                             // used for converting absolute latitude and longitude
+  double degreesLong;                                            // used for converting absolute latitude and longitude
 
+  // ------------------------------------------------------------------------------------
+  // temporary time
+  // ------------------------------------------------------------------------------------
+  uint16_t tmp_year_int=0;       // temp current year
+  uint8_t tmp_month_int=0;       // temp current month
+  uint8_t tmp_day_int=0;         // temp current day
+  uint8_t tmp_hour_int=0;        // temp current hour
+  uint8_t tmp_minute_int=0;      // temp current minute
+  uint8_t tmp_second_int=0;      // temp current second
+  uint8_t tmp_millisecond_int=0; // temp current millisecond
+  char tmp_year[56];             // temp current year
+  char tmp_month[56];            // temp current month
+  char tmp_day[56];              // temp current day
+  char tmp_hour[56];             // temp current hour
+  char tmp_minute[56];           // temp current minute
+  char tmp_second[56];           // temp current second
+  char tmp_millisecond[56];      // temp current millisecond
+
+  // ------------------------------------------------------------------------------------
   // local time converted from rtc utc time (currently only used for display purposes)
+  // ------------------------------------------------------------------------------------
   uint8_t local_hour=0;
   uint8_t local_minute=0;
   uint8_t local_second=0;
@@ -3574,7 +3609,9 @@ struct SatDatatruct {
   String formatted_local_time="00:00:00";
   String formatted_local_date="00/00/00";
 
+  // ------------------------------------------------------------------------------------
   // last time rtc synced with utc
+  // ------------------------------------------------------------------------------------
   uint8_t rtcsync_hour=0;
   uint8_t rtcsync_minute=0;
   uint8_t rtcsync_second=0;
@@ -3583,9 +3620,9 @@ struct SatDatatruct {
   uint8_t rtcsync_day=0;
   uint32_t rtc_unixtime;
 
+  // ------------------------------------------------------------------------------------
   // task safe rtc time now can be used instead of directly calling rtc.now()
-  // rtc time is utc.
-  // all programmable logic uses task safe rtc time (currently safer and faster than converting to local time).
+  // ------------------------------------------------------------------------------------
   uint8_t rtc_hour=0;
   uint8_t rtc_minute=0;
   uint8_t rtc_second=0;
@@ -3594,44 +3631,22 @@ struct SatDatatruct {
   uint8_t rtc_day=0;
   char rtc_weekday[56];
 
+  // ------------------------------------------------------------------------------------
   /*
   utc second offset:
   1: offset UTC (+/-) in seconds, for daylight saving and or timezones.
   2: offset up to LONG_MAX=2147483647 seconds=2,147,483,647 gregorian years.
-  3: this values type may account for both political and not political ammendments to dst
-     and tz by having a very large range and by having a 1 second resolution.
-  4: allow negative and positive value for offset. 
   */
+ // ------------------------------------------------------------------------------------
   long int utc_second_offset=0;
-  bool utc_auto_offset_flag=false;  // automatically aquire an offset value: true=auto, false=manual
-
-  char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
-  char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
-
-  /* TEMPORARY TIME VALUES */
-  uint16_t tmp_year_int=0;        // temp current year
-  uint8_t tmp_month_int=0;        // temp current month
-  uint8_t tmp_day_int=0;          // temp current day
-  uint8_t tmp_hour_int=0;         // temp current hour
-  uint8_t tmp_minute_int=0;       // temp current minute
-  uint8_t tmp_second_int=0;       // temp current second
-  uint8_t tmp_millisecond_int=0;  // temp current millisecond
-  char tmp_year[56];        // temp current year
-  char tmp_month[56];       // temp current month
-  char tmp_day[56];         // temp current day
-  char tmp_hour[56];        // temp current hour
-  char tmp_minute[56];      // temp current minute
-  char tmp_second[56];      // temp current second
-  char tmp_millisecond[56]; // temp current millisecond
-
-  // long current_unixtime;
+  bool utc_auto_offset_flag=false;
 };
 SatDatatruct satData;
 
 void clearDynamicSATIO() {
-  // --------------------------
-  // clear dynamic data
-  // --------------------------
+  // ---------------------------------------------------------------------------------------
+  // clear dynamic data while retaining data that may stay the same if running as a station
+  // ---------------------------------------------------------------------------------------
   satData.checksum_i=0;
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   satData.convert_coordinates=false;
@@ -3649,36 +3664,6 @@ void clearDynamicSATIO() {
   satData.millisecondsLong=NAN;
   satData.minutesLat=NAN;
   satData.minutesLong=NAN;
-  // --------------------------
-  // keep potential static data (if stationary then we can still use coordinates)
-  // --------------------------
-  // satData.degrees_latitude=NAN;
-  // satData.degrees_longitude=NAN;
-  // satData.degreesLat=NAN;
-  // satData.degreesLong=NAN;
-  // --------------------------
-  // keep potential static data (if stationary then we can still use time)
-  // --------------------------
-  // memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
-  // satData.local_hour=NAN;
-  // satData.local_minute=NAN;
-  // satData.local_second=NAN;
-  // satData.local_year=NAN;
-  // satData.local_month=NAN;
-  // satData.local_day=NAN;
-  // satData.rtcsync_hour=NAN;
-  // satData.rtcsync_minute=NAN;
-  // satData.rtcsync_second=NAN;
-  // satData.rtcsync_year=NAN;
-  // satData.rtcsync_month=NAN;
-  // satData.rtcsync_day=NAN;
-  // satData.rtc_unixtime=NAN;
-  // satData.rtc_hour=NAN;
-  // satData.rtc_minute=NAN;
-  // satData.rtc_second=NAN;
-  // satData.rtc_year=NAN;
-  // satData.rtc_month=NAN;
-  // satData.rtc_day=NAN;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3852,12 +3837,12 @@ void calculateLocation(){
 
 String padDigitsZero(int digits) {
   /* preappends char 0 to pad string of digits evenly */
-  memset(satData.pad_digits_new, 0, sizeof(satData.pad_digits_new));
-  memset(satData.pad_current_digits, 0, sizeof(satData.pad_current_digits));
-  if(digits < 10) {strcat(satData.pad_digits_new, "0");}
-  itoa(digits, satData.pad_current_digits, 10);
-  strcat(satData.pad_digits_new, satData.pad_current_digits);
-  return satData.pad_digits_new;
+  memset(pad_digits_new, 0, sizeof(pad_digits_new));
+  memset(pad_current_digits, 0, sizeof(pad_current_digits));
+  if(digits < 10) {strcat(pad_digits_new, "0");}
+  itoa(digits, pad_current_digits, 10);
+  strcat(pad_digits_new, pad_current_digits);
+  return pad_digits_new;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
