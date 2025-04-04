@@ -14832,6 +14832,7 @@ void loop() {
     1: Continue only if port_controller_run_state_flag is true so that we only do this once per flag true.
     2: Zero the matrix switch states.
     3: Matrix switch outputs on port controller will be turned low.
+    4: Matrix can remain enabled and continue to run normally (minus output via port controller).
     */
     if (port_controller_run_state_flag==false) {
       setAllMatrixSwitchesStateFalse();
