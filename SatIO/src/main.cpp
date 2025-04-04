@@ -14667,7 +14667,6 @@ void readGPS(void * pvParameters) {
     // lock to avoid potential race conditions when using gps data
     // ------------------------------------------------------------
     if (gps_done==false) {
-      // ------------------------------------------------------------
       gps_done_t0=micros();
       // --------
       // defaults
@@ -14703,7 +14702,7 @@ void readGPS(void * pvParameters) {
           SerialLink.nbytes=Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
           // ----------------------------------------------------------------------
           // exclude partial reads
-          // ----------------------------------------------------------------------   
+          // ----------------------------------------------------------------------
           if (SerialLink.nbytes>10) {
             // -------------------------------------------------
             // read GNGGA
@@ -14744,9 +14743,9 @@ void readGPS(void * pvParameters) {
           }
         }
       }
-      // -----------------------------------------------
+      // --------------------------------------------------------------------------
       // parse data if all sentences have been collected
-      // -----------------------------------------------
+      // --------------------------------------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         // -------------------------------------------------
         // check GNGGA
@@ -14784,9 +14783,9 @@ void readGPS(void * pvParameters) {
           if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
-        // -------------------------------------------------
+        // ------------------------------------------------------------------------
         // set completion flag
-        // -------------------------------------------------
+        // ------------------------------------------------------------------------
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
           gps_done_t1=micros();
           gps_done=true;
