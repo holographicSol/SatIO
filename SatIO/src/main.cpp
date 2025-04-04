@@ -1623,29 +1623,27 @@ struct validationStruct {
 validationStruct validData;
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                           VALIDATION: CHECKSUM
+//                                                                                                                   GET CHECKSUM
 // ------------------------------------------------------------------------------------------------------------------------------
 
-
 int getCheckSum(char * string) {
-  /* creates a checksum for an NMEA style sentence. can be used to create checksum to append or compare */
-
-  // uncomment to debug
-  // debug("[connected] getCheckSum: " + String(string));
   for (SerialLink.XOR=0, SerialLink.i_XOR=0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
     SerialLink.c_XOR=(unsigned char)string[SerialLink.i_XOR];
     if (SerialLink.c_XOR=='*') break;
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
-  // uncomment to debug
-  // debug("[connected] getCheckSum: " + String(SerialLink.XOR));
   return SerialLink.XOR;
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   HEX TO DIGIT
+// ------------------------------------------------------------------------------------------------------------------------------
 
-
-// takes a character representing a hexadecimal digit and returns the decimal equivalent of that digit.
 uint8_t h2d(char hex) {if(hex > 0x39) hex -= 7; return(hex & 0xf);}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              2 HEX TO 2 DIGITS
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*
 converts each digit it to its decimal equivalent, shifts first digit left by 4 bits and 'ORing' with the second digit.
@@ -1653,31 +1651,27 @@ The result is a single byte value representing two hexadecimal digits combined.
 */
 uint8_t h2d2(char h1, char h2) {return (h2d(h1)<<4) | h2d(h2);}
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                              VALIDATE CHECKSUM
+// ------------------------------------------------------------------------------------------------------------------------------
+
 bool validateChecksum(char * buffer) {
-  /* validate a sentence appended with a checksum */
-  // debug("[validateChecksum]");
-  // debug("[validateChecksum] " + String(buffer));
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
   SerialLink.gotSum[0]=buffer[strlen(buffer) - 3];
   SerialLink.gotSum[1]=buffer[strlen(buffer) - 2];
-  // debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
   SerialLink.checksum_of_buffer= getCheckSum(buffer);
-  // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
-  // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
-  // debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
   SerialLink.checksum_in_buffer=h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
-  // debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
   if (SerialLink.checksum_in_buffer==SerialLink.checksum_of_buffer) {return true;}
   return false;
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                CREATE CHECKSUM
+// ------------------------------------------------------------------------------------------------------------------------------
+
 void createChecksum(char * buffer) {
   SerialLink.checksum_of_buffer=getCheckSum(buffer);
-  // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
-  // debug("[hexadecimal number] " + String("%X", SerialLink.checksum_of_buffer)); todo
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
-
-  // debug("[checksum] " + String(SerialLink.checksum));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
