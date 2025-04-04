@@ -9880,11 +9880,8 @@ void matrixSwitch() {
       // ----------------------------------------------------------------------------------------------------------------------
       //                                                                                                           FINAL SWITCH
       // ----------------------------------------------------------------------------------------------------------------------
-      
-      /*
-      safety layer: disengage if all entries are None.
-      this is a second layer on top of initial check for None set at position zero, function 0.
-      */
+      // safety layer: disengage if all entries are None. a layer on top of initial check for None set at function index zero.
+      // ----------------------------------------------------------------------------------------------------------------------
       if (count_none_function <= matrixData.max_matrix_functions-1) {
 
         // -------------------------------------------------------------------------------------------------------
