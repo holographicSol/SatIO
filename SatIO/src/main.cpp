@@ -402,6 +402,7 @@ NanoCanvas<8,8,1> canvas8x8;
 NanoCanvas<19,8,1> canvas19x8;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
+NanoCanvas<74,8,1> canvas74x8;
 NanoCanvas<76,8,1> canvas76x8;
 NanoCanvas<80,8,1> canvas80x8;
 NanoCanvas<126,24,1> canvas126x24;
@@ -1386,10 +1387,9 @@ void UptimeSecondsToDateTime(long sec) {
 }
 
 // todo: no reset uptime_seconds
-String ScreenSafeUptime(long sec) {
+String DisplayOverMax(long sec, long max) {
   /* modify this according to required/available screen dimensions */
-  // 76px avaliable for font 6px wide + 1px space = approx. 10 digit number all consisting of 9 (316.9 years before each reset)
-  if (sec > 9999999999) {return String("[OVER MAX]");}
+  if (sec > max) {return String("[OVER MAX]");}
   else {return String(sec);}
 }
 
@@ -10706,7 +10706,7 @@ void drawGeneralTitle(String title, int color1, int color2) {
   display.setColor(color1);
   canvas120x8.clear();
   // center the title at top of screen
-  canvas120x8.printFixed((125/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD );
+  canvas120x8.printFixed((125/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
   display.drawCanvas(1, 2, canvas120x8);
   // border the title
   display.setColor(color2);
@@ -10763,7 +10763,7 @@ void UIIndicators() {
     if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -10781,7 +10781,7 @@ void UIIndicators() {
     if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -10799,7 +10799,7 @@ void UIIndicators() {
     if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -10817,8 +10817,8 @@ void UIIndicators() {
     if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -10836,8 +10836,8 @@ void UIIndicators() {
     if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
-      canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD );
-      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD );
+      canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD);
+      canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
@@ -10921,7 +10921,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas120x8.clear();
       if (crunching_time_data==false) {
-        canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 4, canvas120x8);
       }
       // ------------------------------------------------
@@ -10929,7 +10929,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas120x8.clear();
       if (crunching_time_data==false) {
-        canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 14, canvas120x8);
       }
       // ------------------------------------------------
@@ -11005,7 +11005,7 @@ void UpdateUI(void * pvParamters) {
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD);
         display.drawCanvas(1, 39, canvas60x8);
       }
       // ------------------------------------------------
@@ -11014,7 +11014,7 @@ void UpdateUI(void * pvParamters) {
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD);
         display.drawCanvas(1, 39, canvas60x8);
       }
 
@@ -11024,7 +11024,7 @@ void UpdateUI(void * pvParamters) {
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD);
         display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
@@ -11033,7 +11033,7 @@ void UpdateUI(void * pvParamters) {
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD);
         display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
@@ -11054,7 +11054,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 62, canvas120x8);
       // ------------------------------------------------
       // function y
@@ -11063,7 +11063,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 72, canvas120x8);
       // ------------------------------------------------
       // function z
@@ -11072,7 +11072,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 82, canvas120x8);
       // ------------------------------------------------
       // real x: display functions associated X
@@ -11081,7 +11081,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 96, canvas120x8);
       // ------------------------------------------------
       // real y: display functions associated Y
@@ -11090,7 +11090,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 106, canvas120x8);
       // ------------------------------------------------
       // real z: display functions associated Z
@@ -11099,7 +11099,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 116, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -11136,7 +11136,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_menu_content);
         strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.setColor(systemData.color_border);
         display.drawCanvas(10, 19, canvas19x8);
       }
@@ -11174,7 +11174,7 @@ void UpdateUI(void * pvParamters) {
         // indicate if port number is -1 (none)
         if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
         else {display.setColor(RGB_COLOR16(255,0,0));}
-        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(39, 19, canvas19x8);
       }
       // ------------------------------------------------------------------------------------------------------------
@@ -11206,12 +11206,12 @@ void UpdateUI(void * pvParamters) {
         canvas8x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
           display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD ); // enabled
+          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD); // enabled
         }
         // --------------------------------------------------------------
         else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
           display.setColor(RGB_COLOR16(255,0,0));
-          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD );
+          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD);
         }
         // --------------------------------------------------------------
         display.drawCanvas(68, 19, canvas8x8);
@@ -11247,12 +11247,12 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_content);
         if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
           display.setColor(RGB_COLOR16(255,255,0));
-          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
+          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD); // inverted function logic (not switch logic, this is per function on a switch) 
         }
         // --------------------------------------------------------------
         else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
           display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
         }
         // --------------------------------------------------------------
         display.drawCanvas(83, 19, canvas8x8);
@@ -11283,7 +11283,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         // --------------------------------------------------------------
         display.setColor(systemData.color_menu_content);
-        canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(91+4, 19, canvas19x8);
       }
     }
@@ -11315,14 +11315,14 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas60x8.clear();
         display.setColor(systemData.color_content);
-        canvas60x8.printFixed((60/2)-((strlen(String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str())/2)*6), 1, String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str(), STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen(String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str())/2)*6), 1, String("E" + String(matrixData.matrix_enabled_i) + " D" + String(matrixData.matrix_disabled_i)).c_str(), STYLE_BOLD);
         display.drawCanvas(1, 15, canvas60x8);
         // ------------------------------------------------
         // on/off
         // ------------------------------------------------
         canvas60x8.clear();
         display.setColor(systemData.color_content);
-        canvas60x8.printFixed((60/2)-((strlen(String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str())/2)*6), 1, String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str(), STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen(String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str())/2)*6), 1, String("A" + String(matrixData.matrix_active_i) + " I" + String(matrixData.matrix_inactive_i)).c_str(), STYLE_BOLD);
         display.drawCanvas(65, 15, canvas60x8);
         // ------------------------------------------------
         // 0-4 switch number
@@ -11422,25 +11422,25 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas80x8.clear();
-        canvas80x8.printFixed(1, 1, String("MATRIX SWITCH" + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD );
+        canvas80x8.printFixed(1, 1, String("MATRIX SWITCH" + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_0, canvas80x8);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(menuMatrixSwitchSelect.selection()).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String(menuMatrixSwitchSelect.selection()).c_str(), STYLE_BOLD);
         display.drawCanvas(100, ui_content_0, canvas19x8);
         // ------------------------------------------------
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas80x8.clear();
-        canvas80x8.printFixed(1, 1, "CURRENT PORT", STYLE_BOLD );
+        canvas80x8.printFixed(1, 1, "CURRENT PORT", STYLE_BOLD);
         display.drawCanvas(3, ui_content_1, canvas80x8);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str(), STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str(), STYLE_BOLD);
         display.drawCanvas(100, ui_content_1, canvas19x8);
       }
       // ------------------------------------------------
@@ -11474,7 +11474,7 @@ void UpdateUI(void * pvParamters) {
         strcat(TMP_UI_DATA_0, "   P");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(1, ui_content_0, canvas120x8);
 
         // ------------------------------------------------
@@ -11495,7 +11495,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "X ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_3-2, canvas120x8);
         // ------------------------------------------------
         // function y
@@ -11504,7 +11504,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "Y ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_4-2, canvas120x8);
         // ------------------------------------------------
         // function z
@@ -11513,7 +11513,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "Z ");
         strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_5-2, canvas120x8);
         // ------------------------------------------------
         // real x: display functions X
@@ -11522,7 +11522,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "X ");
         strcat(TMP_UI_DATA_0, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_6-2, canvas120x8);
         // ------------------------------------------------
         // real y: display functions Y
@@ -11531,7 +11531,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "Y ");
         strcat(TMP_UI_DATA_0, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_7-2, canvas120x8);
         // ------------------------------------------------
         // real z: display functions Z
@@ -11540,7 +11540,7 @@ void UpdateUI(void * pvParamters) {
         strcpy(TMP_UI_DATA_0, "Z ");
         strcat(TMP_UI_DATA_0, getRelatedZ(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
         canvas120x8.clear();
-        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+        canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
         display.drawCanvas(3, ui_content_8-2, canvas120x8);
         // ------------------------------------------------
         display.setColor(systemData.color_border);
@@ -11572,13 +11572,13 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, "SEC", STYLE_BOLD );
+        canvas19x8.printFixed(1, 1, "SEC", STYLE_BOLD);
         display.drawCanvas(3, ui_content_0, canvas19x8);
         // ------------------------------------------------
         display.setColor(systemData.color_content);
         // ------------------------------------------------
         canvas92x8.clear();
-        canvas92x8.printFixed(1, 1, String(satData.utc_second_offset).c_str(), STYLE_BOLD );
+        canvas92x8.printFixed(1, 1, String(satData.utc_second_offset).c_str(), STYLE_BOLD);
         display.drawCanvas(28, ui_content_0, canvas92x8);
         // ------------------------------------------------
       }
@@ -11588,7 +11588,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(RGB_COLOR16(0,255,0));
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((125/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD );
+      canvas120x8.printFixed((125/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD);
       display.drawCanvas(2, 112, canvas120x8);
       // ------------------------------------------------
     }
@@ -11625,7 +11625,7 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, "   P");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(1, ui_content_0, canvas120x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -11645,7 +11645,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "X ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_3-4, canvas120x8);
       // ------------------------------------------------
       // function y
@@ -11654,7 +11654,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Y ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_4-4, canvas120x8);
       // ------------------------------------------------
       // function z
@@ -11663,7 +11663,7 @@ void UpdateUI(void * pvParamters) {
       strcpy(TMP_UI_DATA_0, "Z ");
       strcat(TMP_UI_DATA_0, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_5-4, canvas120x8);
       // ------------------------------------------------
       // menu
@@ -11709,7 +11709,7 @@ void UpdateUI(void * pvParamters) {
       strcat(TMP_UI_DATA_0, "      F");
       strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
       canvas120x8.clear();
-      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD );
+      canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, ui_content_0, canvas120x8);
 
       // ------------------------------------------------
@@ -11761,13 +11761,13 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas42x8.clear();
-      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD );
+      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD);
       display.drawCanvas(3, ui_content_0, canvas42x8);
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       // ------------------------------------------------
       canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD );
+      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD);
       display.drawCanvas(50, ui_content_0, canvas60x8);
       // ------------------------------------------------
       // menu
@@ -12586,35 +12586,35 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD );
+      canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD);
       display.drawCanvas(3, ui_content_0, canvas42x8);
-      canvas76x8.clear();
+      canvas74x8.clear();
       display.setColor(systemData.color_content);
-      canvas76x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
-      display.drawCanvas(50, ui_content_0, canvas76x8);
+      canvas74x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 7).c_str(), STYLE_BOLD);
+      display.drawCanvas(50, ui_content_0, canvas74x8);
       // ------------------------------------------------
       // uptime 
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD );
+      canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD);
       display.drawCanvas(3, ui_content_1, canvas42x8);
-      canvas76x8.clear();
+      canvas74x8.clear();
       display.setColor(systemData.color_content);
-      canvas76x8.printFixed(1, 1, String(ScreenSafeUptime(timeData.uptime_seconds).c_str(), 10).c_str());
-      display.drawCanvas(50, ui_content_1, canvas76x8);
+      canvas74x8.printFixed(1, 1, String(String(timeData.uptime_seconds).c_str(), 11).c_str());
+      display.drawCanvas(50, ui_content_1, canvas74x8);
       // ------------------------------------------------
       // overload 
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD );
+      canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD);
       display.drawCanvas(3, ui_content_2, canvas42x8);
-      canvas76x8.clear();
+      canvas74x8.clear();
       display.setColor(systemData.color_content);
-      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas76x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
-      else {canvas76x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
-      display.drawCanvas(50, ui_content_2, canvas76x8);
+      if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas74x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
+      else {canvas74x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
+      display.drawCanvas(50, ui_content_2, canvas74x8);
       // ------------------------------------------------
       // set run matrix on startup 
       // ------------------------------------------------
@@ -12660,12 +12660,12 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         /* sensor value column 0 */
         canvas60x8.clear();
-        canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD);
         display.drawCanvas(3, 22, canvas60x8);
         // ------------------------------------------------
         /* sensor value column 1 */
         canvas60x8.clear();
-        canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD );
+        canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD);
         display.drawCanvas(66, 22, canvas60x8);
         // ------------------------------------------------
       }
@@ -12758,10 +12758,10 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         canvas28x8.clear();
-        canvas28x8.printFixed(1, 1, "TIME", STYLE_BOLD );
+        canvas28x8.printFixed(1, 1, "TIME", STYLE_BOLD);
         display.drawCanvas(3, ui_content_0, canvas28x8);
         canvas28x8.clear();
-        canvas28x8.printFixed(1, 1, "DATE", STYLE_BOLD );
+        canvas28x8.printFixed(1, 1, "DATE", STYLE_BOLD);
         display.drawCanvas(3, ui_content_1, canvas28x8);
       }
       // ------------------------------------------------
@@ -12771,10 +12771,10 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (crunching_time_data==false) {
         canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD );
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(37, ui_content_0, canvas76x8);
         canvas76x8.clear();
-        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD );
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(37, ui_content_1, canvas76x8);
       }
       // ------------------------------------------------
@@ -12837,7 +12837,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -12902,7 +12902,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.moon_r) + String("  SET " + String(siderealPlanetData.moon_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -12985,7 +12985,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mercury_r) + String("  SET " + String(siderealPlanetData.mercury_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13080,7 +13080,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13175,7 +13175,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.mars_r) + String("  SET " + String(siderealPlanetData.mars_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13270,7 +13270,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13365,7 +13365,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13460,7 +13460,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -13555,7 +13555,7 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       canvas120x8.clear();
-      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str(), STYLE_BOLD );
+      canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.neptune_r) + String("  SET " + String(siderealPlanetData.neptune_s))).c_str(), STYLE_BOLD);
       display.drawCanvas(4, ui_content_0-2, canvas120x8); // offset for hline
       // ------------------------------------------------
       display.setColor(systemData.color_content);
@@ -14554,6 +14554,7 @@ void setup() {
   canvas120x8.setFixedFont(ssd1306xled_font6x8);
   canvas120x120.setFixedFont(ssd1306xled_font6x8);
   canvas60x8.setFixedFont(ssd1306xled_font6x8);
+  canvas74x8.setFixedFont(ssd1306xled_font6x8);
   canvas76x8.setFixedFont(ssd1306xled_font6x8);
   canvas28x8.setFixedFont(ssd1306xled_font6x8);
   canvas21x8.setFixedFont(ssd1306xled_font6x8);
@@ -14567,7 +14568,7 @@ void setup() {
   // display unidentified studios before loading sdcard data
   display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
   // uncomment to test display
-  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD );
+  // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD);
   // display.drawCanvas(1, 1, canvas);
   // display.clear();
   endSPIDevice(SSD1351_CS);
