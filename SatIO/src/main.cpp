@@ -3671,19 +3671,25 @@ void clearDynamicSATIO() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SensorDataStruct {
+  
+  // ----------------------------------------------------
+  // sensor serial output
+  // ----------------------------------------------------
+  char sensor_sentence[1024];
+  char TMP[1024];
 
-  /* CD74HC4067 x16 Analog/Digital Multiplexer */
-
-  // specific analog/digital sensor: can be refactored
+  // ----------------------------------------------------
+  // CD74HC4067 x16 Analog/Digital Multiplexer
+  // ----------------------------------------------------
+  // default names and data types can be customized
+  // ----------------------------------------------------
   float dht11_h_0=0.0;
   float dht11_c_0=0.0;
   float dht11_f_0=0.0;
   float dht11_hif_0=0.0;
   float dht11_hic_0=0.0;
   bool dht11_0_display_hic=true;
-
-  // general analog/digital sensor: can be refactored
-  float sensor_0=0.0;
+  float    sensor_0=0.0;
   uint16_t sensor_1=0.0;
   uint16_t sensor_2=0.0;
   uint16_t sensor_3=0.0;
@@ -3700,8 +3706,19 @@ struct SensorDataStruct {
   uint16_t sensor_14=0.0;
   uint16_t sensor_15=0.0;
 
-  char sensor_sentence[1024];
-  char TMP[1024];
+  // ----------------------------------------------------
+  // TCA9548A x8 i2C Multiplexer
+  // ----------------------------------------------------
+  // default names and data types can be customized
+  // ----------------------------------------------------
+  uint16_t i2c_sensor_0 = 0.0;
+  uint16_t i2c_sensor_1 = 0.0;
+  uint16_t i2c_sensor_2 = 0.0;
+  uint16_t i2c_sensor_3 = 0.0;
+  uint16_t i2c_sensor_4 = 0.0;
+  uint16_t i2c_sensor_5 = 0.0;
+  uint16_t i2c_sensor_6 = 0.0;
+  uint16_t i2c_sensor_7 = 0.0;
 };
 SensorDataStruct sensorData;
 
