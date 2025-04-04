@@ -11297,11 +11297,10 @@ void drawMainBorderGreen() {
 // ------------------------------------------------
 
 void drawGeneralTitle(String title, int color1, int color2) {
-  /*
-  Prints String title to top horizontal centre of display.
-  Color1: Text color.
-  Color2: Border coler. 
-  */
+  // ----------------------------------------------
+  // Color1: Text color.
+  // Color2: Border coler. 
+  // ----------------------------------------------
   display.setColor(color1);
   canvas120x8.clear();
   // center the title at top of screen
@@ -11317,7 +11316,6 @@ void drawGeneralTitle(String title, int color1, int color2) {
 // ------------------------------------------------
 
 void setMenuMatrixFilePathItems() {
-    // set menu items
     menuMatrixFilepathItems[0]=sdcardData.matrix_filenames[0];
     menuMatrixFilepathItems[1]=sdcardData.matrix_filenames[1];
     menuMatrixFilepathItems[2]=sdcardData.matrix_filenames[2];
@@ -11346,101 +11344,95 @@ void setMenuMatrixFilePathItems() {
 
 void UIIndicators() {
   /*
-  usefull for if we are going to indicate something before SPI switching where we will loose the display temporarily until we are finished with another SPI device.
-  these pages should be written procedurally unlike UpdateUI task.
-  should not be ran while UpdateUI is writing to display.
+  Indicate something before SPI switching to another SPI device.
+  Should not be ran while UpdateUI is writing to display.
   */
 
   // ------------------------------------------------
   //                            SAVE MATRIX INDICATOR
   // ------------------------------------------------
-  
-  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   if (menu_page==page_save_matrix_file_indicator) {
-    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    // static data
     // ------------------------------------------------
     if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
-    // ------------------------------------------------
   }
 
   // ------------------------------------------------
   //                            LOAD MATRIX INDICATOR
   // ------------------------------------------------
-
-  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_load_matrix_file_indicator) {
-    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    // static data
     // ------------------------------------------------
     if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
-    // ------------------------------------------------
   }
 
   // ------------------------------------------------
   //                          DELETE MATRIX INDICATOR
   // ------------------------------------------------
-
-  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_delete_matrix_file_indicator) {
-    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    // static data
     // ------------------------------------------------
     if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
-    // ------------------------------------------------
   }
 
   // ------------------------------------------------
   //                   SAVING SYSTEM CONFIG INDICATOR
   // ------------------------------------------------
-
-  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_save_system_config_indicator) {
-    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    // static data
     // ------------------------------------------------
     if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
       canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
-    // ------------------------------------------------
   }
 
   // ------------------------------------------------
   //        RESTORING DEFAULT SYSTEM CONFIG INDICATOR
   // ------------------------------------------------
-
-  // indicator page (to circumvent unwanted input there are no input controls wired up for this page)
   else if (menu_page==page_restore_default_matrix_indicator) {
-    display.setColor(RGB_COLOR16(0,255,0));
+    // ------------------------------------------------
+    // static data
     // ------------------------------------------------
     if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
+      display.setColor(RGB_COLOR16(0,255,0));
       canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD);
       canvas120x120.printFixed((120/2)-((strlen("SYSTEM CONFIG")/2)*6), (display.height()/2), "SYSTEM CONFIG", STYLE_BOLD);
       display.drawCanvas(5, 5, canvas120x120);
       drawMainBorderGreen();
     }
-    // ------------------------------------------------
   }
 }
 
