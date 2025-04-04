@@ -298,16 +298,16 @@ void readI2C();
 void UIIndicators();
 void printAllTimes();
 
-bool gps_done = false; // helps avoid any potential race conditions where gps data is collected on another task
+bool gps_done=false; // helps avoid any potential race conditions where gps data is collected on another task
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int8_t ctsPin = -1;  // remap hardware serial TXD
-const int8_t rtsPin = -1;  // remap hardware serial RXD
-const byte txd_to_atmega = 25; // 
-const byte rxd_from_gps = 26;  //
+const int8_t ctsPin=-1;  // remap hardware serial TXD
+const int8_t rtsPin=-1;  // remap hardware serial RXD
+const byte txd_to_atmega=25; // 
+const byte rxd_from_gps=26;  //
 
 #define ISR_I2C_PERIPHERAL_PIN 25 // allows the Control Panel to interrupt us
 
@@ -347,15 +347,15 @@ int CD74HC4067_Mux_Channel[16][4]={
   {1,1,1,1}  //channel 15
 };
 
-const int CD74HC4067_S0 = 32; // control pin
-const int CD74HC4067_S1 = 33; // control pin
-const int CD74HC4067_S2 = 16; // control pin
-const int CD74HC4067_S3 = 17; // control pin
-const int CD74HC4067_SIG = 4; // signal pin
-const int CD74HC4067_ControlPin[] = {CD74HC4067_S0, CD74HC4067_S1, CD74HC4067_S2, CD74HC4067_S3};
+const int CD74HC4067_S0=32; // control pin
+const int CD74HC4067_S1=33; // control pin
+const int CD74HC4067_S2=16; // control pin
+const int CD74HC4067_S3=17; // control pin
+const int CD74HC4067_SIG=4; // signal pin
+const int CD74HC4067_ControlPin[]={CD74HC4067_S0, CD74HC4067_S1, CD74HC4067_S2, CD74HC4067_S3};
 
 void setMultiplexChannel_CD74HC4067(int channel) {
-  for(int i = 0; i < 4; i++){
+  for(int i=0; i < 4; i++){
     digitalWrite(CD74HC4067_ControlPin[i], CD74HC4067_Mux_Channel[channel][i]); // change channel of analog/digital multiplexer
   }
 }
@@ -386,10 +386,10 @@ void endSPIDevice(int SS) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 // SSD1351 HSPI pins on esp32 with custom CS
-int SSD1351_SCLK = 14; // (SCL)
-int SSD1351_MISO = 12; // (DC)
-int SSD1351_MOSI = 13; // (SDA)
-int SSD1351_CS   = 26; // (CS)
+int SSD1351_SCLK=14; // (SCL)
+int SSD1351_MISO=12; // (DC)
+int SSD1351_MOSI=13; // (SDA)
+int SSD1351_CS  =26; // (CS)
 
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
 DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD1351_CS,  (int8_t)SSD1351_MISO,  (int8_t)0,  (int8_t)-1,  (int8_t)-1  });
@@ -611,7 +611,7 @@ const uint8_t sat16x16_blue_signal[] PROGMEM =
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f
 };
 
-const uint8_t rtcsync_blue[] = {
+const uint8_t rtcsync_blue[]={
   0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 
   0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
   0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
@@ -630,7 +630,7 @@ const uint8_t rtcsync_blue[] = {
   0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f
 };
 
-const uint8_t rtcsync_red[] = {
+const uint8_t rtcsync_red[]={
   0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 
   0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 
   0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 
@@ -655,98 +655,98 @@ const uint8_t rtcsync_red[] = {
 
 /* try to ensure space for developments by leaving a space of 20 pages between each page group */
 
-bool update_ui = true;
-bool ui_cleared = false;
-signed int menu_page = 0;
-bool interaction_updateui = true; // performance and efficiency: make true when content should be updated. can be true for any reason.
+bool update_ui=true;
+bool ui_cleared=false;
+signed int menu_page=0;
+bool interaction_updateui=true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 
 // ----------------------------------------------------
 // HOME
 // ----------------------------------------------------
-static int page_home                             = 0;
+static int page_home                            =0;
 // ----------------------------------------------------
 // INPUT DATA
 // ----------------------------------------------------
-static int page_input_data                       = 20;
+static int page_input_data                      =20;
 // ----------------------------------------------------
 // MAIN MENU
 // ----------------------------------------------------
-static int page_main_menu                        = 40;
+static int page_main_menu                       =40;
 /* MATRIX LOGIC */
-static int page_matrix_logic_main                = 60;
-static int page_matrix_logic_select_setup        = 61;
-static int page_matrix_logic_setup_function      = 62;
+static int page_matrix_logic_main               =60;
+static int page_matrix_logic_select_setup       =61;
+static int page_matrix_logic_setup_function     =62;
 // ----------------------------------------------------
 // MATRIX SWITCHING OVERVIEW 
 // ----------------------------------------------------
-static int page_overview_matrix_switching        = 63;
+static int page_overview_matrix_switching       =63;
 // ----------------------------------------------------
 // FILE
 // ----------------------------------------------------
-static int page_file_main                        = 80;
-static int page_file_save_matrix                 = 81;
-static int page_file_load_matrix                 = 83;
-static int page_file_delete_matrix               = 84;
-static int page_save_system_config_indicator     = 85;
-static int page_save_matrix_file_indicator       = 86;
-static int page_load_matrix_file_indicator       = 87;
-static int page_delete_matrix_file_indicator     = 88;
-static int page_restore_default_matrix_indicator = 89;
+static int page_file_main                       =80;
+static int page_file_save_matrix                =81;
+static int page_file_load_matrix                =83;
+static int page_file_delete_matrix              =84;
+static int page_save_system_config_indicator    =85;
+static int page_save_matrix_file_indicator      =86;
+static int page_load_matrix_file_indicator      =87;
+static int page_delete_matrix_file_indicator    =88;
+static int page_restore_default_matrix_indicator=89;
 // ----------------------------------------------------
 // GPS
 // ----------------------------------------------------
-static int page_gps_main                         = 100;
-static int page_gps_view_gngga                   = 101;
-static int page_gps_view_gnrmc                   = 102;
-static int page_gps_view_gpatt                   = 103;
-static int page_gps_view_satio                   = 104;
+static int page_gps_main                        =100;
+static int page_gps_view_gngga                  =101;
+static int page_gps_view_gnrmc                  =102;
+static int page_gps_view_gpatt                  =103;
+static int page_gps_view_satio                  =104;
 // ----------------------------------------------------
 // SERIAL
 // ----------------------------------------------------
-static int page_serial_main                      = 120;
+static int page_serial_main                     =120;
 // ----------------------------------------------------
 // SYSTEM
 // ----------------------------------------------------
-static int page_system_main                      = 140;
+static int page_system_main                     =140;
 // ----------------------------------------------------
 // UNIVERSE
 // ----------------------------------------------------
-static int page_universe_main                    = 160;
-static int page_universe_view_sun                = 161;
-static int page_universe_view_moon               = 162;
-static int page_universe_view_mercury            = 163;
-static int page_universe_view_venus              = 164;
-static int page_universe_view_mars               = 165;
-static int page_universe_view_jupiter            = 166;
-static int page_universe_view_saturn             = 167;
-static int page_universe_view_uranus             = 168;
-static int page_universe_view_neptune            = 169;
+static int page_universe_main                   =160;
+static int page_universe_view_sun               =161;
+static int page_universe_view_moon              =162;
+static int page_universe_view_mercury           =163;
+static int page_universe_view_venus             =164;
+static int page_universe_view_mars              =165;
+static int page_universe_view_jupiter           =166;
+static int page_universe_view_saturn            =167;
+static int page_universe_view_uranus            =168;
+static int page_universe_view_neptune           =169;
 // ----------------------------------------------------
 // DISPLAY
 // ----------------------------------------------------
-static int page_display_main                     = 180;
+static int page_display_main                    =180;
 // ----------------------------------------------------
 // CD74HC4067
 // ----------------------------------------------------
-static int page_CD74HC4067_main                  = 200;
+static int page_CD74HC4067_main                 =200;
 // ----------------------------------------------------
 // TIME & DATE
 // ----------------------------------------------------
-static int page_timeanddate_main                 = 300;
+static int page_timeanddate_main                =300;
 // ----------------------------------------------------
 // COMPACT VERTICAL UI SPACING
 // ----------------------------------------------------
-static int ui_content_0 = 16;
-static int ui_content_1 = 26;
-static int ui_content_2 = 36;
-static int ui_content_3 = 46;
-static int ui_content_4 = 56;
-static int ui_content_5 = 66;
-static int ui_content_6 = 76;
-static int ui_content_7 = 86;
-static int ui_content_8 = 96;
-static int ui_content_9 = 106;
-static int ui_content_10 = 116;
+static int ui_content_0=16;
+static int ui_content_1=26;
+static int ui_content_2=36;
+static int ui_content_3=46;
+static int ui_content_4=56;
+static int ui_content_5=66;
+static int ui_content_6=76;
+static int ui_content_7=86;
+static int ui_content_8=96;
+static int ui_content_9=106;
+static int ui_content_10=116;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                MENU HOME SETUP
@@ -759,7 +759,7 @@ this may be replaced later by a simple function that changes the page however un
 are added to this menu.
 */
 
-const int max_home_items = 1;
+const int max_home_items=1;
 const char *menuHomeItems[max_home_items] =
 {
   "",
@@ -770,7 +770,7 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items = 10;
+const int max_main_menu_items=10;
 const char *menuMainItems[max_main_menu_items] =
 {
     "    MATRIX       ", // allows matrix configuration
@@ -791,7 +791,7 @@ LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 30}, {125, 125}} )
 //                                                                                                      MENU MATRIX SWITCH SELECT
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_matrix_switch_items = 20;
+const int max_matrix_switch_items=20;
 const char *menuMatrixSwitchSelectItems[max_matrix_switch_items] =
 {
     "M0  ",
@@ -821,7 +821,7 @@ LcdGfxMenu menuMatrixSwitchSelect( menuMatrixSwitchSelectItems, max_matrix_switc
 //                                                                                             MENU MATRIX SWITCH FUNCTION SELECT
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_function_menu_items = 10;
+const int max_function_menu_items=10;
 const char *menuMatrixFunctionSelectItems[max_function_menu_items] =
 {
     "F0 ",
@@ -841,7 +841,7 @@ LcdGfxMenu menuMatrixFunctionSelect( menuMatrixFunctionSelectItems, max_function
 //                                                                                               MENU MATRIX SWITCH CONFIGURATION
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_matrix_function_configure_items = 5;
+const int max_matrix_function_configure_items=5;
 const char *menuMatrixConfigureFunctionItems[max_matrix_function_configure_items] =
 {
     "SELECT FUNCTION",
@@ -856,7 +856,7 @@ LcdGfxMenu menuMatrixConfigureFunction( menuMatrixConfigureFunctionItems, max_ma
 //                                                                                                                      MENU FILE
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_file_items = 6;
+const int max_file_items=6;
 const char *menuFileItems[max_file_items] =
 {
     "NEW     MATRIX",
@@ -872,7 +872,7 @@ LcdGfxMenu menuFile( menuFileItems, max_file_items, {{2, 62}, {125, 125}} );
 //                                                                                                                MENU FILE NAMES
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_filepath_items = 20;
+const int max_filepath_items=20;
 const char *menuMatrixFilepathItems[max_filepath_items];
 LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2, 20}, {125, 125}} );
 
@@ -880,7 +880,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 //                                                                                                                       MENU GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_gps_items = 9;
+const int max_gps_items=9;
 const char *menuGPSItems[max_gps_items];
 LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 41}, {125, 125}} );
 
@@ -888,7 +888,7 @@ LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 41}, {125, 125}} );
 //                                                                                                                    MENU SERIAL
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_serial_items = 16;
+const int max_serial_items=16;
 const char *menuSerialItems[max_serial_items];
 LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 14}, {125, 125}} );
 
@@ -896,7 +896,7 @@ LcdGfxMenu menuSerial( menuSerialItems, max_serial_items, {{2, 14}, {125, 125}} 
 //                                                                                                                  MENU UNIVERSE
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_universe_items = 18;
+const int max_universe_items=18;
 const char *menuUniverseItems[max_universe_items];
 LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 125}} );
 
@@ -904,7 +904,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 //                                                                                                                   MENU DISPLAY 
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_display_items = 8;
+const int max_display_items=8;
 const char *menuDisplayItems[max_display_items];
 LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
 
@@ -912,7 +912,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125
 //                                                                                                                    MENU SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_system_items = 2;
+const int max_system_items=2;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} );
 
@@ -920,7 +920,7 @@ LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} 
 //                                                                                                               MENU TIME & DATE
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_timeanddate_items = 2;
+const int max_timeanddate_items=2;
 const char *menuTimeAndDateItems[max_timeanddate_items];
 LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
 
@@ -959,14 +959,14 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 // ------------------------------------------------------------------------------------------------------------------------------
 
 // SDCARD VSPI pins on esp32
-int SD_SCLK = 18;  // default esp32 VSPI
-int SD_MISO = 19;  // default esp32 VSPI
-int SD_MOSI = 23;  // default esp32 VSPI
-int SD_CS   = 5;   // default esp32 VSPI
+int SD_SCLK=18;  // default esp32 VSPI
+int SD_MISO=19;  // default esp32 VSPI
+int SD_MOSI=23;  // default esp32 VSPI
+int SD_CS  =5;   // default esp32 VSPI
 
 #define SD_FAT_TYPE 2
 // SDCARD_SS_PIN is defined for the built-in SD on some boards.
-const uint8_t SD_CS_PIN = 5;
+const uint8_t SD_CS_PIN=5;
 // Try max SPI clock for an SD. Reduce SPI_CLOCK if errors occur.
 #define SPI_CLOCK SD_SCK_MHZ(4)
 
@@ -975,7 +975,7 @@ const uint8_t SD_CS_PIN = 5;
 SdExFat sd;
 ExFile exfile;
 
-bool sdcard_initialized = false;
+bool sdcard_initialized=false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                  SPI SWITCHING
@@ -1006,53 +1006,53 @@ void beginSDCARD() {
 
 #define ETX 0x03  // end of text character useful for parsing serial data
 
-char A_char[2] = "A";
-char D_char[2] = "D";
-char N_char[2] = "N";
-char E_char[2] = "E";
-char S_char[2] = "S";
-char V_char[2] = "V";
-char W_char[2] = "W";
+char A_char[2]="A";
+char D_char[2]="D";
+char N_char[2]="N";
+char E_char[2]="E";
+char S_char[2]="S";
+char V_char[2]="V";
+char W_char[2]="W";
 
-char digit_0[2] = "0";
-char digit_1[2] = "1";
-char digit_2[2] = "2";
-char digit_3[2] = "3";
-char digit_4[2] = "4";
-char digit_5[2] = "5";
-char digit_6[2] = "6";
-char digit_7[2] = "7";
-char digit_8[2] = "8";
-char digit_9[2] = "9";
-char hyphen_char[2] = "-";
-char period_char[2] = ".";
+char digit_0[2]="0";
+char digit_1[2]="1";
+char digit_2[2]="2";
+char digit_3[2]="3";
+char digit_4[2]="4";
+char digit_5[2]="5";
+char digit_6[2]="6";
+char digit_7[2]="7";
+char digit_8[2]="8";
+char digit_9[2]="9";
+char hyphen_char[2]="-";
+char period_char[2]=".";
 
-bool make_i2c_request = false;
+bool make_i2c_request=false;
 int unixtime_i2C_reponse;
 int previous_menu_page;
 char input_data[128];
 char tmp_input_data[128];
-char allow_input_data = false;
-signed int enter_digits_key = -1;
+char allow_input_data=false;
+signed int enter_digits_key=-1;
 int menu_column_selection=0;
 int previous_menu_column_selection;
 
-char cwd[1024] = "/";
+char cwd[1024]="/";
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct systemStruct {
-  bool debug = false;                // print verbose information over serial
-  bool t_bench = false;              // prints bennchmark information for tuning
+  bool debug=false;                // print verbose information over serial
+  bool t_bench=false;              // prints bennchmark information for tuning
 
-  bool overload = false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  int i_overload = 0;                // count overloads
+  bool overload=false;             // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
+  int i_overload=0;                // count overloads
   int overload_max=100000;           // main loop overload time in micros (default 1/10th of a second)
-  int index_overload_times = 10;     // index of currently used time
-  int max_overload_times = 11;
-  int overload_times[12] = {
+  int index_overload_times=10;     // index of currently used time
+  int max_overload_times=11;
+  int overload_times[12]={
     1,
     2,
     3,
@@ -1066,7 +1066,7 @@ struct systemStruct {
     100000,
     1000000,
   };
-  char char_overload_times[12][56] = {
+  char char_overload_times[12][56]={
     "OLOAD uS    1",
     "OLOAD uS    2",
     "OLOAD uS    3",
@@ -1081,52 +1081,50 @@ struct systemStruct {
     "OLOAD       1 Second",
   };
 
-  bool matrix_run_on_startup = true; // enables/disable matrix switch on startup as specified by system configuration file
+  bool matrix_run_on_startup=true; // enables/disable matrix switch on startup as specified by system configuration file
 
   // performace: turn on/off what you need
-  bool satio_enabled = true;          // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
-  bool gngga_enabled = true;          // enables/disables parsing of serial GPS data
-  bool gnrmc_enabled = true;          // enables/disables parsing of serial GPS data
-  bool gpatt_enabled = true;          // enables/disables parsing of serial GPS data
-  bool matrix_enabled = true;         // enables/disables matrix switch
+  bool satio_enabled=true;          // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
+  bool gngga_enabled=true;          // enables/disables parsing of serial GPS data
+  bool gnrmc_enabled=true;          // enables/disables parsing of serial GPS data
+  bool gpatt_enabled=true;          // enables/disables parsing of serial GPS data
+  bool matrix_enabled=true;         // enables/disables matrix switch
+  bool port_controller_enabled=true; // may be false by default but is default true for now.
 
-  bool output_satio_enabled = false;   // enables/disables output SatIO sentence over serial
-  bool output_gngga_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_gnrmc_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_gpatt_enabled = false;   // enables/disables output GPS sentence over serial
-  bool output_matrix_enabled = false;  // enables/disables output matrix switch active/inactive states sentence over serial
-  bool output_sensors_enabled = false; // enables/disables output of sensory data sentence over serial
+  bool output_satio_enabled=false;   // enables/disables output SatIO sentence over serial
+  bool output_gngga_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_gnrmc_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_gpatt_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_matrix_enabled=false;  // enables/disables output matrix switch active/inactive states sentence over serial
+  bool output_sensors_enabled=false; // enables/disables output of sensory data sentence over serial
 
-  bool output_sun_enabled = false;     // enables/disables output sentence over serial
-  bool output_moon_enabled = false;    // enables/disables output sentence over serial
-  bool output_mercury_enabled = false; // enables/disables output sentence over serial
-  bool output_venus_enabled = false;   // enables/disables output sentence over serial
-  bool output_mars_enabled = false;    // enables/disables output sentence over serial
-  bool output_jupiter_enabled = false; // enables/disables output sentence over serial
-  bool output_saturn_enabled = false;  // enables/disables output sentence over serial
-  bool output_uranus_enabled = false;  // enables/disables output sentence over serial
-  bool output_neptune_enabled = false; // enables/disables output sentence over serial
+  bool output_sun_enabled=false;     // enables/disables output sentence over serial
+  bool output_moon_enabled=false;    // enables/disables output sentence over serial
+  bool output_mercury_enabled=false; // enables/disables output sentence over serial
+  bool output_venus_enabled=false;   // enables/disables output sentence over serial
+  bool output_mars_enabled=false;    // enables/disables output sentence over serial
+  bool output_jupiter_enabled=false; // enables/disables output sentence over serial
+  bool output_saturn_enabled=false;  // enables/disables output sentence over serial
+  bool output_uranus_enabled=false;  // enables/disables output sentence over serial
+  bool output_neptune_enabled=false; // enables/disables output sentence over serial
 
-  bool port_controller_enabled = true; // may be false by default but is default true for now.
 
-  bool sidereal_track_sun = true;      // enables/disables celestial body tracking
-  bool sidereal_track_moon = true;     // enables/disables celestial body tracking
-  bool sidereal_track_mercury = true;  // enables/disables celestial body tracking
-  bool sidereal_track_venus = true;    // enables/disables celestial body tracking
-  bool sidereal_track_mars = true;     // enables/disables celestial body tracking
-  bool sidereal_track_jupiter = true;  // enables/disables celestial body tracking
-  bool sidereal_track_saturn = true;   // enables/disables celestial body tracking
-  bool sidereal_track_uranus = true;   // enables/disables celestial body tracking
-  bool sidereal_track_neptune = true;  // enables/disables celestial body tracking
-  
-  bool allow_debug_bridge = false; // allows serial programming and other features (recommended false every startup)
+  bool sidereal_track_sun=true;      // enables/disables celestial body tracking
+  bool sidereal_track_moon=true;     // enables/disables celestial body tracking
+  bool sidereal_track_mercury=true;  // enables/disables celestial body tracking
+  bool sidereal_track_venus=true;    // enables/disables celestial body tracking
+  bool sidereal_track_mars=true;     // enables/disables celestial body tracking
+  bool sidereal_track_jupiter=true;  // enables/disables celestial body tracking
+  bool sidereal_track_saturn=true;   // enables/disables celestial body tracking
+  bool sidereal_track_uranus=true;   // enables/disables celestial body tracking
+  bool sidereal_track_neptune=true;  // enables/disables celestial body tracking
 
   // oled protection
-  bool display_auto_off = true; // recommended
-  int index_display_autooff_times = 5; // index of currently used time 
-  int max_display_autooff_times = 5; // max available times
-  int display_autooff_times[6] = {3, 5, 10, 15, 30, 60}; // available times
-  char char_display_autooff_times[6][56] = {
+  bool display_auto_off=true; // recommended
+  int index_display_autooff_times=5; // index of currently used time 
+  int max_display_autooff_times=5; // max available times
+  int display_autooff_times[6]={3, 5, 10, 15, 30, 60}; // available times
+  char char_display_autooff_times[6][56]={
     "AUTO-OFF  3",
     "AUTO-OFF  5",
     "AUTO-OFF  10",
@@ -1134,18 +1132,18 @@ struct systemStruct {
     "AUTO-OFF  30",
     "AUTO-OFF  60",
   };
-  int display_timeout = display_autooff_times[index_display_autooff_times];
+  int display_timeout=display_autooff_times[index_display_autooff_times];
   
   // personalization: color
-  int index_display_border_color = 3;
-  int index_display_content_color = 4;
-  int index_display_menu_content_color = 2;
-  int index_display_menu_border_color = 2;
-  int index_display_title_color = 2;
-  int index_display_color_subtitle = 2;
-  int max_color_index = 6;
+  int index_display_border_color=3;
+  int index_display_content_color=4;
+  int index_display_menu_content_color=2;
+  int index_display_menu_border_color=2;
+  int index_display_title_color=2;
+  int index_display_color_subtitle=2;
+  int max_color_index=6;
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
-  int display_color[7] = {
+  int display_color[7]={
     RGB_COLOR16(255,0,0), // red
     RGB_COLOR16(255,255,0), // yellow
     RGB_COLOR16(0,255,0), // green
@@ -1154,7 +1152,7 @@ struct systemStruct {
     RGB_COLOR16(255,0,255), // purple
     RGB_COLOR16(255,255,255), // white
   };
-  char char_display_border_color[7][56] = {
+  char char_display_border_color[7][56]={
     "BORDER    RED",
     "BORDER    YELLOW",
     "BORDER    GREEN",
@@ -1163,7 +1161,7 @@ struct systemStruct {
     "BORDER    PURPLE",
     "BORDER    WHITE",
   };
-  char char_display_content_color[7][56] = {
+  char char_display_content_color[7][56]={
     "CONTENT   RED",
     "CONTENT   YELLOW",
     "CONTENT   GREEN",
@@ -1172,7 +1170,7 @@ struct systemStruct {
     "CONTENT   PURPLE",
     "CONTENT   WHITE",
   };
-  char char_display_menu_border_color[7][56] = {
+  char char_display_menu_border_color[7][56]={
     "MENUB     RED",
     "MENUB     YELLOW",
     "MENUB     GREEN",
@@ -1181,7 +1179,7 @@ struct systemStruct {
     "MENUB     PURPLE",
     "MENUB     WHITE",
   };
-  char char_display_menu_content_color[7][56] = {
+  char char_display_menu_content_color[7][56]={
     "MENUC     RED",
     "MENUC     YELLOW",
     "MENUC     GREEN",
@@ -1190,7 +1188,7 @@ struct systemStruct {
     "MENUC     PURPLE",
     "MENUC     WHITE",
   };
-  char char_display_title_color[7][56] = {
+  char char_display_title_color[7][56]={
     "TITLE     RED",
     "TITLE     YELLOW",
     "TITLE     GREEN",
@@ -1199,7 +1197,7 @@ struct systemStruct {
     "TITLE     PURPLE",
     "TITLE     WHITE",
   };
-  char char_display_subtitle_color[7][56] = {
+  char char_display_subtitle_color[7][56]={
     "SUBTITLE  RED",
     "SUBTITLE  YELLOW",
     "SUBTITLE  GREEN",
@@ -1208,12 +1206,12 @@ struct systemStruct {
     "SUBTITLE  PURPLE",
     "SUBTITLE  WHITE",
   };
-  int color_border = display_color[index_display_border_color];
-  int color_content = display_color[index_display_content_color];
-  int color_menu_content = display_color[index_display_menu_content_color];
-  int color_menu_border = display_color[index_display_menu_border_color];
-  int color_title = display_color[index_display_title_color];
-  int color_subtitle = display_color[index_display_color_subtitle];
+  int color_border=display_color[index_display_border_color];
+  int color_content=display_color[index_display_content_color];
+  int color_menu_content=display_color[index_display_menu_content_color];
+  int color_menu_border=display_color[index_display_menu_border_color];
+  int color_title=display_color[index_display_title_color];
+  int color_subtitle=display_color[index_display_color_subtitle];
 
   char tmp0[56];
   char tmp1[56];
@@ -1232,11 +1230,11 @@ struct Serial1Struct {
   unsigned long nbytes;                // number of bytes read by serial
   unsigned long iter_token;            // count token iterations
   char BUFFER[2000];                   // serial buffer
-  char * token = strtok(BUFFER, ",");  // token pointer 
-  int collected = 0;                   // counts how many unique sentences have been collected.
-  bool gngga_bool = false;             // has sentence been collected
-  bool gnrmc_bool = false;             // has sentence been collected
-  bool gpatt_bool = false;             // has sentence been collected
+  char * token=strtok(BUFFER, ",");  // token pointer 
+  int collected=0;                   // counts how many unique sentences have been collected.
+  bool gngga_bool=false;             // has sentence been collected
+  bool gnrmc_bool=false;             // has sentence been collected
+  bool gpatt_bool=false;             // has sentence been collected
 };
 Serial1Struct serial1Data;
 
@@ -1249,9 +1247,9 @@ struct SerialLinkStruct {
   char BUFFER1[2000];
   unsigned long nbytes;
   unsigned long TOKEN_i;
-  int i_token = 0;
+  int i_token=0;
   char * token;
-  bool validation = false;
+  bool validation=false;
   char checksum[56];
   uint8_t checksum_of_buffer;
   uint8_t checksum_in_buffer;
@@ -1267,25 +1265,25 @@ SerialLinkStruct SerialLink;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SDCardStruct {
-  int max_matrix_filenames = 20; // max matrix file names available 
-  char matrix_filenames[20][56] = {  
+  int max_matrix_filenames=20; // max matrix file names available 
+  char matrix_filenames[20][56]={  
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
     };                                                   // matrix filenames created, stored and found by system
-  char sysconf[56] = "/SYSTEM/SYSTEM.CONFIG";            // filepath
-  char default_matrix_filepath[56] = "/MATRIX/M_0.SAVE"; // filepath
-  char matrix_filename[56] = "";                         // filename
-  char matrix_filepath[56] = "";                         // current matrix filepath
+  char sysconf[56]="/SYSTEM/SYSTEM.CONFIG";            // filepath
+  char default_matrix_filepath[56]="/MATRIX/M_0.SAVE"; // filepath
+  char matrix_filename[56]="";                         // filename
+  char matrix_filepath[56]="";                         // current matrix filepath
   char tempmatrixfilepath[56];                           // used for laoding filepaths
-  char system_dirs[2][56] = {"/MATRIX/", "/SYSTEM/"};    // root dirs
-  char save_ext[56] = ".SAVE";
-  char matrix_fname[10] = "M";
+  char system_dirs[2][56]={"/MATRIX/", "/SYSTEM/"};    // root dirs
+  char save_ext[56]=".SAVE";
+  char matrix_fname[10]="M";
   unsigned long iter_token; // count token iterations
   char BUFFER[2048];                                           // buffer
   String SBUFFER;                                              // String buffer
-  char * token = strtok(BUFFER, ",");                          // token pointer 
+  char * token=strtok(BUFFER, ",");                          // token pointer 
   char data_0[56];                                             // value placeholder
   char data_1[56];                                             // value placeholder
   char data_2[56];                                             // value placeholder
@@ -1296,10 +1294,10 @@ struct SDCardStruct {
   char data_7[56];                                             // value placeholder
   char data_8[56];                                             // value placeholder
   char file_data[1024];                                        // buffer
-  char delim[56] = ",";                                        // delimiter char
+  char delim[56]=",";                                        // delimiter char
   char tmp[56];                                                // buffer
-  char tag_0[56] = "r";                                        // file line tag
-  char tag_1[56] = "e";                                        // file line tag
+  char tag_0[56]="r";                                        // file line tag
+  char tag_1[56]="e";                                        // file line tag
   ExFile current_file;                                         // file currently handled
   char newfilename[56];
 };
@@ -1337,8 +1335,8 @@ HWTimer designed to be agnostic to any specific unit of time so that interval ti
 
 static int INTERVAL_TIME;
 volatile int interrupt_interval_counter; // for counting interrupt
-hw_timer_t * interval_timer = NULL;      // H/W timer defining (Pointer to the Structure)
-portMUX_TYPE interval_timer_mux = portMUX_INITIALIZER_UNLOCKED;
+hw_timer_t * interval_timer=NULL;      // H/W timer defining (Pointer to the Structure)
+portMUX_TYPE interval_timer_mux=portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR  isr_interval_timer() {
   portENTER_CRITICAL_ISR(&interval_timer_mux);
@@ -1357,8 +1355,8 @@ HWTimer designed to specifically count seconds.
 
 static int SECOND_TIME;
 volatile int interrupt_second_counter; // for counting interrupt
-hw_timer_t * second_timer = NULL;      // H/W timer defining (Pointer to the Structure)
-portMUX_TYPE second_timer_mux = portMUX_INITIALIZER_UNLOCKED;
+hw_timer_t * second_timer=NULL;      // H/W timer defining (Pointer to the Structure)
+portMUX_TYPE second_timer_mux=portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR isr_second_timer() {
   portENTER_CRITICAL_ISR(&second_timer_mux);
@@ -1374,16 +1372,16 @@ void IRAM_ATTR isr_second_timer() {
 
 void UptimeSecondsToDateTime(long sec) {
   // Calculate years, months, days, hours, minutes, seconds
-  timeData.uptime_years = sec / 31536000; // Approximate seconds in a year
+  timeData.uptime_years=sec / 31536000; // Approximate seconds in a year
   sec %= 31536000;
-  timeData.uptime_months = sec / 2629743; // Approximate seconds in a month
+  timeData.uptime_months=sec / 2629743; // Approximate seconds in a month
   sec %= 2629743;
-  timeData.uptime_days = sec / 86400;
+  timeData.uptime_days=sec / 86400;
   sec %= 86400;
   timeData.uptime_hours= sec / 3600;
   sec %= 3600;
-  timeData.uptime_minutes = sec / 60;
-  timeData.uptime_seconds = sec % 60;
+  timeData.uptime_minutes=sec / 60;
+  timeData.uptime_seconds=sec % 60;
 }
 
 // todo: no reset uptime_seconds
@@ -1421,7 +1419,7 @@ struct SiderealPlantetsStruct {
   double moon_r;
   double moon_s;
   double moon_p;
-  char moon_p_name[8][28] = {
+  char moon_p_name[8][28]={
     "New Moon",
     "Waxing Crescent",
     "First Quarter",
@@ -1551,12 +1549,12 @@ SiderealObjectStruct siderealObjectData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct validationStruct {
-  int  valid_i = 0;           // validation counter
-  bool valid_b = true;        // validation bool
+  int  valid_i=0;           // validation counter
+  bool valid_b=true;        // validation bool
   char *find_char;            // validation pointer
   int  index;                 // a placeholder for char index
-  bool bool_data_0 = false;   // load matrix values validation bool
-  bool bool_data_1 = false;   // load matrix values validation bool
+  bool bool_data_0=false;   // load matrix values validation bool
+  bool bool_data_1=false;   // load matrix values validation bool
 };
 validationStruct validData;
 
@@ -1570,9 +1568,9 @@ int getCheckSum(char * string) {
 
   // uncomment to debug
   // debug("[connected] getCheckSum: " + String(string));
-  for (SerialLink.XOR = 0, SerialLink.i_XOR = 0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
-    SerialLink.c_XOR = (unsigned char)string[SerialLink.i_XOR];
-    if (SerialLink.c_XOR == '*') break;
+  for (SerialLink.XOR=0, SerialLink.i_XOR=0; SerialLink.i_XOR < strlen(string); SerialLink.i_XOR++) {
+    SerialLink.c_XOR=(unsigned char)string[SerialLink.i_XOR];
+    if (SerialLink.c_XOR=='*') break;
     if (SerialLink.c_XOR != '$') SerialLink.XOR ^= SerialLink.c_XOR;
   }
   // uncomment to debug
@@ -1596,21 +1594,21 @@ bool validateChecksum(char * buffer) {
   // debug("[validateChecksum]");
   // debug("[validateChecksum] " + String(buffer));
   memset(SerialLink.gotSum, 0, sizeof(SerialLink.gotSum));
-  SerialLink.gotSum[0] = buffer[strlen(buffer) - 3];
-  SerialLink.gotSum[1] = buffer[strlen(buffer) - 2];
+  SerialLink.gotSum[0]=buffer[strlen(buffer) - 3];
+  SerialLink.gotSum[1]=buffer[strlen(buffer) - 2];
   // debug("[checksum_in_buffer] " + String(SerialLink.gotSum));
-  SerialLink.checksum_of_buffer =  getCheckSum(buffer);
+  SerialLink.checksum_of_buffer= getCheckSum(buffer);
   // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
   // debug("[checksum_of_buffer converted] " + String(SerialLink.checksum));
-  SerialLink.checksum_in_buffer = h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
+  SerialLink.checksum_in_buffer=h2d2(SerialLink.gotSum[0], SerialLink.gotSum[1]);
   // debug("[checksum_in_buffer (h2d2)] " + String(SerialLink.checksum_in_buffer));
-  if (SerialLink.checksum_in_buffer == SerialLink.checksum_of_buffer) {return true;}
+  if (SerialLink.checksum_in_buffer==SerialLink.checksum_of_buffer) {return true;}
   return false;
 }
 
 void createChecksum(char * buffer) {
-  SerialLink.checksum_of_buffer = getCheckSum(buffer);
+  SerialLink.checksum_of_buffer=getCheckSum(buffer);
   // debug("[checksum_of_buffer] " + String(SerialLink.checksum_of_buffer));
   // debug("[hexadecimal number] " + String("%X", SerialLink.checksum_of_buffer)); todo
   sprintf(SerialLink.checksum,"%X",SerialLink.checksum_of_buffer);
@@ -1630,29 +1628,29 @@ sanitizing each element of a sentence. thorough testing is required to ensure no
 
 
 bool count_digits(char * data, int expected) {
-  validData.valid_i = 0;
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 1) {validData.valid_i++;}}
-  if (validData.valid_i == expected) {return true;} else {return false;}
+  validData.valid_i=0;
+  for (int i=0; i < strlen(data); i++) {if (isdigit(data[i])==1) {validData.valid_i++;}}
+  if (validData.valid_i==expected) {return true;} else {return false;}
 }
 
 bool count_alpha(char * data, int expected) {
-  validData.valid_i = 0;
-  for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 1) {validData.valid_i++;}}
-  if (validData.valid_i == expected) {return true;} else {return false;}
+  validData.valid_i=0;
+  for (int i=0; i < strlen(data); i++) {if (isalpha(data[i])==1) {validData.valid_i++;}}
+  if (validData.valid_i==expected) {return true;} else {return false;}
 }
 
 bool is_all_digits(char * data) {
-  validData.valid_b = true;
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {validData.valid_b = false;}}
+  validData.valid_b=true;
+  for (int i=0; i < strlen(data); i++) {if (isdigit(data[i])==0) {validData.valid_b=false;}}
   return validData.valid_b;
 }
 
 bool is_all_digits_plus_char(char * data, char find_char) {
   /* designed to check all chars are digits except one period and is more general purpose than just accepting a period */
-  validData.valid_b = true;
-  validData.find_char = strchr(data, find_char);
-  validData.index = (int)(validData.find_char - data);
-  for (int i = 0; i < strlen(data); i++) {if (isdigit(data[i]) == 0) {if (i != validData.index) {validData.valid_b = false;}}}
+  validData.valid_b=true;
+  validData.find_char=strchr(data, find_char);
+  validData.index=(int)(validData.find_char - data);
+  for (int i=0; i < strlen(data); i++) {if (isdigit(data[i])==0) {if (i != validData.index) {validData.valid_b=false;}}}
   return validData.valid_b;
 }
 
@@ -1663,26 +1661,26 @@ bool is_positive_negative_num(char * data) {
   allows one period anywhere.
   allows one minus (-) sign at index zero.
   */
-  validData.valid_b = true;
-  validData.find_char = strchr(data, '.');
-  validData.index = (int)(validData.find_char - data);
-  for (int i = 0; i < strlen(data); i++) {
-    if (isdigit(data[i]) == 0) {if (i != validData.index) {if ((data[i] != '-') && (i > 0)) {validData.valid_b = false;}}}}
+  validData.valid_b=true;
+  validData.find_char=strchr(data, '.');
+  validData.index=(int)(validData.find_char - data);
+  for (int i=0; i < strlen(data); i++) {
+    if (isdigit(data[i])==0) {if (i != validData.index) {if ((data[i] != '-') && (i > 0)) {validData.valid_b=false;}}}}
   return validData.valid_b;
 }
 
 bool is_all_alpha(char * data) {
-  validData.valid_b = true;
-  for (int i = 0; i < strlen(data); i++) {if (isalpha(data[i]) == 0) {validData.valid_b = false;}}
+  validData.valid_b=true;
+  for (int i=0; i < strlen(data); i++) {if (isalpha(data[i])==0) {validData.valid_b=false;}}
   return validData.valid_b;
 }
 
 bool val_utc_time(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 9) {
-    if (data[6] == '.') {
-      if (count_digits(data, 8) == true) {
-        if ((atoi(data) >= 0.0) && (atoi(data) <= 235959.99)) {check_pass = true;}
+  bool check_pass=false;
+  if (strlen(data)==9) {
+    if (data[6]=='.') {
+      if (count_digits(data, 8)==true) {
+        if ((atoi(data) >= 0.0) && (atoi(data) <= 235959.99)) {check_pass=true;}
       }
     }
   }
@@ -1690,22 +1688,22 @@ bool val_utc_time(char * data) {
 }
 
 bool val_utc_date(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 6) {
-    if (is_all_digits(data) == true) {
-      if ((atoi(data) >= 0.0) && (atoi(data) <= 999999)) {check_pass = true;}
+  bool check_pass=false;
+  if (strlen(data)==6) {
+    if (is_all_digits(data)==true) {
+      if ((atoi(data) >= 0.0) && (atoi(data) <= 999999)) {check_pass=true;}
     }
   }
   return check_pass;
 }
 
 bool val_latitude(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 13) {
-    if (data[4] == '.') {
-      if (count_digits(data, 12) == true) {
-        if (is_positive_negative_num(data) == true) {
-          check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==13) {
+    if (data[4]=='.') {
+      if (count_digits(data, 12)==true) {
+        if (is_positive_negative_num(data)==true) {
+          check_pass=true;
         }
       }
     }
@@ -1714,12 +1712,12 @@ bool val_latitude(char * data) {
 }
 
 bool val_longitude(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 14) {
-    if (data[5] == '.') {
-      if (count_digits(data, 13) == true) {
-        if (is_positive_negative_num(data) == true) {
-          check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==14) {
+    if (data[5]=='.') {
+      if (count_digits(data, 13)==true) {
+        if (is_positive_negative_num(data)==true) {
+          check_pass=true;
         }
       }
     }
@@ -1728,31 +1726,31 @@ bool val_longitude(char * data) {
 }
 
 bool val_latitude_H(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if ((strcmp(data, "N") == 0) || (strcmp(data, "S") == 0)) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if ((strcmp(data, "N")==0) || (strcmp(data, "S")==0)) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_longitude_H(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0)) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if ((strcmp(data, "E")==0) || (strcmp(data, "W")==0)) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_positioning_status_gngga(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if (is_all_digits(data) == true) {
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if (is_all_digits(data)==true) {
       if ((atoi(data) >= 0) && (atoi(data) <= 6)) {
-        check_pass = true;
+        check_pass=true;
       }
     }
   }
@@ -1760,20 +1758,20 @@ bool val_positioning_status_gngga(char * data) {
 }
 
 bool val_satellite_count(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
     if (atoi(data) >= 0){
-      check_pass = true;
+      check_pass=true;
       }
   }
   return check_pass;
 }
 
 bool val_hdop_precision_factor(char * data) {
-  bool check_pass = false;
-  if (is_all_digits_plus_char(data, '.') == true) {
+  bool check_pass=false;
+  if (is_all_digits_plus_char(data, '.')==true) {
     if (atoi(data) >= 0){
-      check_pass = true;
+      check_pass=true;
   }
   }
   return check_pass;
@@ -1781,82 +1779,82 @@ bool val_hdop_precision_factor(char * data) {
 
 bool val_altitude(char * data) {
   // account for decimal point
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-      check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+      check_pass=true;
   }
   return check_pass;
 }
 
 bool val_altitude_units(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if (strcmp(data, "M") == 0) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if (strcmp(data, "M")==0) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_geoidal(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_geoidal_units(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if (strcmp(data, "M") == 0) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if (strcmp(data, "M")==0) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_differential_delay(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_basestation_id(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if (strlen(data) == 4) {
-      check_pass = true;
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if (strlen(data)==4) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_positioning_status_gnrmc(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if ((strcmp(data, "A") == 0) || (strcmp(data, "V") == 0)) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if ((strcmp(data, "A")==0) || (strcmp(data, "V")==0)) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_ground_speed(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_ground_heading(char * data) {
-  bool check_pass = false;
-  if (is_all_digits_plus_char(data, '.') == true) {
+  bool check_pass=false;
+  if (is_all_digits_plus_char(data, '.')==true) {
     if ((atoi(data) >= 0) && (atoi(data) <= 360)) {
-      check_pass = true;
+      check_pass=true;
     }
   }
   return check_pass;
@@ -1864,496 +1862,496 @@ bool val_ground_heading(char * data) {
 
 // todo
 bool val_installation_angle(char * data) {
-  bool check_pass = false;
-  if (is_all_digits_plus_char(data, '.') == true) {
+  bool check_pass=false;
+  if (is_all_digits_plus_char(data, '.')==true) {
     if (atoi(data) >= 0) {
-      check_pass = true;
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_installation_angle_direction(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if ((strcmp(data, "E") == 0) || (strcmp(data, "W") == 0) || (strcmp(data, "M") == 0)) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if ((strcmp(data, "E")==0) || (strcmp(data, "W")==0) || (strcmp(data, "M")==0)) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_mode_indication(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 1) {
-    if ((strcmp(data, "A") == 0) || (strcmp(data, "D") == 0) || (strcmp(data, "E") == 0) || (strcmp(data, "N") == 0)) {
-      check_pass = true;
+  bool check_pass=false;
+  if (strlen(data)==1) {
+    if ((strcmp(data, "A")==0) || (strcmp(data, "D")==0) || (strcmp(data, "E")==0) || (strcmp(data, "N")==0)) {
+      check_pass=true;
     }
   }
   return check_pass;
 }
 
 bool val_pitch_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_roll_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_yaw_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_angle_channle_p_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "p") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "p")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_angle_channle_r_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "r") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "r")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_angle_channle_y_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "y") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "y")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_version_channel_s_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "S") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "S")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_software_version_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if (atoi(data) == 20230219) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if (atoi(data)==20230219) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_product_id_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "003E009") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "003E009")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_id_channel_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "ID") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "ID")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_ins_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data)==0) || (atoi(data)==1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ins_channel_gpatt(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "INS") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "INS")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_hardware_version_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if (strcmp(data, "3335") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if (strcmp(data, "3335")==0) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_run_state_flag_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((strcmp(data, "01") == 0) || (strcmp(data, "02") == 0) || (strcmp(data, "03") == 0)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((strcmp(data, "01")==0) || (strcmp(data, "02")==0) || (strcmp(data, "03")==0)) {check_pass=true;}
   }
   return check_pass;
 }
 
 // todo
 bool val_mis_angle_num_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_static_flag_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data)==0) || (atoi(data)==1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 // todo
 bool val_user_code_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits_plus_char(data, '.') == true) {
-    if (atoi(data) >= 0) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits_plus_char(data, '.')==true) {
+    if (atoi(data) >= 0) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_gst_data_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if (atoi(data) >= 0) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if (atoi(data) >= 0) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_line_flag_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data)==0) || (atoi(data)==1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_mis_att_flag_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data)==0) || (atoi(data)==1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_imu_kind_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_car_kind_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 1) && (atoi(data) <= 4)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 1) && (atoi(data) <= 4)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_mileage_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_run_inetial_flag_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_speed_enable_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) == 0) || (atoi(data) == 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data)==0) || (atoi(data)==1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_speed_num_gpatt(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_speed_status(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_accelleration_delimiter(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "A") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "A")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_axis_accelleration(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_angular_velocity_delimiter(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "G") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "G")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_gyro_angular_velocity(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_status_delimiter(char * data) {
-  bool check_pass = false;
-  if (strcmp(data, "S") == 0) {check_pass = true;}
+  bool check_pass=false;
+  if (strcmp(data, "S")==0) {check_pass=true;}
   return check_pass;
 }
 
 bool val_ubi_state_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_state_kind_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_code_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_gset_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_sset_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ang_dget_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ins_run_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_fix_kind_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_fiobject_roll_flag(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_fix_pitch_flag(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_ubi_on_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 8)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_kind_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 2)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_a_set(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-  if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+  if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_b_set(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-  if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+  if ((atoi(data) >= 0) && (atoi(data) <= 19)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_acc_X_data(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_acc_Y_data(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_gyro_Z_data(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_pitch_angle(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_roll_angle(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_yaw_angle(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_car_speed(char * data) {
-  bool check_pass = false;
-  if (is_all_digits_plus_char(data, '.') == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 100)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits_plus_char(data, '.')==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 100)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ins_flag(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-    if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+    if ((atoi(data) >= 0) && (atoi(data) <= 4)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_ubi_num(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_ubi_valid(char * data) {
-  bool check_pass = false;
-  if (is_all_digits(data) == true) {
-  if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass = true;}
+  bool check_pass=false;
+  if (is_all_digits(data)==true) {
+  if ((atoi(data) >= 0) && (atoi(data) <= 1)) {check_pass=true;}
   }
   return check_pass;
 }
 
 bool val_coll_T_data(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_coll_T_heading(char * data) {
-  bool check_pass = false;
-  if (is_positive_negative_num(data) == true) {
-    check_pass = true;
+  bool check_pass=false;
+  if (is_positive_negative_num(data)==true) {
+    check_pass=true;
   }
   return check_pass;
 }
 
 bool val_custom_flag(char * data) {
-  bool check_pass = false;
-  if (strlen(data) >= 1) {check_pass = true;}
+  bool check_pass=false;
+  if (strlen(data) >= 1) {check_pass=true;}
   return check_pass;
 }
 
 bool val_checksum(char * data) {
-  bool check_pass = false;
-  if (strlen(data) == 3) {check_pass = true;}
+  bool check_pass=false;
+  if (strlen(data)==3) {check_pass=true;}
   return check_pass;
 }
 
 bool val_scalable(char * data) {
-  bool check_pass = false;
-  if (strlen(data) >= 1) {check_pass = true;}
+  bool check_pass=false;
+  if (strlen(data) >= 1) {check_pass=true;}
   return check_pass;
 }
 
@@ -2363,20 +2361,20 @@ bool val_scalable(char * data) {
 
 struct MatrixStruct {
 
-  int max_matrices = 20;          // number of matrix switches 
-  int max_matrix_functions = 10;  // number of functions available to a matrix switch
+  int max_matrices=20;          // number of matrix switches 
+  int max_matrix_functions=10;  // number of functions available to a matrix switch
 
-  int matrix_enabled_i = 0;       // count how many matrx switches are enabled
-  int matrix_disabled_i = 0;      // count how many matrx switches are disabled
-  int matrix_active_i = 0;        // count how many matrx switches are active
-  int matrix_inactive_i = 0;      // count how many matrx switches are inactive
+  int matrix_enabled_i=0;       // count how many matrx switches are enabled
+  int matrix_disabled_i=0;      // count how many matrx switches are disabled
+  int matrix_active_i=0;        // count how many matrx switches are active
+  int matrix_inactive_i=0;      // count how many matrx switches are inactive
 
   char temp[256];                 // a general place to store temporary chars relative to MatrixStruct
   char matrix_sentence[256];      // an NMEA inspired sentence reflecting matrix switch states
-  String tempStr = "";
+  String tempStr="";
 
   // reflects matrix switch active/inactive states each loop of matrix switch function
-  bool matrix_switch_state[1][20] = {
+  bool matrix_switch_state[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2384,7 +2382,7 @@ struct MatrixStruct {
   };
 
   // reflects matrix switch active/inactive states each loop of matrix switch function
-  bool tmp_matrix_switch_state[1][20] = {
+  bool tmp_matrix_switch_state[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2392,7 +2390,7 @@ struct MatrixStruct {
   };
 
   // reflects matrix switch enabled/disabled
-  int matrix_switch_enabled[1][20] = {
+  int matrix_switch_enabled[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2400,7 +2398,7 @@ struct MatrixStruct {
   };
 
   // reflects matrix switch output mode: 0=high/low
-  int matrix_switch_output_mode[1][20] = {
+  int matrix_switch_output_mode[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2408,7 +2406,7 @@ struct MatrixStruct {
   };
 
   // reflects matrix switch inverted logic bool (per function)
-  bool matrix_switch_inverted_logic[20][10] = {
+  bool matrix_switch_inverted_logic[20][10]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
     },
@@ -2476,7 +2474,7 @@ struct MatrixStruct {
   allows modulation with second resolution.
   currently intended as one timer per switch so be careful.
   */
-  unsigned long matrix_timers[1][20] = {
+  unsigned long matrix_timers[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2484,7 +2482,7 @@ struct MatrixStruct {
   };
 
   // a placeholder for matrix switch ports (default no port)
-  signed int matrix_port_map[1][20] = {
+  signed int matrix_port_map[1][20]={
     {
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2492,7 +2490,7 @@ struct MatrixStruct {
   };
 
   // a placeholder for matrix switch ports (default no port)
-  signed int tmp_matrix_port_map[1][20] = {
+  signed int tmp_matrix_port_map[1][20]={
     {
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2500,7 +2498,7 @@ struct MatrixStruct {
   };
 
   // a placeholder for matrix switch ports (default ATMEGA2560 digital)
-  // signed int matrix_port_map[1][20] = {
+  // signed int matrix_port_map[1][20]={
   //   {
   //     23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
   //     33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
@@ -2508,7 +2506,7 @@ struct MatrixStruct {
   // };
 
   // a matrix max_matrices by max_matrix_functions storing function names for each matrix switch (default None)
-  char matrix_function[20][10][25] = {
+  char matrix_function[20][10][25]={
     {"None", "None", "None", "None", "None", "None", "None", "None", "None", "None", // 1
      },
     {"None", "None", "None", "None", "None", "None", "None", "None", "None", "None", // 2
@@ -2557,7 +2555,7 @@ struct MatrixStruct {
           X     Y     Z    
   {  {   0.0,  0.0,  0.0   } }
   */
-  double matrix_function_xyz[20][10][3] = {
+  double matrix_function_xyz[20][10][3]={
     {
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, // 1
       {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}
@@ -2650,11 +2648,11 @@ struct MatrixStruct {
     "Under",
     "Range",
   };
-  int i_expression = 0;
+  int i_expression=0;
 
   // number of available base function names that can be used to program a matrix switch
-  int max_matrix_function_names = 134;
-  char matrix_function_names[134][25] = 
+  int max_matrix_function_names=134;
+  char matrix_function_names[134][25]=
   {
     "None",
     "Enabled",
@@ -3068,22 +3066,22 @@ struct GNGGAStruct {
   char sentence[200];
   char outsentence[200];
   char tag[56];                                                                                                            // <0> Log header
-  char utc_time[56];                     unsigned long bad_utc_time_i;              bool bad_utc_time = true;              // <1> UTC time, the format is hhmmss.sss
-  char latitude[56];                     unsigned long bad_latitude_i;              bool bad_latitude = true;              // <2> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere = true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                    unsigned long bad_longitude_i;             bool bad_longitude = true;             // <4> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere = true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char solution_status[56];              unsigned long bad_solution_status_i;       bool bad_solution_status = true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
-  char satellite_count_gngga[56] = "0";  unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga = true; // <7> Number of satellites used
-  char hdop_precision_factor[56];        unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor = true; // <8> HDOP level precision factor
-  char altitude[56];                     unsigned long bad_altitude_i;              bool bad_altitude = true;              // <9> Altitude
-  char altitude_units[56];               unsigned long bad_altitude_units_i;        bool bad_altitude_units = true;        // <10> 
-  char geoidal[56];                      unsigned long bad_geoidal_i;               bool bad_geoidal = true;               // <11> The height of the earth ellipsoid relative to the geoid 
-  char geoidal_units[56];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units = true;         // <12> 
-  char differential_delay[56];           unsigned long bad_differential_delay_i;    bool bad_differential_delay = true;    // <13>
-  char id[56];                           unsigned long bad_id_i;                    bool bad_id = true;                    // <14> base station ID
-  char check_sum[56];                    unsigned long bad_check_sum_i;             bool bad_check_sum = true;             // <15> XOR check value of all bytes starting from $ to *
-  int check_data = 0;                    unsigned long bad_checksum_validity;       bool valid_checksum = false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
+  char utc_time[56];                     unsigned long bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
+  char latitude[56];                     unsigned long bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                    unsigned long bad_longitude_i;             bool bad_longitude=true;             // <4> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere=true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
+  char solution_status[56];              unsigned long bad_solution_status_i;       bool bad_solution_status=true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char satellite_count_gngga[56]="0";  unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga=true; // <7> Number of satellites used
+  char hdop_precision_factor[56];        unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor=true; // <8> HDOP level precision factor
+  char altitude[56];                     unsigned long bad_altitude_i;              bool bad_altitude=true;              // <9> Altitude
+  char altitude_units[56];               unsigned long bad_altitude_units_i;        bool bad_altitude_units=true;        // <10> 
+  char geoidal[56];                      unsigned long bad_geoidal_i;               bool bad_geoidal=true;               // <11> The height of the earth ellipsoid relative to the geoid 
+  char geoidal_units[56];                unsigned long bad_geoidal_units_i;         bool bad_geoidal_units=true;         // <12> 
+  char differential_delay[56];           unsigned long bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
+  char id[56];                           unsigned long bad_id_i;                    bool bad_id=true;                    // <14> base station ID
+  char check_sum[56];                    unsigned long bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
+  int check_data=0;                    unsigned long bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
 };
 GNGGAStruct gnggaData;
 
@@ -3117,29 +3115,29 @@ void clearGNGGA() {
 }
 
 void GNGGA() {
-  gnggaData.check_data = 0;
+  gnggaData.check_data=0;
   memset(gnggaData.tag, 0, 56);
-  serial1Data.iter_token = 0;
-  serial1Data.token = strtok(gnggaData.sentence, ",");
+  serial1Data.iter_token=0;
+  serial1Data.token=strtok(gnggaData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if     (serial1Data.iter_token == 0)                                                                {strcpy(gnggaData.tag, "GNGGA");                                                                             gnggaData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time = false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time = true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token) == true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude = false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude = true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token) == true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere = false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token) == true)                {strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude = false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude = true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token) == true)              {strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere = false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token) == true) {strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status = false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status = true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token) == true)          {strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga = false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga = true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token) == true)    {strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor = false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor = true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token) == true)                 {strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude = false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude = true;}}
-    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token) == true)           {strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.check_data++; gnggaData.bad_altitude_units = false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units = true;}}
-    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token) == true)                  {strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal = false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal = true;}}
-    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token) == true)            {strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units = false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units = true;}}
-    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token) == true)       {strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay = false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay = true;}}
-    serial1Data.token = strtok(NULL, ",");
+    if     (serial1Data.iter_token==0)                                                                {strcpy(gnggaData.tag, "GNGGA");                                                                             gnggaData.check_data++;}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time=false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time=true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token)==true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude=false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude=true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token)==true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere=false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token)==true)                {strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude=false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude=true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token)==true)              {strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere=false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token)==true) {strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status=false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status=true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token)==true)          {strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga=false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga=true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token)==true)    {strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor=false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor=true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token)==true)                 {strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude=false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude=true;}}
+    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token)==true)           {strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.check_data++; gnggaData.bad_altitude_units=false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units=true;}}
+    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token)==true)                  {strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal=false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal=true;}}
+    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token)==true)            {strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units=false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units=true;}}
+    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token)==true)       {strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay=false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay=true;}}
+    serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (systemData.debug == true) {
+  if (systemData.debug==true) {
     Serial.println("[gnggaData.tag] "                     + String(gnggaData.tag));
     Serial.println("[gnggaData.utc_time] "                + String(gnggaData.utc_time));
     Serial.println("[gnggaData.latitude] "                + String(gnggaData.latitude));
@@ -3168,20 +3166,20 @@ struct GNRMCStruct {
   char sentence[200];
   char outsentence[200];
   char tag[56];                                                                                                                          // <0> Log header
-  char utc_time[56];                     unsigned long bad_utc_time_i;                     bool bad_utc_time = true;                     // <1> UTC time, the format is hhmmss.sss
-  char positioning_status[56];           unsigned long bad_positioning_status_i;           bool bad_positioning_status = true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
-  char latitude[56];                     unsigned long bad_latitude_i;                     bool bad_latitude = true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere = true;          // <4> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                    unsigned long bad_longitude_i;                    bool bad_longitude = true;                    // <5> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere = true;         // <6> Longitude hemisphere, E or W (east longitude or west longitude)
-  char ground_speed[56];                 unsigned long bad_ground_speed_i;                 bool bad_ground_speed = true;                 // <7> Ground speed
-  char ground_heading[56];               unsigned long bad_ground_heading_i;               bool bad_ground_heading = true;               // <8> Ground heading (take true north as the reference datum)
-  char utc_date[56];                     unsigned long bad_utc_date_i;                     bool bad_utc_date = true;                     // <9> UTC date, the format is ddmmyy (day, month, year)
-  char installation_angle[56];           unsigned long bad_installation_angle_i;           bool bad_installation_angle = true;           // <10> Magnetic declination (000.0~180.0 degrees)
-  char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction = true; // <11> Magnetic declination direction, E (east) or W (west)
-  char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication = true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
-  char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum = true;                    // <13> XOR check value of all bytes starting from $ to *
-  int check_data = 0;                    unsigned long bad_checksum_validity;              bool valid_checksum = false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
+  char utc_time[56];                     unsigned long bad_utc_time_i;                     bool bad_utc_time=true;                     // <1> UTC time, the format is hhmmss.sss
+  char positioning_status[56];           unsigned long bad_positioning_status_i;           bool bad_positioning_status=true;           // <2> Positioning status, A=effective positioning, V=invalid positioning
+  char latitude[56];                     unsigned long bad_latitude_i;                     bool bad_latitude=true;                     // <3> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];          unsigned long bad_latitude_hemisphere_i;          bool bad_latitude_hemisphere=true;          // <4> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                    unsigned long bad_longitude_i;                    bool bad_longitude=true;                    // <5> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];         unsigned long bad_longitude_hemisphere_i;         bool bad_longitude_hemisphere=true;         // <6> Longitude hemisphere, E or W (east longitude or west longitude)
+  char ground_speed[56];                 unsigned long bad_ground_speed_i;                 bool bad_ground_speed=true;                 // <7> Ground speed
+  char ground_heading[56];               unsigned long bad_ground_heading_i;               bool bad_ground_heading=true;               // <8> Ground heading (take true north as the reference datum)
+  char utc_date[56];                     unsigned long bad_utc_date_i;                     bool bad_utc_date=true;                     // <9> UTC date, the format is ddmmyy (day, month, year)
+  char installation_angle[56];           unsigned long bad_installation_angle_i;           bool bad_installation_angle=true;           // <10> Magnetic declination (000.0~180.0 degrees)
+  char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction=true; // <11> Magnetic declination direction, E (east) or W (west)
+  char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication=true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
+  char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum=true;                    // <13> XOR check value of all bytes starting from $ to *
+  int check_data=0;                    unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
 };
 GNRMCStruct gnrmcData;
 
@@ -3213,26 +3211,26 @@ void clearGNRMC() {
 } 
 
 void GNRMC() {
-  gnrmcData.check_data = 0;
-  serial1Data.iter_token = 0;
-  serial1Data.token = strtok(gnrmcData.sentence, ",");
+  gnrmcData.check_data=0;
+  serial1Data.iter_token=0;
+  serial1Data.token=strtok(gnrmcData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if      (serial1Data.iter_token == 0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                                                                           gnrmcData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token) == true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time = false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time = true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token) == true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status = false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status = true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token) == true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude = false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude = true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token) == true)                   {strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.check_data++; gnrmcData.bad_latitude_hemisphere = false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token) == true)                    {strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.check_data++; gnrmcData.bad_longitude = false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude = true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token) == true)                  {strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.check_data++; gnrmcData.bad_longitude_hemisphere = false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere = true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token) == true)                 {strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.check_data++; gnrmcData.bad_ground_speed = false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed = true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token) == true)               {strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.check_data++; gnrmcData.bad_ground_heading = false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading = true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token) == true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date = false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date = true;}}
-    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token) == true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle = false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle = true;}}
-    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token) == true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction = false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction = true;}}
-    serial1Data.token = strtok(NULL, ",");
+    if      (serial1Data.iter_token==0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                                                                           gnrmcData.check_data++;}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time=false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time=true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token)==true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status=false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status=true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token)==true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude=false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude=true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token)==true)                   {strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.check_data++; gnrmcData.bad_latitude_hemisphere=false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token)==true)                    {strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.check_data++; gnrmcData.bad_longitude=false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude=true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token)==true)                  {strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.check_data++; gnrmcData.bad_longitude_hemisphere=false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token)==true)                 {strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.check_data++; gnrmcData.bad_ground_speed=false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed=true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token)==true)               {strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.check_data++; gnrmcData.bad_ground_heading=false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading=true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date=false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date=true;}}
+    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token)==true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle=false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle=true;}}
+    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token)==true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction=false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction=true;}}
+    serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (systemData.debug == true) {
+  if (systemData.debug==true) {
     Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
     Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time));
     Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status));
@@ -3259,47 +3257,47 @@ struct GPATTStruct {
   char sentence[200];
   char outsentence[200];
   char tag[56];                                                                                       // <0> Log header
-  char pitch[56];             unsigned long bad_pitch_i;            bool bad_pitch = true;            // <1> pitch angle
-  char angle_channel_0[56];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0 = true;  // <2> P
-  char roll[56];              unsigned long bad_roll_i;             bool bad_roll = true;             // <3> Roll angle
-  char angle_channel_1[56];   unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1 = true;  // <4> R
-  char yaw[56];               unsigned long bad_yaw_i;              bool bad_yaw = true;              // <5> Yaw angle
-  char angle_channel_2[56];   unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2 = true;  // <6> Y
-  char software_version[56];  unsigned long bad_software_version_i; bool bad_software_version = true; // <7> software verion
-  char version_channel[56];   unsigned long bad_version_channel_i;  bool bad_version_channel = true;  // <8> S
-  char product_id[56];        unsigned long bad_product_id_i;       bool bad_product_id = true;       // <9> Product ID: 96 bit unique ID
-  char id_channel[56];        unsigned long bad_id_channel_i;       bool bad_id_channel = true;       // <10> ID 
-  char ins[56];               unsigned long bad_ins_i;              bool bad_ins = true;              // <11> INS Default open inertial navigation system
-  char ins_channel[56];       unsigned long bad_ins_channel_i;      bool bad_ins_channel = true;      // <12> whether inertial navigation open
-  char hardware_version[56];  unsigned long bad_hardware_version_i; bool bad_hardware_version = true; // <13> Named after master chip
-  char run_state_flag[56];    unsigned long bad_run_state_flag_i;   bool bad_run_state_flag = true;   // <14> Algorithm status flag: 1->3
-  char mis_angle_num[56];     unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num = true;    // <15> number of Installation
-  char custom_logo_0[56];     unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0 = true;    // <16>
-  char custom_logo_1[56];     unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1 = true;    // <17>
-  char custom_logo_2[56];     unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2 = true;    // <18>
-  char static_flag[56];       unsigned long bad_static_flag_i;      bool bad_static_flag = true;      // <19> 1:Static 0：dynamic
-  char user_code[56];         unsigned long bad_user_code_i;        bool bad_user_code = true;        // <20> 1：Normal user X：Customuser
-  char gst_data[56];          unsigned long bad_gst_data_i;         bool bad_gst_data = true;         // <21> User satellite accuracy
-  char line_flag[56];         unsigned long bad_line_flag_i;        bool bad_line_flag = true;        // <22> 1：straight driving，0：curve driving
-  char custom_logo_3[56];     unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3 = true;    // <23>
-  char mis_att_flag[56];      unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag = true;     // <24> 
-  char imu_kind[56];          unsigned long bad_imu_kind_i;         bool bad_imu_kind = true;         // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
-  char ubi_car_kind[56];      unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind = true;     // <26> 1: small car, 2: big car
-  char mileage[56];           unsigned long bad_mileage_i;          bool bad_mileage = true;          // <27> kilometers: max 9999 kilometers
-  char custom_logo_4[56];     unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4 = true;    // <28>
-  char custom_logo_5[56];     unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5 = true;    // <29>
-  char run_inetial_flag[56];  unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag = true; // <30> 1->4
-  char custom_logo_6[56];     unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6 = true;    // <31>
-  char custom_logo_7[56];     unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7 = true;    // <32>
-  char custom_logo_8[56];     unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8 = true;    // <33>
-  char custom_logo_9[56];     unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9 = true;    // <34>
-  char speed_enable[56];      unsigned long bad_speed_enable_i;     bool bad_speed_enable = true;     // <35> 
-  char custom_logo_10[56];    unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10 = true;   // <36>
-  char custom_logo_11[56];    unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11 = true;   // <37>
-  char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num = true;        // <38> 1：fixed setting，0：Self adaptive installation
-  char scalable[56];          unsigned long bad_scalable_i;         bool bad_scalable = true;         // <39> 
-  char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum = true;        // <40> XOR check value of all bytes starting from $ to *
-  int check_data = 0;         unsigned long bad_checksum_validity;  bool valid_checksum = false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
+  char pitch[56];             unsigned long bad_pitch_i;            bool bad_pitch=true;            // <1> pitch angle
+  char angle_channel_0[56];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0=true;  // <2> P
+  char roll[56];              unsigned long bad_roll_i;             bool bad_roll=true;             // <3> Roll angle
+  char angle_channel_1[56];   unsigned long bad_angle_channel_1_i;  bool bad_angle_channel_1=true;  // <4> R
+  char yaw[56];               unsigned long bad_yaw_i;              bool bad_yaw=true;              // <5> Yaw angle
+  char angle_channel_2[56];   unsigned long bad_angle_channel_2_i;  bool bad_angle_channel_2=true;  // <6> Y
+  char software_version[56];  unsigned long bad_software_version_i; bool bad_software_version=true; // <7> software verion
+  char version_channel[56];   unsigned long bad_version_channel_i;  bool bad_version_channel=true;  // <8> S
+  char product_id[56];        unsigned long bad_product_id_i;       bool bad_product_id=true;       // <9> Product ID: 96 bit unique ID
+  char id_channel[56];        unsigned long bad_id_channel_i;       bool bad_id_channel=true;       // <10> ID 
+  char ins[56];               unsigned long bad_ins_i;              bool bad_ins=true;              // <11> INS Default open inertial navigation system
+  char ins_channel[56];       unsigned long bad_ins_channel_i;      bool bad_ins_channel=true;      // <12> whether inertial navigation open
+  char hardware_version[56];  unsigned long bad_hardware_version_i; bool bad_hardware_version=true; // <13> Named after master chip
+  char run_state_flag[56];    unsigned long bad_run_state_flag_i;   bool bad_run_state_flag=true;   // <14> Algorithm status flag: 1->3
+  char mis_angle_num[56];     unsigned long bad_mis_angle_num_i;    bool bad_mis_angle_num=true;    // <15> number of Installation
+  char custom_logo_0[56];     unsigned long bad_custom_logo_0_i;    bool bad_custom_logo_0=true;    // <16>
+  char custom_logo_1[56];     unsigned long bad_custom_logo_1_i;    bool bad_custom_logo_1=true;    // <17>
+  char custom_logo_2[56];     unsigned long bad_custom_logo_2_i;    bool bad_custom_logo_2=true;    // <18>
+  char static_flag[56];       unsigned long bad_static_flag_i;      bool bad_static_flag=true;      // <19> 1:Static 0：dynamic
+  char user_code[56];         unsigned long bad_user_code_i;        bool bad_user_code=true;        // <20> 1：Normal user X：Customuser
+  char gst_data[56];          unsigned long bad_gst_data_i;         bool bad_gst_data=true;         // <21> User satellite accuracy
+  char line_flag[56];         unsigned long bad_line_flag_i;        bool bad_line_flag=true;        // <22> 1：straight driving，0：curve driving
+  char custom_logo_3[56];     unsigned long bad_custom_logo_3_i;    bool bad_custom_logo_3=true;    // <23>
+  char mis_att_flag[56];      unsigned long bad_mis_att_flag_i;     bool bad_mis_att_flag=true;     // <24> 
+  char imu_kind[56];          unsigned long bad_imu_kind_i;         bool bad_imu_kind=true;         // <25> Sensor Type: 0->BIms055; 1->BMI160; 2->LSM6DS3TR-C; 3->LSM6DSOW 4->ICM-40607; 5->ICM-40608 6->ICM-42670; 7->LSM6DSR
+  char ubi_car_kind[56];      unsigned long bad_ubi_car_kind_i;     bool bad_ubi_car_kind=true;     // <26> 1: small car, 2: big car
+  char mileage[56];           unsigned long bad_mileage_i;          bool bad_mileage=true;          // <27> kilometers: max 9999 kilometers
+  char custom_logo_4[56];     unsigned long bad_custom_logo_4_i;    bool bad_custom_logo_4=true;    // <28>
+  char custom_logo_5[56];     unsigned long bad_custom_logo_5_i;    bool bad_custom_logo_5=true;    // <29>
+  char run_inetial_flag[56];  unsigned long bad_run_inetial_flag_i; bool bad_run_inetial_flag=true; // <30> 1->4
+  char custom_logo_6[56];     unsigned long bad_custom_logo_6_i;    bool bad_custom_logo_6=true;    // <31>
+  char custom_logo_7[56];     unsigned long bad_custom_logo_7_i;    bool bad_custom_logo_7=true;    // <32>
+  char custom_logo_8[56];     unsigned long bad_custom_logo_8_i;    bool bad_custom_logo_8=true;    // <33>
+  char custom_logo_9[56];     unsigned long bad_custom_logo_9_i;    bool bad_custom_logo_9=true;    // <34>
+  char speed_enable[56];      unsigned long bad_speed_enable_i;     bool bad_speed_enable=true;     // <35> 
+  char custom_logo_10[56];    unsigned long bad_custom_logo_10_i;   bool bad_custom_logo_10=true;   // <36>
+  char custom_logo_11[56];    unsigned long bad_custom_logo_11_i;   bool bad_custom_logo_11=true;   // <37>
+  char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num=true;        // <38> 1：fixed setting，0：Self adaptive installation
+  char scalable[56];          unsigned long bad_scalable_i;         bool bad_scalable=true;         // <39> 
+  char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum=true;        // <40> XOR check value of all bytes starting from $ to *
+  int check_data=0;         unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
 };
 GPATTStruct gpattData;
 
@@ -3352,53 +3350,53 @@ void clearGPATT() {
 }
 
 void GPATT() {
-  gpattData.check_data = 0;
-  serial1Data.iter_token = 0;
-  serial1Data.token = strtok(gpattData.sentence, ",");
+  gpattData.check_data=0;
+  serial1Data.iter_token=0;
+  serial1Data.token=strtok(gpattData.sentence, ",");
   while( serial1Data.token != NULL ) { 
-    if      (serial1Data.iter_token == 0)                                                              {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
-    else if (serial1Data.iter_token == 1) {if (val_pitch_gpatt(serial1Data.token) == true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.check_data++; gpattData.bad_pitch = false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch = true;}}
-    else if (serial1Data.iter_token == 2) {if (val_angle_channle_p_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_0 = false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0 = true;}}
-    else if (serial1Data.iter_token == 3) {if (val_roll_gpatt(serial1Data.token) == true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.check_data++; gpattData.bad_roll = false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll = true;}}
-    else if (serial1Data.iter_token == 4) {if (val_angle_channle_r_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_1, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_1 = false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1 = true;}}
-    else if (serial1Data.iter_token == 5) {if (val_yaw_gpatt(serial1Data.token) == true)               {strcpy(gpattData.yaw, serial1Data.token);              gpattData.check_data++; gpattData.bad_yaw = false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw = true;}}
-    else if (serial1Data.iter_token == 6) {if (val_angle_channle_y_gpatt(serial1Data.token) == true)   {strcpy(gpattData.angle_channel_2, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_2 = false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2 = true;}}
-    else if (serial1Data.iter_token == 7) {if (val_software_version_gpatt(serial1Data.token) == true)  {strcpy(gpattData.software_version, serial1Data.token); gpattData.check_data++; gpattData.bad_software_version = false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version = true;}}
-    else if (serial1Data.iter_token == 8) {if (val_version_channel_s_gpatt(serial1Data.token) == true) {strcpy(gpattData.version_channel, serial1Data.token);  gpattData.check_data++; gpattData.bad_version_channel = false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel = true;}}
-    else if (serial1Data.iter_token == 9) {if (val_product_id_gpatt(serial1Data.token) == true)        {strcpy(gpattData.product_id, serial1Data.token);       gpattData.check_data++; gpattData.bad_product_id = false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id = true;}}
-    else if (serial1Data.iter_token == 10) {if (val_id_channel_gpatt(serial1Data.token) == true)       {strcpy(gpattData.id_channel, serial1Data.token);       gpattData.check_data++; gpattData.bad_id_channel = false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel = true;}}
-    else if (serial1Data.iter_token == 11) {if (val_ins_gpatt(serial1Data.token) == true)              {strcpy(gpattData.ins, serial1Data.token);              gpattData.check_data++; gpattData.bad_ins = false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins = true;}}
-    else if (serial1Data.iter_token == 12) {if (val_ins_channel_gpatt(serial1Data.token) == true)      {strcpy(gpattData.ins_channel, serial1Data.token);      gpattData.check_data++; gpattData.bad_ins_channel = false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel = true;}}
-    else if (serial1Data.iter_token == 13) {if (val_hardware_version_gpatt(serial1Data.token) == true) {strcpy(gpattData.hardware_version, serial1Data.token); gpattData.check_data++; gpattData.bad_hardware_version = false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version = true;}}
-    else if (serial1Data.iter_token == 14) {if (val_run_state_flag_gpatt(serial1Data.token) == true)   {strcpy(gpattData.run_state_flag, serial1Data.token);   gpattData.check_data++; gpattData.bad_run_state_flag = false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag = true;}}
-    else if (serial1Data.iter_token == 15) {if (val_mis_angle_num_gpatt(serial1Data.token) == true)    {strcpy(gpattData.mis_angle_num, serial1Data.token);    gpattData.check_data++; gpattData.bad_mis_angle_num = false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num = true;}}
-    else if (serial1Data.iter_token == 16) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_0, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_0 = false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0 = true;}}
-    else if (serial1Data.iter_token == 17) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_1, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_1 = false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1 = true;}}
-    else if (serial1Data.iter_token == 18) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_2, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_2 = false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2 = true;}}
-    else if (serial1Data.iter_token == 19) {if (val_static_flag_gpatt(serial1Data.token) == true)      {strcpy(gpattData.static_flag, serial1Data.token);      gpattData.check_data++; gpattData.bad_static_flag = false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag = true;}}
-    else if (serial1Data.iter_token == 20) {if (val_user_code_gpatt(serial1Data.token) == true)        {strcpy(gpattData.user_code, serial1Data.token);        gpattData.check_data++; gpattData.bad_user_code = false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code = true;}}
-    else if (serial1Data.iter_token == 21) {if (val_gst_data_gpatt(serial1Data.token) == true)         {strcpy(gpattData.gst_data, serial1Data.token);         gpattData.check_data++; gpattData.bad_gst_data = false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data = true;}}
-    else if (serial1Data.iter_token == 22) {if (val_line_flag_gpatt(serial1Data.token) == true)        {strcpy(gpattData.line_flag, serial1Data.token);        gpattData.check_data++; gpattData.bad_line_flag = false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag = true;}}
-    else if (serial1Data.iter_token == 23) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_3, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_3 = false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3 = true;}}
-    else if (serial1Data.iter_token == 24) {if (val_mis_att_flag_gpatt(serial1Data.token) == true)     {strcpy(gpattData.mis_att_flag, serial1Data.token);     gpattData.check_data++; gpattData.bad_mis_att_flag = false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag = true;}}
-    else if (serial1Data.iter_token == 25) {if (val_imu_kind_gpatt(serial1Data.token) == true)         {strcpy(gpattData.imu_kind, serial1Data.token);         gpattData.check_data++; gpattData.bad_imu_kind = false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind = true;}}
-    else if (serial1Data.iter_token == 26) {if (val_ubi_car_kind_gpatt(serial1Data.token) == true)     {strcpy(gpattData.ubi_car_kind, serial1Data.token);     gpattData.check_data++; gpattData.bad_ubi_car_kind = false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind = true;}}
-    else if (serial1Data.iter_token == 27) {if (val_mileage_gpatt(serial1Data.token) == true)          {strcpy(gpattData.mileage, serial1Data.token);          gpattData.check_data++; gpattData.bad_mileage = false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage = true;}}
-    else if (serial1Data.iter_token == 28) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_4, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_4 = false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4 = true;}}
-    else if (serial1Data.iter_token == 29) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_5, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_5 = false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5 = true;}}
-    else if (serial1Data.iter_token == 30) {if (val_run_inetial_flag_gpatt(serial1Data.token) == true) {strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.check_data++; gpattData.bad_run_inetial_flag = false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag = true;}}
-    else if (serial1Data.iter_token == 31) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_6, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_6 = false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6 = true;}}
-    else if (serial1Data.iter_token == 32) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_7, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_7 = false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7 = true;}}
-    else if (serial1Data.iter_token == 33) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_8, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_8 = false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8 = true;}}
-    else if (serial1Data.iter_token == 34) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_9, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_9 = false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9 = true;}}
-    else if (serial1Data.iter_token == 35) {if (val_speed_enable_gpatt(serial1Data.token) == true)     {strcpy(gpattData.speed_enable, serial1Data.token);     gpattData.check_data++; gpattData.bad_speed_enable = false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable = true;}}
-    else if (serial1Data.iter_token == 36) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_10, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_10 = false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10 = true;}}
-    else if (serial1Data.iter_token == 37) {if (val_custom_flag(serial1Data.token) == true)            {strcpy(gpattData.custom_logo_11, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_11 = false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11 = true;}}
-    else if (serial1Data.iter_token == 38) {if (val_speed_num_gpatt(serial1Data.token) == true)        {strcpy(gpattData.speed_num, serial1Data.token);        gpattData.check_data++; gpattData.bad_speed_num = false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num = true;}}
-    serial1Data.token = strtok(NULL, ",");
+    if      (serial1Data.iter_token==0)                                                              {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
+    else if (serial1Data.iter_token==1) {if (val_pitch_gpatt(serial1Data.token)==true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.check_data++; gpattData.bad_pitch=false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch=true;}}
+    else if (serial1Data.iter_token==2) {if (val_angle_channle_p_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_0=false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0=true;}}
+    else if (serial1Data.iter_token==3) {if (val_roll_gpatt(serial1Data.token)==true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.check_data++; gpattData.bad_roll=false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll=true;}}
+    else if (serial1Data.iter_token==4) {if (val_angle_channle_r_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_1, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_1=false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1=true;}}
+    else if (serial1Data.iter_token==5) {if (val_yaw_gpatt(serial1Data.token)==true)               {strcpy(gpattData.yaw, serial1Data.token);              gpattData.check_data++; gpattData.bad_yaw=false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw=true;}}
+    else if (serial1Data.iter_token==6) {if (val_angle_channle_y_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_2, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_2=false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2=true;}}
+    else if (serial1Data.iter_token==7) {if (val_software_version_gpatt(serial1Data.token)==true)  {strcpy(gpattData.software_version, serial1Data.token); gpattData.check_data++; gpattData.bad_software_version=false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version=true;}}
+    else if (serial1Data.iter_token==8) {if (val_version_channel_s_gpatt(serial1Data.token)==true) {strcpy(gpattData.version_channel, serial1Data.token);  gpattData.check_data++; gpattData.bad_version_channel=false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel=true;}}
+    else if (serial1Data.iter_token==9) {if (val_product_id_gpatt(serial1Data.token)==true)        {strcpy(gpattData.product_id, serial1Data.token);       gpattData.check_data++; gpattData.bad_product_id=false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id=true;}}
+    else if (serial1Data.iter_token==10) {if (val_id_channel_gpatt(serial1Data.token)==true)       {strcpy(gpattData.id_channel, serial1Data.token);       gpattData.check_data++; gpattData.bad_id_channel=false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel=true;}}
+    else if (serial1Data.iter_token==11) {if (val_ins_gpatt(serial1Data.token)==true)              {strcpy(gpattData.ins, serial1Data.token);              gpattData.check_data++; gpattData.bad_ins=false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins=true;}}
+    else if (serial1Data.iter_token==12) {if (val_ins_channel_gpatt(serial1Data.token)==true)      {strcpy(gpattData.ins_channel, serial1Data.token);      gpattData.check_data++; gpattData.bad_ins_channel=false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel=true;}}
+    else if (serial1Data.iter_token==13) {if (val_hardware_version_gpatt(serial1Data.token)==true) {strcpy(gpattData.hardware_version, serial1Data.token); gpattData.check_data++; gpattData.bad_hardware_version=false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version=true;}}
+    else if (serial1Data.iter_token==14) {if (val_run_state_flag_gpatt(serial1Data.token)==true)   {strcpy(gpattData.run_state_flag, serial1Data.token);   gpattData.check_data++; gpattData.bad_run_state_flag=false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag=true;}}
+    else if (serial1Data.iter_token==15) {if (val_mis_angle_num_gpatt(serial1Data.token)==true)    {strcpy(gpattData.mis_angle_num, serial1Data.token);    gpattData.check_data++; gpattData.bad_mis_angle_num=false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num=true;}}
+    else if (serial1Data.iter_token==16) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_0, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_0=false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0=true;}}
+    else if (serial1Data.iter_token==17) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_1, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_1=false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1=true;}}
+    else if (serial1Data.iter_token==18) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_2, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_2=false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2=true;}}
+    else if (serial1Data.iter_token==19) {if (val_static_flag_gpatt(serial1Data.token)==true)      {strcpy(gpattData.static_flag, serial1Data.token);      gpattData.check_data++; gpattData.bad_static_flag=false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag=true;}}
+    else if (serial1Data.iter_token==20) {if (val_user_code_gpatt(serial1Data.token)==true)        {strcpy(gpattData.user_code, serial1Data.token);        gpattData.check_data++; gpattData.bad_user_code=false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code=true;}}
+    else if (serial1Data.iter_token==21) {if (val_gst_data_gpatt(serial1Data.token)==true)         {strcpy(gpattData.gst_data, serial1Data.token);         gpattData.check_data++; gpattData.bad_gst_data=false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data=true;}}
+    else if (serial1Data.iter_token==22) {if (val_line_flag_gpatt(serial1Data.token)==true)        {strcpy(gpattData.line_flag, serial1Data.token);        gpattData.check_data++; gpattData.bad_line_flag=false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag=true;}}
+    else if (serial1Data.iter_token==23) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_3, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_3=false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3=true;}}
+    else if (serial1Data.iter_token==24) {if (val_mis_att_flag_gpatt(serial1Data.token)==true)     {strcpy(gpattData.mis_att_flag, serial1Data.token);     gpattData.check_data++; gpattData.bad_mis_att_flag=false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag=true;}}
+    else if (serial1Data.iter_token==25) {if (val_imu_kind_gpatt(serial1Data.token)==true)         {strcpy(gpattData.imu_kind, serial1Data.token);         gpattData.check_data++; gpattData.bad_imu_kind=false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind=true;}}
+    else if (serial1Data.iter_token==26) {if (val_ubi_car_kind_gpatt(serial1Data.token)==true)     {strcpy(gpattData.ubi_car_kind, serial1Data.token);     gpattData.check_data++; gpattData.bad_ubi_car_kind=false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind=true;}}
+    else if (serial1Data.iter_token==27) {if (val_mileage_gpatt(serial1Data.token)==true)          {strcpy(gpattData.mileage, serial1Data.token);          gpattData.check_data++; gpattData.bad_mileage=false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage=true;}}
+    else if (serial1Data.iter_token==28) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_4, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_4=false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4=true;}}
+    else if (serial1Data.iter_token==29) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_5, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_5=false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5=true;}}
+    else if (serial1Data.iter_token==30) {if (val_run_inetial_flag_gpatt(serial1Data.token)==true) {strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.check_data++; gpattData.bad_run_inetial_flag=false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag=true;}}
+    else if (serial1Data.iter_token==31) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_6, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_6=false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6=true;}}
+    else if (serial1Data.iter_token==32) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_7, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_7=false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7=true;}}
+    else if (serial1Data.iter_token==33) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_8, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_8=false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8=true;}}
+    else if (serial1Data.iter_token==34) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_9, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_9=false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9=true;}}
+    else if (serial1Data.iter_token==35) {if (val_speed_enable_gpatt(serial1Data.token)==true)     {strcpy(gpattData.speed_enable, serial1Data.token);     gpattData.check_data++; gpattData.bad_speed_enable=false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable=true;}}
+    else if (serial1Data.iter_token==36) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_10, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_10=false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10=true;}}
+    else if (serial1Data.iter_token==37) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_11, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_11=false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11=true;}}
+    else if (serial1Data.iter_token==38) {if (val_speed_num_gpatt(serial1Data.token)==true)        {strcpy(gpattData.speed_num, serial1Data.token);        gpattData.check_data++; gpattData.bad_speed_num=false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num=true;}}
+    serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
-  if (systemData.debug == true) {
+  if (systemData.debug==true) {
     Serial.println("[gpattData.tag] "              + String(gpattData.tag));
     Serial.println("[gpattData.pitch] "            + String(gpattData.pitch));
     Serial.println("[gpattData.angle_channel_0] "  + String(gpattData.angle_channel_0));
@@ -3450,17 +3448,17 @@ void GPATT() {
 struct SatDatatruct {
   int checksum_i;                                                  // checksum int
   char satio_sentence[200];                                        // buffer
-  char satDataTag[56]                 = "$SATIO";                  // satio sentence tag
-  bool convert_coordinates            = true;                      // enables/disables coordinate conversion to degrees
-  char coordinate_conversion_mode[56] = "GNGGA";                   // sentence coordinates degrees created from
-  double latitude_meter               = 0.0000100;                 // one meter (needs tuning)
-  double longitude_meter              = 0.0000100;                 // one meter (needs tuning)
-  double latitude_mile                = latitude_meter  * 1609.34; // one mile (needs tuning)
-  double longitude_mile               = longitude_meter * 1609.34; // one mile (needs tuning)
-  double abs_latitude_gngga_0         = 0.0;                       // absolute latitude from $ sentence
-  double abs_longitude_gngga_0        = 0.0;                       // absolute longditude from $ sentence
-  double abs_latitude_gnrmc_0         = 0.0;                       // absolute latitude from $ sentence
-  double abs_longitude_gnrmc_0        = 0.0;                       // absolute longditude from $ sentence
+  char satDataTag[56]                ="$SATIO";                  // satio sentence tag
+  bool convert_coordinates           =true;                      // enables/disables coordinate conversion to degrees
+  char coordinate_conversion_mode[56]="GNGGA";                   // sentence coordinates degrees created from
+  double latitude_meter              =0.0000100;                 // one meter (needs tuning)
+  double longitude_meter             =0.0000100;                 // one meter (needs tuning)
+  double latitude_mile               =latitude_meter  * 1609.34; // one mile (needs tuning)
+  double longitude_mile              =longitude_meter * 1609.34; // one mile (needs tuning)
+  double abs_latitude_gngga_0        =0.0;                       // absolute latitude from $ sentence
+  double abs_longitude_gngga_0       =0.0;                       // absolute longditude from $ sentence
+  double abs_latitude_gnrmc_0        =0.0;                       // absolute latitude from $ sentence
+  double abs_longitude_gnrmc_0       =0.0;                       // absolute longditude from $ sentence
   double temp_latitude_gngga;                                      // degrees converted from absolute
   double temp_longitude_gngga;                                     // degrees converted from absolute
   double temp_latitude_gnrmc;                                      // degrees converted from absolute
@@ -3477,46 +3475,46 @@ struct SatDatatruct {
   double degreesLong;                                              // used for converting absolute latitude and longitude
 
   // local time converted from rtc utc time (currently only used for display purposes)
-  uint8_t local_hour = 0;
-  uint8_t local_minute = 0;
-  uint8_t local_second = 0;
-  uint16_t local_year = 0;
-  uint8_t local_month = 0;
-  uint8_t local_day = 0;
+  uint8_t local_hour=0;
+  uint8_t local_minute=0;
+  uint8_t local_second=0;
+  uint16_t local_year=0;
+  uint8_t local_month=0;
+  uint8_t local_day=0;
   char local_weekday[56];
-  String formatted_local_time = "00:00:00";
-  String formatted_local_date = "00/00/00";
+  String formatted_local_time="00:00:00";
+  String formatted_local_date="00/00/00";
 
   // last time rtc synced with utc
-  uint8_t rtcsync_hour = 0;
-  uint8_t rtcsync_minute = 0;
-  uint8_t rtcsync_second = 0;
-  uint16_t rtcsync_year = 0;
-  uint8_t rtcsync_month = 0;
-  uint8_t rtcsync_day = 0;
+  uint8_t rtcsync_hour=0;
+  uint8_t rtcsync_minute=0;
+  uint8_t rtcsync_second=0;
+  uint16_t rtcsync_year=0;
+  uint8_t rtcsync_month=0;
+  uint8_t rtcsync_day=0;
   uint32_t rtc_unixtime;
 
   // task safe rtc time now can be used instead of directly calling rtc.now()
   // rtc time is utc.
   // all programmable logic uses task safe rtc time (currently safer and faster than converting to local time).
-  uint8_t rtc_hour = 0;
-  uint8_t rtc_minute = 0;
-  uint8_t rtc_second = 0;
-  uint16_t rtc_year = 0;
-  uint8_t rtc_month = 0;
-  uint8_t rtc_day = 0;
+  uint8_t rtc_hour=0;
+  uint8_t rtc_minute=0;
+  uint8_t rtc_second=0;
+  uint16_t rtc_year=0;
+  uint8_t rtc_month=0;
+  uint8_t rtc_day=0;
   char rtc_weekday[56];
 
   /*
   utc second offset:
   1: offset UTC (+/-) in seconds, for daylight saving and or timezones.
-  2: offset up to LONG_MAX = 2147483647 seconds = 2,147,483,647 gregorian years.
+  2: offset up to LONG_MAX=2147483647 seconds=2,147,483,647 gregorian years.
   3: this values type may account for both political and not political ammendments to dst
      and tz by having a very large range and by having a 1 second resolution.
   4: allow negative and positive value for offset. 
   */
-  long int utc_second_offset = 0;
-  bool utc_auto_offset_flag = false;  // automatically aquire an offset value: true=auto, false=manual
+  long int utc_second_offset=0;
+  bool utc_auto_offset_flag=false;  // automatically aquire an offset value: true=auto, false=manual
 
   char pad_digits_new[56]; // a placeholder for digits preappended with zero's.
   char pad_current_digits[56]; // a placeholder for digits to be preappended with zero's.
@@ -3545,53 +3543,53 @@ void clearDynamicSATIO() {
   // --------------------------
   // clear dynamic data
   // --------------------------
-  satData.checksum_i = 0;
+  satData.checksum_i=0;
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
-  satData.convert_coordinates = false;
-  satData.abs_latitude_gngga_0 = NAN;
-  satData.abs_longitude_gngga_0 = NAN;
-  satData.abs_latitude_gnrmc_0 = NAN;
-  satData.abs_longitude_gnrmc_0 = NAN;
-  satData.temp_latitude_gngga = NAN;
-  satData.temp_longitude_gngga = NAN;
-  satData.temp_latitude_gnrmc = NAN;
-  satData.temp_longitude_gnrmc = NAN;
-  satData.secondsLat = NAN;
-  satData.secondsLong = NAN;
-  satData.millisecondsLat = NAN;
-  satData.millisecondsLong = NAN;
-  satData.minutesLat = NAN;
-  satData.minutesLong = NAN;
+  satData.convert_coordinates=false;
+  satData.abs_latitude_gngga_0=NAN;
+  satData.abs_longitude_gngga_0=NAN;
+  satData.abs_latitude_gnrmc_0=NAN;
+  satData.abs_longitude_gnrmc_0=NAN;
+  satData.temp_latitude_gngga=NAN;
+  satData.temp_longitude_gngga=NAN;
+  satData.temp_latitude_gnrmc=NAN;
+  satData.temp_longitude_gnrmc=NAN;
+  satData.secondsLat=NAN;
+  satData.secondsLong=NAN;
+  satData.millisecondsLat=NAN;
+  satData.millisecondsLong=NAN;
+  satData.minutesLat=NAN;
+  satData.minutesLong=NAN;
   // --------------------------
   // keep potential static data (if stationary then we can still use coordinates)
   // --------------------------
-  // satData.degrees_latitude = NAN;
-  // satData.degrees_longitude = NAN;
-  // satData.degreesLat = NAN;
-  // satData.degreesLong = NAN;
+  // satData.degrees_latitude=NAN;
+  // satData.degrees_longitude=NAN;
+  // satData.degreesLat=NAN;
+  // satData.degreesLong=NAN;
   // --------------------------
   // keep potential static data (if stationary then we can still use time)
   // --------------------------
   // memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
-  // satData.local_hour = NAN;
-  // satData.local_minute = NAN;
-  // satData.local_second = NAN;
-  // satData.local_year = NAN;
-  // satData.local_month = NAN;
-  // satData.local_day = NAN;
-  // satData.rtcsync_hour = NAN;
-  // satData.rtcsync_minute = NAN;
-  // satData.rtcsync_second = NAN;
-  // satData.rtcsync_year = NAN;
-  // satData.rtcsync_month = NAN;
-  // satData.rtcsync_day = NAN;
-  // satData.rtc_unixtime = NAN;
-  // satData.rtc_hour = NAN;
-  // satData.rtc_minute = NAN;
-  // satData.rtc_second = NAN;
-  // satData.rtc_year = NAN;
-  // satData.rtc_month = NAN;
-  // satData.rtc_day = NAN;
+  // satData.local_hour=NAN;
+  // satData.local_minute=NAN;
+  // satData.local_second=NAN;
+  // satData.local_year=NAN;
+  // satData.local_month=NAN;
+  // satData.local_day=NAN;
+  // satData.rtcsync_hour=NAN;
+  // satData.rtcsync_minute=NAN;
+  // satData.rtcsync_second=NAN;
+  // satData.rtcsync_year=NAN;
+  // satData.rtcsync_month=NAN;
+  // satData.rtcsync_day=NAN;
+  // satData.rtc_unixtime=NAN;
+  // satData.rtc_hour=NAN;
+  // satData.rtc_minute=NAN;
+  // satData.rtc_second=NAN;
+  // satData.rtc_year=NAN;
+  // satData.rtc_month=NAN;
+  // satData.rtc_day=NAN;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3603,30 +3601,30 @@ struct SensorDataStruct {
   /* CD74HC4067 x16 Analog/Digital Multiplexer */
 
   // specific analog/digital sensor: can be refactored
-  float dht11_h_0 = 0.0;
-  float dht11_c_0 = 0.0;
-  float dht11_f_0 = 0.0;
-  float dht11_hif_0 = 0.0;
-  float dht11_hic_0 = 0.0;
-  bool dht11_0_display_hic = true;
+  float dht11_h_0=0.0;
+  float dht11_c_0=0.0;
+  float dht11_f_0=0.0;
+  float dht11_hif_0=0.0;
+  float dht11_hic_0=0.0;
+  bool dht11_0_display_hic=true;
 
   // general analog/digital sensor: can be refactored
-  float sensor_0 = 0.0;
-  uint16_t sensor_1 = 0.0;
-  uint16_t sensor_2 = 0.0;
-  uint16_t sensor_3 = 0.0;
-  uint16_t sensor_4 = 0.0;
-  uint16_t sensor_5 = 0.0;
-  uint16_t sensor_6 = 0.0;
-  uint16_t sensor_7 = 0.0;
-  uint16_t sensor_8 = 0.0;
-  uint16_t sensor_9 = 0.0;
-  uint16_t sensor_10 = 0.0;
-  uint16_t sensor_11 = 0.0;
-  uint16_t sensor_12 = 0.0;
-  uint16_t sensor_13 = 0.0;
-  uint16_t sensor_14 = 0.0;
-  uint16_t sensor_15 = 0.0;
+  float sensor_0=0.0;
+  uint16_t sensor_1=0.0;
+  uint16_t sensor_2=0.0;
+  uint16_t sensor_3=0.0;
+  uint16_t sensor_4=0.0;
+  uint16_t sensor_5=0.0;
+  uint16_t sensor_6=0.0;
+  uint16_t sensor_7=0.0;
+  uint16_t sensor_8=0.0;
+  uint16_t sensor_9=0.0;
+  uint16_t sensor_10=0.0;
+  uint16_t sensor_11=0.0;
+  uint16_t sensor_12=0.0;
+  uint16_t sensor_13=0.0;
+  uint16_t sensor_14=0.0;
+  uint16_t sensor_15=0.0;
 
   char sensor_sentence[1024];
   char TMP[1024];
@@ -3646,54 +3644,54 @@ void calculateLocation(){
   /*
   Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
   */
-  if (String(satData.coordinate_conversion_mode) == "GNGGA") {
+  if (String(satData.coordinate_conversion_mode)=="GNGGA") {
 
     // Extract absolute latitude value from GNGGA data as decimal degrees.
-    satData.abs_latitude_gngga_0 = atof(String(gnggaData.latitude).c_str());
+    satData.abs_latitude_gngga_0=atof(String(gnggaData.latitude).c_str());
     // Store absolute latitude in temporary variable for further processing.
-    satData.temp_latitude_gngga = satData.abs_latitude_gngga_0;
+    satData.temp_latitude_gngga=satData.abs_latitude_gngga_0;
     // Separate the integer degrees value from the fractional part.
-    satData.degreesLat = trunc(satData.temp_latitude_gngga / 100);
+    satData.degreesLat=trunc(satData.temp_latitude_gngga / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
-    satData.minutesLat = satData.temp_latitude_gngga - (satData.degreesLat * 100);
+    satData.minutesLat=satData.temp_latitude_gngga - (satData.degreesLat * 100);
     // Convert excess fractional part to seconds.
-    satData.secondsLat = (satData.minutesLat - trunc(satData.minutesLat)) * 60;
+    satData.secondsLat=(satData.minutesLat - trunc(satData.minutesLat)) * 60;
     // Convert excess seconds to milliseconds.
-    satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    satData.millisecondsLat=(satData.secondsLat - trunc(satData.secondsLat)) * 1000;
     // Round off minutes and seconds values to nearest integer.
-    satData.minutesLat = trunc(satData.minutesLat);
-    satData.secondsLat = trunc(satData.secondsLat);
+    satData.minutesLat=trunc(satData.minutesLat);
+    satData.secondsLat=trunc(satData.secondsLat);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
-    if (strcmp(gnggaData.latitude_hemisphere, "S") == 0) {
-      satData.degrees_latitude = 0 - satData.degrees_latitude;
+    if (strcmp(gnggaData.latitude_hemisphere, "S")==0) {
+      satData.degrees_latitude=0 - satData.degrees_latitude;
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.degrees_latitude);
 
     // Extract absolute longitude value from GNGGA data as decimal degrees.
-    satData.abs_longitude_gngga_0 = atof(String(gnggaData.longitude).c_str());
+    satData.abs_longitude_gngga_0=atof(String(gnggaData.longitude).c_str());
     // Store absolute latitude in temporary variable for further processing.
-    satData.temp_longitude_gngga = satData.abs_longitude_gngga_0;
+    satData.temp_longitude_gngga=satData.abs_longitude_gngga_0;
     // Separate the integer degrees value from the fractional part.
-    satData.degreesLong = trunc(satData.temp_longitude_gngga / 100);
+    satData.degreesLong=trunc(satData.temp_longitude_gngga / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
-    satData.minutesLong = satData.temp_longitude_gngga - (satData.degreesLong * 100);
+    satData.minutesLong=satData.temp_longitude_gngga - (satData.degreesLong * 100);
     // Convert excess fractional part to seconds.
-    satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    satData.secondsLong=(satData.minutesLong - trunc(satData.minutesLong)) * 60;
     // Convert excess seconds to milliseconds.
-    satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    satData.millisecondsLong=(satData.secondsLong - trunc(satData.secondsLong)) * 1000;
     // Round off minutes and seconds values to nearest integer.
-    satData.minutesLong = trunc(satData.minutesLong);
-    satData.secondsLong = trunc(satData.secondsLong);
+    satData.minutesLong=trunc(satData.minutesLong);
+    satData.secondsLong=trunc(satData.secondsLong);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
-    if (strcmp(gnggaData.longitude_hemisphere, "W") == 0) {
-      satData.degrees_longitude = 0 - satData.degrees_longitude;
+    if (strcmp(gnggaData.longitude_hemisphere, "W")==0) {
+      satData.degrees_longitude=0 - satData.degrees_longitude;
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.degrees_longitude);
@@ -3706,53 +3704,53 @@ void calculateLocation(){
   /*
   Convert GNRMC latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
   */
-  else if (String(satData.coordinate_conversion_mode) == "GNRMC") {
+  else if (String(satData.coordinate_conversion_mode)=="GNRMC") {
     // Extract absolute latitude value from GNGGA data as decimal degrees.
-    satData.abs_latitude_gnrmc_0 = atof(String(gnrmcData.latitude).c_str());
+    satData.abs_latitude_gnrmc_0=atof(String(gnrmcData.latitude).c_str());
     // Store absolute latitude in temporary variable for further processing.
-    satData.temp_latitude_gnrmc = satData.abs_latitude_gnrmc_0;
+    satData.temp_latitude_gnrmc=satData.abs_latitude_gnrmc_0;
     // Separate the integer degrees value from the fractional part.
-    satData.degreesLat = trunc(satData.temp_latitude_gnrmc / 100);
+    satData.degreesLat=trunc(satData.temp_latitude_gnrmc / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
-    satData.minutesLat = satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
+    satData.minutesLat=satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
     // Convert excess fractional part to seconds.
-    satData.secondsLat = (satData.minutesLat - (satData.minutesLat)) * 60;
+    satData.secondsLat=(satData.minutesLat - (satData.minutesLat)) * 60;
     // Convert excess seconds to milliseconds.
-    satData.millisecondsLat = (satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    satData.millisecondsLat=(satData.secondsLat - trunc(satData.secondsLat)) * 1000;
     // Round off minutes and seconds values to nearest integer.
-    satData.minutesLat = trunc(satData.minutesLat);
-    satData.secondsLat = trunc(satData.secondsLat);
+    satData.minutesLat=trunc(satData.minutesLat);
+    satData.secondsLat=trunc(satData.secondsLat);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
-    if (strcmp(gnrmcData.latitude_hemisphere, "S") == 0) {
-      satData.degrees_latitude = 0 - satData.degrees_latitude;
+    if (strcmp(gnrmcData.latitude_hemisphere, "S")==0) {
+      satData.degrees_latitude=0 - satData.degrees_latitude;
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.degrees_latitude);
 
     // Extract absolute latitude value from GNGGA data as decimal degrees.
-    satData.abs_longitude_gnrmc_0 = atof(String(gnrmcData.longitude).c_str());
+    satData.abs_longitude_gnrmc_0=atof(String(gnrmcData.longitude).c_str());
     // Store absolute latitude in temporary variable for further processing.
-    satData.temp_longitude_gnrmc = satData.abs_longitude_gnrmc_0;
+    satData.temp_longitude_gnrmc=satData.abs_longitude_gnrmc_0;
     // Separate the integer degrees value from the fractional part.
-    satData.degreesLong = trunc(satData.temp_longitude_gnrmc / 100);
+    satData.degreesLong=trunc(satData.temp_longitude_gnrmc / 100);
     // Calculate minutes and seconds values based on remaining fractional part.
-    satData.minutesLong = satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
+    satData.minutesLong=satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
     // Convert excess fractional part to seconds.
-    satData.secondsLong = (satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    satData.secondsLong=(satData.minutesLong - trunc(satData.minutesLong)) * 60;
     // Convert excess seconds to milliseconds.
-    satData.millisecondsLong = (satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    satData.millisecondsLong=(satData.secondsLong - trunc(satData.secondsLong)) * 1000;
     // Round off minutes and seconds values to nearest integer.
-    satData.minutesLong = trunc(satData.minutesLong);
-    satData.secondsLong = trunc(satData.secondsLong);
+    satData.minutesLong=trunc(satData.minutesLong);
+    satData.secondsLong=trunc(satData.secondsLong);
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
     satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
-    if (strcmp(gnrmcData.longitude_hemisphere, "W") == 0) {
-      satData.degrees_longitude = 0 - satData.degrees_longitude;
+    if (strcmp(gnrmcData.longitude_hemisphere, "W")==0) {
+      satData.degrees_longitude=0 - satData.degrees_longitude;
     }
     // Save formatted latitude value as a string for later use.
     scanf("%f17", &satData.degrees_longitude);
@@ -3826,7 +3824,7 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 //                                                                                                              SYNC RTC FROM GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-bool first_gps_pass = true;
+bool first_gps_pass=true;
 
 void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
@@ -3834,33 +3832,33 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
 
   memset(satData.tmp_day, 0, sizeof(satData.tmp_day));
-  satData.tmp_day[0] = gnrmcData.utc_date[0];
-  satData.tmp_day[1] = gnrmcData.utc_date[1];
+  satData.tmp_day[0]=gnrmcData.utc_date[0];
+  satData.tmp_day[1]=gnrmcData.utc_date[1];
   memset(satData.tmp_month, 0, sizeof(satData.tmp_month));
-  satData.tmp_month[0] = gnrmcData.utc_date[2];
-  satData.tmp_month[1] = gnrmcData.utc_date[3];
+  satData.tmp_month[0]=gnrmcData.utc_date[2];
+  satData.tmp_month[1]=gnrmcData.utc_date[3];
   memset(satData.tmp_year, 0, sizeof(satData.tmp_year));
-  satData.tmp_year[0] = gnrmcData.utc_date[4];
-  satData.tmp_year[1] = gnrmcData.utc_date[5];
+  satData.tmp_year[0]=gnrmcData.utc_date[4];
+  satData.tmp_year[1]=gnrmcData.utc_date[5];
   memset(satData.tmp_hour, 0, sizeof(satData.tmp_hour));
-  satData.tmp_hour[0] = gnrmcData.utc_time[0];
-  satData.tmp_hour[1] = gnrmcData.utc_time[1];
+  satData.tmp_hour[0]=gnrmcData.utc_time[0];
+  satData.tmp_hour[1]=gnrmcData.utc_time[1];
   memset(satData.tmp_minute, 0, sizeof(satData.tmp_minute));
-  satData.tmp_minute[0] = gnrmcData.utc_time[2];
-  satData.tmp_minute[1] = gnrmcData.utc_time[3];
+  satData.tmp_minute[0]=gnrmcData.utc_time[2];
+  satData.tmp_minute[1]=gnrmcData.utc_time[3];
   memset(satData.tmp_second, 0, sizeof(satData.tmp_second));
-  satData.tmp_second[0] = gnrmcData.utc_time[4];
-  satData.tmp_second[1] = gnrmcData.utc_time[5];
+  satData.tmp_second[0]=gnrmcData.utc_time[4];
+  satData.tmp_second[1]=gnrmcData.utc_time[5];
   memset(satData.tmp_millisecond, 0, sizeof(satData.tmp_millisecond));
-  satData.tmp_millisecond[0] = gnrmcData.utc_time[7];
-  satData.tmp_millisecond[1] = gnrmcData.utc_time[8];
-  satData.tmp_day_int = atoi(satData.tmp_day);
-  satData.tmp_month_int = atoi(satData.tmp_month);
-  satData.tmp_year_int = atoi(satData.tmp_year);
-  satData.tmp_hour_int = atoi(satData.tmp_hour);
-  satData.tmp_minute_int = atoi(satData.tmp_minute);
-  satData.tmp_second_int = atoi(satData.tmp_second);
-  satData.tmp_millisecond_int = atoi(satData.tmp_millisecond);
+  satData.tmp_millisecond[0]=gnrmcData.utc_time[7];
+  satData.tmp_millisecond[1]=gnrmcData.utc_time[8];
+  satData.tmp_day_int=atoi(satData.tmp_day);
+  satData.tmp_month_int=atoi(satData.tmp_month);
+  satData.tmp_year_int=atoi(satData.tmp_year);
+  satData.tmp_hour_int=atoi(satData.tmp_hour);
+  satData.tmp_minute_int=atoi(satData.tmp_minute);
+  satData.tmp_second_int=atoi(satData.tmp_second);
+  satData.tmp_millisecond_int=atoi(satData.tmp_millisecond);
   // ----------------------------------------------------------------------------------------------
   /*                                 SYNC RTC TIME & DATE FROM GPS                               */
   // ----------------------------------------------------------------------------------------------
@@ -3870,7 +3868,7 @@ void syncUTCTime() {
       /* Sync at first opportunity within the first 100 milliseconds of any second */
       // ----------------------------------------------------------------------------
       if (satData.tmp_millisecond_int==0) {
-        first_gps_pass = false;
+        first_gps_pass=false;
         Serial.println("[rtc] synchronizing (first opportunity)");
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
@@ -3879,12 +3877,12 @@ void syncUTCTime() {
         // --------------------------------------------------------------------------
         /* Record Sync time                                                        */
         // --------------------------------------------------------------------------
-        satData.rtcsync_hour = rtc.now().hour();
-        satData.rtcsync_minute = rtc.now().minute();
-        satData.rtcsync_second = rtc.now().second();
-        satData.rtcsync_year = rtc.now().year();
-        satData.rtcsync_month = rtc.now().month();
-        satData.rtcsync_day = rtc.now().day();
+        satData.rtcsync_hour=rtc.now().hour();
+        satData.rtcsync_minute=rtc.now().minute();
+        satData.rtcsync_second=rtc.now().second();
+        satData.rtcsync_year=rtc.now().year();
+        satData.rtcsync_month=rtc.now().month();
+        satData.rtcsync_day=rtc.now().day();
       }
     }
     else {
@@ -3900,12 +3898,12 @@ void syncUTCTime() {
         // --------------------------------------------------------------------------
         /* Record Sync time                                                        */
         // --------------------------------------------------------------------------
-        satData.rtcsync_hour = rtc.now().hour();
-        satData.rtcsync_minute = rtc.now().minute();
-        satData.rtcsync_second = rtc.now().second();
-        satData.rtcsync_year = rtc.now().year();
-        satData.rtcsync_month = rtc.now().month();
-        satData.rtcsync_day = rtc.now().day();
+        satData.rtcsync_hour=rtc.now().hour();
+        satData.rtcsync_minute=rtc.now().minute();
+        satData.rtcsync_second=rtc.now().second();
+        satData.rtcsync_year=rtc.now().year();
+        satData.rtcsync_month=rtc.now().month();
+        satData.rtcsync_day=rtc.now().day();
       }
     }
   }
@@ -3926,13 +3924,13 @@ void syncTaskSafeRTCTime() {
   // This so that multiple calls to rtc.now() are not made at the same time from different cores/tasks.
   // Downstream second resolution of time will not be lost providing syncTaskSafeRTCTime is called once or more a second.
   // ----------------------------------------------------------------------------------------
-  satData.rtc_hour = rtc.now().hour();
-  satData.rtc_minute = rtc.now().minute();
-  satData.rtc_second = rtc.now().second();
-  satData.rtc_year = rtc.now().year();
-  satData.rtc_month = rtc.now().month();
-  satData.rtc_day = rtc.now().day();
-  satData.rtc_unixtime = rtc.now().unixtime();
+  satData.rtc_hour=rtc.now().hour();
+  satData.rtc_minute=rtc.now().minute();
+  satData.rtc_second=rtc.now().second();
+  satData.rtc_year=rtc.now().year();
+  satData.rtc_month=rtc.now().month();
+  satData.rtc_day=rtc.now().day();
+  satData.rtc_unixtime=rtc.now().unixtime();
   memset(satData.rtc_weekday, 0, sizeof(satData.rtc_weekday));
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
   // ----------------------------------------------------------------------------------------
@@ -3943,9 +3941,9 @@ void syncTaskSafeRTCTime() {
   // tmElements_t year is currently uint8_t (0-255) while DateTime year is uint16_t (0-65535).
   // ----------------------------------------------------------------------------------------
   memset(satData.tmp_year, 0, sizeof(satData.tmp_year));
-  satData.tmp_year[0] = String(satData.rtc_year).c_str()[2];
-  satData.tmp_year[1] = String(satData.rtc_year).c_str()[3];
-  satData.tmp_year_int = atoi(satData.tmp_year);
+  satData.tmp_year[0]=String(satData.rtc_year).c_str()[2];
+  satData.tmp_year[1]=String(satData.rtc_year).c_str()[3];
+  satData.tmp_year_int=atoi(satData.tmp_year);
   // ---------------------------------------------------------------------
   // Set a time that can be adjusted independantly of RTC, from RTC time.
   // ---------------------------------------------------------------------
@@ -3956,8 +3954,8 @@ void syncTaskSafeRTCTime() {
     satData.rtc_day,
     satData.rtc_month,
     satData.tmp_year_int);
-  make_utc_time_elements = {(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
-  make_utc_time = makeTime(make_utc_time_elements);
+  make_utc_time_elements={(uint8_t)second(), (uint8_t)minute(), (uint8_t)hour(), (uint8_t)weekday(), (uint8_t)day(), (uint8_t)month(), (uint8_t)year()};
+  make_utc_time=makeTime(make_utc_time_elements);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3983,17 +3981,17 @@ void convertUTCTimeToLocalTime() {
   // --------------------------------------------------------
   // Set a snapshot of local time
   // --------------------------------------------------------
-  satData.local_year = year();
-  satData.local_month = month();
-  satData.local_day = day();
-  satData.local_hour = hour();
-  satData.local_minute = minute();
-  satData.local_second = second();
+  satData.local_year=year();
+  satData.local_month=month();
+  satData.local_day=day();
+  satData.local_hour=hour();
+  satData.local_minute=minute();
+  satData.local_second=second();
   memset(satData.local_weekday, 0, sizeof(satData.local_weekday));
   strcpy(satData.local_weekday, String(myAstro.HumanDayOfTheWeek(satData.local_year, satData.local_month, satData.local_day)).c_str());
 
-  satData.formatted_local_time = String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second));
-  satData.formatted_local_date = String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year));
+  satData.formatted_local_time=String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second));
+  satData.formatted_local_date=String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year));
   
   // --------------------------------------------------------
   // uncomment to debug
@@ -4077,7 +4075,7 @@ void buildSatIOSentence() {
   createChecksum(satData.satio_sentence);
   strcat(satData.satio_sentence, "*");
   strcat(satData.satio_sentence, SerialLink.checksum);
-  if (systemData.output_satio_enabled == true) {Serial.println(satData.satio_sentence);}
+  if (systemData.output_satio_enabled==true) {Serial.println(satData.satio_sentence);}
   // debug(satData.satio_sentence);
 }
 
@@ -4119,7 +4117,7 @@ void sdcard_save_system_configuration(char * file) {
 
   Serial.println("[sdcard] attempting to save file: " + String(file));
   exfile.flush();
-  exfile = sd.open(file, O_WRITE | O_CREAT);
+  exfile=sd.open(file, O_WRITE | O_CREAT);
 
   // ------------------------------------------------
 
@@ -4662,18 +4660,18 @@ bool sdcard_load_system_configuration(char * file) {
       // ------------------------------------------------
       // read line
       // ------------------------------------------------
-      sdcardData.SBUFFER = "";
+      sdcardData.SBUFFER="";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
-      sdcardData.SBUFFER = exfile.readStringUntil('\n');
+      sdcardData.SBUFFER=exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "MATRIX_FILEPATH", 15)==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
+        sdcardData.token=strtok(NULL, ",");
         PrintFileToken();
         // update filename and file path
         UpdateMatrixFileNameFilePath(sdcardData.token);
@@ -4681,107 +4679,107 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11)==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          if (atoi(sdcardData.token) == 0) {systemData.matrix_run_on_startup = false;} else {systemData.matrix_run_on_startup = true;}
+          if (atoi(sdcardData.token)==0) {systemData.matrix_run_on_startup=false;} else {systemData.matrix_run_on_startup=true;}
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "DISPLAY_AUTO_OFF", strlen("DISPLAY_AUTO_OFF"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          if (atoi(sdcardData.token) == 0) {systemData.display_auto_off = false;} else {systemData.display_auto_off = true;}
+          if (atoi(sdcardData.token)==0) {systemData.display_auto_off=false;} else {systemData.display_auto_off=true;}
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_AUTO_OFF", strlen("INDEX_DISPLAY_AUTO_OFF")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_AUTO_OFF", strlen("INDEX_DISPLAY_AUTO_OFF"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_autooff_times = atoi(sdcardData.token);
-          systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
+          systemData.index_display_autooff_times=atoi(sdcardData.token);
+          systemData.display_timeout=systemData.display_autooff_times[systemData.index_display_autooff_times];
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_BORDER_COLOR", strlen("INDEX_DISPLAY_BORDER_COLOR")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_BORDER_COLOR", strlen("INDEX_DISPLAY_BORDER_COLOR"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_border_color = atoi(sdcardData.token);
-          systemData.color_border = systemData.display_color[systemData.index_display_border_color];
+          systemData.index_display_border_color=atoi(sdcardData.token);
+          systemData.color_border=systemData.display_color[systemData.index_display_border_color];
           // Serial.println("[index_display_border_color] " + String(systemData.index_display_border_color));
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_CONTENT_COLOR", strlen("INDEX_DISPLAY_CONTENT_COLOR")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_CONTENT_COLOR", strlen("INDEX_DISPLAY_CONTENT_COLOR"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_content_color = atoi(sdcardData.token);
-          systemData.color_content = systemData.display_color[systemData.index_display_content_color];
+          systemData.index_display_content_color=atoi(sdcardData.token);
+          systemData.color_content=systemData.display_color[systemData.index_display_content_color];
           // Serial.println("[color_content] " + String(systemData.color_content));
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_BORDER_COLOR", strlen("INDEX_DISPLAY_MENU_BORDER_COLOR")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_BORDER_COLOR", strlen("INDEX_DISPLAY_MENU_BORDER_COLOR"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_display_menu_border_color= atoi(sdcardData.token);
-          systemData.color_menu_border = systemData.display_color[systemData.index_display_menu_border_color];
+          systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
           // Serial.println("[color_menu_border] " + String(systemData.color_menu_border));
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_CONTENT_COLOR", strlen("INDEX_DISPLAY_MENU_CONTENT_COLOR")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_MENU_CONTENT_COLOR", strlen("INDEX_DISPLAY_MENU_CONTENT_COLOR"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_menu_content_color = atoi(sdcardData.token);
-          systemData.color_menu_content = systemData.display_color[systemData.index_display_menu_content_color];
+          systemData.index_display_menu_content_color=atoi(sdcardData.token);
+          systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
           // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_TITLE_COLOR", strlen("INDEX_DISPLAY_TITLE_COLOR")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_TITLE_COLOR", strlen("INDEX_DISPLAY_TITLE_COLOR"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_title_color = atoi(sdcardData.token);
-          systemData.color_title = systemData.display_color[systemData.index_display_title_color];
+          systemData.index_display_title_color=atoi(sdcardData.token);
+          systemData.color_title=systemData.display_color[systemData.index_display_title_color];
           // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
@@ -4789,14 +4787,14 @@ bool sdcard_load_system_configuration(char * file) {
       // ------------------------------------------------
 
       // display subtitle color index
-      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_COLOR_SUBTITLE", strlen("INDEX_DISPLAY_COLOR_SUBTITLE")) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+      if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_COLOR_SUBTITLE", strlen("INDEX_DISPLAY_COLOR_SUBTITLE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
-        sdcardData.token = strtok(NULL, ",");
-        if (is_all_digits(sdcardData.token) == true) {
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          systemData.index_display_color_subtitle = atoi(sdcardData.token);
-          systemData.color_subtitle = systemData.display_color[systemData.index_display_color_subtitle];
+          systemData.index_display_color_subtitle=atoi(sdcardData.token);
+          systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
           // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
@@ -4804,390 +4802,390 @@ bool sdcard_load_system_configuration(char * file) {
       // ------------------------------------------------------
       // continue to enable/disable only if auto resume is true
       // ------------------------------------------------------
-      if (systemData.matrix_run_on_startup == true) {
+      if (systemData.matrix_run_on_startup==true) {
 
         // ------------------------------------------------
 
-        if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.matrix_enabled = false;} else {systemData.matrix_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.matrix_enabled=false;} else {systemData.matrix_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.satio_enabled = false;} else {systemData.satio_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.satio_enabled=false;} else {systemData.satio_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.gngga_enabled = false;} else {systemData.gngga_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.gngga_enabled=false;} else {systemData.gngga_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.gnrmc_enabled = false;} else {systemData.gnrmc_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.gnrmc_enabled=false;} else {systemData.gnrmc_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.gpatt_enabled = false;} else {systemData.gpatt_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.gpatt_enabled=false;} else {systemData.gpatt_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_satio_enabled = false;} else {systemData.output_satio_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_satio_enabled=false;} else {systemData.output_satio_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_gngga_enabled = false;} else {systemData.output_gngga_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_gngga_enabled=false;} else {systemData.output_gngga_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_gnrmc_enabled = false;} else {systemData.output_gnrmc_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_gnrmc_enabled=false;} else {systemData.output_gnrmc_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_gpatt_enabled = false;} else {systemData.output_gpatt_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_gpatt_enabled=false;} else {systemData.output_gpatt_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MATRIX_SENTENCE", strlen("OUTPUT_MATRIX_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MATRIX_SENTENCE", strlen("OUTPUT_MATRIX_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_matrix_enabled = false;} else {systemData.output_matrix_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_matrix_enabled=false;} else {systemData.output_matrix_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SENSORS_SENTENCE", strlen("OUTPUT_SENSORS_SENTENCE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SENSORS_SENTENCE", strlen("OUTPUT_SENSORS_SENTENCE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_sensors_enabled = false;} else {systemData.output_sensors_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_sensors_enabled=false;} else {systemData.output_sensors_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET,", strlen("UTC_SECOND_OFFSET,")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET,", strlen("UTC_SECOND_OFFSET,"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            satData.utc_second_offset = atoi(sdcardData.token);
+            satData.utc_second_offset=atoi(sdcardData.token);
           }
         }
 
         // ------------------------------------------------
         
-        else if (strncmp(sdcardData.BUFFER, "UTC_AUTO_OFFSET_FLAG", strlen("UTC_AUTO_OFFSET_FLAG")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "UTC_AUTO_OFFSET_FLAG", strlen("UTC_AUTO_OFFSET_FLAG"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {satData.utc_auto_offset_flag = false;} else {satData.utc_auto_offset_flag = true;}
+            if (atoi(sdcardData.token)==0) {satData.utc_auto_offset_flag=false;} else {satData.utc_auto_offset_flag=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_sun = false;} else {systemData.sidereal_track_sun = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_sun=false;} else {systemData.sidereal_track_sun=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_moon = false;} else {systemData.sidereal_track_moon = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_moon=false;} else {systemData.sidereal_track_moon=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mercury = false;} else {systemData.sidereal_track_mercury = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mercury=false;} else {systemData.sidereal_track_mercury=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_venus = false;} else {systemData.sidereal_track_venus = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_venus=false;} else {systemData.sidereal_track_venus=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_mars = false;} else {systemData.sidereal_track_mars = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mars=false;} else {systemData.sidereal_track_mars=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_jupiter = false;} else {systemData.sidereal_track_jupiter = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_jupiter=false;} else {systemData.sidereal_track_jupiter=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_saturn = false;} else {systemData.sidereal_track_saturn = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_saturn=false;} else {systemData.sidereal_track_saturn=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_uranus = false;} else {systemData.sidereal_track_uranus = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_uranus=false;} else {systemData.sidereal_track_uranus=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.sidereal_track_neptune = false;} else {systemData.sidereal_track_neptune = true;}
+            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_neptune=false;} else {systemData.sidereal_track_neptune=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SUN", strlen("OUTPUT_SUN")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SUN", strlen("OUTPUT_SUN"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_sun_enabled = false;} else {systemData.output_sun_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_sun_enabled=false;} else {systemData.output_sun_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MOON", strlen("OUTPUT_MOON")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MOON", strlen("OUTPUT_MOON"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_moon_enabled = false;} else {systemData.output_moon_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_moon_enabled=false;} else {systemData.output_moon_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MERCURY", strlen("OUTPUT_MERCURY")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MERCURY", strlen("OUTPUT_MERCURY"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_mercury_enabled = false;} else {systemData.output_mercury_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_mercury_enabled=false;} else {systemData.output_mercury_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_VENUS", strlen("OUTPUT_VENUS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_VENUS", strlen("OUTPUT_VENUS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_venus_enabled = false;} else {systemData.output_venus_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_venus_enabled=false;} else {systemData.output_venus_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MARS", strlen("OUTPUT_MARS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MARS", strlen("OUTPUT_MARS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_mars_enabled = false;} else {systemData.output_mars_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_mars_enabled=false;} else {systemData.output_mars_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_JUPITER", strlen("OUTPUT_JUPITER")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_JUPITER", strlen("OUTPUT_JUPITER"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_jupiter_enabled = false;} else {systemData.output_jupiter_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_jupiter_enabled=false;} else {systemData.output_jupiter_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATURN", strlen("OUTPUT_SATURN")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATURN", strlen("OUTPUT_SATURN"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_saturn_enabled = false;} else {systemData.output_saturn_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_saturn_enabled=false;} else {systemData.output_saturn_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_URANUS", strlen("OUTPUT_URANUS")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_URANUS", strlen("OUTPUT_URANUS"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_uranus_enabled = false;} else {systemData.output_uranus_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_uranus_enabled=false;} else {systemData.output_uranus_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_NEPTUNE", strlen("OUTPUT_NEPTUNE")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        else if (strncmp(sdcardData.BUFFER, "OUTPUT_NEPTUNE", strlen("OUTPUT_NEPTUNE"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            if (atoi(sdcardData.token) == 0) {systemData.output_neptune_enabled = false;} else {systemData.output_neptune_enabled = true;}
+            if (atoi(sdcardData.token)==0) {systemData.output_neptune_enabled=false;} else {systemData.output_neptune_enabled=true;}
           }
         }
 
         // ------------------------------------------------
 
-        if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX")) == 0) {
-          sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX"))==0) {
+          sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
-          sdcardData.token = strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token) == true) {
+          sdcardData.token=strtok(NULL, ",");
+          if (is_all_digits(sdcardData.token)==true) {
             PrintFileToken();
-            systemData.index_overload_times = atoi(sdcardData.token);
-            systemData.overload_max = systemData.overload_times[systemData.index_overload_times];
+            systemData.index_overload_times=atoi(sdcardData.token);
+            systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
           }
         }
 
@@ -5223,7 +5221,7 @@ void sdcard_mkdir(char * dir){
 
 /* creates root directories required by the system to work properly */
 
-void sdcard_mkdirs() {for (int i = 0; i < 2; i++) {sdcard_mkdir(sdcardData.system_dirs[i]);}}
+void sdcard_mkdirs() {for (int i=0; i < 2; i++) {sdcard_mkdir(sdcardData.system_dirs[i]);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
@@ -5235,8 +5233,8 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
   char tempname[56];
   char temppath[56];
   char temp_i[4];
-  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
-  for (int i = 0; i < sdcardData.max_matrix_filenames; i++) {
+  for (int i=0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
+  for (int i=0; i < sdcardData.max_matrix_filenames; i++) {
     memset(temppath, 0, 56);
     strcpy(temppath, dir);
     strcat(temppath, name);
@@ -5268,28 +5266,28 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
   // iterate over each matrix matrix
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    matrixData.matrix_switch_enabled[0][Mi] = 0;
-    for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
+    matrixData.matrix_switch_enabled[0][Mi]=0;
+    for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
       // clear function names
       memset(matrixData.matrix_function[Mi][Fi], 0, 56);
       strcpy(matrixData.matrix_function[Mi][Fi], "None");
       // clear function values
-      matrixData.matrix_function_xyz[Mi][Fi][0] = 0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][1] = 0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][2] = 0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][0]=0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][1]=0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][2]=0.0;
       // clear port maps
-      matrixData.matrix_port_map[0][Mi] = -1;
-      matrixData.tmp_matrix_port_map[0][Mi] = -1;
+      matrixData.matrix_port_map[0][Mi]=-1;
+      matrixData.tmp_matrix_port_map[0][Mi]=-1;
       // clear inverted logic (default is standard not inverted)
-      matrixData.matrix_switch_inverted_logic[Mi][Fi] = false;
+      matrixData.matrix_switch_inverted_logic[Mi][Fi]=false;
       // clear timers
-      matrixData.matrix_timers[0][Mi] = 0.0;
+      matrixData.matrix_timers[0][Mi]=0.0;
       // clear enabled
-      matrixData.matrix_switch_enabled[0][Mi] = false;
+      matrixData.matrix_switch_enabled[0][Mi]=false;
       // clear states
-      matrixData.matrix_switch_state[0][Mi] = false;
-      matrixData.tmp_matrix_switch_state[0][Mi] = false;
+      matrixData.matrix_switch_state[0][Mi]=false;
+      matrixData.tmp_matrix_switch_state[0][Mi]=false;
     }
   }
 }
@@ -5303,115 +5301,115 @@ void zero_matrix() {
 bool sdcard_load_matrix(char * file) {
   Serial.println("[sdcard] attempting to load file: " + String(file));
   exfile.flush();
-  exfile = sd.open(file); 
+  exfile=sd.open(file); 
   if (exfile) {
     while (exfile.available()) {
 
       // ------------------------------------------------
       // read line
-      sdcardData.SBUFFER = "";
+      sdcardData.SBUFFER="";
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
-      sdcardData.SBUFFER = exfile.readStringUntil('\n');
+      sdcardData.SBUFFER=exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
       Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
 
       // ------------------------------------------------
 
       // tag: r
-      if (strncmp(sdcardData.BUFFER, sdcardData.tag_0, 1) == 0) {
+      if (strncmp(sdcardData.BUFFER, sdcardData.tag_0, 1)==0) {
 
         // ------------------------------------------------
         // ensure cleared
         memset(sdcardData.data_0, 0, sizeof(sdcardData.data_0)); memset(sdcardData.data_1, 0, sizeof(sdcardData.data_1)); memset(sdcardData.data_2, 0, sizeof(sdcardData.data_2));
         memset(sdcardData.data_3, 0, sizeof(sdcardData.data_3)); memset(sdcardData.data_4, 0, sizeof(sdcardData.data_4)); memset(sdcardData.data_5, 0, sizeof(sdcardData.data_5));
         memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7)); memset(sdcardData.data_8, 0, sizeof(sdcardData.data_8));
-        validData.bool_data_0 = false;
-        validData.bool_data_1 = false;
+        validData.bool_data_0=false;
+        validData.bool_data_1=false;
         // ------------------------------------------------
         // split line on delimiter
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
         // ------------------------------------------------
         // matrix index
-        sdcardData.token = strtok(NULL, ",");
+        sdcardData.token=strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
-        if (is_all_digits(sdcardData.data_0) == true) {validData.bool_data_0 = true;
+        if (is_all_digits(sdcardData.data_0)==true) {validData.bool_data_0=true;
           Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
         }
         else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
         // ------------------------------------------------
         // matrix function index
-        sdcardData.token = strtok(NULL, ",");
+        sdcardData.token=strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
-        if (is_all_digits(sdcardData.data_1) == true) {validData.bool_data_1 = true;
+        if (is_all_digits(sdcardData.data_1)==true) {validData.bool_data_1=true;
           Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
         }
         else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
         // ------------------------------------------------
         // continue if we have valid index numbers
-        if ((validData.bool_data_0 == true) && (validData.bool_data_1 == true)) {
+        if ((validData.bool_data_0==true) && (validData.bool_data_1==true)) {
           // ------------------------------------------------
           // matrix function name
-          sdcardData.token = strtok(NULL, ",");
+          sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, sizeof(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
           Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           // ------------------------------------------------
           // matrix function data: x
-          sdcardData.token = strtok(NULL, ",");
+          sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
-          if (is_positive_negative_num(sdcardData.data_3) == true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0] = atol(sdcardData.data_3);
+          if (is_positive_negative_num(sdcardData.data_3)==true) {
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]=atol(sdcardData.data_3);
             Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
           else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
           // ------------------------------------------------
           // matrix function data: y
-          sdcardData.token = strtok(NULL, ",");
+          sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
-          if (is_positive_negative_num(sdcardData.data_4) == true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1] = atol(sdcardData.data_4);
+          if (is_positive_negative_num(sdcardData.data_4)==true) {
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]=atol(sdcardData.data_4);
             Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
           else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
           // ------------------------------------------------
           // matrix function data: z
-          sdcardData.token = strtok(NULL, ",");
+          sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
-          if (is_positive_negative_num(sdcardData.data_5) == true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2] = atol(sdcardData.data_5);
+          if (is_positive_negative_num(sdcardData.data_5)==true) {
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]=atol(sdcardData.data_5);
             Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
           else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
           // ------------------------------------------------
           // matrix function data: inverted logic
-          sdcardData.token = strtok(NULL, ",");
+          sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_8, sdcardData.token);
-          if (is_all_digits(sdcardData.data_8) == true) {matrixData.matrix_switch_inverted_logic[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_8);}
+          if (is_all_digits(sdcardData.data_8)==true) {matrixData.matrix_switch_inverted_logic[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_8);}
           // ------------------------------------------------
         }
       }
       // ------------------------------------------------
       // tag: e
-      else if (strncmp(sdcardData.BUFFER, sdcardData.tag_1, 1) == 0) {
-        sdcardData.token = strtok(sdcardData.BUFFER, ",");
-        sdcardData.token = strtok(NULL, ",");
-        sdcardData.token = strtok(NULL, ",");
+      else if (strncmp(sdcardData.BUFFER, sdcardData.tag_1, 1)==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        sdcardData.token=strtok(NULL, ",");
+        sdcardData.token=strtok(NULL, ",");
         // ------------------------------------------------
         // enabled/disabled
         strcpy(sdcardData.data_6, sdcardData.token);
-        if (is_all_digits(sdcardData.data_6) == true) {
-          matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_6);
+        if (is_all_digits(sdcardData.data_6)==true) {
+          matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]=atoi(sdcardData.data_6);
           Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
         }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
         // ------------------------------------------------
         // port
-        sdcardData.token = strtok(NULL, ",");
+        sdcardData.token=strtok(NULL, ",");
         // check
-        if (is_all_digits_plus_char(sdcardData.data_7, '-') == true) {
+        if (is_all_digits_plus_char(sdcardData.data_7, '-')==true) {
           strcpy(sdcardData.data_7, sdcardData.token);
-          matrixData.matrix_port_map[0][atoi(sdcardData.data_0)] = atoi(sdcardData.data_7);
+          matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]=atoi(sdcardData.data_7);
           Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
         }
         else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
@@ -5459,11 +5457,11 @@ bool sdcard_save_matrix(char * file) {
 
   Serial.println("[sdcard] attempting to save file: " + String(file));
   // exfile.flush();
-  exfile = sd.open(file, O_WRITE | O_CREAT);
+  exfile=sd.open(file, O_WRITE | O_CREAT);
   Serial.println("[sdcard exfile] " + String(exfile));
   if (exfile) {
-    for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+    for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
+      for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
         // ------------------------------------------------
         // tag: matrix (r)
         memset(sdcardData.file_data, 0 , sizeof(sdcardData.file_data));
@@ -5589,22 +5587,22 @@ void trackObject(double latitude, double longitude, int year, int month, int day
   myAstro.setGMTdate(year, month, day);
   myAstro.setLocalTime(hour, minute, second);
   myAstro.setGMTtime(hour, minute, second);
-  if (object_table_i == 0) {myAstroObj.selectStarTable(object_i);}
-  if (object_table_i == 1) {myAstroObj.selectNGCTable(object_i);}
-  if (object_table_i == 2) {myAstroObj.selectICTable(object_i);}
-  if (object_table_i == 3) {myAstroObj.selectMessierTable(object_i);}
-  if (object_table_i == 4) {myAstroObj.selectCaldwellTable(object_i);}
-  if (object_table_i == 5) {myAstroObj.selectHershel400Table(object_i);}
-  if (object_table_i == 6) {myAstroObj.selectOtherObjectsTable(object_i);}
+  if (object_table_i==0) {myAstroObj.selectStarTable(object_i);}
+  if (object_table_i==1) {myAstroObj.selectNGCTable(object_i);}
+  if (object_table_i==2) {myAstroObj.selectICTable(object_i);}
+  if (object_table_i==3) {myAstroObj.selectMessierTable(object_i);}
+  if (object_table_i==4) {myAstroObj.selectCaldwellTable(object_i);}
+  if (object_table_i==5) {myAstroObj.selectHershel400Table(object_i);}
+  if (object_table_i==6) {myAstroObj.selectOtherObjectsTable(object_i);}
   myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
   myAstro.doRAdec2AltAz();
-  siderealObjectData.object_ra = myAstro.getRAdec();
-  siderealObjectData.object_dec = myAstro.getDeclinationDec();
-  siderealObjectData.object_az = myAstro.getAzimuth();
-  siderealObjectData.object_alt = myAstro.getAltitude();
+  siderealObjectData.object_ra=myAstro.getRAdec();
+  siderealObjectData.object_dec=myAstro.getDeclinationDec();
+  siderealObjectData.object_az=myAstro.getAzimuth();
+  siderealObjectData.object_alt=myAstro.getAltitude();
   myAstro.doXRiseSetTimes();
-  siderealObjectData.object_r = myAstro.getRiseTime();
-  siderealObjectData.object_s = myAstro.getSetTime();
+  siderealObjectData.object_r=myAstro.getRiseTime();
+  siderealObjectData.object_s=myAstro.getSetTime();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -5625,17 +5623,17 @@ void IdentifyObject(double object_ra, double object_dec) {
   // scan tables for the object
   switch(myAstroObj.getIdentifiedObjectTable()) {
     case(1):
-    siderealObjectData.object_table_i = 0; break; // Star
+    siderealObjectData.object_table_i=0; break; // Star
     case(2):
-    siderealObjectData.object_table_i = 1; break; // NGC
+    siderealObjectData.object_table_i=1; break; // NGC
     case(3):
-    siderealObjectData.object_table_i = 2;  break; //IC
+    siderealObjectData.object_table_i=2;  break; //IC
     case(7):
-    siderealObjectData.object_table_i = 3;  break; // Other
+    siderealObjectData.object_table_i=3;  break; // Other
   }
   // -------------------------------------------------------
   // object tables
-  if (myAstroObj.getIdentifiedObjectTable() == 1) {
+  if (myAstroObj.getIdentifiedObjectTable()==1) {
     // set table name
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
@@ -5643,18 +5641,18 @@ void IdentifyObject(double object_ra, double object_dec) {
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
     // set object id number
-    siderealObjectData.object_number = myAstroObj.getIdentifiedObjectNumber();
+    siderealObjectData.object_number=myAstroObj.getIdentifiedObjectNumber();
   }
   // -------------------------------------------------------
   // alternate object tables
   if (myAstroObj.getAltIdentifiedObjectTable()) {
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
       casematrix_indi_h:
-      siderealObjectData.object_table_i = 4;  break; // Messier
+      siderealObjectData.object_table_i=4;  break; // Messier
       case(5):
-      siderealObjectData.object_table_i = 5;  break; // Caldwell
+      siderealObjectData.object_table_i=5;  break; // Caldwell
       case(6):
-      siderealObjectData.object_table_i = 6;  break; // Herschel 400 number
+      siderealObjectData.object_table_i=6;  break; // Herschel 400 number
     }
     // set table name
     memset(siderealObjectData.object_table_name, 0, 56);
@@ -5663,20 +5661,20 @@ void IdentifyObject(double object_ra, double object_dec) {
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getAltIdentifiedObjectNumber()));
     // set object id number
-    siderealObjectData.object_number = myAstroObj.getAltIdentifiedObjectNumber();
+    siderealObjectData.object_number=myAstroObj.getAltIdentifiedObjectNumber();
   }
   // -------------------------------------------------------
 }
 
 void trackSun() {
-  siderealPlanetData.sun_ra  = myAstro.getRAdec();
-  siderealPlanetData.sun_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.sun_ra =myAstro.getRAdec();
+  siderealPlanetData.sun_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.sun_az  = myAstro.getAzimuth();
-  siderealPlanetData.sun_alt = myAstro.getAltitude();
+  siderealPlanetData.sun_az =myAstro.getAzimuth();
+  siderealPlanetData.sun_alt=myAstro.getAltitude();
   myAstro.doSunRiseSetTimes();
-  siderealPlanetData.sun_r  = myAstro.getSunriseTime();
-  siderealPlanetData.sun_s  = myAstro.getSunsetTime();
+  siderealPlanetData.sun_r =myAstro.getSunriseTime();
+  siderealPlanetData.sun_s =myAstro.getSunsetTime();
   // create and ouptput solar tracking information
   if (systemData.output_sun_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5697,16 +5695,16 @@ void trackSun() {
 }
 
 void trackMoon() {
-  siderealPlanetData.moon_ra  = myAstro.getRAdec();
-  siderealPlanetData.moon_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.moon_ra =myAstro.getRAdec();
+  siderealPlanetData.moon_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.moon_az  = myAstro.getAzimuth();
-  siderealPlanetData.moon_alt = myAstro.getAltitude();
+  siderealPlanetData.moon_az =myAstro.getAzimuth();
+  siderealPlanetData.moon_alt=myAstro.getAltitude();
   myAstro.doMoonRiseSetTimes();
-  siderealPlanetData.moon_r  = myAstro.getMoonriseTime();
-  siderealPlanetData.moon_s  = myAstro.getMoonsetTime();
-  siderealPlanetData.moon_p  = myAstro.getMoonPhase();
-  siderealPlanetData.moon_lum = myAstro.getLunarLuminance();
+  siderealPlanetData.moon_r =myAstro.getMoonriseTime();
+  siderealPlanetData.moon_s =myAstro.getMoonsetTime();
+  siderealPlanetData.moon_p =myAstro.getMoonPhase();
+  siderealPlanetData.moon_lum=myAstro.getLunarLuminance();
   // create and ouptput lunar tracking information
   if (systemData.output_moon_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5730,20 +5728,20 @@ void trackMoon() {
 
 void trackMercury() {
   myAstro.doMercury();
-  siderealPlanetData.mercury_ra  = myAstro.getRAdec();
-  siderealPlanetData.mercury_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.mercury_ra =myAstro.getRAdec();
+  siderealPlanetData.mercury_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.mercury_az  = myAstro.getAzimuth();
-  siderealPlanetData.mercury_alt = myAstro.getAltitude();
-  siderealPlanetData.mercury_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.mercury_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.mercury_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.mercury_distance = myAstro.getDistance();
-  siderealPlanetData.mercury_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.mercury_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.mercury_az =myAstro.getAzimuth();
+  siderealPlanetData.mercury_alt=myAstro.getAltitude();
+  siderealPlanetData.mercury_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.mercury_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.mercury_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.mercury_distance=myAstro.getDistance();
+  siderealPlanetData.mercury_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.mercury_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.mercury_r = myAstro.getRiseTime();
-  siderealPlanetData.mercury_s = myAstro.getSetTime();
+  siderealPlanetData.mercury_r=myAstro.getRiseTime();
+  siderealPlanetData.mercury_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_mercury_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5771,20 +5769,20 @@ void trackMercury() {
 
 void trackVenus() {
   myAstro.doVenus();
-  siderealPlanetData.venus_ra  = myAstro.getRAdec();
-  siderealPlanetData.venus_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.venus_ra =myAstro.getRAdec();
+  siderealPlanetData.venus_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.venus_az  = myAstro.getAzimuth();
-  siderealPlanetData.venus_alt = myAstro.getAltitude();
-  siderealPlanetData.venus_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.venus_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.venus_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.venus_distance = myAstro.getDistance();
-  siderealPlanetData.venus_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.venus_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.venus_az =myAstro.getAzimuth();
+  siderealPlanetData.venus_alt=myAstro.getAltitude();
+  siderealPlanetData.venus_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.venus_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.venus_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.venus_distance=myAstro.getDistance();
+  siderealPlanetData.venus_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.venus_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.venus_r = myAstro.getRiseTime();
-  siderealPlanetData.venus_s = myAstro.getSetTime();
+  siderealPlanetData.venus_r=myAstro.getRiseTime();
+  siderealPlanetData.venus_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_venus_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5812,20 +5810,20 @@ void trackVenus() {
 
 void trackMars() {
   myAstro.doMars();
-  siderealPlanetData.mars_ra  = myAstro.getRAdec();
-  siderealPlanetData.mars_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.mars_ra =myAstro.getRAdec();
+  siderealPlanetData.mars_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.mars_az  = myAstro.getAzimuth();
-  siderealPlanetData.mars_alt = myAstro.getAltitude();
-  siderealPlanetData.mars_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.mars_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.mars_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.mars_distance = myAstro.getDistance();
-  siderealPlanetData.mars_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.mars_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.mars_az =myAstro.getAzimuth();
+  siderealPlanetData.mars_alt=myAstro.getAltitude();
+  siderealPlanetData.mars_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.mars_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.mars_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.mars_distance=myAstro.getDistance();
+  siderealPlanetData.mars_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.mars_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.mars_r = myAstro.getRiseTime();
-  siderealPlanetData.mars_s = myAstro.getSetTime();
+  siderealPlanetData.mars_r=myAstro.getRiseTime();
+  siderealPlanetData.mars_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_mars_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5853,20 +5851,20 @@ void trackMars() {
 
 void trackJupiter() {
   myAstro.doJupiter();
-  siderealPlanetData.jupiter_ra  = myAstro.getRAdec();
-  siderealPlanetData.jupiter_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.jupiter_ra =myAstro.getRAdec();
+  siderealPlanetData.jupiter_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.jupiter_az  = myAstro.getAzimuth();
-  siderealPlanetData.jupiter_alt = myAstro.getAltitude();
-  siderealPlanetData.jupiter_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.jupiter_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.jupiter_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.jupiter_distance = myAstro.getDistance();
-  siderealPlanetData.jupiter_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.jupiter_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.jupiter_az =myAstro.getAzimuth();
+  siderealPlanetData.jupiter_alt=myAstro.getAltitude();
+  siderealPlanetData.jupiter_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.jupiter_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.jupiter_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.jupiter_distance=myAstro.getDistance();
+  siderealPlanetData.jupiter_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.jupiter_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.jupiter_r = myAstro.getRiseTime();
-  siderealPlanetData.jupiter_s = myAstro.getSetTime();
+  siderealPlanetData.jupiter_r=myAstro.getRiseTime();
+  siderealPlanetData.jupiter_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_jupiter_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5894,20 +5892,20 @@ void trackJupiter() {
 
 void trackSaturn() {
   myAstro.doSaturn();
-  siderealPlanetData.saturn_ra  = myAstro.getRAdec();
-  siderealPlanetData.saturn_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.saturn_ra =myAstro.getRAdec();
+  siderealPlanetData.saturn_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.saturn_az  = myAstro.getAzimuth();
-  siderealPlanetData.saturn_alt = myAstro.getAltitude();
-  siderealPlanetData.saturn_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.saturn_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.saturn_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.saturn_distance = myAstro.getDistance();
-  siderealPlanetData.saturn_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.saturn_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.saturn_az =myAstro.getAzimuth();
+  siderealPlanetData.saturn_alt=myAstro.getAltitude();
+  siderealPlanetData.saturn_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.saturn_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.saturn_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.saturn_distance=myAstro.getDistance();
+  siderealPlanetData.saturn_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.saturn_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.saturn_r = myAstro.getRiseTime();
-  siderealPlanetData.saturn_s = myAstro.getSetTime();
+  siderealPlanetData.saturn_r=myAstro.getRiseTime();
+  siderealPlanetData.saturn_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_saturn_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5935,20 +5933,20 @@ void trackSaturn() {
 
 void trackUranus() {
   myAstro.doUranus();
-  siderealPlanetData.uranus_ra  = myAstro.getRAdec();
-  siderealPlanetData.uranus_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.uranus_ra =myAstro.getRAdec();
+  siderealPlanetData.uranus_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.uranus_az  = myAstro.getAzimuth();
-  siderealPlanetData.uranus_alt = myAstro.getAltitude();
-  siderealPlanetData.uranus_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.uranus_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.uranus_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.uranus_distance = myAstro.getDistance();
-  siderealPlanetData.uranus_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.uranus_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.uranus_az =myAstro.getAzimuth();
+  siderealPlanetData.uranus_alt=myAstro.getAltitude();
+  siderealPlanetData.uranus_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.uranus_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.uranus_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.uranus_distance=myAstro.getDistance();
+  siderealPlanetData.uranus_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.uranus_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.uranus_r = myAstro.getRiseTime();
-  siderealPlanetData.uranus_s = myAstro.getSetTime();
+  siderealPlanetData.uranus_r=myAstro.getRiseTime();
+  siderealPlanetData.uranus_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_uranus_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -5976,20 +5974,20 @@ void trackUranus() {
 
 void trackNeptune() {
   myAstro.doNeptune();
-  siderealPlanetData.neptune_ra  = myAstro.getRAdec();
-  siderealPlanetData.neptune_dec = myAstro.getDeclinationDec();
+  siderealPlanetData.neptune_ra =myAstro.getRAdec();
+  siderealPlanetData.neptune_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
-  siderealPlanetData.neptune_az  = myAstro.getAzimuth();
-  siderealPlanetData.neptune_alt = myAstro.getAltitude();
-  siderealPlanetData.neptune_helio_ecliptic_lat = myAstro.getHelioLat();
-  siderealPlanetData.neptune_helio_ecliptic_long = myAstro.getHelioLong();
-  siderealPlanetData.neptune_radius_vector = myAstro.getRadiusVec();
-  siderealPlanetData.neptune_distance = myAstro.getDistance();
-  siderealPlanetData.neptune_ecliptic_lat = myAstro.getEclipticLatitude();
-  siderealPlanetData.neptune_ecliptic_long = myAstro.getEclipticLongitude();
+  siderealPlanetData.neptune_az =myAstro.getAzimuth();
+  siderealPlanetData.neptune_alt=myAstro.getAltitude();
+  siderealPlanetData.neptune_helio_ecliptic_lat=myAstro.getHelioLat();
+  siderealPlanetData.neptune_helio_ecliptic_long=myAstro.getHelioLong();
+  siderealPlanetData.neptune_radius_vector=myAstro.getRadiusVec();
+  siderealPlanetData.neptune_distance=myAstro.getDistance();
+  siderealPlanetData.neptune_ecliptic_lat=myAstro.getEclipticLatitude();
+  siderealPlanetData.neptune_ecliptic_long=myAstro.getEclipticLongitude();
   myAstro.doXRiseSetTimes();
-  siderealPlanetData.neptune_r = myAstro.getRiseTime();
-  siderealPlanetData.neptune_s = myAstro.getSetTime();
+  siderealPlanetData.neptune_r=myAstro.getRiseTime();
+  siderealPlanetData.neptune_s=myAstro.getSetTime();
   // create and ouptput tracking information
   if (systemData.output_neptune_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -6157,27 +6155,27 @@ void clearTrackPlanets() {
 }
 
 void setTrackPlanetsFalse() {
-  systemData.sidereal_track_sun = false;
-  systemData.sidereal_track_moon = false;
-  systemData.sidereal_track_mercury = false;
-  systemData.sidereal_track_venus = false;
-  systemData.sidereal_track_mars = false;
-  systemData.sidereal_track_jupiter = false;
-  systemData.sidereal_track_saturn = false;
-  systemData.sidereal_track_uranus = false;
-  systemData.sidereal_track_neptune = false;
+  systemData.sidereal_track_sun=false;
+  systemData.sidereal_track_moon=false;
+  systemData.sidereal_track_mercury=false;
+  systemData.sidereal_track_venus=false;
+  systemData.sidereal_track_mars=false;
+  systemData.sidereal_track_jupiter=false;
+  systemData.sidereal_track_saturn=false;
+  systemData.sidereal_track_uranus=false;
+  systemData.sidereal_track_neptune=false;
 }
 
 void setTrackPlanetsTrue() {
-  systemData.sidereal_track_sun = true;
-  systemData.sidereal_track_moon = true;
-  systemData.sidereal_track_mercury = true;
-  systemData.sidereal_track_venus = true;
-  systemData.sidereal_track_mars = true;
-  systemData.sidereal_track_jupiter = true;
-  systemData.sidereal_track_saturn = true;
-  systemData.sidereal_track_uranus = true;
-  systemData.sidereal_track_neptune = true;
+  systemData.sidereal_track_sun=true;
+  systemData.sidereal_track_moon=true;
+  systemData.sidereal_track_mercury=true;
+  systemData.sidereal_track_venus=true;
+  systemData.sidereal_track_mars=true;
+  systemData.sidereal_track_jupiter=true;
+  systemData.sidereal_track_saturn=true;
+  systemData.sidereal_track_uranus=true;
+  systemData.sidereal_track_neptune=true;
 }
 
 void trackPlanets() {
@@ -6185,23 +6183,23 @@ void trackPlanets() {
   myAstro.doPlanetElements();
   myAstro.doSun();
   // now do other plans
-  if (systemData.sidereal_track_sun == true) {trackSun();}
+  if (systemData.sidereal_track_sun==true) {trackSun();}
   else {clearSun();}
-  if (systemData.sidereal_track_moon == true) {trackMoon();}
+  if (systemData.sidereal_track_moon==true) {trackMoon();}
   else {clearMoon();}
-  if (systemData.sidereal_track_mercury == true) {trackMercury();}
+  if (systemData.sidereal_track_mercury==true) {trackMercury();}
   else {clearMercury();}
-  if (systemData.sidereal_track_venus == true) {trackVenus();}
+  if (systemData.sidereal_track_venus==true) {trackVenus();}
   else {clearVenus();}
-  if (systemData.sidereal_track_mars == true) {trackMars();}
+  if (systemData.sidereal_track_mars==true) {trackMars();}
   else {clearMars();}
-  if (systemData.sidereal_track_jupiter == true) {trackJupiter();}
+  if (systemData.sidereal_track_jupiter==true) {trackJupiter();}
   else {clearJupiter();}
-  if (systemData.sidereal_track_saturn == true) {trackSaturn();}
+  if (systemData.sidereal_track_saturn==true) {trackSaturn();}
   else {clearSaturn();}
-  if (systemData.sidereal_track_uranus == true) {trackUranus();}
+  if (systemData.sidereal_track_uranus==true) {trackUranus();}
   else {clearUranus();}
-  if (systemData.sidereal_track_neptune == true) {trackNeptune();}
+  if (systemData.sidereal_track_neptune==true) {trackNeptune();}
   else {clearNeptune();}
 }
 
@@ -6263,14 +6261,14 @@ bool in_range_check_false(double n0, double n1, double r) {
 }
 
 bool in_square_range_check_true(double x0, double x1, double y0, double y1, double r) {
-  if (in_range_check_true(x0, x1, r) == true) {
-    if (in_range_check_true(y0, y1, r) == true) {return true;} else return false;}
+  if (in_range_check_true(x0, x1, r)==true) {
+    if (in_range_check_true(y0, y1, r)==true) {return true;} else return false;}
   else {return false;}
 }
 
 bool in_square_range_check_false(double x0, double x1, double y0, double y1, double r) {
-  if (in_range_check_true(x0, x1, r) == true) {
-    if (in_range_check_true(y0, y1, r) == true) {return false;} else return true;}
+  if (in_range_check_true(x0, x1, r)==true) {
+    if (in_range_check_true(y0, y1, r)==true) {return false;} else return true;}
   else {return true;}
 }
 
@@ -6299,13 +6297,13 @@ bool check_under_false(double n0, double n1) {
 }
 
 bool check_equal_true(double n0, double n1) {
-  // debug("check_equal_true: n0 " + String(n0) + " == n1 " + String(n1));
-  if (n0 == n1) {return true;}
+  // debug("check_equal_true: n0 " + String(n0) + "==n1 " + String(n1));
+  if (n0==n1) {return true;}
   else {return false;}
 }
 
 bool check_equal_false(double n0, double n1) {
-  // debug("check_equal_false: n0 " + String(n0) + " == n1 " + String(n1));
+  // debug("check_equal_false: n0 " + String(n0) + "==n1 " + String(n1));
   if (n0 != n1) {return true;}
   else {return false;}
 }
@@ -6339,25 +6337,25 @@ bool check_ge_and_le_false(double n0, double n1, double n2) {
 }
 
 bool check_strncmp_true(char * c0, char * c1, int n) {
-  // debug("check_strncmp_true: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
-  if (strncmp(c0, c1, n) == 0) {return true;}
+  // debug("check_strncmp_true: c0 " + String(c0) + "==c1 " + String(c1) + " (n=" + String(n) + ")");
+  if (strncmp(c0, c1, n)==0) {return true;}
   else {return false;}
 }
 
 bool check_strncmp_false(char * c0, char * c1, int n) {
-  // debug("check_strncmp_false: c0 " + String(c0) + " == c1 " + String(c1) + " (n=" + String(n) + ")");
-  if (strncmp(c0, c1, n) == 0) {return false;}
+  // debug("check_strncmp_false: c0 " + String(c0) + "==c1 " + String(c1) + " (n=" + String(n) + ")");
+  if (strncmp(c0, c1, n)==0) {return false;}
   else {return true;}
 }
 
 bool check_bool_true(bool _bool) {
   // debug("check_bool_true: " + String(_bool));
-  if (_bool == true) {return true;} else {return false;}
+  if (_bool==true) {return true;} else {return false;}
 }
 
 bool check_bool_false(bool _bool) {
   // debug("check_bool_false: " + String(_bool));
-  if (_bool == false) {return true;} else {return false;}
+  if (_bool==false) {return true;} else {return false;}
 }
 
 bool MatrixTimer(double n0, double n1, int Mi) {
@@ -6365,20 +6363,20 @@ bool MatrixTimer(double n0, double n1, int Mi) {
   units of time accumulated by an isr alarm.
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
-  example: x=1, y=1 = on for 1 unit of time, off for 1 unit of time
+  example: x=1, y=1=on for 1 unit of time, off for 1 unit of time
   */
   // ---------------------
   // turn on or remain off
   // ---------------------
-  if (matrixData.matrix_switch_state[0][Mi] == 0) {
+  if (matrixData.matrix_switch_state[0][Mi]==0) {
     if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) < n0) {return false;}
-    if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals; return true;}
+    if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n0) {matrixData.matrix_timers[0][Mi]=timeData.accumulated_intervals; return true;}
     else {false;}
   }
   // ---------------------
   // turn off or remain on
   // ---------------------
-  else if (matrixData.matrix_switch_state[0][Mi] == 1) {
+  else if (matrixData.matrix_switch_state[0][Mi]==1) {
     if      ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) < n1) {return true;}
     /*
     timer style: stacked time: y on time period is stacked on top of x time interval.
@@ -6387,7 +6385,7 @@ bool MatrixTimer(double n0, double n1, int Mi) {
                  (3) total on off time is x+y.
                  (4) considerations: harder to predict because on and off times will creep.
     */
-    // else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals; return false;}
+    // else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi]=timeData.accumulated_intervals; return false;}
 
     /*
     timer style: integrated time: y on time occurrs for a period within x time interval.
@@ -6397,7 +6395,7 @@ bool MatrixTimer(double n0, double n1, int Mi) {
                  (4) considerations: take care no to overlap x and y to prevent always returning true or false.
                  
     */
-    else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi] = timeData.accumulated_intervals-n1; return false;}
+    else if ((timeData.accumulated_intervals - matrixData.matrix_timers[0][Mi]) > n1) {matrixData.matrix_timers[0][Mi]=timeData.accumulated_intervals-n1; return false;}
     else {true;}
   }
   return false;
@@ -6413,16 +6411,16 @@ void matrixSwitch() {
   */
   // ------------------------------------------------
   // iterate through matrices
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
+  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
     // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
-    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {
+    if (matrixData.matrix_switch_enabled[0][Mi]==1) {
       // ------------------------------------------------
       // temporary switch must be zero each time (each switch has 0 to 10 functions that must all be true for the switch to turn high/low).
-      bool tmp_matrix[matrixData.max_matrix_functions] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      int count_none_function = 0;
+      bool tmp_matrix[matrixData.max_matrix_functions]={0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      int count_none_function=0;
       // ------------------------------------------------
       // iterate over each function name in the current matrix
-      for (int Fi = 0; Fi < matrixData.max_matrix_functions; Fi++) {
+      for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
         // uncomment to debug
         // debug("[Mi] " + String(Mi));
         // debug("[Fi] " + String(Fi));
@@ -6432,7 +6430,7 @@ void matrixSwitch() {
         //                                                                                                          FIRST IS NONE
         // ----------------------------------------------------------------------------------------------------------------------
         // perfromance and logic prefers adding function names in matrix from index zero else if index zero None then break.
-        if ((strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) && (Fi == 0)) {break;}
+        if ((strcmp(matrixData.matrix_function[Mi][Fi], "None")==0) && (Fi==0)) {break;}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                   NONE
@@ -6440,8 +6438,8 @@ void matrixSwitch() {
         /*
         put true in temporary matrix for functions after position zero that are set to None. allows for 1-10 functions to be set.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "None") == 0) {
-          tmp_matrix[Fi] = 1; count_none_function++;}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "None")==0) {
+          tmp_matrix[Fi]=1; count_none_function++;}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                ENABLED
@@ -6450,14 +6448,14 @@ void matrixSwitch() {
         put true in temporary matrix if switch is Enabled (different from enabling disabling) regardless of data. if used,
         function name Enabled will always return true.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Enabled") == 0) {tmp_matrix[Fi] = 1;}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Enabled")==0) {tmp_matrix[Fi]=1;}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               OVERLOAD
         // ----------------------------------------------------------------------------------------------------------------------
         /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload") == 0) {
-          tmp_matrix[Fi] = check_bool_true(systemData.overload);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload")==0) {
+          tmp_matrix[Fi]=check_bool_true(systemData.overload);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                             SWITCHLINK
@@ -6466,12 +6464,12 @@ void matrixSwitch() {
          Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
          gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLink") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLink")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);
+            tmp_matrix[Fi]=check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);
+            tmp_matrix[Fi]=check_equal_false(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);
           }
         }
 
@@ -6484,8 +6482,8 @@ void matrixSwitch() {
         while other stacked logic true, switch state is true/false every Xsec for Ysec.
         can also be used independantly as a switches only set function.
         */
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MatrixTimer") == 0) {
-          tmp_matrix[Fi] = MatrixTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MatrixTimer")==0) {
+          tmp_matrix[Fi]=MatrixTimer(matrixData.matrix_function_xyz[Mi][Fi][0],
           matrixData.matrix_function_xyz[Mi][Fi][1], Mi);
         }
 
@@ -6493,139 +6491,139 @@ void matrixSwitch() {
         //                                                                                                                    RTC
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_over_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_over_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_under_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_under_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_equal_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_equal_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
           }
         }
           
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi] = 1;}
+            if (!strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateMonthX") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateMonthX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateYearX") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateYearX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
@@ -6633,105 +6631,105 @@ void matrixSwitch() {
         //                                                                                                                  SATIO
         // ----------------------------------------------------------------------------------------------------------------------
 
-        if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver") == 0) {
+        if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_over_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_over_true(satData.degrees_latitude,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_over_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_over_false(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_under_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_under_false(satData.degrees_longitude,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_under_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_under_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_equal_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.degrees_latitude,
+            tmp_matrix[Fi]=check_equal_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_equal_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(satData.degrees_longitude,
+            tmp_matrix[Fi]=check_equal_false(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=in_range_check_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.degrees_latitude,
+            tmp_matrix[Fi]=in_range_check_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLonRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_range_check_true(satData.degrees_longitude,
+            tmp_matrix[Fi]=in_range_check_true(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_range_check_false(satData.degrees_longitude,
+            tmp_matrix[Fi]=in_range_check_false(satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][0], matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatLonRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = in_square_range_check_true(satData.degrees_latitude,
+            tmp_matrix[Fi]=in_square_range_check_true(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][1],
             matrixData.matrix_function_xyz[Mi][Fi][2]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = in_square_range_check_false(satData.degrees_latitude,
+            tmp_matrix[Fi]=in_square_range_check_false(satData.degrees_latitude,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             satData.degrees_longitude,
             matrixData.matrix_function_xyz[Mi][Fi][1],
@@ -6743,232 +6741,232 @@ void matrixSwitch() {
         //                                                                                                                  GNGGA
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_over_true(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_over_false(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_under_true(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_under_false(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_equal_true(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_equal_false(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGARange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGARange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.utc_time),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnggaData.utc_time),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNGGA") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.solution_status),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.solution_status),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.satellite_count_gngga),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnggaData.satellite_count_gngga),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnggaData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNGGA")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, N_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, N_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAEast") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, E_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, E_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGASouth") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.latitude_hemisphere, S_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.latitude_hemisphere, S_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAWest") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnggaData.longitude_hemisphere, W_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnggaData.longitude_hemisphere, W_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_equal_true(atol(gnggaData.solution_status),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_equal_false(atol(gnggaData.solution_status),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_over_true(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_over_false(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_under_true(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_under_false(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_equal_true(atol(gnggaData.satellite_count_gngga),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gnggaData.satellite_count_gngga),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnggaData.hdop_precision_factor),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnggaData.satellite_count_gngga),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_strncmp_true(gnggaData.latitude_hemisphere, N_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnggaData.latitude_hemisphere, N_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAEast")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnggaData.longitude_hemisphere, E_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnggaData.longitude_hemisphere, E_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGASouth")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnggaData.latitude_hemisphere, S_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnggaData.latitude_hemisphere, S_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGAWest")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnggaData.longitude_hemisphere, W_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnggaData.longitude_hemisphere, W_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_over_false(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_under_true(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_under_false(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_equal_true(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_equal_false(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGARange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnggaData.hdop_precision_factor),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnggaData.altitude),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnggaData.hdop_precision_factor),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGARange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnggaData.altitude),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnggaData.altitude),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -6978,277 +6976,277 @@ void matrixSwitch() {
         //                                                                                                                  GNRMC
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_over_true(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_over_false(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_under_true(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_under_false(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_equal_true(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_equal_false(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_time),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnrmcData.utc_time),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, N_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, N_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCEast") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, E_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, E_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCSouth") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.latitude_hemisphere, S_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.latitude_hemisphere, S_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCWest") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.longitude_hemisphere, W_char, 1);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.longitude_hemisphere, W_char, 1);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_speed),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnrmcData.ground_speed),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnrmcData.utc_time),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.latitude_hemisphere, N_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.latitude_hemisphere, N_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCEast")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.longitude_hemisphere, E_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.longitude_hemisphere, E_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCSouth")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.latitude_hemisphere, S_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.latitude_hemisphere, S_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCWest")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.longitude_hemisphere, W_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.longitude_hemisphere, W_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnrmcData.ground_speed),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]); 
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_over_false(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]); 
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_under_true(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_under_false(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_equal_true(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_equal_false(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.ground_heading),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnrmcData.ground_heading),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gnrmcData.utc_date),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gnrmcData.utc_date),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnrmcData.ground_heading),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCA") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, A_char, 1);
+            tmp_matrix[Fi]=check_over_true(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, A_char, 1);
+            tmp_matrix[Fi]=check_over_false(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCV") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.positioning_status, V_char, 1);
+            tmp_matrix[Fi]=check_under_true(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.positioning_status, V_char, 1);
+            tmp_matrix[Fi]=check_under_false(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCA") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, A_char, 1);
+            tmp_matrix[Fi]=check_equal_true(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, A_char, 1);
+            tmp_matrix[Fi]=check_equal_false(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCD") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, D_char, 1);
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, D_char, 1);
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gnrmcData.utc_date),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCE") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCA")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, E_char, 1);
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.positioning_status, A_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, E_char, 1);
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.positioning_status, A_char, 1);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCN") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PosStatusGNRMCV")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_strncmp_true(gnrmcData.mode_indication, N_char, 1);
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.positioning_status, V_char, 1);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_strncmp_false(gnrmcData.mode_indication, N_char, 1);
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.positioning_status, V_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCA")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.mode_indication, A_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.mode_indication, A_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCD")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.mode_indication, D_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.mode_indication, D_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCE")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.mode_indication, E_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.mode_indication, E_char, 1);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCN")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_strncmp_true(gnrmcData.mode_indication, N_char, 1);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_strncmp_false(gnrmcData.mode_indication, N_char, 1);
           }
         }
 
@@ -7256,461 +7254,461 @@ void matrixSwitch() {
         //                                                                                                                  GPATT
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.pitch),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.pitch),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.roll),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.roll),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.pitch),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.yaw),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.yaw),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.gst_data),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.gst_data),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.roll),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.mileage),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.mileage),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.speed_num),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.speed_num),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.yaw),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.line_flag),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.line_flag),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTOver") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTUnder") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTEqual") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.ins),
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.ins),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.gst_data),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.run_state_flag),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.mileage),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.speed_num),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(atol(gpattData.static_flag),
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.speed_num),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.line_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.ins),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.run_state_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(atol(gpattData.static_flag),
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(atol(gpattData.static_flag),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7720,75 +7718,75 @@ void matrixSwitch() {
         //                                                                                                     SIDEREAL TIME: SUN
         // ----------------------------------------------------------------------------------------------------------------------
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.sun_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.sun_az,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.sun_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.sun_alt,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.sun_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.sun_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.sun_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
         // daytime: current time in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTime") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTime")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
         }
 
         // nighttime: current time not in range of sunrise and sunset
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NightTime") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NightTime")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.sun_r,
             siderealPlanetData.sun_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.sun_r,
             siderealPlanetData.sun_s);
           }
         }
 
         // sunrise time less than current time: true after sunrise until midnight
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunrise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunrise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
         // sunset time less than current time: true after sunset until midnight                                                                  
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunset") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunset")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
@@ -7796,121 +7794,121 @@ void matrixSwitch() {
         //                                                                                                    SIDEREAL TIME: MOON
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.moon_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.moon_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonrise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.moon_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.moon_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonrise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.moon_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.moon_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.moon_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonset") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonset")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.moon_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.moon_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.moon_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.moon_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseOver") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_over_true((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_false((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_over_false((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseUnder") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_under_true((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_false((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_under_false((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseEqual") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_equal_true((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_false((int)siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_equal_false((int)siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonPhaseRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.moon_p,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.moon_p,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7920,75 +7918,75 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: MERCURY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.mercury_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mercury_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mercury_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.mercury_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.mercury_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.mercury_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.mercury_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.mercury_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercurySet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercurySet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mercury_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.mercury_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mercury_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.mercury_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
@@ -7998,75 +7996,75 @@ void matrixSwitch() {
         //                                                                                                   SIDEREAL TIME: VENUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.venus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.venus_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.venus_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.venus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.venus_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.venus_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.venus_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.venus_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusSet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.venus_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.venus_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.venus_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.venus_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.venus_r, 
             siderealPlanetData.venus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.venus_r, 
             siderealPlanetData.venus_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.venus_r,
             siderealPlanetData.venus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.venus_r,
             siderealPlanetData.venus_s);
           }
@@ -8076,75 +8074,75 @@ void matrixSwitch() {
         //                                                                                                    SIDEREAL TIME: MARS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.mars_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.mars_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.mars_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.mars_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.mars_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.mars_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.mars_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.mars_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsSet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.mars_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.mars_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.mars_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.mars_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
@@ -8154,75 +8152,75 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: JUPITER
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.jupiter_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.jupiter_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.jupiter_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.jupiter_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.jupiter_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.jupiter_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_r,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterSet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.jupiter_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.jupiter_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.jupiter_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
@@ -8232,75 +8230,75 @@ void matrixSwitch() {
         //                                                                                                  SIDEREAL TIME: SATURN
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.saturn_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.saturn_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.saturn_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.saturn_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.saturn_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.saturn_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.saturn_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.saturn_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnSet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.saturn_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.saturn_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.saturn_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.saturn_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
@@ -8310,75 +8308,75 @@ void matrixSwitch() {
         //                                                                                                  SIDEREAL TIME: URANUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.uranus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_az,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAltRange") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.uranus_alt,
-            matrixData.matrix_function_xyz[Mi][Fi][0],
-            matrixData.matrix_function_xyz[Mi][Fi][1]);
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.uranus_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.uranus_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_r,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.uranus_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.uranus_alt,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusRise")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.uranus_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_r,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.uranus_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusSet") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.uranus_s,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.uranus_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.uranus_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.uranus_s,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
@@ -8388,75 +8386,75 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: NEPTUNE
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_az,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.neptune_az,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_az,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.neptune_az,
               matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAltRange") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAltRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(siderealPlanetData.neptune_alt,
+            tmp_matrix[Fi]=check_ge_and_le_true(siderealPlanetData.neptune_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(siderealPlanetData.neptune_alt,
+            tmp_matrix[Fi]=check_ge_and_le_false(siderealPlanetData.neptune_alt,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneRise") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_r,
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.neptune_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
-          }
-        }
-
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneSet") == 0) {
-          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(siderealPlanetData.neptune_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
-          }
-          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(siderealPlanetData.neptune_s,
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.neptune_r,
             hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneUp") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.neptune_s,
+            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.neptune_s,
+            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneUp")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneDown") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
@@ -8466,64 +8464,64 @@ void matrixSwitch() {
         //                                                                                                               VALIDITY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_true(gnggaData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_true(gnrmcData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCS") == 0) {
-          tmp_matrix[Fi] = check_bool_true(gpattData.valid_checksum);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_true(gnggaData.check_data, 16);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_true(gnrmcData.check_data, 14);}
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD") == 0) {
-          tmp_matrix[Fi] = check_equal_true(gpattData.check_data, 41);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCS")==0) {
+          tmp_matrix[Fi]=check_bool_true(gnggaData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCS")==0) {
+          tmp_matrix[Fi]=check_bool_true(gnrmcData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCS")==0) {
+          tmp_matrix[Fi]=check_bool_true(gpattData.valid_checksum);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCD")==0) {
+          tmp_matrix[Fi]=check_equal_true(gnggaData.check_data, 16);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCD")==0) {
+          tmp_matrix[Fi]=check_equal_true(gnrmcData.check_data, 14);}
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD")==0) {
+          tmp_matrix[Fi]=check_equal_true(gpattData.check_data, 41);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.dht11_h_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.dht11_h_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8534,47 +8532,47 @@ void matrixSwitch() {
         //                                                                                                        DHT11_0 CELSIUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11C0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.dht11_c_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.dht11_c_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8584,47 +8582,47 @@ void matrixSwitch() {
         //                                                                                                     DHT11_0 FAHRENHEIT
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11F0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.dht11_f_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.dht11_f_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8634,47 +8632,47 @@ void matrixSwitch() {
         //                                                                                             DHT11_0 HEAT INDEX CELSIUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIC0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.dht11_hic_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.dht11_hic_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8684,47 +8682,47 @@ void matrixSwitch() {
         //                                                                                          DHT11_0 HEAT INDEX FAHRENHEIT
         // ----------------------------------------------------------------------------------------------------------------------
         
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11HIF0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.dht11_hif_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.dht11_hif_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8734,47 +8732,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 0
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_0,
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_0,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_0,
               matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8784,47 +8782,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 1
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor1Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_1,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_1,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8834,47 +8832,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 2
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor2Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_2,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_2,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8884,47 +8882,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 3
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor3Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_3,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_3,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8934,47 +8932,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 4
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor4Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_4,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_4,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -8984,47 +8982,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 5
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor5Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_5,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_5,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9034,47 +9032,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 6
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor6Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_6,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_6,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9084,47 +9082,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 7
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor7Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_7,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_7,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9134,47 +9132,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 8
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor8Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_8,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_8,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9184,47 +9182,47 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 9
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor9Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_9,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_9,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9234,47 +9232,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 10
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor10Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_10,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_10,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9284,47 +9282,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 11
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor11Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_11,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_11,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9334,47 +9332,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 12
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor12Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_12,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_12,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9384,47 +9382,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 13
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor13Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_13,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_13,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9434,47 +9432,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 14
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor14Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_14,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_14,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9484,47 +9482,47 @@ void matrixSwitch() {
         //                                                                                                              SENSOR 15
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Over") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Over")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_over_true(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_over_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_over_false(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_over_false(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Under") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Under")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_under_true(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_under_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_under_false(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_under_false(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Equal") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Equal")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_equal_true(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_equal_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_equal_false(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_equal_false(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Range") == 0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor15Range")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi] = check_ge_and_le_true(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi] = check_ge_and_le_false(sensorData.sensor_15,
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.sensor_15,
             matrixData.matrix_function_xyz[Mi][Fi][0],
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -9549,20 +9547,20 @@ void matrixSwitch() {
         default final bool default is true: if a single false is found then final bool should be set to false and remain false.
         prevent/allow the matrix switch to activate.
         */
-        bool final_bool = true;
+        bool final_bool=true;
         
         // ------------------------------------------------
         // create a final bool with debug (same as line below but with output)
         if (systemData.debug==true) {
-          for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {
-            Serial.println ("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC] == 0) {final_bool = false;}
+          for (int FC=0; FC < matrixData.max_matrix_functions-1; FC++) {
+            Serial.println ("[tmp_matrix[FC]] " + String(tmp_matrix[FC])); if (tmp_matrix[FC]==0) {final_bool=false;}
           }
         }
 
         // ------------------------------------------------
         // create a final bool
         else {
-          for (int FC = 0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC] == 0) {final_bool = false; break;}}
+          for (int FC=0; FC < matrixData.max_matrix_functions-1; FC++) {if (tmp_matrix[FC]==0) {final_bool=false; break;}}
         }
 
         /*
@@ -9574,27 +9572,27 @@ void matrixSwitch() {
         // ------------------------------------------------
         // set switch as on/off according to final bool with debug (same as line below but with output)
         if (systemData.debug==true) {
-          if (final_bool == false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi] = 0;}
-          else if (final_bool == true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi] = 1;}
+          if (final_bool==false) {Serial.println("[matrix " + String(Mi) + "] inactive"); matrixData.matrix_switch_state[0][Mi]=0;}
+          else if (final_bool==true) {Serial.println("[matrix " + String(Mi) + "] active"); matrixData.matrix_switch_state[0][Mi]=1;}
         }
 
         // ------------------------------------------------
         // set switch as on/off according to final bool
         else {
-          if (final_bool == false) {matrixData.matrix_switch_state[0][Mi] = 0;}
-          else if (final_bool == true) {matrixData.matrix_switch_state[0][Mi] = 1;}
+          if (final_bool==false) {matrixData.matrix_switch_state[0][Mi]=0;}
+          else if (final_bool==true) {matrixData.matrix_switch_state[0][Mi]=1;}
         }
       }
       // else {debug("[matrix " + String(Mi) + "] WARNING: Matrix switch enabled enabled for unconfigured matrix switch!");}
     }
     // ------------------------------------------------
     // handle matrix switches that are disbaled.
-    else {matrixData.matrix_switch_state[0][Mi] = 0;}
+    else {matrixData.matrix_switch_state[0][Mi]=0;}
   }
 
   // ------------------------------------------------
   // serial sentence
-  if (systemData.output_matrix_enabled == true) {
+  if (systemData.output_matrix_enabled==true) {
     // start building matrix sentence
     memset(matrixData.matrix_sentence, 0, sizeof(matrixData.matrix_sentence));
     strcpy(matrixData.matrix_sentence, "$MATRIX,");
@@ -9622,18 +9620,18 @@ void matrixSwitch() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void CountMatrixEnabled() {
-  matrixData.matrix_enabled_i = 0;
-  matrixData.matrix_disabled_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    if (matrixData.matrix_switch_enabled[0][Mi] == 1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}
+  matrixData.matrix_enabled_i=0;
+  matrixData.matrix_disabled_i=0;
+  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
+    if (matrixData.matrix_switch_enabled[0][Mi]==1) {matrixData.matrix_enabled_i++;} else {matrixData.matrix_disabled_i++;}
   }
 }
 
 void CountMatrixActive(){
-  matrixData.matrix_active_i = 0;
-  matrixData.matrix_inactive_i = 0;
-  for (int Mi = 0; Mi < matrixData.max_matrices; Mi++) {
-    if (matrixData.matrix_switch_state[0][Mi] == 1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
+  matrixData.matrix_active_i=0;
+  matrixData.matrix_inactive_i=0;
+  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
+    if (matrixData.matrix_switch_state[0][Mi]==1) {matrixData.matrix_active_i++;} else {matrixData.matrix_inactive_i++;}}
 }
 
 void MatrixStatsCounter() {
@@ -9797,11 +9795,11 @@ void menuBack() {
   else if (menu_page==page_input_data) {
     // debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
     // enter port
-    if (enter_digits_key == 1) {menu_page=page_matrix_logic_main;}
+    if (enter_digits_key==1) {menu_page=page_matrix_logic_main;}
     // enter function x, enter function y, enter function z
-    else if ((enter_digits_key == 2) || (enter_digits_key == 3) || (enter_digits_key == 4)) {menu_page=page_matrix_logic_select_setup;}
+    else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {menu_page=page_matrix_logic_select_setup;}
     // enter utc offset seconds
-    else if (enter_digits_key == 5) {menu_page=page_timeanddate_main;}
+    else if (enter_digits_key==5) {menu_page=page_timeanddate_main;}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
   else if (menu_page==page_matrix_logic_setup_function) {menu_page=page_matrix_logic_select_setup;}
@@ -9911,7 +9909,7 @@ void menuEnter() {
     if (menu_column_selection==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
-      enter_digits_key = 1;
+      enter_digits_key=1;
       menu_page=page_input_data;
     }
     // ------------------------------------------------
@@ -9941,7 +9939,7 @@ void menuEnter() {
     else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==5) {satData.utc_second_offset=atol(input_data); menu_page=page_timeanddate_main;}
-    enter_digits_key = -1;
+    enter_digits_key=-1;
   }
 
   // ----------------------------------------------------------------
@@ -9953,7 +9951,7 @@ void menuEnter() {
     if (menuMatrixConfigureFunction.selection()==1) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
-      enter_digits_key = 2;
+      enter_digits_key=2;
       menu_page=page_input_data;
     }
     // ------------------------------------------------
@@ -9961,7 +9959,7 @@ void menuEnter() {
     else if (menuMatrixConfigureFunction.selection()==2) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
-      enter_digits_key = 3;
+      enter_digits_key=3;
       menu_page=page_input_data;
     }
     // ------------------------------------------------
@@ -9969,7 +9967,7 @@ void menuEnter() {
     else if (menuMatrixConfigureFunction.selection()==3) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
-      enter_digits_key = 4;
+      enter_digits_key=4;
       menu_page=page_input_data;
     }
     // ------------------------------------------------
@@ -9985,14 +9983,14 @@ void menuEnter() {
       strcpy(matrixData.temp, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]);
       // ------------------------------------------------
       // remove expression
-      matrixData.tempStr = String(matrixData.temp);
+      matrixData.tempStr=String(matrixData.temp);
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
       matrixData.tempStr.replace("Range", "");
       // ------------------------------------------------
       // concatinate base function name with expression
-      matrixData.tempStr = matrixData.tempStr + matrixData.expression[matrixData.i_expression];
+      matrixData.tempStr=matrixData.tempStr + matrixData.expression[matrixData.i_expression];
       // ------------------------------------------------
       // copy new name into matrix
       memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
@@ -10304,7 +10302,7 @@ void menuEnter() {
     if (menuDisplay.selection()==1)  {
       systemData.index_display_autooff_times++;
       if (systemData.index_display_autooff_times>systemData.max_display_autooff_times) {systemData.index_display_autooff_times=0;}
-      systemData.display_timeout = systemData.display_autooff_times[systemData.index_display_autooff_times];
+      systemData.display_timeout=systemData.display_autooff_times[systemData.index_display_autooff_times];
     }
     // ------------------------------------------------
     // iter display border color
@@ -10370,7 +10368,7 @@ void menuEnter() {
     if (menuTimeAndDate.selection()==0) {
       memset(input_data, 0, sizeof(input_data));
       allow_input_data=true;
-      enter_digits_key = 5;
+      enter_digits_key=5;
       menu_page=page_input_data;
     }
     // ------------------------------------------------
@@ -10389,7 +10387,7 @@ void menuEnter() {
 String getRelatedY(char * data) {
   /*
   returns y value for in ranges checks where x and y are different (not typically required for an in range check where range pertains to x alone).
-  in ranges checks are square (check in square range) where z is square range. example x=lat, y=lon, z= squarerange = 0.0000100 = approx 1 meter in latitude.
+  in ranges checks are square (check in square range) where z is square range. example x=lat, y=lon, z= squarerange=0.0000100=approx 1 meter in latitude.
   if inverted then in square range check becomes is out of square range check.
   */
   if (strcmp("DegLatLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
@@ -10719,26 +10717,26 @@ void drawGeneralTitle(String title, int color1, int color2) {
 
 void setMenuMatrixFilePathItems() {
     // set menu items
-    menuMatrixFilepathItems[0] = sdcardData.matrix_filenames[0];
-    menuMatrixFilepathItems[1] = sdcardData.matrix_filenames[1];
-    menuMatrixFilepathItems[2] = sdcardData.matrix_filenames[2];
-    menuMatrixFilepathItems[3] = sdcardData.matrix_filenames[3];
-    menuMatrixFilepathItems[4] = sdcardData.matrix_filenames[4];
-    menuMatrixFilepathItems[5] = sdcardData.matrix_filenames[5];
-    menuMatrixFilepathItems[6] = sdcardData.matrix_filenames[6];
-    menuMatrixFilepathItems[7] = sdcardData.matrix_filenames[7];
-    menuMatrixFilepathItems[8] = sdcardData.matrix_filenames[8];
-    menuMatrixFilepathItems[9] = sdcardData.matrix_filenames[9];
-    menuMatrixFilepathItems[10] = sdcardData.matrix_filenames[10];
-    menuMatrixFilepathItems[11] = sdcardData.matrix_filenames[11];
-    menuMatrixFilepathItems[12] = sdcardData.matrix_filenames[12];
-    menuMatrixFilepathItems[13] = sdcardData.matrix_filenames[13];
-    menuMatrixFilepathItems[14] = sdcardData.matrix_filenames[14];
-    menuMatrixFilepathItems[15] = sdcardData.matrix_filenames[15];
-    menuMatrixFilepathItems[16] = sdcardData.matrix_filenames[16];
-    menuMatrixFilepathItems[17] = sdcardData.matrix_filenames[17];
-    menuMatrixFilepathItems[18] = sdcardData.matrix_filenames[18];
-    menuMatrixFilepathItems[19] = sdcardData.matrix_filenames[19];
+    menuMatrixFilepathItems[0]=sdcardData.matrix_filenames[0];
+    menuMatrixFilepathItems[1]=sdcardData.matrix_filenames[1];
+    menuMatrixFilepathItems[2]=sdcardData.matrix_filenames[2];
+    menuMatrixFilepathItems[3]=sdcardData.matrix_filenames[3];
+    menuMatrixFilepathItems[4]=sdcardData.matrix_filenames[4];
+    menuMatrixFilepathItems[5]=sdcardData.matrix_filenames[5];
+    menuMatrixFilepathItems[6]=sdcardData.matrix_filenames[6];
+    menuMatrixFilepathItems[7]=sdcardData.matrix_filenames[7];
+    menuMatrixFilepathItems[8]=sdcardData.matrix_filenames[8];
+    menuMatrixFilepathItems[9]=sdcardData.matrix_filenames[9];
+    menuMatrixFilepathItems[10]=sdcardData.matrix_filenames[10];
+    menuMatrixFilepathItems[11]=sdcardData.matrix_filenames[11];
+    menuMatrixFilepathItems[12]=sdcardData.matrix_filenames[12];
+    menuMatrixFilepathItems[13]=sdcardData.matrix_filenames[13];
+    menuMatrixFilepathItems[14]=sdcardData.matrix_filenames[14];
+    menuMatrixFilepathItems[15]=sdcardData.matrix_filenames[15];
+    menuMatrixFilepathItems[16]=sdcardData.matrix_filenames[16];
+    menuMatrixFilepathItems[17]=sdcardData.matrix_filenames[17];
+    menuMatrixFilepathItems[18]=sdcardData.matrix_filenames[18];
+    menuMatrixFilepathItems[19]=sdcardData.matrix_filenames[19];
 }
 
 // ------------------------------------------------
@@ -10760,7 +10758,7 @@ void UIIndicators() {
   if (menu_page==page_save_matrix_file_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
     // ------------------------------------------------
-    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
@@ -10778,7 +10776,7 @@ void UIIndicators() {
   else if (menu_page==page_load_matrix_file_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
     // ------------------------------------------------
-    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("LOADING")/2)*6), (display.height()/2)-16, "LOADING", STYLE_BOLD);
@@ -10796,7 +10794,7 @@ void UIIndicators() {
   else if (menu_page==page_delete_matrix_file_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
     // ------------------------------------------------
-    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("DELETING")/2)*6), (display.height()/2)-16, "DELETING", STYLE_BOLD);
@@ -10814,7 +10812,7 @@ void UIIndicators() {
   else if (menu_page==page_save_system_config_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
     // ------------------------------------------------
-    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("SAVING")/2)*6), (display.height()/2)-16, "SAVING", STYLE_BOLD);
@@ -10833,7 +10831,7 @@ void UIIndicators() {
   else if (menu_page==page_restore_default_matrix_indicator) {
     display.setColor(RGB_COLOR16(0,255,0));
     // ------------------------------------------------
-    if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
       previous_menu_page=menu_page; display.clear();
       canvas120x120.clear();
       canvas120x120.printFixed((120/2)-((strlen("RESTORING")/2)*6), (display.height()/2)-16, "RESTORING", STYLE_BOLD);
@@ -10875,7 +10873,7 @@ void UpdateUI(void * pvParamters) {
   //                                DEVELOPER OPTIONS
   // ------------------------------------------------
 
-  // update_ui = true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
+  // update_ui=true; // uncomment to debug. warning: do not leave enabled or risk damaging your oled display. if this line is enabled then you are the screensaver.
   // menu_page=page_CD74HC4067_main; // uncomment to debug
 
   // ------------------------------------------------
@@ -10893,7 +10891,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page;
         display.clear();
       }
@@ -10906,7 +10904,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
@@ -10954,7 +10952,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
@@ -10985,7 +10983,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MATRIX LOGIC", systemData.color_title, systemData.color_border);
@@ -11115,7 +11113,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch select menu
       // ------------------------------------------------------------------------------------------------------------
-      if (menu_column_selection == 0) {
+      if (menu_column_selection==0) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
@@ -11143,7 +11141,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch port select
       // ------------------------------------------------------------------------------------------------------------
-      if (menu_column_selection == 1) {
+      if (menu_column_selection==1) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
@@ -11180,7 +11178,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch enable/disable
       // ------------------------------------------------------------------------------------------------------------
-      if (menu_column_selection == 2) {
+      if (menu_column_selection==2) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
@@ -11219,7 +11217,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch inverted logic
       // ------------------------------------------------------------------------------------------------------------
-      if (menu_column_selection == 3) {
+      if (menu_column_selection==3) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
@@ -11260,7 +11258,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------------------------------------------------------------------
       // highlight matrix switch function select menu
       // ------------------------------------------------------------------------------------------------------------
-      if (menu_column_selection == 4) {
+      if (menu_column_selection==4) {
         // --------------------------------------------------------------
         // draw unhighlighted
         // --------------------------------------------------------------
@@ -11296,7 +11294,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
@@ -11307,8 +11305,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-      int size = 23;
-      int start = 2;
+      int size=23;
+      int start=2;
       for (int i=0; i<5; i++) {
         // ------------------------------------------------
         // enabled/disabled
@@ -11391,7 +11389,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // adjust
         // ------------------------------------------------
-        start = start+25;
+        start=start+25;
         // ------------------------------------------------
       }
     }
@@ -11405,7 +11403,7 @@ void UpdateUI(void * pvParamters) {
       // static data
       // ------------------------------------------------
       if (enter_digits_key==1) {
-        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
           drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255,0,0), systemData.color_border);
@@ -11450,7 +11448,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // static data
         // ------------------------------------------------
-        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
           if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", systemData.color_title, systemData.color_border);;}
@@ -11552,7 +11550,7 @@ void UpdateUI(void * pvParamters) {
       // enter utc offset
       // ------------------------------------------------
       else if (enter_digits_key==5) {
-        if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+        if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           // ------------------------------------------------
           // static data
           // ------------------------------------------------
@@ -11601,7 +11599,7 @@ void UpdateUI(void * pvParamters) {
     // static data
     // ------------------------------------------------
     else if (menu_page==page_matrix_logic_select_setup) {
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();  
         drawMainBorder();
         drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_title, systemData.color_border);
@@ -11686,7 +11684,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SELECT FUNCTION", systemData.color_title, systemData.color_border);
@@ -11744,7 +11742,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("FILE", systemData.color_title, systemData.color_border);
@@ -11790,7 +11788,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SAVE", systemData.color_title, systemData.color_border);
@@ -11828,7 +11826,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("LOAD", systemData.color_title, systemData.color_border);
@@ -11865,7 +11863,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("DELETE", systemData.color_title, systemData.color_border);
@@ -11902,8 +11900,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
-          previous_menu_page = menu_page; display.clear();
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+          previous_menu_page=menu_page; display.clear();
           drawMainBorder();
           drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
           // ------------------------------------------------
@@ -11970,7 +11968,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
@@ -12069,7 +12067,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
@@ -12168,7 +12166,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
@@ -12264,7 +12262,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SATIO", systemData.color_title, systemData.color_border);
@@ -12391,7 +12389,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SERIAL", systemData.color_title, systemData.color_border);
@@ -12459,7 +12457,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("UNIVERSE", systemData.color_title, systemData.color_border);
@@ -12520,7 +12518,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
       }
       // ------------------------------------------------
@@ -12535,19 +12533,19 @@ void UpdateUI(void * pvParamters) {
       if (systemData.display_auto_off==true) {menuDisplayItems[0] ="AUTO-OFF  ENABLED";}
       else {menuDisplayItems[0]                                   ="AUTO-OFF  DISABLED";}
       // auto off time
-      menuDisplayItems[1] = systemData.char_display_autooff_times[systemData.index_display_autooff_times];
+      menuDisplayItems[1]=systemData.char_display_autooff_times[systemData.index_display_autooff_times];
       // border color
-      menuDisplayItems[2] = systemData.char_display_border_color[systemData.index_display_border_color];
+      menuDisplayItems[2]=systemData.char_display_border_color[systemData.index_display_border_color];
       // content color
-      menuDisplayItems[3] = systemData.char_display_content_color[systemData.index_display_content_color];
+      menuDisplayItems[3]=systemData.char_display_content_color[systemData.index_display_content_color];
       // menu border color
-      menuDisplayItems[4] = systemData.char_display_menu_border_color[systemData.index_display_menu_border_color];
+      menuDisplayItems[4]=systemData.char_display_menu_border_color[systemData.index_display_menu_border_color];
       // menu content color
-      menuDisplayItems[5] = systemData.char_display_menu_content_color[systemData.index_display_menu_content_color];
+      menuDisplayItems[5]=systemData.char_display_menu_content_color[systemData.index_display_menu_content_color];
       // title color
-      menuDisplayItems[6] = systemData.char_display_title_color[systemData.index_display_title_color];
+      menuDisplayItems[6]=systemData.char_display_title_color[systemData.index_display_title_color];
       // subtitle color
-      menuDisplayItems[7] = systemData.char_display_subtitle_color[systemData.index_display_color_subtitle];
+      menuDisplayItems[7]=systemData.char_display_subtitle_color[systemData.index_display_color_subtitle];
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -12569,7 +12567,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SYSTEM", systemData.color_title, systemData.color_border);
@@ -12647,7 +12645,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("CD74HC4067", systemData.color_title, systemData.color_border);
@@ -12746,7 +12744,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("TIME & DATE", systemData.color_title, systemData.color_border);
@@ -12780,9 +12778,9 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
 
       // ------------------------------------------------
-      menuTimeAndDateItems[0] =                                          "ENTER UTC OFFSET";
-      if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1] = "UTC OFFSET AUTO";}
-      else {menuTimeAndDateItems[1] =                                    "UTC OFFSET MANUAL";}
+      menuTimeAndDateItems[0]=                                         "ENTER UTC OFFSET";
+      if (satData.utc_auto_offset_flag==true) {menuTimeAndDateItems[1]="UTC OFFSET AUTO";}
+      else {menuTimeAndDateItems[1]=                                   "UTC OFFSET MANUAL";}
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -12804,7 +12802,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SUN", systemData.color_title, systemData.color_border);
@@ -12865,7 +12863,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MOON", systemData.color_title, systemData.color_border);
@@ -12935,7 +12933,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MERCURY", systemData.color_title, systemData.color_border);
@@ -13030,7 +13028,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("VENUS", systemData.color_title, systemData.color_border);
@@ -13125,7 +13123,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("MARS", systemData.color_title, systemData.color_border);
@@ -13220,7 +13218,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("JUPITER", systemData.color_title, systemData.color_border);
@@ -13315,7 +13313,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SATURN", systemData.color_title, systemData.color_border);
@@ -13410,7 +13408,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("URANUS", systemData.color_title, systemData.color_border);
@@ -13505,7 +13503,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // static data
       // ------------------------------------------------
-      if ((menu_page != previous_menu_page) || (ui_cleared == true)) {
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("NEPTUNE", systemData.color_title, systemData.color_border);
@@ -13595,7 +13593,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // set flag last
     // ------------------------------------------------
-    ui_cleared = false;
+    ui_cleared=false;
     // ------------------------------------------------
   }
 
@@ -13603,7 +13601,7 @@ void UpdateUI(void * pvParamters) {
   //                                  OLED PROTECTION
   // ------------------------------------------------
 
-  if ((ui_cleared == false) && (update_ui == false)) {
+  if ((ui_cleared==false) && (update_ui==false)) {
     // debug("[oled protection] clearing ui");
     // uncomment if issues occur using faster option
     // display.clear();
@@ -13634,10 +13632,10 @@ struct I2CLinkStruct {
   char INPUT_BUFFER[10];  // chars received
   char TMP_BUFFER_0[10];  // chars of bytes to be sent
   char TMP_BUFFER_1[10];  // some space for type conversions
-  int I2CADDRESSINDEX = 0;
-  int I2CADDRESSRANGEMIN = 0;   // for performance this should be modifiable, can be min zero
-  int I2CADDRESSRANGEMAX = 50; // for performance this should be modifiable, can be max 127
-  bool MESSAGE_RECEIVED = false;
+  int I2CADDRESSINDEX=0;
+  int I2CADDRESSRANGEMIN=0;   // for performance this should be modifiable, can be min zero
+  int I2CADDRESSRANGEMAX=50; // for performance this should be modifiable, can be max 127
+  bool MESSAGE_RECEIVED=false;
 };
 I2CLinkStruct I2CLink;
 
@@ -13673,7 +13671,7 @@ Note:
 
 void ISR_I2C_PERIPHERAL() {
   // Serial.println("[ISR] ISR_I2C_PERIPHERAL"); // do not ever uncomment this unless when absolutely necessary (no stuff in isr)
-  make_i2c_request = true;
+  make_i2c_request=true;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -13683,7 +13681,7 @@ void ISR_I2C_PERIPHERAL() {
 void writeI2C(int I2C_Address) {
   // compile bytes array
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER_0[i];}
   // begin
   Wire.beginTransmission(I2C_Address);
   // write bytes array
@@ -13698,10 +13696,10 @@ void writeI2C(int I2C_Address) {
 
 void readI2C() {
   // ------------------------------------------------
-  I2CLink.MESSAGE_RECEIVED = false;
+  I2CLink.MESSAGE_RECEIVED=false;
   // make i2c request if interrupt flag true 
-  if (make_i2c_request == true) {
-    make_i2c_request = false;
+  if (make_i2c_request==true) {
+    make_i2c_request=false;
     // ------------------------------------------------
 
     // ------------------------------------------------
@@ -13719,7 +13717,7 @@ void readI2C() {
     // ------------------------------------------------
     // scan I2C address range
     // ------------------------------------------------
-    I2CLink.I2CADDRESSINDEX = I2CLink.I2CADDRESSRANGEMIN;
+    I2CLink.I2CADDRESSINDEX=I2CLink.I2CADDRESSRANGEMIN;
     for (I2CLink.I2CADDRESSINDEX; I2CLink.I2CADDRESSINDEX<I2CLink.I2CADDRESSRANGEMAX; I2CLink.I2CADDRESSINDEX++) {
 
       // ------------------------------------------------
@@ -13731,15 +13729,15 @@ void readI2C() {
       // write bytes array
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER_0[i];}
+      for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER_0[i];}
       Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
       // end test
-      int error = Wire.endTransmission();
+      int error=Wire.endTransmission();
 
       // ------------------------------------------------
       // make request
       // ------------------------------------------------
-      if (error == 0){
+      if (error==0){
         Serial.println("[I2C] address found: " + String(I2CLink.I2CADDRESSINDEX));
         // make a request from found device
         Serial.println("[master] requesting from address: " + String(I2CLink.I2CADDRESSINDEX));
@@ -13762,12 +13760,12 @@ void readI2C() {
     // ------------------------------------------------
     if (I2CLink.MESSAGE_RECEIVED==true) {
       I2CLink.MESSAGE_RECEIVED=false;
-      interaction_updateui = true;
+      interaction_updateui=true;
 
       // ------------------------------------------------
       // record activity time
       // ------------------------------------------------
-      unixtime_i2C_reponse = satData.rtc_unixtime;
+      unixtime_i2C_reponse=satData.rtc_unixtime;
       Serial.println("[unixtime_i2C_reponse] " + String(unixtime_i2C_reponse));
 
       // ------------------------------------------------
@@ -13865,7 +13863,7 @@ void writeToPortController() {
     // check for change
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // update
-      matrixData.tmp_matrix_port_map[0][i] = matrixData.matrix_port_map[0][i];
+      matrixData.tmp_matrix_port_map[0][i]=matrixData.matrix_port_map[0][i];
       // tag
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$P,");
@@ -13890,7 +13888,7 @@ void writeToPortController() {
     // check for change
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
       // update
-      matrixData.tmp_matrix_switch_state[0][i] = matrixData.matrix_switch_state[0][i];
+      matrixData.tmp_matrix_switch_state[0][i]=matrixData.matrix_switch_state[0][i];
       // tag
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
       strcpy(I2CLink.TMP_BUFFER_0, "$M,");
@@ -13994,37 +13992,8 @@ bool sdcardCheck() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                SERIAL COMMANDS
+//                                                                                                                       READ GPS
 // ------------------------------------------------------------------------------------------------------------------------------
-
-/* this is where we can accept input over serial in order to program the device or simply return information */
-
-// void readSerial0() {
-//   // Serial.println("[readSerial0] ");
-
-//   // 
-//   if (Serial.available()) {
-//     memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-//     SerialLink.nbytes = Serial.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
-//     // Serial.println("$" + String(SerialLink.BUFFER)); // debug
-
-//     if (SerialLink.nbytes > 1) {
-//       if (systemData.allow_debug_bridge==true) {
-//         if (strncmp(SerialLink.BUFFER, "test", strlen("test")) == 0) {Serial.println("[command] running test");}
-
-//         // // command token
-//         // sdcardData.token = strtok(SerialLink.BUFFER, " ");
-
-//         // if (strncmp(sdcardData.token, "ls", strlen("ls")) == 0) {Serial.println("[command] ls");
-//         //   sdcardData.token = strtok(NULL, " ");
-//         //   if (sdcardData.token!=NULL) {memset(cwd, 0, sizeof(cwd)); strcpy(cwd, sdcardData.token);}
-//         //   // ls();
-//         //   }
-//       }
-//       else {Serial.println("[access] denied.");}
-//     }
-//   }
-// }
 
 int gps_done_t0;
 int gps_done_t1;
@@ -14036,13 +14005,13 @@ void readGPS(void * pvParameters) {
     // ------------------------------------------------------------
     if (gps_done==false) {
       // ------------------------------------------------------------
-      gps_done_t0 = micros();
+      gps_done_t0=micros();
       // --------
       // defaults
       // --------
-      serial1Data.gngga_bool = false;
-      serial1Data.gnrmc_bool = false;
-      serial1Data.gpatt_bool = false;
+      serial1Data.gngga_bool=false;
+      serial1Data.gnrmc_bool=false;
+      serial1Data.gpatt_bool=false;
       // --------
       // override
       // --------
@@ -14068,42 +14037,42 @@ void readGPS(void * pvParameters) {
           // read serial into buffer until buffer max or special char
           // --------------------------------------------------------
           memset(SerialLink.BUFFER, 0, sizeof(SerialLink.BUFFER));
-          SerialLink.nbytes = Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
+          SerialLink.nbytes=Serial2.readBytesUntil('\n', SerialLink.BUFFER, sizeof(SerialLink.BUFFER));
           // ---------------------
           // exclude partial reads
           //----------------------
           if (SerialLink.nbytes>10) {
-            // ----------------------------------------------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------------
             if (serial1Data.gngga_bool==false) {
-              if (strncmp(SerialLink.BUFFER, "$GNGGA", 6) == 0) {
-                if (systemData.gngga_enabled == true){
+              if (strncmp(SerialLink.BUFFER, "$GNGGA", 6)==0) {
+                if (systemData.gngga_enabled==true){
                   strcpy(gnggaData.sentence, SerialLink.BUFFER);
-                  serial1Data.gngga_bool = true;
+                  serial1Data.gngga_bool=true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
-            // ----------------------------------------------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------------
             else if (serial1Data.gnrmc_bool==false) {
-              if (strncmp(SerialLink.BUFFER, "$GNRMC", 6) == 0) {
-                if (systemData.gnrmc_enabled == true){
+              if (strncmp(SerialLink.BUFFER, "$GNRMC", 6)==0) {
+                if (systemData.gnrmc_enabled==true){
                   strcpy(gnrmcData.sentence, SerialLink.BUFFER);
-                  serial1Data.gnrmc_bool = true;
+                  serial1Data.gnrmc_bool=true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
-            // ----------------------------------------------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------------
             else if (serial1Data.gpatt_bool==false) {
-              if (strncmp(SerialLink.BUFFER, "$GPATT", 6) == 0) {
-                if (systemData.gpatt_enabled == true){
+              if (strncmp(SerialLink.BUFFER, "$GPATT", 6)==0) {
+                if (systemData.gpatt_enabled==true){
                   strcpy(gpattData.sentence, SerialLink.BUFFER);
-                  serial1Data.gpatt_bool = true;
+                  serial1Data.gpatt_bool=true;
                   if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {break;}
                 }
               }
             }
-            // ----------------------------------------------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------------
           }
         }
       }
@@ -14112,7 +14081,7 @@ void readGPS(void * pvParameters) {
       // -----------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         // ----------------------------------------------------------------------------------------------------------------------
-        if (systemData.gngga_enabled == true){
+        if (systemData.gngga_enabled==true){
           if (systemData.output_gngga_enabled==true) {
             // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
@@ -14120,37 +14089,37 @@ void readGPS(void * pvParameters) {
             memset(gnggaData.outsentence, 0, sizeof(gnggaData.outsentence));
             strcpy(gnggaData.outsentence, gnggaData.sentence);
           }
-          gnggaData.valid_checksum = validateChecksum(gnggaData.sentence);
+          gnggaData.valid_checksum=validateChecksum(gnggaData.sentence);
           // debug("[gnggaData.valid_checksum] " + String(gnggaData.valid_checksum));
-          if (gnggaData.valid_checksum == true) {clearGNGGA(); GNGGA();}
+          if (gnggaData.valid_checksum==true) {clearGNGGA(); GNGGA();}
           else {gnggaData.bad_checksum_validity++;}
         }
         // ----------------------------------------------------------------------------------------------------------------------
-        if (systemData.gnrmc_enabled == true) {
-          if (systemData.output_gnrmc_enabled == true) {
+        if (systemData.gnrmc_enabled==true) {
+          if (systemData.output_gnrmc_enabled==true) {
             // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
             // -------------------------------------------------------------------------------------
             memset(gnrmcData.outsentence, 0, sizeof(gnrmcData.outsentence));
             strcpy(gnrmcData.outsentence, gnrmcData.sentence);
           }
-          gnrmcData.valid_checksum = validateChecksum(gnrmcData.sentence);
+          gnrmcData.valid_checksum=validateChecksum(gnrmcData.sentence);
           // debug("[gnrmcData.valid_checksum] " + String(gnrmcData.valid_checksum));
-          if (gnrmcData.valid_checksum == true) {clearGNRMC(); GNRMC();}
+          if (gnrmcData.valid_checksum==true) {clearGNRMC(); GNRMC();}
           else {gnrmcData.bad_checksum_validity++;}
         }
         // ----------------------------------------------------------------------------------------------------------------------
-        if (systemData.gpatt_enabled == true) {
-          if (systemData.output_gpatt_enabled == true) {
+        if (systemData.gpatt_enabled==true) {
+          if (systemData.output_gpatt_enabled==true) {
             // -------------------------------------------------------------------------------------
             // store a copy before tokenization since this is a task we may prefer not to print here
             // -------------------------------------------------------------------------------------
             memset(gpattData.outsentence, 0, sizeof(gpattData.outsentence));
             strcpy(gpattData.outsentence, gpattData.sentence);
           }
-          gpattData.valid_checksum = validateChecksum(gpattData.sentence);
+          gpattData.valid_checksum=validateChecksum(gpattData.sentence);
           // debug("[gpattData.valid_checksum] " + String(gpattData.valid_checksum));
-          if (gpattData.valid_checksum == true) {clearGPATT(); GPATT();}
+          if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
         // -------------------
@@ -14158,7 +14127,7 @@ void readGPS(void * pvParameters) {
         // -------------------
         if ((gnggaData.valid_checksum=true) && (gnrmcData.valid_checksum=true) && (gpattData.valid_checksum=true)) {
           // debug("[gps_done_t] " + String(millis()-gps_done_t)); // debug
-          gps_done_t1 = micros();
+          gps_done_t1=micros();
           gps_done=true;
         }
       }
@@ -14181,7 +14150,7 @@ void getSensorData() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // step over each multiplexer analog/digital channel
   // ----------------------------------------------------------------------------------------------------------------------------
-  for (int i_chan = 0; i_chan < 16; i_chan++) {
+  for (int i_chan=0; i_chan < 16; i_chan++) {
     // --------------------------------------------------
     // set multiplexer channel
     // --------------------------------------------------
@@ -14190,105 +14159,105 @@ void getSensorData() {
     // sensor 0
     // --------------------------------------------------
     if (i_chan==0) {
-      sensorData.dht11_h_0 = dht.readHumidity();
-      sensorData.dht11_c_0 = dht.readTemperature();     // celsius default
-      sensorData.dht11_f_0 = dht.readTemperature(true); // fahreheit = true
+      sensorData.dht11_h_0=dht.readHumidity();
+      sensorData.dht11_c_0=dht.readTemperature();     // celsius default
+      sensorData.dht11_f_0=dht.readTemperature(true); // fahreheit=true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
         Serial.println("[dht11_hic_0] Failed to read from dht senor!");
       }
-      sensorData.dht11_hif_0 = dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
-      sensorData.dht11_hic_0 = dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit = false
-      sensorData.sensor_0 = sensorData.dht11_hic_0; // custum sensor 0
+      sensorData.dht11_hif_0=dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
+      sensorData.dht11_hic_0=dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit=false
+      sensorData.sensor_0=sensorData.dht11_hic_0; // custum sensor 0
     }
     // --------------------------------------------------
     // sensor 1
     // --------------------------------------------------
     else if (i_chan==1) {
-      sensorData.sensor_1 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_1=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 2
     // --------------------------------------------------
     else if (i_chan==2) {
-      sensorData.sensor_2 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_2=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 3
     // --------------------------------------------------
     else if (i_chan==3) {
-      sensorData.sensor_3 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_3=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 4
     // --------------------------------------------------
     else if (i_chan==4) {
-      sensorData.sensor_4 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_4=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 5
     // --------------------------------------------------
     else if (i_chan==5) {
-      sensorData.sensor_5 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_5=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 6
     // --------------------------------------------------
     else if (i_chan==6) {
-      sensorData.sensor_6 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_6=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 7
     // --------------------------------------------------
     else if (i_chan==7) {
-      sensorData.sensor_7 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_7=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 8
     // --------------------------------------------------
     else if (i_chan==8) {
-      sensorData.sensor_8 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_8=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 9
     // --------------------------------------------------
     else if (i_chan==9) {
-      sensorData.sensor_9 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_9=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 10
     // --------------------------------------------------
     else if (i_chan==10) {
-      sensorData.sensor_10 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_10=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 11
     // --------------------------------------------------
     else if (i_chan==11) {
-      sensorData.sensor_11 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_11=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 12
     // --------------------------------------------------
     else if (i_chan==12) {
-      sensorData.sensor_12 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_12=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 13
     // --------------------------------------------------
     else if (i_chan==13) {
-      sensorData.sensor_13 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_13=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 14
     // --------------------------------------------------
     else if (i_chan==14) {
-      sensorData.sensor_14 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_14=analogRead(CD74HC4067_SIG);
     }
     // --------------------------------------------------
     // sensor 15
     // --------------------------------------------------
     else if (i_chan==15) {
-      sensorData.sensor_15 = analogRead(CD74HC4067_SIG);
+      sensorData.sensor_15=analogRead(CD74HC4067_SIG);
     }
   }
   // --------------------------------------------------
@@ -14299,7 +14268,7 @@ void getSensorData() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // step over each I2C multiplexer channel
   // ----------------------------------------------------------------------------------------------------------------------------
-  for (int i_chan = 0; i_chan < 8; i_chan++) {
+  for (int i_chan=0; i_chan < 8; i_chan++) {
     // --------------------------------------------------
     // set multiplexer channel
     // --------------------------------------------------
@@ -14409,7 +14378,7 @@ void getSensorData() {
     createChecksum(sensorData.sensor_sentence);
     strcat(sensorData.sensor_sentence, "*");
     strcat(sensorData.sensor_sentence, SerialLink.checksum);
-    if (systemData.output_sensors_enabled == true) {Serial.println(sensorData.sensor_sentence);}
+    if (systemData.output_sensors_enabled==true) {Serial.println(sensorData.sensor_sentence);}
   }
 }
 
@@ -14482,22 +14451,22 @@ void setup() {
            3: Hardware & performace should also be considered if reducing INTERVAL_TIME below 1 second.
            4: MatrixTimer resolution pertaining to INTERVAL_TIME value is ultimately dependant on main loop speed.
 
-  Example INTERVAL_TIME = 1000000: 1 Second on 1 Second off MatrixTimer = MatrixTimer x=1,       y=1.       SECOND TIMER
-  Example INTERVAL_TIME = 500000:  1 Second on 1 Second off MatrixTimer = MatrixTimer x=4,       y=2.       HALF SECOND TIMER
-  Example INTERVAL_TIME = 1000:    1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000,    y=1000.    MILLISECOND TIMER
-  Example INTERVAL_TIME = 1:       1 Second on 1 Second off MatrixTimer = MatrixTimer x=2000000, y=1000000. MICROSECOND TIMER
+  Example INTERVAL_TIME=1000000: 1 Second on 1 Second off MatrixTimer=MatrixTimer x=1,       y=1.       SECOND TIMER
+  Example INTERVAL_TIME=500000:  1 Second on 1 Second off MatrixTimer=MatrixTimer x=4,       y=2.       HALF SECOND TIMER
+  Example INTERVAL_TIME=1000:    1 Second on 1 Second off MatrixTimer=MatrixTimer x=2000,    y=1000.    MILLISECOND TIMER
+  Example INTERVAL_TIME=1:       1 Second on 1 Second off MatrixTimer=MatrixTimer x=2000000, y=1000000. MICROSECOND TIMER
 
   CONCLUSION: Decreasing INTERVAL_TIME increases MatrixTimer resolution and changes required values for matrix timers by a factor of INTERVAL_TIME.
               This allows for increasing MatrixTimer resolution without the need for more timers, timer functions and timer values.
               Changing INTERVAL_TIME outside of given hardware capabilities may have adverse and unpredictable effects.
               Variable names and functions depending on INTERVAL_TIME are agnostic to any specific unit of time.
   */
-  INTERVAL_TIME = 1000000; // SECOND TIMER
-  // INTERVAL_TIME = 500000;  // HALF SECOND TIMER
-  // INTERVAL_TIME = 1000;    // MILLISECOND TIMER
-  // INTERVAL_TIME = 1;       // MICROSECOND TIMER
+  INTERVAL_TIME=1000000; // SECOND TIMER
+  // INTERVAL_TIME=500000;  // HALF SECOND TIMER
+  // INTERVAL_TIME=1000;    // MILLISECOND TIMER
+  // INTERVAL_TIME=1;       // MICROSECOND TIMER
   Serial.println("[INTERVAL_TIME] " + String(INTERVAL_TIME));
-  interval_timer = timerBegin(0, 80, true);
+  interval_timer=timerBegin(0, 80, true);
   timerAttachInterrupt(interval_timer, &isr_interval_timer, true);
   timerAlarmWrite(interval_timer, INTERVAL_TIME, true);
   timerAlarmEnable(interval_timer);
@@ -14505,7 +14474,7 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // Second Timer Interrupt
   // ----------------------------------------------------------------------------------------------------------------------------
-  second_timer = timerBegin(2, 80, true);
+  second_timer=timerBegin(2, 80, true);
   timerAttachInterrupt(second_timer, &isr_second_timer, true);
   timerAlarmWrite(second_timer, 1000000, true);
   timerAlarmEnable(second_timer);
@@ -14626,22 +14595,22 @@ void setup() {
 //                                                                                                                      MAIN LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
 
-int t0 = millis();
-bool longer_loop = false;
-int load_distribution = 0;
-bool track_planets_period = false;
-bool suspended_gps_task = false;
+int t0=millis();
+bool longer_loop=false;
+int load_distribution=0;
+bool track_planets_period=false;
+bool suspended_gps_task=false;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
 every second that may be utilized for other things. like a seperate sensor matrix for example.
 */
-long count_faster_loops = 0;
+long count_faster_loops=0;
 
 void loop() {
   bench("-----");
-  timeData.mainLoopTimeStart = micros();
-  systemData.t_bench = true; // uncomment to observe timings
+  timeData.mainLoopTimeStart=micros();
+  systemData.t_bench=true; // uncomment to observe timings
   // count_faster_loops++;
 
   // ----------------------------------------------------------------------------------------------------------
@@ -14675,9 +14644,9 @@ void loop() {
   Only run the following block when new GPS data has been collected.
   GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
   */
-  longer_loop = false;
+  longer_loop=false;
   if (gps_done==true && suspended_gps_task==false)  {
-    longer_loop = true; // set load distribution flag
+    longer_loop=true; // set load distribution flag
     
     // -----------------------------------------------------------------------
     //                                                   SUSPEND READ GPS TASK
@@ -14710,21 +14679,21 @@ void loop() {
     Convert absolute latitude and longitude to degrees.
     Only run if new GPS data has been collected.
     */
-    crunching_time_data = true;
-    t0 = micros();
+    crunching_time_data=true;
+    t0=micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data = false;
+    crunching_time_data=false;
 
     // -----------------------------------------------------------------------
     //                                                  SATIO GPS CALCULATIONS
     // -----------------------------------------------------------------------
-    if (systemData.satio_enabled == true) {
+    if (systemData.satio_enabled==true) {
       // ---------------------------------------------------------------------
       //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
       // ---------------------------------------------------------------------
       // Only run if new GPS data has been collected.
-      t0 = micros();
+      t0=micros();
       calculateLocation();
       bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
@@ -14737,8 +14706,8 @@ void loop() {
     Never run while values are being updated (never when gps task is running).
     Only run if new GPS data has been collected.
     */
-    t0 = micros();
-    if (systemData.matrix_enabled == true) {matrixSwitch();}
+    t0=micros();
+    if (systemData.matrix_enabled==true) {matrixSwitch();}
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
@@ -14749,7 +14718,7 @@ void loop() {
     Aim to set this true as soon as possible and never before we are
     finished using the GPS data.
     */
-    gps_done = false;
+    gps_done=false;
     vTaskResume(GPSTask);
   }
   // ----------------------------------------------------------------------------------------------------------
@@ -14764,7 +14733,7 @@ void loop() {
   // Collect sensor data that could be utilized every loop.
   // Run every loop.
   // */
-  t0 = micros();
+  t0=micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
@@ -14782,7 +14751,7 @@ void loop() {
     This may be useful for a user if the system is setup for anything that does not require GPS task to be currently running.
     */
     if (suspended_gps_task==true) {
-      t0 = micros();
+      t0=micros();
       if (systemData.matrix_enabled==true) {matrixSwitch();}
       MatrixStatsCounter();
       bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -14795,8 +14764,8 @@ void loop() {
   /*
   Run every loop.
   */
-  t0 = micros();
-  if (systemData.port_controller_enabled == true) {writeToPortController();}
+  t0=micros();
+  if (systemData.port_controller_enabled==true) {writeToPortController();}
   bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------
@@ -14815,13 +14784,13 @@ void loop() {
     // ---------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
-      if (systemData.satio_enabled == true) {
-        if (track_planets_period == true) {
-          track_planets_period = false;
-          t0 = micros();
+      if (systemData.satio_enabled==true) {
+        if (track_planets_period==true) {
+          track_planets_period=false;
+          t0=micros();
           setTrackPlanets();
           bench("[setTrackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
-          t0 = micros();
+          t0=micros();
           trackPlanets();
           bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
         }
@@ -14835,8 +14804,8 @@ void loop() {
       /*
       Create and output special SatIO sentence over serial.
       */
-      t0 = micros();
-      if (systemData.satio_enabled == true) {buildSatIOSentence();}
+      t0=micros();
+      if (systemData.satio_enabled==true) {buildSatIOSentence();}
       bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
       // ---------------------------------------------------------------------
     }
@@ -14864,7 +14833,7 @@ void loop() {
       // ------------------
       // reset dependencies
       // ------------------
-      for (int i = 0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
+      for (int i=0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
   }
 
@@ -14881,7 +14850,7 @@ void loop() {
     // ----------
     // set flags
     // ----------
-    track_planets_period = true;
+    track_planets_period=true;
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
     // ---------------------------------------------------------------------
@@ -14909,7 +14878,7 @@ void loop() {
     //   1: local time is onky displayed.
     //   2: DS3231 has a resolution of second.
     crunching_time_data=true;
-    t0 = micros();
+    t0=micros();
     syncTaskSafeRTCTime();
     convertUTCTimeToLocalTime();
     bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -14920,11 +14889,11 @@ void loop() {
   //                                                               TIMINGS
   // ---------------------------------------------------------------------
   // delay(100); // debug test overload: increase loop time
-  timeData.mainLoopTimeTaken = (micros() - timeData.mainLoopTimeStart);
+  timeData.mainLoopTimeTaken=(micros() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
   else {systemData.overload=false;}
-  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax = timeData.mainLoopTimeTaken;}
-  // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin = timeData.mainLoopTimeTaken;}
+  if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
+  // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin=timeData.mainLoopTimeTaken;}
   bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
