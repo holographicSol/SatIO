@@ -11267,6 +11267,7 @@ String getRelatedX(char * data) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                             UI
 // ------------------------------------------------------------------------------------------------------------------------------
+
 /*
 IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
 */
@@ -11303,10 +11304,10 @@ void drawGeneralTitle(String title, int color1, int color2) {
   // ----------------------------------------------
   display.setColor(color1);
   canvas120x8.clear();
-  // center the title at top of screen
+  // top center
   canvas120x8.printFixed((125/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
   display.drawCanvas(1, 2, canvas120x8);
-  // border the title
+  // title border
   display.setColor(color2);
   display.drawRect(0, 0, 127, 12);
 }
