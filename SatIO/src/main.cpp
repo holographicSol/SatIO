@@ -6800,7 +6800,6 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                ENABLED
         // ----------------------------------------------------------------------------------------------------------------------
-        // ----------------------------------------------------------------------------------------------------------------------
         // put true in temporary matrix if switch is function name is set to Enabled (return true with no further logic required)
         // ----------------------------------------------------------------------------------------------------------------------
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Enabled")==0) {tmp_matrix[Fi]=1;}
@@ -6808,7 +6807,8 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               OVERLOAD
         // ----------------------------------------------------------------------------------------------------------------------
-        /* a special pair of switches to combine with logic that requires timing be below any specified overload max */
+        // a special pair of switches to combine with logic that requires timing be below any specified overload max
+        // ----------------------------------------------------------------------------------------------------------------------
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload")==0) {
           tmp_matrix[Fi]=check_bool_true(systemData.overload);}
 
