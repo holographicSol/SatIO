@@ -1286,6 +1286,10 @@ struct systemStruct {
 };
 systemStruct systemData;
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                PRINT FUNCTIONS
+// ------------------------------------------------------------------------------------------------------------------------------
+
 void debug(String x) {if (systemData.debug==true) {Serial.println(x);}}
 
 void bench(String x) {if (systemData.t_bench==true) {Serial.println(x);}}
