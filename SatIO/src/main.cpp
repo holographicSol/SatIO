@@ -6018,6 +6018,10 @@ void IdentifyObject(double object_ra, double object_dec) {
   }
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                PLANET TRACKING
+// ------------------------------------------------------------------------------------------------------------------------------
+
 void trackSun() {
   siderealPlanetData.sun_ra =myAstro.getRAdec();
   siderealPlanetData.sun_dec=myAstro.getDeclinationDec();
@@ -6366,7 +6370,7 @@ void trackNeptune() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                   TASK: PLANETARY CALCULATIONS
+//                                                                                                     CLEAR PLANET TRACKING DATA
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
 void clearSun() {
@@ -6506,29 +6510,9 @@ void clearTrackPlanets() {
   clearNeptune();
 }
 
-void setTrackPlanetsFalse() {
-  systemData.sidereal_track_sun=false;
-  systemData.sidereal_track_moon=false;
-  systemData.sidereal_track_mercury=false;
-  systemData.sidereal_track_venus=false;
-  systemData.sidereal_track_mars=false;
-  systemData.sidereal_track_jupiter=false;
-  systemData.sidereal_track_saturn=false;
-  systemData.sidereal_track_uranus=false;
-  systemData.sidereal_track_neptune=false;
-}
-
-void setTrackPlanetsTrue() {
-  systemData.sidereal_track_sun=true;
-  systemData.sidereal_track_moon=true;
-  systemData.sidereal_track_mercury=true;
-  systemData.sidereal_track_venus=true;
-  systemData.sidereal_track_mars=true;
-  systemData.sidereal_track_jupiter=true;
-  systemData.sidereal_track_saturn=true;
-  systemData.sidereal_track_uranus=true;
-  systemData.sidereal_track_neptune=true;
-}
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  TRACK PLANETS
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void trackPlanets() {
   // do planet elements and do sun before doing other plans
@@ -6554,6 +6538,12 @@ void trackPlanets() {
   if (systemData.sidereal_track_neptune==true) {trackNeptune();}
   else {clearNeptune();}
 }
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                          SETUP PLANET TRACKING
+// ------------------------------------------------------------------------------------------------------------------------------
+// once data is set, this function can be called once before calling trackPlanets
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void setTrackPlanets() {
   myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
