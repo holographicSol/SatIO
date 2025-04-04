@@ -10084,7 +10084,7 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // --------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10100,13 +10100,13 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
         // --------------------------------------------
-        // GO TO
-        // ---------------- ----------------------------
+        // go to
+        // --------------------------------------------
         menu_page=page_file_save_matrix;
       }
     }
@@ -10119,7 +10119,7 @@ void menuEnter() {
       // DISPLAY
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
-        // END SPI DEVICE
+        // end spi device
         endSPIDevice(SSD1351_CS);
       }
       // ----------------------------------------------
@@ -10134,12 +10134,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_file_load_matrix;
       }
@@ -10154,7 +10154,7 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // --------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10170,12 +10170,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_file_delete_matrix;
       }
@@ -10190,12 +10190,12 @@ void menuEnter() {
       // --------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // ------------------------------------------
-        // GO TO
+        // go to
         // ------------------------------------------
         menu_page=page_save_system_config_indicator;
         UIIndicators();
         // ------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // ------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10211,12 +10211,12 @@ void menuEnter() {
       // --------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // ------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // ------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_file_main;
       }
@@ -10231,12 +10231,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_restore_default_matrix_indicator;
         UIIndicators();
         // --------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // --------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10252,12 +10252,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
         display.begin();
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_file_main;
       }
@@ -10282,12 +10282,12 @@ void menuEnter() {
     // ----------------------------------------------
     if (systemData.DISPLAY_ENABLED==true) {
       // --------------------------------------------
-      // GO TO
+      // go to
       // --------------------------------------------
       menu_page=page_save_matrix_file_indicator;
       UIIndicators();
       // --------------------------------------------
-      // END SPI DEVICE
+      // end spi device
       // --------------------------------------------
       endSPIDevice(SSD1351_CS);
     }
@@ -10303,12 +10303,12 @@ void menuEnter() {
     // ------------------------------------------------
     if (systemData.DISPLAY_ENABLED==true) {
       // ----------------------------------------------
-      // BEGIN SPI DEVICE
+      // begin spi device
       // ----------------------------------------------
       beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
       display.begin();
       // ----------------------------------------------
-      // GO TO
+      // go to
       // ----------------------------------------------
       menu_page=page_file_main;
     }
@@ -10336,12 +10336,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_load_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // --------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10357,14 +10357,14 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
       }
     }
     // ------------------------------------------------
-    // GO TO
+    // go to
     // ------------------------------------------------
     menu_page=page_file_main;
   }
@@ -10390,12 +10390,12 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // GO TO
+        // go to
         // --------------------------------------------
         menu_page=page_delete_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
-        // END SPI DEVICE
+        // end spi device
         // --------------------------------------------
         endSPIDevice(SSD1351_CS);
       }
@@ -10411,14 +10411,14 @@ void menuEnter() {
       // ----------------------------------------------
       if (systemData.DISPLAY_ENABLED==true) {
         // --------------------------------------------
-        // BEGIN SPI DEVICE
+        // begin spi device
         // --------------------------------------------
         beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
         display.begin();
       }
     }
     // ------------------------------------------------
-    // GO TO
+    // go to
     // ------------------------------------------------
     menu_page=page_file_main;
   }
