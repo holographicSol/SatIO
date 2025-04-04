@@ -5870,16 +5870,24 @@ bool sdcardSaveMatrix(char * file) {
 void sdcardDeleteMatrix(char * file) {
   if (sd.exists(file)) {
     Serial.println("[sdcard] attempting to delete file: " + String(file));
+    // -----------------------------------
     // try remove
+    // -----------------------------------
     sd.remove(file);
     if (!sd.exists(file)) {
       Serial.println("[sdcard] successfully deleted file: " + String(file));
       Serial.println("attempting to remove filename from filenames.");
+      // ---------------------------------
       // recreate matrix filenames
+      // ---------------------------------
       sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      // ---------------------------------
       // zero the matrix
+      // ---------------------------------
       zero_matrix();
+      // ---------------------------------
       // update filename and file path
+      // ---------------------------------
       memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
       memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     }
@@ -5898,11 +5906,17 @@ void trackObject(double latitude, double longitude, int year, int month, int day
   sets time and location specific values pertaining to an object.
   object will first need to be identified.
   */
+  // -----------------------------------------------------
+  // setup
+  // -----------------------------------------------------
   myAstro.setLatLong(latitude, longitude);
   myAstro.rejectDST();
   myAstro.setGMTdate(year, month, day);
   myAstro.setLocalTime(hour, minute, second);
   myAstro.setGMTtime(hour, minute, second);
+  // -----------------------------------------------------
+  // select object table
+  // -----------------------------------------------------
   if (object_table_i==0) {myAstroObj.selectStarTable(object_i);}
   if (object_table_i==1) {myAstroObj.selectNGCTable(object_i);}
   if (object_table_i==2) {myAstroObj.selectICTable(object_i);}
@@ -5910,8 +5924,14 @@ void trackObject(double latitude, double longitude, int year, int month, int day
   if (object_table_i==4) {myAstroObj.selectCaldwellTable(object_i);}
   if (object_table_i==5) {myAstroObj.selectHershel400Table(object_i);}
   if (object_table_i==6) {myAstroObj.selectOtherObjectsTable(object_i);}
+  // -----------------------------------------------------
+  // setup
+  // -----------------------------------------------------
   myAstro.setRAdec(myAstroObj.getRAdec(), myAstroObj.getDeclinationDec());
   myAstro.doRAdec2AltAz();
+  // -----------------------------------------------------
+  // retreive data
+  // -----------------------------------------------------
   siderealObjectData.object_ra=myAstro.getRAdec();
   siderealObjectData.object_dec=myAstro.getDeclinationDec();
   siderealObjectData.object_az=myAstro.getAzimuth();
@@ -5932,11 +5952,14 @@ void IdentifyObject(double object_ra, double object_dec) {
   once we have the object number we can track the object if required.
   */
   // -------------------------------------------------------
+  // setup
+  // -------------------------------------------------------
   myAstroObj.setRAdec(object_ra, object_dec);
   myAstro.doRAdec2AltAz();
   myAstroObj.identifyObject();
   // -------------------------------------------------------
   // scan tables for the object
+  // -------------------------------------------------------
   switch(myAstroObj.getIdentifiedObjectTable()) {
     case(1):
     siderealObjectData.object_table_i=0; break; // Star
@@ -5949,18 +5972,26 @@ void IdentifyObject(double object_ra, double object_dec) {
   }
   // -------------------------------------------------------
   // object tables
+  // -------------------------------------------------------
   if (myAstroObj.getIdentifiedObjectTable()==1) {
+    // -----------------------------------------------------
     // set table name
+    // -----------------------------------------------------
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+    // -----------------------------------------------------
     // set object id name
+    // -----------------------------------------------------
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getIdentifiedObjectNumber()));
+    // -----------------------------------------------------
     // set object id number
+    // -----------------------------------------------------
     siderealObjectData.object_number=myAstroObj.getIdentifiedObjectNumber();
   }
   // -------------------------------------------------------
   // alternate object tables
+  // -------------------------------------------------------
   if (myAstroObj.getAltIdentifiedObjectTable()) {
     switch(myAstroObj.getAltIdentifiedObjectTable()) {
       casematrix_indi_h:
@@ -5970,16 +6001,21 @@ void IdentifyObject(double object_ra, double object_dec) {
       case(6):
       siderealObjectData.object_table_i=6;  break; // Herschel 400 number
     }
+    // -----------------------------------------------------
     // set table name
+    // -----------------------------------------------------
     memset(siderealObjectData.object_table_name, 0, 56);
     strcpy(siderealObjectData.object_table_name, siderealObjectData.object_table[siderealObjectData.object_table_i]);
+    // -----------------------------------------------------
     // set object id name
+    // -----------------------------------------------------
     memset(siderealObjectData.object_name, 0, 56);
     strcpy(siderealObjectData.object_name, myAstroObj.printStarName(myAstroObj.getAltIdentifiedObjectNumber()));
+    // -----------------------------------------------------
     // set object id number
+    // -----------------------------------------------------
     siderealObjectData.object_number=myAstroObj.getAltIdentifiedObjectNumber();
   }
-  // -------------------------------------------------------
 }
 
 void trackSun() {
