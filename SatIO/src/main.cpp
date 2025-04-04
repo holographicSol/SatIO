@@ -1337,40 +1337,42 @@ SerialLinkStruct SerialLink;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SDCardStruct {
-  int max_matrix_filenames=20; // max matrix file names available 
+  // max matrix file names available
+  int max_matrix_filenames=20; 
+  // matrix filenames created, stored and found by system
   char matrix_filenames[20][56]={  
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
-    };                                                   // matrix filenames created, stored and found by system
-  char sysconf[56]="/SYSTEM/SYSTEM.CONFIG";            // filepath
-  char default_matrix_filepath[56]="/MATRIX/M_0.SAVE"; // filepath
-  char matrix_filename[56]="";                         // filename
-  char matrix_filepath[56]="";                         // current matrix filepath
-  char tempmatrixfilepath[56];                           // used for laoding filepaths
-  char system_dirs[2][56]={"/MATRIX/", "/SYSTEM/"};    // root dirs
+    };                                                   
+  char sysconf[56]="/SYSTEM/SYSTEM.CONFIG";
+  char default_matrix_filepath[56]="/MATRIX/M_0.SAVE";
+  char matrix_filename[56]="";
+  char matrix_filepath[56]="";
+  char tempmatrixfilepath[56];
+  char system_dirs[2][56]={"/MATRIX/", "/SYSTEM/"};
   char save_ext[56]=".SAVE";
   char matrix_fname[10]="M";
-  unsigned long iter_token; // count token iterations
-  char BUFFER[2048];                                           // buffer
-  String SBUFFER;                                              // String buffer
-  char * token=strtok(BUFFER, ",");                          // token pointer 
-  char data_0[56];                                             // value placeholder
-  char data_1[56];                                             // value placeholder
-  char data_2[56];                                             // value placeholder
-  char data_3[56];                                             // value placeholder
-  char data_4[56];                                             // value placeholder
-  char data_5[56];                                             // value placeholder
-  char data_6[56];                                             // value placeholder
-  char data_7[56];                                             // value placeholder
-  char data_8[56];                                             // value placeholder
-  char file_data[1024];                                        // buffer
-  char delim[56]=",";                                        // delimiter char
-  char tmp[56];                                                // buffer
-  char tag_0[56]="r";                                        // file line tag
-  char tag_1[56]="e";                                        // file line tag
-  ExFile current_file;                                         // file currently handled
+  unsigned long iter_token;
+  char BUFFER[2048];
+  String SBUFFER;
+  char * token=strtok(BUFFER, ",");
+  char data_0[56];
+  char data_1[56];
+  char data_2[56];
+  char data_3[56];
+  char data_4[56];
+  char data_5[56];
+  char data_6[56];
+  char data_7[56];
+  char data_8[56];
+  char file_data[1024];
+  char delim[56]=",";
+  char tmp[56];
+  char tag_0[56]="r";
+  char tag_1[56]="e";
+  ExFile current_file;
   char newfilename[56];
 };
 SDCardStruct sdcardData;
