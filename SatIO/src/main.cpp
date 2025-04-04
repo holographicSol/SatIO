@@ -14985,55 +14985,38 @@ void getSensorData() {
   if (systemData.output_sensors_enabled==true) {
     memset(sensorData.sensor_sentence, 0, sizeof(sensorData.sensor_sentence));
     strcat(sensorData.sensor_sentence, "$SENSORS,");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_0).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_1).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_2).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_3).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_4).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_5).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_6).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_7).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_8).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_9).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_10).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_11).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_12).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_13).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_14).c_str());
     strcat(sensorData.sensor_sentence, ",");
-
     strcat(sensorData.sensor_sentence, String(sensorData.sensor_15).c_str());
     strcat(sensorData.sensor_sentence, ",");
-    
     // append checksum
     createChecksum(sensorData.sensor_sentence);
     strcat(sensorData.sensor_sentence, "*");
@@ -15195,11 +15178,16 @@ void setup() {
     canvas92x8.setFixedFont(ssd1306xled_font6x8);
     display.clear();
     menu_page=-1; // none
+    // -------------------------------------------------------
     // display unidentified studios before loading sdcard data
+    // --------------------------------------------------------
     display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
-    // uncomment to test display
-    // canvas.printFixed(1, 1, " SATIO ", STYLE_BOLD);
+    // --------------------------------------------------------
+    // uncomment to debug
+    // --------------------------------------------------------
+    // canvas.printFixed(1, 1, "FOOBAR", STYLE_BOLD);
     // display.drawCanvas(1, 1, canvas);
+    // delay(5000)
     // display.clear();
     endSPIDevice(SSD1351_CS);
   }
