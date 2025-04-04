@@ -6807,7 +6807,7 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                               OVERLOAD
         // ----------------------------------------------------------------------------------------------------------------------
-        // a special pair of switches to combine with logic that requires timing be below any specified overload max
+        // a special function name for logic that requires loop time be below any specified time
         // ----------------------------------------------------------------------------------------------------------------------
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Overload")==0) {
           tmp_matrix[Fi]=check_bool_true(systemData.overload);}
