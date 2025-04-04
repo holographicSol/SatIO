@@ -11608,7 +11608,7 @@ void UpdateUI(void * pvParamters) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
         canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD);
-        display.drawCanvas(66, 39, canvas60x8);
+        display.drawCanvas(65, 39, canvas60x8);
       }
       // ------------------------------------------------
       // matrix switch state low
@@ -11617,7 +11617,7 @@ void UpdateUI(void * pvParamters) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
         canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD);
-        display.drawCanvas(66, 39, canvas60x8);
+        display.drawCanvas(65, 39, canvas60x8);
       }
       // ------------------------------------------------
       // matrix switch function name
@@ -11689,184 +11689,185 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas120x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
       display.drawCanvas(3, 116, canvas120x8);
+      // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
+      if (interaction_updateui==true) {
+        // ---------------------------------------------------------------
+        // clear any previously highlighted menus
+        // ---------------------------------------------------------------
+        if (previous_menu_column_selection!=menu_column_selection) {
+          canvas126x24.clear();
+          display.setColor(systemData.color_content);
+          display.drawCanvas(1, 13, canvas126x24);
+          previous_menu_column_selection=menu_column_selection;
+        }
 
-      // ---------------------------------------------------------------
-      // clear any previously highlighted menus
-      // ---------------------------------------------------------------
-      if (previous_menu_column_selection!=menu_column_selection) {
-        canvas126x24.clear();
-        display.setColor(systemData.color_content);
-        display.drawCanvas(1, 13, canvas126x24);
-        previous_menu_column_selection=menu_column_selection;
-      }
-
-      // ---------------------------------------------------------------
-      // matrix switch menu
-      // ---------------------------------------------------------------
-      if (menu_column_selection==0) {
-        // -------------------------------------------------------------
-        // draw unhighlighted
-        // -------------------------------------------------------------
-        if (interaction_updateui==true) {
-          interaction_updateui=false;
-          display.setColor(systemData.color_menu_border);
-          menuMatrixSwitchSelect.showMenuBorder(display);
+        // ---------------------------------------------------------------
+        // matrix switch menu
+        // ---------------------------------------------------------------
+        if (menu_column_selection==0) {
+          // -------------------------------------------------------------
+          // draw unhighlighted
+          // -------------------------------------------------------------
+          if (interaction_updateui==true) {
+            interaction_updateui=false;
+            display.setColor(systemData.color_menu_border);
+            menuMatrixSwitchSelect.showMenuBorder(display);
+            display.setColor(systemData.color_menu_content);
+            menuMatrixSwitchSelect.showMenuContent(display);
+          }
+        }
+        else {
+          // -------------------------------------------------------------
+          // draw highlighted
+          // -------------------------------------------------------------
+          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+          strcpy(TMP_UI_DATA_0, "");
+          strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
+          canvas19x8.clear();
           display.setColor(systemData.color_menu_content);
-          menuMatrixSwitchSelect.showMenuContent(display);
+          canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+          display.setColor(systemData.color_border);
+          display.drawCanvas(10, 19, canvas19x8);
         }
-      }
-      else {
-        // -------------------------------------------------------------
-        // draw highlighted
-        // -------------------------------------------------------------
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "");
-        strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
-        canvas19x8.clear();
-        display.setColor(systemData.color_menu_content);
-        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.setColor(systemData.color_border);
-        display.drawCanvas(10, 19, canvas19x8);
-      }
-
-      // ---------------------------------------------------------------
-      // matrix switch port button
-      // ---------------------------------------------------------------
-      if (menu_column_selection==1) {
-        // -------------------------------------------------------------
-        // draw unhighlighted
-        // -------------------------------------------------------------
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "P");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
-        canvas19x8.clear();
-        // -------------------------------------------------------------
-        // indicate if port number is -1 (none)
-        // -------------------------------------------------------------
-        if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
-        else {display.setColor(RGB_COLOR16(255,0,0));}
-        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
-        display.drawCanvas(39, 19, canvas19x8);
-        display.setColor(systemData.color_menu_content);
-        display.drawRect(35, 15, 62, 15+15);
-      }
-      else {
-        // -------------------------------------------------------------
-        // draw highlighted
-        // -------------------------------------------------------------
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "P");
-        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
-        canvas19x8.clear();
-        // -------------------------------------------------------------
-        // indicate if port number is -1 (none)
-        // -------------------------------------------------------------
-        if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
-        else {display.setColor(RGB_COLOR16(255,0,0));}
-        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.drawCanvas(39, 19, canvas19x8);
-      }
-
-      // ---------------------------------------------------------------
-      // matrix switch enable/disable button
-      // ---------------------------------------------------------------
-      if (menu_column_selection==2) {
-        // -------------------------------------------------------------
-        // draw unhighlighted
-        // -------------------------------------------------------------
-        canvas8x8.clear();
-        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
-        }
-        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(255,0,0));
-          canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
-        }
-        display.drawCanvas(68, 19, canvas8x8);
-        display.setColor(systemData.color_menu_content);
-        display.drawRect(66, 15, 79, 15+15);
-      }
-      else {
-        // -------------------------------------------------------------
-        // draw highlighted
-        // -------------------------------------------------------------
-        canvas8x8.clear();
-        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD);
-        }
-        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(255,0,0));
-          canvas8x8.printFixed(1, 1, "D", STYLE_BOLD);
-        }
-        display.drawCanvas(68, 19, canvas8x8);
-      }
-
-      // ---------------------------------------------------------------
-      // matrix switch inverted logic button
-      // ---------------------------------------------------------------
-      if (menu_column_selection==3) {
-        // -------------------------------------------------------------
-        // draw unhighlighted
-        // -------------------------------------------------------------
-        canvas8x8.clear();
-        display.setColor(systemData.color_content);
-        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(255,255,0));
-          canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function on a switch) 
-        }
-        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
-        }
-        display.drawCanvas(84, 19, canvas8x8);
-        display.setColor(systemData.color_menu_content);
-        display.drawRect(83, 15, 93, 15+15);
-      }
-      else {
-        // -------------------------------------------------------------
-        // draw highlighted
-        // -------------------------------------------------------------
-        canvas8x8.clear();
-        display.setColor(systemData.color_content);
-        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-          display.setColor(RGB_COLOR16(255,255,0));
-          canvas8x8.printFixed(1, 1, "I", STYLE_BOLD); // inverted function logic (not switch logic, this is per function on a switch) 
-        }
-        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-          display.setColor(RGB_COLOR16(0,0,255));
-          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
-        }
-        display.drawCanvas(83, 19, canvas8x8);
-      }
-
-      // ---------------------------------------------------------------
-      // matrix switch function menu
-      // ---------------------------------------------------------------
-      if (menu_column_selection==4) {
-        // -------------------------------------------------------------
-        // draw unhighlighted
-        // -------------------------------------------------------------
-        if (interaction_updateui==true) {
-          interaction_updateui=false;
-          display.setColor(systemData.color_menu_border);
-          menuMatrixFunctionSelect.showMenuBorder(display);
+        // ---------------------------------------------------------------
+        // matrix switch port button
+        // ---------------------------------------------------------------
+        if (menu_column_selection==1) {
+          // -------------------------------------------------------------
+          // draw unhighlighted
+          // -------------------------------------------------------------
+          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+          strcpy(TMP_UI_DATA_0, "P");
+          strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+          canvas19x8.clear();
+          // -------------------------------------------------------------
+          // indicate if port number is -1 (none)
+          // -------------------------------------------------------------
+          if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
+          else {display.setColor(RGB_COLOR16(255,0,0));}
+          canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
+          display.drawCanvas(39, 19, canvas19x8);
           display.setColor(systemData.color_menu_content);
-          menuMatrixFunctionSelect.showMenuContent(display);
+          display.drawRect(35, 15, 62, 15+15);
         }
-      }
-      else {
-        // -------------------------------------------------------------
-        // draw highlighted
-        // -------------------------------------------------------------
-        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-        strcpy(TMP_UI_DATA_0, "");
-        strcat(TMP_UI_DATA_0, menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]);
-        canvas19x8.clear();
-        display.setColor(systemData.color_menu_content);
-        canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD);
-        display.drawCanvas(91+4, 19, canvas19x8);
+        else {
+          // -------------------------------------------------------------
+          // draw highlighted
+          // -------------------------------------------------------------
+          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+          strcpy(TMP_UI_DATA_0, "P");
+          strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+          canvas19x8.clear();
+          // -------------------------------------------------------------
+          // indicate if port number is -1 (none)
+          // -------------------------------------------------------------
+          if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
+          else {display.setColor(RGB_COLOR16(255,0,0));}
+          canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+          display.drawCanvas(39, 19, canvas19x8);
+        }
+        // ---------------------------------------------------------------
+        // matrix switch enable/disable button
+        // ---------------------------------------------------------------
+        if (menu_column_selection==2) {
+          // -------------------------------------------------------------
+          // draw unhighlighted
+          // -------------------------------------------------------------
+          canvas8x8.clear();
+          if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+            display.setColor(RGB_COLOR16(0,0,255));
+            canvas8x8.printFixed(1, 1, "E", STYLE_NORMAL );
+          }
+          else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+            display.setColor(RGB_COLOR16(255,0,0));
+            canvas8x8.printFixed(1, 1, "D", STYLE_NORMAL );
+          }
+          display.drawCanvas(68, 19, canvas8x8);
+          display.setColor(systemData.color_menu_content);
+          display.drawRect(66, 15, 79, 15+15);
+        }
+        else {
+          // -------------------------------------------------------------
+          // draw highlighted
+          // -------------------------------------------------------------
+          canvas8x8.clear();
+          if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+            display.setColor(RGB_COLOR16(0,0,255));
+            canvas8x8.printFixed(1, 1, "E", STYLE_BOLD);
+          }
+          else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+            display.setColor(RGB_COLOR16(255,0,0));
+            canvas8x8.printFixed(1, 1, "D", STYLE_BOLD);
+          }
+          display.drawCanvas(68, 19, canvas8x8);
+        }
+        // ---------------------------------------------------------------
+        // matrix switch inverted logic button
+        // ---------------------------------------------------------------
+        if (menu_column_selection==3) {
+          // -------------------------------------------------------------
+          // draw unhighlighted
+          // -------------------------------------------------------------
+          canvas8x8.clear();
+          display.setColor(systemData.color_content);
+          if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+            display.setColor(RGB_COLOR16(255,255,0));
+            canvas8x8.printFixed(1, 1, "I", STYLE_NORMAL ); // inverted function logic (not switch logic, this is per function on a switch) 
+          }
+          else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+            display.setColor(RGB_COLOR16(0,0,255));
+            canvas8x8.printFixed(1, 1, "S", STYLE_NORMAL ); // standard function logic (not switch logic, this is per function on a switch) 
+          }
+          display.drawCanvas(84, 19, canvas8x8);
+          display.setColor(systemData.color_menu_content);
+          display.drawRect(83, 15, 93, 15+15);
+        }
+        else {
+          // -------------------------------------------------------------
+          // draw highlighted
+          // -------------------------------------------------------------
+          canvas8x8.clear();
+          display.setColor(systemData.color_content);
+          if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+            display.setColor(RGB_COLOR16(255,255,0));
+            canvas8x8.printFixed(1, 1, "I", STYLE_BOLD); // inverted function logic (not switch logic, this is per function on a switch) 
+          }
+          else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+            display.setColor(RGB_COLOR16(0,0,255));
+            canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
+          }
+          display.drawCanvas(83, 19, canvas8x8);
+        }
+
+        // ---------------------------------------------------------------
+        // matrix switch function menu
+        // ---------------------------------------------------------------
+        if (menu_column_selection==4) {
+          // -------------------------------------------------------------
+          // draw unhighlighted
+          // -------------------------------------------------------------
+          if (interaction_updateui==true) {
+            interaction_updateui=false;
+            display.setColor(systemData.color_menu_border);
+            menuMatrixFunctionSelect.showMenuBorder(display);
+            display.setColor(systemData.color_menu_content);
+            menuMatrixFunctionSelect.showMenuContent(display);
+          }
+        }
+        else {
+          // -------------------------------------------------------------
+          // draw highlighted
+          // -------------------------------------------------------------
+          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+          strcpy(TMP_UI_DATA_0, "");
+          strcat(TMP_UI_DATA_0, menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]);
+          canvas19x8.clear();
+          display.setColor(systemData.color_menu_content);
+          canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD);
+          display.drawCanvas(91+4, 19, canvas19x8);
+        }
       }
     }
 
