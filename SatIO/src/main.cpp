@@ -297,6 +297,7 @@ bool sdcardCheck();
 void readI2C();
 void UIIndicators();
 void printAllTimes();
+void zero_matrix();
 
 bool gps_done=false; // helps avoid any potential race conditions where gps data is collected on another task
 
@@ -912,7 +913,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125
 //                                                                                                                    MENU SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_system_items=2;
+const int max_system_items=4;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} );
 
@@ -4139,7 +4140,7 @@ void sdcard_save_system_configuration(char * file) {
     // ------------------------------------------------
 
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "AUTO_RESUME,");
+    strcat(sdcardData.file_data, "MATRIX_RUN_ON_STARTUP,");
     itoa(systemData.matrix_run_on_startup, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
@@ -4249,6 +4250,18 @@ void sdcard_save_system_configuration(char * file) {
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
     strcat(sdcardData.file_data, "MATRIX_ENABLED,");
     itoa(systemData.matrix_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // ------------------------------------------------
+
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "PORT_CONTROLLER_ENABLED,");
+    itoa(systemData.port_controller_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -4679,7 +4692,7 @@ bool sdcard_load_system_configuration(char * file) {
 
       // ------------------------------------------------
 
-      if (strncmp(sdcardData.BUFFER, "AUTO_RESUME", 11)==0) {
+      if (strncmp(sdcardData.BUFFER, "MATRIX_RUN_ON_STARTUP", 11)==0) {
         sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token=strtok(NULL, ",");
@@ -4724,7 +4737,6 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_border_color=atoi(sdcardData.token);
           systemData.color_border=systemData.display_color[systemData.index_display_border_color];
-          // Serial.println("[index_display_border_color] " + String(systemData.index_display_border_color));
         }
       }
 
@@ -4738,7 +4750,6 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_content_color=atoi(sdcardData.token);
           systemData.color_content=systemData.display_color[systemData.index_display_content_color];
-          // Serial.println("[color_content] " + String(systemData.color_content));
         }
       }
 
@@ -4752,7 +4763,6 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_menu_border_color= atoi(sdcardData.token);
           systemData.color_menu_border=systemData.display_color[systemData.index_display_menu_border_color];
-          // Serial.println("[color_menu_border] " + String(systemData.color_menu_border));
         }
       }
 
@@ -4766,7 +4776,6 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_menu_content_color=atoi(sdcardData.token);
           systemData.color_menu_content=systemData.display_color[systemData.index_display_menu_content_color];
-          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
@@ -4780,13 +4789,11 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_title_color=atoi(sdcardData.token);
           systemData.color_title=systemData.display_color[systemData.index_display_title_color];
-          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
       // ------------------------------------------------
 
-      // display subtitle color index
       if (strncmp(sdcardData.BUFFER, "INDEX_DISPLAY_COLOR_SUBTITLE", strlen("INDEX_DISPLAY_COLOR_SUBTITLE"))==0) {
         sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
@@ -4795,17 +4802,400 @@ bool sdcard_load_system_configuration(char * file) {
           PrintFileToken();
           systemData.index_display_color_subtitle=atoi(sdcardData.token);
           systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
-          // Serial.println("[color_menu_content] " + String(systemData.color_menu_content));
         }
       }
 
-      // ------------------------------------------------------
-      // continue to enable/disable only if auto resume is true
-      // ------------------------------------------------------
+      // ------------------------------------------------
+
+      if (strncmp(sdcardData.BUFFER, "PORT_CONTROLLER_ENABLED", strlen("PORT_CONTROLLER_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.port_controller_enabled=false;} else {systemData.port_controller_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.satio_enabled=false;} else {systemData.satio_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.gngga_enabled=false;} else {systemData.gngga_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.gnrmc_enabled=false;} else {systemData.gnrmc_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.gpatt_enabled=false;} else {systemData.gpatt_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_satio_enabled=false;} else {systemData.output_satio_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_gngga_enabled=false;} else {systemData.output_gngga_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_gnrmc_enabled=false;} else {systemData.output_gnrmc_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_gpatt_enabled=false;} else {systemData.output_gpatt_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_MATRIX_SENTENCE", strlen("OUTPUT_MATRIX_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_matrix_enabled=false;} else {systemData.output_matrix_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_SENSORS_SENTENCE", strlen("OUTPUT_SENSORS_SENTENCE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_sensors_enabled=false;} else {systemData.output_sensors_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET,", strlen("UTC_SECOND_OFFSET,"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          satData.utc_second_offset=atoi(sdcardData.token);
+        }
+      }
+
+      // ------------------------------------------------
+      
+      else if (strncmp(sdcardData.BUFFER, "UTC_AUTO_OFFSET_FLAG", strlen("UTC_AUTO_OFFSET_FLAG"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {satData.utc_auto_offset_flag=false;} else {satData.utc_auto_offset_flag=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_sun=false;} else {systemData.sidereal_track_sun=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_moon=false;} else {systemData.sidereal_track_moon=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mercury=false;} else {systemData.sidereal_track_mercury=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_venus=false;} else {systemData.sidereal_track_venus=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mars=false;} else {systemData.sidereal_track_mars=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_jupiter=false;} else {systemData.sidereal_track_jupiter=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_saturn=false;} else {systemData.sidereal_track_saturn=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_uranus=false;} else {systemData.sidereal_track_uranus=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.sidereal_track_neptune=false;} else {systemData.sidereal_track_neptune=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_SUN", strlen("OUTPUT_SUN"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_sun_enabled=false;} else {systemData.output_sun_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_MOON", strlen("OUTPUT_MOON"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_moon_enabled=false;} else {systemData.output_moon_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_MERCURY", strlen("OUTPUT_MERCURY"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_mercury_enabled=false;} else {systemData.output_mercury_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_VENUS", strlen("OUTPUT_VENUS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_venus_enabled=false;} else {systemData.output_venus_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_MARS", strlen("OUTPUT_MARS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_mars_enabled=false;} else {systemData.output_mars_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_JUPITER", strlen("OUTPUT_JUPITER"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_jupiter_enabled=false;} else {systemData.output_jupiter_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATURN", strlen("OUTPUT_SATURN"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_saturn_enabled=false;} else {systemData.output_saturn_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_URANUS", strlen("OUTPUT_URANUS"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_uranus_enabled=false;} else {systemData.output_uranus_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      else if (strncmp(sdcardData.BUFFER, "OUTPUT_NEPTUNE", strlen("OUTPUT_NEPTUNE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          if (atoi(sdcardData.token)==0) {systemData.output_neptune_enabled=false;} else {systemData.output_neptune_enabled=true;}
+        }
+      }
+
+      // ------------------------------------------------
+
+      if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.index_overload_times=atoi(sdcardData.token);
+          systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
+        }
+      }
+
+      // ---------------------------------------------------------
+      // continue to enable/disable only if matrix runs on startup
+      // ---------------------------------------------------------
       if (systemData.matrix_run_on_startup==true) {
 
         // ------------------------------------------------
-
         if (strncmp(sdcardData.BUFFER, "MATRIX_ENABLED", strlen("MATRIX_ENABLED"))==0) {
           sdcardData.token=strtok(sdcardData.BUFFER, ",");
           PrintFileToken();
@@ -4815,382 +5205,7 @@ bool sdcard_load_system_configuration(char * file) {
             if (atoi(sdcardData.token)==0) {systemData.matrix_enabled=false;} else {systemData.matrix_enabled=true;}
           }
         }
-
         // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "SATIO_ENABLED", strlen("SATIO_ENABLED"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.satio_enabled=false;} else {systemData.satio_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "GNGGA_ENABLED", strlen("GNGGA_ENABLED"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.gngga_enabled=false;} else {systemData.gngga_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "GNRMC_ENABLED", strlen("GNRMC_ENABLED"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.gnrmc_enabled=false;} else {systemData.gnrmc_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "GPATT_ENABLED", strlen("GPATT_ENABLED"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.gpatt_enabled=false;} else {systemData.gpatt_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATIO_SENTENCE", strlen("OUTPUT_SATIO_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_satio_enabled=false;} else {systemData.output_satio_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNGGA_SENTENCE", strlen("OUTPUT_GNGGA_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_gngga_enabled=false;} else {systemData.output_gngga_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GNRMC_SENTENCE", strlen("OUTPUT_GNRMC_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_gnrmc_enabled=false;} else {systemData.output_gnrmc_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_GPATT_SENTENCE", strlen("OUTPUT_GPATT_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_gpatt_enabled=false;} else {systemData.output_gpatt_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MATRIX_SENTENCE", strlen("OUTPUT_MATRIX_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_matrix_enabled=false;} else {systemData.output_matrix_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SENSORS_SENTENCE", strlen("OUTPUT_SENSORS_SENTENCE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_sensors_enabled=false;} else {systemData.output_sensors_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "UTC_SECOND_OFFSET,", strlen("UTC_SECOND_OFFSET,"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            satData.utc_second_offset=atoi(sdcardData.token);
-          }
-        }
-
-        // ------------------------------------------------
-        
-        else if (strncmp(sdcardData.BUFFER, "UTC_AUTO_OFFSET_FLAG", strlen("UTC_AUTO_OFFSET_FLAG"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {satData.utc_auto_offset_flag=false;} else {satData.utc_auto_offset_flag=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_SUN", strlen("TRACK_SUN"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_sun=false;} else {systemData.sidereal_track_sun=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MOON", strlen("TRACK_MOON"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_moon=false;} else {systemData.sidereal_track_moon=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MERCURY", strlen("TRACK_MERCURY"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mercury=false;} else {systemData.sidereal_track_mercury=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_VENUS", strlen("TRACK_VENUS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_venus=false;} else {systemData.sidereal_track_venus=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_MARS", strlen("TRACK_MARS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_mars=false;} else {systemData.sidereal_track_mars=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_JUPITER", strlen("TRACK_JUPITER"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_jupiter=false;} else {systemData.sidereal_track_jupiter=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_SATURN", strlen("TRACK_SATURN"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_saturn=false;} else {systemData.sidereal_track_saturn=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_URANUS", strlen("TRACK_URANUS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_uranus=false;} else {systemData.sidereal_track_uranus=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "TRACK_NEPTUNE", strlen("TRACK_NEPTUNE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.sidereal_track_neptune=false;} else {systemData.sidereal_track_neptune=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SUN", strlen("OUTPUT_SUN"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_sun_enabled=false;} else {systemData.output_sun_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MOON", strlen("OUTPUT_MOON"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_moon_enabled=false;} else {systemData.output_moon_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MERCURY", strlen("OUTPUT_MERCURY"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_mercury_enabled=false;} else {systemData.output_mercury_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_VENUS", strlen("OUTPUT_VENUS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_venus_enabled=false;} else {systemData.output_venus_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_MARS", strlen("OUTPUT_MARS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_mars_enabled=false;} else {systemData.output_mars_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_JUPITER", strlen("OUTPUT_JUPITER"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_jupiter_enabled=false;} else {systemData.output_jupiter_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_SATURN", strlen("OUTPUT_SATURN"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_saturn_enabled=false;} else {systemData.output_saturn_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_URANUS", strlen("OUTPUT_URANUS"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_uranus_enabled=false;} else {systemData.output_uranus_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        else if (strncmp(sdcardData.BUFFER, "OUTPUT_NEPTUNE", strlen("OUTPUT_NEPTUNE"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            if (atoi(sdcardData.token)==0) {systemData.output_neptune_enabled=false;} else {systemData.output_neptune_enabled=true;}
-          }
-        }
-
-        // ------------------------------------------------
-
-        if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX"))==0) {
-          sdcardData.token=strtok(sdcardData.BUFFER, ",");
-          PrintFileToken();
-          sdcardData.token=strtok(NULL, ",");
-          if (is_all_digits(sdcardData.token)==true) {
-            PrintFileToken();
-            systemData.index_overload_times=atoi(sdcardData.token);
-            systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
-          }
-        }
-
-        // ------------------------------------------------
-        
       }
     }
     exfile.close();
@@ -5254,41 +5269,6 @@ void sdcard_list_matrix_files(char * dir, char * name, char * ext) {
       Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
       }
     else {strcpy(sdcardData.matrix_filenames[i], "EMPTY");}
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                    ZERO MATRIX
-// ------------------------------------------------------------------------------------------------------------------------------ 
-
-/* writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
-
-void zero_matrix() {
-  Serial.println("[matrix] setting all matrix values to zero.");
-  // iterate over each matrix matrix
-  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
-    matrixData.matrix_switch_enabled[0][Mi]=0;
-    for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
-      // clear function names
-      memset(matrixData.matrix_function[Mi][Fi], 0, 56);
-      strcpy(matrixData.matrix_function[Mi][Fi], "None");
-      // clear function values
-      matrixData.matrix_function_xyz[Mi][Fi][0]=0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][1]=0.0;
-      matrixData.matrix_function_xyz[Mi][Fi][2]=0.0;
-      // clear port maps
-      matrixData.matrix_port_map[0][Mi]=-1;
-      matrixData.tmp_matrix_port_map[0][Mi]=-1;
-      // clear inverted logic (default is standard not inverted)
-      matrixData.matrix_switch_inverted_logic[Mi][Fi]=false;
-      // clear timers
-      matrixData.matrix_timers[0][Mi]=0.0;
-      // clear enabled
-      matrixData.matrix_switch_enabled[0][Mi]=false;
-      // clear states
-      matrixData.matrix_switch_state[0][Mi]=false;
-      matrixData.tmp_matrix_switch_state[0][Mi]=false;
-    }
   }
 }
 
@@ -9640,6 +9620,41 @@ void MatrixStatsCounter() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    ZERO MATRIX
+// ------------------------------------------------------------------------------------------------------------------------------ 
+
+/* writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
+
+void zero_matrix() {
+  Serial.println("[matrix] setting all matrix values to zero.");
+  // iterate over each matrix matrix
+  for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
+    matrixData.matrix_switch_enabled[0][Mi]=0;
+    for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
+      // clear function names
+      memset(matrixData.matrix_function[Mi][Fi], 0, 56);
+      strcpy(matrixData.matrix_function[Mi][Fi], "None");
+      // clear function values
+      matrixData.matrix_function_xyz[Mi][Fi][0]=0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][1]=0.0;
+      matrixData.matrix_function_xyz[Mi][Fi][2]=0.0;
+      // clear port maps
+      matrixData.matrix_port_map[0][Mi]=-1;
+      matrixData.tmp_matrix_port_map[0][Mi]=-1;
+      // clear inverted logic (default is standard not inverted)
+      matrixData.matrix_switch_inverted_logic[Mi][Fi]=false;
+      // clear timers
+      matrixData.matrix_timers[0][Mi]=0.0;
+      // clear enabled
+      matrixData.matrix_switch_enabled[0][Mi]=false;
+      // clear states
+      matrixData.matrix_switch_state[0][Mi]=false;
+      matrixData.tmp_matrix_switch_state[0][Mi]=false;
+    }
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                        MATRIX SWITCH FUNCTIONS
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -10356,8 +10371,8 @@ void menuEnter() {
     }
     // ------------------------------------------------
     // consider matrix switch state handling before allowing the below two values to be changed after flashing
-    // else if (menuSystem.selection()==1) {systemData.matrix_enabled^=true;}
-    // else if (menuSystem.selection()==2) {systemData.port_controller_enabled^=true;}
+    else if (menuSystem.selection()==2) {systemData.matrix_enabled^=true;}
+    else if (menuSystem.selection()==3) {systemData.port_controller_enabled^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -12623,6 +12638,16 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       menuSystemItems[1]=systemData.char_overload_times[systemData.index_overload_times];
       // ------------------------------------------------
+      // enable/disable matrix
+      // ------------------------------------------------
+      if (systemData.matrix_enabled==true) {menuSystemItems[2]="MATRIX ENABLED";}
+      else {menuSystemItems[2]="MATRIX DISABLED";}
+      // ------------------------------------------------
+      // enable/disable port controller
+      // ------------------------------------------------
+      if (systemData.port_controller_enabled==true) {menuSystemItems[3]="IO ENABLED";}
+      else {menuSystemItems[3]="IO DISABLED";}
+      // ------------------------------------------------
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
@@ -13853,11 +13878,10 @@ void readI2C() {
 //                                                                                                                PORT CONTROLLER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-void writeToPortController() {
-
-  // ------------------------------------------------
-  // Send Port Map
-  // ------------------------------------------------
+// ------------------------------------------------
+// Write Port Map
+// ------------------------------------------------
+void writePortControllerPortMap() {
   for (int i=0; i < 20; i++) {
     // debug("[matrix_port_map] " + String(matrixData.matrix_port_map[0][i]) + " [tmp_matrix_port_map] " + String(matrixData.tmp_matrix_port_map[0][i]));
     // check for change
@@ -13879,10 +13903,12 @@ void writeToPortController() {
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+}
 
-  // ------------------------------------------------
-  // Send Switch State
-  // ------------------------------------------------
+// ------------------------------------------------
+// Write Switch State
+// ------------------------------------------------
+void writePortControllerSwitchState() {
   for (int i=0; i < 20; i++) {
     // debug("[matrix_switch_state] " + String(matrixData.matrix_switch_state[0][i]) + " [tmp_matrix_switch_state] " + String(matrixData.tmp_matrix_switch_state[0][i]));
     // check for change
@@ -13904,40 +13930,52 @@ void writeToPortController() {
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+}
 
-  // ------------------------------------------------
-  // Send Abstract GPS Signal Value
-  // ------------------------------------------------
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  // tag
-  strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
-  // data
-  if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
-  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+// ------------------------------------------------
+// Write GPS Signal LED
+// ------------------------------------------------
+void writePortControllerGPSSignalLED() {
+    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+    // tag
+    strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
+    // data
+    if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
+    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+    writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+}
 
-  // ------------------------------------------------
-  // Send Overload Value
-  // ------------------------------------------------
-  // tag
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
-  // data
-  if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
-  else {strcat(I2CLink.TMP_BUFFER_0, "1");}
-  // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
-  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+// ------------------------------------------------
+// Write Overload Value
+// ------------------------------------------------
+void writePortControllerOverloadValue() {
+    // tag
+    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+    strcpy(I2CLink.TMP_BUFFER_0, "$OLOAD,");
+    // data
+    if (systemData.overload==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+    else {strcat(I2CLink.TMP_BUFFER_0, "1");}
+    // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
+    writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+}
 
-  // ------------------------------------------------
-  // Receive Back After Sending
-  // ------------------------------------------------
-  // Uncomment if and when hearing back from the peripheral is required
-  // Serial.println("[master] read data");
-  // Wire.requestFrom(I2C_ADDR_PORTCONTROLLER_0,sizeof(input_buffer));
-  // memset(input_buffer, 0, sizeof(input_buffer));
-  // Wire.readBytesUntil('\n', input_buffer, sizeof(input_buffer));
-  // Serial.println("[received] " + String(input_buffer));
+// ------------------------------------------------
+// Write To Enabled Port Controller
+// ------------------------------------------------
+void writeToEnabledPortController() {
+  writePortControllerPortMap();
+  writePortControllerSwitchState();
+  writePortControllerGPSSignalLED();
+  writePortControllerOverloadValue();
+}
+
+// ------------------------------------------------
+// Disable Port Controller
+// ------------------------------------------------
+void writeToSemiDisabledPortController() {
+  writePortControllerGPSSignalLED();
+  writePortControllerOverloadValue();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -14600,6 +14638,8 @@ bool longer_loop=false;
 int load_distribution=0;
 bool track_planets_period=false;
 bool suspended_gps_task=false;
+bool matrix_run_state_flag=false;
+bool port_controller_run_state_flag=false;
 /*
 determine how many fast loops that may be utilized, occur during longer loops.
 these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
@@ -14707,7 +14747,15 @@ void loop() {
     Only run if new GPS data has been collected.
     */
     t0=micros();
-    if (systemData.matrix_enabled==true) {matrixSwitch();}
+    // run matrix
+    if (systemData.matrix_enabled==true) {matrix_run_state_flag=false; matrixSwitch();}
+    // handle matrix disabled
+    else if (systemData.matrix_enabled==false) {
+      Serial.println("[matrix] disabled");
+      // zero states once to allow opportunity for modifying states elsewhere when and if required.
+      // this does not disable the port controller but if the port controller is running then all output should turn low.
+      if (matrix_run_state_flag==false) {matrix_run_state_flag=true; setAllMatrixSwitchesStateFalse();}
+    }
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
@@ -14752,7 +14800,18 @@ void loop() {
     */
     if (suspended_gps_task==true) {
       t0=micros();
-      if (systemData.matrix_enabled==true) {matrixSwitch();}
+      // Run matrix and set a flag to show that the matrix has ran
+      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
+      // Handle matrix disabled
+      else if (systemData.matrix_enabled==false) {
+        /*
+        1: Continue only if matrix_run_state_flag is true so that we only do this once per flag true.
+        2: Zero the matrix switch states.
+        3: Matrix switch outputs on port controller will be turned low IF port controller is enabled.
+        */
+        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
+      }
+      // Stats
       MatrixStatsCounter();
       bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
@@ -14765,7 +14824,23 @@ void loop() {
   Run every loop.
   */
   t0=micros();
-  if (systemData.port_controller_enabled==true) {writeToPortController();}
+  // Run port controller and set a flag to show that the port controller has ran
+  if (systemData.port_controller_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();} // run normally
+  // Handle port controller disabled
+  else {
+    /*
+    1: Continue only if port_controller_run_state_flag is true so that we only do this once per flag true.
+    2: Zero the matrix switch states.
+    3: Matrix switch outputs on port controller will be turned low.
+    */
+    if (port_controller_run_state_flag==false) {
+      setAllMatrixSwitchesStateFalse();
+      writeToEnabledPortController();
+      port_controller_run_state_flag=true;
+    }
+    // Run in a semi-disabled mode where some information can still be conveyed through the port controller.
+    else {writeToSemiDisabledPortController();}
+  }
   bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------
