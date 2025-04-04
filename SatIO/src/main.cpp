@@ -6801,8 +6801,7 @@ void matrixSwitch() {
         //                                                                                                                ENABLED
         // ----------------------------------------------------------------------------------------------------------------------
         /*
-        put true in temporary matrix if switch is Enabled (different from enabling disabling) regardless of data. if used,
-        function name Enabled will always return true.
+        put true in temporary matrix if switch is function name is set to Enabled (return true with no further logic required)
         */
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Enabled")==0) {tmp_matrix[Fi]=1;}
 
