@@ -14747,15 +14747,19 @@ void loop() {
     Only run if new GPS data has been collected.
     */
     t0=micros();
-    // run matrix
-    if (systemData.matrix_enabled==true) {matrix_run_state_flag=false; matrixSwitch();}
-    // handle matrix disabled
+    // Run matrix and set a flag to show that the matrix has ran
+    if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
+    // Handle matrix disabled
     else if (systemData.matrix_enabled==false) {
-      Serial.println("[matrix] disabled");
-      // zero states once to allow opportunity for modifying states elsewhere when and if required.
-      // this does not disable the port controller but if the port controller is running then all output should turn low.
-      if (matrix_run_state_flag==false) {matrix_run_state_flag=true; setAllMatrixSwitchesStateFalse();}
+      /*
+      1: Continue only if matrix_run_state_flag is true so that we only do this once per flag true.
+      2: Zero the matrix switch states.
+      3: Matrix switch outputs on port controller will be turned low IF port controller is enabled.
+      4: This is no subsitute for a button on an interrupt.
+      */
+      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
     }
+    // Stats
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
