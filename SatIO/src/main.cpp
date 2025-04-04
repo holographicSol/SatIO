@@ -9972,8 +9972,8 @@ void MatrixStatsCounter() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    ZERO MATRIX
 // ------------------------------------------------------------------------------------------------------------------------------ 
-
-/* writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values */
+// writes None to every matrix function name for every matrix switch and writes 0 to every matrix function xyz values, etc.
+// ------------------------------------------------------------------------------------------------------------------------------ 
 
 void zero_matrix() {
   Serial.println("[matrix] setting all matrix values to zero.");
