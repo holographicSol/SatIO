@@ -2364,16 +2364,16 @@ bool val_scalable(char * data) {
 
 struct MatrixStruct {
 
-  int max_matrices=20;          // number of matrix switches 
-  int max_matrix_functions=10;  // number of functions available to a matrix switch
+  int max_matrices=20;         // number of matrix switches 
+  int max_matrix_functions=10; // number of functions available to a matrix switch
 
-  int matrix_enabled_i=0;       // count how many matrx switches are enabled
-  int matrix_disabled_i=0;      // count how many matrx switches are disabled
-  int matrix_active_i=0;        // count how many matrx switches are active
-  int matrix_inactive_i=0;      // count how many matrx switches are inactive
+  int matrix_enabled_i=0;      // count how many matrx switches are enabled
+  int matrix_disabled_i=0;     // count how many matrx switches are disabled
+  int matrix_active_i=0;       // count how many matrx switches are active
+  int matrix_inactive_i=0;     // count how many matrx switches are inactive
 
-  char temp[256];                 // a general place to store temporary chars relative to MatrixStruct
-  char matrix_sentence[256];      // an NMEA inspired sentence reflecting matrix switch states
+  char temp[256];              // a general place to store temporary chars relative to MatrixStruct
+  char matrix_sentence[256];   // an NMEA inspired sentence reflecting matrix switch states
   String tempStr="";
 
   // -------------------------------------------------------------------------------------------------------
