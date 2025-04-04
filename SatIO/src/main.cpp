@@ -9805,17 +9805,26 @@ void menuLeft() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void menuBack() {
+  // ---------------------------------------------------------------
   /* specify explicity which page to go from each given page */
-  // debug("[menuBack] menupage 0: " + String(menu_page));
+  // ---------------------------------------------------------------
   if (menu_page==page_main_menu) {menu_page=page_home;}
   else if (menu_page==page_matrix_logic_main) {menu_page=page_main_menu;}
+  // ---------------------------------------------------------------
+  // ENTER DIGITS
+  // ---------------------------------------------------------------
   else if (menu_page==page_input_data) {
-    // debug("[menuBack] enter_digits_key: " + String(enter_digits_key));
+    // -------------------------------------------------------------
     // enter port
+    // -------------------------------------------------------------
     if (enter_digits_key==1) {menu_page=page_matrix_logic_main;}
+    // -------------------------------------------------------------
     // enter function x, enter function y, enter function z
+    // -------------------------------------------------------------
     else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4)) {menu_page=page_matrix_logic_select_setup;}
+    // -------------------------------------------------------------
     // enter utc offset seconds
+    // -------------------------------------------------------------
     else if (enter_digits_key==5) {menu_page=page_timeanddate_main;}
   }
   else if (menu_page==page_matrix_logic_select_setup) {menu_page=page_matrix_logic_main;}
@@ -9845,7 +9854,6 @@ void menuBack() {
   else if (menu_page==page_universe_view_saturn) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
-  // debug("[menuBack] menupage 1: " + String(menu_page));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
