@@ -6711,7 +6711,7 @@ bool check_bool_false(bool _bool) {
 bool MatrixTimer(double n0, double n1, int Mi) {
   /*
   units of time accumulated by an isr alarm.
-  can be used to modulate output, if other functions are also set then the output will still be modulated according to matrix timer. 
+  can be used to modulate output, if other functions are also set then the output will still be modulated according to matrix timer.
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
   example: x=1, y=1=on for 1 unit of time, off for 1 unit of time
@@ -6758,19 +6758,24 @@ bool MatrixTimer(double n0, double n1, int Mi) {
 
 void matrixSwitch() {
   /*
-  compound condition checks, each resulting in zero/one at the final_bool.
+  check stacked logic for each matrix switch, resulting in either true or false (high/low) for each matrix switch (output pin).
   */
-  // ------------------------------------------------
-  // iterate through matrices
+  // -----------------------------------------------------------------------------------------------------------------------
+  // iterate over each matrix switch
+  // -----------------------------------------------------------------------------------------------------------------------
   for (int Mi=0; Mi < matrixData.max_matrices; Mi++) {
     // debug("[Mi] " + String(Mi) + " [E] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     if (matrixData.matrix_switch_enabled[0][Mi]==1) {
-      // ------------------------------------------------
-      // temporary switch must be zero each time (each switch has 0 to 10 functions that must all be true for the switch to turn high/low).
+
+      // -------------------------------------------------------------------------------------------------------------------
+      // temporary switch is zero (each switch has 0 to 10 functions that must all be true for the switch to turn high/low).
+      // -------------------------------------------------------------------------------------------------------------------
       bool tmp_matrix[matrixData.max_matrix_functions]={0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       int count_none_function=0;
-      // ------------------------------------------------
-      // iterate over each function name in the current matrix
+
+      // -------------------------------------------------------------------------------------------------------------------
+      // iterate over each function in the current matrix switch
+      // -------------------------------------------------------------------------------------------------------------------
       for (int Fi=0; Fi < matrixData.max_matrix_functions; Fi++) {
         // uncomment to debug
         // debug("[Mi] " + String(Mi));
@@ -6780,15 +6785,15 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                          FIRST IS NONE
         // ----------------------------------------------------------------------------------------------------------------------
-        // perfromance and logic prefers adding function names in matrix from index zero else if index zero None then break.
+        // perfromance prefers adding function names in matrix from index zero, so if function index zero is None then break.
+        // ----------------------------------------------------------------------------------------------------------------------
         if ((strcmp(matrixData.matrix_function[Mi][Fi], "None")==0) && (Fi==0)) {break;}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                                   NONE
         // ----------------------------------------------------------------------------------------------------------------------
-        /*
-        put true in temporary matrix for functions after position zero that are set to None. allows for 1-10 functions to be set.
-        */
+        // put true in temporary matrix for functions after position zero that are set to None. allows for 1-10 functions to be set.
+        // ----------------------------------------------------------------------------------------------------------------------
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "None")==0) {
           tmp_matrix[Fi]=1; count_none_function++;}
 
