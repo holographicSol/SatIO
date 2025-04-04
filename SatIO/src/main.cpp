@@ -3671,7 +3671,7 @@ void clearDynamicSATIO() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SensorDataStruct {
-  
+
   // ----------------------------------------------------
   // sensor serial output
   // ----------------------------------------------------
@@ -3732,59 +3732,99 @@ void calculateLocation(){
   //                                                                                                  GNGGA COORDINATE CONVERSION
   // ----------------------------------------------------------------------------------------------------------------------------
 
-  /*
-  Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
-  */
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Convert GNGGA latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
+  // ----------------------------------------------------------------------------------------------------------------------------
+
   if (String(satData.coordinate_conversion_mode)=="GNGGA") {
 
+    // -----------------------------------------------------------------------------------------
     // Extract absolute latitude value from GNGGA data as decimal degrees.
+    // -----------------------------------------------------------------------------------------
     satData.abs_latitude_gngga_0=atof(String(gnggaData.latitude).c_str());
+    // -----------------------------------------------------------------------------------------
     // Store absolute latitude in temporary variable for further processing.
+    // -----------------------------------------------------------------------------------------
     satData.temp_latitude_gngga=satData.abs_latitude_gngga_0;
+    // -----------------------------------------------------------------------------------------
     // Separate the integer degrees value from the fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.degreesLat=trunc(satData.temp_latitude_gngga / 100);
+    // -----------------------------------------------------------------------------------------
     // Calculate minutes and seconds values based on remaining fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLat=satData.temp_latitude_gngga - (satData.degreesLat * 100);
+    // -----------------------------------------------------------------------------------------
     // Convert excess fractional part to seconds.
+    // -----------------------------------------------------------------------------------------
     satData.secondsLat=(satData.minutesLat - trunc(satData.minutesLat)) * 60;
+    // -----------------------------------------------------------------------------------------
     // Convert excess seconds to milliseconds.
+    // -----------------------------------------------------------------------------------------
     satData.millisecondsLat=(satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    // -----------------------------------------------------------------------------------------
     // Round off minutes and seconds values to nearest integer.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLat=trunc(satData.minutesLat);
     satData.secondsLat=trunc(satData.secondsLat);
+    // -----------------------------------------------------------------------------------------
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
+    // -----------------------------------------------------------------------------------------
     satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
+    // -----------------------------------------------------------------------------------------
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
+    // -----------------------------------------------------------------------------------------
     if (strcmp(gnggaData.latitude_hemisphere, "S")==0) {
       satData.degrees_latitude=0 - satData.degrees_latitude;
     }
+    // -----------------------------------------------------------------------------------------
     // Save formatted latitude value as a string for later use.
+    // -----------------------------------------------------------------------------------------
     scanf("%f17", &satData.degrees_latitude);
-
+    // -----------------------------------------------------------------------------------------
     // Extract absolute longitude value from GNGGA data as decimal degrees.
+    // -----------------------------------------------------------------------------------------
     satData.abs_longitude_gngga_0=atof(String(gnggaData.longitude).c_str());
+    // -----------------------------------------------------------------------------------------
     // Store absolute latitude in temporary variable for further processing.
+    // -----------------------------------------------------------------------------------------
     satData.temp_longitude_gngga=satData.abs_longitude_gngga_0;
+    // -----------------------------------------------------------------------------------------
     // Separate the integer degrees value from the fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.degreesLong=trunc(satData.temp_longitude_gngga / 100);
+    // -----------------------------------------------------------------------------------------
     // Calculate minutes and seconds values based on remaining fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLong=satData.temp_longitude_gngga - (satData.degreesLong * 100);
+    // -----------------------------------------------------------------------------------------
     // Convert excess fractional part to seconds.
+    // -----------------------------------------------------------------------------------------
     satData.secondsLong=(satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    // -----------------------------------------------------------------------------------------
     // Convert excess seconds to milliseconds.
+    // -----------------------------------------------------------------------------------------
     satData.millisecondsLong=(satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    // -----------------------------------------------------------------------------------------
     // Round off minutes and seconds values to nearest integer.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLong=trunc(satData.minutesLong);
     satData.secondsLong=trunc(satData.secondsLong);
+    // -----------------------------------------------------------------------------------------
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
+    // -----------------------------------------------------------------------------------------
     satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
+    // -----------------------------------------------------------------------------------------
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
+    // -----------------------------------------------------------------------------------------
     if (strcmp(gnggaData.longitude_hemisphere, "W")==0) {
       satData.degrees_longitude=0 - satData.degrees_longitude;
     }
+    // -----------------------------------------------------------------------------------------
     // Save formatted latitude value as a string for later use.
+    // -----------------------------------------------------------------------------------------
     scanf("%f17", &satData.degrees_longitude);
   }
 
@@ -3792,58 +3832,98 @@ void calculateLocation(){
   //                                                                                              GNRMC COORDINATE CONVERSION
   // ------------------------------------------------------------------------------------------------------------------------
 
-  /*
-  Convert GNRMC latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
-  */
+  // ------------------------------------------------------------------------------------------------------------------------
+  // Convert GNRMC latitude & longitude strings to decimal degrees and format into hours, minutes, seconds, milliseconds.
+  // ------------------------------------------------------------------------------------------------------------------------
+
   else if (String(satData.coordinate_conversion_mode)=="GNRMC") {
+    // -----------------------------------------------------------------------------------------
     // Extract absolute latitude value from GNGGA data as decimal degrees.
+    // -----------------------------------------------------------------------------------------
     satData.abs_latitude_gnrmc_0=atof(String(gnrmcData.latitude).c_str());
+    // -----------------------------------------------------------------------------------------
     // Store absolute latitude in temporary variable for further processing.
+    // -----------------------------------------------------------------------------------------
     satData.temp_latitude_gnrmc=satData.abs_latitude_gnrmc_0;
+    // -----------------------------------------------------------------------------------------
     // Separate the integer degrees value from the fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.degreesLat=trunc(satData.temp_latitude_gnrmc / 100);
+    // -----------------------------------------------------------------------------------------
     // Calculate minutes and seconds values based on remaining fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLat=satData.temp_latitude_gnrmc - (satData.degreesLat * 100);
+    // -----------------------------------------------------------------------------------------
     // Convert excess fractional part to seconds.
+    // -----------------------------------------------------------------------------------------
     satData.secondsLat=(satData.minutesLat - (satData.minutesLat)) * 60;
+    // -----------------------------------------------------------------------------------------
     // Convert excess seconds to milliseconds.
+    // -----------------------------------------------------------------------------------------
     satData.millisecondsLat=(satData.secondsLat - trunc(satData.secondsLat)) * 1000;
+    // -----------------------------------------------------------------------------------------
     // Round off minutes and seconds values to nearest integer.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLat=trunc(satData.minutesLat);
     satData.secondsLat=trunc(satData.secondsLat);
+    // -----------------------------------------------------------------------------------------
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
+    // -----------------------------------------------------------------------------------------
     satData.degrees_latitude =
     satData.degreesLat + satData.minutesLat / 60 + satData.secondsLat / 3600 + satData.millisecondsLat / 3600000;
+    // -----------------------------------------------------------------------------------------
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
+    // -----------------------------------------------------------------------------------------
     if (strcmp(gnrmcData.latitude_hemisphere, "S")==0) {
       satData.degrees_latitude=0 - satData.degrees_latitude;
     }
+    // -----------------------------------------------------------------------------------------
     // Save formatted latitude value as a string for later use.
+    // -----------------------------------------------------------------------------------------
     scanf("%f17", &satData.degrees_latitude);
-
+    // -----------------------------------------------------------------------------------------
     // Extract absolute latitude value from GNGGA data as decimal degrees.
+    // -----------------------------------------------------------------------------------------
     satData.abs_longitude_gnrmc_0=atof(String(gnrmcData.longitude).c_str());
+    // -----------------------------------------------------------------------------------------
     // Store absolute latitude in temporary variable for further processing.
+    // -----------------------------------------------------------------------------------------
     satData.temp_longitude_gnrmc=satData.abs_longitude_gnrmc_0;
+    // -----------------------------------------------------------------------------------------
     // Separate the integer degrees value from the fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.degreesLong=trunc(satData.temp_longitude_gnrmc / 100);
+    // -----------------------------------------------------------------------------------------
     // Calculate minutes and seconds values based on remaining fractional part.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLong=satData.temp_longitude_gnrmc - (satData.degreesLong * 100);
+    // -----------------------------------------------------------------------------------------
     // Convert excess fractional part to seconds.
+    // -----------------------------------------------------------------------------------------
     satData.secondsLong=(satData.minutesLong - trunc(satData.minutesLong)) * 60;
+    // -----------------------------------------------------------------------------------------
     // Convert excess seconds to milliseconds.
+    // -----------------------------------------------------------------------------------------
     satData.millisecondsLong=(satData.secondsLong - trunc(satData.secondsLong)) * 1000;
+    // -----------------------------------------------------------------------------------------
     // Round off minutes and seconds values to nearest integer.
+    // -----------------------------------------------------------------------------------------
     satData.minutesLong=trunc(satData.minutesLong);
     satData.secondsLong=trunc(satData.secondsLong);
+    // -----------------------------------------------------------------------------------------
     // Combine degrees, minutes, seconds, and milliseconds into a single decimal latitude value.
+    // -----------------------------------------------------------------------------------------
     satData.degrees_longitude =
     satData.degreesLong + satData.minutesLong / 60 + satData.secondsLong / 3600 + satData.millisecondsLong / 3600000;
+    // -----------------------------------------------------------------------------------------
     // Negate latitude value if it's in the Southern hemisphere (make negative value).
+    // -----------------------------------------------------------------------------------------
     if (strcmp(gnrmcData.longitude_hemisphere, "W")==0) {
       satData.degrees_longitude=0 - satData.degrees_longitude;
     }
+    // -----------------------------------------------------------------------------------------
     // Save formatted latitude value as a string for later use.
+    // -----------------------------------------------------------------------------------------
     scanf("%f17", &satData.degrees_longitude);
   }
 }
@@ -3853,7 +3933,9 @@ void calculateLocation(){
 // ------------------------------------------------------------------------------------------------------------------------------
 
 String padDigitsZero(int digits) {
-  /* preappends char 0 to pad string of digits evenly */
+  // ------------------------------------------------
+  // preappends char 0 to pad string of digits evenly
+  // ------------------------------------------------
   memset(pad_digits_new, 0, sizeof(pad_digits_new));
   memset(pad_current_digits, 0, sizeof(pad_current_digits));
   if(digits < 10) {strcat(pad_digits_new, "0");}
@@ -3867,11 +3949,16 @@ String padDigitsZero(int digits) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 String formatDate(int day, int month, int year) {
-  /* returns period delimited string */
+  // -------------------------------
+  // returns period delimited string 
+  // -------------------------------
   return String(padDigitsZero(day)) + "." + String(padDigitsZero(month)) + "." + String(padDigitsZero(year));
 }
+
 String formatDateStamp(int day, int month, int year) {
-  /* return string without delimiters */
+  // --------------------------------
+  // return string without delimiters
+  // --------------------------------
   return String(padDigitsZero(year)) + String(padDigitsZero(month)) + String(padDigitsZero(day));
 }
 
@@ -3880,17 +3967,30 @@ String formatDateStamp(int day, int month, int year) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 String formatTime(int hour, int minute, int second) {
-  /* returns period delimited string */
+  // -------------------------------
+  // returns period delimited string 
+  // -------------------------------
   return String(padDigitsZero(hour)) + ":" + String(padDigitsZero(minute)) + ":" + String(padDigitsZero(second));
 }
+
 String formatTimeStamp(int hour, int minute, int second) {
-  /* return string without delimiters */
+  // --------------------------------
+  // return string without delimiters
+  // --------------------------------
   return  String(padDigitsZero(hour)) + String(padDigitsZero(minute)) + String(padDigitsZero(second));
 }
+
 int hoursMinutesSecondsToInt(int hours, int minutes, int seconds) {
+  // ---------------------------------------------------------------------------------------
+  // returns padded int: useful for mathematical operations and can be used for other things
+  // ---------------------------------------------------------------------------------------
   return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes) + padDigitsZero(seconds)).c_str());
 }
+
 int hoursMinutesToInt(int hours, int minutes) {
+  // ---------------------------------------------------------------------------------------
+  // returns padded int: useful for mathematical operations and can be used for other things
+  // ---------------------------------------------------------------------------------------
   return atoi(String(padDigitsZero(hours) + padDigitsZero(minutes)).c_str());
 }
 
@@ -3899,13 +3999,17 @@ int hoursMinutesToInt(int hours, int minutes) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 String formatDateTime(int hour, int minute, int second, int day, int month, int year) {
-  /* returns period delimited string */
+  // -------------------------------
+  // returns period delimited string 
+  // -------------------------------
   return 
   String(padDigitsZero(hour)) + ":" + String(padDigitsZero(minute)) + ":" + String(padDigitsZero(second)) + " " +
   String(padDigitsZero(day))  + "." + String(padDigitsZero(month))  + "." + String(padDigitsZero(year));
 }
 String formatDateTimeStamp(int hour, int minute, int second, int day, int month, int year) {
-  /* return string without delimiters */
+  // --------------------------------
+  // return string without delimiters
+  // --------------------------------
   return 
   String(padDigitsZero(year)) + String(padDigitsZero(month))  + String(padDigitsZero(day)) +
   String(padDigitsZero(hour)) + String(padDigitsZero(minute)) + String(padDigitsZero(second));
@@ -3921,7 +4025,6 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                             EXTRACT UTC TIME & DATE FROM GPS                                */
   // ----------------------------------------------------------------------------------------------
-
   memset(satData.tmp_day, 0, sizeof(satData.tmp_day));
   satData.tmp_day[0]=gnrmcData.utc_date[0];
   satData.tmp_day[1]=gnrmcData.utc_date[1];
@@ -4061,6 +4164,7 @@ void convertUTCTimeToLocalTime() {
   // GPS and RTC are UTC.
   // Make local time from RTC, regardless of synchronization.
   // ----------------------------------------------------------------------------------------------
+
   // --------------------------------------------------------
   // Auto UTC offset: automatically modify utc_second_offset
   // --------------------------------------------------------
@@ -4083,7 +4187,6 @@ void convertUTCTimeToLocalTime() {
 
   satData.formatted_local_time=String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second));
   satData.formatted_local_date=String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year));
-  
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
