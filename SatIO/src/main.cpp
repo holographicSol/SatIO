@@ -6704,9 +6704,14 @@ bool check_bool_false(bool _bool) {
   if (_bool==false) {return true;} else {return false;}
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   MATRIX TIMER
+// ------------------------------------------------------------------------------------------------------------------------------ 
+
 bool MatrixTimer(double n0, double n1, int Mi) {
   /*
   units of time accumulated by an isr alarm.
+  can be used to modulate output, if other functions are also set then the output will still be modulated according to matrix timer. 
   x (n0): off interval
   y (n1): on interval (should not exceed off interval)
   example: x=1, y=1=on for 1 unit of time, off for 1 unit of time
