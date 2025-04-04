@@ -5742,9 +5742,6 @@ bool sdcardLoadMatrix(char * file) {
     // ------------------------------------------------
     exfile.close();
     Serial.println("[sdcard] failed to load file: " + String(file));
-    // update filename and file path
-    // memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-    // memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
     return false;
     }
 }
