@@ -1408,13 +1408,13 @@ TimeStruct timeData;
 //                                                                                                     INTERRUPT INTERVAL COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-/*
-HWTimer designed to be agnostic to any specific unit of time so that interval time can be adjusted according to a given system.
-*/
+// ------------------------------------------------------------------------------------------------------------------------------
+// HWTimer designed to be agnostic to any specific unit of time so that interval time can be adjusted according to a given system.
+// ------------------------------------------------------------------------------------------------------------------------------
 
-static int INTERVAL_TIME;
+static int INTERVAL_TIME;                // interval of time between alarms
 volatile int interrupt_interval_counter; // for counting interrupt
-hw_timer_t * interval_timer=NULL;      // H/W timer defining (Pointer to the Structure)
+hw_timer_t * interval_timer=NULL;        // H/W timer defining (Pointer to the Structure)
 portMUX_TYPE interval_timer_mux=portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR  isr_interval_timer() {
@@ -1428,13 +1428,12 @@ void IRAM_ATTR  isr_interval_timer() {
 //                                                                                                       INTERRUPT SECOND COUNTER
 // ------------------------------------------------------------------------------------------------------------------------------
 
-/*
-HWTimer designed to specifically count seconds.
-*/
+// ------------------------------------------------------------------------------------------------------------------------------
+// HWTimer designed to specifically count seconds.
+// ------------------------------------------------------------------------------------------------------------------------------
 
-static int SECOND_TIME;
 volatile int interrupt_second_counter; // for counting interrupt
-hw_timer_t * second_timer=NULL;      // H/W timer defining (Pointer to the Structure)
+hw_timer_t * second_timer=NULL;        // H/W timer defining (Pointer to the Structure)
 portMUX_TYPE second_timer_mux=portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR isr_second_timer() {
@@ -1443,31 +1442,6 @@ void IRAM_ATTR isr_second_timer() {
   timeData.accumulated_seconds++;
   timeData.uptime_seconds++;
   portEXIT_CRITICAL_ISR(&second_timer_mux);
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                          SYSTEM UPTIME COUNTER
-// ------------------------------------------------------------------------------------------------------------------------------
-
-void UptimeSecondsToDateTime(long sec) {
-  // Calculate years, months, days, hours, minutes, seconds
-  timeData.uptime_years=sec / 31536000; // Approximate seconds in a year
-  sec %= 31536000;
-  timeData.uptime_months=sec / 2629743; // Approximate seconds in a month
-  sec %= 2629743;
-  timeData.uptime_days=sec / 86400;
-  sec %= 86400;
-  timeData.uptime_hours= sec / 3600;
-  sec %= 3600;
-  timeData.uptime_minutes=sec / 60;
-  timeData.uptime_seconds=sec % 60;
-}
-
-// todo: no reset uptime_seconds
-String DisplayOverMax(long sec, long max) {
-  /* modify this according to required/available screen dimensions */
-  if (sec > max) {return String("[OVER MAX]");}
-  else {return String(sec);}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
