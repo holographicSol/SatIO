@@ -10244,7 +10244,7 @@ void menuEnter() {
       // SDCARD
       // ----------------------------------------------
       beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      // ToDo:
+      // ToDo: restore defaults
       sd.end();
       endSPIDevice(SD_CS);
       // ----------------------------------------------
