@@ -1351,6 +1351,8 @@ struct SDCardStruct {
     "", "", "", "", "",
     };
   // ----------------------------------------------------------
+  // paths and names
+  // ----------------------------------------------------------
   char sysconf[56]="/SYSTEM/SYSTEM.CONFIG";
   char default_matrix_filepath[56]="/MATRIX/M_0.SAVE";
   char matrix_filename[56]="";
@@ -1359,6 +1361,11 @@ struct SDCardStruct {
   char system_dirs[2][56]={"/MATRIX/", "/SYSTEM/"};
   char save_ext[56]=".SAVE";
   char matrix_fname[10]="M";
+  ExFile current_file;
+  char newfilename[56];
+  // ----------------------------------------------------------
+  // read/write data
+  // ----------------------------------------------------------
   unsigned long iter_token;
   char BUFFER[2048];
   String SBUFFER;
@@ -1377,8 +1384,6 @@ struct SDCardStruct {
   char tmp[56];
   char tag_0[56]="r";
   char tag_1[56]="e";
-  ExFile current_file;
-  char newfilename[56];
 };
 SDCardStruct sdcardData;
 
@@ -1445,10 +1450,11 @@ void IRAM_ATTR isr_second_timer() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                     MATRIX FUNCTIONS: ADVANCED
+//                                                                                                                    PLANET DATA
 // ------------------------------------------------------------------------------------------------------------------------------
 
-/*
+/* -------------------------------------------------------------
+
 Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
            Dec: Declination     (ranges from -90 to 90 degrees)
            Az:  Azimuth         (ranges from 0 to 360 degrees)
@@ -1456,7 +1462,8 @@ Astronomy: Ra:  Right Ascension (ranges from 0 to 24 hours)
            R:   Rise            (time)
            S:   Set             (time)
            P:   Phase
-*/
+
+------------------------------------------------------------- */
 
 struct SiderealPlantetsStruct {
   double sun_ra;
@@ -1570,6 +1577,10 @@ struct SiderealPlantetsStruct {
   char sentence[1024];
 };
 SiderealPlantetsStruct siderealPlanetData;
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                    OBJECT DATA
+// ------------------------------------------------------------------------------------------------------------------------------
 
 struct SiderealObjectStruct {
   char object_name[56];
