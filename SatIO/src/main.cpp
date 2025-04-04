@@ -1386,10 +1386,11 @@ void UptimeSecondsToDateTime(long sec) {
 }
 
 // todo: no reset uptime_seconds
-void ScreenSafeUptime(long sec) {
+String ScreenSafeUptime(long sec) {
   /* modify this according to required/available screen dimensions */
   // 76px avaliable for font 6px wide + 1px space = approx. 10 digit number all consisting of 9 (316.9 years before each reset)
-  if (sec > 9999999999) {timeData.uptime_seconds=0;}
+  if (sec > 9999999999) {return String("[OVER MAX]");}
+  else {return String(sec);}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12572,61 +12573,48 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SYSTEM", systemData.color_title, systemData.color_border);
-        // ------------------------------------------------
+        // ----------------------------------------------
         display.setColor(systemData.color_border);
-        // ------------------------------------------------
         display.drawHLine(1, 62, 127);
         display.drawVLine(46, 13, 61);
-        // ------------------------------------------------
+        // ----------------------------------------------
       }
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
       // speed
       // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
-      // ------------------------------------------------
       canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
       canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD );
       display.drawCanvas(3, ui_content_0, canvas42x8);
-      // ------------------------------------------------
+      canvas76x8.clear();
       display.setColor(systemData.color_content);
-      // ------------------------------------------------
-      canvas60x8.clear();
-      canvas60x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
-      display.drawCanvas(50, ui_content_0, canvas60x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
+      canvas76x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 6).c_str(), STYLE_BOLD );
+      display.drawCanvas(50, ui_content_0, canvas76x8);
       // ------------------------------------------------
       // uptime 
       // ------------------------------------------------
       canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
       canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD );
       display.drawCanvas(3, ui_content_1, canvas42x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
       canvas76x8.clear();
-      ScreenSafeUptime(timeData.uptime_seconds);
-      canvas76x8.printFixed(1, 1, String(timeData.uptime_seconds, 10).c_str());
+      display.setColor(systemData.color_content);
+      canvas76x8.printFixed(1, 1, String(ScreenSafeUptime(timeData.uptime_seconds).c_str(), 10).c_str());
       display.drawCanvas(50, ui_content_1, canvas76x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_subtitle);
       // ------------------------------------------------
       // overload 
       // ------------------------------------------------
       canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
       canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD );
       display.drawCanvas(3, ui_content_2, canvas42x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
-      // ------------------------------------------------
       canvas76x8.clear();
+      display.setColor(systemData.color_content);
       if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas76x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
       else {canvas76x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD );}
       display.drawCanvas(50, ui_content_2, canvas76x8);
-      // ------------------------------------------------
-      display.setColor(systemData.color_content);
       // ------------------------------------------------
       // set run matrix on startup 
       // ------------------------------------------------
@@ -12636,16 +12624,6 @@ void UpdateUI(void * pvParamters) {
       // set overload time
       // ------------------------------------------------
       menuSystemItems[1]=systemData.char_overload_times[systemData.index_overload_times];
-
-      // toDo:
-      // manually set rtc
-      // // enable/disable matrix
-      // if (systemData.matrix_enabled==true) {menuSystemItems[1]="MATRIX ENABLED";}
-      // else {menuSystemItems[1]="MATRIX DISABLED";}
-      // // enable/disable port controller
-      // if (systemData.port_controller_enabled==true) {menuSystemItems[2]="PORT.CON ENABLED";}
-      // else {menuSystemItems[2]="PORT.CON DISABLED";}
-
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -12655,8 +12633,8 @@ void UpdateUI(void * pvParamters) {
         menuSystem.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
         menuSystem.showMenuContent(display);
+        // ----------------------------------------------
       }
-      // ------------------------------------------------
     }
 
     // ------------------------------------------------
@@ -13878,6 +13856,7 @@ void readI2C() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void writeToPortController() {
+
   // ------------------------------------------------
   // Send Port Map
   // ------------------------------------------------
@@ -13902,6 +13881,7 @@ void writeToPortController() {
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+
   // ------------------------------------------------
   // Send Switch State
   // ------------------------------------------------
@@ -13926,6 +13906,7 @@ void writeToPortController() {
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
     }
   }
+
   // ------------------------------------------------
   // Send Abstract GPS Signal Value
   // ------------------------------------------------
@@ -13934,8 +13915,8 @@ void writeToPortController() {
   strcpy(I2CLink.TMP_BUFFER_0, "$GPSSIG,");
   // data
   if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)>1.0)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
-  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atof(gnggaData.hdop_precision_factor)<=1.0)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
 
   // ------------------------------------------------
@@ -13949,6 +13930,7 @@ void writeToPortController() {
   else {strcat(I2CLink.TMP_BUFFER_0, "1");}
   // debug("[overload writing] " + String(I2CLink.TMP_BUFFER_0));
   writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+
   // ------------------------------------------------
   // Receive Back After Sending
   // ------------------------------------------------
