@@ -10093,13 +10093,6 @@ void inputChar(char * data) {
   }
 }
 
-// ------------------------------------------------
-//                                          UI DATA
-// ------------------------------------------------
-
-char TMP_UI_DATA_0[56];
-char TMP_UI_DATA_1[56];
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        MENU UP
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -11277,6 +11270,8 @@ String getRelatedX(char * data) {
 /*
 IMPORTANT: beware of image retention and other damage that can be caused to OLED displays.
 */
+
+char TMP_UI_DATA_0[56];
 
 // ------------------------------------------------
 //                                        UI BORDER
@@ -15203,13 +15198,13 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
     xTaskCreatePinnedToCore(
-      UpdateUI, /* Function to implement the task */
-      "UpdateUITask",  /* Name of the task */
-      102400,   /* Stack size in words */
-      NULL,     /* Task input parameter */
-      2,        /* Priority of the task */
-      &UpdateUITask,   /* Task handle. */
-      0);       /* Core where the task should run */
+      UpdateUI,       /* Function to implement the task */
+      "UpdateUITask", /* Name of the task */
+      102400,         /* Stack size in words */
+      NULL,           /* Task input parameter */
+      2,              /* Priority of the task */
+      &UpdateUITask,  /* Task handle. */
+      0);             /* Core where the task should run */
   }
   
   // ----------------------------------------------------------------------------------------------------------------------------
