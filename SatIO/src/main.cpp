@@ -299,7 +299,10 @@ void UIIndicators();
 void printAllTimes();
 void zero_matrix();
 
-bool gps_done=false; // helps avoid any potential race conditions where gps data is collected on another task
+// --------------------------------------------------------------------------------------
+// helps avoid any potential race conditions where gps data is collected on another task
+// --------------------------------------------------------------------------------------
+bool gps_done=false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -316,7 +319,9 @@ const byte rxd_from_gps=26;  //
 //                                                                                                                   MULTIPLEXERS
 // ------------------------------------------------------------------------------------------------------------------------------
 
+// --------------------------------------------------------------------------------------
 /* i2c multiplexer */
+// --------------------------------------------------------------------------------------
 
 #define TCA9548AADDR 0x70 // i2c address of TCA9548A i2c multiplexer 
 
@@ -327,7 +332,9 @@ void setMultiplexChannel_TCA9548A(uint8_t channel) {
   Wire.endTransmission();
 }
 
+// --------------------------------------------------------------------------------------
 /* analog/digital multiplexer */
+// --------------------------------------------------------------------------------------
 
 int CD74HC4067_Mux_Channel[16][4]={
   {0,0,0,0}, //channel 0 
@@ -357,7 +364,8 @@ const int CD74HC4067_ControlPin[]={CD74HC4067_S0, CD74HC4067_S1, CD74HC4067_S2, 
 
 void setMultiplexChannel_CD74HC4067(int channel) {
   for(int i=0; i < 4; i++){
-    digitalWrite(CD74HC4067_ControlPin[i], CD74HC4067_Mux_Channel[channel][i]); // change channel of analog/digital multiplexer
+    // change channel of analog/digital multiplexer
+    digitalWrite(CD74HC4067_ControlPin[i], CD74HC4067_Mux_Channel[channel][i]);
   }
 }
 
@@ -417,7 +425,6 @@ NanoCanvas<36,8,1> canvas36x8;
 NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
-
 
 const uint8_t UnidentifiedStudioBMP[] PROGMEM =
 {
@@ -654,12 +661,26 @@ const uint8_t rtcsync_red[]={
 //                                                                                                              DISPLAY VARIABLES
 // ------------------------------------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------------------------
 /* try to ensure space for developments by leaving a space of 20 pages between each page group */
+// ----------------------------------------------------------------------------------------------
 
 bool update_ui=true;
 bool ui_cleared=false;
-signed int menu_page=0;
 bool interaction_updateui=true; // performance and efficiency: make true when content should be updated. can be true for any reason.
+
+signed int menu_page=0;
+int previous_menu_page;
+int menu_column_selection=0;
+int previous_menu_column_selection;
+
+bool make_i2c_request=false;
+int unixtime_i2C_reponse;
+
+char input_data[128];
+char tmp_input_data[128];
+char allow_input_data=false;
+signed int enter_digits_key=-1;
 
 // ----------------------------------------------------
 // HOME
@@ -759,7 +780,6 @@ main menu is activated by pressing enter when on homescreen.
 this may be replaced later by a simple function that changes the page however until then this is preferrable in case more items
 are added to this menu.
 */
-
 const int max_home_items=1;
 const char *menuHomeItems[max_home_items] =
 {
@@ -774,18 +794,17 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 const int max_main_menu_items=10;
 const char *menuMainItems[max_main_menu_items] =
 {
-    "    MATRIX       ", // allows matrix configuration
-    "    VIEW MATRIX  ", // overview matrix switching
-    "    FILE         ", // load/save/delete system and matrix configurations
-    "    GPS          ", // enable/disable parsing of sentences from the gps module
-    "    SERIAL       ", // enable/disable output of various comma delimited sentences
-    "    SYSTEM       ",
-    "    UNIVERSE     ", // enable/disable solar tracking, planet tracking and or other celestial calculations
-    "    DISPLAY      ",
-    "    CD74HC4067   ",
-    "    TIME & DATE  ",
+    "    MATRIX       ", // 0
+    "    VIEW MATRIX  ", // 1
+    "    FILE         ", // 2
+    "    GPS          ", // 3
+    "    SERIAL       ", // 4
+    "    SYSTEM       ", // 5
+    "    UNIVERSE     ", // 6
+    "    DISPLAY      ", // 7
+    "    CD74HC4067   ", // 8
+    "    TIME & DATE  ", // 9
 };
-//  "                  "
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 30}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -925,6 +944,10 @@ const int max_timeanddate_items=2;
 const char *menuTimeAndDateItems[max_timeanddate_items];
 LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                          DHT11
+// ------------------------------------------------------------------------------------------------------------------------------
+
 /*
 Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14. Pin 15 can work but DHT must be disconnected during program upload.
 Uncomment whatever type you're using!
@@ -959,16 +982,22 @@ SiderealObjects myAstroObj; // for getting right ascension and declination of ob
 //                                                                                                                         SDCARD
 // ------------------------------------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------
 // SDCARD VSPI pins on esp32
+// ----------------------------------------------------------------
 int SD_SCLK=18;  // default esp32 VSPI
 int SD_MISO=19;  // default esp32 VSPI
 int SD_MOSI=23;  // default esp32 VSPI
 int SD_CS  =5;   // default esp32 VSPI
 
 #define SD_FAT_TYPE 2
+// ----------------------------------------------------------------
 // SDCARD_SS_PIN is defined for the built-in SD on some boards.
+// ----------------------------------------------------------------
 const uint8_t SD_CS_PIN=5;
+// ----------------------------------------------------------------
 // Try max SPI clock for an SD. Reduce SPI_CLOCK if errors occur.
+// ----------------------------------------------------------------
 #define SPI_CLOCK SD_SCK_MHZ(4)
 
 #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SPI_CLOCK)
@@ -1028,33 +1057,32 @@ char digit_9[2]="9";
 char hyphen_char[2]="-";
 char period_char[2]=".";
 
-bool make_i2c_request=false;
-int unixtime_i2C_reponse;
-int previous_menu_page;
-char input_data[128];
-char tmp_input_data[128];
-char allow_input_data=false;
-signed int enter_digits_key=-1;
-int menu_column_selection=0;
-int previous_menu_column_selection;
-
-char cwd[1024]="/";
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   DATA: SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct systemStruct {
-  bool DISPLAY_ENABLED=true; // enable/disable headless mode (currently in firmware only).
 
-  bool debug=false; // print verbose information over serial
+  // -----------------------------------------------------------------------------------------------------------------------
+  // debug
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool debug=false;   // print verbose information over serial
   bool t_bench=false; // prints bennchmark information for tuning
 
-  bool overload=false; // false providing main loop time under specified amount of time. useful if we need to know data is accurate to within overload threshhold time.
-  int i_overload=0; // count overloads
-  int overload_max=100000; // main loop overload time in micros (default 1/10th of a second)
+  // -----------------------------------------------------------------------------------------------------------------------
+  // display
+  // -----------------------------------------------------------------------------------------------------------------------
+
+  bool DISPLAY_ENABLED=true; // enable/disable headless mode (currently in firmware only).
+
+  // -----------------------------------------------------------------------------------------------------------------------
+  // overload
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool overload=false;         // are loop times withing specified loop time max
+  int i_overload=0;            // count overloads
+  int overload_max=100000;     // main loop overload time in micros (default 100 milliseconds)
   int index_overload_times=10; // index of currently used time
-  int max_overload_times=11;
+  int max_overload_times=11;   // max overload menu values
   int overload_times[12]={
     1,
     2,
@@ -1084,34 +1112,24 @@ struct systemStruct {
     "OLOAD       1 Second",
   };
 
-  bool matrix_run_on_startup=true; // enables/disable matrix switch on startup as specified by system configuration file
-
-  // performace: turn on/off what you need
-  bool satio_enabled=true;          // enables/disables data extrapulation from existing GPS data (coordinate degrees, etc)
-  bool gngga_enabled=true;          // enables/disables parsing of serial GPS data
-  bool gnrmc_enabled=true;          // enables/disables parsing of serial GPS data
-  bool gpatt_enabled=true;          // enables/disables parsing of serial GPS data
-  bool matrix_enabled=true;         // enables/disables matrix switch
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable system functions
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool matrix_enabled=true;          // enables/disables matrix switching
+  bool matrix_run_on_startup=true;   // enables/disable matrix switch on startup as specified by system configuration file
   bool port_controller_enabled=true; // may be false by default but is default true for now.
 
-  bool output_satio_enabled=false;   // enables/disables output SatIO sentence over serial
-  bool output_gngga_enabled=false;   // enables/disables output GPS sentence over serial
-  bool output_gnrmc_enabled=false;   // enables/disables output GPS sentence over serial
-  bool output_gpatt_enabled=false;   // enables/disables output GPS sentence over serial
-  bool output_matrix_enabled=false;  // enables/disables output matrix switch active/inactive states sentence over serial
-  bool output_sensors_enabled=false; // enables/disables output of sensory data sentence over serial
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable GPS processing
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool satio_enabled=true;           // enables/disables further processing of GPS data (coordinate degrees, etc.)
+  bool gngga_enabled=true;           // enables/disables processing GNGGA sentence data
+  bool gnrmc_enabled=true;           // enables/disables processing GNRMC sentence data
+  bool gpatt_enabled=true;           // enables/disables processing GPATT sentence data
 
-  bool output_sun_enabled=false;     // enables/disables output sentence over serial
-  bool output_moon_enabled=false;    // enables/disables output sentence over serial
-  bool output_mercury_enabled=false; // enables/disables output sentence over serial
-  bool output_venus_enabled=false;   // enables/disables output sentence over serial
-  bool output_mars_enabled=false;    // enables/disables output sentence over serial
-  bool output_jupiter_enabled=false; // enables/disables output sentence over serial
-  bool output_saturn_enabled=false;  // enables/disables output sentence over serial
-  bool output_uranus_enabled=false;  // enables/disables output sentence over serial
-  bool output_neptune_enabled=false; // enables/disables output sentence over serial
-
-
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable planet and object tracking
+  // -----------------------------------------------------------------------------------------------------------------------
   bool sidereal_track_sun=true;      // enables/disables celestial body tracking
   bool sidereal_track_moon=true;     // enables/disables celestial body tracking
   bool sidereal_track_mercury=true;  // enables/disables celestial body tracking
@@ -1122,10 +1140,31 @@ struct systemStruct {
   bool sidereal_track_uranus=true;   // enables/disables celestial body tracking
   bool sidereal_track_neptune=true;  // enables/disables celestial body tracking
 
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable serial output
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool output_satio_enabled=false;   // enables/disables output SatIO sentence over serial
+  bool output_gngga_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_gnrmc_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_gpatt_enabled=false;   // enables/disables output GPS sentence over serial
+  bool output_matrix_enabled=false;  // enables/disables output matrix switch active/inactive states sentence over serial
+  bool output_sensors_enabled=false; // enables/disables output of sensory data sentence over serial
+  bool output_sun_enabled=false;     // enables/disables output sentence over serial
+  bool output_moon_enabled=false;    // enables/disables output sentence over serial
+  bool output_mercury_enabled=false; // enables/disables output sentence over serial
+  bool output_venus_enabled=false;   // enables/disables output sentence over serial
+  bool output_mars_enabled=false;    // enables/disables output sentence over serial
+  bool output_jupiter_enabled=false; // enables/disables output sentence over serial
+  bool output_saturn_enabled=false;  // enables/disables output sentence over serial
+  bool output_uranus_enabled=false;  // enables/disables output sentence over serial
+  bool output_neptune_enabled=false; // enables/disables output sentence over serial
+
+  // -----------------------------------------------------------------------------------------------------------------------
   // oled protection
-  bool display_auto_off=true; // recommended
-  int index_display_autooff_times=5; // index of currently used time 
-  int max_display_autooff_times=5; // max available times
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool display_auto_off=true;                          // recommended
+  int index_display_autooff_times=5;                   // index of currently used time 
+  int max_display_autooff_times=5;                     // max available times
   int display_autooff_times[6]={3, 5, 10, 15, 30, 60}; // available times
   char char_display_autooff_times[6][56]={
     "AUTO-OFF  3",
@@ -1137,24 +1176,27 @@ struct systemStruct {
   };
   int display_timeout=display_autooff_times[index_display_autooff_times];
   
-  // personalization: color
-  int index_display_border_color=3;
-  int index_display_content_color=4;
-  int index_display_menu_content_color=2;
-  int index_display_menu_border_color=2;
-  int index_display_title_color=2;
-  int index_display_color_subtitle=2;
-  int max_color_index=6;
+  // -----------------------------------------------------------------------------------------------------------------------
+  // oled personalization: colors
+  // -----------------------------------------------------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------
   // ensure rgb16 values can be equally divided by 8 unless 255 or 0
+  // ----------------------------------------------------------------
+  int max_color_index=6;      // max color values
   int display_color[7]={
-    RGB_COLOR16(255,0,0), // red
-    RGB_COLOR16(255,255,0), // yellow
-    RGB_COLOR16(0,255,0), // green
-    RGB_COLOR16(0,0,255), // blue
-    RGB_COLOR16(0,255,255), // light blue
-    RGB_COLOR16(255,0,255), // purple
+    RGB_COLOR16(255,0,0),     // red
+    RGB_COLOR16(255,255,0),   // yellow
+    RGB_COLOR16(0,255,0),     // green
+    RGB_COLOR16(0,0,255),     // blue
+    RGB_COLOR16(0,255,255),   // light blue
+    RGB_COLOR16(255,0,255),   // purple
     RGB_COLOR16(255,255,255), // white
   };
+
+  // ----------------------------------------------------------------
+  // border color
+  // ----------------------------------------------------------------
   char char_display_border_color[7][56]={
     "BORDER    RED",
     "BORDER    YELLOW",
@@ -1164,6 +1206,12 @@ struct systemStruct {
     "BORDER    PURPLE",
     "BORDER    WHITE",
   };
+  int index_display_border_color=3;
+  int color_border=display_color[index_display_border_color];
+
+  // ----------------------------------------------------------------
+  // content color
+  // ----------------------------------------------------------------
   char char_display_content_color[7][56]={
     "CONTENT   RED",
     "CONTENT   YELLOW",
@@ -1173,6 +1221,12 @@ struct systemStruct {
     "CONTENT   PURPLE",
     "CONTENT   WHITE",
   };
+  int index_display_content_color=4;
+  int color_content=display_color[index_display_content_color];
+
+  // ----------------------------------------------------------------
+  // menu border color
+  // ----------------------------------------------------------------
   char char_display_menu_border_color[7][56]={
     "MENUB     RED",
     "MENUB     YELLOW",
@@ -1182,6 +1236,12 @@ struct systemStruct {
     "MENUB     PURPLE",
     "MENUB     WHITE",
   };
+  int index_display_menu_border_color=2;
+  int color_menu_border=display_color[index_display_menu_border_color];
+
+  // ----------------------------------------------------------------
+  // menu content color
+  // ----------------------------------------------------------------
   char char_display_menu_content_color[7][56]={
     "MENUC     RED",
     "MENUC     YELLOW",
@@ -1191,6 +1251,12 @@ struct systemStruct {
     "MENUC     PURPLE",
     "MENUC     WHITE",
   };
+  int index_display_menu_content_color=2;
+  int color_menu_content=display_color[index_display_menu_content_color];
+
+  // ----------------------------------------------------------------
+  // title color
+  // ----------------------------------------------------------------
   char char_display_title_color[7][56]={
     "TITLE     RED",
     "TITLE     YELLOW",
@@ -1200,6 +1266,12 @@ struct systemStruct {
     "TITLE     PURPLE",
     "TITLE     WHITE",
   };
+  int index_display_title_color=2;
+  int color_title=display_color[index_display_title_color];
+  
+  // ----------------------------------------------------------------
+  // sub-title color
+  // ----------------------------------------------------------------
   char char_display_subtitle_color[7][56]={
     "SUBTITLE  RED",
     "SUBTITLE  YELLOW",
@@ -1209,15 +1281,8 @@ struct systemStruct {
     "SUBTITLE  PURPLE",
     "SUBTITLE  WHITE",
   };
-  int color_border=display_color[index_display_border_color];
-  int color_content=display_color[index_display_content_color];
-  int color_menu_content=display_color[index_display_menu_content_color];
-  int color_menu_border=display_color[index_display_menu_border_color];
-  int color_title=display_color[index_display_title_color];
+  int index_display_color_subtitle=2;
   int color_subtitle=display_color[index_display_color_subtitle];
-
-  char tmp0[56];
-  char tmp1[56];
 };
 systemStruct systemData;
 
@@ -1230,14 +1295,14 @@ void bench(String x) {if (systemData.t_bench==true) {Serial.println(x);}}
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct Serial1Struct {
-  unsigned long nbytes;                // number of bytes read by serial
-  unsigned long iter_token;            // count token iterations
-  char BUFFER[2000];                   // serial buffer
-  char * token=strtok(BUFFER, ",");  // token pointer 
-  int collected=0;                   // counts how many unique sentences have been collected.
-  bool gngga_bool=false;             // has sentence been collected
-  bool gnrmc_bool=false;             // has sentence been collected
-  bool gpatt_bool=false;             // has sentence been collected
+  unsigned long nbytes;             // number of bytes read by serial
+  unsigned long iter_token;         // count token iterations
+  char BUFFER[2000];                // serial buffer
+  char * token=strtok(BUFFER, ","); // token pointer 
+  int collected=0;                  // counts how many unique sentences have been collected.
+  bool gngga_bool=false;            // has sentence been collected
+  bool gnrmc_bool=false;            // has sentence been collected
+  bool gpatt_bool=false;            // has sentence been collected
 };
 Serial1Struct serial1Data;
 
