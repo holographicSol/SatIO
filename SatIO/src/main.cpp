@@ -2488,7 +2488,7 @@ struct MatrixStruct {
   allows modulation with second resolution.
   currently intended as one timer per switch so be careful.
   */
- // -------------------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------------------
   unsigned long matrix_timers[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
