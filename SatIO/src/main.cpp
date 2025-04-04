@@ -1337,15 +1337,20 @@ SerialLinkStruct SerialLink;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct SDCardStruct {
+  // ----------------------------------------------------------
   // max matrix file names available
+  // ----------------------------------------------------------
   int max_matrix_filenames=20; 
+  // ----------------------------------------------------------
   // matrix filenames created, stored and found by system
+  // ----------------------------------------------------------
   char matrix_filenames[20][56]={  
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", "",
-    };                                                   
+    };
+  // ----------------------------------------------------------
   char sysconf[56]="/SYSTEM/SYSTEM.CONFIG";
   char default_matrix_filepath[56]="/MATRIX/M_0.SAVE";
   char matrix_filename[56]="";
@@ -1382,14 +1387,14 @@ SDCardStruct sdcardData;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 struct TimeStruct {
-  double accumulated_intervals;     // time (units defined by alarm) accumulated by isr timer
+  double accumulated_intervals; // time (units defined by alarm) accumulated by isr timer
   double accumulated_seconds;
-  signed long mainLoopTimeTaken;    // current main loop time
-  signed long mainLoopTimeStart;    // time recorded at the start of each iteration of main loop
-  signed long mainLoopTimeTakenMax; // current record of longest main loop time
-  signed long mainLoopTimeTakenMin; // current record of shortest main loop time
-  unsigned long t0;                 // micros time 0
-  unsigned long t1;                 // micros time 1
+  signed long mainLoopTimeTaken;
+  signed long mainLoopTimeStart;
+  signed long mainLoopTimeTakenMax;
+  signed long mainLoopTimeTakenMin;
+  unsigned long t0;
+  unsigned long t1;
   long uptime_seconds;
   long uptime_years;
   long uptime_months;
