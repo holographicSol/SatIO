@@ -10055,11 +10055,15 @@ void inputChar(char * data) {
     // ---------------------------
     if (enter_digits_key==1) {
       if (allow_input_data==true) {
+        // ----------------------------------------
         // create temporary data to concat and test
+        // ----------------------------------------
         memset(tmp_input_data, 0, sizeof(tmp_input_data));
         strcpy(tmp_input_data, input_data);
         strcat(tmp_input_data, data);
+        // ----------------------------------------
         // test range
+        // ----------------------------------------
         if ((atoi(tmp_input_data) <= 99) && (atoi(tmp_input_data) >= -1)) {
           memset(input_data, 0, sizeof(input_data));
           strcpy(input_data, tmp_input_data);
@@ -10071,11 +10075,15 @@ void inputChar(char * data) {
     // ---------------------------
     else if ((enter_digits_key==2) || (enter_digits_key==3) || (enter_digits_key==4) || (enter_digits_key==5)) {
       if (allow_input_data==true) {
+        // ----------------------------------------
         // create temporary data to concat and test
+        // ----------------------------------------
         memset(tmp_input_data, 0, sizeof(tmp_input_data));
         strcpy(tmp_input_data, input_data);
         strcat(tmp_input_data, data);
+        // ----------------------------------------
         // test range
+        // ----------------------------------------
         if ((atol(tmp_input_data) <= 179769313486232) && (atol(tmp_input_data) >= -179769313486232)) {
           memset(input_data, 0, sizeof(input_data));
           strcpy(input_data, tmp_input_data);
