@@ -6815,10 +6815,8 @@ void matrixSwitch() {
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                             SWITCHLINK
         // ----------------------------------------------------------------------------------------------------------------------
-        /*
-         Special Switch Link Function: Mirrors/inverts switch X state (on/off) for switch using SwitchLink function. benefits:
-         gain 9+ (over original 10) functions on a switch, simple inverted logic, logic expansion, etc. 
-        */
+        // a special function that allow mirroring/inversion of a specified (function value x) matrix switch (0-19).
+        // ----------------------------------------------------------------------------------------------------------------------
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SwitchLink")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_equal_true(matrixData.matrix_switch_state[0][(int)matrixData.matrix_function_xyz[Mi][Fi][0]], 1);
