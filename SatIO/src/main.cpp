@@ -14615,19 +14615,27 @@ void setupSDCard() {
   }
   else {
     Serial.println("[sdcard] initialized");
+    // ----------------------------------------------------
     // create/load system files
+    // ----------------------------------------------------
     sdcardMakeSystemDirs();
+    // ----------------------------------------------------
     // load system configuration file
-    if (!sdcardLoadSystemConfig(sdcardData.sysconf)) {
-      sdcardSaveSystemConfig(sdcardData.sysconf);
-    }
+    // ----------------------------------------------------
+    if (!sdcardLoadSystemConfig(sdcardData.sysconf)) {sdcardSaveSystemConfig(sdcardData.sysconf);}
+    // ----------------------------------------------------
     // load matrix file specified by configuration file
+    // ----------------------------------------------------
     if (!sdcardLoadMatrix(sdcardData.matrix_filepath)) {
       Serial.println("[sdcard] specified matrix file not found!");
+      // --------------------------------------------------
       // is it the the default matrix file that is missing?
+      // --------------------------------------------------
       if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
         Serial.println("[sdcard] default matrix file not found!");
+        // ------------------------------------------------
         // create default matrix file
+        // ------------------------------------------------
         if (!sdcardSaveMatrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
         else if (!sdcardLoadMatrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
       }
