@@ -9872,7 +9872,7 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-  // main menu
+  // main menu page
   // ----------------------------------------------------------------
   else if (menu_page==page_main_menu) {
     // ------------------------------------------------
@@ -9937,7 +9937,7 @@ void menuEnter() {
     }
   }
   // ----------------------------------------------------------------
-  // matrix switch configuration
+  // matrix switch configuration page
   // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_main) {
     // ------------------------------------------------
@@ -9971,7 +9971,7 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-  // set digits
+  // set digits page
   // ----------------------------------------------------------------
   else if (menu_page==page_input_data) {
     allow_input_data=false;
@@ -9984,7 +9984,7 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-  // matrix switch select function name, x, y, or z
+  // matrix switch select function name, x, y, or z page
   // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_select_setup) {
     if (menuMatrixConfigureFunction.selection()==0) {menu_page=page_matrix_logic_setup_function;}
@@ -10050,7 +10050,7 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-  // matrix switch set function name
+  // matrix switch set function name page
   // ----------------------------------------------------------------
   else if (menu_page==page_matrix_logic_setup_function) {
     memset(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], 0, sizeof(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]));
@@ -10059,7 +10059,7 @@ void menuEnter() {
   }
 
   // ----------------------------------------------------------------
-  // file menu
+  // file menu page
   // ----------------------------------------------------------------
   else if (menu_page==page_file_main) {
 
@@ -10190,7 +10190,7 @@ void menuEnter() {
     }
 
     // ----------------------------------------------
-    // save system settings
+    // save system settings page
     // ----------------------------------------------
     else if (menuFile.selection()==4) {
       // --------------------------------------------
@@ -10231,7 +10231,7 @@ void menuEnter() {
     }
 
     // ------------------------------------------------
-    // restore default system settings
+    // restore default system settings page
     // ------------------------------------------------
     else if (menuFile.selection()==5) {
       // ----------------------------------------------
@@ -10273,7 +10273,7 @@ void menuEnter() {
   }
 
   // ------------------------------------------------
-  // save matrix menu
+  // save matrix menu page
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
     // ----------------------------------------------
@@ -10323,7 +10323,7 @@ void menuEnter() {
   }
 
   // --------------------------------------------------
-  // load matrix menu
+  // load matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_load_matrix) {
     // ------------------------------------------------
@@ -10378,7 +10378,7 @@ void menuEnter() {
   }
 
   // --------------------------------------------------
-  // delete matrix menu
+  // delete matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_delete_matrix) {
     // ------------------------------------------------
