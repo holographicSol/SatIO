@@ -14532,6 +14532,8 @@ void writePortControllerSwitchState() {
 // ------------------------------------------------
 // Write GPS Signal LED
 // ------------------------------------------------
+int gps_signal=0;
+
 void writePortControllerGPSSignalLED() {
     memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
     // -----------------------
@@ -14541,9 +14543,9 @@ void writePortControllerGPSSignalLED() {
     // -----------------------
     // data
     // -----------------------
-    if (atoi(gnggaData.satellite_count_gngga)==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
-    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {strcat(I2CLink.TMP_BUFFER_0, "1");}
-    else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+    if (gps_signal==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+    else if (gps_signal>0) {strcat(I2CLink.TMP_BUFFER_0, "1");}
+    else if (gps_signal>0) {strcat(I2CLink.TMP_BUFFER_0, "2");}
     // -----------------------
     // write instruction
     // -----------------------
@@ -15242,6 +15244,17 @@ void setup() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                RETAIN GPS DATA
+// ------------------------------------------------------------------------------------------------------------------------------
+// retain some information for the port controller which runs every loop while gps task is overwriting data.
+// ------------------------------------------------------------------------------------------------------------------------------
+void retainGPSData() {
+  if (atoi(gnggaData.satellite_count_gngga)==0) {gps_signal=0;}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {gps_signal=1;}
+  else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {gps_signal=2;}
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
 // care has been taken to reduce maximum loop times using vTasks and 'load distribution'.
@@ -15298,6 +15311,7 @@ void loop() {
   //                                                                                                                          GPS
   // ----------------------------------------------------------------------------------------------------------------------------
   longer_loop=false;
+  if (systemData.gngga_enabled==false) {gps_signal=0;}
   if (gps_done==true && suspended_gps_task==false)  {
     longer_loop=true;
     
@@ -15341,6 +15355,11 @@ void loop() {
     }
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+    // -----------------------------------------------------------------------
+    //                                                         RETAIN GPS DATA
+    // -----------------------------------------------------------------------
+    retainGPSData();
 
     // -----------------------------------------------------------------------
     //                                                            RESUME TASKS
