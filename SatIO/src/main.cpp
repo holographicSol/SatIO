@@ -11588,7 +11588,7 @@ void UpdateUI(void * pvParamters) {
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD);
+        canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_NORMAL);
         display.drawCanvas(1, 39, canvas60x8);
       }
       // ------------------------------------------------
@@ -11597,7 +11597,7 @@ void UpdateUI(void * pvParamters) {
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD);
+        canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_NORMAL);
         display.drawCanvas(1, 39, canvas60x8);
       }
 
@@ -11607,8 +11607,8 @@ void UpdateUI(void * pvParamters) {
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
-        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD);
-        display.drawCanvas(65, 39, canvas60x8);
+        canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_NORMAL);
+        display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
       // matrix switch state low
@@ -11616,8 +11616,8 @@ void UpdateUI(void * pvParamters) {
       else {
         canvas60x8.clear();
         display.setColor(RGB_COLOR16(255,0,0));
-        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD);
-        display.drawCanvas(65, 39, canvas60x8);
+        canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_NORMAL);
+        display.drawCanvas(66, 39, canvas60x8);
       }
       // ------------------------------------------------
       // matrix switch function name
@@ -15598,5 +15598,5 @@ void loop() {
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   // bench("[Looptime Min] " + String((float)(timeData.mainLoopTimeTakenMin)/1000000, 4) + "s");
 
-  delay(1);
+  // delay(1);
 }
