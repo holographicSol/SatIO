@@ -11684,12 +11684,12 @@ void UpdateUI(void * pvParamters) {
       canvas8x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas8x8.printFixed(1, 1, "Y", STYLE_NORMAL);
-      display.drawCanvas(3, 105, canvas8x8);
+      display.drawCanvas(3, 115, canvas8x8);
 
       canvas110x8.clear();
       display.setColor(systemData.color_content);
       canvas110x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
-      display.drawCanvas(13, 105, canvas110x8);
+      display.drawCanvas(13, 115, canvas110x8);
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
