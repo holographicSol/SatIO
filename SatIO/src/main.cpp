@@ -14544,8 +14544,8 @@ void writePortControllerGPSSignalLED() {
     // data
     // -----------------------
     if (gps_signal==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
-    else if (gps_signal>0) {strcat(I2CLink.TMP_BUFFER_0, "1");}
-    else if (gps_signal>0) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+    else if (gps_signal==1) {strcat(I2CLink.TMP_BUFFER_0, "1");}
+    else if (gps_signal==2) {strcat(I2CLink.TMP_BUFFER_0, "2");}
     // -----------------------
     // write instruction
     // -----------------------
