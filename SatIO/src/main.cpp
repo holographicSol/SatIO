@@ -11440,7 +11440,6 @@ void UIIndicators() {
 // ----------------------------------------------------------------------------------------------------------------
 
 bool display_sync;
-bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
 
 void UpdateUI(void * pvParamters) {
 
@@ -11507,21 +11506,17 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
-      if (crunching_time_data==false) {
         canvas120x8.clear();
         display.setColor(systemData.color_title);
         canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 4, canvas120x8);
-      }
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
-      if (crunching_time_data==false) {
         canvas120x8.clear();
         display.setColor(systemData.color_title);
         canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 14, canvas120x8);
-      }
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -13354,25 +13349,20 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-      // ------------------------------------------------
-      // local datetime
-      // ------------------------------------------------
-      if (crunching_time_data==false) {
-        // ----------------------------------------------
-        // local time
-        // ----------------------------------------------
-        canvas76x8.clear();
-        display.setColor(systemData.color_content);
-        canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(37, ui_content_0, canvas76x8);
-        // ----------------------------------------------
-        // local date
-        // ----------------------------------------------
-        canvas76x8.clear();
-        display.setColor(systemData.color_content);
-        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
-        display.drawCanvas(37, ui_content_1, canvas76x8);
-      }
+      // ----------------------------------------------
+      // local time
+      // ----------------------------------------------
+      canvas76x8.clear();
+      display.setColor(systemData.color_content);
+      canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
+      display.drawCanvas(37, ui_content_0, canvas76x8);
+      // ----------------------------------------------
+      // local date
+      // ----------------------------------------------
+      canvas76x8.clear();
+      display.setColor(systemData.color_content);
+      canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
+      display.drawCanvas(37, ui_content_1, canvas76x8);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -15228,7 +15218,7 @@ void setup() {
   }
   
   // ----------------------------------------------------------------------------------------------------------------------------
-  // wait a moment before entering main loop
+  // Wait a moment before entering main loop
   // ----------------------------------------------------------------------------------------------------------------------------
   delay(3000);
 
@@ -15253,99 +15243,59 @@ bool track_planets_period=false;
 bool suspended_gps_task=false;
 bool matrix_run_state_flag=false;
 bool port_controller_run_state_flag=false;
-/*
-determine how many fast loops that may be utilized, occur during longer loops.
-these loops will be counted up to every 100 ms and can be multiplied by 10 to get an idea of how many faster loops are available
-every second that may be utilized for other things. like a seperate sensor matrix for example.
-*/
 long count_faster_loops=0;
+bool time_conversion_period=false;
 
 void loop() {
   bench("-----");
   timeData.mainLoopTimeStart=micros();
-  systemData.t_bench=true; // uncomment to observe timings
-  // count_faster_loops++;
+  systemData.t_bench=true;
+  longer_loop=false;
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                  SUSPEND GPS IF NOT IN USE 
-  // ----------------------------------------------------------------------------------------------------------
-  // clear gps data that is not enabled while retaining some data that may be static (running as a station)
-  // this allows for running off the RTC and with data like coordinates preserved for advanced calculations while not syncronizing.
-  // enabling gngga/gnrmc again manually will syncronize the RTC and is recommended periodically in order to circumvent drift.
-  // manual sync may be preferrable if 'running as a station', because a dramatic performance increase can be gained when gps task is not running.
-  // manual sync may be preferrable if system does not use gps data (perhaps only using other sensor data).
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                    SUSPEND GPS IF NOT IN USE 
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.satio_enabled==false) {clearDynamicSATIO();}
   if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
   if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
   if (systemData.gpatt_enabled==false) {clearGPATT();}
-  // suspend task if no gps data is enabled
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    if (suspended_gps_task==false) {vTaskSuspend(GPSTask);} // do this if we have not done it already
-    suspended_gps_task=true; // set suspension flag
-    first_gps_pass=true; // ensure we can sync on first opportunity if task is resumed
+    if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
+    suspended_gps_task=true;
+    first_gps_pass=true;
   }
-  else {
-    if (suspended_gps_task==true) {vTaskResume(GPSTask);} // do this if we have not done it already
-    suspended_gps_task=false; // set suspension flag
-  }
+  else {if (suspended_gps_task==true) {vTaskResume(GPSTask);} suspended_gps_task=false;}
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                                  GPS START
-  // ----------------------------------------------------------------------------------------------------------
-  /*
-  Efficiency and performance.
-  Only run the following block when new GPS data has been collected.
-  GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
-  */
-  longer_loop=false;
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                          GPS
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (gps_done==true && suspended_gps_task==false)  {
-    longer_loop=true; // set load distribution flag
+    longer_loop=true;
     
     // -----------------------------------------------------------------------
-    //                                                   SUSPEND READ GPS TASK
+    //                                                        SUSPEND GPS TASK
     // -----------------------------------------------------------------------
-    /*
-    Do not allow values to be changed while we use the GPS data!
-    Avert race conditions while using GPS data.
-    */
     vTaskSuspend(GPSTask);
 
     // -----------------------------------------------------------------------
-    //                                                     GPS SENTENCE OUTPUT
+    //                                                              GPS SERIAL
     // -----------------------------------------------------------------------
-    /*
-    Read GPS is running on a task so print the data here for safe output.
-    Only run if new GPS data has been collected.
-    */
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
     if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
-
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
-    // bench("[count_faster_loops] " + String(count_faster_loops));
-    // count_faster_loops=0;
 
     // -----------------------------------------------------------------------
-    //                                                       SYNC RTC WITH UTC
+    //                                                                SYNC RTC
     // -----------------------------------------------------------------------
-    /*
-    Convert absolute latitude and longitude to degrees.
-    Only run if new GPS data has been collected.
-    */
-    crunching_time_data=true;
     t0=micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
 
     // -----------------------------------------------------------------------
-    //                                                  SATIO GPS CALCULATIONS
+    //                                                      CALCULATE LOCATION
     // -----------------------------------------------------------------------
     if (systemData.satio_enabled==true) {
-      // ---------------------------------------------------------------------
-      //                               CONVERT LATITUDE & LONGITUDE TO DEGREES
-      // ---------------------------------------------------------------------
-      // Only run if new GPS data has been collected.
       t0=micros();
       calculateLocation();
       bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -15354,129 +15304,61 @@ void loop() {
     // -----------------------------------------------------------------------
     //                                                           MATRIX SWITCH
     // -----------------------------------------------------------------------
-    /*
-    Check users programmable logic.
-    Never run while values are being updated (never when gps task is running).
-    Only run if new GPS data has been collected.
-    */
     t0=micros();
-    // Run matrix and set a flag to show that the matrix has ran
     if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
-    // Handle matrix disabled
-    else if (systemData.matrix_enabled==false) {
-      /*
-      1: Continue only if matrix_run_state_flag is true so that we only do this once per flag true.
-      2: Zero the matrix switch states.
-      3: Matrix switch outputs on port controller will be turned low IF port controller is enabled.
-      4: This is no subsitute for a button on an interrupt.
-      */
-      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
-    }
-    // Stats
+    else if (systemData.matrix_enabled==false) {if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}}
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // -----------------------------------------------------------------------
-    //                                                    RESUME READ GPS TASK
+    //                                                         RESUME GPS TASK
     // -----------------------------------------------------------------------
-    /*
-    Aim to set this true as soon as possible and never before we are
-    finished using the GPS data.
-    */
     gps_done=false;
     vTaskResume(GPSTask);
   }
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                                    GPS END
-  // ----------------------------------------------------------------------------------------------------------
-
   
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                                SENSOR DATA
-  // ----------------------------------------------------------------------------------------------------------
-  // /*
-  // Collect sensor data that could be utilized every loop.
-  // Run every loop.
-  // */
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SENSOR DATA
+  // ----------------------------------------------------------------------------------------------------------------------------
   t0=micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                               GPS DISABLED
-  // ----------------------------------------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                MATRIX SWITCH
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    // ---------------------------------------------------------------------
-    //                                                MATRIX SWITCH ZERO GPS
-    // ---------------------------------------------------------------------
-    /*
-    Check users programmable logic.
-    Never run while values are being updated.
-    If GPS parsing is entirely disabled then allow running matrixSwitch here.
-    This may be useful for a user if the system is setup for anything that does not require GPS task to be currently running.
-    */
     if (suspended_gps_task==true) {
       t0=micros();
-      // Run matrix and set a flag to show that the matrix has ran
-      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
-      // Handle matrix disabled
-      else if (systemData.matrix_enabled==false) {
-        /*
-        1: Continue only if matrix_run_state_flag is true so that we only do this once per flag true.
-        2: Zero the matrix switch states.
-        3: Matrix switch outputs on port controller will be turned low IF port controller is enabled.
-        4: This is no subsitute for a button on an interrupt.
-        */
-        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
-      }
-      // Stats
-      MatrixStatsCounter();
-      bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch(); MatrixStatsCounter(); bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");}
+      else if (systemData.matrix_enabled==false) {if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}}
     }
   }
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                            PORT CONTROLLER
-  // ----------------------------------------------------------------------------------------------------------
-  /*
-  Run every loop.
-  */
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              PORT CONTROLLER
+  // ----------------------------------------------------------------------------------------------------------------------------
   t0=micros();
-  // Run port controller and set a flag to show that the port controller has ran
-  if (systemData.port_controller_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();} // run normally
-  // Handle port controller disabled
+  if (systemData.port_controller_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
   else {
-    /*
-    1: Continue only if port_controller_run_state_flag is true so that we only do this once per flag true.
-    2: Zero the matrix switch states.
-    3: Matrix switch outputs on port controller will be turned low.
-    4: Matrix can remain enabled and continue to run normally (minus output via port controller).
-    5: This is no subsitute for a button on an interrupt.
-    */
     if (port_controller_run_state_flag==false) {
       setAllMatrixSwitchesStateFalse();
       writeToEnabledPortController();
       port_controller_run_state_flag=true;
     }
-    // Run in a semi-disabled mode where some information can still be conveyed through the port controller.
     else {writeToSemiDisabledPortController();}
   }
   bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                          LOAD DISTRIBUTION
-  // ----------------------------------------------------------------------------------------------------------
-  /*
-  Efficiency and performance.
-  Distribute functions between faster loops.
-  Utilizes loops that did not perform GPS calculations and conversions.
-  GPS data from wtgps300p is every 100ms, aim to keep loop time under 100ms.
-  Run every loop.
-  */
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                            LOAD DISTRIBUTION
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
-    // ---------------------------------------------------------------------
-    // TRACK PLANETS
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                           TRACK PLANETS
+    // -----------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
       if (systemData.satio_enabled==true) {
@@ -15491,101 +15373,87 @@ void loop() {
         }
       }
     }
-    // --------------------------------------------------------------------
-    // SATIO SENTENCE
-    // --------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                          SATIO SENTENCE
+    // -----------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=0;
-      /*
-      Create and output special SatIO sentence over serial.
-      */
+      load_distribution=2;
       t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
       // ---------------------------------------------------------------------
     }
+    // -----------------------------------------------------------------------
+    //                                               CONVERT UTC TO LOCAL TIME
+    // -----------------------------------------------------------------------
+    else if (load_distribution==2) {
+      load_distribution=0;
+      if (time_conversion_period==true) {
+        t0=micros();
+        syncTaskSafeRTCTime();
+        convertUTCTimeToLocalTime();
+        bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      }
+    }
   }
 
-  // ----------------------------------------------------------------------------------------------------------
-  //                                                                                    OPERATIONS PER INTERVAL
-  // ----------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                      OPERATIONS PER INTERVAL
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
-    // ---------------------------------
-    // reset interrupt_interval_counter
-    // ---------------------------------
+    // -----------------------------------------------------------------------
+    //                                                        INTERVAL COUNTER
+    // -----------------------------------------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
     interrupt_interval_counter=0;
     portEXIT_CRITICAL(&interval_timer_mux);
-    // ---------------------------------------------------------------------
-    //                                                  INTERVAL ACCUMULATOR
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                    INTERVAL ACCUMULATOR
+    // -----------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
-      // ------------------
-      // reset accumulator
-      // ------------------
       timeData.accumulated_intervals=0;
       Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
-      // ------------------
-      // reset dependencies
-      // ------------------
       for (int i=0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
     }
   }
 
-  // ---------------------------------------------------------------------
-  //                                                 OPERATIONS PER SECOND
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                        OPERATIONS PER SECOND
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (interrupt_second_counter>0) {
-    // ---------------------------------
-    // reset interrupt_second_counter
-    // ---------------------------------
+    // -----------------------------------------------------------------------
+    //                                                          SECOND COUNTER
+    // -----------------------------------------------------------------------
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    // ----------
-    // set flags
-    // ----------
+    // -----------------------------------------------------------------------
+    //                                                            SECOND FLAGS
+    // -----------------------------------------------------------------------
     track_planets_period=true;
-    // ---------------------------------------------------------------------
-    //                                                    UPTIME ACCUMULATOR
-    // ---------------------------------------------------------------------
+    time_conversion_period=true;
+    // -----------------------------------------------------------------------
+    //                                                      UPTIME ACCUMULATOR
+    // -----------------------------------------------------------------------
     if (timeData.uptime_seconds>LONG_MAX-1) {
-      // ------------------
-      // reset accumulator
-      // ------------------
       timeData.uptime_seconds=0;
       Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
     }
-    // ---------------------------------------------------------------------
-    //                                                    SECOND ACCUMULATOR
-    // ---------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    //                                                      SECOND ACCUMULATOR
+    // -----------------------------------------------------------------------
     if (timeData.accumulated_seconds>LONG_MAX-1) {
-      // ------------------
-      // reset accumulator
-      // ------------------
       timeData.accumulated_seconds=0;
       Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
     }
-    // ---------------------------------------------------------------------
-    //                                             CONVERT UTC TO LOCAL TIME
-    // ---------------------------------------------------------------------
-    // Currently limited to once per second because:
-    //   1: local time is onky displayed.
-    //   2: DS3231 has a resolution of second.
-    crunching_time_data=true;
-    t0=micros();
-    syncTaskSafeRTCTime();
-    convertUTCTimeToLocalTime();
-    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
   }
 
-  // ---------------------------------------------------------------------
-  //                                                               TIMINGS
-  // ---------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                       TIMING
+  // ----------------------------------------------------------------------------------------------------------------------------
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken=(micros() - timeData.mainLoopTimeStart);
-  if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}} // gps module outputs every 100ms (100,000uS)
+  if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}}
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
   // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin=timeData.mainLoopTimeTaken;}
@@ -15593,6 +15461,4 @@ void loop() {
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   // bench("[Looptime Min] " + String((float)(timeData.mainLoopTimeTakenMin)/1000000, 4) + "s");
-
-  // delay(1);
 }
