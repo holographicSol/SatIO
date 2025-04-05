@@ -15381,7 +15381,6 @@ void loop() {
       t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
-      // ---------------------------------------------------------------------
     }
     // -----------------------------------------------------------------------
     //                                               CONVERT UTC TO LOCAL TIME
@@ -15389,6 +15388,7 @@ void loop() {
     else if (load_distribution==2) {
       load_distribution=0;
       if (time_conversion_period==true) {
+        time_conversion_period=false;
         t0=micros();
         syncTaskSafeRTCTime();
         convertUTCTimeToLocalTime();
