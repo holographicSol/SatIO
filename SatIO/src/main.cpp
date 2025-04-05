@@ -15302,7 +15302,7 @@ void loop() {
   // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
   // syncing manually and periodically will increase perfromance if required.
   // ----------------------------------------------------------------------------------------------------------------------------
-  gps_signal=0; 
+  gps_signal=0; // 0 reflects either zero satellites or signal unknown due to gngga disabled.
   if (systemData.satio_enabled==false) {if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
   if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
