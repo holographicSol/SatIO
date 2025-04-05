@@ -1401,7 +1401,6 @@ struct TimeStruct {
   signed long mainLoopTimeTaken;
   signed long mainLoopTimeStart;
   signed long mainLoopTimeTakenMax;
-  signed long mainLoopTimeTakenMin;
   unsigned long t0;
   unsigned long t1;
   long uptime_seconds;
@@ -11440,6 +11439,7 @@ void UIIndicators() {
 // ----------------------------------------------------------------------------------------------------------------
 
 bool display_sync;
+bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
 
 void UpdateUI(void * pvParamters) {
 
@@ -11506,17 +11506,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
+      if (crunching_time_data==false) {
         canvas120x8.clear();
         display.setColor(systemData.color_title);
         canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 4, canvas120x8);
+      }
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
+      if (crunching_time_data==false) {
         canvas120x8.clear();
         display.setColor(systemData.color_title);
         canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(3, 14, canvas120x8);
+      }
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -13349,20 +13353,25 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-      // ----------------------------------------------
-      // local time
-      // ----------------------------------------------
-      canvas76x8.clear();
-      display.setColor(systemData.color_content);
-      canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
-      display.drawCanvas(37, ui_content_0, canvas76x8);
-      // ----------------------------------------------
-      // local date
-      // ----------------------------------------------
-      canvas76x8.clear();
-      display.setColor(systemData.color_content);
-      canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
-      display.drawCanvas(37, ui_content_1, canvas76x8);
+      // ------------------------------------------------
+      // local datetime
+      // ------------------------------------------------
+      if (crunching_time_data==false) {
+        // ----------------------------------------------
+        // local time
+        // ----------------------------------------------
+        canvas76x8.clear();
+        display.setColor(systemData.color_content);
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
+        display.drawCanvas(37, ui_content_0, canvas76x8);
+        // ----------------------------------------------
+        // local date
+        // ----------------------------------------------
+        canvas76x8.clear();
+        display.setColor(systemData.color_content);
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
+        display.drawCanvas(37, ui_content_1, canvas76x8);
+      }
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -15218,7 +15227,7 @@ void setup() {
   }
   
   // ----------------------------------------------------------------------------------------------------------------------------
-  // Wait a moment before entering main loop
+  // wait a moment before entering main loop
   // ----------------------------------------------------------------------------------------------------------------------------
   delay(3000);
 
@@ -15235,6 +15244,12 @@ void setup() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
+// care has been taken to reduce maximum loop times using vTasks and 'load distribution'.
+// wtgps300p outputs every 100 milliseconds so loop time must always be below 100 milliseconds.
+// average looptime 9 milliseconds.
+// average loops per second are about 60.
+// other looptimes range between 9ms and 40ms when gps/planetary data has been collected and is being processed. 
+// ------------------------------------------------------------------------------------------------------------------------------
 
 int t0=millis();
 bool longer_loop=false;
@@ -15243,22 +15258,23 @@ bool track_planets_period=false;
 bool suspended_gps_task=false;
 bool matrix_run_state_flag=false;
 bool port_controller_run_state_flag=false;
-long count_faster_loops=0;
-bool time_conversion_period=false;
+int loops_a_second=0;
+bool cleared_dynamic_data_satio=false;
+bool cleared_dynamic_data_gngga=false;
+bool cleared_dynamic_data_gnrmc=false;
+bool cleared_dynamic_data_gpatt=false;
 
 void loop() {
   bench("-----");
   timeData.mainLoopTimeStart=micros();
   systemData.t_bench=true;
-  longer_loop=false;
+  loops_a_second++;
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    SUSPEND GPS IF NOT IN USE 
+  //                                                                                                          SUSPEND/RESUME GPS
   // ----------------------------------------------------------------------------------------------------------------------------
-  if (systemData.satio_enabled==false) {clearDynamicSATIO();}
-  if (systemData.gngga_enabled==false) {clearDynamicGNGGA();}
-  if (systemData.gnrmc_enabled==false) {clearDynamicGNRMC();}
-  if (systemData.gpatt_enabled==false) {clearGPATT();}
+  // suspend/resume task once if all gps parsing was disabled. this is done here rather than on another task.
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
     suspended_gps_task=true;
@@ -15267,31 +15283,43 @@ void loop() {
   else {if (suspended_gps_task==true) {vTaskResume(GPSTask);} suspended_gps_task=false;}
 
   // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                  DYNAMIC DATA (STATION MODE)
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // clear dynamic data once.
+  // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
+  // syncing manually and periodically will increase perfromance if required.
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (systemData.satio_enabled==false) {if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
+  if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
+  if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
+  if (systemData.gpatt_enabled==false) {if (cleared_dynamic_data_gpatt==false) {clearGPATT(); cleared_dynamic_data_gpatt=true;} else {cleared_dynamic_data_gpatt=false;}}
+
+  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                          GPS
   // ----------------------------------------------------------------------------------------------------------------------------
+  longer_loop=false;
   if (gps_done==true && suspended_gps_task==false)  {
     longer_loop=true;
     
     // -----------------------------------------------------------------------
-    //                                                        SUSPEND GPS TASK
+    //                                                           SUSPEND TASKS
     // -----------------------------------------------------------------------
     vTaskSuspend(GPSTask);
-
     // -----------------------------------------------------------------------
-    //                                                              GPS SERIAL
+    //                                                              GPS OUTPUT
     // -----------------------------------------------------------------------
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
     if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
     bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
-
     // -----------------------------------------------------------------------
     //                                                                SYNC RTC
     // -----------------------------------------------------------------------
+    crunching_time_data=true;
     t0=micros();
     syncUTCTime();
     bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
+    crunching_time_data=false;
     // -----------------------------------------------------------------------
     //                                                      CALCULATE LOCATION
     // -----------------------------------------------------------------------
@@ -15300,23 +15328,27 @@ void loop() {
       calculateLocation();
       bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
-
     // -----------------------------------------------------------------------
     //                                                           MATRIX SWITCH
     // -----------------------------------------------------------------------
+    // running matrix here allows gps task to be resumed as quickly as possible
+    // when gngga/gnrmc/gpatt are enabled. (perfromance)
+    // -----------------------------------------------------------------------
     t0=micros();
     if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
-    else if (systemData.matrix_enabled==false) {if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}}
+    else if (systemData.matrix_enabled==false) {
+      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
+    }
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // -----------------------------------------------------------------------
-    //                                                         RESUME GPS TASK
+    //                                                            RESUME TASKS
     // -----------------------------------------------------------------------
     gps_done=false;
     vTaskResume(GPSTask);
   }
-  
+
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -15324,18 +15356,22 @@ void loop() {
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // running the matrix here allows the matrix to be ran every loop if gngga/gnrmc/gpatt are disabled. (perfromance)
   // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==true) {
       t0=micros();
-      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch(); MatrixStatsCounter(); bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");}
-      else if (systemData.matrix_enabled==false) {if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}}
+      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
+      else if (systemData.matrix_enabled==false) {
+        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
+      }
+      MatrixStatsCounter();
+      bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
-
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
@@ -15356,9 +15392,9 @@ void loop() {
   //                                                                                                            LOAD DISTRIBUTION
   // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
-    // -----------------------------------------------------------------------
-    //                                                           TRACK PLANETS
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                         TRACK PLANETS
+    // ---------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
       if (systemData.satio_enabled==true) {
@@ -15373,43 +15409,31 @@ void loop() {
         }
       }
     }
-    // -----------------------------------------------------------------------
-    //                                                          SATIO SENTENCE
-    // -----------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    //                                                       SATIO SENTENCE
+    // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=2;
+      load_distribution=0;
       t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    }
-    // -----------------------------------------------------------------------
-    //                                               CONVERT UTC TO LOCAL TIME
-    // -----------------------------------------------------------------------
-    else if (load_distribution==2) {
-      load_distribution=0;
-      if (time_conversion_period==true) {
-        time_conversion_period=false;
-        t0=micros();
-        syncTaskSafeRTCTime();
-        convertUTCTimeToLocalTime();
-        bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-      }
     }
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      OPERATIONS PER INTERVAL
   // ----------------------------------------------------------------------------------------------------------------------------
+
   if (interrupt_interval_counter > 0) {
-    // -----------------------------------------------------------------------
-    //                                                        INTERVAL COUNTER
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                    INTERRUPT COUNTER
+    // ---------------------------------------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
     interrupt_interval_counter=0;
     portEXIT_CRITICAL(&interval_timer_mux);
-    // -----------------------------------------------------------------------
-    //                                                    INTERVAL ACCUMULATOR
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                  INTERVAL ACCUMULATOR
+    // ---------------------------------------------------------------------
     if (timeData.accumulated_intervals>DBL_MAX-1) {
       timeData.accumulated_intervals=0;
       Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
@@ -15417,48 +15441,56 @@ void loop() {
     }
   }
 
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                        OPERATIONS PER SECOND
-  // ----------------------------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  //                                                   OPERATIONS PER SECOND
+  // -----------------------------------------------------------------------
   if (interrupt_second_counter>0) {
-    // -----------------------------------------------------------------------
-    //                                                          SECOND COUNTER
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                    INTERRUPT COUNTER
+    // ---------------------------------------------------------------------
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    // -----------------------------------------------------------------------
-    //                                                            SECOND FLAGS
-    // -----------------------------------------------------------------------
     track_planets_period=true;
-    time_conversion_period=true;
-    // -----------------------------------------------------------------------
-    //                                                      UPTIME ACCUMULATOR
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                    UPTIME ACCUMULATOR
+    // ---------------------------------------------------------------------
     if (timeData.uptime_seconds>LONG_MAX-1) {
       timeData.uptime_seconds=0;
       Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
     }
-    // -----------------------------------------------------------------------
-    //                                                      SECOND ACCUMULATOR
-    // -----------------------------------------------------------------------
+    // ---------------------------------------------------------------------
+    //                                                    SECOND ACCUMULATOR
+    // ---------------------------------------------------------------------
     if (timeData.accumulated_seconds>LONG_MAX-1) {
       timeData.accumulated_seconds=0;
       Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
     }
+    // ---------------------------------------------------------------------
+    //                                             CONVERT UTC TO LOCAL TIME
+    // ---------------------------------------------------------------------
+    crunching_time_data=true;
+    t0=micros();
+    syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
+    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data=false;
+    // ---------------------------------------------------------------------
+    //                                                        LOOPS A SECOND
+    // ---------------------------------------------------------------------
+    Serial.println("[loops_a_second] " + String(loops_a_second));
+    loops_a_second=0;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                       TIMING
+  //                                                                                                                      TIMINGS
   // ----------------------------------------------------------------------------------------------------------------------------
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken=(micros() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}}
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
-  // if ((timeData.mainLoopTimeTaken < timeData.mainLoopTimeTakenMin) && (timeData.mainLoopTimeTaken>0)) {timeData.mainLoopTimeTakenMin=timeData.mainLoopTimeTaken;}
   bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
-  // bench("[Looptime Min] " + String((float)(timeData.mainLoopTimeTakenMin)/1000000, 4) + "s");
 }
