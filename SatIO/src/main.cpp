@@ -11691,22 +11691,22 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // clear any previously highlighted menus
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (previous_menu_column_selection!=menu_column_selection) {
           canvas126x24.clear();
           display.setColor(systemData.color_content);
           display.drawCanvas(1, 13, canvas126x24);
           previous_menu_column_selection=menu_column_selection;
         }
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // matrix switch menu
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (menu_column_selection==0) {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw unhighlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           if (interaction_updateui==true) {
             interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
@@ -11716,9 +11716,9 @@ void UpdateUI(void * pvParamters) {
           }
         }
         else {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw highlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
           strcpy(TMP_UI_DATA_0, "");
           strcat(TMP_UI_DATA_0, menuMatrixSwitchSelectItems[menuMatrixSwitchSelect.selection()]);
@@ -11728,20 +11728,20 @@ void UpdateUI(void * pvParamters) {
           display.setColor(systemData.color_border);
           display.drawCanvas(10, 19, canvas19x8);
         }
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // matrix switch port button
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (menu_column_selection==1) {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw unhighlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
           strcpy(TMP_UI_DATA_0, "P");
           strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
           canvas19x8.clear();
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // indicate if port number is -1 (none)
-          // -------------------------------------------------------------
+          // --------------------------------------------
           if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
           else {display.setColor(RGB_COLOR16(255,0,0));}
           canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
@@ -11750,28 +11750,28 @@ void UpdateUI(void * pvParamters) {
           display.drawRect(35, 15, 62, 15+15);
         }
         else {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw highlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
           strcpy(TMP_UI_DATA_0, "P");
           strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
           canvas19x8.clear();
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // indicate if port number is -1 (none)
-          // -------------------------------------------------------------
+          // --------------------------------------------
           if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
           else {display.setColor(RGB_COLOR16(255,0,0));}
           canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
           display.drawCanvas(39, 19, canvas19x8);
         }
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // matrix switch enable/disable button
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (menu_column_selection==2) {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw unhighlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           canvas8x8.clear();
           if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
             display.setColor(RGB_COLOR16(0,0,255));
@@ -11786,9 +11786,9 @@ void UpdateUI(void * pvParamters) {
           display.drawRect(66, 15, 79, 15+15);
         }
         else {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw highlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           canvas8x8.clear();
           if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
             display.setColor(RGB_COLOR16(0,0,255));
@@ -11800,13 +11800,13 @@ void UpdateUI(void * pvParamters) {
           }
           display.drawCanvas(68, 19, canvas8x8);
         }
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // matrix switch inverted logic button
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (menu_column_selection==3) {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw unhighlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           canvas8x8.clear();
           display.setColor(systemData.color_content);
           if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
@@ -11822,9 +11822,9 @@ void UpdateUI(void * pvParamters) {
           display.drawRect(83, 15, 93, 15+15);
         }
         else {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw highlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           canvas8x8.clear();
           display.setColor(systemData.color_content);
           if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
@@ -11837,14 +11837,13 @@ void UpdateUI(void * pvParamters) {
           }
           display.drawCanvas(83, 19, canvas8x8);
         }
-
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         // matrix switch function menu
-        // ---------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------
         if (menu_column_selection==4) {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw unhighlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           if (interaction_updateui==true) {
             interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
@@ -11854,9 +11853,9 @@ void UpdateUI(void * pvParamters) {
           }
         }
         else {
-          // -------------------------------------------------------------
+          // --------------------------------------------
           // draw highlighted
-          // -------------------------------------------------------------
+          // --------------------------------------------
           memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
           strcpy(TMP_UI_DATA_0, "");
           strcat(TMP_UI_DATA_0, menuMatrixFunctionSelectItems[menuMatrixFunctionSelect.selection()]);
