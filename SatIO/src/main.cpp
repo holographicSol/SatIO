@@ -11830,7 +11830,7 @@ void UpdateUI(void * pvParamters) {
           }
           display.drawCanvas(84, 19, canvas8x8);
           display.setColor(systemData.color_menu_content);
-          display.drawRect(83, 15, 93, 15+15);
+          display.drawRect(83, 15, 95, 15+15);
         }
         else {
           // --------------------------------------------
@@ -11873,7 +11873,7 @@ void UpdateUI(void * pvParamters) {
           canvas19x8.clear();
           display.setColor(systemData.color_menu_content);
           canvas19x8.printFixed(5, 1, TMP_UI_DATA_0, STYLE_BOLD);
-          display.drawCanvas(91+4, 19, canvas19x8);
+          display.drawCanvas(91+6, 19, canvas19x8);
         }
       }
     }
