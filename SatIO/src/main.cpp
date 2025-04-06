@@ -11648,7 +11648,7 @@ void UpdateUI(void * pvParamters) {
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,0,255));
         canvas54x8.printFixed(1, 1, " ENABLED", STYLE_BOLD);
-        display.drawCanvas(6, 41, canvas54x8);
+        display.drawCanvas(4, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch disabled
@@ -11656,7 +11656,7 @@ void UpdateUI(void * pvParamters) {
       else {
         display.setColor(RGB_COLOR16(64,64,64));
         canvas54x8.printFixed(1, 1, "DISABLED", STYLE_BOLD);
-        display.drawCanvas(6, 41, canvas54x8);
+        display.drawCanvas(7, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch state high
