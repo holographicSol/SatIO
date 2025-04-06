@@ -11647,16 +11647,16 @@ void UpdateUI(void * pvParamters) {
       canvas54x8.clear();
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,0,255));
-        canvas54x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD);
-        display.drawCanvas(1, 41, canvas54x8);
+        canvas54x8.printFixed(1, 1, " ENABLED", STYLE_BOLD);
+        display.drawCanvas(6, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch disabled
       // ------------------------------------------------
       else {
         display.setColor(RGB_COLOR16(64,64,64));
-        canvas54x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD);
-        display.drawCanvas(1, 41, canvas54x8);
+        canvas54x8.printFixed(1, 1, "DISABLED", STYLE_BOLD);
+        display.drawCanvas(6, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch state high
@@ -11664,16 +11664,16 @@ void UpdateUI(void * pvParamters) {
       canvas54x8.clear();
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
         display.setColor(RGB_COLOR16(0,255,0));
-        canvas54x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD);
-        display.drawCanvas(66, 41, canvas54x8);
+        canvas54x8.printFixed(1, 1, " ACTIVE", STYLE_BOLD);
+        display.drawCanvas(70, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch state low
       // ------------------------------------------------
       else {
         display.setColor(RGB_COLOR16(64,64,64));
-        canvas54x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD);
-        display.drawCanvas(66, 41, canvas54x8);
+        canvas54x8.printFixed(1, 1, "INACTIVE", STYLE_BOLD);
+        display.drawCanvas(70, 41, canvas54x8);
       }
       // ------------------------------------------------
       // matrix switch function real x
