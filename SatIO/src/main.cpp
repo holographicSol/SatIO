@@ -10325,7 +10325,7 @@ void menuEnter() {
     // ------------------------------------------------
     else if (menu_column_selection==2) {
       matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]^=true;
-      matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]^=true;
+      matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]=false;
     }
     // ------------------------------------------------
     // toggle standard/inverted function logic
