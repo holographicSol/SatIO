@@ -11756,7 +11756,7 @@ void UpdateUI(void * pvParamters) {
           if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
           else {display.setColor(RGB_COLOR16(255,0,0));}
           canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_NORMAL);
-          display.drawCanvas(39, 19, canvas19x8);
+          display.drawCanvas(38, 19, canvas19x8);
           display.setColor(systemData.color_menu_content);
           display.drawRect(35, 15, 62, 15+15);
         }
@@ -11794,7 +11794,7 @@ void UpdateUI(void * pvParamters) {
           }
           display.drawCanvas(68, 19, canvas8x8);
           display.setColor(systemData.color_menu_content);
-          display.drawRect(66, 15, 79, 15+15);
+          display.drawRect(65, 15, 79, 15+15);
         }
         else {
           // --------------------------------------------
