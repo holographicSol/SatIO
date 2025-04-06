@@ -11579,6 +11579,30 @@ void UpdateUI(void * pvParamters) {
         display.drawHLine(1, 101, 127); // x from real x
         display.drawVLine(64, 38, 53); // split enabled fom active 
         display.drawVLine(14, 55, 127); // split value names from values
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "F", STYLE_BOLD);
+        display.drawCanvas(3, 58, canvas8x8);
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "X", STYLE_BOLD);
+        display.drawCanvas(3, 68, canvas8x8);
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "Y", STYLE_BOLD);
+        display.drawCanvas(3, 78, canvas8x8);
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "Z", STYLE_BOLD);
+        display.drawCanvas(3, 88, canvas8x8);
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "X", STYLE_BOLD);
+        display.drawCanvas(3, 105, canvas8x8);
+        canvas8x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas8x8.printFixed(1, 1, "Y", STYLE_BOLD);
+        display.drawCanvas(3, 115, canvas8x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -11586,8 +11610,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch enabled
       // ------------------------------------------------
+      canvas60x8.clear();
       if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-        canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,0,255));
         canvas60x8.printFixed((60/2)-((strlen("ENABLED")/2)*6), 1, "ENABLED", STYLE_BOLD);
         display.drawCanvas(1, 41, canvas60x8);
@@ -11596,7 +11620,6 @@ void UpdateUI(void * pvParamters) {
       // matrix switch disabled
       // ------------------------------------------------
       else {
-        canvas60x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         canvas60x8.printFixed((60/2)-((strlen("DISABLED")/2)*6), 1, "DISABLED", STYLE_BOLD);
         display.drawCanvas(1, 41, canvas60x8);
@@ -11604,8 +11627,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch state high
       // ------------------------------------------------
+      canvas60x8.clear();
       if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
-        canvas60x8.clear();
         display.setColor(RGB_COLOR16(0,255,0));
         canvas60x8.printFixed((60/2)-((strlen("ACTIVE")/2)*6), 1, "ACTIVE", STYLE_BOLD);
         display.drawCanvas(66, 41, canvas60x8);
@@ -11614,7 +11637,6 @@ void UpdateUI(void * pvParamters) {
       // matrix switch state low
       // ------------------------------------------------
       else {
-        canvas60x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         canvas60x8.printFixed((60/2)-((strlen("INACTIVE")/2)*6), 1, "INACTIVE", STYLE_BOLD);
         display.drawCanvas(66, 41, canvas60x8);
@@ -11622,10 +11644,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function name
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "F", STYLE_BOLD);
-      display.drawCanvas(3, 58, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()], STYLE_BOLD);
@@ -11633,10 +11651,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function x
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "X", STYLE_BOLD);
-      display.drawCanvas(3, 68, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_NORMAL);
@@ -11644,10 +11658,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function y
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "Y", STYLE_BOLD);
-      display.drawCanvas(3, 78, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_NORMAL);
@@ -11655,10 +11665,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function z
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "Z", STYLE_BOLD);
-      display.drawCanvas(3, 88, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_NORMAL);
@@ -11666,10 +11672,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function real x
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "X", STYLE_BOLD);
-      display.drawCanvas(3, 105, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
@@ -11677,10 +11679,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // matrix switch function real y
       // ------------------------------------------------
-      canvas8x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas8x8.printFixed(1, 1, "Y", STYLE_BOLD);
-      display.drawCanvas(3, 115, canvas8x8);
       canvas108x8.clear();
       display.setColor(systemData.color_content);
       canvas108x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
@@ -15302,8 +15300,8 @@ void loop() {
   // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
   // syncing manually and periodically will increase perfromance if required.
   // ----------------------------------------------------------------------------------------------------------------------------
-  gps_signal=0; // 0 reflects either zero satellites or signal unknown due to gngga disabled.
-  if (systemData.satio_enabled==false) {if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
+  // 0 reflects either zero satellites or signal unknown due to gngga disabled.
+  if (systemData.satio_enabled==false) {gps_signal=0; if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
   if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
   if (systemData.gpatt_enabled==false) {if (cleared_dynamic_data_gpatt==false) {clearGPATT(); cleared_dynamic_data_gpatt=true;} else {cleared_dynamic_data_gpatt=false;}}
@@ -15442,7 +15440,6 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      OPERATIONS PER INTERVAL
   // ----------------------------------------------------------------------------------------------------------------------------
-
   if (interrupt_interval_counter > 0) {
     // ---------------------------------------------------------------------
     //                                                    INTERRUPT COUNTER
@@ -15502,7 +15499,7 @@ void loop() {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                      TIMINGS
+  //                                                                                                                       TIMING
   // ----------------------------------------------------------------------------------------------------------------------------
   // delay(100); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken=(micros() - timeData.mainLoopTimeStart);
