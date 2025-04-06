@@ -11830,7 +11830,7 @@ void UpdateUI(void * pvParamters) {
           }
           display.drawCanvas(84, 19, canvas8x8);
           display.setColor(systemData.color_menu_content);
-          display.drawRect(83, 15, 95, 15+15);
+          display.drawRect(82, 15, 95, 15+15);
         }
         else {
           // --------------------------------------------
@@ -11846,7 +11846,7 @@ void UpdateUI(void * pvParamters) {
             display.setColor(RGB_COLOR16(0,0,255));
             canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
           }
-          display.drawCanvas(83, 19, canvas8x8);
+          display.drawCanvas(84, 19, canvas8x8);
         }
         // ------------------------------------------------------------------------------------------------------------
         // matrix switch function menu
