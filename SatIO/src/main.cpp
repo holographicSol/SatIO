@@ -15701,6 +15701,7 @@ bool cleared_dynamic_data_gngga=false;
 bool cleared_dynamic_data_gnrmc=false;
 bool cleared_dynamic_data_gpatt=false;
 bool second_time_period=false;
+int remain_rtc_sync_flag=0;
 
 void loop() {
   bench("-----");
@@ -15955,7 +15956,8 @@ void loop() {
     // ---------------------------------------------------------------------
     // give rtc sync flag an opportunity to be processed.
     // ---------------------------------------------------------------------
-    if(satData.rtc_second>3) {rtc_sync_flag=false;}
+    if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
+    if (remain_rtc_sync_flag>2) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
