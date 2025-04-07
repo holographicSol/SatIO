@@ -933,7 +933,7 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 
 const int max_display_items=8;
 const char *menuDisplayItems[max_display_items];
-LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 38}, {125, 125}} );
+LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 46}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SYSTEM
