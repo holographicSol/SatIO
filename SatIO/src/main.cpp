@@ -308,7 +308,7 @@ bool gps_done=false;
 // --------------------------------------------------------------------------------------
 int gps_signal=0;
 int satellite_count=0;
-bool sync_rtc=false;
+bool rtc_sync_flag=false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -4087,7 +4087,7 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
-        sync_rtc=true; // ToDo: check
+        rtc_sync_flag=true; // ToDo: check
       }
     }
     else {
@@ -4109,7 +4109,7 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
-        sync_rtc=true; // ToDo: check
+        rtc_sync_flag=true; // ToDo: check
       }
     }
   }
@@ -11441,7 +11441,7 @@ void DisplaySignal(int x, int y) {
 void DisplayRTCSync(int x, int y) {
   display.setColor(RGB_COLOR16(0,0,255));
   canvas19x8.clear();
-  if (sync_rtc==true) {canvas19x8.printFixed(1, 1, "SYN", STYLE_BOLD);}
+  if (rtc_sync_flag==true) {canvas19x8.printFixed(1, 1, "SYN", STYLE_BOLD);}
   display.drawCanvas(x, y, canvas19x8);
 }
 
@@ -15953,9 +15953,9 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                              SYNC RTC
     // ---------------------------------------------------------------------
-    // give sync flag aproximate 1 second opportunity to be processed
+    // give sync flag aproximate an opportunity to be processed
     // ---------------------------------------------------------------------
-    if(satData.rtc_second>1) {sync_rtc=false;}
+    if(satData.rtc_second>3) {rtc_sync_flag=false;}
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
