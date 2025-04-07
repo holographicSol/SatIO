@@ -15953,7 +15953,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                              SYNC RTC
     // ---------------------------------------------------------------------
-    // give sync flag aproximate an opportunity to be processed
+    // give rtc sync flag an opportunity to be processed.
     // ---------------------------------------------------------------------
     if(satData.rtc_second>3) {rtc_sync_flag=false;}
   }
