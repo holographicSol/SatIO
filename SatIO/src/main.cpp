@@ -12160,8 +12160,8 @@ void UpdateUI(void * pvParamters) {
           display.drawHLine(1, 108, 127);
           display.drawVLine(86, 13, 37);
           display.drawHLine(1, 38, 127);
-          display.drawVLine(64, ui_content_2+1, ui_content_2+17);
-          display.drawHLine(1, ui_content_2+18, 127);
+          display.drawVLine(64, ui_content_2+1, ui_content_2+18);
+          display.drawHLine(1, ui_content_2+19, 127);
           // ------------------------------------------------
           // matrix switch
           // ------------------------------------------------
