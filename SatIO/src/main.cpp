@@ -307,6 +307,7 @@ bool gps_done=false;
 // abstraction from number of satellites and HDOP precision factor
 // --------------------------------------------------------------------------------------
 int gps_signal=0;
+int satellite_count=0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -11419,13 +11420,13 @@ void DisplaySignal(int x, int y) {
   else if (gps_signal==1) {
     display.setColor(RGB_COLOR16(0,255,0));
     canvas19x8.clear();
-    canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(satellite_count).c_str(), STYLE_BOLD);
     display.drawCanvas(x, y, canvas19x8);
   }
   else if (gps_signal==2) {
     display.setColor(RGB_COLOR16(0,0,255));
     canvas19x8.clear();
-    canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(satellite_count).c_str(), STYLE_BOLD);
     display.drawCanvas(x, y, canvas19x8);
   }
 }
@@ -15657,6 +15658,7 @@ void setup() {
 // retain some information for the port controller which runs every loop while gps task is overwriting data.
 // ------------------------------------------------------------------------------------------------------------------------------
 void retainGPSData() {
+  satellite_count = atoi(gnggaData.satellite_count_gngga);
   if (atoi(gnggaData.satellite_count_gngga)==0) {gps_signal=0;}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)>1)) {gps_signal=1;}
   else if ((atoi(gnggaData.satellite_count_gngga)>0) && (atoi(gnggaData.hdop_precision_factor)<=1)) {gps_signal=2;}
