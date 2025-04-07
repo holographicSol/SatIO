@@ -12061,7 +12061,7 @@ void UpdateUI(void * pvParamters) {
         if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          drawGeneralTitle("ENTER PORT NUMBER", RGB_COLOR16(255,0,0), systemData.color_border);
+          drawGeneralTitle("ENTER PORT", RGB_COLOR16(255,0,0), systemData.color_border);
           display.setColor(systemData.color_border);
           display.drawHLine(1, 108, 127);
           display.drawVLine(90, 13, 37);
@@ -12070,6 +12070,14 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // dynamic data
         // ------------------------------------------------
+        // ------------------------------------------------
+        // load
+        // ------------------------------------------------
+        DisplayDiscreteLoadPercentage(115, 3, 10);
+        // ------------------------------------------------
+        // overload
+        // ------------------------------------------------
+        DisplayOverload(3, 2);
         // ------------------------------------------------
         // matrix switch
         // ------------------------------------------------
