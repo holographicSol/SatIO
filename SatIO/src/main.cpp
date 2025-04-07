@@ -11662,13 +11662,16 @@ void UpdateUI(void * pvParamters) {
       else if (systemData.load_percentage>50 && systemData.load_percentage<=75) {
         display.setColor(RGB_COLOR16(255,255,0));
         display.drawHLine(115, 5, 125);
+        display.setColor(RGB_COLOR16(0,255,0));
         display.drawHLine(115, 7, 125);
         display.drawHLine(115, 9, 125);
       }
       else if (systemData.load_percentage>75) {
         display.setColor(RGB_COLOR16(255,0,0));
         display.drawHLine(115, 3, 125);
+        display.setColor(RGB_COLOR16(255,255,0));
         display.drawHLine(115, 5, 125);
+        display.setColor(RGB_COLOR16(0,255,0));
         display.drawHLine(115, 7, 125);
         display.drawHLine(115, 9, 125);
       }
