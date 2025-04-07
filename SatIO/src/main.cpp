@@ -4087,7 +4087,8 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
-        rtc_sync_flag=true; // ToDo: check
+        rtc_sync_flag=true;
+        Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
       }
     }
     else {
@@ -4109,7 +4110,8 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
-        rtc_sync_flag=true; // ToDo: check
+        rtc_sync_flag=true;
+        Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
       }
     }
   }
