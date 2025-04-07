@@ -11306,7 +11306,7 @@ void drawGeneralTitle(String title, int color1, int color2) {
   display.setColor(color1);
   canvas120x8.clear();
   // top center
-  canvas120x8.printFixed((125/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
+  canvas120x8.printFixed((int)(128/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
   display.drawCanvas(1, 2, canvas120x8);
   // title border
   display.setColor(color2);
