@@ -15264,6 +15264,9 @@ void readGPS(void * pvParameters) {
 // ------------------------------------------------------------------------------------------------------------------------------
 // Sensors are mostly intentionally left blank for custum configurations.
 // ------------------------------------------------------------------------------------------------------------------------------
+
+bool sensor_0_issue_flag=false;
+
 void getSensorData() {
 
   // ------------------------------------------------------------------------------------------
@@ -15282,8 +15285,9 @@ void getSensorData() {
       sensorData.dht11_c_0=dht.readTemperature();     // celsius default
       sensorData.dht11_f_0=dht.readTemperature(true); // fahreheit=true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println("[dht11] failed");
+        if (sensor_0_issue_flag==false) {Serial.println("[dht11] failed"); sensor_0_issue_flag=true;}
       }
+      else {if (sensor_0_issue_flag==true) {Serial.println("[dht11] succeeded"); sensor_0_issue_flag=false;}}
       sensorData.dht11_hif_0=dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
       sensorData.dht11_hic_0=dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit=false
       sensorData.sensor_0=sensorData.dht11_hic_0; // custum sensor 0
