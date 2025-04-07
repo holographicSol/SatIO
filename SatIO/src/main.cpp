@@ -1082,6 +1082,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   // overload
   // -----------------------------------------------------------------------------------------------------------------------
+  float load_percentage=0;
   bool overload=false;         // are loop times withing specified loop time max
   int i_overload=0;            // count overloads
   int overload_max=100000;     // main loop overload time in micros (default 100 milliseconds)
@@ -15536,7 +15537,7 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                       TIMING
   // ----------------------------------------------------------------------------------------------------------------------------
-  // delay(100); // debug test overload: increase loop time
+  // delay(50); // debug test overload: increase loop time
   timeData.mainLoopTimeTaken=(micros() - timeData.mainLoopTimeStart);
   if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}}
   else {systemData.overload=false;}
@@ -15544,4 +15545,6 @@ void loop() {
   bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
+  systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
+  bench("[load] " + String(systemData.load_percentage, 10) + "%");
 }
