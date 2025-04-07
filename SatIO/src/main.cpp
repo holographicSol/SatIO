@@ -11946,13 +11946,22 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
-        drawGeneralTitle("MATRIX OVERVIEW", systemData.color_title, systemData.color_border);
+        drawGeneralTitle("MATRIX", systemData.color_title, systemData.color_border);
         display.drawRect(0, 12, 127, 26);
         display.drawVLine(64, 13, 25);
       }
       // --------------------------------------------------
       // dynamic data
       // --------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       int size=23;
       int start=2;
       for (int i=0; i<5; i++) {
