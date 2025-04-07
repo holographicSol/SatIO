@@ -16251,4 +16251,6 @@ void loop() {
   // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
+
+  delay(1);
 }
