@@ -15666,10 +15666,8 @@ void retainGPSData() {
 //                                                                                                                      MAIN LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
 // care has been taken to reduce maximum loop times using vTasks and 'load distribution'.
-// wtgps300p outputs every 100 milliseconds so loop time must always be below 100 milliseconds.
-// average looptime 9 milliseconds.
-// average loops per second are about 60.
-// other looptimes range between 9ms and 40ms when gps/planetary data has been collected and is being processed. 
+// wtgps300p outputs every 100 milliseconds so loop time must always be below 100 milliseconds if intending to utilize gps data
+// 10 times a second.
 // ------------------------------------------------------------------------------------------------------------------------------
 
 int t0=millis();
