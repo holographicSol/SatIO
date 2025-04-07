@@ -11390,6 +11390,7 @@ void DisplayDiscreteLoadPercentage(int x, int y, int w) {
 // -------------------------------------------------------------------
 
 void DisplaySignal(int x, int y) {
+  // this may be abstracted in case satellites over 99 (for ui space resons) 
   canvas19x8.clear();
   if (gps_signal==0) {
     display.setColor(RGB_COLOR16(255,0,0));
