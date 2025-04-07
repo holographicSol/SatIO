@@ -308,6 +308,7 @@ bool gps_done=false;
 // --------------------------------------------------------------------------------------
 int gps_signal=0;
 int satellite_count=0;
+bool sync_rtc=false;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -4086,6 +4087,7 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
+        sync_rtc=true; // ToDo: check
       }
     }
     else {
@@ -4107,6 +4109,7 @@ void syncUTCTime() {
         satData.rtcsync_year=rtc.now().year();
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
+        sync_rtc=true; // ToDo: check
       }
     }
   }
@@ -11432,6 +11435,17 @@ void DisplaySignal(int x, int y) {
 }
 
 // -------------------------------------------------------------------
+//                                                         UI RTC SYNC
+// -------------------------------------------------------------------
+
+void DisplayRTCSync(int x, int y) {
+  display.setColor(RGB_COLOR16(0,0,255));
+  canvas19x8.clear();
+  if (sync_rtc==true) {canvas19x8.printFixed(1, 1, "SYN", STYLE_BOLD);}
+  display.drawCanvas(x, y, canvas19x8);
+}
+
+// -------------------------------------------------------------------
 //                                                       UI INDICATORS
 // -------------------------------------------------------------------
 
@@ -11604,9 +11618,13 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       DisplayDiscreteLoadPercentage(115, 3, 10);
       // ------------------------------------------------
-      // overload
+      // signal
       // ------------------------------------------------
       DisplaySignal(3, 4);
+      // ------------------------------------------------
+      // sync rtc
+      // ------------------------------------------------
+      DisplayRTCSync(3, 14);
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
@@ -15932,6 +15950,12 @@ void loop() {
     // Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
+    // ---------------------------------------------------------------------
+    //                                                              SYNC RTC
+    // ---------------------------------------------------------------------
+    // give sync flag aproximate 1 second opportunity to be processed
+    // ---------------------------------------------------------------------
+    if(satData.rtc_second>1) {sync_rtc=false;}
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
