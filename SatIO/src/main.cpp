@@ -11393,16 +11393,22 @@ void DisplaySignal(int x, int y) {
   canvas19x8.clear();
   if (gps_signal==0) {
     display.setColor(RGB_COLOR16(255,0,0));
+    canvas19x8.clear();
+    canvas19x8.printFixed(1, 1, "0", STYLE_BOLD);
+    display.drawCanvas(x, y, canvas19x8);
   }
   else if (gps_signal==1) {
     display.setColor(RGB_COLOR16(0,255,0));
+    canvas19x8.clear();
+    canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
+    display.drawCanvas(x, y, canvas19x8);
   }
   else if (gps_signal==2) {
     display.setColor(RGB_COLOR16(0,0,255));
+    canvas19x8.clear();
+    canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
+    display.drawCanvas(x, y, canvas19x8);
   }
-  canvas19x8.clear();
-  canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
-  display.drawCanvas(x, y, canvas19x8);
 }
 
 // -------------------------------------------------------------------
@@ -13494,13 +13500,13 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas60x8.clear();
         canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD);
-        display.drawCanvas(3, 22, canvas60x8);
+        display.drawCanvas(1, 20, canvas60x8);
         // ------------------------------------------------
         // sensor value column 1
         // ------------------------------------------------
         canvas60x8.clear();
         canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD);
-        display.drawCanvas(66, 22, canvas60x8);
+        display.drawCanvas(66, 20, canvas60x8);
         // ------------------------------------------------
       }
       // ------------------------------------------------
