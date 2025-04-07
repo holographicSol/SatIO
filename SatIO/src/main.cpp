@@ -12112,9 +12112,9 @@ void UpdateUI(void * pvParamters) {
         if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          if (enter_digits_key==2)      {drawGeneralTitle("ENTER VALUE X", systemData.color_title, systemData.color_border);;}
-          else if (enter_digits_key==3) {drawGeneralTitle("ENTER VALUE Y", systemData.color_title, systemData.color_border);;}
-          else if (enter_digits_key==4) {drawGeneralTitle("ENTER VALUE Z", systemData.color_title, systemData.color_border);;}
+          if (enter_digits_key==2)      {drawGeneralTitle("ENTER X", systemData.color_title, systemData.color_border);;}
+          else if (enter_digits_key==3) {drawGeneralTitle("ENTER Y", systemData.color_title, systemData.color_border);;}
+          else if (enter_digits_key==4) {drawGeneralTitle("ENTER Z", systemData.color_title, systemData.color_border);;}
           display.setColor(systemData.color_border);
           display.drawHLine(1, 28, 127);
           display.drawHLine(1, 108, 127);
@@ -12122,6 +12122,14 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // dynamic data
         // ------------------------------------------------
+        // ------------------------------------------------
+        // load
+        // ------------------------------------------------
+        DisplayDiscreteLoadPercentage(115, 3, 10);
+        // ------------------------------------------------
+        // overload
+        // ------------------------------------------------
+        DisplayOverload(3, 2);
         // ------------------------------------------------
         // matrix switch number
         // ------------------------------------------------
@@ -12218,7 +12226,7 @@ void UpdateUI(void * pvParamters) {
         if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
           previous_menu_page=menu_page; display.clear();
           drawMainBorder();
-          drawGeneralTitle("ENTER UTC OFFSET", systemData.color_title, systemData.color_border);
+          drawGeneralTitle("ENTER OFFSET", systemData.color_title, systemData.color_border);
           display.setColor(systemData.color_border);
           display.drawHLine(1, 28, 127);
           display.drawHLine(1, 108, 127);
@@ -12227,6 +12235,14 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // dynamic data
         // ------------------------------------------------
+        // ------------------------------------------------
+        // load
+        // ------------------------------------------------
+        DisplayDiscreteLoadPercentage(115, 3, 10);
+        // ------------------------------------------------
+        // overload
+        // ------------------------------------------------
+        DisplayOverload(3, 2);
         // ------------------------------------------------
         // utc second offset
         // ------------------------------------------------
@@ -12258,13 +12274,21 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();  
         drawMainBorder();
-        drawGeneralTitle("SETUP SWITCH LOGIC", systemData.color_title, systemData.color_border);
+        drawGeneralTitle("SETUP", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, 28, 127);
       }
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // matrix switch number
       // ------------------------------------------------
@@ -12341,13 +12365,21 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
-        drawGeneralTitle("SELECT FUNCTION", systemData.color_title, systemData.color_border);
+        drawGeneralTitle("SET FUNCTION", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, 28, 127);
       }
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // matrix switch number 
       // ------------------------------------------------
@@ -12401,6 +12433,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // matrix filename
       // ------------------------------------------------
       canvas42x8.clear();
@@ -12440,6 +12480,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
       setMenuMatrixFilePathItems();
@@ -12472,6 +12520,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
       setMenuMatrixFilePathItems();
@@ -12503,6 +12559,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -12544,6 +12608,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // satellite count
       // ------------------------------------------------
@@ -12626,6 +12698,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
@@ -12744,6 +12824,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
@@ -12866,6 +12954,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // pitch
       // ------------------------------------------------
       canvas92x8.clear();
@@ -12978,6 +13074,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // rtc time (utc)
       // ------------------------------------------------
       canvas80x8.clear();
@@ -13085,6 +13189,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
       if (systemData.output_satio_enabled==true) {menuSerialItems[0]    ="SATIO   ENABLED";}
@@ -13147,6 +13259,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
       if (systemData.sidereal_track_sun==true) {menuUniverseItems[0]     ="SUN     ENABLED";} 
@@ -13197,12 +13317,20 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("DISPLAY", systemData.color_title, systemData.color_border);
       }
-      // --------------------------------------------------------------
-      // dynamic data: all data on this page should be dynamically set!
-      // --------------------------------------------------------------
-      drawMainBorder();
-      drawGeneralTitle("DISPLAY", systemData.color_title, systemData.color_border);
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13245,6 +13373,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // speed
       // ------------------------------------------------
@@ -13344,6 +13480,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // sensor value column 0
       // ------------------------------------------------
       canvas60x8.clear();
@@ -13441,6 +13585,14 @@ void UpdateUI(void * pvParamters) {
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // local datetime
       // ------------------------------------------------
       if (crunching_time_data==false) {
@@ -13509,6 +13661,15 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.sun_r) + String("  SET " + String(siderealPlanetData.sun_s))).c_str(), STYLE_BOLD);
@@ -13567,6 +13728,15 @@ void UpdateUI(void * pvParamters) {
       }
       // ------------------------------------------------
       // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13647,6 +13817,15 @@ void UpdateUI(void * pvParamters) {
       }
       // ------------------------------------------------
       // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13744,6 +13923,15 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.venus_r) + String("  SET " + String(siderealPlanetData.venus_s))).c_str(), STYLE_BOLD);
@@ -13839,6 +14027,15 @@ void UpdateUI(void * pvParamters) {
       }
       // ------------------------------------------------
       // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13936,6 +14133,15 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.jupiter_r) + String("  SET " + String(siderealPlanetData.jupiter_s))).c_str(), STYLE_BOLD);
@@ -14031,6 +14237,15 @@ void UpdateUI(void * pvParamters) {
       }
       // ------------------------------------------------
       // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14128,6 +14343,15 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.uranus_r) + String("  SET " + String(siderealPlanetData.uranus_s))).c_str(), STYLE_BOLD);
@@ -14223,6 +14447,15 @@ void UpdateUI(void * pvParamters) {
       }
       // ------------------------------------------------
       // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
