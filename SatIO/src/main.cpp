@@ -11385,6 +11385,10 @@ void DisplayDiscreteLoadPercentage(int x, int y, int w) {
   }
 }
 
+// -------------------------------------------------------------------
+//                                                           UI SIGNAL
+// -------------------------------------------------------------------
+
 void DisplaySignal(int x, int y) {
   canvas19x8.clear();
   if (gps_signal==0) {
