@@ -12157,25 +12157,22 @@ void UpdateUI(void * pvParamters) {
           drawMainBorder();
           drawGeneralTitle("ENTER PORT", RGB_COLOR16(255,0,0), systemData.color_border);
           display.setColor(systemData.color_border);
-          display.drawHLine(1, 108, 127);
-          display.drawVLine(86, 13, 37);
-          display.drawHLine(1, 38, 127);
-          display.drawVLine(64, ui_content_2+1, ui_content_2+18);
-          display.drawHLine(1, ui_content_2+19, 127);
+          display.drawHLine(1, 24, 127); // below mfp
+          display.drawVLine(64, 25, ui_content_2+4); // seperate enabled from active
+          display.drawHLine(1, ui_content_2+5, 127); // below enabled and active
+          display.drawHLine(1, 108, 127); // input
           // ------------------------------------------------
-          // matrix switch
+          // matrix switch number
           // ------------------------------------------------
           display.setColor(systemData.color_subtitle);
-          canvas80x8.clear();
-          canvas80x8.printFixed(1, 1, String("MATRIX SWITCH" + String(menuMatrixSwitchSelect.selection())).c_str(), STYLE_BOLD);
-          display.drawCanvas(3, ui_content_0, canvas80x8);
-          // ------------------------------------------------
-          // matrix switch port
-          // ------------------------------------------------
-          canvas80x8.clear();
-          display.setColor(systemData.color_subtitle);
-          canvas80x8.printFixed(1, 1, "CURRENT PORT", STYLE_BOLD);
-          display.drawCanvas(3, ui_content_1, canvas80x8);
+          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+          strcpy(TMP_UI_DATA_0, "M");
+          strcat(TMP_UI_DATA_0, String(menuMatrixFunctionSelect.selection()).c_str());
+          strcat(TMP_UI_DATA_0, "   P");
+          strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+          canvas120x8.clear();
+          canvas120x8.printFixed((125/2)-((strlen(TMP_UI_DATA_0)/2)*6), 1, TMP_UI_DATA_0, STYLE_BOLD);
+          display.drawCanvas(1, ui_content_0-2, canvas120x8);
         }
         // ------------------------------------------------
         // dynamic data
@@ -12190,27 +12187,13 @@ void UpdateUI(void * pvParamters) {
         if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
         else {DisplaySignal(2, 2);}
         // ------------------------------------------------
-        // matrix switch
-        // ------------------------------------------------
-        canvas19x8.clear();
-        display.setColor(systemData.color_content);
-        canvas19x8.printFixed(1, 1, String(menuMatrixSwitchSelect.selection()).c_str(), STYLE_BOLD);
-        display.drawCanvas(89, ui_content_0, canvas19x8);
-        // ------------------------------------------------
-        // matrix switch port
-        // ------------------------------------------------
-        canvas19x8.clear();
-        display.setColor(systemData.color_content);
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str(), STYLE_BOLD);
-        display.drawCanvas(89, ui_content_1, canvas19x8);
-        // ------------------------------------------------
         // matrix switch enabled
         // ------------------------------------------------
         canvas54x8.clear();
         if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
           display.setColor(RGB_COLOR16(0,0,255));
           canvas54x8.printFixed(1, 1, " ENABLED", STYLE_BOLD);
-          display.drawCanvas(4, ui_content_2+6, canvas54x8);
+          display.drawCanvas(4, ui_content_1+2, canvas54x8);
         }
         // ------------------------------------------------
         // matrix switch disabled
@@ -12218,7 +12201,7 @@ void UpdateUI(void * pvParamters) {
         else {
           display.setColor(RGB_COLOR16(64,64,64));
           canvas54x8.printFixed(1, 1, "DISABLED", STYLE_BOLD);
-          display.drawCanvas(7, ui_content_2+6, canvas54x8);
+          display.drawCanvas(7, ui_content_1+2, canvas54x8);
         }
         // ------------------------------------------------
         // matrix switch state high
@@ -12227,7 +12210,7 @@ void UpdateUI(void * pvParamters) {
         if (matrixData.matrix_switch_state[0][menuMatrixSwitchSelect.selection()]==true) {
           display.setColor(RGB_COLOR16(0,255,0));
           canvas54x8.printFixed(1, 1, " ACTIVE", STYLE_BOLD);
-          display.drawCanvas(70, ui_content_2+6, canvas54x8);
+          display.drawCanvas(70, ui_content_1+2, canvas54x8);
         }
         // ------------------------------------------------
         // matrix switch state low
@@ -12235,7 +12218,7 @@ void UpdateUI(void * pvParamters) {
         else {
           display.setColor(RGB_COLOR16(64,64,64));
           canvas54x8.printFixed(1, 1, "INACTIVE", STYLE_BOLD);
-          display.drawCanvas(70, ui_content_2+6, canvas54x8);
+          display.drawCanvas(70, ui_content_1+2, canvas54x8);
         }
       }
       
