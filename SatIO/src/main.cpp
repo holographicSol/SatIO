@@ -15685,7 +15685,7 @@ bool second_time_period=false;
 void loop() {
   bench("-----");
   timeData.mainLoopTimeStart=micros();
-  systemData.t_bench=true;
+  // systemData.t_bench=true;
   systemData.loops_a_second++;
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -15927,7 +15927,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
+    // Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
   }
@@ -15941,8 +15941,8 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
   // bench("[overload] " + String(systemData.overload));
-  bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
-  bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
+  // bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
+  // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
-  bench("[load] " + String(systemData.load_percentage, 10) + "%");
+  // bench("[load] " + String(systemData.load_percentage, 10) + "%");
 }
