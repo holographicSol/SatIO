@@ -15957,7 +15957,7 @@ void loop() {
     // give rtc sync flag an opportunity to be processed.
     // ---------------------------------------------------------------------
     if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
-    if (remain_rtc_sync_flag>2) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
+    if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
