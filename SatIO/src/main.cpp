@@ -969,6 +969,7 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 /* ESP32 has 2 cores. initiate task handles */
 TaskHandle_t GPSTask;
 TaskHandle_t UpdateUITask;
+TaskHandle_t TrackPlanetsTask;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
@@ -6554,12 +6555,27 @@ void trackPlanets() {
 // once data is set, this function can be called once before calling trackPlanets
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
-void setTrackPlanets() {
-  myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
-  myAstro.rejectDST();
-  myAstro.setGMTdate(satData.rtc_year, satData.rtc_month, satData.rtc_day);
-  myAstro.setGMTtime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
-  myAstro.setLocalTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
+bool track_planet_period=false;
+
+void setTrackPlanets(void * pvParamaters) {
+  while (1) {
+
+    if (track_planet_period==true) {
+      track_planet_period=false;
+      if (systemData.satio_enabled) {
+
+        myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
+        myAstro.rejectDST();
+        myAstro.setGMTdate(satData.rtc_year, satData.rtc_month, satData.rtc_day);
+        myAstro.setGMTtime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
+        myAstro.setLocalTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
+        
+        trackPlanets();
+      }
+    }
+
+    delay(1000);
+  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -15326,7 +15342,7 @@ void getSensorData() {
   // --------------------------------------------------
   // set multiplexer channel back to zeroa
   // --------------------------------------------------
-  setMultiplexChannel_TCA9548A(0);
+  // setMultiplexChannel_TCA9548A(0);
 
   // --------------------------------------------------
   // output sentence
@@ -15580,6 +15596,20 @@ void setup() {
       &UpdateUITask,  /* Task handle. */
       0);             /* Core where the task should run */
   }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // xTask Track Planets
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    xTaskCreatePinnedToCore(
+      setTrackPlanets,    /* Function to implement the task */
+      "TrackPlanetsTask", /* Name of the task */
+      10240,              /* Stack size in words */
+      NULL,               /* Task input parameter */
+      2,                  /* Priority of the task */
+      &TrackPlanetsTask,  /* Task handle. */
+      0);                 /* Core where the task should run */
+  }
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
@@ -15620,7 +15650,6 @@ void retainGPSData() {
 int t0=millis();
 bool longer_loop=false;
 int load_distribution=0;
-bool track_planets_period=false;
 bool suspended_gps_task=false;
 bool matrix_run_state_flag=false;
 bool port_controller_run_state_flag=false;
@@ -15629,6 +15658,7 @@ bool cleared_dynamic_data_satio=false;
 bool cleared_dynamic_data_gngga=false;
 bool cleared_dynamic_data_gnrmc=false;
 bool cleared_dynamic_data_gpatt=false;
+bool second_time_period=false;
 
 void loop() {
   bench("-----");
@@ -15697,28 +15727,33 @@ void loop() {
     }
 
     // -----------------------------------------------------------------------
-    //                                                           SUSPEND TASKS
-    // -----------------------------------------------------------------------
-    // vTaskSuspend(UpdateUITask);
-
-    // -----------------------------------------------------------------------
     //                                                           MATRIX SWITCH
     // -----------------------------------------------------------------------
     // running matrix here allows gps task to be resumed as quickly as possible
     // when gngga/gnrmc/gpatt are enabled. (perfromance)
     // -----------------------------------------------------------------------
     t0=micros();
-    if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
+    if (systemData.matrix_enabled==true) {
+      matrix_run_state_flag=true;
+      // ---------------------------------------------------------------------
+      //                                                         SUSPEND TASKS
+      // ---------------------------------------------------------------------
+      vTaskSuspend(TrackPlanetsTask);
+      // ---------------------------------------------------------------------
+      //                                                                MATRIX
+      // ---------------------------------------------------------------------
+      matrixSwitch();
+      // ---------------------------------------------------------------------
+      //                                                          RESUME TASKS
+      // ---------------------------------------------------------------------
+      vTaskResume(TrackPlanetsTask);
+    }
     else if (systemData.matrix_enabled==false) {
-      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
+      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
+      }
     }
     MatrixStatsCounter();
     bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-    // -----------------------------------------------------------------------
-    //                                                            RESUME TASKS
-    // -----------------------------------------------------------------------
-    // vTaskResume(UpdateUITask);
 
     // -----------------------------------------------------------------------
     //                                                         RETAIN GPS DATA
@@ -15739,11 +15774,6 @@ void loop() {
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-  // -----------------------------------------------------------------------
-  //                                                           SUSPEND TASKS
-  // -----------------------------------------------------------------------
-  // vTaskSuspend(UpdateUITask);
-
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -15752,19 +15782,29 @@ void loop() {
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==true) {
       t0=micros();
-      if (systemData.matrix_enabled==true) {matrix_run_state_flag=true; matrixSwitch();}
+      if (systemData.matrix_enabled==true) {
+        matrix_run_state_flag=true;
+        // -----------------------------------------------------------------------
+        //                                                           SUSPEND TASKS
+        // -----------------------------------------------------------------------
+        vTaskSuspend(TrackPlanetsTask);
+        // -----------------------------------------------------------------------
+        //                                                                  MATRIX
+        // -----------------------------------------------------------------------
+        matrixSwitch();
+        // -----------------------------------------------------------------------
+        //                                                            RESUME TASKS
+        // -----------------------------------------------------------------------
+        vTaskResume(TrackPlanetsTask);
+      }
       else if (systemData.matrix_enabled==false) {
-        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();}
+        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
+        }
       }
       MatrixStatsCounter();
       bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
-
-  // -----------------------------------------------------------------------
-  //                                                            RESUME TASKS
-  // -----------------------------------------------------------------------
-  // vTaskResume(UpdateUITask);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
@@ -15785,21 +15825,20 @@ void loop() {
   //                                                                                                            LOAD DISTRIBUTION
   // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
+
     // ---------------------------------------------------------------------
-    //                                                         TRACK PLANETS
+    //                                             CONVERT UTC TO LOCAL TIME
     // ---------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
-      if (systemData.satio_enabled==true) {
-        if (track_planets_period==true) {
-          track_planets_period=false;
-          t0=micros();
-          setTrackPlanets();
-          bench("[setTrackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
-          t0=micros();
-          trackPlanets();
-          bench("[trackPlanets] " + String((float)(micros()-t0)/1000000, 4) + "s");
-        }
+      if (second_time_period==true) {
+        second_time_period=false;
+        crunching_time_data=true;
+        t0=micros();
+        syncTaskSafeRTCTime();
+        convertUTCTimeToLocalTime();
+        bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+        crunching_time_data=false;
       }
     }
     // --------------------------------------------------------------------
@@ -15843,7 +15882,12 @@ void loop() {
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
     portEXIT_CRITICAL(&second_timer_mux);
-    track_planets_period=true;
+    // ---------------------------------------------------------------------
+    //                                                          SECOND FLAGS
+    // ---------------------------------------------------------------------
+    second_time_period=true;
+    track_planet_period=true;
+
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
     // ---------------------------------------------------------------------
@@ -15859,15 +15903,6 @@ void loop() {
       Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
     }
     // ---------------------------------------------------------------------
-    //                                             CONVERT UTC TO LOCAL TIME
-    // ---------------------------------------------------------------------
-    crunching_time_data=true;
-    t0=micros();
-    syncTaskSafeRTCTime();
-    convertUTCTimeToLocalTime();
-    bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
-    // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
     Serial.println("[loops_a_second] " + String(loops_a_second));
@@ -15882,7 +15917,7 @@ void loop() {
   if (timeData.mainLoopTimeTaken>=systemData.overload_max) {systemData.overload=true; systemData.i_overload++; if (systemData.i_overload>9999) {systemData.i_overload=0;}}
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
-  bench("[overload] " + String(systemData.overload));
+  // bench("[overload] " + String(systemData.overload));
   bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
