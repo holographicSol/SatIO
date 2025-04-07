@@ -11549,28 +11549,36 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page;
         display.clear();
         drawMainBorder();
-        display.drawHLine(1, 26, 126);
+        // display.drawHLine(1, 26, 126);
       }
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
       // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
+      DisplayOverload(3, 2);
+      // ------------------------------------------------
       // local time
       // ------------------------------------------------
       if (crunching_time_data==false) {
-        canvas120x8.clear();
+        canvas76x8.clear();
         display.setColor(systemData.color_title);
-        canvas120x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, 4, canvas120x8);
+        canvas76x8.printFixed(1, 1, String(" " + String(satData.formatted_local_time)).c_str(), STYLE_BOLD);
+        display.drawCanvas(34, 4, canvas76x8);
       }
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
       if (crunching_time_data==false) {
-        canvas120x8.clear();
+        canvas76x8.clear();
         display.setColor(systemData.color_title);
-        canvas120x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, 14, canvas120x8);
+        canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
+        display.drawCanvas(34, 14, canvas76x8);
       }
       // ------------------------------------------------
       // menu
