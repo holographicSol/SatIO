@@ -303,6 +303,10 @@ void zero_matrix();
 // helps avoid any potential race conditions where gps data is collected on another task
 // --------------------------------------------------------------------------------------
 bool gps_done=false;
+// --------------------------------------------------------------------------------------
+// abstraction from number of satellites and HDOP precision factor
+// --------------------------------------------------------------------------------------
+int gps_signal=0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           PINS
@@ -11363,7 +11367,7 @@ void DisplayDiscreteLoadPercentage(int x, int y, int w) {
     display.drawHLine(x, y+4, x+w);
     display.drawHLine(x, y+6, x+w);
   }
-  else if (systemData.load_percentage>75) {
+  else if (systemData.load_percentage>75 && systemData.load_percentage<100) {
     display.setColor(RGB_COLOR16(255,0,0));
     display.drawHLine(x, y, x+w);
     display.setColor(RGB_COLOR16(255,255,0));
@@ -11372,18 +11376,29 @@ void DisplayDiscreteLoadPercentage(int x, int y, int w) {
     display.drawHLine(x, y+4, x+w);
     display.drawHLine(x, y+6, x+w);
   }
+  else if (systemData.load_percentage==100) {
+    display.setColor(RGB_COLOR16(255,0,0));
+    display.drawHLine(x, y, x+w);
+    display.drawHLine(x, y+2, x+w);
+    display.drawHLine(x, y+4, x+w);
+    display.drawHLine(x, y+6, x+w);
+  }
 }
 
-void DisplayOverload(int x, int y) {
-  canvas8x8.clear();
-  if (systemData.overload==true) {
-    display.setColor(RGB_COLOR16(255,255,0));
-    canvas8x8.printFixed(1, 1, "!", STYLE_BOLD);
-    display.drawCanvas(x, y, canvas8x8);
+void DisplaySignal(int x, int y) {
+  canvas19x8.clear();
+  if (gps_signal==0) {
+    display.setColor(RGB_COLOR16(255,0,0));
   }
-  else {
-    display.drawCanvas(x, y, canvas8x8);
+  else if (gps_signal==1) {
+    display.setColor(RGB_COLOR16(0,255,0));
   }
+  else if (gps_signal==2) {
+    display.setColor(RGB_COLOR16(0,0,255));
+  }
+  canvas19x8.clear();
+  canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
+  display.drawCanvas(3, 3, canvas19x8);
 }
 
 // -------------------------------------------------------------------
@@ -11561,7 +11576,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
@@ -11615,7 +11630,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -11715,7 +11730,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // matrix switch enabled
       // ------------------------------------------------
@@ -11968,7 +11983,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       int size=23;
       int start=2;
@@ -12085,7 +12100,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // overload
         // ------------------------------------------------
-        DisplayOverload(3, 2);
+        DisplaySignal(3, 2);
         // ------------------------------------------------
         // matrix switch
         // ------------------------------------------------
@@ -12137,7 +12152,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // overload
         // ------------------------------------------------
-        DisplayOverload(3, 2);
+        DisplaySignal(3, 2);
         // ------------------------------------------------
         // matrix switch number
         // ------------------------------------------------
@@ -12250,7 +12265,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // overload
         // ------------------------------------------------
-        DisplayOverload(3, 2);
+        DisplaySignal(3, 2);
         // ------------------------------------------------
         // utc second offset
         // ------------------------------------------------
@@ -12296,7 +12311,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // matrix switch number
       // ------------------------------------------------
@@ -12387,7 +12402,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // matrix switch number 
       // ------------------------------------------------
@@ -12447,7 +12462,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // matrix filename
       // ------------------------------------------------
@@ -12494,7 +12509,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -12534,7 +12549,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -12574,7 +12589,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -12623,7 +12638,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // satellite count
       // ------------------------------------------------
@@ -12713,7 +12728,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
@@ -12839,7 +12854,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
@@ -12968,7 +12983,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // pitch
       // ------------------------------------------------
@@ -13088,7 +13103,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // rtc time (utc)
       // ------------------------------------------------
@@ -13203,7 +13218,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13273,7 +13288,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13338,7 +13353,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13388,7 +13403,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // speed
       // ------------------------------------------------
@@ -13494,7 +13509,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // sensor value column 0
       // ------------------------------------------------
@@ -13599,7 +13614,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       // local datetime
       // ------------------------------------------------
@@ -13676,7 +13691,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13744,7 +13759,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13833,7 +13848,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -13938,7 +13953,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14043,7 +14058,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14148,7 +14163,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14253,7 +14268,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14358,7 +14373,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14463,7 +14478,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      DisplayOverload(3, 2);
+      DisplaySignal(3, 2);
       // ------------------------------------------------
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
@@ -14860,7 +14875,6 @@ void writePortControllerSwitchState() {
 // ------------------------------------------------
 // Write GPS Signal LED
 // ------------------------------------------------
-int gps_signal=0;
 
 void writePortControllerGPSSignalLED() {
     memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
