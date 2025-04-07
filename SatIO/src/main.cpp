@@ -15685,7 +15685,7 @@ void loop() {
   // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
   // syncing manually and periodically will increase perfromance if required.
   // ----------------------------------------------------------------------------------------------------------------------------
-  // 0 reflects either zero satellites or signal unknown due to gngga disabled.
+  // gps_signal 0 reflects either zero satellites or signal unknown due to gngga disabled.
   if (systemData.satio_enabled==false) {gps_signal=0; if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
   if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
@@ -15708,22 +15708,22 @@ void loop() {
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
     if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
-    bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
+    // bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
     // -----------------------------------------------------------------------
     //                                                                SYNC RTC
     // -----------------------------------------------------------------------
     crunching_time_data=true;
-    t0=micros();
+    // t0=micros();
     syncUTCTime();
-    bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
     crunching_time_data=false;
     // -----------------------------------------------------------------------
     //                                                      CALCULATE LOCATION
     // -----------------------------------------------------------------------
     if (systemData.satio_enabled==true) {
-      t0=micros();
+      // t0=micros();
       calculateLocation();
-      bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
 
     // -----------------------------------------------------------------------
@@ -15732,7 +15732,7 @@ void loop() {
     // running matrix here allows gps task to be resumed as quickly as possible
     // when gngga/gnrmc/gpatt are enabled. (perfromance)
     // -----------------------------------------------------------------------
-    t0=micros();
+    // t0=micros();
     if (systemData.matrix_enabled==true) {
       matrix_run_state_flag=true;
       // ---------------------------------------------------------------------
@@ -15753,7 +15753,7 @@ void loop() {
       }
     }
     MatrixStatsCounter();
-    bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
     // -----------------------------------------------------------------------
     //                                                         RETAIN GPS DATA
@@ -15770,9 +15770,9 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   getSensorData();
-  bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
@@ -15781,7 +15781,7 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==true) {
-      t0=micros();
+      // t0=micros();
       if (systemData.matrix_enabled==true) {
         matrix_run_state_flag=true;
         // -----------------------------------------------------------------------
@@ -15802,14 +15802,14 @@ void loop() {
         }
       }
       MatrixStatsCounter();
-      bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   if (systemData.port_controller_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
   else {
     if (port_controller_run_state_flag==false) {
@@ -15819,7 +15819,7 @@ void loop() {
     }
     else {writeToSemiDisabledPortController();}
   }
-  bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            LOAD DISTRIBUTION
@@ -15834,10 +15834,10 @@ void loop() {
       if (second_time_period==true) {
         second_time_period=false;
         crunching_time_data=true;
-        t0=micros();
+        // t0=micros();
         syncTaskSafeRTCTime();
         convertUTCTimeToLocalTime();
-        bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+        // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
         crunching_time_data=false;
       }
     }
@@ -15846,9 +15846,9 @@ void loop() {
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
       load_distribution=0;
-      t0=micros();
+      // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
-      bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
