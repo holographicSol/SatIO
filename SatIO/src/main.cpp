@@ -11337,6 +11337,56 @@ void setMenuMatrixFilePathItems() {
 }
 
 // -------------------------------------------------------------------
+//                                         UI DISCRETE LOAD PERCENTAGE
+// -------------------------------------------------------------------
+
+void DisplayDiscreteLoadPercentage(int x, int y, int w) {
+  // title bar right: x=115, y=3, w=10
+  display.setColor(RGB_COLOR16(0,0,0));
+  display.drawHLine(x, y, x+w);
+  display.drawHLine(x, y+2, x+w);
+  display.drawHLine(x, y+4, x+w);
+  display.drawHLine(x, y+6, x+w);
+  if (systemData.load_percentage>=0 && systemData.load_percentage<=25) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    display.drawHLine(x, y+6, x+w);
+  }
+  else if (systemData.load_percentage>25 && systemData.load_percentage<=50) {
+    display.setColor(RGB_COLOR16(0,255,0));
+    display.drawHLine(x, y+4, x+w);
+    display.drawHLine(x, y+6, x+w);
+  }
+  else if (systemData.load_percentage>50 && systemData.load_percentage<=75) {
+    display.setColor(RGB_COLOR16(255,255,0));
+    display.drawHLine(x, y+2, x+w);
+    display.setColor(RGB_COLOR16(0,255,0));
+    display.drawHLine(x, y+4, x+w);
+    display.drawHLine(x, y+6, x+w);
+  }
+  else if (systemData.load_percentage>75) {
+    display.setColor(RGB_COLOR16(255,0,0));
+    display.drawHLine(x, y, x+w);
+    display.setColor(RGB_COLOR16(255,255,0));
+    display.drawHLine(x, y+2, x+w);
+    display.setColor(RGB_COLOR16(0,255,0));
+    display.drawHLine(x, y+4, x+w);
+    display.drawHLine(x, y+6, x+w);
+  }
+}
+
+void DisplayOverload(int x, int y) {
+  canvas8x8.clear();
+  if (systemData.overload==true) {
+    display.setColor(RGB_COLOR16(255,255,0));
+    canvas8x8.printFixed(1, 1, "!", STYLE_BOLD);
+    display.drawCanvas(x, y, canvas8x8);
+  }
+  else {
+    display.drawCanvas(x, y, canvas8x8);
+  }
+}
+
+// -------------------------------------------------------------------
 //                                                       UI INDICATORS
 // -------------------------------------------------------------------
 
@@ -11645,48 +11695,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // load
       // ------------------------------------------------
-      display.setColor(RGB_COLOR16(0,0,0));
-      display.drawHLine(115, 3, 125);
-      display.drawHLine(115, 5, 125);
-      display.drawHLine(115, 7, 125);
-      display.drawHLine(115, 9, 125);
-      if (systemData.load_percentage>=0 && systemData.load_percentage<=25) {
-        display.setColor(RGB_COLOR16(0,255,0));
-        display.drawHLine(115, 9, 125);
-      }
-      else if (systemData.load_percentage>25 && systemData.load_percentage<=50) {
-        display.setColor(RGB_COLOR16(0,255,0));
-        display.drawHLine(115, 7, 125);
-        display.drawHLine(115, 9, 125);
-      }
-      else if (systemData.load_percentage>50 && systemData.load_percentage<=75) {
-        display.setColor(RGB_COLOR16(255,255,0));
-        display.drawHLine(115, 5, 125);
-        display.setColor(RGB_COLOR16(0,255,0));
-        display.drawHLine(115, 7, 125);
-        display.drawHLine(115, 9, 125);
-      }
-      else if (systemData.load_percentage>75) {
-        display.setColor(RGB_COLOR16(255,0,0));
-        display.drawHLine(115, 3, 125);
-        display.setColor(RGB_COLOR16(255,255,0));
-        display.drawHLine(115, 5, 125);
-        display.setColor(RGB_COLOR16(0,255,0));
-        display.drawHLine(115, 7, 125);
-        display.drawHLine(115, 9, 125);
-      }
+      DisplayDiscreteLoadPercentage(115, 3, 10);
       // ------------------------------------------------
       // overload
       // ------------------------------------------------
-      canvas8x8.clear();
-      if (systemData.overload==true) {
-        display.setColor(RGB_COLOR16(255,255,0));
-        canvas8x8.printFixed(1, 1, "!", STYLE_BOLD);
-        display.drawCanvas(3, 2, canvas8x8);
-      }
-      else {
-        display.drawCanvas(3, 2, canvas8x8);
-      }
+      DisplayOverload(3, 2);
       // ------------------------------------------------
       // matrix switch enabled
       // ------------------------------------------------
