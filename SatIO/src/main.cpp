@@ -15213,7 +15213,7 @@ void getSensorData() {
       sensorData.dht11_c_0=dht.readTemperature();     // celsius default
       sensorData.dht11_f_0=dht.readTemperature(true); // fahreheit=true
       if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        Serial.println("[dht11_hic_0] Failed to read from dht senor!");
+        Serial.println("[dht11] failed");
       }
       sensorData.dht11_hif_0=dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
       sensorData.dht11_hic_0=dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit=false
