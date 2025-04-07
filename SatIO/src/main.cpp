@@ -11601,7 +11601,17 @@ void UpdateUI(void * pvParamters) {
     //                                                                                                     UAP ATTITUDE
     // ----------------------------------------------------------------------------------------------------------------
     // this page will provide a view of vehicle/device attitude (roll, pitch yaw etc) provided by multi axis gyros and INS.
+    // may also provide sensory information relating to area/environment around vehicle/device.
     // ----------------------------------------------------------------------------------------------------------------
+    /*                         
+    //                         (heading)
+    //                          N/S/E/W
+    //            gyro -o-   |           | -> altitude (GPS)
+    //           (primary)   |           |                  
+    //                       | ----o---- | -> roll/pitch/yaw (INS)
+    //                       |           |   
+    //                       |___________|    
+    */
 
     // ----------------------------------------------------------------------------------------------------------------
     //                                                                                                        HOME PAGE
