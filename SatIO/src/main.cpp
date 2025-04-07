@@ -4096,7 +4096,7 @@ void syncUTCTime() {
       /* Sync within the first 100 milliseconds of any minute                      */
       // ----------------------------------------------------------------------------
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
-        Serial.println("[rtc] synchronizing:                     " + String(rtc.now().timestamp()));
+        Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
         // --------------------------------------------------------------------------
@@ -4111,7 +4111,7 @@ void syncUTCTime() {
         satData.rtcsync_month=rtc.now().month();
         satData.rtcsync_day=rtc.now().day();
         rtc_sync_flag=true;
-        Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
+        Serial.println("[rtc] synchronization (completed): " + String(rtc.now().timestamp()));
       }
     }
   }
