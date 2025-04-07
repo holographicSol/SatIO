@@ -11642,6 +11642,39 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      display.setColor(RGB_COLOR16(0,0,0));
+      display.drawHLine(115, 4, 125);
+      display.drawHLine(115, 6, 125);
+      display.drawHLine(115, 8, 125);
+      display.drawHLine(115, 10, 125);
+      if (systemData.load_percentage>=0 && systemData.load_percentage<=25) {
+        display.setColor(RGB_COLOR16(0,255,0));
+        display.drawHLine(115, 10, 125);
+      }
+      else if (systemData.load_percentage>25 && systemData.load_percentage<=50) {
+        display.setColor(RGB_COLOR16(0,255,0));
+        display.drawHLine(115, 8, 125);
+        display.drawHLine(115, 10, 125);
+      }
+      else if (systemData.load_percentage>50 && systemData.load_percentage<=75) {
+        display.setColor(RGB_COLOR16(255,255,0));
+        display.drawHLine(115, 6, 125);
+        display.drawHLine(115, 8, 125);
+        display.drawHLine(115, 10, 125);
+      }
+      else if (systemData.load_percentage>75) {
+        display.setColor(RGB_COLOR16(255,0,0));
+        display.drawHLine(115, 4, 125);
+        display.drawHLine(115, 6, 125);
+        display.drawHLine(115, 8, 125);
+        display.drawHLine(115, 10, 125);
+      }
+      // ------------------------------------------------
+      // overload
+      // ------------------------------------------------
       canvas8x8.clear();
       if (systemData.overload==true) {
         display.setColor(RGB_COLOR16(255,255,0));
