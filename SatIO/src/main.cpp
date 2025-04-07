@@ -949,7 +949,7 @@ LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} 
 
 const int max_timeanddate_items=2;
 const char *menuTimeAndDateItems[max_timeanddate_items];
-LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 64}, {125, 125}} );
+LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 92}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          DHT11
