@@ -1224,6 +1224,11 @@ struct systemStruct {
   int color_border=display_color[index_display_border_color];
 
   // ----------------------------------------------------------------
+  // color is used to assist with emphasis to importance and clarity.
+  // custumizable. 
+  // ----------------------------------------------------------------
+
+  // ----------------------------------------------------------------
   // content color
   // ----------------------------------------------------------------
   char char_display_content_color[7][56]={
