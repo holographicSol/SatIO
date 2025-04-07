@@ -11398,7 +11398,7 @@ void DisplaySignal(int x, int y) {
   }
   canvas19x8.clear();
   canvas19x8.printFixed(1, 1, gnggaData.satellite_count_gngga, STYLE_BOLD);
-  display.drawCanvas(3, 3, canvas19x8);
+  display.drawCanvas(3, 2, canvas19x8);
 }
 
 // -------------------------------------------------------------------
