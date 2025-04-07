@@ -1087,6 +1087,8 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   // overload
   // -----------------------------------------------------------------------------------------------------------------------
+  int loops_a_second=0;
+  int total_loops_a_second=0;
   float load_percentage=0;
   bool overload=false;         // are loop times withing specified loop time max
   int i_overload=0;            // count overloads
@@ -13419,6 +13421,34 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_border);
         display.drawHLine(1, 62, 127);
         display.drawVLine(46, 13, 61);
+        canvas42x8.clear();
+        // ------------------------------------------------
+        // speed
+        // ------------------------------------------------
+        display.setColor(systemData.color_subtitle);
+        canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0, canvas42x8);
+        // ------------------------------------------------
+        // uptime 
+        // ------------------------------------------------
+        canvas42x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_1, canvas42x8);
+        // ------------------------------------------------
+        // overload 
+        // ------------------------------------------------
+        canvas42x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_2, canvas42x8);
+        // ------------------------------------------------
+        // loops a second
+        // ------------------------------------------------
+        canvas42x8.clear();
+        display.setColor(systemData.color_subtitle);
+        canvas42x8.printFixed(1, 1, "LOOPS", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_3, canvas42x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13434,10 +13464,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // speed
       // ------------------------------------------------
-      canvas42x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD);
-      display.drawCanvas(3, ui_content_0, canvas42x8);
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       canvas74x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 7).c_str(), STYLE_BOLD);
@@ -13445,10 +13471,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // uptime 
       // ------------------------------------------------
-      canvas42x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD);
-      display.drawCanvas(3, ui_content_1, canvas42x8);
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       canvas74x8.printFixed(1, 1, String(String(timeData.uptime_seconds).c_str(), 11).c_str());
@@ -13456,17 +13478,20 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // overload 
       // ------------------------------------------------
-      canvas42x8.clear();
-      display.setColor(systemData.color_subtitle);
-      canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD);
-      display.drawCanvas(3, ui_content_2, canvas42x8);
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas74x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
       else {canvas74x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
       display.drawCanvas(50, ui_content_2, canvas74x8);
       // ------------------------------------------------
-      // set run matrix on startup 
+      // loops a second
+      // ------------------------------------------------
+      canvas74x8.clear();
+      display.setColor(systemData.color_content);
+      canvas74x8.printFixed(1, 1, String(systemData.total_loops_a_second).c_str());
+      display.drawCanvas(50, ui_content_3, canvas74x8);
+      // ------------------------------------------------
+      // set run matrix on startup
       // ------------------------------------------------
       if (systemData.matrix_run_on_startup==true) {menuSystemItems[0]="AUTO MATRIX ON";}
       else {menuSystemItems[0]="AUTO MATRIX OFF";}
@@ -15653,7 +15678,6 @@ int load_distribution=0;
 bool suspended_gps_task=false;
 bool matrix_run_state_flag=false;
 bool port_controller_run_state_flag=false;
-int loops_a_second=0;
 bool cleared_dynamic_data_satio=false;
 bool cleared_dynamic_data_gngga=false;
 bool cleared_dynamic_data_gnrmc=false;
@@ -15664,7 +15688,7 @@ void loop() {
   bench("-----");
   timeData.mainLoopTimeStart=micros();
   systemData.t_bench=true;
-  loops_a_second++;
+  systemData.loops_a_second++;
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SUSPEND/RESUME GPS
@@ -15905,8 +15929,9 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    Serial.println("[loops_a_second] " + String(loops_a_second));
-    loops_a_second=0;
+    Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
+    systemData.total_loops_a_second=systemData.loops_a_second;
+    systemData.loops_a_second=0;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
