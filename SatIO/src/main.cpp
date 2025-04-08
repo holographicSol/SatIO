@@ -292,7 +292,7 @@ void beginSDCARD();
 void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
-bool sdcardQuickCheck();
+void sdcardQuickCheck();
 void readI2C();
 void UIIndicators();
 void printAllTimes();
@@ -429,6 +429,7 @@ NanoCanvas<21,8,1> canvas21x8;
 NanoCanvas<42,8,1> canvas42x8;
 NanoCanvas<54,8,1> canvas54x8;
 NanoCanvas<32,8,1> canvas32x8;
+NanoCanvas<38,8,1> canvas38x8;
 NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
@@ -941,7 +942,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 46}, {125, 125
 
 const int max_system_items=4;
 const char *menuSystemItems[max_system_items];
-LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 64}, {125, 125}} );
+LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 76}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MENU TIME & DATE
@@ -6105,6 +6106,85 @@ void sdcardDeleteMatrix(char * file) {
     else {Serial.println("[sdcard] failed to deleted file: " + String(file));}
   }
   else {Serial.println("[sdcard] file does not exist: " + String(file));}
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                        SDCARD: FULL INITIALIZE
+// ------------------------------------------------------------------------------------------------------------------------------
+
+void setupSDCard() {
+  /*
+  initializes sdcard, attempts to load saved system configuration file and saved matrix file. creates new directory tree, system file
+  and matrix file if not exists.
+  */
+  if (!sd.begin(SD_CONFIG)) {
+    Serial.println("[sdcard] failed to initialize");
+  }
+  else {
+    Serial.println("[sdcard] initialized");
+    // ----------------------------------------------------
+    // create/load system files
+    // ----------------------------------------------------
+    sdcardMakeSystemDirs();
+    // ----------------------------------------------------
+    // load system configuration file
+    // ----------------------------------------------------
+    if (!sdcardLoadSystemConfig(sdcardData.sysconf)) {sdcardSaveSystemConfig(sdcardData.sysconf);}
+    // ----------------------------------------------------
+    // load matrix file specified by configuration file
+    // ----------------------------------------------------
+    if (!sdcardLoadMatrix(sdcardData.matrix_filepath)) {
+      Serial.println("[sdcard] specified matrix file not found!");
+      // --------------------------------------------------
+      // is it the the default matrix file that is missing?
+      // --------------------------------------------------
+      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
+        Serial.println("[sdcard] default matrix file not found!");
+        // ------------------------------------------------
+        // create default matrix file
+        // ------------------------------------------------
+        if (!sdcardSaveMatrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
+        else if (!sdcardLoadMatrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
+      }
+    }
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                            SDCARD: QUICK CHECK
+// ------------------------------------------------------------------------------------------------------------------------------
+
+void sdcardQuickCheck() {
+  // vTaskSuspend(UpdateUITask);
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // end spi device
+    // --------------------------------------------
+    endSPIDevice(SSD1351_CS);
+  }
+  // ----------------------------------------------
+  // SDCARD
+  // ----------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sd.end();
+  if (sd.cardBegin(SD_CONFIG)) {Serial.println("[sdcard] initialized");}
+  else {Serial.println("[sdcard] could not begin card");}
+  sd.end();
+  endSPIDevice(SD_CS);
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // begin spi device
+    // --------------------------------------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+  }
+  // vTaskResume(UpdateUITask);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -14109,36 +14189,36 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("SYSTEM", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawHLine(1, 62, 127);
-        display.drawVLine(46, 13, 61);
-        canvas42x8.clear();
+        display.drawHLine(1, ui_content_4+3, 127);
+        display.drawVLine(44, 13, ui_content_4+2);
         // ------------------------------------------------
         // speed
         // ------------------------------------------------
+        canvas38x8.clear();
         display.setColor(systemData.color_subtitle);
-        canvas42x8.printFixed(1, 1, "SPEED", STYLE_BOLD);
-        display.drawCanvas(3, ui_content_0, canvas42x8);
+        canvas38x8.printFixed(1, 1, "SPEED", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0, canvas38x8);
         // ------------------------------------------------
         // uptime 
         // ------------------------------------------------
-        canvas42x8.clear();
+        canvas38x8.clear();
         display.setColor(systemData.color_subtitle);
-        canvas42x8.printFixed(1, 1, "UPTIME", STYLE_BOLD);
-        display.drawCanvas(3, ui_content_1, canvas42x8);
+        canvas38x8.printFixed(1, 1, "UPTIME", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_1, canvas38x8);
         // ------------------------------------------------
         // overload 
         // ------------------------------------------------
-        canvas42x8.clear();
+        canvas38x8.clear();
         display.setColor(systemData.color_subtitle);
-        canvas42x8.printFixed(1, 1, "OLOAD", STYLE_BOLD);
-        display.drawCanvas(3, ui_content_2, canvas42x8);
+        canvas38x8.printFixed(1, 1, "OLOAD", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_2, canvas38x8);
         // ------------------------------------------------
         // loops a second
         // ------------------------------------------------
-        canvas42x8.clear();
+        canvas38x8.clear();
         display.setColor(systemData.color_subtitle);
-        canvas42x8.printFixed(1, 1, "LOOPS", STYLE_BOLD);
-        display.drawCanvas(3, ui_content_3, canvas42x8);
+        canvas38x8.printFixed(1, 1, "LOOPS", STYLE_BOLD);
+        display.drawCanvas(3, ui_content_3, canvas38x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -14158,14 +14238,14 @@ void UpdateUI(void * pvParamters) {
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       canvas74x8.printFixed(1, 1, String((double)timeData.mainLoopTimeTaken/1000000, 7).c_str(), STYLE_BOLD);
-      display.drawCanvas(50, ui_content_0, canvas74x8);
+      display.drawCanvas(47, ui_content_0, canvas74x8);
       // ------------------------------------------------
       // uptime 
       // ------------------------------------------------
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       canvas74x8.printFixed(1, 1, String(String(timeData.uptime_seconds).c_str(), 11).c_str());
-      display.drawCanvas(50, ui_content_1, canvas74x8);
+      display.drawCanvas(47, ui_content_1, canvas74x8);
       // ------------------------------------------------
       // overload 
       // ------------------------------------------------
@@ -14173,14 +14253,14 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       if (systemData.overload==true) {display.setColor(RGB_COLOR16(255,255,0)); canvas74x8.printFixed(1, 1, String("TRUE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
       else {canvas74x8.printFixed(1, 1, String("FALSE (" + String(systemData.i_overload) + ")").c_str(), STYLE_BOLD);}
-      display.drawCanvas(50, ui_content_2, canvas74x8);
+      display.drawCanvas(47, ui_content_2, canvas74x8);
       // ------------------------------------------------
       // loops a second
       // ------------------------------------------------
       canvas74x8.clear();
       display.setColor(systemData.color_content);
       canvas74x8.printFixed(1, 1, String(systemData.total_loops_a_second).c_str());
-      display.drawCanvas(50, ui_content_3, canvas74x8);
+      display.drawCanvas(47, ui_content_3, canvas74x8);
       // ------------------------------------------------
       // set run matrix on startup
       // ------------------------------------------------
@@ -15695,59 +15775,6 @@ void writeToSemiDisabledPortController() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                        SDCARD: FULL INITIALIZE
-// ------------------------------------------------------------------------------------------------------------------------------
-
-void setupSDCard() {
-  /*
-  initializes sdcard, attempts to load saved system configuration file and saved matrix file. creates new directory tree, system file
-  and matrix file if not exists.
-  */
-  if (!sd.begin(SD_CONFIG)) {
-    Serial.println("[sdcard] failed to initialize");
-  }
-  else {
-    Serial.println("[sdcard] initialized");
-    // ----------------------------------------------------
-    // create/load system files
-    // ----------------------------------------------------
-    sdcardMakeSystemDirs();
-    // ----------------------------------------------------
-    // load system configuration file
-    // ----------------------------------------------------
-    if (!sdcardLoadSystemConfig(sdcardData.sysconf)) {sdcardSaveSystemConfig(sdcardData.sysconf);}
-    // ----------------------------------------------------
-    // load matrix file specified by configuration file
-    // ----------------------------------------------------
-    if (!sdcardLoadMatrix(sdcardData.matrix_filepath)) {
-      Serial.println("[sdcard] specified matrix file not found!");
-      // --------------------------------------------------
-      // is it the the default matrix file that is missing?
-      // --------------------------------------------------
-      if (strcmp(sdcardData.matrix_filepath, sdcardData.default_matrix_filepath)==0) {
-        Serial.println("[sdcard] default matrix file not found!");
-        // ------------------------------------------------
-        // create default matrix file
-        // ------------------------------------------------
-        if (!sdcardSaveMatrix(sdcardData.matrix_filepath)) {Serial.println("[sdcard] failed to write default marix file.");}
-        else if (!sdcardLoadMatrix(sdcardData.default_matrix_filepath)) {Serial.println("[sdcard] failed to load matrix file");}
-      }
-    }
-  }
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                            SDCARD: QUICK CHECK
-// ------------------------------------------------------------------------------------------------------------------------------
-
-bool sdcardQuickCheck() {
-  Serial.println("[sdcard] cardBegin: " + String(sd.cardBegin(SD_CONFIG)));
-  if (!sd.cardBegin(SD_CONFIG)) {Serial.println("[sdcard] could not begin card");}
-  else {Serial.println("[sdcard] sdcard began"); return true;}
-  return false;
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       READ GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -16278,6 +16305,7 @@ void setup() {
     canvas28x8.setFixedFont(ssd1306xled_font6x8);
     canvas21x8.setFixedFont(ssd1306xled_font6x8);
     canvas32x8.setFixedFont(ssd1306xled_font6x8);
+    canvas38x8.setFixedFont(ssd1306xled_font6x8);
     canvas42x8.setFixedFont(ssd1306xled_font6x8);
     canvas54x8.setFixedFont(ssd1306xled_font6x8);
     canvas80x8.setFixedFont(ssd1306xled_font6x8);
@@ -16398,6 +16426,8 @@ bool cleared_dynamic_data_gnrmc=false;
 bool cleared_dynamic_data_gpatt=false;
 bool second_time_period=false;
 int remain_rtc_sync_flag=0;
+int sdcard_check_counter=0;
+
 
 void loop() {
   bench("-----");
