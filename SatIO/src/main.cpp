@@ -3173,7 +3173,7 @@ LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 134, {{2, 
 struct GNGGAStruct {
   char sentence[200];
   char outsentence[200];
-  char tag[56];                                                                                                       // <0> Log header
+  char tag[56];                                                                                             // <0> Log header
   char utc_time[56];                  int bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
   char latitude[56];                  int bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
   char latitude_hemisphere[56];       int bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
@@ -3189,9 +3189,10 @@ struct GNGGAStruct {
   char differential_delay[56];        int bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
   char id[56];                        int bad_id_i;                    bool bad_id=true;                    // <14> base station ID
   char check_sum[56];                 int bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
-  int count_valid_elements=0;         int bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga count_valid_elements should result in 15 from zero)
+  int count_valid_elements=0;         int bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga count_valid_elements should result in 16)
+  int max_valid_elements=16;
   int total_invalid_elements=0;
-  int max_bad=99;
+  int max_bad=9999;
 };
 GNGGAStruct gnggaData;
 
@@ -3293,45 +3294,30 @@ void GNGGA() {
   if (gnggaData.bad_geoidal_i>gnggaData.max_bad) {gnggaData.bad_geoidal_i=0;}
   if (gnggaData.bad_geoidal_units_i>gnggaData.max_bad) {gnggaData.bad_geoidal_units_i=0;}
   if (gnggaData.bad_differential_delay_i>gnggaData.max_bad) {gnggaData.bad_differential_delay_i=0;}
-
+  // -------------------------------
+  // debug
+  // -------------------------------
+  // systemData.debug=true;
   if (systemData.debug==true) {
-    Serial.println("[gnggaData.tag] "                         + String(gnggaData.tag));
-    Serial.println("[gnggaData.bad_utc_time_i] "              + String(gnggaData.bad_utc_time_i));
-    Serial.println("[gnggaData.bad_latitude_i] "              + String(gnggaData.bad_latitude_i));
-    Serial.println("[gnggaData.bad_latitude_hemisphere_i] "   + String(gnggaData.bad_latitude_hemisphere_i));
-    Serial.println("[gnggaData.bad_longitude_i] "             + String(gnggaData.bad_longitude_i));
-    Serial.println("[gnggaData.bad_longitude_hemisphere_i] "  + String(gnggaData.bad_longitude_hemisphere_i));
-    Serial.println("[gnggaData.bad_solution_status_i] "       + String(gnggaData.bad_solution_status_i));
-    Serial.println("[gnggaData.bad_satellite_count_gngga_i] " + String(gnggaData.bad_satellite_count_gngga_i));
-    Serial.println("[gnggaData.bad_hdop_precision_factor_i] " + String(gnggaData.bad_hdop_precision_factor_i));
-    Serial.println("[gnggaData.bad_altitude_i] "              + String(gnggaData.bad_altitude_i));
-    Serial.println("[gnggaData.bad_altitude_units_i] "        + String(gnggaData.bad_altitude_units_i));
-    Serial.println("[gnggaData.bad_geoidal_i] "               + String(gnggaData.bad_geoidal_i));
-    Serial.println("[gnggaData.bad_geoidal_units_i] "         + String(gnggaData.bad_geoidal_units_i));
-    Serial.println("[gnggaData.bad_differential_delay_i] "    + String(gnggaData.bad_differential_delay_i));
-    Serial.println("[gnggaData.bad_id_i] "                    + String(gnggaData.bad_id_i));
-    Serial.println("[gnggaData.check_sum] "                   + String(gnggaData.check_sum));
-    Serial.println("[gnggaData.total_invalid_elements] "      + String(gnggaData.total_invalid_elements));
+    Serial.println("[gnggaData.tag] "                    + String(gnggaData.tag));
+    Serial.println("[gnggaData.utc_time] "               + String(gnggaData.utc_time)              + " (bad: " + String(gnggaData.bad_utc_time_i) + ")");
+    Serial.println("[gnggaData.latitude] "               + String(gnggaData.latitude)              + " (bad: " + String(gnggaData.bad_latitude_i) + ")");
+    Serial.println("[gnggaData.latitude_hemisphere] "    + String(gnggaData.latitude_hemisphere)   + " (bad: " + String(gnggaData.bad_latitude_hemisphere_i) + ")");
+    Serial.println("[gnggaData.longitude] "              + String(gnggaData.longitude)             + " (bad: " + String(gnggaData.bad_longitude_i) + ")");
+    Serial.println("[gnggaData.longitude_hemisphere] "   + String(gnggaData.longitude_hemisphere)  + " (bad: " + String(gnggaData.bad_longitude_hemisphere_i) + ")");
+    Serial.println("[gnggaData.solution_status] "        + String(gnggaData.solution_status)       + " (bad: " + String(gnggaData.bad_solution_status_i) + ")");
+    Serial.println("[gnggaData.satellite_count_gngga] "  + String(gnggaData.satellite_count_gngga) + " (bad: " + String(gnggaData.bad_satellite_count_gngga_i) + ")");
+    Serial.println("[gnggaData.hdop_precision_factor] "  + String(gnggaData.hdop_precision_factor) + " (bad: " + String(gnggaData.bad_hdop_precision_factor_i) + ")");
+    Serial.println("[gnggaData.altitude] "               + String(gnggaData.altitude)              + " (bad: " + String(gnggaData.bad_altitude_i) + ")");
+    Serial.println("[gnggaData.altitude_units] "         + String(gnggaData.altitude_units)        + " (bad: " + String(gnggaData.bad_altitude_units_i) + ")");
+    Serial.println("[gnggaData.geoidal] "                + String(gnggaData.geoidal)               + " (bad: " + String(gnggaData.bad_geoidal_i) + ")");
+    Serial.println("[gnggaData.geoidal_units] "          + String(gnggaData.geoidal_units)         + " (bad: " + String(gnggaData.bad_geoidal_units_i) + ")");
+    Serial.println("[gnggaData.differential_delay] "     + String(gnggaData.differential_delay)    + " (bad: " + String(gnggaData.bad_differential_delay_i) + ")");
+    Serial.println("[gnggaData.id] "                     + String(gnggaData.id)                    + " (bad: " + String(gnggaData.bad_id_i) + ")");
+    Serial.println("[gnggaData.count_valid_elements] "   + String(gnggaData.count_valid_elements));
+    Serial.println("[gnggaData.total_invalid_elements] " + String(gnggaData.total_invalid_elements));
   }
-  if (systemData.debug==true) {
-    Serial.println("[gnggaData.tag] "                   + String(gnggaData.tag));
-    Serial.println("[gnggaData.utc_time] "              + String(gnggaData.utc_time));
-    Serial.println("[gnggaData.latitude] "              + String(gnggaData.latitude));
-    Serial.println("[gnggaData.latitude_hemisphere] "   + String(gnggaData.latitude_hemisphere));
-    Serial.println("[gnggaData.longitude] "             + String(gnggaData.longitude));
-    Serial.println("[gnggaData.longitude_hemisphere] "  + String(gnggaData.longitude_hemisphere));
-    Serial.println("[gnggaData.solution_status] "       + String(gnggaData.solution_status));
-    Serial.println("[gnggaData.satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));
-    Serial.println("[gnggaData.hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));
-    Serial.println("[gnggaData.altitude] "              + String(gnggaData.altitude));
-    Serial.println("[gnggaData.altitude_units] "        + String(gnggaData.altitude_units));
-    Serial.println("[gnggaData.geoidal] "               + String(gnggaData.geoidal));
-    Serial.println("[gnggaData.geoidal_units] "         + String(gnggaData.geoidal_units));
-    Serial.println("[gnggaData.differential_delay] "    + String(gnggaData.differential_delay));
-    Serial.println("[gnggaData.id] "                    + String(gnggaData.id));
-    Serial.println("[gnggaData.check_sum] "             + String(gnggaData.check_sum));
-    Serial.println("[gnggaData.count_valid_elements] "  + String(gnggaData.count_valid_elements));
-  }
+  // systemData.debug=false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3355,9 +3341,10 @@ struct GNRMCStruct {
   char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction=true; // <11> Magnetic declination direction, E (east) or W (west)
   char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication=true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
   char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum=true;                    // <13> XOR check value of all bytes starting from $ to *
-  int count_valid_elements=0;            unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 13 from zero)
+  int count_valid_elements=0;            unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 13)
+  int max_valid_elements=13;
   int total_invalid_elements=0;
-  int max_bad=99;
+  int max_bad=9999;
 };
 GNRMCStruct gnrmcData;
 
@@ -3440,6 +3427,7 @@ void GNRMC() {
   // -------------------------------
   if (gnrmcData.total_invalid_elements>gnrmcData.max_bad) {gnrmcData.total_invalid_elements=0;}
   if (gnrmcData.bad_utc_time_i>gnrmcData.max_bad) {gnrmcData.bad_utc_time_i=0;}
+  if (gnrmcData.bad_positioning_status_i>gnrmcData.max_bad) {gnrmcData.bad_positioning_status=0;}
   if (gnrmcData.bad_latitude_i>gnrmcData.max_bad) {gnrmcData.bad_latitude_i=0;}
   if (gnrmcData.bad_latitude_hemisphere_i>gnrmcData.max_bad) {gnrmcData.bad_latitude_hemisphere_i=0;}
   if (gnrmcData.bad_longitude_i>gnrmcData.max_bad) {gnrmcData.bad_longitude_i=0;}
@@ -3450,38 +3438,26 @@ void GNRMC() {
   if (gnrmcData.bad_installation_angle_i>gnrmcData.max_bad) {gnrmcData.bad_installation_angle_i=0;}
   if (gnrmcData.bad_installation_angle_direction_i>gnrmcData.max_bad) {gnrmcData.bad_installation_angle_direction_i=0;}
   if (gnrmcData.bad_mode_indication_i>gnrmcData.max_bad) {gnrmcData.bad_mode_indication_i=0;}
-
+  // -------------------------------
+  // debug
+  // -------------------------------
   // systemData.debug=true;
   if (systemData.debug==true) {
-    Serial.println("[gnrmcData.bad_utc_time_i] "                     + String(gnrmcData.bad_utc_time_i));
-    Serial.println("[gnrmcData.bad_latitude_i] "                     + String(gnrmcData.bad_latitude_i));
-    Serial.println("[gnrmcData.bad_latitude_hemisphere_i] "          + String(gnrmcData.bad_latitude_hemisphere_i));
-    Serial.println("[gnrmcData.bad_longitude_i] "                    + String(gnrmcData.bad_longitude_i));
-    Serial.println("[gnrmcData.bad_longitude_hemisphere_i] "         + String(gnrmcData.bad_longitude_hemisphere_i));
-    Serial.println("[gnrmcData.bad_ground_speed_i] "                 + String(gnrmcData.bad_ground_speed_i));
-    Serial.println("[gnrmcData.bad_ground_heading_i] "               + String(gnrmcData.bad_ground_heading_i));
-    Serial.println("[gnrmcData.bad_utc_date_i] "                     + String(gnrmcData.bad_utc_date_i));
-    Serial.println("[gnrmcData.bad_installation_angle_i] "           + String(gnrmcData.bad_installation_angle_i));
-    Serial.println("[gnrmcData.bad_installation_angle_direction_i] " + String(gnrmcData.bad_installation_angle_direction_i));
-    Serial.println("[gnrmcData.bad_mode_indication_i] "              + String(gnrmcData.bad_mode_indication_i));
-    Serial.println("[gnrmcData.total_invalid_elements] "             + String(gnrmcData.total_invalid_elements));
-  }
-  if (systemData.debug==true) {
     Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
-    Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time));
-    Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status));
-    Serial.println("[gnrmcData.latitude] "                     + String(gnrmcData.latitude));
-    Serial.println("[gnrmcData.latitude_hemisphere] "          + String(gnrmcData.latitude_hemisphere));
-    Serial.println("[gnrmcData.longitude] "                    + String(gnrmcData.longitude));
-    Serial.println("[gnrmcData.longitude_hemisphere] "         + String(gnrmcData.longitude_hemisphere));
-    Serial.println("[gnrmcData.ground_speed] "                 + String(gnrmcData.ground_speed));
-    Serial.println("[gnrmcData.ground_heading] "               + String(gnrmcData.ground_heading));
-    Serial.println("[gnrmcData.utc_date] "                     + String(gnrmcData.utc_date));
-    Serial.println("[gnrmcData.installation_angle] "           + String(gnrmcData.installation_angle));
-    Serial.println("[gnrmcData.installation_angle_direction] " + String(gnrmcData.installation_angle_direction));
-    Serial.println("[gnrmcData.mode_indication] "              + String(gnrmcData.mode_indication));
-    Serial.println("[gnrmcData.check_sum] "                    + String(gnrmcData.check_sum));
+    Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time)                     + " (bad: " + String(gnrmcData.bad_utc_time_i) + ")");
+    Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status)           + " (bad: " + String(gnrmcData.bad_positioning_status) + ")");
+    Serial.println("[gnrmcData.latitude] "                     + String(gnrmcData.latitude)                     + " (bad: " + String(gnrmcData.bad_latitude_i) + ")");
+    Serial.println("[gnrmcData.latitude_hemisphere] "          + String(gnrmcData.latitude_hemisphere)          + " (bad: " + String(gnrmcData.bad_latitude_hemisphere_i) + ")");
+    Serial.println("[gnrmcData.longitude] "                    + String(gnrmcData.longitude)                    + " (bad: " + String(gnrmcData.bad_longitude_i) + ")");
+    Serial.println("[gnrmcData.longitude_hemisphere] "         + String(gnrmcData.longitude_hemisphere)         + " (bad: " + String(gnrmcData.bad_longitude_hemisphere_i) + ")");
+    Serial.println("[gnrmcData.ground_speed] "                 + String(gnrmcData.ground_speed)                 + " (bad: " + String(gnrmcData.bad_ground_speed_i) + ")");
+    Serial.println("[gnrmcData.ground_heading] "               + String(gnrmcData.ground_heading)               + " (bad: " + String(gnrmcData.bad_ground_heading_i) + ")");
+    Serial.println("[gnrmcData.utc_date] "                     + String(gnrmcData.utc_date)                     + " (bad: " + String(gnrmcData.bad_utc_date_i) + ")");
+    Serial.println("[gnrmcData.installation_angle] "           + String(gnrmcData.installation_angle)           + " (bad: " + String(gnrmcData.bad_installation_angle_i) + ")");
+    Serial.println("[gnrmcData.installation_angle_direction] " + String(gnrmcData.installation_angle_direction) + " (bad: " + String(gnrmcData.bad_installation_angle_direction_i) + ")");
+    Serial.println("[gnrmcData.mode_indication] "              + String(gnrmcData.mode_indication)              + " (bad: " + String(gnrmcData.bad_mode_indication_i) + ")");
     Serial.println("[gnrmcData.count_valid_elements] "         + String(gnrmcData.count_valid_elements));
+    Serial.println("[gnrmcData.total_invalid_elements] "       + String(gnrmcData.total_invalid_elements));
   }
   // systemData.debug=false;
 }
@@ -3534,7 +3510,10 @@ struct GPATTStruct {
   char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num=true;        // <38> 1：fixed setting，0：Self adaptive installation
   char scalable[56];          unsigned long bad_scalable_i;         bool bad_scalable=true;         // <39> 
   char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum=true;        // <40> XOR check value of all bytes starting from $ to *
-  int count_valid_elements=0; unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 41)
+  int count_valid_elements=0; unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 39)
+  int max_valid_elements=39;
+  int total_invalid_elements=0;
+  int max_bad=9999;
 };
 GPATTStruct gpattData;
 
@@ -3587,6 +3566,9 @@ void clearGPATT() {
 }
 
 void GPATT() {
+  // ---------------------
+  // tokenize and validate
+  // ---------------------
   gpattData.count_valid_elements=0;
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gpattData.sentence, ",");
@@ -3635,50 +3617,94 @@ void GPATT() {
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
+  // ------------------
+  // total bad elements
+  // ------------------
+  gpattData.total_invalid_elements=
+  gpattData.bad_pitch_i+
+  gpattData.bad_angle_channel_0_i+
+  gpattData.bad_roll_i+
+  gpattData.bad_angle_channel_1_i+
+  gpattData.bad_yaw_i+
+  gpattData.bad_angle_channel_2_i+
+  gpattData.bad_software_version_i+
+  gpattData.bad_version_channel_i+
+  gpattData.bad_product_id_i+
+  gpattData.bad_id_channel_i+
+  gpattData.bad_ins_i+
+  gpattData.bad_ins_channel_i+
+  gpattData.bad_hardware_version_i+
+  gpattData.bad_run_state_flag_i+
+  gpattData.bad_mis_angle_num_i+
+  gpattData.bad_custom_logo_0_i+
+  gpattData.bad_custom_logo_1_i+
+  gpattData.bad_custom_logo_2_i+
+  gpattData.bad_static_flag_i+
+  gpattData.bad_user_code_i+
+  gpattData.bad_gst_data_i+
+  gpattData.bad_line_flag_i+
+  gpattData.bad_custom_logo_3_i+
+  gpattData.bad_mis_att_flag_i+
+  gpattData.bad_imu_kind_i+
+  gpattData.bad_ubi_car_kind_i+
+  gpattData.bad_mileage_i+
+  gpattData.bad_custom_logo_4_i+
+  gpattData.bad_custom_logo_5_i+
+  gpattData.bad_run_inetial_flag_i+
+  gpattData.bad_custom_logo_6_i+
+  gpattData.bad_custom_logo_7_i+
+  gpattData.bad_custom_logo_8_i+
+  gpattData.bad_custom_logo_9_i+
+  gpattData.bad_speed_enable_i+
+  gpattData.bad_custom_logo_10_i+
+  gpattData.bad_custom_logo_11_i+
+  gpattData.bad_speed_num_i;
+  // -------------------------------
+  // debug
+  // -------------------------------
   // systemData.debug=true;
   if (systemData.debug==true) {
-    Serial.println("[gpattData.tag] "              + String(gpattData.tag));
-    Serial.println("[gpattData.pitch] "            + String(gpattData.pitch));
-    Serial.println("[gpattData.angle_channel_0] "  + String(gpattData.angle_channel_0));
-    Serial.println("[gpattData.roll] "             + String(gpattData.roll));
-    Serial.println("[gpattData.angle_channel_1] "  + String(gpattData.angle_channel_1));
-    Serial.println("[gpattData.yaw] "              + String(gpattData.yaw)); 
-    Serial.println("[gpattData.angle_channel_2] "  + String(gpattData.angle_channel_2));
-    Serial.println("[gpattData.software_version] " + String(gpattData.software_version));
-    Serial.println("[gpattData.version_channel] "  + String(gpattData.version_channel));
-    Serial.println("[gpattData.product_id] "       + String(gpattData.product_id));
-    Serial.println("[gpattData.id_channel] "       + String(gpattData.id_channel));
-    Serial.println("[gpattData.ins] "              + String(gpattData.ins));
-    Serial.println("[gpattData.ins_channel] "      + String(gpattData.ins_channel));
-    Serial.println("[gpattData.hardware_version] " + String(gpattData.hardware_version));
-    Serial.println("[gpattData.run_state_flag] "   + String(gpattData.run_state_flag));
-    Serial.println("[gpattData.mis_angle_num] "    + String(gpattData.mis_angle_num));
-    Serial.println("[gpattData.custom_logo_0] "    + String(gpattData.custom_logo_0));
-    Serial.println("[gpattData.custom_logo_1] "    + String(gpattData.custom_logo_1));
-    Serial.println("[gpattData.custom_logo_2] "    + String(gpattData.custom_logo_2));
-    Serial.println("[gpattData.static_flag] "      + String(gpattData.static_flag));
-    Serial.println("[gpattData.user_code] "        + String(gpattData.user_code));
-    Serial.println("[gpattData.gst_data] "         + String(gpattData.gst_data));
-    Serial.println("[gpattData.line_flag] "        + String(gpattData.line_flag));
-    Serial.println("[gpattData.custom_logo_3] "    + String(gpattData.custom_logo_3));
-    Serial.println("[gpattData.mis_att_flag] "     + String(gpattData.mis_att_flag));
-    Serial.println("[gpattData.imu_kind] "         + String(gpattData.imu_kind));
-    Serial.println("[gpattData.ubi_car_kind] "     + String(gpattData.ubi_car_kind));
-    Serial.println("[gpattData.mileage] "          + String(gpattData.mileage));
-    Serial.println("[gpattData.custom_logo_4] "    + String(gpattData.custom_logo_4));
-    Serial.println("[gpattData.custom_logo_5] "    + String(gpattData.custom_logo_5));
-    Serial.println("[gpattData.run_inetial_flag] " + String(gpattData.run_inetial_flag));
-    Serial.println("[gpattData.custom_logo_6] "    + String(gpattData.custom_logo_6));
-    Serial.println("[gpattData.custom_logo_7] "    + String(gpattData.custom_logo_7));
-    Serial.println("[gpattData.custom_logo_8] "    + String(gpattData.custom_logo_8));
-    Serial.println("[gpattData.custom_logo_9] "    + String(gpattData.custom_logo_9));
-    Serial.println("[gpattData.speed_enable] "     + String(gpattData.speed_enable));
-    Serial.println("[gpattData.custom_logo_10] "   + String(gpattData.custom_logo_10));
-    Serial.println("[gpattData.custom_logo_11] "   + String(gpattData.custom_logo_11));
-    Serial.println("[gpattData.speed_num] "        + String(gpattData.speed_num));
-    Serial.println("[gpattData.scalable] "         + String(gpattData.scalable));
-    Serial.println("[gpattData.check_sum] "        + String(gpattData.check_sum));
+    Serial.println("[gpattData.tag] "                    + String(gpattData.tag));
+    Serial.println("[gpattData.pitch] "                  + String(gpattData.pitch)               + " (bad: " + String(gpattData.bad_pitch_i) + ")");
+    Serial.println("[gpattData.angle_channel_0] "        + String(gpattData.angle_channel_0)     + " (bad: " + String(gpattData.bad_angle_channel_0_i) + ")");
+    Serial.println("[gpattData.roll] "                   + String(gpattData.roll)                + " (bad: " + String(gpattData.bad_roll_i) + ")");
+    Serial.println("[gpattData.angle_channel_1] "        + String(gpattData.angle_channel_1)     + " (bad: " + String(gpattData.bad_angle_channel_1_i) + ")");
+    Serial.println("[gpattData.yaw] "                    + String(gpattData.yaw)                 + " (bad: " + String(gpattData.bad_yaw_i) + ")");
+    Serial.println("[gpattData.angle_channel_2] "        + String(gpattData.angle_channel_2)     + " (bad: " + String(gpattData.bad_angle_channel_2_i) + ")");
+    Serial.println("[gpattData.software_version] "       + String(gpattData.software_version)    + " (bad: " + String(gpattData.bad_software_version_i) + ")");
+    Serial.println("[gpattData.version_channel] "        + String(gpattData.version_channel)     + " (bad: " + String(gpattData.bad_version_channel_i) + ")");
+    Serial.println("[gpattData.product_id] "             + String(gpattData.product_id)          + " (bad: " + String(gpattData.bad_product_id_i) + ")");
+    Serial.println("[gpattData.id_channel] "             + String(gpattData.id_channel)          + " (bad: " + String(gpattData.bad_id_channel_i) + ")");
+    Serial.println("[gpattData.ins] "                    + String(gpattData.ins)                 + " (bad: " + String(gpattData.bad_ins_i) + ")");
+    Serial.println("[gpattData.ins_channel] "            + String(gpattData.ins_channel)         + " (bad: " + String(gpattData.bad_ins_channel_i) + ")");
+    Serial.println("[gpattData.hardware_version] "       + String(gpattData.hardware_version)    + " (bad: " + String(gpattData.bad_hardware_version_i) + ")");
+    Serial.println("[gpattData.run_state_flag] "         + String(gpattData.run_state_flag)      + " (bad: " + String(gpattData.bad_run_state_flag_i) + ")");
+    Serial.println("[gpattData.mis_angle_num] "          + String(gpattData.mis_angle_num)       + " (bad: " + String(gpattData.bad_mis_angle_num_i) + ")");
+    Serial.println("[gpattData.custom_logo_0] "          + String(gpattData.custom_logo_0)       + " (bad: " + String(gpattData.bad_custom_logo_0_i) + ")");
+    Serial.println("[gpattData.custom_logo_1] "          + String(gpattData.custom_logo_1)       + " (bad: " + String(gpattData.bad_custom_logo_1_i) + ")");
+    Serial.println("[gpattData.custom_logo_2] "          + String(gpattData.custom_logo_2)       + " (bad: " + String(gpattData.bad_custom_logo_2_i) + ")");
+    Serial.println("[gpattData.static_flag] "            + String(gpattData.static_flag)         + " (bad: " + String(gpattData.bad_static_flag_i) + ")");
+    Serial.println("[gpattData.user_code] "              + String(gpattData.user_code)           + " (bad: " + String(gpattData.bad_user_code_i) + ")");
+    Serial.println("[gpattData.gst_data] "               + String(gpattData.gst_data)            + " (bad: " + String(gpattData.bad_gst_data_i) + ")");
+    Serial.println("[gpattData.line_flag] "              + String(gpattData.line_flag)           + " (bad: " + String(gpattData.bad_line_flag_i) + ")");
+    Serial.println("[gpattData.custom_logo_3] "          + String(gpattData.custom_logo_3)       + " (bad: " + String(gpattData.bad_custom_logo_3_i) + ")");
+    Serial.println("[gpattData.mis_att_flag] "           + String(gpattData.mis_att_flag)        + " (bad: " + String(gpattData.bad_mis_att_flag_i) + ")");
+    Serial.println("[gpattData.imu_kind] "               + String(gpattData.imu_kind)            + " (bad: " + String(gpattData.bad_imu_kind_i) + ")");
+    Serial.println("[gpattData.ubi_car_kind] "           + String(gpattData.ubi_car_kind)        + " (bad: " + String(gpattData.bad_ubi_car_kind_i) + ")");
+    Serial.println("[gpattData.mileage] "                + String(gpattData.mileage)             + " (bad: " + String(gpattData.bad_mileage_i) + ")");
+    Serial.println("[gpattData.custom_logo_4] "          + String(gpattData.custom_logo_4)       + " (bad: " + String(gpattData.bad_custom_logo_4_i) + ")");
+    Serial.println("[gpattData.custom_logo_5] "          + String(gpattData.custom_logo_5)       + " (bad: " + String(gpattData.bad_custom_logo_5_i) + ")");
+    Serial.println("[gpattData.run_inetial_flag] "       + String(gpattData.run_inetial_flag)    + " (bad: " + String(gpattData.bad_run_inetial_flag_i) + ")");
+    Serial.println("[gpattData.custom_logo_6] "          + String(gpattData.custom_logo_6)       + " (bad: " + String(gpattData.bad_custom_logo_6_i) + ")");
+    Serial.println("[gpattData.custom_logo_7] "          + String(gpattData.custom_logo_7)       + " (bad: " + String(gpattData.bad_custom_logo_7_i) + ")");
+    Serial.println("[gpattData.custom_logo_8] "          + String(gpattData.custom_logo_8)       + " (bad: " + String(gpattData.bad_custom_logo_8_i) + ")");
+    Serial.println("[gpattData.custom_logo_9] "          + String(gpattData.custom_logo_9)       + " (bad: " + String(gpattData.bad_custom_logo_9_i) + ")");
+    Serial.println("[gpattData.speed_enable] "           + String(gpattData.speed_enable)        + " (bad: " + String(gpattData.bad_speed_enable_i) + ")");
+    Serial.println("[gpattData.custom_logo_10] "         + String(gpattData.custom_logo_10)      + " (bad: " + String(gpattData.bad_custom_logo_10_i) + ")");
+    Serial.println("[gpattData.custom_logo_11] "         + String(gpattData.custom_logo_11)      + " (bad: " + String(gpattData.bad_custom_logo_11_i) + ")");
+    Serial.println("[gpattData.speed_num] "              + String(gpattData.speed_num)           + " (bad: " + String(gpattData.bad_speed_num_i) + ")");
     Serial.println("[gpattData.count_valid_elements] "   + String(gpattData.count_valid_elements));
+    Serial.println("[gpattData.total_invalid_elements] " + String(gpattData.total_invalid_elements));
   }
   // systemData.debug=false;
 }
@@ -13163,39 +13189,37 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawVLine(25, 13, 127);
-        display.drawVLine(64, 13, ui_content_2-4);
-        display.drawVLine(89, 13, ui_content_2-4);
-        display.drawHLine(1, ui_content_2-3, 127);
+        display.drawVLine(64, 13, ui_content_1-3);
+        display.drawVLine(89, 13, ui_content_1-3);
+        display.drawHLine(1, ui_content_1-2, 127);
         display.setColor(systemData.color_subtitle);
         canvas19x8.clear();
-
         canvas19x8.printFixed(1, 1, String("CKS").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_0-2, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("CKD").c_str(), STYLE_BOLD);
         display.drawCanvas(67, ui_content_0-2, canvas19x8);
-
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UTC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_2, canvas19x8);
+        display.drawCanvas(3, ui_content_2+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SS").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_5, canvas19x8);
+        display.drawCanvas(3, ui_content_5+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_6, canvas19x8);
+        display.drawCanvas(3, ui_content_6+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("PF").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_7, canvas19x8);
+        display.drawCanvas(3, ui_content_7+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("ALT").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_8, canvas19x8);
+        display.drawCanvas(3, ui_content_8+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("GEO").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_9, canvas19x8);
+        display.drawCanvas(3, ui_content_9+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("DD").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_10, canvas19x8);
+        display.drawCanvas(3, ui_content_10+1, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13209,99 +13233,97 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
-
       // ------------------------------------------------
       // count invalid checksum
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(String(gnggaData.bad_checksum_validity) + String("/99")).c_str());
+      canvas32x8.printFixed(1, 1, String(gnggaData.bad_checksum_validity).c_str());
       display.drawCanvas(28, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // count invalid data
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(String(gnggaData.total_invalid_elements) + String("/99")).c_str());
+      canvas32x8.printFixed(1, 1, String(gnggaData.total_invalid_elements).c_str());
       display.drawCanvas(92, ui_content_0-2, canvas32x8);
-
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
-      display.drawCanvas(28, ui_content_2, canvas92x8);
+      display.drawCanvas(28, ui_content_2+1, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas19x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str(), STYLE_BOLD);
-      display.drawCanvas(3, ui_content_3, canvas19x8);
+      display.drawCanvas(3, ui_content_3+1, canvas19x8);
       // ------------------------------------------------
       // latitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
-      display.drawCanvas(28, ui_content_3, canvas92x8);
+      display.drawCanvas(28, ui_content_3+1, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas19x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str(), STYLE_BOLD);
-      display.drawCanvas(3, ui_content_4, canvas19x8);
+      display.drawCanvas(3, ui_content_4+1, canvas19x8);
       // ------------------------------------------------
       // longitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
-      display.drawCanvas(28, ui_content_4, canvas92x8);
+      display.drawCanvas(28, ui_content_4+1, canvas92x8);
       // ------------------------------------------------
       // solution status
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str());
-      display.drawCanvas(28, ui_content_5, canvas92x8);
+      display.drawCanvas(28, ui_content_5+1, canvas92x8);
       // ------------------------------------------------
       // satellite count
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
-      display.drawCanvas(28, ui_content_6, canvas92x8);
+      display.drawCanvas(28, ui_content_6+1, canvas92x8);
       // ------------------------------------------------
       // hdop precision factor
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
-      display.drawCanvas(28, ui_content_7, canvas92x8);
+      display.drawCanvas(28, ui_content_7+1, canvas92x8);
       // ------------------------------------------------
       // altitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(String(gnggaData.altitude) + " " + String(gnggaData.altitude_units)).c_str());
-      display.drawCanvas(28, ui_content_8, canvas92x8);
+      display.drawCanvas(28, ui_content_8+1, canvas92x8);
       // ------------------------------------------------
       // geoidal
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(String(gnggaData.geoidal) + " " + String(gnggaData.geoidal_units)).c_str());
-      display.drawCanvas(28, ui_content_9, canvas92x8);
+      display.drawCanvas(28, ui_content_9+1, canvas92x8);
       // ------------------------------------------------
       // differential delay
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str());
-      display.drawCanvas(28, ui_content_10, canvas92x8);
+      display.drawCanvas(28, ui_content_10+1, canvas92x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13316,33 +13338,41 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(25, ui_content_1-2, 127);
-        display.drawHLine(1, ui_content_1-3, 127);
+        display.drawVLine(25, 13, 127);
+        display.drawVLine(64, 13, ui_content_1-3);
+        display.drawVLine(89, 13, ui_content_1-3);
+        display.drawHLine(1, ui_content_1-2, 127);
         display.setColor(systemData.color_subtitle);
         canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("CKS").c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("CKD").c_str(), STYLE_BOLD);
+        display.drawCanvas(67, ui_content_0-2, canvas19x8);
+        canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UTC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_1, canvas19x8);
+        display.drawCanvas(3, ui_content_1+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("PS").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_2, canvas19x8);
+        display.drawCanvas(3, ui_content_2+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("GS").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_5, canvas19x8);
+        display.drawCanvas(3, ui_content_5+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("GH").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_6, canvas19x8);
+        display.drawCanvas(3, ui_content_6+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UTC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_7, canvas19x8);
+        display.drawCanvas(3, ui_content_7+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IA").c_str(), STYLE_BOLD);
-        display.drawCanvas(2, ui_content_8, canvas19x8);
+        display.drawCanvas(2, ui_content_8+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IAD").c_str(), STYLE_BOLD);
-        display.drawCanvas(2, ui_content_9, canvas19x8);
+        display.drawCanvas(2, ui_content_9+1, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MI").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_10, canvas19x8);
+        display.drawCanvas(3, ui_content_10+1, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13357,83 +13387,97 @@ void UpdateUI(void * pvParamters) {
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
       // ------------------------------------------------
+      // count invalid checksum
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(gnrmcData.bad_checksum_validity).c_str());
+      display.drawCanvas(28, ui_content_0-2, canvas32x8);
+      // ------------------------------------------------
+      // count invalid data
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(gnrmcData.total_invalid_elements).c_str());
+      display.drawCanvas(92, ui_content_0-2, canvas32x8);
+      // ------------------------------------------------
       // utc time
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
-      display.drawCanvas(28, ui_content_1, canvas92x8);
+      display.drawCanvas(28, ui_content_1+1, canvas92x8);
       // ------------------------------------------------
       // positioning status
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.positioning_status).c_str());
-      display.drawCanvas(28, ui_content_2, canvas92x8);
+      display.drawCanvas(28, ui_content_2+1, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas19x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str(), STYLE_BOLD);
-      display.drawCanvas(3, ui_content_3, canvas19x8);
+      display.drawCanvas(3, ui_content_3+1, canvas19x8);
       canvas92x8.clear();
       // ------------------------------------------------
       // latitude
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
-      display.drawCanvas(28, ui_content_3, canvas92x8);
+      display.drawCanvas(28, ui_content_3+1, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas19x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str(), STYLE_BOLD);
-      display.drawCanvas(3, ui_content_4, canvas19x8);
+      display.drawCanvas(3, ui_content_4+1, canvas19x8);
       // ------------------------------------------------
       // longitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
-      display.drawCanvas(28, ui_content_4, canvas92x8);
+      display.drawCanvas(28, ui_content_4+1, canvas92x8);
       // ------------------------------------------------
       // ground speed
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str());
-      display.drawCanvas(28, ui_content_5, canvas92x8);
+      display.drawCanvas(28, ui_content_5+1, canvas92x8);
       // ------------------------------------------------
       // ground heading
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str());
-      display.drawCanvas(28, ui_content_6, canvas92x8);
+      display.drawCanvas(28, ui_content_6+1, canvas92x8);
       // ------------------------------------------------
       // utc date
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str());
-      display.drawCanvas(28, ui_content_7, canvas92x8);
+      display.drawCanvas(28, ui_content_7+1, canvas92x8);
       // ------------------------------------------------
       // installation angle
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str());
-      display.drawCanvas(28, ui_content_8, canvas92x8);
+      display.drawCanvas(28, ui_content_8+1, canvas92x8);
       // ------------------------------------------------
       // angle direction
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str());
-      display.drawCanvas(28, ui_content_9, canvas92x8);
+      display.drawCanvas(28, ui_content_9+1, canvas92x8);
       // ------------------------------------------------
       // mode indication
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str());
-      display.drawCanvas(28, ui_content_10, canvas92x8);
+      display.drawCanvas(28, ui_content_10+1, canvas92x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13448,113 +13492,122 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawHLine(1, ui_content_5-2, 127);
         display.drawVLine(25, 13, 127);
-        display.drawVLine(64, ui_content_5-1, 127);
-        display.drawVLine(89, ui_content_5-1, 127);
+        display.drawHLine(1, ui_content_5, 127);
+        display.drawVLine(64, ui_content_5+1, 127);
+        display.drawVLine(89, ui_content_5+1, 127);
+        display.drawVLine(64, 13, ui_content_1-3);
+        display.drawVLine(89, 13, ui_content_1-3);
+        display.drawHLine(1, ui_content_1-2, 127);
         display.setColor(systemData.color_subtitle);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("CKS").c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("CKD").c_str(), STYLE_BOLD);
+        display.drawCanvas(67, ui_content_0-2, canvas19x8);
         // ------------------------------------------------
         // user code
         // ------------------------------------------------
-        canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("UC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_0-2, canvas19x8);
+        // canvas19x8.clear();
+        // canvas19x8.printFixed(1, 1, String("UC").c_str(), STYLE_BOLD);
+        // display.drawCanvas(3, ui_content_0-2, canvas19x8);
         // ------------------------------------------------
         // pitch
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("P").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_1-2, canvas19x8);
+        display.drawCanvas(3, ui_content_1, canvas19x8);
         // ------------------------------------------------
         // roll
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("R").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_2-2, canvas19x8);
+        display.drawCanvas(3, ui_content_2, canvas19x8);
         // ------------------------------------------------
         // yaw
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("Y").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_3-2, canvas19x8);
+        display.drawCanvas(3, ui_content_3, canvas19x8);
         // ------------------------------------------------
         // mileage
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("M").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_4-2, canvas19x8);
+        display.drawCanvas(3, ui_content_4, canvas19x8);
         // ------------------------------------------------
         // speed enable
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SE").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_5, canvas19x8);
+        display.drawCanvas(3, ui_content_5+1, canvas19x8);
         // ------------------------------------------------
         // speed num
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SN").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_5, canvas19x8);
+        display.drawCanvas(67, ui_content_5+1, canvas19x8);
         // ------------------------------------------------
         // imu kind
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IMU").c_str(), STYLE_BOLD);
-        display.drawCanvas(2, ui_content_6, canvas19x8);
+        display.drawCanvas(2, ui_content_6+1, canvas19x8);
         // ------------------------------------------------
         // ubi car kind
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UBI").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_6, canvas19x8);
+        display.drawCanvas(67, ui_content_6+1, canvas19x8);
         // ------------------------------------------------
         // mis angle num
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MAN").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_7, canvas19x8);
+        display.drawCanvas(3, ui_content_7+1, canvas19x8);
         // ------------------------------------------------
         // mis att flag
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MAF").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_7, canvas19x8);
+        display.drawCanvas(67, ui_content_7+1, canvas19x8);
         // ------------------------------------------------
         // INS
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("INS").c_str(), STYLE_BOLD);
-        display.drawCanvas(2, ui_content_8, canvas19x8);
+        display.drawCanvas(2, ui_content_8+1, canvas19x8);
         // ------------------------------------------------
         // run state flag
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("RSF").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_8, canvas19x8);
+        display.drawCanvas(67, ui_content_8+1, canvas19x8);
         // ------------------------------------------------
         // run inetial flag
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("RIF").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_9, canvas19x8);
+        display.drawCanvas(3, ui_content_9+1, canvas19x8);
         // ------------------------------------------------
         // static flag
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SF").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_9, canvas19x8);
+        display.drawCanvas(67, ui_content_9+1, canvas19x8);
         // ------------------------------------------------
         // gst data
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("GST").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_10, canvas19x8);
+        display.drawCanvas(3, ui_content_10+1, canvas19x8);
         canvas19x8.clear();
         // ------------------------------------------------
         // line flag
         // ------------------------------------------------
         canvas19x8.printFixed(1, 1, String("LF").c_str(), STYLE_BOLD);
-        display.drawCanvas(67, ui_content_10, canvas19x8);
+        display.drawCanvas(67, ui_content_10+1, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13569,124 +13622,138 @@ void UpdateUI(void * pvParamters) {
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
       // ------------------------------------------------
+      // count invalid checksum
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(gpattData.bad_checksum_validity).c_str());
+      display.drawCanvas(28, ui_content_0-2, canvas32x8);
+      // ------------------------------------------------
+      // count invalid data
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(gpattData.total_invalid_elements).c_str());
+      display.drawCanvas(92, ui_content_0-2, canvas32x8);
+      // ------------------------------------------------
       // user code
       // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.user_code).c_str());
-      display.drawCanvas(28, ui_content_0-2, canvas92x8);
+      // canvas92x8.clear();
+      // display.setColor(systemData.color_content);
+      // canvas92x8.printFixed(1, 1, String(gpattData.user_code).c_str());
+      // display.drawCanvas(28, ui_content_0-2, canvas92x8);
       // ------------------------------------------------
       // pitch
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
-      display.drawCanvas(28, ui_content_1-2, canvas92x8);
+      display.drawCanvas(28, ui_content_1, canvas92x8);
       // ------------------------------------------------
       // roll
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
-      display.drawCanvas(28, ui_content_2-2, canvas92x8);
+      display.drawCanvas(28, ui_content_2, canvas92x8);
       // ------------------------------------------------
       // yaw
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
-      display.drawCanvas(28, ui_content_3-2, canvas92x8);
+      display.drawCanvas(28, ui_content_3, canvas92x8);
       // ------------------------------------------------
       // mileage
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
-      display.drawCanvas(28, ui_content_4-2, canvas92x8);
+      display.drawCanvas(28, ui_content_4, canvas92x8);
       // ------------------------------------------------
       // speed enable
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.speed_enable).c_str());
-      display.drawCanvas(28, ui_content_5, canvas19x8);
+      display.drawCanvas(28, ui_content_5+1, canvas19x8);
       // ------------------------------------------------
       // speed num
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.speed_num).c_str());
-      display.drawCanvas(92, ui_content_5, canvas19x8);
+      display.drawCanvas(92, ui_content_5+1, canvas19x8);
       // ------------------------------------------------
       // imu kind
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.imu_kind).c_str());
-      display.drawCanvas(28, ui_content_6, canvas19x8);
+      display.drawCanvas(28, ui_content_6+1, canvas19x8);
       // ------------------------------------------------
       // ubi car kind
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.ubi_car_kind).c_str());
-      display.drawCanvas(92, ui_content_6, canvas19x8);
+      display.drawCanvas(92, ui_content_6+1, canvas19x8);
       // ------------------------------------------------
       // mis angle num
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.mis_angle_num).c_str());
-      display.drawCanvas(28, ui_content_7, canvas19x8);
+      display.drawCanvas(28, ui_content_7+1, canvas19x8);
       // ------------------------------------------------
       // mis att flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.mis_att_flag).c_str());
-      display.drawCanvas(92, ui_content_7, canvas19x8);
+      display.drawCanvas(92, ui_content_7+1, canvas19x8);
       // ------------------------------------------------
       // INS
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.ins).c_str());
-      display.drawCanvas(28, ui_content_8, canvas19x8);
+      display.drawCanvas(28, ui_content_8+1, canvas19x8);
       // ------------------------------------------------
       // run state flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
-      display.drawCanvas(92, ui_content_8, canvas19x8);
+      display.drawCanvas(92, ui_content_8+1, canvas19x8);
       // ------------------------------------------------
       // run inetial flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
-      display.drawCanvas(28, ui_content_9, canvas19x8);
+      display.drawCanvas(28, ui_content_9+1, canvas19x8);
       // ------------------------------------------------
       // static flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
-      display.drawCanvas(92, ui_content_9, canvas19x8);
+      display.drawCanvas(92, ui_content_9+1, canvas19x8);
       // ------------------------------------------------
       // gst data
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
-      display.drawCanvas(28, ui_content_10, canvas19x8);
+      display.drawCanvas(28, ui_content_10+1, canvas19x8);
       // ------------------------------------------------
       // line flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
-      display.drawCanvas(92, ui_content_10, canvas19x8);
+      display.drawCanvas(92, ui_content_10+1, canvas19x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
