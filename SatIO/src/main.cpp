@@ -12108,35 +12108,35 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 68, canvas108x8);
       // ------------------------------------------------
       // matrix switch function y
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 78, canvas108x8);
       // ------------------------------------------------
       // matrix switch function z
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 88, canvas108x8);
       // ------------------------------------------------
       // matrix switch function real x
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 105, canvas108x8);
       // ------------------------------------------------
       // matrix switch function real y
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 115, canvas108x8);
       // ------------------------------------------------
       // menu
@@ -12368,7 +12368,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 30, canvas19x8);
         // ------------------------------------------------
         // 0-4 port number
@@ -12376,7 +12376,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 40, canvas19x8);
         // ------------------------------------------------
         // 5-9 switch number
@@ -12384,7 +12384,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 55, canvas19x8);
         // ------------------------------------------------
         // 5-9 port number
@@ -12392,7 +12392,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 65, canvas19x8);
         // ------------------------------------------------
         // 10-14 switch number
@@ -12400,7 +12400,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 81, canvas19x8);
         // ------------------------------------------------
         // 10-14 port number
@@ -12408,7 +12408,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 91, canvas19x8);
         // ------------------------------------------------
         // 15-19 switch number
@@ -12416,7 +12416,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 106, canvas19x8);
         // ------------------------------------------------
         // 15-19 port number
@@ -12424,7 +12424,7 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_NORMAL );
+        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
         display.drawCanvas(start+1, 116, canvas19x8);
         // ------------------------------------------------
         // adjust
@@ -12646,35 +12646,35 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_3+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function y
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_4+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function z
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_5+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function real x
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_7+1, canvas108x8);
         // ------------------------------------------------
         // matrix switch function real y
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_8+1, canvas108x8);
       }
       
@@ -12845,21 +12845,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_3+8, canvas108x8);
       // ------------------------------------------------
       // matrix switch function y
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_4+8, canvas108x8);
       // ------------------------------------------------
       // matrix switch function z
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_NORMAL);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_5+8, canvas108x8);
       // ------------------------------------------------
       // menu
@@ -12924,7 +12924,7 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(3, ui_content_3+8, canvas8x8);
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_3+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function y
@@ -12935,7 +12935,7 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(3, ui_content_4+8, canvas8x8);
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_4+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function z
@@ -12946,7 +12946,7 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(3, ui_content_5+8, canvas8x8);
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_NORMAL);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_5+8, canvas108x8);
       }
       // ------------------------------------------------
@@ -13258,14 +13258,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
+      canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str(), STYLE_BOLD);
       display.drawCanvas(72, ui_content_0, canvas42x8);
       // ------------------------------------------------
       // hdop precision factor
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
+      canvas42x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str(), STYLE_BOLD);
       display.drawCanvas(72, ui_content_1, canvas42x8);
       // ------------------------------------------------
       // set menu items
@@ -13358,21 +13358,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gnggaData.bad_checksum_validity).c_str());
+      canvas32x8.printFixed(1, 1, String(gnggaData.bad_checksum_validity).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // count invalid data
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gnggaData.total_invalid_elements).c_str());
+      canvas32x8.printFixed(1, 1, String(gnggaData.total_invalid_elements).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2+1, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
@@ -13386,7 +13386,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3+1, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
@@ -13400,49 +13400,49 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4+1, canvas92x8);
       // ------------------------------------------------
       // solution status
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5+1, canvas92x8);
       // ------------------------------------------------
       // satellite count
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6+1, canvas92x8);
       // ------------------------------------------------
       // hdop precision factor
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7+1, canvas92x8);
       // ------------------------------------------------
       // altitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(String(gnggaData.altitude) + " " + String(gnggaData.altitude_units)).c_str());
+      canvas92x8.printFixed(1, 1, String(String(gnggaData.altitude) + " " + String(gnggaData.altitude_units)).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8+1, canvas92x8);
       // ------------------------------------------------
       // geoidal
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(String(gnggaData.geoidal) + " " + String(gnggaData.geoidal_units)).c_str());
+      canvas92x8.printFixed(1, 1, String(String(gnggaData.geoidal) + " " + String(gnggaData.geoidal_units)).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9+1, canvas92x8);
       // ------------------------------------------------
       // differential delay
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str());
+      canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10+1, canvas92x8);
     }
 
@@ -13511,28 +13511,28 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gnrmcData.bad_checksum_validity).c_str());
+      canvas32x8.printFixed(1, 1, String(gnrmcData.bad_checksum_validity).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // count invalid data
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gnrmcData.total_invalid_elements).c_str());
+      canvas32x8.printFixed(1, 1, String(gnrmcData.total_invalid_elements).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1+1, canvas92x8);
       // ------------------------------------------------
       // positioning status
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnrmcData.positioning_status).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.positioning_status).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2+1, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
@@ -13546,7 +13546,7 @@ void UpdateUI(void * pvParamters) {
       // latitude
       // ------------------------------------------------
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3+1, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
@@ -13560,43 +13560,43 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4+1, canvas92x8);
       // ------------------------------------------------
       // ground speed
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5+1, canvas92x8);
       // ------------------------------------------------
       // ground heading
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6+1, canvas92x8);
       // ------------------------------------------------
       // utc date
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7+1, canvas92x8);
       // ------------------------------------------------
       // installation angle
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8+1, canvas92x8);
       // ------------------------------------------------
       // angle direction
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9+1, canvas92x8);
       // ------------------------------------------------
       // mode indication
       // ------------------------------------------------
       canvas92x8.clear();
-      canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str());
+      canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10+1, canvas92x8);
     }
 
@@ -13746,14 +13746,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gpattData.bad_checksum_validity).c_str());
+      canvas32x8.printFixed(1, 1, String(gpattData.bad_checksum_validity).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // count invalid data
       // ------------------------------------------------
       canvas32x8.clear();
       display.setColor(systemData.color_content);
-      canvas32x8.printFixed(1, 1, String(gpattData.total_invalid_elements).c_str());
+      canvas32x8.printFixed(1, 1, String(gpattData.total_invalid_elements).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_0-2, canvas32x8);
       // ------------------------------------------------
       // user code
@@ -13767,112 +13767,112 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
+      canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas92x8);
       // ------------------------------------------------
       // roll
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
+      canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas92x8);
       // ------------------------------------------------
       // yaw
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
+      canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas92x8);
       // ------------------------------------------------
       // mileage
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
+      canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas92x8);
       // ------------------------------------------------
       // speed enable
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.speed_enable).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.speed_enable).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5+1, canvas19x8);
       // ------------------------------------------------
       // speed num
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.speed_num).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.speed_num).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_5+1, canvas19x8);
       // ------------------------------------------------
       // imu kind
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.imu_kind).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.imu_kind).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6+1, canvas19x8);
       // ------------------------------------------------
       // ubi car kind
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.ubi_car_kind).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.ubi_car_kind).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_6+1, canvas19x8);
       // ------------------------------------------------
       // mis angle num
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.mis_angle_num).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.mis_angle_num).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7+1, canvas19x8);
       // ------------------------------------------------
       // mis att flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.mis_att_flag).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.mis_att_flag).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_7+1, canvas19x8);
       // ------------------------------------------------
       // INS
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.ins).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.ins).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8+1, canvas19x8);
       // ------------------------------------------------
       // run state flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_8+1, canvas19x8);
       // ------------------------------------------------
       // run inetial flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9+1, canvas19x8);
       // ------------------------------------------------
       // static flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.static_flag).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_9+1, canvas19x8);
       // ------------------------------------------------
       // gst data
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.gst_data).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10+1, canvas19x8);
       // ------------------------------------------------
       // line flag
       // ------------------------------------------------
       canvas19x8.clear();
       display.setColor(systemData.color_content);
-      canvas19x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
+      canvas19x8.printFixed(1, 1, String(gpattData.line_flag).c_str(), STYLE_BOLD);
       display.drawCanvas(92, ui_content_10+1, canvas19x8);
     }
 
@@ -13895,7 +13895,6 @@ void UpdateUI(void * pvParamters) {
         // display.drawHLine(1, ui_content_9-2, 127);
         // display.drawHLine(1, ui_content_10-2, 127);
         display.setColor(systemData.color_subtitle);
-
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("RTC").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_0, canvas19x8);
@@ -13903,13 +13902,11 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.printFixed(1, 1, String("RTC").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_1, canvas19x8);
         canvas19x8.clear();
-
         canvas19x8.printFixed(1, 1, String("SYN").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_2+5, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SYN").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_3+5, canvas19x8);
-
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("LOC").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_4+9, canvas19x8);
@@ -13938,14 +13935,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, satData.formatted_rtc_time.c_str());
+      canvas80x8.printFixed(1, 1, satData.formatted_rtc_time.c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_0, canvas80x8);
       // ------------------------------------------------
       // rtc date (utc)
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, satData.formatted_rtc_date.c_str());
+      canvas80x8.printFixed(1, 1, satData.formatted_rtc_date.c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas80x8);
 
       // ------------------------------------------------
@@ -13953,14 +13950,14 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_time.c_str());
+      canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_time.c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2+5, canvas80x8);
       // ------------------------------------------------
       // rtc sync date (utc)
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_date.c_str());
+      canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_date.c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3+5, canvas80x8);
 
       // ------------------------------------------------
@@ -13968,21 +13965,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, String(satData.formatted_local_time).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.formatted_local_time).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4+9, canvas80x8);
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, String(satData.formatted_local_date).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5+9, canvas80x8);
       // ------------------------------------------------
       // local day
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, String(satData.local_weekday).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.local_weekday).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6+9, canvas80x8);
 
       // ------------------------------------------------
@@ -14005,7 +14002,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9+1, canvas80x8);
       // ------------------------------------------------
       // longitude hemisphere
@@ -14027,7 +14024,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
-      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
+      canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10+1, canvas80x8);
     }
 
@@ -14283,7 +14280,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas74x8.clear();
       display.setColor(systemData.color_content);
-      canvas74x8.printFixed(1, 1, String(String(timeData.uptime_seconds).c_str(), 11).c_str());
+      canvas74x8.printFixed(1, 1, String(String(timeData.uptime_seconds).c_str(), 11).c_str(), STYLE_BOLD);
       display.drawCanvas(47, ui_content_1, canvas74x8);
       // ------------------------------------------------
       // overload 
@@ -14298,7 +14295,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas74x8.clear();
       display.setColor(systemData.color_content);
-      canvas74x8.printFixed(1, 1, String(systemData.total_loops_a_second).c_str());
+      canvas74x8.printFixed(1, 1, String(systemData.total_loops_a_second).c_str(), STYLE_BOLD);
       display.drawCanvas(47, ui_content_3, canvas74x8);
       // ------------------------------------------------
       // set run matrix on startup
@@ -14378,70 +14375,70 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_0, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_0, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 42, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_1, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_1, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 52, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_2, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_2, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 62, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_3, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_3, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 72, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_4, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_4, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 82, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_5, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_5, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 92, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_6, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_6, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 102, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_7, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_7, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(3, 112, canvas60x8);
       // ------------------------------------------------
       // sensor value column 1
       // ------------------------------------------------
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_8, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_8, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 42, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_9, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_9, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 52, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_10, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_10, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 62, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_11, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_11, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 72, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_12, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_12, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 82, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_13, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_13, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 92, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_14, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_14, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 102, canvas60x8);
       canvas60x8.clear();
       display.setColor(systemData.color_content);
-      canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str());
+      canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 112, canvas60x8);
     }
 
@@ -14564,19 +14561,19 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.sun_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
     }
 
@@ -14633,27 +14630,27 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(siderealPlanetData.moon_p_name[(int)siderealPlanetData.moon_p]).c_str());
+      canvas92x8.printFixed(1, 1, String(siderealPlanetData.moon_p_name[(int)siderealPlanetData.moon_p]).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas92x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_lum).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.moon_lum).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
     }
 
@@ -14723,43 +14720,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mercury_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -14829,43 +14826,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.venus_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -14935,43 +14932,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.mars_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -15041,43 +15038,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.jupiter_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -15147,43 +15144,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(3, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -15253,43 +15250,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.uranus_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
 
@@ -15359,43 +15356,43 @@ void UpdateUI(void * pvParamters) {
       display.drawCanvas(4, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ra).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ra).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_1, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_dec).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_dec).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_2, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_az).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_az).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_3, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_alt).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_alt).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_4, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_helio_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_helio_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_5, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_helio_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_helio_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_6, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_radius_vector).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_radius_vector).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_7, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_distance).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_distance).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_8, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_lat).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_lat).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_9, canvas42x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
-      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_long).c_str());
+      canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
     
