@@ -3346,6 +3346,8 @@ void GNRMC() {
     else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date=false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date=true;}}
     else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token)==true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle=false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle=true;}}
     else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token)==true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction=false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction=true;}}
+    else if (serial1Data.iter_token ==12) {if (val_mode_indication(serial1Data.token)==true)              {strcpy(gnrmcData.mode_indication, serial1Data.token);              gnrmcData.check_data++; gnrmcData.bad_mode_indication=false;}              else {gnrmcData.bad_mode_indication_i++;              gnrmcData.bad_mode_indication=true;}}
+
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -3515,6 +3517,7 @@ void GPATT() {
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
+  // systemData.debug=true;
   if (systemData.debug==true) {
     Serial.println("[gpattData.tag] "              + String(gpattData.tag));
     Serial.println("[gpattData.pitch] "            + String(gpattData.pitch));
@@ -3540,6 +3543,7 @@ void GPATT() {
     Serial.println("[gpattData.gst_data] "         + String(gpattData.gst_data));
     Serial.println("[gpattData.line_flag] "        + String(gpattData.line_flag));
     Serial.println("[gpattData.custom_logo_3] "    + String(gpattData.custom_logo_3));
+    Serial.println("[gpattData.mis_att_flag] "     + String(gpattData.mis_att_flag));
     Serial.println("[gpattData.imu_kind] "         + String(gpattData.imu_kind));
     Serial.println("[gpattData.ubi_car_kind] "     + String(gpattData.ubi_car_kind));
     Serial.println("[gpattData.mileage] "          + String(gpattData.mileage));
@@ -3558,6 +3562,7 @@ void GPATT() {
     Serial.println("[gpattData.check_sum] "        + String(gpattData.check_sum));
     Serial.println("[gpattData.check_data] "       + String(gpattData.check_data));
   }
+  // systemData.debug=false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12997,29 +13002,30 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
+        display.drawVLine(25, ui_content_2-2, 127);
+        display.drawHLine(1, ui_content_2-3, 127);
         display.setColor(systemData.color_subtitle);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SC").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("PF").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("A").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GEO").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("DD").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(3, ui_content_2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("SS").c_str());
+        display.drawCanvas(3, ui_content_5, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("SC").c_str());
+        display.drawCanvas(3, ui_content_6, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("PF").c_str());
+        display.drawCanvas(3, ui_content_7, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("ALT").c_str());
+        display.drawCanvas(3, ui_content_8, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("GEO").c_str());
+        display.drawCanvas(3, ui_content_9, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("DD").c_str());
+        display.drawCanvas(3, ui_content_10, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13039,77 +13045,77 @@ void UpdateUI(void * pvParamters) {
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.utc_time).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
+      display.drawCanvas(28, ui_content_2, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
       // ------------------------------------------------
-      canvas21x8.clear();
+      canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas21x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_1, canvas21x8);
+      canvas19x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str());
+      display.drawCanvas(3, ui_content_3, canvas19x8);
       // ------------------------------------------------
       // latitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.latitude).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
+      display.drawCanvas(28, ui_content_3, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
       // ------------------------------------------------
-      canvas21x8.clear();
+      canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas21x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_2, canvas21x8);
+      canvas19x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str());
+      display.drawCanvas(3, ui_content_4, canvas19x8);
       // ------------------------------------------------
       // longitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.longitude).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
+      display.drawCanvas(28, ui_content_4, canvas92x8);
       // ------------------------------------------------
       // solution status
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.solution_status).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
+      display.drawCanvas(28, ui_content_5, canvas92x8);
       // ------------------------------------------------
       // satellite count
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
+      display.drawCanvas(28, ui_content_6, canvas92x8);
       // ------------------------------------------------
       // hdop precision factor
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
+      display.drawCanvas(28, ui_content_7, canvas92x8);
       // ------------------------------------------------
       // altitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.altitude).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
+      canvas92x8.printFixed(1, 1, String(String(gnggaData.altitude) + " " + String(gnggaData.altitude_units)).c_str());
+      display.drawCanvas(28, ui_content_8, canvas92x8);
       // ------------------------------------------------
       // geoidal
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gnggaData.geoidal).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
+      canvas92x8.printFixed(1, 1, String(String(gnggaData.geoidal) + " " + String(gnggaData.geoidal_units)).c_str());
+      display.drawCanvas(28, ui_content_9, canvas92x8);
       // ------------------------------------------------
       // differential delay
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnggaData.differential_delay).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
+      display.drawCanvas(28, ui_content_10, canvas92x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13124,29 +13130,33 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GNRMC", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
+        display.drawVLine(25, ui_content_1-2, 127);
+        display.drawHLine(1, ui_content_1-3, 127);
         display.setColor(systemData.color_subtitle);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GH").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("UTC").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("IA").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("IAD").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("MI").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(3, ui_content_1, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("PS").c_str());
+        display.drawCanvas(3, ui_content_2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("GS").c_str());
+        display.drawCanvas(3, ui_content_5, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("GH").c_str());
+        display.drawCanvas(3, ui_content_6, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("UTC").c_str());
+        display.drawCanvas(3, ui_content_7, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("IA").c_str());
+        display.drawCanvas(3, ui_content_8, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("IAD").c_str());
+        display.drawCanvas(3, ui_content_9, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("MI").c_str());
+        display.drawCanvas(3, ui_content_10, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13166,71 +13176,78 @@ void UpdateUI(void * pvParamters) {
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.utc_time).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
+      display.drawCanvas(28, ui_content_1, canvas92x8);
+      // ------------------------------------------------
+      // positioning status
+      // ------------------------------------------------
+      canvas92x8.clear();
+      display.setColor(systemData.color_content);
+      canvas92x8.printFixed(1, 1, String(gnrmcData.positioning_status).c_str());
+      display.drawCanvas(28, ui_content_2, canvas92x8);
       // ------------------------------------------------
       // latitude hemisphere
       // ------------------------------------------------
-      canvas21x8.clear();
+      canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas21x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_1, canvas21x8);
+      canvas19x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str());
+      display.drawCanvas(3, ui_content_3, canvas19x8);
       canvas92x8.clear();
       // ------------------------------------------------
       // latitude
       // ------------------------------------------------
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.latitude).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
+      display.drawCanvas(28, ui_content_3, canvas92x8);
       // ------------------------------------------------
       // longitude hemisphere
       // ------------------------------------------------
-      canvas21x8.clear();
+      canvas19x8.clear();
       display.setColor(systemData.color_subtitle);
-      canvas21x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
-      display.drawCanvas(4, ui_content_2, canvas21x8);
+      canvas19x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str());
+      display.drawCanvas(3, ui_content_4, canvas19x8);
       // ------------------------------------------------
       // longitude
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gnrmcData.longitude).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
+      display.drawCanvas(28, ui_content_4, canvas92x8);
       // ------------------------------------------------
       // ground speed
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.ground_speed).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
+      display.drawCanvas(28, ui_content_5, canvas92x8);
       // ------------------------------------------------
       // ground heading
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
+      display.drawCanvas(28, ui_content_6, canvas92x8);
       // ------------------------------------------------
       // utc date
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.utc_date).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
+      display.drawCanvas(28, ui_content_7, canvas92x8);
       // ------------------------------------------------
       // installation angle
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
+      display.drawCanvas(28, ui_content_8, canvas92x8);
       // ------------------------------------------------
       // angle direction
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.installation_angle_direction).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
+      display.drawCanvas(28, ui_content_9, canvas92x8);
       // ------------------------------------------------
       // mode indication
       // ------------------------------------------------
       canvas92x8.clear();
       canvas92x8.printFixed(1, 1, String(gnrmcData.mode_indication).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
+      display.drawCanvas(28, ui_content_10, canvas92x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13245,38 +13262,70 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(28, 13, 127);
+        display.drawHLine(1, ui_content_5-2, 127);
+        display.drawVLine(25, ui_content_5-1, 127);
+        display.drawVLine(64, ui_content_5-1, 127);
+        display.drawVLine(89, ui_content_5-1, 127);
         display.setColor(systemData.color_subtitle);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("p").c_str());
-        display.drawCanvas(4, ui_content_0, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("R").c_str());
-        display.drawCanvas(4, ui_content_1, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("Y").c_str());
-        display.drawCanvas(4, ui_content_2, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("INS").c_str());
-        display.drawCanvas(4, ui_content_3, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("RSF").c_str());
-        display.drawCanvas(4, ui_content_4, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("RIF").c_str());
-        display.drawCanvas(4, ui_content_5, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("SF").c_str());
-        display.drawCanvas(4, ui_content_6, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("GST").c_str());
-        display.drawCanvas(4, ui_content_7, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("LF").c_str());
-        display.drawCanvas(4, ui_content_8, canvas21x8);
-        canvas21x8.clear();
-        canvas21x8.printFixed(1, 1, String("M").c_str());
-        display.drawCanvas(4, ui_content_9, canvas21x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("UC").c_str());
+        display.drawCanvas(3, ui_content_0-2, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("P").c_str());
+        display.drawCanvas(3, ui_content_1-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("R").c_str());
+        display.drawCanvas(3, ui_content_2-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("Y").c_str());
+        display.drawCanvas(3, ui_content_3-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("M").c_str());
+        display.drawCanvas(3, ui_content_4-2, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("SE").c_str());
+        display.drawCanvas(3, ui_content_5, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("SN").c_str());
+        display.drawCanvas(67, ui_content_5, canvas19x8);
+        
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("IMU").c_str());
+        display.drawCanvas(3, ui_content_6, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("UBI").c_str());
+        display.drawCanvas(67, ui_content_6, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("MAN").c_str());
+        display.drawCanvas(3, ui_content_7, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("MAF").c_str());
+        display.drawCanvas(67, ui_content_7, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("INS").c_str());
+        display.drawCanvas(3, ui_content_8, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("RSF").c_str());
+        display.drawCanvas(67, ui_content_8, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("RIF").c_str());
+        display.drawCanvas(3, ui_content_9, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("SF").c_str());
+        display.drawCanvas(67, ui_content_9, canvas19x8);
+
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("GST").c_str());
+        display.drawCanvas(3, ui_content_10, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("LF").c_str());
+        display.drawCanvas(67, ui_content_10, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13290,77 +13339,133 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
+
+      // ------------------------------------------------
+      // user code
+      // ------------------------------------------------
+      canvas92x8.clear();
+      display.setColor(systemData.color_content);
+      canvas92x8.printFixed(1, 1, String(gpattData.user_code).c_str());
+      display.drawCanvas(28, ui_content_0-2, canvas92x8);
+
       // ------------------------------------------------
       // pitch
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.pitch).c_str());
-      display.drawCanvas(32, ui_content_0, canvas92x8);
+      display.drawCanvas(28, ui_content_1-2, canvas92x8);
       // ------------------------------------------------
       // roll
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.roll).c_str());
-      display.drawCanvas(32, ui_content_1, canvas92x8);
+      display.drawCanvas(28, ui_content_2-2, canvas92x8);
       // ------------------------------------------------
       // yaw
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.yaw).c_str());
-      display.drawCanvas(32, ui_content_2, canvas92x8);
-      // ------------------------------------------------
-      // INS
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.ins).c_str());
-      display.drawCanvas(32, ui_content_3, canvas92x8);
-      // ------------------------------------------------
-      // run state flag
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
-      display.drawCanvas(32, ui_content_4, canvas92x8);
-      // ------------------------------------------------
-      // run inetial flag
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
-      display.drawCanvas(32, ui_content_5, canvas92x8);
-      // ------------------------------------------------
-      // static flag
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
-      display.drawCanvas(32, ui_content_6, canvas92x8);
-      // ------------------------------------------------
-      // gst data
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
-      display.drawCanvas(32, ui_content_7, canvas92x8);
-      // ------------------------------------------------
-      // line flag
-      // ------------------------------------------------
-      canvas92x8.clear();
-      display.setColor(systemData.color_content);
-      canvas92x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
-      display.drawCanvas(32, ui_content_8, canvas92x8);
+      display.drawCanvas(28, ui_content_3-2, canvas92x8);
       // ------------------------------------------------
       // mileage
       // ------------------------------------------------
       canvas92x8.clear();
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
-      display.drawCanvas(32, ui_content_9, canvas92x8);
+      display.drawCanvas(28, ui_content_4-2, canvas92x8);
+
       // ------------------------------------------------
+      // speed enable
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.speed_enable).c_str());
+      display.drawCanvas(28, ui_content_5, canvas19x8);
+      // ------------------------------------------------
+      // speed num
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.speed_num).c_str());
+      display.drawCanvas(92, ui_content_5, canvas19x8);
+
+      // ------------------------------------------------
+      // imu kind
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.imu_kind).c_str());
+      display.drawCanvas(28, ui_content_6, canvas19x8);
+      // ------------------------------------------------
+      // ubi car kind
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.ubi_car_kind).c_str());
+      display.drawCanvas(92, ui_content_6, canvas19x8);
+
+      // ------------------------------------------------
+      // mis angle num
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.mis_angle_num).c_str());
+      display.drawCanvas(28, ui_content_7, canvas19x8);
+      // ------------------------------------------------
+      // mis att flag
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.mis_att_flag).c_str());
+      display.drawCanvas(92, ui_content_7, canvas19x8);
+
+      // ------------------------------------------------
+      // INS
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.ins).c_str());
+      display.drawCanvas(28, ui_content_8, canvas19x8);
+      // ------------------------------------------------
+      // run state flag
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
+      display.drawCanvas(92, ui_content_8, canvas19x8);
+
+      // ------------------------------------------------
+      // run inetial flag
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.run_inetial_flag).c_str());
+      display.drawCanvas(28, ui_content_9, canvas19x8);
+      // ------------------------------------------------
+      // static flag
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
+      display.drawCanvas(92, ui_content_9, canvas19x8);
+
+      // ------------------------------------------------
+      // gst data
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.gst_data).c_str());
+      display.drawCanvas(28, ui_content_10, canvas19x8);
+      // ------------------------------------------------
+      // line flag
+      // ------------------------------------------------
+      canvas19x8.clear();
+      display.setColor(systemData.color_content);
+      canvas19x8.printFixed(1, 1, String(gpattData.line_flag).c_str());
+      display.drawCanvas(92, ui_content_10, canvas19x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -15432,8 +15537,12 @@ void readGPS(void * pvParameters) {
       // --------------------------------------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         // -------------------------------------------------
+        // suspend tasks
+        // -------------------------------------------------
+        vTaskSuspend(UpdateUITask);
+        // -------------------------------------------------
         // check GNGGA
-        // -------------------------------------------------   
+        // -------------------------------------------------
         if (systemData.gngga_enabled==true){
           if (systemData.output_gngga_enabled==true) {
             memset(gnggaData.outsentence, 0, sizeof(gnggaData.outsentence));
@@ -15445,7 +15554,7 @@ void readGPS(void * pvParameters) {
         }
         // -------------------------------------------------
         // read GNRMC
-        // -------------------------------------------------   
+        // -------------------------------------------------
         if (systemData.gnrmc_enabled==true) {
           if (systemData.output_gnrmc_enabled==true) {
             memset(gnrmcData.outsentence, 0, sizeof(gnrmcData.outsentence));
@@ -15467,6 +15576,10 @@ void readGPS(void * pvParameters) {
           if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++;}
         }
+        // -------------------------------------------------
+        // resume tasks
+        // -------------------------------------------------
+        vTaskResume(UpdateUITask);
         // ------------------------------------------------------------------------
         // set completion flag
         // ------------------------------------------------------------------------
