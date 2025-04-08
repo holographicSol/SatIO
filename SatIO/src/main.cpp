@@ -13267,63 +13267,106 @@ void UpdateUI(void * pvParamters) {
         display.drawVLine(64, ui_content_5-1, 127);
         display.drawVLine(89, ui_content_5-1, 127);
         display.setColor(systemData.color_subtitle);
-
+        // ------------------------------------------------
+        // user code
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UC").c_str());
         display.drawCanvas(3, ui_content_0-2, canvas19x8);
-
+        // ------------------------------------------------
+        // pitch
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("P").c_str());
         display.drawCanvas(3, ui_content_1-2, canvas19x8);
+        // ------------------------------------------------
+        // roll
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("R").c_str());
         display.drawCanvas(3, ui_content_2-2, canvas19x8);
+        // ------------------------------------------------
+        // yaw
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("Y").c_str());
         display.drawCanvas(3, ui_content_3-2, canvas19x8);
+        // ------------------------------------------------
+        // mileage
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("M").c_str());
         display.drawCanvas(3, ui_content_4-2, canvas19x8);
-
+        // ------------------------------------------------
+        // speed enable
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SE").c_str());
         display.drawCanvas(3, ui_content_5, canvas19x8);
+        // ------------------------------------------------
+        // speed num
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SN").c_str());
         display.drawCanvas(67, ui_content_5, canvas19x8);
-        
+        // ------------------------------------------------
+        // imu kind
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IMU").c_str());
         display.drawCanvas(3, ui_content_6, canvas19x8);
+        // ------------------------------------------------
+        // ubi car kind
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UBI").c_str());
         display.drawCanvas(67, ui_content_6, canvas19x8);
-
+        // ------------------------------------------------
+        // mis angle num
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MAN").c_str());
         display.drawCanvas(3, ui_content_7, canvas19x8);
+        // ------------------------------------------------
+        // mis att flag
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MAF").c_str());
         display.drawCanvas(67, ui_content_7, canvas19x8);
-
+        // ------------------------------------------------
+        // INS
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("INS").c_str());
         display.drawCanvas(3, ui_content_8, canvas19x8);
+        // ------------------------------------------------
+        // run state flag
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("RSF").c_str());
         display.drawCanvas(67, ui_content_8, canvas19x8);
-
+        // ------------------------------------------------
+        // run inetial flag
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("RIF").c_str());
         display.drawCanvas(3, ui_content_9, canvas19x8);
+        // ------------------------------------------------
+        // static flag
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SF").c_str());
         display.drawCanvas(67, ui_content_9, canvas19x8);
-
+        // ------------------------------------------------
+        // gst data
+        // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("GST").c_str());
         display.drawCanvas(3, ui_content_10, canvas19x8);
         canvas19x8.clear();
+        // ------------------------------------------------
+        // line flag
+        // ------------------------------------------------
         canvas19x8.printFixed(1, 1, String("LF").c_str());
         display.drawCanvas(67, ui_content_10, canvas19x8);
       }
@@ -13339,7 +13382,6 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
-
       // ------------------------------------------------
       // user code
       // ------------------------------------------------
@@ -13347,7 +13389,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.user_code).c_str());
       display.drawCanvas(28, ui_content_0-2, canvas92x8);
-
       // ------------------------------------------------
       // pitch
       // ------------------------------------------------
@@ -13376,7 +13417,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas92x8.printFixed(1, 1, String(gpattData.mileage).c_str());
       display.drawCanvas(28, ui_content_4-2, canvas92x8);
-
       // ------------------------------------------------
       // speed enable
       // ------------------------------------------------
@@ -13391,7 +13431,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.speed_num).c_str());
       display.drawCanvas(92, ui_content_5, canvas19x8);
-
       // ------------------------------------------------
       // imu kind
       // ------------------------------------------------
@@ -13406,7 +13445,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.ubi_car_kind).c_str());
       display.drawCanvas(92, ui_content_6, canvas19x8);
-
       // ------------------------------------------------
       // mis angle num
       // ------------------------------------------------
@@ -13421,7 +13459,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.mis_att_flag).c_str());
       display.drawCanvas(92, ui_content_7, canvas19x8);
-
       // ------------------------------------------------
       // INS
       // ------------------------------------------------
@@ -13436,7 +13473,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.run_state_flag).c_str());
       display.drawCanvas(92, ui_content_8, canvas19x8);
-
       // ------------------------------------------------
       // run inetial flag
       // ------------------------------------------------
@@ -13451,7 +13487,6 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas19x8.printFixed(1, 1, String(gpattData.static_flag).c_str());
       display.drawCanvas(92, ui_content_9, canvas19x8);
-
       // ------------------------------------------------
       // gst data
       // ------------------------------------------------
