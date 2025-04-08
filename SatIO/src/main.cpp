@@ -15403,13 +15403,16 @@ void UpdateUI(void * pvParamters) {
     // ----------------------------------------------------------------------------------------------------------------
     /*                         
     //         altitude (GPS)       (heading)
-    //                               N/S/E/W
-    //              latitude   <- |           |
-    //             longitude   <- |           |                  
-    //                            | ----o---- | -> vehicle/device rotation reflecting roll
-    //    roll/pitch/yaw (INS) <- |           |   
-    //                            |___________|    
-    //                speed             mileage
+    //                               N/S/E/W   _ pitch (cursor moves up/down)
+    //                latitude <- |           |
+    //               longitude <- |           | 
+    //                   pitch <- | ----o---- |  -> vehicle/device rotation reflecting roll
+    //                    roll <- |           |  -> input (directional)
+    //                     yaw <- |___________|_ -> input (directional acceleration)
+    //                   speed <- |<---yaw--->|
+    //                       (cursor moves left/right)
+    //                                  |
+    //                                  mileage                         
     */
    if (menu_page==page_attitude) {
     // ------------------------------------------------
