@@ -15024,7 +15024,7 @@ void UpdateUI(void * pvParamters) {
       canvas120x8.clear();
       display.setColor(systemData.color_subtitle);
       canvas120x8.printFixed((120/2)-((strlen(String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str())/2)*6), 1, String("RISE " + String(siderealPlanetData.saturn_r) + String("  SET " + String(siderealPlanetData.saturn_s))).c_str(), STYLE_BOLD);
-      display.drawCanvas(4, ui_content_0-2, canvas120x8);
+      display.drawCanvas(3, ui_content_0-2, canvas120x8);
       canvas42x8.clear();
       display.setColor(systemData.color_content);
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.saturn_ra).c_str());
