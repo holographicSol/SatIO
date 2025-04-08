@@ -56,17 +56,16 @@
 
 
                                            $SATIO SENTENCE
-
-                                            System Uptime                    
-        Tag                  Last Sync      |                               Degrees Longitude        
-        |      yyyymmddhhmmss|yyyymmddhhmmss|s|hh.mm|hh.mm|                 |                 |                
-        $SATIO,00000000000000,00000000000000,0,00.00,00.00,00.00000000000000,00.00000000000000,*Z
-              |              |                |     |     |                 |                 |            
-              RTC Datetime                    |     |     Degrees Latitude                    Checksum            
-                                              |     Sun Set
-                                              Sun Rise
-
-
+                              
+                              RTC Sync Time (UTC)             System Uptime (Seconds)
+                              |      RTC Sync Date (UTC)      |
+        Tag                   |      |                        |   Longitude Degrees
+        |                     |      |                        |   |
+        $SATIO,000000,00000000,000000,00000000,000000,00000000,0,0,0,*CHECKSUM
+              |      |                        |      |          |
+              |      |                        |      |          Latitude Degrees
+              |      RTC Date (UTC)           |      Local Date (UTC Offset)
+              RTC Time (UTC)                  Local Time (UTC Offset)
 
                                           $MATRIX SENTENCE 
 
@@ -3628,6 +3627,8 @@ struct SatDatatruct {
   char local_weekday[56];
   String formatted_local_time="00:00:00";
   String formatted_local_date="00/00/00";
+  String padded_local_time="000000";
+  String padded_local_date="00000000";
 
   // ------------------------------------------------------------------------------------
   // last time rtc synced with utc
@@ -3641,6 +3642,8 @@ struct SatDatatruct {
   uint32_t rtc_unixtime;
   String formatted_rtc_sync_time="00:00:00";
   String formatted_rtc_sync_date="00/00/00";
+  String padded_rtc_sync_time="000000";
+  String padded_rtc_sync_date="00000000";
 
   // ------------------------------------------------------------------------------------
   // task safe rtc time now can be used instead of directly calling rtc.now()
@@ -3654,6 +3657,8 @@ struct SatDatatruct {
   char rtc_weekday[56];
   String formatted_rtc_time="00:00:00";
   String formatted_rtc_date="00/00/00";
+  String padded_rtc_time="000000";
+  String padded_rtc_date="00000000";
 
   // ------------------------------------------------------------------------------------
   /*
@@ -4103,6 +4108,8 @@ void syncUTCTime() {
         satData.rtcsync_day=rtc.now().day();
         satData.formatted_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + ":" + padDigitsZero(satData.rtcsync_minute) + ":" + padDigitsZero(satData.rtcsync_second));
         satData.formatted_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "/" + padDigitsZero(satData.rtcsync_month) + "/" + padDigitsZero(satData.rtcsync_year));
+        satData.padded_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + "" + padDigitsZero(satData.rtcsync_minute) + "" + padDigitsZero(satData.rtcsync_second));
+        satData.padded_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "" + padDigitsZero(satData.rtcsync_month) + "" + padDigitsZero(satData.rtcsync_year));
         rtc_sync_flag=true;
         Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
       }
@@ -4128,6 +4135,8 @@ void syncUTCTime() {
         satData.rtcsync_day=rtc.now().day();
         satData.formatted_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + ":" + padDigitsZero(satData.rtcsync_minute) + ":" + padDigitsZero(satData.rtcsync_second));
         satData.formatted_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "/" + padDigitsZero(satData.rtcsync_month) + "/" + padDigitsZero(satData.rtcsync_year));
+        satData.padded_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + "" + padDigitsZero(satData.rtcsync_minute) + "" + padDigitsZero(satData.rtcsync_second));
+        satData.padded_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "" + padDigitsZero(satData.rtcsync_month) + "" + padDigitsZero(satData.rtcsync_year));
         rtc_sync_flag=true;
         Serial.println("[rtc] synchronization (completed): " + String(rtc.now().timestamp()));
       }
@@ -4161,6 +4170,8 @@ void syncTaskSafeRTCTime() {
   strcpy(satData.rtc_weekday, String(myAstro.HumanDayOfTheWeek(satData.rtc_year, satData.rtc_month, satData.rtc_day)).c_str());
   satData.formatted_rtc_time=String(padDigitsZero(satData.rtc_hour) + ":" + padDigitsZero(satData.rtc_minute) + ":" + padDigitsZero(satData.rtc_second));
   satData.formatted_rtc_date=String(padDigitsZero(satData.rtc_day) + "/" + padDigitsZero(satData.rtc_month) + "/" + padDigitsZero(satData.rtc_year));
+  satData.padded_rtc_time=String(padDigitsZero(satData.rtc_hour) + "" + padDigitsZero(satData.rtc_minute) + "" + padDigitsZero(satData.rtc_second));
+  satData.padded_rtc_date=String(padDigitsZero(satData.rtc_day) + "" + padDigitsZero(satData.rtc_month) + "" + padDigitsZero(satData.rtc_year));
   // ----------------------------------------------------------------------------------------
   /*                               SYNC TIMELIB WITH RTC                                   */
   // ----------------------------------------------------------------------------------------
@@ -4220,6 +4231,8 @@ void convertUTCTimeToLocalTime() {
   strcpy(satData.local_weekday, String(myAstro.HumanDayOfTheWeek(satData.local_year, satData.local_month, satData.local_day)).c_str());
   satData.formatted_local_time=String(padDigitsZero(satData.local_hour) + ":" + padDigitsZero(satData.local_minute) + ":" + padDigitsZero(satData.local_second));
   satData.formatted_local_date=String(padDigitsZero(satData.local_day) + "/" + padDigitsZero(satData.local_month) + "/" + padDigitsZero(satData.local_year));
+  satData.padded_local_time=String(padDigitsZero(satData.local_hour) + "" + padDigitsZero(satData.local_minute) + "" + padDigitsZero(satData.local_second));
+  satData.padded_local_date=String(padDigitsZero(satData.local_day) + "" + padDigitsZero(satData.local_month) + "" + padDigitsZero(satData.local_year));
   // --------------------------------------------------------
   // uncomment to debug
   // --------------------------------------------------------
@@ -4276,38 +4289,57 @@ void buildSatIOSentence() {
   memset(satData.satio_sentence, 0, sizeof(satData.satio_sentence));
   strcat(satData.satio_sentence, satData.satDataTag);
   strcat(satData.satio_sentence, ",");
+
   // -----------------------------
-  // current rtc unixtime (utc)
+  // rtc time (utc)
   // -----------------------------
-  strcat(satData.satio_sentence, String(satData.rtc_unixtime).c_str());
+  strcat(satData.satio_sentence, String(satData.padded_rtc_time).c_str());
+  strcat(satData.satio_sentence, ",");
+  // -----------------------------
+  // rtc date (utc)
+  // -----------------------------
+  strcat(satData.satio_sentence, String(satData.padded_rtc_date).c_str());
+  strcat(satData.satio_sentence, ",");
+
+  // -------------------
+  // rtc sync time (utc)
+  // -------------------
+  strcat(satData.satio_sentence, String(satData.padded_rtc_sync_time).c_str());
   strcat(satData.satio_sentence, ",");
   // -------------------
-  // last rtc sync (utc)
+  // rtc sync date (utc)
   // -------------------
-  strcat(satData.satio_sentence, String(formatDateTimeStamp(satData.rtcsync_hour, satData.rtcsync_minute, satData.rtcsync_second, satData.rtcsync_day, satData.rtcsync_month, satData.rtcsync_year)).c_str());
+  strcat(satData.satio_sentence, String(satData.padded_rtc_sync_date).c_str());
   strcat(satData.satio_sentence, ",");
+
+  // -------------------
+  // local time (utc)
+  // -------------------
+  strcat(satData.satio_sentence, String(satData.padded_local_time).c_str());
+  strcat(satData.satio_sentence, ",");
+  // -------------------
+  // local date (utc)
+  // -------------------
+  strcat(satData.satio_sentence, String(satData.padded_local_date).c_str());
+  strcat(satData.satio_sentence, ",");
+
   // -----------------------------
   // system uptime in seconds
   // -----------------------------
   strcat(satData.satio_sentence, String(timeData.uptime_seconds).c_str());
   strcat(satData.satio_sentence, ",");
+
   // -----------------------------
-  // sun rise time
-  // -----------------------------
-  strcat(satData.satio_sentence, String(siderealPlanetData.sun_r).c_str());
-  strcat(satData.satio_sentence, ",");
-  // -----------------------------
-  // sun set time
-  // -----------------------------
-  strcat(satData.satio_sentence, String(siderealPlanetData.sun_s).c_str());
-  strcat(satData.satio_sentence, ",");
-  // -----------------------------
-  // coordinates degrees
+  // latitude degrees
   // -----------------------------
   strcat(satData.satio_sentence, String(satData.degrees_latitude, 7).c_str());
   strcat(satData.satio_sentence, ",");
+  // -----------------------------
+  // longitude degrees
+  // -----------------------------
   strcat(satData.satio_sentence, String(satData.degrees_longitude, 7).c_str());
   strcat(satData.satio_sentence, ",");
+
   // -----------------------------
   // append checksum
   // -----------------------------
