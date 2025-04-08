@@ -909,7 +909,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 
 const int max_gps_items=9;
 const char *menuGPSItems[max_gps_items];
-LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 44}, {125, 125}} );
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 46}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
