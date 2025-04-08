@@ -13263,7 +13263,7 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, ui_content_5-2, 127);
-        display.drawVLine(25, ui_content_5-1, 127);
+        display.drawVLine(25, 13, 127);
         display.drawVLine(64, ui_content_5-1, 127);
         display.drawVLine(89, ui_content_5-1, 127);
         display.setColor(systemData.color_subtitle);
