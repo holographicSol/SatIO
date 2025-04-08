@@ -427,7 +427,7 @@ NanoCanvas<28,8,1> canvas28x8;
 NanoCanvas<21,8,1> canvas21x8;
 NanoCanvas<42,8,1> canvas42x8;
 NanoCanvas<54,8,1> canvas54x8;
-NanoCanvas<30,8,1> canvas30x8;
+NanoCanvas<32,8,1> canvas32x8;
 NanoCanvas<92,8,1> canvas92x8;
 NanoPoint sprite;
 NanoEngine16<DisplaySSD1351_128x128x16_SPI> engine( display );
@@ -1898,6 +1898,7 @@ bool val_differential_delay(char * data) {
 }
 
 bool val_basestation_id(char * data) {
+  // Serial.println("[val_basestation_id] " + String(data));
   bool check_pass=false;
   if (is_all_digits(data)==true) {
     if (strlen(data)==4) {
@@ -1957,6 +1958,7 @@ bool val_installation_angle_direction(char * data) {
 }
 
 bool val_mode_indication(char * data) {
+  Serial.println("[val_mode_indication]" + String(data));
   bool check_pass=false;
   if (strlen(data)==1) {
     if ((strcmp(data, "A")==0) || (strcmp(data, "D")==0) || (strcmp(data, "E")==0) || (strcmp(data, "N")==0)) {
@@ -3172,22 +3174,24 @@ struct GNGGAStruct {
   char sentence[200];
   char outsentence[200];
   char tag[56];                                                                                                       // <0> Log header
-  char utc_time[56];                  unsigned long bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
-  char latitude[56];                  unsigned long bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
-  char latitude_hemisphere[56];       unsigned long bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
-  char longitude[56];                 unsigned long bad_longitude_i;             bool bad_longitude=true;             // <4> Longitude, the format is dddmm.mmmmmmm
-  char longitude_hemisphere[56];      unsigned long bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere=true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
-  char solution_status[56];           unsigned long bad_solution_status_i;       bool bad_solution_status=true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
-  char satellite_count_gngga[56]="0"; unsigned long bad_satellite_count_gngga_i; bool bad_satellite_count_gngga=true; // <7> Number of satellites used
-  char hdop_precision_factor[56];     unsigned long bad_hdop_precision_factor_i; bool bad_hdop_precision_factor=true; // <8> HDOP level precision factor
-  char altitude[56];                  unsigned long bad_altitude_i;              bool bad_altitude=true;              // <9> Altitude
-  char altitude_units[56];            unsigned long bad_altitude_units_i;        bool bad_altitude_units=true;        // <10> 
-  char geoidal[56];                   unsigned long bad_geoidal_i;               bool bad_geoidal=true;               // <11> The height of the earth ellipsoid relative to the geoid 
-  char geoidal_units[56];             unsigned long bad_geoidal_units_i;         bool bad_geoidal_units=true;         // <12> 
-  char differential_delay[56];        unsigned long bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
-  char id[56];                        unsigned long bad_id_i;                    bool bad_id=true;                    // <14> base station ID
-  char check_sum[56];                 unsigned long bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
-  int check_data=0;                   unsigned long bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga check_data should result in 16)
+  char utc_time[56];                  int bad_utc_time_i;              bool bad_utc_time=true;              // <1> UTC time, the format is hhmmss.sss
+  char latitude[56];                  int bad_latitude_i;              bool bad_latitude=true;              // <2> Latitude, the format is  ddmm.mmmmmmm
+  char latitude_hemisphere[56];       int bad_latitude_hemisphere_i;   bool bad_latitude_hemisphere=true;   // <3> Latitude hemisphere, N or S (north latitude or south latitude)
+  char longitude[56];                 int bad_longitude_i;             bool bad_longitude=true;             // <4> Longitude, the format is dddmm.mmmmmmm
+  char longitude_hemisphere[56];      int bad_longitude_hemisphere_i;  bool bad_longitude_hemisphere=true;  // <5> Longitude hemisphere, E or W (east longitude or west longitude)
+  char solution_status[56];           int bad_solution_status_i;       bool bad_solution_status=true;       // <6> GNSS positioning status: 0 not positioned, 1 single point positioning, 2: pseudorange difference, 6: pure INS */
+  char satellite_count_gngga[56]="0"; int bad_satellite_count_gngga_i; bool bad_satellite_count_gngga=true; // <7> Number of satellites used
+  char hdop_precision_factor[56];     int bad_hdop_precision_factor_i; bool bad_hdop_precision_factor=true; // <8> HDOP level precision factor
+  char altitude[56];                  int bad_altitude_i;              bool bad_altitude=true;              // <9> Altitude
+  char altitude_units[56];            int bad_altitude_units_i;        bool bad_altitude_units=true;        // <10> 
+  char geoidal[56];                   int bad_geoidal_i;               bool bad_geoidal=true;               // <11> The height of the earth ellipsoid relative to the geoid 
+  char geoidal_units[56];             int bad_geoidal_units_i;         bool bad_geoidal_units=true;         // <12> 
+  char differential_delay[56];        int bad_differential_delay_i;    bool bad_differential_delay=true;    // <13>
+  char id[56];                        int bad_id_i;                    bool bad_id=true;                    // <14> base station ID
+  char check_sum[56];                 int bad_check_sum_i;             bool bad_check_sum=true;             // <15> XOR check value of all bytes starting from $ to *
+  int count_valid_elements=0;         int bad_checksum_validity;       bool valid_checksum=false;           // Checksum validity bool, counters and a counter for how many elements passed further testing (gngga count_valid_elements should result in 15 from zero)
+  int total_invalid_elements=0;
+  int max_bad=99;
 };
 GNGGAStruct gnggaData;
 
@@ -3227,27 +3231,87 @@ void clearGNGGA() {
 }
 
 void GNGGA() {
-  gnggaData.check_data=0;
+  // ---------------------
+  // tokenize and validate
+  // ---------------------
+  gnggaData.count_valid_elements=0;
   memset(gnggaData.tag, 0, 56);
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gnggaData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if     (serial1Data.iter_token==0)                                                                {strcpy(gnggaData.tag, "GNGGA");                             gnggaData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_utc_time=false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time=true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token)==true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_latitude=false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude=true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token)==true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.check_data++; gnggaData.bad_latitude_hemisphere=false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere=true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token)==true)                {strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.check_data++; gnggaData.bad_longitude=false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude=true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token)==true)              {strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.check_data++; gnggaData.bad_longitude_hemisphere=false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere=true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token)==true) {strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.check_data++; gnggaData.bad_solution_status=false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status=true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token)==true)          {strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.check_data++; gnggaData.bad_satellite_count_gngga=false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga=true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token)==true)    {strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.check_data++; gnggaData.bad_hdop_precision_factor=false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor=true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token)==true)                 {strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.check_data++; gnggaData.bad_altitude=false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude=true;}}
-    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token)==true)           {strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.check_data++; gnggaData.bad_altitude_units=false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units=true;}}
-    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token)==true)                  {strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.check_data++; gnggaData.bad_geoidal=false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal=true;}}
-    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token)==true)            {strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.check_data++; gnggaData.bad_geoidal_units=false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units=true;}}
-    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token)==true)       {strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.check_data++; gnggaData.bad_differential_delay=false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay=true;}}
+    if     (serial1Data.iter_token==0)    {if (strcmp(serial1Data.token, "$GNGGA")==0)                {strcpy(gnggaData.tag, serial1Data.token);                   gnggaData.count_valid_elements++;}                                            else {}}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                 {strcpy(gnggaData.utc_time, serial1Data.token);              gnggaData.count_valid_elements++; gnggaData.bad_utc_time=false;}              else {gnggaData.bad_utc_time_i++;              gnggaData.bad_utc_time=true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_latitude(serial1Data.token)==true)                 {strcpy(gnggaData.latitude, serial1Data.token);              gnggaData.count_valid_elements++; gnggaData.bad_latitude=false;}              else {gnggaData.bad_latitude_i++;              gnggaData.bad_latitude=true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude_H(serial1Data.token)==true)               {strcpy(gnggaData.latitude_hemisphere, serial1Data.token);   gnggaData.count_valid_elements++; gnggaData.bad_latitude_hemisphere=false;}   else {gnggaData.bad_latitude_hemisphere_i++;   gnggaData.bad_latitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_longitude(serial1Data.token)==true)                {strcpy(gnggaData.longitude, serial1Data.token);             gnggaData.count_valid_elements++; gnggaData.bad_longitude=false;}             else {gnggaData.bad_longitude_i++;             gnggaData.bad_longitude=true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude_H(serial1Data.token)==true)              {strcpy(gnggaData.longitude_hemisphere, serial1Data.token);  gnggaData.count_valid_elements++; gnggaData.bad_longitude_hemisphere=false;}  else {gnggaData.bad_longitude_hemisphere_i++;  gnggaData.bad_longitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_positioning_status_gngga(serial1Data.token)==true) {strcpy(gnggaData.solution_status, serial1Data.token);       gnggaData.count_valid_elements++; gnggaData.bad_solution_status=false;}       else {gnggaData.bad_solution_status_i++;       gnggaData.bad_solution_status=true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_satellite_count(serial1Data.token)==true)          {strcpy(gnggaData.satellite_count_gngga, serial1Data.token); gnggaData.count_valid_elements++; gnggaData.bad_satellite_count_gngga=false;} else {gnggaData.bad_satellite_count_gngga_i++; gnggaData.bad_satellite_count_gngga=true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_hdop_precision_factor(serial1Data.token)==true)    {strcpy(gnggaData.hdop_precision_factor, serial1Data.token); gnggaData.count_valid_elements++; gnggaData.bad_hdop_precision_factor=false;} else {gnggaData.bad_hdop_precision_factor_i++; gnggaData.bad_hdop_precision_factor=true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_altitude(serial1Data.token)==true)                 {strcpy(gnggaData.altitude, serial1Data.token);              gnggaData.count_valid_elements++; gnggaData.bad_altitude=false;}              else {gnggaData.bad_altitude_i++;              gnggaData.bad_altitude=true;}}
+    else if (serial1Data.iter_token ==10) {if (val_altitude_units(serial1Data.token)==true)           {strcpy(gnggaData.altitude_units, serial1Data.token);        gnggaData.count_valid_elements++; gnggaData.bad_altitude_units=false;}        else {gnggaData.bad_altitude_units_i++;        gnggaData.bad_altitude_units=true;}}
+    else if (serial1Data.iter_token ==11) {if (val_geoidal(serial1Data.token)==true)                  {strcpy(gnggaData.geoidal, serial1Data.token);               gnggaData.count_valid_elements++; gnggaData.bad_geoidal=false;}               else {gnggaData.bad_geoidal_i++;               gnggaData.bad_geoidal=true;}}
+    else if (serial1Data.iter_token ==12) {if (val_geoidal_units(serial1Data.token)==true)            {strcpy(gnggaData.geoidal_units, serial1Data.token);         gnggaData.count_valid_elements++; gnggaData.bad_geoidal_units=false;}         else {gnggaData.bad_geoidal_units_i++;         gnggaData.bad_geoidal_units=true;}}
+    else if (serial1Data.iter_token ==13) {if (val_differential_delay(serial1Data.token)==true)       {strcpy(gnggaData.differential_delay, serial1Data.token);    gnggaData.count_valid_elements++; gnggaData.bad_differential_delay=false;}    else {gnggaData.bad_differential_delay_i++;    gnggaData.bad_differential_delay=true;}}
+    else if (serial1Data.iter_token ==14) {serial1Data.token=strtok(serial1Data.token, "*"); if (val_basestation_id(serial1Data.token)==true) {strcpy(gnggaData.id, serial1Data.token); gnggaData.count_valid_elements++; gnggaData.bad_id=false;} else {gnggaData.bad_id_i++;                  gnggaData.bad_id=true;}}
+    else if (serial1Data.iter_token ==15) {gnggaData.count_valid_elements++;} // skip element: checksum (validated seperately)
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
+  }
+  // ------------------
+  // total bad elements
+  // ------------------
+  gnggaData.total_invalid_elements=
+  gnggaData.bad_utc_time_i+
+  gnggaData.bad_latitude_i+
+  gnggaData.bad_latitude_hemisphere_i+
+  gnggaData.bad_longitude_i+
+  gnggaData.bad_longitude_hemisphere_i+
+  gnggaData.bad_solution_status_i+
+  gnggaData.bad_satellite_count_gngga_i+
+  gnggaData.bad_hdop_precision_factor_i+
+  gnggaData.bad_altitude_i+
+  gnggaData.bad_altitude_units_i+
+  gnggaData.bad_geoidal_i+
+  gnggaData.bad_geoidal_units_i+
+  gnggaData.bad_differential_delay_i+
+  gnggaData.bad_id_i;
+  // -------------------------------
+  // reset counters (memory/ui safe)
+  // -------------------------------
+  if (gnggaData.total_invalid_elements>gnggaData.max_bad) {gnggaData.total_invalid_elements=0;}
+  if (gnggaData.bad_utc_time_i>gnggaData.max_bad) {gnggaData.bad_utc_time_i=0;}
+  if (gnggaData.bad_latitude_i>gnggaData.max_bad) {gnggaData.bad_latitude_i=0;}
+  if (gnggaData.bad_latitude_hemisphere_i>gnggaData.max_bad) {gnggaData.bad_latitude_hemisphere_i=0;}
+  if (gnggaData.bad_longitude_i>gnggaData.max_bad) {gnggaData.bad_longitude_i=0;}
+  if (gnggaData.bad_longitude_hemisphere_i>gnggaData.max_bad) {gnggaData.bad_longitude_hemisphere_i=0;}
+  if (gnggaData.bad_solution_status_i>gnggaData.max_bad) {gnggaData.bad_solution_status_i=0;}
+  if (gnggaData.bad_satellite_count_gngga_i>gnggaData.max_bad) {gnggaData.bad_satellite_count_gngga_i=0;}
+  if (gnggaData.bad_hdop_precision_factor_i>gnggaData.max_bad) {gnggaData.bad_hdop_precision_factor_i=0;}
+  if (gnggaData.bad_altitude_i>gnggaData.max_bad) {gnggaData.bad_altitude_i=0;}
+  if (gnggaData.bad_altitude_units_i>gnggaData.max_bad) {gnggaData.bad_altitude_units_i=0;}
+  if (gnggaData.bad_geoidal_i>gnggaData.max_bad) {gnggaData.bad_geoidal_i=0;}
+  if (gnggaData.bad_geoidal_units_i>gnggaData.max_bad) {gnggaData.bad_geoidal_units_i=0;}
+  if (gnggaData.bad_differential_delay_i>gnggaData.max_bad) {gnggaData.bad_differential_delay_i=0;}
+
+  if (systemData.debug==true) {
+    Serial.println("[gnggaData.tag] "                         + String(gnggaData.tag));
+    Serial.println("[gnggaData.bad_utc_time_i] "              + String(gnggaData.bad_utc_time_i));
+    Serial.println("[gnggaData.bad_latitude_i] "              + String(gnggaData.bad_latitude_i));
+    Serial.println("[gnggaData.bad_latitude_hemisphere_i] "   + String(gnggaData.bad_latitude_hemisphere_i));
+    Serial.println("[gnggaData.bad_longitude_i] "             + String(gnggaData.bad_longitude_i));
+    Serial.println("[gnggaData.bad_longitude_hemisphere_i] "  + String(gnggaData.bad_longitude_hemisphere_i));
+    Serial.println("[gnggaData.bad_solution_status_i] "       + String(gnggaData.bad_solution_status_i));
+    Serial.println("[gnggaData.bad_satellite_count_gngga_i] " + String(gnggaData.bad_satellite_count_gngga_i));
+    Serial.println("[gnggaData.bad_hdop_precision_factor_i] " + String(gnggaData.bad_hdop_precision_factor_i));
+    Serial.println("[gnggaData.bad_altitude_i] "              + String(gnggaData.bad_altitude_i));
+    Serial.println("[gnggaData.bad_altitude_units_i] "        + String(gnggaData.bad_altitude_units_i));
+    Serial.println("[gnggaData.bad_geoidal_i] "               + String(gnggaData.bad_geoidal_i));
+    Serial.println("[gnggaData.bad_geoidal_units_i] "         + String(gnggaData.bad_geoidal_units_i));
+    Serial.println("[gnggaData.bad_differential_delay_i] "    + String(gnggaData.bad_differential_delay_i));
+    Serial.println("[gnggaData.bad_id_i] "                    + String(gnggaData.bad_id_i));
+    Serial.println("[gnggaData.check_sum] "                   + String(gnggaData.check_sum));
+    Serial.println("[gnggaData.total_invalid_elements] "      + String(gnggaData.total_invalid_elements));
   }
   if (systemData.debug==true) {
     Serial.println("[gnggaData.tag] "                   + String(gnggaData.tag));
@@ -3266,7 +3330,7 @@ void GNGGA() {
     Serial.println("[gnggaData.differential_delay] "    + String(gnggaData.differential_delay));
     Serial.println("[gnggaData.id] "                    + String(gnggaData.id));
     Serial.println("[gnggaData.check_sum] "             + String(gnggaData.check_sum));
-    Serial.println("[gnggaData.check_data] "            + String(gnggaData.check_data));
+    Serial.println("[gnggaData.count_valid_elements] "  + String(gnggaData.count_valid_elements));
   }
 }
 
@@ -3291,7 +3355,9 @@ struct GNRMCStruct {
   char installation_angle_direction[56]; unsigned long bad_installation_angle_direction_i; bool bad_installation_angle_direction=true; // <11> Magnetic declination direction, E (east) or W (west)
   char mode_indication[56];              unsigned long bad_mode_indication_i;              bool bad_mode_indication=true;              // <12> Mode indication (A=autonomous positioning, D=differential E=estimation, N=invalid data) */
   char check_sum[56];                    unsigned long bad_check_sum_i;                    bool bad_check_sum=true;                    // <13> XOR check value of all bytes starting from $ to *
-  int check_data=0;                      unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 14)
+  int count_valid_elements=0;            unsigned long bad_checksum_validity;              bool valid_checksum=false;                  // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 13 from zero)
+  int total_invalid_elements=0;
+  int max_bad=99;
 };
 GNRMCStruct gnrmcData;
 
@@ -3329,26 +3395,76 @@ void clearGNRMC() {
 } 
 
 void GNRMC() {
-  gnrmcData.check_data=0;
+  // ---------------------
+  // tokenize and validate
+  // ---------------------
+  gnrmcData.count_valid_elements=0;
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gnrmcData.sentence, ",");
   while( serial1Data.token != NULL ) {
-    if      (serial1Data.iter_token==0)                                                                   {strcpy(gnrmcData.tag, "GNRMC");                                    gnrmcData.check_data++;}
-    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_time=false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time=true;}}
-    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token)==true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_positioning_status=false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status=true;}}
-    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token)==true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_latitude=false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude=true;}}
-    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token)==true)                   {strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.check_data++; gnrmcData.bad_latitude_hemisphere=false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere=true;}}
-    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token)==true)                    {strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.check_data++; gnrmcData.bad_longitude=false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude=true;}}
-    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token)==true)                  {strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.check_data++; gnrmcData.bad_longitude_hemisphere=false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere=true;}}
-    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token)==true)                 {strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.check_data++; gnrmcData.bad_ground_speed=false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed=true;}}
-    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token)==true)               {strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.check_data++; gnrmcData.bad_ground_heading=false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading=true;}}
-    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.check_data++; gnrmcData.bad_utc_date=false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date=true;}}
-    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token)==true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.check_data++; gnrmcData.bad_installation_angle=false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle=true;}}
-    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token)==true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.check_data++; gnrmcData.bad_installation_angle_direction=false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction=true;}}
-    else if (serial1Data.iter_token ==12) {if (val_mode_indication(serial1Data.token)==true)              {strcpy(gnrmcData.mode_indication, serial1Data.token);              gnrmcData.check_data++; gnrmcData.bad_mode_indication=false;}              else {gnrmcData.bad_mode_indication_i++;              gnrmcData.bad_mode_indication=true;}}
-
+    if      (serial1Data.iter_token==0)   {if (strcmp(serial1Data.token, "$GNRMC")==0)                    {strcpy(gnrmcData.tag, serial1Data.token);                          gnrmcData.count_valid_elements++;}}
+    else if (serial1Data.iter_token ==1)  {if (val_utc_time(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_time, serial1Data.token);                     gnrmcData.count_valid_elements++; gnrmcData.bad_utc_time=false;}                     else {gnrmcData.bad_utc_time_i++;                     gnrmcData.bad_utc_time=true;}}
+    else if (serial1Data.iter_token ==2)  {if (val_positioning_status_gnrmc(serial1Data.token)==true)     {strcpy(gnrmcData.positioning_status, serial1Data.token);           gnrmcData.count_valid_elements++; gnrmcData.bad_positioning_status=false;}           else {gnrmcData.bad_positioning_status_i++;           gnrmcData.bad_positioning_status=true;}}
+    else if (serial1Data.iter_token ==3)  {if (val_latitude(serial1Data.token)==true)                     {strcpy(gnrmcData.latitude, serial1Data.token);                     gnrmcData.count_valid_elements++; gnrmcData.bad_latitude=false;}                     else {gnrmcData.bad_latitude_i++;                     gnrmcData.bad_latitude=true;}}
+    else if (serial1Data.iter_token ==4)  {if (val_latitude_H(serial1Data.token)==true)                   {strcpy(gnrmcData.latitude_hemisphere, serial1Data.token);          gnrmcData.count_valid_elements++; gnrmcData.bad_latitude_hemisphere=false;}          else {gnrmcData.bad_latitude_hemisphere_i++;          gnrmcData.bad_latitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==5)  {if (val_longitude(serial1Data.token)==true)                    {strcpy(gnrmcData.longitude, serial1Data.token);                    gnrmcData.count_valid_elements++; gnrmcData.bad_longitude=false;}                    else {gnrmcData.bad_longitude_i++;                    gnrmcData.bad_longitude=true;}}
+    else if (serial1Data.iter_token ==6)  {if (val_longitude_H(serial1Data.token)==true)                  {strcpy(gnrmcData.longitude_hemisphere, serial1Data.token);         gnrmcData.count_valid_elements++; gnrmcData.bad_longitude_hemisphere=false;}         else {gnrmcData.bad_longitude_hemisphere_i++;         gnrmcData.bad_longitude_hemisphere=true;}}
+    else if (serial1Data.iter_token ==7)  {if (val_ground_speed(serial1Data.token)==true)                 {strcpy(gnrmcData.ground_speed, serial1Data.token);                 gnrmcData.count_valid_elements++; gnrmcData.bad_ground_speed=false;}                 else {gnrmcData.bad_ground_speed_i++;                 gnrmcData.bad_ground_speed=true;}}
+    else if (serial1Data.iter_token ==8)  {if (val_ground_heading(serial1Data.token)==true)               {strcpy(gnrmcData.ground_heading, serial1Data.token);               gnrmcData.count_valid_elements++; gnrmcData.bad_ground_heading=false;}               else {gnrmcData.bad_ground_heading_i++;               gnrmcData.bad_ground_heading=true;}}
+    else if (serial1Data.iter_token ==9)  {if (val_utc_date(serial1Data.token)==true)                     {strcpy(gnrmcData.utc_date, serial1Data.token);                     gnrmcData.count_valid_elements++; gnrmcData.bad_utc_date=false;}                     else {gnrmcData.bad_utc_date_i++;                     gnrmcData.bad_utc_date=true;}}
+    else if (serial1Data.iter_token ==10) {if (val_installation_angle(serial1Data.token)==true)           {strcpy(gnrmcData.installation_angle, serial1Data.token);           gnrmcData.count_valid_elements++; gnrmcData.bad_installation_angle=false;}           else {gnrmcData.bad_installation_angle_i++;           gnrmcData.bad_installation_angle=true;}}
+    else if (serial1Data.iter_token ==11) {if (val_installation_angle_direction(serial1Data.token)==true) {strcpy(gnrmcData.installation_angle_direction, serial1Data.token); gnrmcData.count_valid_elements++; gnrmcData.bad_installation_angle_direction=false;} else {gnrmcData.bad_installation_angle_direction_i++; gnrmcData.bad_installation_angle_direction=true;}}
+    else if (serial1Data.iter_token ==12) {serial1Data.token=strtok(serial1Data.token, "*"); if (val_mode_indication(serial1Data.token)==true) {strcpy(gnrmcData.mode_indication, serial1Data.token); gnrmcData.count_valid_elements++; gnrmcData.bad_mode_indication=false;} else {gnrmcData.bad_mode_indication_i++; gnrmcData.bad_mode_indication=true;}}
+    else if (serial1Data.iter_token ==13) {gnggaData.count_valid_elements++;} // skip element: checksum (validated seperately)
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
+  }
+  // ------------------
+  // total bad elements
+  // ------------------
+  gnrmcData.total_invalid_elements=
+  gnrmcData.bad_utc_time_i+
+  gnrmcData.bad_positioning_status_i+
+  gnrmcData.bad_latitude_i+
+  gnrmcData.bad_latitude_hemisphere_i+
+  gnrmcData.bad_longitude_i+
+  gnrmcData.bad_longitude_hemisphere_i+
+  gnrmcData.bad_ground_speed_i+
+  gnrmcData.bad_ground_heading_i+
+  gnrmcData.bad_utc_date_i+
+  gnrmcData.bad_installation_angle_i+
+  gnrmcData.bad_installation_angle_direction_i+
+  gnrmcData.bad_mode_indication_i;
+  // -------------------------------
+  // reset counters (memory/ui safe)
+  // -------------------------------
+  if (gnrmcData.total_invalid_elements>gnrmcData.max_bad) {gnrmcData.total_invalid_elements=0;}
+  if (gnrmcData.bad_utc_time_i>gnrmcData.max_bad) {gnrmcData.bad_utc_time_i=0;}
+  if (gnrmcData.bad_latitude_i>gnrmcData.max_bad) {gnrmcData.bad_latitude_i=0;}
+  if (gnrmcData.bad_latitude_hemisphere_i>gnrmcData.max_bad) {gnrmcData.bad_latitude_hemisphere_i=0;}
+  if (gnrmcData.bad_longitude_i>gnrmcData.max_bad) {gnrmcData.bad_longitude_i=0;}
+  if (gnrmcData.bad_longitude_hemisphere_i>gnrmcData.max_bad) {gnrmcData.bad_longitude_hemisphere_i=0;}
+  if (gnrmcData.bad_ground_speed_i>gnrmcData.max_bad) {gnrmcData.bad_ground_speed_i=0;}
+  if (gnrmcData.bad_ground_heading_i>gnrmcData.max_bad) {gnrmcData.bad_ground_heading_i=0;}
+  if (gnrmcData.bad_utc_date_i>gnrmcData.max_bad) {gnrmcData.bad_utc_date_i=0;}
+  if (gnrmcData.bad_installation_angle_i>gnrmcData.max_bad) {gnrmcData.bad_installation_angle_i=0;}
+  if (gnrmcData.bad_installation_angle_direction_i>gnrmcData.max_bad) {gnrmcData.bad_installation_angle_direction_i=0;}
+  if (gnrmcData.bad_mode_indication_i>gnrmcData.max_bad) {gnrmcData.bad_mode_indication_i=0;}
+
+  // systemData.debug=true;
+  if (systemData.debug==true) {
+    Serial.println("[gnrmcData.bad_utc_time_i] "                     + String(gnrmcData.bad_utc_time_i));
+    Serial.println("[gnrmcData.bad_latitude_i] "                     + String(gnrmcData.bad_latitude_i));
+    Serial.println("[gnrmcData.bad_latitude_hemisphere_i] "          + String(gnrmcData.bad_latitude_hemisphere_i));
+    Serial.println("[gnrmcData.bad_longitude_i] "                    + String(gnrmcData.bad_longitude_i));
+    Serial.println("[gnrmcData.bad_longitude_hemisphere_i] "         + String(gnrmcData.bad_longitude_hemisphere_i));
+    Serial.println("[gnrmcData.bad_ground_speed_i] "                 + String(gnrmcData.bad_ground_speed_i));
+    Serial.println("[gnrmcData.bad_ground_heading_i] "               + String(gnrmcData.bad_ground_heading_i));
+    Serial.println("[gnrmcData.bad_utc_date_i] "                     + String(gnrmcData.bad_utc_date_i));
+    Serial.println("[gnrmcData.bad_installation_angle_i] "           + String(gnrmcData.bad_installation_angle_i));
+    Serial.println("[gnrmcData.bad_installation_angle_direction_i] " + String(gnrmcData.bad_installation_angle_direction_i));
+    Serial.println("[gnrmcData.bad_mode_indication_i] "              + String(gnrmcData.bad_mode_indication_i));
+    Serial.println("[gnrmcData.total_invalid_elements] "             + String(gnrmcData.total_invalid_elements));
   }
   if (systemData.debug==true) {
     Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
@@ -3365,8 +3481,9 @@ void GNRMC() {
     Serial.println("[gnrmcData.installation_angle_direction] " + String(gnrmcData.installation_angle_direction));
     Serial.println("[gnrmcData.mode_indication] "              + String(gnrmcData.mode_indication));
     Serial.println("[gnrmcData.check_sum] "                    + String(gnrmcData.check_sum));
-    Serial.println("[gnrmcData.check_data] "                   + String(gnrmcData.check_data));
+    Serial.println("[gnrmcData.count_valid_elements] "         + String(gnrmcData.count_valid_elements));
   }
+  // systemData.debug=false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -3376,7 +3493,7 @@ void GNRMC() {
 struct GPATTStruct {
   char sentence[200];
   char outsentence[200];
-  char tag[56];                                                                                       // <0> Log header
+  char tag[56];                                                                                     // <0> Log header
   char pitch[56];             unsigned long bad_pitch_i;            bool bad_pitch=true;            // <1> pitch angle
   char angle_channel_0[56];   unsigned long bad_angle_channel_0_i;  bool bad_angle_channel_0=true;  // <2> P
   char roll[56];              unsigned long bad_roll_i;             bool bad_roll=true;             // <3> Roll angle
@@ -3417,7 +3534,7 @@ struct GPATTStruct {
   char speed_num[56];         unsigned long bad_speed_num_i;        bool bad_speed_num=true;        // <38> 1：fixed setting，0：Self adaptive installation
   char scalable[56];          unsigned long bad_scalable_i;         bool bad_scalable=true;         // <39> 
   char check_sum[56];         unsigned long bad_check_sum_i;        bool bad_check_sum=true;        // <40> XOR check value of all bytes starting from $ to *
-  int check_data=0;           unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc check_data should result in 41)
+  int count_valid_elements=0; unsigned long bad_checksum_validity;  bool valid_checksum=false;      // Checksum validity bool, counters and a counter for how many elements passed further testing (gnrmc count_valid_elements should result in 41)
 };
 GPATTStruct gpattData;
 
@@ -3470,49 +3587,51 @@ void clearGPATT() {
 }
 
 void GPATT() {
-  gpattData.check_data=0;
+  gpattData.count_valid_elements=0;
   serial1Data.iter_token=0;
   serial1Data.token=strtok(gpattData.sentence, ",");
   while( serial1Data.token != NULL ) { 
-    if      (serial1Data.iter_token==0)                                                            {strcpy(gpattData.tag, "GPATT");                        gpattData.check_data++;}
-    else if (serial1Data.iter_token==1) {if (val_pitch_gpatt(serial1Data.token)==true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.check_data++; gpattData.bad_pitch=false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch=true;}}
-    else if (serial1Data.iter_token==2) {if (val_angle_channle_p_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_0=false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0=true;}}
-    else if (serial1Data.iter_token==3) {if (val_roll_gpatt(serial1Data.token)==true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.check_data++; gpattData.bad_roll=false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll=true;}}
-    else if (serial1Data.iter_token==4) {if (val_angle_channle_r_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_1, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_1=false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1=true;}}
-    else if (serial1Data.iter_token==5) {if (val_yaw_gpatt(serial1Data.token)==true)               {strcpy(gpattData.yaw, serial1Data.token);              gpattData.check_data++; gpattData.bad_yaw=false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw=true;}}
-    else if (serial1Data.iter_token==6) {if (val_angle_channle_y_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_2, serial1Data.token);  gpattData.check_data++; gpattData.bad_angle_channel_2=false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2=true;}}
-    else if (serial1Data.iter_token==7) {if (val_software_version_gpatt(serial1Data.token)==true)  {strcpy(gpattData.software_version, serial1Data.token); gpattData.check_data++; gpattData.bad_software_version=false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version=true;}}
-    else if (serial1Data.iter_token==8) {if (val_version_channel_s_gpatt(serial1Data.token)==true) {strcpy(gpattData.version_channel, serial1Data.token);  gpattData.check_data++; gpattData.bad_version_channel=false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel=true;}}
-    else if (serial1Data.iter_token==9) {if (val_product_id_gpatt(serial1Data.token)==true)        {strcpy(gpattData.product_id, serial1Data.token);       gpattData.check_data++; gpattData.bad_product_id=false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id=true;}}
-    else if (serial1Data.iter_token==10) {if (val_id_channel_gpatt(serial1Data.token)==true)       {strcpy(gpattData.id_channel, serial1Data.token);       gpattData.check_data++; gpattData.bad_id_channel=false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel=true;}}
-    else if (serial1Data.iter_token==11) {if (val_ins_gpatt(serial1Data.token)==true)              {strcpy(gpattData.ins, serial1Data.token);              gpattData.check_data++; gpattData.bad_ins=false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins=true;}}
-    else if (serial1Data.iter_token==12) {if (val_ins_channel_gpatt(serial1Data.token)==true)      {strcpy(gpattData.ins_channel, serial1Data.token);      gpattData.check_data++; gpattData.bad_ins_channel=false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel=true;}}
-    else if (serial1Data.iter_token==13) {if (val_hardware_version_gpatt(serial1Data.token)==true) {strcpy(gpattData.hardware_version, serial1Data.token); gpattData.check_data++; gpattData.bad_hardware_version=false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version=true;}}
-    else if (serial1Data.iter_token==14) {if (val_run_state_flag_gpatt(serial1Data.token)==true)   {strcpy(gpattData.run_state_flag, serial1Data.token);   gpattData.check_data++; gpattData.bad_run_state_flag=false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag=true;}}
-    else if (serial1Data.iter_token==15) {if (val_mis_angle_num_gpatt(serial1Data.token)==true)    {strcpy(gpattData.mis_angle_num, serial1Data.token);    gpattData.check_data++; gpattData.bad_mis_angle_num=false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num=true;}}
-    else if (serial1Data.iter_token==16) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_0, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_0=false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0=true;}}
-    else if (serial1Data.iter_token==17) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_1, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_1=false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1=true;}}
-    else if (serial1Data.iter_token==18) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_2, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_2=false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2=true;}}
-    else if (serial1Data.iter_token==19) {if (val_static_flag_gpatt(serial1Data.token)==true)      {strcpy(gpattData.static_flag, serial1Data.token);      gpattData.check_data++; gpattData.bad_static_flag=false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag=true;}}
-    else if (serial1Data.iter_token==20) {if (val_user_code_gpatt(serial1Data.token)==true)        {strcpy(gpattData.user_code, serial1Data.token);        gpattData.check_data++; gpattData.bad_user_code=false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code=true;}}
-    else if (serial1Data.iter_token==21) {if (val_gst_data_gpatt(serial1Data.token)==true)         {strcpy(gpattData.gst_data, serial1Data.token);         gpattData.check_data++; gpattData.bad_gst_data=false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data=true;}}
-    else if (serial1Data.iter_token==22) {if (val_line_flag_gpatt(serial1Data.token)==true)        {strcpy(gpattData.line_flag, serial1Data.token);        gpattData.check_data++; gpattData.bad_line_flag=false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag=true;}}
-    else if (serial1Data.iter_token==23) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_3, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_3=false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3=true;}}
-    else if (serial1Data.iter_token==24) {if (val_mis_att_flag_gpatt(serial1Data.token)==true)     {strcpy(gpattData.mis_att_flag, serial1Data.token);     gpattData.check_data++; gpattData.bad_mis_att_flag=false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag=true;}}
-    else if (serial1Data.iter_token==25) {if (val_imu_kind_gpatt(serial1Data.token)==true)         {strcpy(gpattData.imu_kind, serial1Data.token);         gpattData.check_data++; gpattData.bad_imu_kind=false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind=true;}}
-    else if (serial1Data.iter_token==26) {if (val_ubi_car_kind_gpatt(serial1Data.token)==true)     {strcpy(gpattData.ubi_car_kind, serial1Data.token);     gpattData.check_data++; gpattData.bad_ubi_car_kind=false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind=true;}}
-    else if (serial1Data.iter_token==27) {if (val_mileage_gpatt(serial1Data.token)==true)          {strcpy(gpattData.mileage, serial1Data.token);          gpattData.check_data++; gpattData.bad_mileage=false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage=true;}}
-    else if (serial1Data.iter_token==28) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_4, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_4=false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4=true;}}
-    else if (serial1Data.iter_token==29) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_5, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_5=false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5=true;}}
-    else if (serial1Data.iter_token==30) {if (val_run_inetial_flag_gpatt(serial1Data.token)==true) {strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.check_data++; gpattData.bad_run_inetial_flag=false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag=true;}}
-    else if (serial1Data.iter_token==31) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_6, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_6=false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6=true;}}
-    else if (serial1Data.iter_token==32) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_7, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_7=false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7=true;}}
-    else if (serial1Data.iter_token==33) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_8, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_8=false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8=true;}}
-    else if (serial1Data.iter_token==34) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_9, serial1Data.token);    gpattData.check_data++; gpattData.bad_custom_logo_9=false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9=true;}}
-    else if (serial1Data.iter_token==35) {if (val_speed_enable_gpatt(serial1Data.token)==true)     {strcpy(gpattData.speed_enable, serial1Data.token);     gpattData.check_data++; gpattData.bad_speed_enable=false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable=true;}}
-    else if (serial1Data.iter_token==36) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_10, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_10=false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10=true;}}
-    else if (serial1Data.iter_token==37) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_11, serial1Data.token);   gpattData.check_data++; gpattData.bad_custom_logo_11=false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11=true;}}
-    else if (serial1Data.iter_token==38) {if (val_speed_num_gpatt(serial1Data.token)==true)        {strcpy(gpattData.speed_num, serial1Data.token);        gpattData.check_data++; gpattData.bad_speed_num=false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num=true;}}
+    if      (serial1Data.iter_token==0) {if (strcmp(serial1Data.token, "$GPATT")==0)               {strcpy(gpattData.tag, serial1Data.token);              gpattData.count_valid_elements++;}}
+    else if (serial1Data.iter_token==1) {if (val_pitch_gpatt(serial1Data.token)==true)             {strcpy(gpattData.pitch, serial1Data.token);            gpattData.count_valid_elements++; gpattData.bad_pitch=false;}            else {gpattData.bad_pitch_i++;            gpattData.bad_pitch=true;}}
+    else if (serial1Data.iter_token==2) {if (val_angle_channle_p_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_0, serial1Data.token);  gpattData.count_valid_elements++; gpattData.bad_angle_channel_0=false;}  else {gpattData.bad_angle_channel_0_i++;  gpattData.bad_angle_channel_0=true;}}
+    else if (serial1Data.iter_token==3) {if (val_roll_gpatt(serial1Data.token)==true)              {strcpy(gpattData.roll, serial1Data.token);             gpattData.count_valid_elements++; gpattData.bad_roll=false;}             else {gpattData.bad_roll_i++;             gpattData.bad_roll=true;}}
+    else if (serial1Data.iter_token==4) {if (val_angle_channle_r_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_1, serial1Data.token);  gpattData.count_valid_elements++; gpattData.bad_angle_channel_1=false;}  else {gpattData.bad_angle_channel_1_i++;  gpattData.bad_angle_channel_1=true;}}
+    else if (serial1Data.iter_token==5) {if (val_yaw_gpatt(serial1Data.token)==true)               {strcpy(gpattData.yaw, serial1Data.token);              gpattData.count_valid_elements++; gpattData.bad_yaw=false;}              else {gpattData.bad_yaw_i++;              gpattData.bad_yaw=true;}}
+    else if (serial1Data.iter_token==6) {if (val_angle_channle_y_gpatt(serial1Data.token)==true)   {strcpy(gpattData.angle_channel_2, serial1Data.token);  gpattData.count_valid_elements++; gpattData.bad_angle_channel_2=false;}  else {gpattData.bad_angle_channel_2_i++;  gpattData.bad_angle_channel_2=true;}}
+    else if (serial1Data.iter_token==7) {if (val_software_version_gpatt(serial1Data.token)==true)  {strcpy(gpattData.software_version, serial1Data.token); gpattData.count_valid_elements++; gpattData.bad_software_version=false;} else {gpattData.bad_software_version_i++; gpattData.bad_software_version=true;}}
+    else if (serial1Data.iter_token==8) {if (val_version_channel_s_gpatt(serial1Data.token)==true) {strcpy(gpattData.version_channel, serial1Data.token);  gpattData.count_valid_elements++; gpattData.bad_version_channel=false;}  else {gpattData.bad_version_channel_i++;  gpattData.bad_version_channel=true;}}
+    else if (serial1Data.iter_token==9) {if (val_product_id_gpatt(serial1Data.token)==true)        {strcpy(gpattData.product_id, serial1Data.token);       gpattData.count_valid_elements++; gpattData.bad_product_id=false;}       else {gpattData.bad_product_id_i++;       gpattData.bad_product_id=true;}}
+    else if (serial1Data.iter_token==10) {if (val_id_channel_gpatt(serial1Data.token)==true)       {strcpy(gpattData.id_channel, serial1Data.token);       gpattData.count_valid_elements++; gpattData.bad_id_channel=false;}       else {gpattData.bad_id_channel_i++;       gpattData.bad_id_channel=true;}}
+    else if (serial1Data.iter_token==11) {if (val_ins_gpatt(serial1Data.token)==true)              {strcpy(gpattData.ins, serial1Data.token);              gpattData.count_valid_elements++; gpattData.bad_ins=false;}              else {gpattData.bad_ins_i++;              gpattData.bad_ins=true;}}
+    else if (serial1Data.iter_token==12) {if (val_ins_channel_gpatt(serial1Data.token)==true)      {strcpy(gpattData.ins_channel, serial1Data.token);      gpattData.count_valid_elements++; gpattData.bad_ins_channel=false;}      else {gpattData.bad_ins_channel_i++;      gpattData.bad_ins_channel=true;}}
+    else if (serial1Data.iter_token==13) {if (val_hardware_version_gpatt(serial1Data.token)==true) {strcpy(gpattData.hardware_version, serial1Data.token); gpattData.count_valid_elements++; gpattData.bad_hardware_version=false;} else {gpattData.bad_hardware_version_i++; gpattData.bad_hardware_version=true;}}
+    else if (serial1Data.iter_token==14) {if (val_run_state_flag_gpatt(serial1Data.token)==true)   {strcpy(gpattData.run_state_flag, serial1Data.token);   gpattData.count_valid_elements++; gpattData.bad_run_state_flag=false;}   else {gpattData.bad_run_state_flag_i++;   gpattData.bad_run_state_flag=true;}}
+    else if (serial1Data.iter_token==15) {if (val_mis_angle_num_gpatt(serial1Data.token)==true)    {strcpy(gpattData.mis_angle_num, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_mis_angle_num=false;}    else {gpattData.bad_mis_angle_num_i++;    gpattData.bad_mis_angle_num=true;}}
+    else if (serial1Data.iter_token==16) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_0, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_0=false;}    else {gpattData.bad_custom_logo_0_i++;    gpattData.bad_custom_logo_0=true;}}
+    else if (serial1Data.iter_token==17) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_1, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_1=false;}    else {gpattData.bad_custom_logo_1_i++;    gpattData.bad_custom_logo_1=true;}}
+    else if (serial1Data.iter_token==18) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_2, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_2=false;}    else {gpattData.bad_custom_logo_2_i++;    gpattData.bad_custom_logo_2=true;}}
+    else if (serial1Data.iter_token==19) {if (val_static_flag_gpatt(serial1Data.token)==true)      {strcpy(gpattData.static_flag, serial1Data.token);      gpattData.count_valid_elements++; gpattData.bad_static_flag=false;}      else {gpattData.bad_static_flag_i++;      gpattData.bad_static_flag=true;}}
+    else if (serial1Data.iter_token==20) {if (val_user_code_gpatt(serial1Data.token)==true)        {strcpy(gpattData.user_code, serial1Data.token);        gpattData.count_valid_elements++; gpattData.bad_user_code=false;}        else {gpattData.bad_user_code_i++;        gpattData.bad_user_code=true;}}
+    else if (serial1Data.iter_token==21) {if (val_gst_data_gpatt(serial1Data.token)==true)         {strcpy(gpattData.gst_data, serial1Data.token);         gpattData.count_valid_elements++; gpattData.bad_gst_data=false;}         else {gpattData.bad_gst_data_i++;         gpattData.bad_gst_data=true;}}
+    else if (serial1Data.iter_token==22) {if (val_line_flag_gpatt(serial1Data.token)==true)        {strcpy(gpattData.line_flag, serial1Data.token);        gpattData.count_valid_elements++; gpattData.bad_line_flag=false;}        else {gpattData.bad_line_flag_i++;        gpattData.bad_line_flag=true;}}
+    else if (serial1Data.iter_token==23) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_3, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_3=false;}    else {gpattData.bad_custom_logo_3_i++;    gpattData.bad_custom_logo_3=true;}}
+    else if (serial1Data.iter_token==24) {if (val_mis_att_flag_gpatt(serial1Data.token)==true)     {strcpy(gpattData.mis_att_flag, serial1Data.token);     gpattData.count_valid_elements++; gpattData.bad_mis_att_flag=false;}     else {gpattData.bad_mis_att_flag_i++;     gpattData.bad_mis_att_flag=true;}}
+    else if (serial1Data.iter_token==25) {if (val_imu_kind_gpatt(serial1Data.token)==true)         {strcpy(gpattData.imu_kind, serial1Data.token);         gpattData.count_valid_elements++; gpattData.bad_imu_kind=false;}         else {gpattData.bad_imu_kind_i++;         gpattData.bad_imu_kind=true;}}
+    else if (serial1Data.iter_token==26) {if (val_ubi_car_kind_gpatt(serial1Data.token)==true)     {strcpy(gpattData.ubi_car_kind, serial1Data.token);     gpattData.count_valid_elements++; gpattData.bad_ubi_car_kind=false;}     else {gpattData.bad_ubi_car_kind_i++;     gpattData.bad_ubi_car_kind=true;}}
+    else if (serial1Data.iter_token==27) {if (val_mileage_gpatt(serial1Data.token)==true)          {strcpy(gpattData.mileage, serial1Data.token);          gpattData.count_valid_elements++; gpattData.bad_mileage=false;}          else {gpattData.bad_mileage_i++;          gpattData.bad_mileage=true;}}
+    else if (serial1Data.iter_token==28) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_4, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_4=false;}    else {gpattData.bad_custom_logo_4_i++;    gpattData.bad_custom_logo_4=true;}}
+    else if (serial1Data.iter_token==29) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_5, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_5=false;}    else {gpattData.bad_custom_logo_5_i++;    gpattData.bad_custom_logo_5=true;}}
+    else if (serial1Data.iter_token==30) {if (val_run_inetial_flag_gpatt(serial1Data.token)==true) {strcpy(gpattData.run_inetial_flag, serial1Data.token); gpattData.count_valid_elements++; gpattData.bad_run_inetial_flag=false;} else {gpattData.bad_run_inetial_flag_i++; gpattData.bad_run_inetial_flag=true;}}
+    else if (serial1Data.iter_token==31) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_6, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_6=false;}    else {gpattData.bad_custom_logo_6_i++;    gpattData.bad_custom_logo_6=true;}}
+    else if (serial1Data.iter_token==32) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_7, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_7=false;}    else {gpattData.bad_custom_logo_7_i++;    gpattData.bad_custom_logo_7=true;}}
+    else if (serial1Data.iter_token==33) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_8, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_8=false;}    else {gpattData.bad_custom_logo_8_i++;    gpattData.bad_custom_logo_8=true;}}
+    else if (serial1Data.iter_token==34) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_9, serial1Data.token);    gpattData.count_valid_elements++; gpattData.bad_custom_logo_9=false;}    else {gpattData.bad_custom_logo_9_i++;    gpattData.bad_custom_logo_9=true;}}
+    else if (serial1Data.iter_token==35) {if (val_speed_enable_gpatt(serial1Data.token)==true)     {strcpy(gpattData.speed_enable, serial1Data.token);     gpattData.count_valid_elements++; gpattData.bad_speed_enable=false;}     else {gpattData.bad_speed_enable_i++;     gpattData.bad_speed_enable=true;}}
+    else if (serial1Data.iter_token==36) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_10, serial1Data.token);   gpattData.count_valid_elements++; gpattData.bad_custom_logo_10=false;}   else {gpattData.bad_custom_logo_10_i++;   gpattData.bad_custom_logo_10=true;}}
+    else if (serial1Data.iter_token==37) {if (val_custom_flag(serial1Data.token)==true)            {strcpy(gpattData.custom_logo_11, serial1Data.token);   gpattData.count_valid_elements++; gpattData.bad_custom_logo_11=false;}   else {gpattData.bad_custom_logo_11_i++;   gpattData.bad_custom_logo_11=true;}}
+    else if (serial1Data.iter_token==38) {if (val_speed_num_gpatt(serial1Data.token)==true)        {strcpy(gpattData.speed_num, serial1Data.token);        gpattData.count_valid_elements++; gpattData.bad_speed_num=false;}        else {gpattData.bad_speed_num_i++;        gpattData.bad_speed_num=true;}}
+    else if (serial1Data.iter_token ==39) {serial1Data.token=strtok(serial1Data.token, "*"); gnggaData.count_valid_elements++;} // skip element: scalable
+    else if (serial1Data.iter_token ==40) {gnggaData.count_valid_elements++;} // skip element: checksum (validated seperately)
     serial1Data.token=strtok(NULL, ",");
     serial1Data.iter_token++;
   }
@@ -3559,7 +3678,7 @@ void GPATT() {
     Serial.println("[gpattData.speed_num] "        + String(gpattData.speed_num));
     Serial.println("[gpattData.scalable] "         + String(gpattData.scalable));
     Serial.println("[gpattData.check_sum] "        + String(gpattData.check_sum));
-    Serial.println("[gpattData.check_data] "       + String(gpattData.check_data));
+    Serial.println("[gpattData.count_valid_elements] "   + String(gpattData.count_valid_elements));
   }
   // systemData.debug=false;
 }
@@ -8899,11 +9018,11 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCS")==0) {
           tmp_matrix[Fi]=check_bool_true(gpattData.valid_checksum);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNGGAValidCD")==0) {
-          tmp_matrix[Fi]=check_equal_true(gnggaData.check_data, 16);}
+          tmp_matrix[Fi]=check_equal_true(gnggaData.count_valid_elements, 15);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GNRMCValidCD")==0) {
-          tmp_matrix[Fi]=check_equal_true(gnrmcData.check_data, 14);}
+          tmp_matrix[Fi]=check_equal_true(gnrmcData.count_valid_elements, 14);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD")==0) {
-          tmp_matrix[Fi]=check_equal_true(gpattData.check_data, 41);}
+          tmp_matrix[Fi]=check_equal_true(gpattData.count_valid_elements, 41);}
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
@@ -11196,9 +11315,9 @@ String getRelatedX(char * data) {
   if (strcmp("GNGGAValidCS", data)==0) {return String(gnggaData.valid_checksum);}
   if (strcmp("GNRMCValidCS", data)==0) {return String(gnrmcData.valid_checksum);}
   if (strcmp("GPATTValidCS", data)==0) {return String(gpattData.valid_checksum);}
-  if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.check_data);}
-  if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.check_data);}
-  if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.check_data);}
+  if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.count_valid_elements);}
+  if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.count_valid_elements);}
+  if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.count_valid_elements);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
   if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
@@ -13043,9 +13162,19 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GNGGA", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(25, ui_content_2-2, 127);
+        display.drawVLine(25, 13, 127);
+        display.drawVLine(64, 13, ui_content_2-4);
+        display.drawVLine(89, 13, ui_content_2-4);
         display.drawHLine(1, ui_content_2-3, 127);
         display.setColor(systemData.color_subtitle);
+        canvas19x8.clear();
+
+        canvas19x8.printFixed(1, 1, String("CKS").c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_0-2, canvas19x8);
+        canvas19x8.clear();
+        canvas19x8.printFixed(1, 1, String("CKD").c_str(), STYLE_BOLD);
+        display.drawCanvas(67, ui_content_0-2, canvas19x8);
+
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("UTC").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_2, canvas19x8);
@@ -13080,6 +13209,22 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
+
+      // ------------------------------------------------
+      // count invalid checksum
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(String(gnggaData.bad_checksum_validity) + String("/99")).c_str());
+      display.drawCanvas(28, ui_content_0-2, canvas32x8);
+      // ------------------------------------------------
+      // count invalid data
+      // ------------------------------------------------
+      canvas32x8.clear();
+      display.setColor(systemData.color_content);
+      canvas32x8.printFixed(1, 1, String(String(gnggaData.total_invalid_elements) + String("/99")).c_str());
+      display.drawCanvas(92, ui_content_0-2, canvas32x8);
+
       // ------------------------------------------------
       // utc time
       // ------------------------------------------------
@@ -13191,10 +13336,10 @@ void UpdateUI(void * pvParamters) {
         display.drawCanvas(3, ui_content_7, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IA").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_8, canvas19x8);
+        display.drawCanvas(2, ui_content_8, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IAD").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_9, canvas19x8);
+        display.drawCanvas(2, ui_content_9, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("MI").c_str(), STYLE_BOLD);
         display.drawCanvas(3, ui_content_10, canvas19x8);
@@ -13355,7 +13500,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("IMU").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_6, canvas19x8);
+        display.drawCanvas(2, ui_content_6, canvas19x8);
         // ------------------------------------------------
         // ubi car kind
         // ------------------------------------------------
@@ -13379,7 +13524,7 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("INS").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_8, canvas19x8);
+        display.drawCanvas(2, ui_content_8, canvas19x8);
         // ------------------------------------------------
         // run state flag
         // ------------------------------------------------
@@ -15641,7 +15786,7 @@ void readGPS(void * pvParameters) {
           }
           gnggaData.valid_checksum=validateChecksum(gnggaData.sentence);
           if (gnggaData.valid_checksum==true) {clearGNGGA(); GNGGA();}
-          else {gnggaData.bad_checksum_validity++;}
+          else {gnggaData.bad_checksum_validity++; if (gnggaData.bad_checksum_validity>99) {gnggaData.bad_checksum_validity=0;}}
         }
         // -------------------------------------------------
         // read GNRMC
@@ -15653,7 +15798,7 @@ void readGPS(void * pvParameters) {
           }
           gnrmcData.valid_checksum=validateChecksum(gnrmcData.sentence);
           if (gnrmcData.valid_checksum==true) {clearGNRMC(); GNRMC();}
-          else {gnrmcData.bad_checksum_validity++;}
+          else {gnrmcData.bad_checksum_validity++; if (gnrmcData.bad_checksum_validity>99) {gnrmcData.bad_checksum_validity=0;}}
         }
         // -------------------------------------------------
         // read GPATT
@@ -15665,7 +15810,7 @@ void readGPS(void * pvParameters) {
           }
           gpattData.valid_checksum=validateChecksum(gpattData.sentence);
           if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
-          else {gpattData.bad_checksum_validity++;}
+          else {gpattData.bad_checksum_validity++; if (gpattData.bad_checksum_validity>99) {gpattData.bad_checksum_validity=0;}}
         }
         // -------------------------------------------------
         // resume tasks
@@ -16063,7 +16208,7 @@ void setup() {
     canvas76x8.setFixedFont(ssd1306xled_font6x8);
     canvas28x8.setFixedFont(ssd1306xled_font6x8);
     canvas21x8.setFixedFont(ssd1306xled_font6x8);
-    canvas30x8.setFixedFont(ssd1306xled_font6x8);
+    canvas32x8.setFixedFont(ssd1306xled_font6x8);
     canvas42x8.setFixedFont(ssd1306xled_font6x8);
     canvas54x8.setFixedFont(ssd1306xled_font6x8);
     canvas80x8.setFixedFont(ssd1306xled_font6x8);
