@@ -417,6 +417,7 @@ NanoCanvas<19,8,1> canvas19x8;
 NanoCanvas<108,8,1> canvas108x8;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
+NanoCanvas<64,8,1> canvas64x8;
 NanoCanvas<74,8,1> canvas74x8;
 NanoCanvas<76,8,1> canvas76x8;
 NanoCanvas<80,8,1> canvas80x8;
@@ -908,7 +909,7 @@ LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2,
 
 const int max_gps_items=9;
 const char *menuGPSItems[max_gps_items];
-LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 41}, {125, 125}} );
+LcdGfxMenu menuGPS( menuGPSItems, max_gps_items, {{2, 44}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SERIAL
@@ -13112,14 +13113,14 @@ void UpdateUI(void * pvParamters) {
           drawGeneralTitle("GPS", systemData.color_title, systemData.color_border);
           display.setColor(systemData.color_border);
           display.drawHLine(1, 38, 127);
-          display.drawVLine(67, 13, 37);
+          display.drawVLine(68, 13, 37);
           display.setColor(systemData.color_subtitle);
-          canvas60x8.clear();
-          canvas60x8.printFixed(1, 1, String("SATELLITES").c_str());
-          display.drawCanvas(3, ui_content_0, canvas60x8);
-          canvas60x8.clear();
-          canvas60x8.printFixed(1, 1, String("PRECISION").c_str());
-          display.drawCanvas(3, ui_content_1, canvas60x8);
+          canvas64x8.clear();
+          canvas64x8.printFixed(1, 1, String("SATELLITES").c_str(), STYLE_BOLD);
+          display.drawCanvas(3, ui_content_0, canvas64x8);
+          canvas64x8.clear();
+          canvas64x8.printFixed(1, 1, String("PRECISION").c_str(), STYLE_BOLD);
+          display.drawCanvas(3, ui_content_1, canvas64x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13139,14 +13140,14 @@ void UpdateUI(void * pvParamters) {
       canvas42x8.clear();
       display.setColor(systemData.color_content);
       canvas42x8.printFixed(1, 1, String(gnggaData.satellite_count_gngga).c_str());
-      display.drawCanvas(71, ui_content_0, canvas42x8);
+      display.drawCanvas(72, ui_content_0, canvas42x8);
       // ------------------------------------------------
       // hdop precision factor
       // ------------------------------------------------
       canvas42x8.clear();
       display.setColor(systemData.color_content);
       canvas42x8.printFixed(1, 1, String(gnggaData.hdop_precision_factor).c_str());
-      display.drawCanvas(71, ui_content_1, canvas42x8);
+      display.drawCanvas(72, ui_content_1, canvas42x8);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -16271,6 +16272,7 @@ void setup() {
     canvas108x8.setFixedFont(ssd1306xled_font6x8);
     canvas120x120.setFixedFont(ssd1306xled_font6x8);
     canvas60x8.setFixedFont(ssd1306xled_font6x8);
+    canvas64x8.setFixedFont(ssd1306xled_font6x8);
     canvas74x8.setFixedFont(ssd1306xled_font6x8);
     canvas76x8.setFixedFont(ssd1306xled_font6x8);
     canvas28x8.setFixedFont(ssd1306xled_font6x8);
