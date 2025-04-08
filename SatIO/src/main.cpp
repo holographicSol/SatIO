@@ -13872,13 +13872,13 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(systemData.color_subtitle);
         canvas19x8.printFixed(1, 1, String(gnggaData.latitude_hemisphere).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_9, canvas19x8);
+        display.drawCanvas(3, ui_content_9+1, canvas19x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
         canvas19x8.clear();
         display.setColor(systemData.color_subtitle);
         canvas19x8.printFixed(1, 1, String(gnrmcData.latitude_hemisphere).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_9, canvas19x8);
+        display.drawCanvas(3, ui_content_9+1, canvas19x8);
       }
       // ------------------------------------------------
       // latitude degrees
@@ -13886,7 +13886,7 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str());
-      display.drawCanvas(28, ui_content_9, canvas80x8);
+      display.drawCanvas(28, ui_content_9+1, canvas80x8);
       // ------------------------------------------------
       // longitude hemisphere
       // ------------------------------------------------
@@ -13894,13 +13894,13 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
         display.setColor(systemData.color_subtitle);
         canvas19x8.printFixed(1, 1, String(gnggaData.longitude_hemisphere).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_10, canvas19x8);
+        display.drawCanvas(3, ui_content_10+1, canvas19x8);
       }
       else if (strcmp(satData.coordinate_conversion_mode, "GNRMC")==0) {
         canvas19x8.clear();
         display.setColor(systemData.color_subtitle);
         canvas19x8.printFixed(1, 1, String(gnrmcData.longitude_hemisphere).c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_10, canvas19x8);
+        display.drawCanvas(3, ui_content_1+10, canvas19x8);
       }
       // ------------------------------------------------
       // longitude hemisphere
@@ -13908,7 +13908,7 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str());
-      display.drawCanvas(28, ui_content_10, canvas80x8);
+      display.drawCanvas(28, ui_content_10+1, canvas80x8);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
