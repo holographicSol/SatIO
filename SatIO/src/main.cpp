@@ -1958,7 +1958,7 @@ bool val_installation_angle_direction(char * data) {
 }
 
 bool val_mode_indication(char * data) {
-  Serial.println("[val_mode_indication]" + String(data));
+  // Serial.println("[val_mode_indication]" + String(data));
   bool check_pass=false;
   if (strlen(data)==1) {
     if ((strcmp(data, "A")==0) || (strcmp(data, "D")==0) || (strcmp(data, "E")==0) || (strcmp(data, "N")==0)) {
