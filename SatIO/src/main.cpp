@@ -13492,13 +13492,13 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("GPATT", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawVLine(25, 13, 127);
-        display.drawHLine(1, ui_content_5, 127);
-        display.drawVLine(64, ui_content_5+1, 127);
-        display.drawVLine(89, ui_content_5+1, 127);
-        display.drawVLine(64, 13, ui_content_1-3);
-        display.drawVLine(89, 13, ui_content_1-3);
-        display.drawHLine(1, ui_content_1-2, 127);
+        display.drawHLine(1, ui_content_1-2, 127);  // checksum divider
+        display.drawVLine(25, 13, 127);             // left data divider
+        display.drawVLine(64, 13, ui_content_1-3);  // invalid data mid
+        display.drawVLine(89, 13, ui_content_1-3);  // invalid data divider
+        display.drawVLine(64, ui_content_5+1, 127); // right data mid
+        display.drawVLine(89, ui_content_5+1, 127); // right data divider
+        display.drawHLine(64, ui_content_5, 127);
         display.setColor(systemData.color_subtitle);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("CKS").c_str(), STYLE_BOLD);
