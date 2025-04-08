@@ -13557,6 +13557,11 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("SATIO", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawVLine(25, 13, 127);
+        display.drawHLine(1, ui_content_2+2, 127);
+        display.drawHLine(1, ui_content_4+6, 127);
+        display.drawHLine(1, ui_content_7+10, 127);
+        // display.drawHLine(1, ui_content_9-2, 127);
+        // display.drawHLine(1, ui_content_10-2, 127);
         display.setColor(systemData.color_subtitle);
 
         canvas19x8.clear();
@@ -13568,21 +13573,20 @@ void UpdateUI(void * pvParamters) {
         canvas19x8.clear();
 
         canvas19x8.printFixed(1, 1, String("SYN").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_2, canvas19x8);
+        display.drawCanvas(3, ui_content_2+5, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("SYN").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_3, canvas19x8);
+        display.drawCanvas(3, ui_content_3+5, canvas19x8);
 
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("LOC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_4, canvas19x8);
+        display.drawCanvas(3, ui_content_4+9, canvas19x8);
         canvas19x8.clear();
         canvas19x8.printFixed(1, 1, String("LOC").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_5, canvas19x8);
-
+        display.drawCanvas(3, ui_content_5+9, canvas19x8);
         canvas19x8.clear();
-        canvas19x8.printFixed(1, 1, String("DAY").c_str(), STYLE_BOLD);
-        display.drawCanvas(3, ui_content_6, canvas19x8);
+        canvas19x8.printFixed(1, 1, String("LOC").c_str(), STYLE_BOLD);
+        display.drawCanvas(3, ui_content_6+9, canvas19x8);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13618,14 +13622,14 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_time.c_str());
-      display.drawCanvas(28, ui_content_2, canvas80x8);
+      display.drawCanvas(28, ui_content_2+5, canvas80x8);
       // ------------------------------------------------
       // rtc sync date (utc)
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, satData.formatted_rtc_sync_date.c_str());
-      display.drawCanvas(28, ui_content_3, canvas80x8);
+      display.drawCanvas(28, ui_content_3+5, canvas80x8);
 
       // ------------------------------------------------
       // local time
@@ -13633,21 +13637,21 @@ void UpdateUI(void * pvParamters) {
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, String(satData.formatted_local_time).c_str());
-      display.drawCanvas(28, ui_content_4, canvas80x8);
+      display.drawCanvas(28, ui_content_4+9, canvas80x8);
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, String(satData.formatted_local_date).c_str());
-      display.drawCanvas(28, ui_content_5, canvas80x8);
+      display.drawCanvas(28, ui_content_5+9, canvas80x8);
       // ------------------------------------------------
       // local day
       // ------------------------------------------------
       canvas80x8.clear();
       display.setColor(systemData.color_content);
       canvas80x8.printFixed(1, 1, String(satData.local_weekday).c_str());
-      display.drawCanvas(28, ui_content_6, canvas80x8);
+      display.drawCanvas(28, ui_content_6+9, canvas80x8);
 
       // ------------------------------------------------
       // latitude hemisphere
