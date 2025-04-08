@@ -15402,13 +15402,14 @@ void UpdateUI(void * pvParamters) {
     // may also provide sensory information relating to area/environment around vehicle/device.
     // ----------------------------------------------------------------------------------------------------------------
     /*                         
-    //                         (heading)
-    //                          N/S/E/W
-    //            gyro -o-   |           | -> altitude (GPS)
-    //           (primary)   |           |                  
-    //                       | ----o---- | -> roll/pitch/yaw (INS)
-    //                       |           |   
-    //                       |___________|    
+    //         altitude (GPS)       (heading)
+    //                               N/S/E/W
+    //              latitude   <- |           |
+    //             longitude   <- |           |                  
+    //                            | ----o---- | -> vehicle/device rotation reflecting roll
+    //    roll/pitch/yaw (INS) <- |           |   
+    //                            |___________|    
+    //                speed             mileage
     */
    if (menu_page==page_attitude) {
     // ------------------------------------------------
@@ -15504,7 +15505,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64-38, canvas64x8);
 
     // ------------------------------------------------
-    // pitch
+    // pitch (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
@@ -15512,7 +15513,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64+18, canvas42x8);
 
     // ------------------------------------------------
-    // roll
+    // roll (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
@@ -15520,7 +15521,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64+28, canvas42x8);
 
     // ------------------------------------------------
-    // yaw
+    // yaw (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
