@@ -902,7 +902,7 @@ LcdGfxMenu menuFile( menuFileItems, max_file_items, {{2, 62}, {125, 125}} );
 
 const int max_filepath_items=20;
 const char *menuMatrixFilepathItems[max_filepath_items];
-LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuMatrixFilepath( menuMatrixFilepathItems, max_filepath_items, {{2, 30}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       MENU GPS
@@ -13068,7 +13068,8 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("SAVE", systemData.color_title, systemData.color_border);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        display.drawHLine(1, 28, 127);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13082,6 +13083,17 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
+      // ------------------------------------------------
+      // matrix filename
+      // ------------------------------------------------
+      canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
+      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD);
+      display.drawCanvas(3, ui_content_0, canvas42x8);
+      canvas60x8.clear();
+      display.setColor(systemData.color_content);
+      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD);
+      display.drawCanvas(50, ui_content_0, canvas60x8);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13109,7 +13121,8 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("LOAD", systemData.color_title, systemData.color_border);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        display.drawHLine(1, 28, 127);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13123,6 +13136,17 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
+      // ------------------------------------------------
+      // matrix filename
+      // ------------------------------------------------
+      canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
+      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD);
+      display.drawCanvas(3, ui_content_0, canvas42x8);
+      canvas60x8.clear();
+      display.setColor(systemData.color_content);
+      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD);
+      display.drawCanvas(50, ui_content_0, canvas60x8);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
@@ -13150,7 +13174,8 @@ void UpdateUI(void * pvParamters) {
         previous_menu_page=menu_page; display.clear();
         drawMainBorder();
         drawGeneralTitle("DELETE", systemData.color_title, systemData.color_border);
-        display.setColor(systemData.color_content);
+        display.setColor(systemData.color_border);
+        display.drawHLine(1, 28, 127);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13164,6 +13189,17 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (rtc_sync_flag==true) {DisplayRTCSync(2, 2);}
       else {DisplaySignal(2, 2);}
+      // ------------------------------------------------
+      // matrix filename
+      // ------------------------------------------------
+      canvas42x8.clear();
+      display.setColor(systemData.color_subtitle);
+      canvas42x8.printFixed(1, 1, "MATRIX", STYLE_BOLD);
+      display.drawCanvas(3, ui_content_0, canvas42x8);
+      canvas60x8.clear();
+      display.setColor(systemData.color_content);
+      canvas60x8.printFixed(1, 1, String(sdcardData.matrix_filename).c_str(), STYLE_BOLD);
+      display.drawCanvas(50, ui_content_0, canvas60x8);
       // ------------------------------------------------
       // set menu items
       // ------------------------------------------------
