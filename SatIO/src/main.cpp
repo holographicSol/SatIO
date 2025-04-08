@@ -421,6 +421,7 @@ NanoCanvas<64,8,1> canvas64x8;
 NanoCanvas<74,8,1> canvas74x8;
 NanoCanvas<76,8,1> canvas76x8;
 NanoCanvas<80,8,1> canvas80x8;
+NanoCanvas<49,8,1> canvas49x8;
 NanoCanvas<126,24,1> canvas126x24;
 NanoCanvas<120,120,1> canvas120x120;
 NanoCanvas<128,128,1> canvas128x128;
@@ -764,6 +765,12 @@ static int page_CD74HC4067_main                 =200;
 // ----------------------------------------------------
 static int page_timeanddate_main                =300;
 // ----------------------------------------------------
+// ATTITUDE
+// ----------------------------------------------------
+static int page_attitude                          =400;
+// ----------------------------------------------------
+
+// ----------------------------------------------------
 // COMPACT VERTICAL UI SPACING
 // ----------------------------------------------------
 static int ui_content_0=16;
@@ -799,7 +806,7 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=10;
+const int max_main_menu_items=11;
 const char *menuMainItems[max_main_menu_items] =
 {
     "    MATRIX       ", // 0
@@ -812,8 +819,9 @@ const char *menuMainItems[max_main_menu_items] =
     "    DISPLAY      ", // 7
     "    CD74HC4067   ", // 8
     "    TIME & DATE  ", // 9
+    "    ATTITUDE     ", // 10
 };
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 30}, {125, 125}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 20}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                      MENU MATRIX SWITCH SELECT
@@ -10531,6 +10539,7 @@ void menuBack() {
   else if (menu_page==page_universe_view_saturn) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
+  else if (menu_page==page_attitude) {menu_page=page_main_menu;}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -10611,6 +10620,12 @@ void menuEnter() {
     // ------------------------------------------------
     else if (menuMain.selection()==9) {
       menu_page=page_timeanddate_main;
+    }
+    // ------------------------------------------------
+    // go to attitude page
+    // ------------------------------------------------
+    else if (menuMain.selection()==10) {
+      menu_page=page_attitude;
     }
   }
   // ----------------------------------------------------------------
@@ -11875,22 +11890,6 @@ void UpdateUI(void * pvParamters) {
         display.clear();
       }
     }
-
-    // ----------------------------------------------------------------------------------------------------------------
-    //                                                                                                     UAP ATTITUDE
-    // ----------------------------------------------------------------------------------------------------------------
-    // this page will provide a view of vehicle/device attitude (roll, pitch yaw etc) provided by multi axis gyros and INS.
-    // may also provide sensory information relating to area/environment around vehicle/device.
-    // ----------------------------------------------------------------------------------------------------------------
-    /*                         
-    //                         (heading)
-    //                          N/S/E/W
-    //            gyro -o-   |           | -> altitude (GPS)
-    //           (primary)   |           |                  
-    //                       | ----o---- | -> roll/pitch/yaw (INS)
-    //                       |           |   
-    //                       |___________|    
-    */
 
     // ----------------------------------------------------------------------------------------------------------------
     //                                                                                                        HOME PAGE
@@ -15395,11 +15394,144 @@ void UpdateUI(void * pvParamters) {
       canvas42x8.printFixed(1, 1, String(siderealPlanetData.neptune_ecliptic_long).c_str(), STYLE_BOLD);
       display.drawCanvas(28, ui_content_10, canvas42x8);
     }
-    
-    // -------------------------------------------------------
-    // set flag last
-    // -------------------------------------------------------
-    ui_cleared=false;
+
+    // ----------------------------------------------------------------------------------------------------------------
+    //                                                                                                     UAP ATTITUDE
+    // ----------------------------------------------------------------------------------------------------------------
+    // this page will provide a view of vehicle/device attitude (roll, pitch yaw etc) provided by multi axis gyros and INS.
+    // may also provide sensory information relating to area/environment around vehicle/device.
+    // ----------------------------------------------------------------------------------------------------------------
+    /*                         
+    //                         (heading)
+    //                          N/S/E/W
+    //            gyro -o-   |           | -> altitude (GPS)
+    //           (primary)   |           |                  
+    //                       | ----o---- | -> roll/pitch/yaw (INS)
+    //                       |           |   
+    //                       |___________|    
+    */
+   if (menu_page==page_attitude) {
+    // ------------------------------------------------
+    // static data
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+      previous_menu_page=menu_page;
+      display.clear();
+      // drawMainBorder();
+    }
+    // ------------------------------------------------
+    // dynamic data
+    // ------------------------------------------------
+    // ------------------------------------------------
+    // graph
+    // ------------------------------------------------
+    display.setColor(RGB_COLOR16(0,0,255));
+    display.drawHLine(64-50, 64-50, 64+50); // upper inner
+    display.drawVLine(64-50, 64-50, 64-50); // upper left
+    display.drawVLine(64+50, 64-50, 64-50); // upper right
+    display.drawVLine(64-25, 64-52, 64-50); // upper guide 25
+    display.drawVLine(64, 64-54, 64-50);    // upper guide 50
+    display.drawVLine(64+25, 64-52, 64-50); // upper guide 25
+
+    display.drawHLine(64-50, 64+50, 64+50); // lower inner
+    display.drawVLine(64-50, 64+50, 64+50); // lower left
+    display.drawVLine(64+50, 64+50, 64+50); // lower right
+    display.drawVLine(64-25, 64+50, 64+52); // lower guide 25
+    display.drawVLine(64, 64+50, 64+54);    // lower guide 50
+    display.drawVLine(64+25, 64+50, 64+52); // lower guide 25
+
+    display.setColor(RGB_COLOR16(0,255,0));
+    display.drawVLine(64-50, 64-50, 64+50); // left inner
+    display.drawHLine(64-50, 64-50, 64-50); // left upper
+    display.drawHLine(64-50, 64+50, 64-50); // left lower
+    display.drawHLine(64-52, 64-25, 64-50); // left guide 25
+    display.drawHLine(64-54, 64, 64-50);    // left guide 50
+    display.drawHLine(64-52, 64+25, 64-50); // left guide 25
+
+    display.drawVLine(64+50, 64-50, 64+50); // right inner
+    display.drawHLine(64+50, 64-50, 64+50); // right upper
+    display.drawHLine(64+50, 64+50, 64+50); // right lower
+    display.drawHLine(64+50, 64-25, 64+52); // right guide 25
+    display.drawHLine(64+50, 64, 64+54);    // right guide 50
+    display.drawHLine(64+50, 64+25, 64+52); // right guide 25
+
+    // ------------------------------------------------
+    // heading
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
+    display.drawCanvas(64, 1, canvas42x8);
+
+    // ------------------------------------------------
+    // altitude
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 1, canvas42x8);
+
+    // ------------------------------------------------
+    // ground speed
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 119, canvas42x8);
+
+    // ------------------------------------------------
+    // mileage
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(64, 119, canvas42x8);
+
+    // ------------------------------------------------
+    // degrees latitude
+    // ------------------------------------------------
+    canvas64x8.clear();
+    display.setColor(systemData.color_content);
+    canvas64x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(64-48, 64-48, canvas64x8);
+
+    // ------------------------------------------------
+    // degrees longitude
+    // ------------------------------------------------
+    canvas64x8.clear();
+    display.setColor(systemData.color_content);
+    canvas64x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(64-48, 64-38, canvas64x8);
+
+    // ------------------------------------------------
+    // pitch
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(gpattData.pitch).c_str(), STYLE_BOLD);
+    display.drawCanvas(64-48, 64+18, canvas42x8);
+
+    // ------------------------------------------------
+    // roll
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(gpattData.roll).c_str(), STYLE_BOLD);
+    display.drawCanvas(64-48, 64+28, canvas42x8);
+
+    // ------------------------------------------------
+    // yaw
+    // ------------------------------------------------
+    canvas42x8.clear();
+    display.setColor(systemData.color_content);
+    canvas42x8.printFixed(1, 1, String(gpattData.yaw).c_str(), STYLE_BOLD);
+    display.drawCanvas(64-48, 64+38, canvas42x8);
+  }
+
+  // -------------------------------------------------------
+  // set flag last
+  // -------------------------------------------------------
+  ui_cleared=false;
   }
 
   // ---------------------------------------------------------
@@ -16345,6 +16477,7 @@ void setup() {
     canvas42x8.setFixedFont(ssd1306xled_font6x8);
     canvas54x8.setFixedFont(ssd1306xled_font6x8);
     canvas80x8.setFixedFont(ssd1306xled_font6x8);
+    canvas49x8.setFixedFont(ssd1306xled_font6x8);
     canvas92x8.setFixedFont(ssd1306xled_font6x8);
     display.clear();
     menu_page=-1; // none
