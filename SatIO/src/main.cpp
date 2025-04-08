@@ -13070,6 +13070,7 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("SAVE", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, 28, 127);
+        display.drawVLine(46, 13, 26);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13123,6 +13124,7 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("LOAD", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, 28, 127);
+        display.drawVLine(46, 13, 26);
       }
       // ------------------------------------------------
       // dynamic data
@@ -13176,6 +13178,7 @@ void UpdateUI(void * pvParamters) {
         drawGeneralTitle("DELETE", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
         display.drawHLine(1, 28, 127);
+        display.drawVLine(46, 13, 26);
       }
       // ------------------------------------------------
       // dynamic data
