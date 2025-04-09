@@ -425,7 +425,7 @@ TFT_eSprite uap = TFT_eSprite(&tft);
 // ------------------------------------
 int gpatt_roll = 0; // rotation angle
 int temporary_gpatt_roll; // mapped rotation angle
-int offset_gpatt_roll_0 = 90; // allows craft to have a default horizontal orientation
+int offset_gpatt_roll_0 = 90; // default (horizontal) is +90 degrees.
 uint16_t uap_piv_X; // x pivot of Sprite (middle)
 uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
 int uap_w = 40; // width of sprite
@@ -11866,30 +11866,38 @@ void UIIndicators() {
 // --------------------------------------------------------------
 void DisplayUAP() {
 
+  // ------------------------------------------------------------
   // create sprite
+  // ------------------------------------------------------------
   uap.createSprite(uap_w, uap_h); // create the Sprite pixels width and height
   uap_piv_X = uap.width() / 2; // x pivot of Sprite (middle)
   uap_piv_y = uap_h/2; // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uap_piv_X, uap_piv_y); // Set pivot point in this Sprite
 
+  // ------------------------------------------------------------
   // draw object to be rotated
-  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y +80, TFT_GREEN); // uap
+  // ------------------------------------------------------------
+  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y +80, TFT_BLUE); // uap
   uap.fillCircle(uap_piv_X-3, uap_piv_y, 3, TFT_GREEN); // uap orientation
 
+  // ------------------------------------------------------------
   // calculate rotation
-  tft.setPivot(64, 64); // set the TFT pivot point that the hud will rotate around
+  // ------------------------------------------------------------
+  tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
   temporary_gpatt_roll = gpatt_roll;
   temporary_gpatt_roll = map(temporary_gpatt_roll, -90.00, 90, 0, 360);
   temporary_gpatt_roll -= offset_gpatt_roll_0;
   
+  // ------------------------------------------------------------
   // uncomment to force roll incrementation and debug
+  // ------------------------------------------------------------
   // Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(temporary_gpatt_roll));
   gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;}
 
-  // rotate sprite
+  // ------------------------------------------------------------
+  // rotate sprite and free memory
+  // ------------------------------------------------------------
   uap.pushRotated(temporary_gpatt_roll);
-
-  // clean memory
   yield();
   uap.deleteSprite();
 }
