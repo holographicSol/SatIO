@@ -15530,26 +15530,26 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // altitude
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas64x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 0, canvas42x8);
+    canvas64x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 0, canvas64x8);
 
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas64x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 119, canvas42x8);
+    canvas64x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 119, canvas64x8);
 
     // ------------------------------------------------
     // mileage
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas64x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
-    display.drawCanvas(64, 119, canvas42x8);
+    canvas64x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(64, 119, canvas64x8);
 
     // ------------------------------------------------
     // degrees latitude
