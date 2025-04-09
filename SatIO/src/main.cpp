@@ -285,7 +285,7 @@
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 #include <DHT.h>              // https://github.com/adafruit/DHT-sensor-library
 #include <CD74HC4067.h>       // https://github.com/waspinator/CD74HC4067
-#include <TFT_eSPI.h>         // Hardware-specific library
+#include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
 #include "lcdgfx.h"           // https://github.com/lexus2k/lcdgfx
 #include "lcdgfx_gui.h"       // https://github.com/lexus2k/lcdgfx
 
@@ -399,6 +399,8 @@ void endSPIDevice(int SS) {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                          DISPLAY WIRING LCDGFX
 // ------------------------------------------------------------------------------------------------------------------------------
+// this library is used because it has buffering, is fast and has menus.
+// ------------------------------------------------------------------------------------------------------------------------------
 
 // SSD1351 HSPI pins on esp32 with custom CS
 int SSD1351_SCLK=14; // (SCL)
@@ -412,7 +414,7 @@ DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD13
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                 TFT_eSPI SETUP
 // ------------------------------------------------------------------------------------------------------------------------------
-// (wiring in UserSetup.h)
+// this library is used for anything that lcdgfx can't currently do like arbitrary sprite rotations. (wiring in UserSetup.h)
 // ------------------------------------------------------------------------------------------------------------------------------
 
 TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
