@@ -11878,7 +11878,7 @@ void DisplayUAP() {
   // draw object to be rotated
   // ------------------------------------------------------------
   uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y +80, TFT_BLUE); // uap
-  uap.fillCircle(uap_piv_X-3, uap_piv_y, 3, TFT_GREEN); // uap orientation
+  uap.fillCircle(uap_piv_X-2, uap_piv_y, 2, TFT_GREEN); // uap orientation
 
   // ------------------------------------------------------------
   // calculate rotation
