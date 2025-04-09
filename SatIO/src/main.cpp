@@ -442,6 +442,7 @@ NanoCanvas<108,8,1> canvas108x8;
 NanoCanvas<120,8,1> canvas120x8;
 NanoCanvas<60,8,1> canvas60x8;
 NanoCanvas<64,8,1> canvas64x8;
+NanoCanvas<62,8,1> canvas62x8;
 NanoCanvas<74,8,1> canvas74x8;
 NanoCanvas<76,8,1> canvas76x8;
 NanoCanvas<80,8,1> canvas80x8;
@@ -15487,37 +15488,52 @@ void UpdateUI(void * pvParamters) {
     // dynamic data
     // ------------------------------------------------
     // ------------------------------------------------
+    // load
+    // ------------------------------------------------
+    DisplayDiscreteLoadPercentage(117, 3, 10);
+    // ------------------------------------------------
     // graph
     // ------------------------------------------------
-    display.setColor(RGB_COLOR16(0,0,255));
-    display.drawHLine(64-50, 64-50, 64+50); // upper inner
-    display.drawVLine(64-50, 64-50, 64-50); // upper left
-    display.drawVLine(64+50, 64-50, 64-50); // upper right
-    display.drawVLine(64-25, 64-52, 64-50); // upper guide 25
-    display.drawVLine(64, 64-54, 64-50);    // upper guide 50
-    display.drawVLine(64+25, 64-52, 64-50); // upper guide 25
+    display.setColor(RGB_COLOR16(0,0,255)); // axis color
+    display.drawHLine(64-50, 0, 64+50); // upper inner
+    display.drawVLine(64-25, 1, 1); // upper guide 25
+    display.drawVLine(64, 1, 2); // upper guide 50
+    display.drawVLine(64+25, 1, 1); // upper guide 25
 
-    display.drawHLine(64-50, 64+50, 64+50); // lower inner
-    display.drawVLine(64-50, 64+50, 64+50); // lower left
-    display.drawVLine(64+50, 64+50, 64+50); // lower right
-    display.drawVLine(64-25, 64+50, 64+52); // lower guide 25
-    display.drawVLine(64, 64+50, 64+54);    // lower guide 50
-    display.drawVLine(64+25, 64+50, 64+52); // lower guide 25
+    display.drawHLine(64-50, 127, 64+50); // lower inner
+    display.drawVLine(64-25, 126, 126); // lower guide 25
+    display.drawVLine(64, 125, 126); // lower guide 50
+    display.drawVLine(64+25, 126, 126); // lower guide 25
 
-    display.setColor(RGB_COLOR16(0,255,0));
-    display.drawVLine(64-50, 64-50, 64+50); // left inner
-    display.drawHLine(64-50, 64-50, 64-50); // left upper
-    display.drawHLine(64-50, 64+50, 64-50); // left lower
-    display.drawHLine(64-52, 64-25, 64-50); // left guide 25
-    display.drawHLine(64-54, 64, 64-50);    // left guide 50
-    display.drawHLine(64-52, 64+25, 64-50); // left guide 25
+    display.setColor(RGB_COLOR16(0,255,0)); // axis color
+    display.drawVLine(127, 64-50, 64+50); // right inner
+    display.drawHLine(125, 64-25, 127); // right guide 25
+    display.drawHLine(124, 64, 127); // right guide 50
+    display.drawHLine(125, 64+25, 127); // right guide 25
 
-    display.drawVLine(64+50, 64-50, 64+50); // right inner
-    display.drawHLine(64+50, 64-50, 64+50); // right upper
-    display.drawHLine(64+50, 64+50, 64+50); // right lower
-    display.drawHLine(64+50, 64-25, 64+53); // right guide 25
-    display.drawHLine(64+50, 64, 64+55);    // right guide 50
-    display.drawHLine(64+50, 64+25, 64+53); // right guide 25
+    // ------------------------------------------------
+    // altitude
+    // ------------------------------------------------
+    canvas62x8.clear();
+    display.setColor(systemData.color_content);
+    canvas62x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 10, canvas62x8);
+
+    // ------------------------------------------------
+    // degrees latitude
+    // ------------------------------------------------
+    canvas62x8.clear();
+    display.setColor(systemData.color_content);
+    canvas62x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 20, canvas62x8);
+
+    // ------------------------------------------------
+    // degrees longitude
+    // ------------------------------------------------
+    canvas62x8.clear();
+    display.setColor(systemData.color_content);
+    canvas62x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 30, canvas62x8);
 
     // ------------------------------------------------
     // heading
@@ -15525,47 +15541,7 @@ void UpdateUI(void * pvParamters) {
     canvas42x8.clear();
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
-    display.drawCanvas(64, 0, canvas42x8);
-
-    // ------------------------------------------------
-    // altitude
-    // ------------------------------------------------
-    canvas64x8.clear();
-    display.setColor(systemData.color_content);
-    canvas64x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 0, canvas64x8);
-
-    // ------------------------------------------------
-    // ground speed
-    // ------------------------------------------------
-    canvas64x8.clear();
-    display.setColor(systemData.color_content);
-    canvas64x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 119, canvas64x8);
-
-    // ------------------------------------------------
-    // mileage
-    // ------------------------------------------------
-    canvas64x8.clear();
-    display.setColor(systemData.color_content);
-    canvas64x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
-    display.drawCanvas(64, 119, canvas64x8);
-
-    // ------------------------------------------------
-    // degrees latitude
-    // ------------------------------------------------
-    canvas64x8.clear();
-    display.setColor(systemData.color_content);
-    canvas64x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(64-47, 64-47, canvas64x8);
-
-    // ------------------------------------------------
-    // degrees longitude
-    // ------------------------------------------------
-    canvas64x8.clear();
-    display.setColor(systemData.color_content);
-    canvas64x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(64-47, 64-37, canvas64x8);
+    display.drawCanvas(0, 40, canvas42x8);
 
     // ------------------------------------------------
     // pitch
@@ -15573,7 +15549,7 @@ void UpdateUI(void * pvParamters) {
     canvas42x8.clear();
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.pitch).c_str(), STYLE_BOLD);
-    display.drawCanvas(64-47, 64+20, canvas42x8);
+    display.drawCanvas(0, 50, canvas42x8);
 
     // ------------------------------------------------
     // roll
@@ -15581,7 +15557,7 @@ void UpdateUI(void * pvParamters) {
     canvas42x8.clear();
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.roll).c_str(), STYLE_BOLD);
-    display.drawCanvas(64-47, 64+30, canvas42x8);
+    display.drawCanvas(0, 60, canvas42x8);
 
     // ------------------------------------------------
     // yaw
@@ -15589,7 +15565,23 @@ void UpdateUI(void * pvParamters) {
     canvas42x8.clear();
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.yaw).c_str(), STYLE_BOLD);
-    display.drawCanvas(64-47, 64+40, canvas42x8);
+    display.drawCanvas(0, 70, canvas42x8);
+
+    // ------------------------------------------------
+    // ground speed
+    // ------------------------------------------------
+    canvas62x8.clear();
+    display.setColor(systemData.color_content);
+    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 99, canvas62x8);
+
+    // ------------------------------------------------
+    // mileage
+    // ------------------------------------------------
+    canvas62x8.clear();
+    display.setColor(systemData.color_content);
+    canvas62x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 109, canvas62x8);
 
     // ------------------------------------------------
     // UAP
@@ -16576,6 +16568,7 @@ void setup() {
     canvas80x8.setFixedFont(ssd1306xled_font6x8);
     canvas49x8.setFixedFont(ssd1306xled_font6x8);
     canvas92x8.setFixedFont(ssd1306xled_font6x8);
+    canvas62x8.setFixedFont(ssd1306xled_font6x8);
     //---------------
     // loading splash
     //---------------
