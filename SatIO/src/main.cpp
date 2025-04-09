@@ -11881,7 +11881,7 @@ void DisplayUAP() {
   temporary_gpatt_roll -= offset_gpatt_roll_0;
   
   // uncomment to force roll incrementation and debug
-  Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(temporary_gpatt_roll));
+  // Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(temporary_gpatt_roll));
   gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;}
 
   // rotate sprite
