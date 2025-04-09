@@ -285,6 +285,7 @@
 #include <SiderealObjects.h>  // https://github.com/DavidArmstrong/SiderealObjects
 #include <DHT.h>              // https://github.com/adafruit/DHT-sensor-library
 #include <CD74HC4067.h>       // https://github.com/waspinator/CD74HC4067
+#include <TFT_eSPI.h>         // Hardware-specific library
 #include "lcdgfx.h"           // https://github.com/lexus2k/lcdgfx
 #include "lcdgfx_gui.h"       // https://github.com/lexus2k/lcdgfx
 
@@ -396,7 +397,7 @@ void endSPIDevice(int SS) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DISPLAY WIRING
+//                                                                                                          DISPLAY WIRING LCDGFX
 // ------------------------------------------------------------------------------------------------------------------------------
 
 // SSD1351 HSPI pins on esp32 with custom CS
@@ -409,7 +410,28 @@ int SSD1351_CS  =26; // (CS)
 DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD1351_CS,  (int8_t)SSD1351_MISO,  (int8_t)0,  (int8_t)-1,  (int8_t)-1  });
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                 DISPLAY CANVAS
+//                                                                                                                 TFT_eSPI SETUP
+// ------------------------------------------------------------------------------------------------------------------------------
+// (wiring in UserSetup.h)
+// ------------------------------------------------------------------------------------------------------------------------------
+
+TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
+TFT_eSprite uap = TFT_eSprite(&tft);
+
+// ------------------------------------
+// sprite data: device/vehicle rotation
+// ------------------------------------
+int gpatt_roll = 0; // rotation angle
+int temporary_gpatt_roll; // mapped rotation angle
+int offset_gpatt_roll_0 = 90; // allows craft to have a default horizontal orientation
+uint16_t uap_piv_X; // x pivot of Sprite (middle)
+uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
+int uap_w = 40; // width of sprite
+int uap_h = 40; // height of sprite
+
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                   LCDGFX SETUP
 // ------------------------------------------------------------------------------------------------------------------------------
 
 NanoCanvas<8,8,1> canvas8x8; 
@@ -11837,6 +11859,38 @@ void UIIndicators() {
   }
 }
 
+// --------------------------------------------------------------
+//                                                    DISPLAY UAP
+// --------------------------------------------------------------
+void DisplayUAP() {
+
+  // create sprite
+  uap.createSprite(uap_w, uap_h); // create the Sprite pixels width and height
+  uap_piv_X = uap.width() / 2; // x pivot of Sprite (middle)
+  uap_piv_y = uap_h/2; // y pivot of Sprite (10 pixels from bottom)
+  uap.setPivot(uap_piv_X, uap_piv_y); // Set pivot point in this Sprite
+
+  // draw object to be rotated
+  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y +80, TFT_GREEN); // uap
+  uap.fillCircle(uap_piv_X-3, uap_piv_y, 3, TFT_GREEN); // uap orientation
+
+  // calculate rotation
+  tft.setPivot(64, 64); // set the TFT pivot point that the hud will rotate around
+  temporary_gpatt_roll = gpatt_roll;
+  temporary_gpatt_roll = map(temporary_gpatt_roll, -90.00, 90, 0, 360);
+  temporary_gpatt_roll -= offset_gpatt_roll_0;
+  
+  // uncomment to force roll incrementation and debug
+  Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(temporary_gpatt_roll));
+  gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;}
+
+  // rotate sprite
+  uap.pushRotated(temporary_gpatt_roll);
+
+  // clean memory
+  yield();
+  uap.deleteSprite();
+}
 
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                        UPDATE UI
@@ -15402,17 +15456,13 @@ void UpdateUI(void * pvParamters) {
     // may also provide sensory information relating to area/environment around vehicle/device.
     // ----------------------------------------------------------------------------------------------------------------
     /*                         
-    //         altitude (GPS)       (heading)
-    //                               N/S/E/W   _ pitch (cursor moves up/down)
-    //                latitude <- |           |
-    //               longitude <- |           | 
-    //                   pitch <- | ----o---- |  -> vehicle/device rotation reflecting roll
-    //                    roll <- |           |  -> input (directional)
-    //                     yaw <- |___________|_ -> input (directional acceleration)
-    //                   speed <- |<---yaw--->|
-    //                       (cursor moves left/right)
-    //                                  |
-    //                                  mileage                         
+    //                         (heading)
+    //                          N/S/E/W
+    //            gyro -o-   |           | -> altitude (GPS)
+    //           (primary)   |           |                  
+    //                       | ----o---- | -> roll/pitch/yaw (INS)
+    //                       |           |   
+    //                       |___________|    
     */
    if (menu_page==page_attitude) {
     // ------------------------------------------------
@@ -15508,7 +15558,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64-38, canvas64x8);
 
     // ------------------------------------------------
-    // pitch (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
+    // pitch
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
@@ -15516,7 +15566,7 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64+18, canvas42x8);
 
     // ------------------------------------------------
-    // roll (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
+    // roll
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
@@ -15524,12 +15574,17 @@ void UpdateUI(void * pvParamters) {
     display.drawCanvas(64-48, 64+28, canvas42x8);
 
     // ------------------------------------------------
-    // yaw (attitude is curently INS data which may be complimented and or replaced with primary gyro data)
+    // yaw
     // ------------------------------------------------
     canvas42x8.clear();
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(1, 1, String(gpattData.yaw).c_str(), STYLE_BOLD);
     display.drawCanvas(64-48, 64+38, canvas42x8);
+
+    // ------------------------------------------------
+    // UAP
+    // ------------------------------------------------
+    DisplayUAP();
   }
 
   // -------------------------------------------------------
@@ -16461,10 +16516,38 @@ void setup() {
   // HSPI: SSD1351 OLED Display
   // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    //---------------
+    // begin
+    //---------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+    //---------------
+    // begin lcdgfx
+    //---------------
     display.begin();
+    //---------------
+    // begin TFT_eSPI
+    //---------------
+    tft.init();
+    //---------------
+    // test TFT_eSPI
+    //---------------
+    // tft.fillScreen(TFT_BLACK);
+    // tft.drawRect(0, 0, 127, 127, TFT_GREEN);
+    // delay(1000);
+    //---------------
+    // test lcdgfx
+    //---------------
+    // canvas49x8.setFixedFont(ssd1306xled_font6x8);
+    // canvas49x8.clear();
+    // display.setColor(RGB_COLOR16(0,255,0));
+    // canvas49x8.printFixed(1, 1, "test");
+    // display.drawCanvas(4, 4, canvas49x8);
+    // delay(1000);
+    //---------------
+    // setup lcdgfx
+    //---------------
     display.setFixedFont(ssd1306xled_font6x8);
-    display.fill( 0x0000 );
+    display.fill(0x0000);
     canvas8x8.setFixedFont(ssd1306xled_font6x8);
     canvas19x8.setFixedFont(ssd1306xled_font6x8);
     canvas120x8.setFixedFont(ssd1306xled_font6x8);
@@ -16483,19 +16566,15 @@ void setup() {
     canvas80x8.setFixedFont(ssd1306xled_font6x8);
     canvas49x8.setFixedFont(ssd1306xled_font6x8);
     canvas92x8.setFixedFont(ssd1306xled_font6x8);
+    //---------------
+    // loading splash
+    //---------------
     display.clear();
-    menu_page=-1; // none
-    // -------------------------------------------------------
-    // display unidentified studios before loading sdcard data
-    // --------------------------------------------------------
+    menu_page=-1;
     display.drawBitmap16(0, 0, 128, 128, UnidentifiedStudioBMP);
-    // --------------------------------------------------------
-    // uncomment to debug
-    // --------------------------------------------------------
-    // canvas.printFixed(1, 1, "FOOBAR", STYLE_BOLD);
-    // display.drawCanvas(1, 1, canvas);
-    // delay(5000)
-    // display.clear();
+    //---------------
+    // end
+    //---------------
     endSPIDevice(SSD1351_CS);
   }
 
