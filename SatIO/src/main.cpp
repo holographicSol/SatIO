@@ -15515,9 +15515,9 @@ void UpdateUI(void * pvParamters) {
     display.drawVLine(64+50, 64-50, 64+50); // right inner
     display.drawHLine(64+50, 64-50, 64+50); // right upper
     display.drawHLine(64+50, 64+50, 64+50); // right lower
-    display.drawHLine(64+50, 64-25, 64+52); // right guide 25
-    display.drawHLine(64+50, 64, 64+54);    // right guide 50
-    display.drawHLine(64+50, 64+25, 64+52); // right guide 25
+    display.drawHLine(64+50, 64-25, 64+53); // right guide 25
+    display.drawHLine(64+50, 64, 64+55);    // right guide 50
+    display.drawHLine(64+50, 64+25, 64+53); // right guide 25
 
     // ------------------------------------------------
     // heading
