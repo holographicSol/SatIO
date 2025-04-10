@@ -15637,14 +15637,14 @@ void UpdateUI(void * pvParamters) {
     canvas62x8.clear();
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 99, canvas62x8);
+    display.drawCanvas(0, 100, canvas62x8);
     // ------------------------------------------------
-    // mileag (full width)
+    // mileage (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
     canvas120x8.printFixed(0, 0, String(gpattData.mileage).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 109, canvas120x8);
+    display.drawCanvas(0, 110, canvas120x8);
     // ------------------------------------------------
     // UAP
     // ------------------------------------------------
