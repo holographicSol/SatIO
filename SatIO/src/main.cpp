@@ -15520,9 +15520,19 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,255,0));
     display.drawVLine(127, 64-52, 64+54);
-    display.drawHLine(125, 64-25, 127);
-    display.drawHLine(124, 64, 127);
-    display.drawHLine(125, 64+25, 127);
+    display.drawHLine(122, 64-52, 127); // 90
+    display.drawHLine(125, 64-38, 127); // 67.5
+    display.drawHLine(125, 64-37, 127); // 67.5
+    display.drawHLine(122, 64-25, 127); // 45
+    display.drawHLine(125, 64-13, 127); // 22.5
+    display.drawHLine(125, 64-12, 127); // 22.5
+    display.drawHLine(122, 64, 127); // 0
+    display.drawHLine(125, 64+13, 127); // -22.5
+    display.drawHLine(125, 64+12, 127); // -22.5
+    display.drawHLine(122, 64+25, 127); // -45
+    display.drawHLine(125, 64+38, 127); // -67.5
+    display.drawHLine(125, 64+39, 127); // -67.5
+    display.drawHLine(122, 64+54, 127); // -90
     // ------------------------------------------------
     // pitch slider clear position
     // ------------------------------------------------
@@ -15534,8 +15544,7 @@ void UpdateUI(void * pvParamters) {
     // pitch slider new position
     // ------------------------------------------------
     // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
-    // gpatt_pitch=-90; // uncomment to test
-    // gpatt_pitch=gpatt_pitch; // uncomment to simulate
+    // gpatt_pitch=67.5; // uncomment to test
     gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
@@ -15549,18 +15558,29 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
-    display.setColor(RGB_COLOR16(255,255,0));
     canvas8x8.clear();
-    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(120, 121, canvas8x8);
+    if (gpatt_pitch<-45 || gpatt_pitch>45) {
+      display.setColor(RGB_COLOR16(255,255,0));
+      canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
+      display.drawCanvas(120, 120, canvas8x8);
+      display.drawRect(119, 119, 127, 127);
+    }
+    else {
+      display.setColor(RGB_COLOR16(0,0,0));
+      display.drawCanvas(120, 120, canvas8x8);
+      display.drawRect(119, 119, 127, 127);
+    }
+    
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255));
     display.drawHLine(64-52, 127, 64+54);
+    display.drawVLine(64-52, 125, 126); // max
     display.drawVLine(64-25, 126, 126);
-    display.drawVLine(64, 125, 126);
+    display.drawVLine(64, 123, 126); // center
     display.drawVLine(64+25, 126, 126);
+    display.drawVLine(64+53, 125, 126); // min
     // ------------------------------------------------
     // yaw slider clear position
     // ------------------------------------------------
@@ -15573,7 +15593,6 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
     // gpatt_yaw=-180; // uncomment to test
-    // gpatt_yaw=gpatt_yaw; // uncomment to simulate
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
@@ -15587,10 +15606,18 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // yaw warning
     // ------------------------------------------------
-    display.setColor(RGB_COLOR16(255,255,0));
     canvas8x8.clear();
-    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(0, 121, canvas8x8);
+    if (gpatt_yaw<-90 || gpatt_yaw>90) {
+      display.setColor(RGB_COLOR16(255,255,0));
+      canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
+      display.drawCanvas(4, 120, canvas8x8);
+      display.drawRect(3, 119, 11, 127);
+    }
+    else {
+      display.setColor(RGB_COLOR16(0,0,0));
+      display.drawCanvas(4, 120, canvas8x8);
+      display.drawRect(3, 119, 11, 127);
+    }
 
     // ------------------------------------------------
     // dev
