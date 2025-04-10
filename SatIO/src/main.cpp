@@ -15563,18 +15563,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
-    // canvas8x8.clear();
-    // if (gpatt_pitch<-45 || gpatt_pitch>45) {
-    //   display.setColor(RGB_COLOR16(255,255,0));
-    //   canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
-    //   display.drawCanvas(120, 120, canvas8x8);
-    //   display.drawRect(119, 119, 127, 127);
-    // }
-    // else {
-    //   display.setColor(RGB_COLOR16(0,0,0));
-    //   display.drawCanvas(120, 120, canvas8x8);
-    //   display.drawRect(119, 119, 127, 127);
-    // }
+    canvas8x8.clear();
+    display.setColor(RGB_COLOR16(255,255,0));
+    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(120, 120, canvas8x8);
     
     // ------------------------------------------------
     // yaw scale
@@ -15623,18 +15615,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // yaw warning
     // ------------------------------------------------
-    // canvas8x8.clear();
-    // if (gpatt_yaw<-90 || gpatt_yaw>90) {
-    //   display.setColor(RGB_COLOR16(255,255,0));
-    //   canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
-    //   display.drawCanvas(4, 120, canvas8x8);
-    //   display.drawRect(3, 119, 11, 127);
-    // }
-    // else {
-    //   display.setColor(RGB_COLOR16(0,0,0));
-    //   display.drawCanvas(4, 120, canvas8x8);
-    //   display.drawRect(3, 119, 11, 127);
-    // }
+    canvas8x8.clear();
+    display.setColor(RGB_COLOR16(255,255,0));
+    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(0, 120, canvas8x8);
 
     // ------------------------------------------------
     // dev
