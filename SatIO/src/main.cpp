@@ -15473,13 +15473,18 @@ void UpdateUI(void * pvParamters) {
     // may also provide sensory information relating to area/environment around vehicle/device.
     // ----------------------------------------------------------------------------------------------------------------
     /*                         
-    //                         (heading)
-    //                          N/S/E/W
-    //            gyro -o-   |           | -> altitude (GPS)
-    //           (primary)   |           |                  
-    //                       | ----o---- | -> roll/pitch/yaw (INS)
-    //                       |           |   
-    //                       |___________| -> joystick input
+                             (heading)
+                              N/S/E/W
+                gyro -o-   |           | -> altitude (GPS)
+               (primary)   |           |                  
+                           | ----o---- | -> roll/pitch/yaw (INS)
+                           |           |   
+                           |___________| -> joystick input
+
+    Joystick input will be:
+      1: mappable for different joysticks (+-precision across different hardware).
+      2: output through port controller.
+      3: available in matrix for optional programmable joystick events.
     */
    if (menu_page==page_attitude) {
     // ------------------------------------------------
