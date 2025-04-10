@@ -15529,7 +15529,7 @@ void UpdateUI(void * pvParamters) {
     display.drawHLine(122, 64-25, 127); // 45
     display.drawHLine(125, 64-13, 127); // 22.5
     display.drawHLine(125, 64-12, 127); // 22.5
-    display.drawHLine(122, 64, 127); // 0
+    display.drawHLine(121, 64, 127); // 0
     display.drawHLine(125, 64+13, 127); // -22.5
     display.drawHLine(125, 64+12, 127); // -22.5
     display.drawHLine(122, 64+25, 127); // -45
@@ -15563,29 +15563,41 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
-    canvas8x8.clear();
-    if (gpatt_pitch<-45 || gpatt_pitch>45) {
-      display.setColor(RGB_COLOR16(255,255,0));
-      canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
-      display.drawCanvas(120, 120, canvas8x8);
-      display.drawRect(119, 119, 127, 127);
-    }
-    else {
-      display.setColor(RGB_COLOR16(0,0,0));
-      display.drawCanvas(120, 120, canvas8x8);
-      display.drawRect(119, 119, 127, 127);
-    }
+    // canvas8x8.clear();
+    // if (gpatt_pitch<-45 || gpatt_pitch>45) {
+    //   display.setColor(RGB_COLOR16(255,255,0));
+    //   canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
+    //   display.drawCanvas(120, 120, canvas8x8);
+    //   display.drawRect(119, 119, 127, 127);
+    // }
+    // else {
+    //   display.setColor(RGB_COLOR16(0,0,0));
+    //   display.drawCanvas(120, 120, canvas8x8);
+    //   display.drawRect(119, 119, 127, 127);
+    // }
     
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255));
     display.drawHLine(64-52, 127, 64+54);
-    display.drawVLine(64-52, 125, 126); // max
-    display.drawVLine(64-25, 126, 126);
-    display.drawVLine(64, 123, 126); // center
-    display.drawVLine(64+25, 126, 126);
-    display.drawVLine(64+53, 125, 126); // min
+    display.drawVLine(64-54, 122, 127); // -180
+    display.drawVLine(64-53, 122, 127); // -180
+    display.drawVLine(64-52, 122, 127); // -180
+    display.drawVLine(64-38, 125, 127); // -135
+    display.drawVLine(64-37, 125, 127); // -135
+    display.drawVLine(64-25, 122, 127); // -90
+    display.drawVLine(64-13, 125, 127); // -45
+    display.drawVLine(64-12, 125, 127); // -45
+    display.drawVLine(64, 121, 127); // 0
+    display.drawVLine(64+12, 125, 127); // 45
+    display.drawVLine(64+13, 125, 127); // 45
+    display.drawVLine(64+25, 122, 127); // 90
+    display.drawVLine(64+37, 125, 127); // 135
+    display.drawVLine(64+38, 125, 127); // 135
+    display.drawVLine(64+52, 122, 127); // 180
+    display.drawVLine(64+53, 122, 127); // 180
+    display.drawVLine(64+54, 122, 127); // 180
     // ------------------------------------------------
     // yaw slider clear position
     // ------------------------------------------------
@@ -15611,18 +15623,18 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // yaw warning
     // ------------------------------------------------
-    canvas8x8.clear();
-    if (gpatt_yaw<-90 || gpatt_yaw>90) {
-      display.setColor(RGB_COLOR16(255,255,0));
-      canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
-      display.drawCanvas(4, 120, canvas8x8);
-      display.drawRect(3, 119, 11, 127);
-    }
-    else {
-      display.setColor(RGB_COLOR16(0,0,0));
-      display.drawCanvas(4, 120, canvas8x8);
-      display.drawRect(3, 119, 11, 127);
-    }
+    // canvas8x8.clear();
+    // if (gpatt_yaw<-90 || gpatt_yaw>90) {
+    //   display.setColor(RGB_COLOR16(255,255,0));
+    //   canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);
+    //   display.drawCanvas(4, 120, canvas8x8);
+    //   display.drawRect(3, 119, 11, 127);
+    // }
+    // else {
+    //   display.setColor(RGB_COLOR16(0,0,0));
+    //   display.drawCanvas(4, 120, canvas8x8);
+    //   display.drawRect(3, 119, 11, 127);
+    // }
 
     // ------------------------------------------------
     // dev
