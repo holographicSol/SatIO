@@ -15540,7 +15540,7 @@ void UpdateUI(void * pvParamters) {
     hud.pushSprite(64-50 + mapped_yaw, 120, TFT_TRANSPARENT);
     hud.deleteSprite();
     // uncomment to simulate yaw and debug
-    Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw));
+    // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
     // ------------------------------------------------
     // altitude
