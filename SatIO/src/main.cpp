@@ -15529,19 +15529,19 @@ void UpdateUI(void * pvParamters) {
     // yaw slider
     // ------------------------------------------------
     // clear current
-    hud.createSprite(6, 6);
-    hud.fillTriangle(3-6/2, 6-3, 6, 6-3, 3, 0, TFT_BLACK);
-    hud.pushSprite(64-50 + mapped_yaw, 120, TFT_TRANSPARENT);
+    hud.createSprite(5, 5);
+    hud.fillTriangle(0, 2, 5, 2, 2, 0, TFT_BLACK);
+    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     // create new
     mapped_yaw=gpatt_yaw;
-    hud.createSprite(6, 6);
-    hud.fillTriangle(3-6/2, 6-3, 6, 6-3, 3, 0, TFT_GREEN);
+    hud.createSprite(5, 5);
+    hud.fillTriangle(0, 2, 5, 2, 2, 0, TFT_GREEN);
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
-    hud.pushSprite(64-50 + mapped_yaw, 120, TFT_TRANSPARENT);
+    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT); // deduct half scale width + half triangle base ignoring center triangle base pixel
     hud.deleteSprite();
     // uncomment to simulate yaw and debug
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
-    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
+    // gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
     // ------------------------------------------------
     // altitude
     // ------------------------------------------------
