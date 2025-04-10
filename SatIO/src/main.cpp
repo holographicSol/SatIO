@@ -15516,7 +15516,20 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider
     // ------------------------------------------------
-
+    // clear current
+    hud.createSprite(5, 5);
+    hud.fillTriangle(2, 5, 2, 0, 0, 2, TFT_BLACK);
+    hud.pushSprite(120, 64-50 + mapped_pitch, TFT_TRANSPARENT);
+    // create new
+    mapped_pitch=gpatt_pitch;
+    hud.createSprite(5, 5);
+    hud.fillTriangle(2, 5, 2, 0, 0, 2, TFT_GREEN);
+    mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
+    hud.pushSprite(120, 64+50 - mapped_pitch, TFT_TRANSPARENT);
+    hud.deleteSprite();
+    // uncomment to simulate yaw and debug
+    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64-50 + mapped_pitch));
+    gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;}
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
@@ -15537,7 +15550,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillTriangle(0, 2, 5, 2, 2, 0, TFT_GREEN);
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
-    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT); // deduct half scale width + half triangle base ignoring center triangle base pixel
+    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     hud.deleteSprite();
     // uncomment to simulate yaw and debug
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
