@@ -849,7 +849,7 @@ const char *menuMainItems[max_main_menu_items] =
     "    DISPLAY      ", // 7
     "    CD74HC4067   ", // 8
     "    TIME & DATE  ", // 9
-    "    ATTITUDE     ", // 10
+    "    HUD          ", // 10
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 20}, {125, 125}} );
 
@@ -15492,6 +15492,9 @@ void UpdateUI(void * pvParamters) {
     }
     // ------------------------------------------------
     // dynamic data
+    // ------------------------------------------------
+    // ------------------------------------------------
+    // local time
     // ------------------------------------------------
     canvas76x8.clear();
     display.setColor(systemData.color_title);
