@@ -425,7 +425,7 @@ TFT_eSprite uap = TFT_eSprite(&tft);
 // sprite data: device/vehicle rotation
 // ------------------------------------
 int gpatt_roll = 0; // rotation angle
-int temporary_gpatt_roll; // mapped rotation angle
+int mapped_gpatt_roll; // mapped rotation angle
 int offset_gpatt_roll_0 = 90; // default (horizontal) is +90 degrees.
 uint16_t uap_piv_X; // x pivot of Sprite (middle)
 uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
@@ -11890,20 +11890,21 @@ void DisplayUAP() {
   // calculate rotation
   // ------------------------------------------------------------
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
-  temporary_gpatt_roll = gpatt_roll;
-  temporary_gpatt_roll = map(temporary_gpatt_roll, -90.00, 90, 0, 360);
-  temporary_gpatt_roll -= offset_gpatt_roll_0;
+  mapped_gpatt_roll = gpatt_roll; // sim
+  // mapped_gpatt_roll = gpattData.roll; // INS
+  mapped_gpatt_roll = map(mapped_gpatt_roll, -90.00, 90, 0, 360);
+  mapped_gpatt_roll -= offset_gpatt_roll_0;
   
   // ------------------------------------------------------------
   // uncomment to force roll incrementation and debug
   // ------------------------------------------------------------
-  // Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(temporary_gpatt_roll));
-  gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;}
+  // Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(mapped_gpatt_roll));
+  gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;} // sim
 
   // ------------------------------------------------------------
   // rotate sprite and free memory
   // ------------------------------------------------------------
-  uap.pushRotated(temporary_gpatt_roll);
+  uap.pushRotated(mapped_gpatt_roll);
   yield();
   uap.deleteSprite();
 }
@@ -15521,7 +15522,8 @@ void UpdateUI(void * pvParamters) {
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(120, 64+48 - mapped_pitch, TFT_TRANSPARENT);
     // create new
-    mapped_pitch=gpatt_pitch;
+    mapped_pitch=gpatt_pitch; // sim
+    // mapped_pitch=atof(gpattData.pitch); // INS
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
@@ -15529,8 +15531,7 @@ void UpdateUI(void * pvParamters) {
     hud.deleteSprite();
     // uncomment to simulate and debug
     // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64-50 + mapped_pitch));
-    gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;}
-    // gpatt_pitch=0;
+    gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // sim
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
@@ -15547,7 +15548,8 @@ void UpdateUI(void * pvParamters) {
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     // create new
-    mapped_yaw=gpatt_yaw;
+    mapped_yaw=gpatt_yaw; // sim
+    // mapped_yaw=atof(gpattData.yaw); // INS
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
@@ -15555,8 +15557,7 @@ void UpdateUI(void * pvParamters) {
     hud.deleteSprite();
     // uncomment to simulate and debug
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
-    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
-    // gpatt_yaw=0;
+    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // sim
     // ------------------------------------------------
     // altitude
     // ------------------------------------------------
