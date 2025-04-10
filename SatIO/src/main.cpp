@@ -11905,7 +11905,7 @@ void DisplayUAP() {
   // ------------------------------------------------------------
   // rotate sprite and free memory
   // ------------------------------------------------------------
-  uap.pushRotated(mapped_gpatt_roll);
+  uap.pushRotated((int)mapped_gpatt_roll);
   yield();
   uap.deleteSprite();
 }
@@ -11949,6 +11949,7 @@ void UpdateUI(void * pvParamters) {
   // -----------------------------------------------------------------
 
   if (update_ui==true) {
+    // Serial.println("[update_ui] " + String(update_ui));
 
     // -----------------------------------------------------------------
     //                                                         NONE PAGE
@@ -15543,7 +15544,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(121, (int)mapped_pitch, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
@@ -15555,7 +15556,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(gpatt_pitch, 90, -90, 64-52, 64+50);
-    hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(121, (int)mapped_pitch, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
@@ -15592,12 +15593,12 @@ void UpdateUI(void * pvParamters) {
     display.drawVLine(64+52, 122, 127); // 180
     display.drawVLine(64+53, 122, 127); // 180
     display.drawVLine(64+54, 122, 127); // 180
-    // ------------------------------------------------
-    // yaw slider clear position
-    // ------------------------------------------------
+    // // ------------------------------------------------
+    // // yaw slider clear position
+    // // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
+    hud.pushSprite((int)mapped_yaw, 121, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
@@ -15609,7 +15610,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
     mapped_yaw = map(gpatt_yaw, -180, 180, 64-52, 64+50);
-    hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
+    hud.pushSprite((int)mapped_yaw, 121, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
