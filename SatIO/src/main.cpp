@@ -15519,7 +15519,7 @@ void UpdateUI(void * pvParamters) {
     // clear current
     hud.createSprite(5, 5);
     hud.fillTriangle(2, 5, 2, 0, 0, 2, TFT_BLACK);
-    hud.pushSprite(120, 64+50 + mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(120, 64+50 - mapped_pitch, TFT_TRANSPARENT);
     // create new
     mapped_pitch=gpatt_pitch;
     hud.createSprite(5, 5);
