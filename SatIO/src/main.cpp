@@ -15589,7 +15589,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(255,255,0));
     canvas8x8.clear();
-    if (gpatt_yaw<-45 || gpatt_yaw>45) {canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);}
+    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);}
     display.drawCanvas(0, 121, canvas8x8);
 
     // ------------------------------------------------
