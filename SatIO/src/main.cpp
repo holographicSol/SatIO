@@ -15527,7 +15527,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(120, 64+48 - mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(121, 64+48 - mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider new position
@@ -15538,7 +15538,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
-    hud.pushSprite(120, 64+48 - mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(121, 64+48 - mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider debug
@@ -15557,7 +15557,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
+    hud.pushSprite(64-52 + mapped_yaw, 121, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider new position
@@ -15568,7 +15568,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
-    hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
+    hud.pushSprite(64-52 + mapped_yaw, 121, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider debug
@@ -15583,7 +15583,7 @@ void UpdateUI(void * pvParamters) {
     // gpattData.run_inetial_flag;
     // gpattData.ins;
     // ------------------------------------------------
-    // altitude (full width - 10 = 120 = 20 digits = 99999999999999999999 meters = 62137119223733392 miles. neptune is 4.611 billion km away!) 
+    // altitude (full width - 10 = 120 = approx (20 digits = 99999999999999999999 meters = 62137119223733392 miles). neptune is 4.611 billion km away!) 
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
@@ -15639,7 +15639,7 @@ void UpdateUI(void * pvParamters) {
     canvas62x8.printFixed(0, 0, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 100, canvas62x8);
     // ------------------------------------------------
-    // mileage (full width - 10 = 120 = 20 digits = 99999999999999999999 meters = 62137119223733392 miles. neptune is 4.611 billion km away!) 
+    // mileage (full width - 10 = 120 = approx (20 digits = 99999999999999999999 meters = 62137119223733392 miles). neptune is 4.611 billion km away!) 
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
