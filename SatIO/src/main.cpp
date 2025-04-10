@@ -15519,7 +15519,7 @@ void UpdateUI(void * pvParamters) {
     // pitch scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,255,0));
-    display.drawVLine(127, 64-54, 64+52);
+    display.drawVLine(127, 64-52, 64+54);
     display.drawHLine(125, 64-25, 127);
     display.drawHLine(124, 64, 127);
     display.drawHLine(125, 64+25, 127);
