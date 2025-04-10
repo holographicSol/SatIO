@@ -15533,7 +15533,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider new position
     // ------------------------------------------------
-    // mapped_pitch=atof(gpattData.pitch); // uncomment to use INS
+    // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
     // gpatt_pitch=-90; // uncomment to test
     // gpatt_pitch=gpatt_pitch; // uncomment to simulate
     gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
@@ -15546,7 +15546,13 @@ void UpdateUI(void * pvParamters) {
     // pitch slider debug
     // ------------------------------------------------
     // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64+48 + mapped_pitch));
-
+    // ------------------------------------------------
+    // pitch warning
+    // ------------------------------------------------
+    display.setColor(RGB_COLOR16(255,255,0));
+    canvas8x8.clear();
+    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(120, 121, canvas8x8);
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
@@ -15565,7 +15571,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // yaw slider new position
     // ------------------------------------------------
-    // mapped_yaw=atof(gpattData.yaw); // uncomment to use INS
+    // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
     // gpatt_yaw=-180; // uncomment to test
     // gpatt_yaw=gpatt_yaw; // uncomment to simulate
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
@@ -15578,6 +15584,13 @@ void UpdateUI(void * pvParamters) {
     // yaw slider debug
     // ------------------------------------------------
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw] " + String(mapped_yaw) + " [x] " + String(mapped_yaw));
+    // ------------------------------------------------
+    // yaw warning
+    // ------------------------------------------------
+    display.setColor(RGB_COLOR16(255,255,0));
+    canvas8x8.clear();
+    if (gpatt_yaw<-45 || gpatt_yaw>45) {canvas8x8.printFixed(0, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(0, 121, canvas8x8);
 
     // ------------------------------------------------
     // dev
