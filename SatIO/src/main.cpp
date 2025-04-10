@@ -277,6 +277,7 @@
 #include <Wire.h>
 #include <assert.h>
 #include <float.h>
+#include <FS.h>
 #include "SdFat.h"            // https://github.com/greiman/SdFat
 #include <RTClib.h>           // https://github.com/adafruit/RTClib
 #include <TimeLib.h>          // https://github.com/PaulStoffregen/Time
@@ -11905,7 +11906,7 @@ void DisplayUAP() {
   // rotate sprite and free memory
   // ------------------------------------------------------------
   uap.pushRotated(mapped_gpatt_roll);
-  yield();
+  // yield();
   uap.deleteSprite();
 }
 
@@ -15558,7 +15559,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider debug
     // ------------------------------------------------
-    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64+48 + mapped_pitch));
+    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(mapped_pitch));
     // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
