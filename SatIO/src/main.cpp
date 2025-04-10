@@ -15514,11 +15514,12 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
     else {DisplaySignal(0, 0, 0, 0);}
+
     // ------------------------------------------------
     // pitch scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,255,0));
-    display.drawVLine(127, 64-50, 64+50);
+    display.drawVLine(127, 64-54, 64+52);
     display.drawHLine(125, 64-25, 127);
     display.drawHLine(124, 64, 127);
     display.drawHLine(125, 64+25, 127);
@@ -15533,22 +15534,24 @@ void UpdateUI(void * pvParamters) {
     // pitch slider new position
     // ------------------------------------------------
     // mapped_pitch=atof(gpattData.pitch); // uncomment to use INS
-    mapped_pitch=gpatt_pitch; // uncomment to simulate
+    // gpatt_pitch=-90; // uncomment to test
+    // gpatt_pitch=gpatt_pitch; // uncomment to simulate
     gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
-    mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
-    hud.pushSprite(121, 64+48 - mapped_pitch, TFT_TRANSPARENT);
+    mapped_pitch = map(gpatt_pitch, 90, -90, 64-52, 64+50);
+    hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider debug
     // ------------------------------------------------
-    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64-50 + mapped_pitch));
+    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64+48 + mapped_pitch));
+
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255));
-    display.drawHLine(64-50, 127, 64+50);
+    display.drawHLine(64-52, 127, 64+54);
     display.drawVLine(64-25, 126, 126);
     display.drawVLine(64, 125, 126);
     display.drawVLine(64+25, 126, 126);
@@ -15563,17 +15566,19 @@ void UpdateUI(void * pvParamters) {
     // yaw slider new position
     // ------------------------------------------------
     // mapped_yaw=atof(gpattData.yaw); // uncomment to use INS
-    mapped_yaw=gpatt_yaw; // uncomment to simulate
+    // gpatt_yaw=-180; // uncomment to test
+    // gpatt_yaw=gpatt_yaw; // uncomment to simulate
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
-    mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
-    hud.pushSprite(64-52 + mapped_yaw, 121, TFT_TRANSPARENT);
+    mapped_yaw = map(gpatt_yaw, -180, 180, 64-52, 64+50);
+    hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider debug
     // ------------------------------------------------
-    // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
+    // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw] " + String(mapped_yaw) + " [x] " + String(mapped_yaw));
+
     // ------------------------------------------------
     // dev
     // ------------------------------------------------
