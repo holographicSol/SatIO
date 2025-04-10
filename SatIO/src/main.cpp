@@ -11906,7 +11906,7 @@ void DisplayUAP() {
   // rotate sprite and free memory
   // ------------------------------------------------------------
   uap.pushRotated(mapped_gpatt_roll);
-  // yield();
+  yield();
   uap.deleteSprite();
 }
 
@@ -15544,6 +15544,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
+    yield();
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider new position
@@ -15555,6 +15556,7 @@ void UpdateUI(void * pvParamters) {
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(gpatt_pitch, 90, -90, 64-52, 64+50);
     hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
+    yield();
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider debug
@@ -15596,6 +15598,7 @@ void UpdateUI(void * pvParamters) {
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
+    yield();
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider new position
@@ -15607,6 +15610,7 @@ void UpdateUI(void * pvParamters) {
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
     mapped_yaw = map(gpatt_yaw, -180, 180, 64-52, 64+50);
     hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
+    yield();
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider debug
@@ -15625,7 +15629,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // gpattData.line_flag;
     // gpattData.static_flag;
-    // gpattData.run_state_flag;
+    // gpattData.run_state_flag;`
     // gpattData.run_inetial_flag;
     // gpattData.ins;
     // ------------------------------------------------
