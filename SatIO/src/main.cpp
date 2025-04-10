@@ -15519,7 +15519,9 @@ void UpdateUI(void * pvParamters) {
     // pitch scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,255,0));
-    display.drawVLine(127, 64-52, 64+54);
+    display.drawVLine(127, 64-54, 64+54); // axis
+    display.drawHLine(122, 64-54, 127); // 90
+    display.drawHLine(122, 64-53, 127); // 90
     display.drawHLine(122, 64-52, 127); // 90
     display.drawHLine(125, 64-38, 127); // 67.5
     display.drawHLine(125, 64-37, 127); // 67.5
@@ -15532,6 +15534,8 @@ void UpdateUI(void * pvParamters) {
     display.drawHLine(122, 64+25, 127); // -45
     display.drawHLine(125, 64+38, 127); // -67.5
     display.drawHLine(125, 64+39, 127); // -67.5
+    display.drawHLine(122, 64+52, 127); // -90
+    display.drawHLine(122, 64+53, 127); // -90
     display.drawHLine(122, 64+54, 127); // -90
     // ------------------------------------------------
     // pitch slider clear position
