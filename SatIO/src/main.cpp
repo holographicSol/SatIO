@@ -15575,6 +15575,14 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
     // ------------------------------------------------
+    // dev
+    // ------------------------------------------------
+    // gpattData.line_flag;
+    // gpattData.static_flag;
+    // gpattData.run_state_flag;
+    // gpattData.run_inetial_flag;
+    // gpattData.ins;
+    // ------------------------------------------------
     // altitude
     // ------------------------------------------------
     canvas62x8.clear();
@@ -15628,14 +15636,14 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas62x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    canvas62x8.printFixed(0, 0, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 99, canvas62x8);
     // ------------------------------------------------
     // mileage
     // ------------------------------------------------
     canvas62x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    canvas62x8.printFixed(0, 0, String(gpattData.mileage).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 109, canvas62x8);
     // ------------------------------------------------
     // UAP
