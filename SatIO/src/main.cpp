@@ -15518,12 +15518,12 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // clear current
     hud.createSprite(5, 5);
-    hud.fillTriangle(2, 0, 2, 5, 0, 2, TFT_BLACK);
+    hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(120, 64+48 - mapped_pitch, TFT_TRANSPARENT);
     // create new
     mapped_pitch=gpatt_pitch;
     hud.createSprite(5, 5);
-    hud.fillTriangle(2, 0, 2, 5, 0, 2, TFT_GREEN);
+    hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
     hud.pushSprite(120, 64+48 - mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
@@ -15543,12 +15543,12 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // clear current
     hud.createSprite(5, 5);
-    hud.fillTriangle(0, 2, 5, 2, 2, 0, TFT_BLACK);
+    hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     // create new
     mapped_yaw=gpatt_yaw;
     hud.createSprite(5, 5);
-    hud.fillTriangle(0, 2, 5, 2, 2, 0, TFT_GREEN);
+    hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
     hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     hud.deleteSprite();
