@@ -418,6 +418,7 @@ DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD13
 // ------------------------------------------------------------------------------------------------------------------------------
 
 TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
+TFT_eSprite hud = TFT_eSprite(&tft);
 TFT_eSprite uap = TFT_eSprite(&tft);
 
 // ------------------------------------
@@ -431,6 +432,10 @@ uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
 int uap_w = 40; // width of sprite
 int uap_h = 40; // height of sprite
 
+float gpatt_yaw=0;
+float mapped_yaw=0;
+float gpatt_pitch=0;
+float mapped_pitch=0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                   LCDGFX SETUP
@@ -15511,6 +15516,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider
     // ------------------------------------------------
+
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
@@ -15522,6 +15528,20 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // yaw slider
     // ------------------------------------------------
+    // clear current
+    hud.createSprite(6, 6);
+    hud.fillTriangle(3-6/2, 6-3, 6, 6-3, 3, 0, TFT_BLACK);
+    hud.pushSprite(64-50 + mapped_yaw, 120, TFT_TRANSPARENT);
+    // create new
+    mapped_yaw=gpatt_yaw;
+    hud.createSprite(6, 6);
+    hud.fillTriangle(3-6/2, 6-3, 6, 6-3, 3, 0, TFT_GREEN);
+    mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
+    hud.pushSprite(64-50 + mapped_yaw, 120, TFT_TRANSPARENT);
+    hud.deleteSprite();
+    // uncomment to simulate yaw and debug
+    Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw));
+    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
     // ------------------------------------------------
     // altitude
     // ------------------------------------------------
