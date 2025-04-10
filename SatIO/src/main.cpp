@@ -15583,7 +15583,7 @@ void UpdateUI(void * pvParamters) {
     // gpattData.run_inetial_flag;
     // gpattData.ins;
     // ------------------------------------------------
-    // altitude (full width)
+    // altitude (full width - 10 = 120 = 20 digits = 99999999999999999999 meters = 62137119223733392 miles. neptune is 4.611 billion km away!) 
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
@@ -15639,7 +15639,7 @@ void UpdateUI(void * pvParamters) {
     canvas62x8.printFixed(0, 0, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 100, canvas62x8);
     // ------------------------------------------------
-    // mileage (full width)
+    // mileage (full width - 10 = 120 = 20 digits = 99999999999999999999 meters = 62137119223733392 miles. neptune is 4.611 billion km away!) 
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
