@@ -15527,7 +15527,7 @@ void UpdateUI(void * pvParamters) {
     mapped_pitch = map(mapped_pitch, -90, 90, 0, 100);
     hud.pushSprite(120, 64+50 - mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
-    // uncomment to simulate yaw and debug
+    // uncomment to simulate and debug
     // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(64-50 + mapped_pitch));
     gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;}
     // ------------------------------------------------
@@ -15552,7 +15552,7 @@ void UpdateUI(void * pvParamters) {
     mapped_yaw = map(mapped_yaw, -180, 180, 0, 100);
     hud.pushSprite(64-52 + mapped_yaw, 120, TFT_TRANSPARENT);
     hud.deleteSprite();
-    // uncomment to simulate yaw and debug
+    // uncomment to simulate and debug
     // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw]" + String(mapped_yaw) + " [x] " + String(64-50 + mapped_yaw));
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;}
     // ------------------------------------------------
