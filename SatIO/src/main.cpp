@@ -15501,20 +15501,27 @@ void UpdateUI(void * pvParamters) {
     if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
     else {DisplaySignal(0, 0, 0, 0);}
     // ------------------------------------------------
-    // scale
+    // pitch scale
+    // ------------------------------------------------
+    display.setColor(RGB_COLOR16(0,255,0)); // axis color
+    display.drawVLine(127, 64-50, 64+50); // right inner
+    display.drawHLine(125, 64-25, 127); // right guide 25
+    display.drawHLine(124, 64, 127); // right guide 50
+    display.drawHLine(125, 64+25, 127); // right guide 25
+    // ------------------------------------------------
+    // pitch slider
+    // ------------------------------------------------
+    // ------------------------------------------------
+    // yaw scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255)); // axis color
     display.drawHLine(64-50, 127, 64+50); // lower inner
     display.drawVLine(64-25, 126, 126); // lower guide 25
     display.drawVLine(64, 125, 126); // lower guide 50
     display.drawVLine(64+25, 126, 126); // lower guide 25
-
-    display.setColor(RGB_COLOR16(0,255,0)); // axis color
-    display.drawVLine(127, 64-50, 64+50); // right inner
-    display.drawHLine(125, 64-25, 127); // right guide 25
-    display.drawHLine(124, 64, 127); // right guide 50
-    display.drawHLine(125, 64+25, 127); // right guide 25
-
+    // ------------------------------------------------
+    // yaw slider
+    // ------------------------------------------------
     // ------------------------------------------------
     // altitude
     // ------------------------------------------------
@@ -15522,7 +15529,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 10, canvas62x8);
-
     // ------------------------------------------------
     // degrees latitude
     // ------------------------------------------------
@@ -15530,7 +15536,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 20, canvas62x8);
-
     // ------------------------------------------------
     // degrees longitude
     // ------------------------------------------------
@@ -15538,7 +15543,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 30, canvas62x8);
-
     // ------------------------------------------------
     // heading
     // ------------------------------------------------
@@ -15546,7 +15550,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 40, canvas42x8);
-
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
@@ -15554,7 +15557,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.pitch).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 50, canvas42x8);
-
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
@@ -15562,7 +15564,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.roll).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 60, canvas42x8);
-
     // ------------------------------------------------
     // yaw
     // ------------------------------------------------
@@ -15570,7 +15571,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas42x8.printFixed(0, 0, String(gpattData.yaw).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 70, canvas42x8);
-
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
@@ -15578,7 +15578,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 99, canvas62x8);
-
     // ------------------------------------------------
     // mileage
     // ------------------------------------------------
@@ -15586,7 +15585,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas62x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 109, canvas62x8);
-
     // ------------------------------------------------
     // UAP
     // ------------------------------------------------
