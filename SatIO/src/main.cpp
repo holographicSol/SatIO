@@ -15528,7 +15528,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(121, 64+48 - mapped_pitch, TFT_TRANSPARENT);
+    hud.pushSprite(121, mapped_pitch, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // pitch slider new position
@@ -15560,7 +15560,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
-    hud.pushSprite(64-52 + mapped_yaw, 121, TFT_TRANSPARENT);
+    hud.pushSprite(mapped_yaw, 121, TFT_TRANSPARENT);
     hud.deleteSprite();
     // ------------------------------------------------
     // yaw slider new position
