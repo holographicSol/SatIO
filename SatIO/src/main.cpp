@@ -15551,7 +15551,7 @@ void UpdateUI(void * pvParamters) {
     // pitch slider new position
     // ------------------------------------------------
     // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
-    // gpatt_pitch=67.5; // uncomment to test
+    // gpatt_pitch=90; // uncomment to test
     gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
@@ -15568,8 +15568,8 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(120, 120, canvas8x8);
+    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(120, 122, canvas8x8);
     
     // ------------------------------------------------
     // yaw scale
@@ -15605,7 +15605,7 @@ void UpdateUI(void * pvParamters) {
     // yaw slider new position
     // ------------------------------------------------
     // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
-    // gpatt_yaw=-180; // uncomment to test
+    // gpatt_yaw=180; // uncomment to test
     gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
@@ -15622,15 +15622,15 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(3, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(0, 120, canvas8x8);
+    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    display.drawCanvas(0, 122, canvas8x8);
 
     // ------------------------------------------------
     // dev
     // ------------------------------------------------
     // gpattData.line_flag;
     // gpattData.static_flag;
-    // gpattData.run_state_flag;`
+    // gpattData.run_state_flag;
     // gpattData.run_inetial_flag;
     // gpattData.ins;
     // ------------------------------------------------
