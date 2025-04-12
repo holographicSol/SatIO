@@ -11616,6 +11616,26 @@ String getRelatedX(char * data) {
   return String("");
 }
 
+String groundHeadingDegreesToNESW(float num) {
+  if (num == 0 || num == 360)      {return String("N");}
+  else if (num > 0 && num < 45)    {return String("NNE");}
+  else if (num == 45)              {return String("NE");}
+  else if (num > 45 && num < 90)   {return String("ENE");}
+  else if (num == 90)              {return String("E");}
+  else if (num > 90 && num < 135)  {return String("ESE");}
+  else if (num == 135)             {return String("SE");}
+  else if (num > 135 && num < 180) {return String("SSE");}
+  else if (num == 180)             {return String("S");}
+  else if (num > 180 && num < 225) {return String("SSW");}
+  else if (num == 225)             {return String("SW");}
+  else if (num > 225 && num < 270) {return String("WSW");}
+  else if (num == 270)             {return String("W");}
+  else if (num > 270 && num < 315) {return String("WNW");}
+  else if (num == 315)             {return String("NW");}
+  else if (num > 315 && num < 360) {return String("NNW");}
+  return String("");
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                             UI
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -11653,7 +11673,7 @@ void drawGeneralTitle(String title, int color1, int color2) {
   display.setColor(color1);
   canvas120x8.clear();
   // top center
-  canvas120x8.printFixed((int)(128/2)-((strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
+  canvas120x8.printFixed((int)(128/2)-((int)(strlen(title.c_str())/2)*6), 1, title.c_str(), STYLE_BOLD);
   display.drawCanvas(1, 2, canvas120x8);
   // title border
   display.setColor(color2);
@@ -15633,13 +15653,22 @@ void UpdateUI(void * pvParamters) {
     // gpattData.run_state_flag;
     // gpattData.run_inetial_flag;
     // gpattData.ins;
+
     // ------------------------------------------------
-    // altitude (full width)
+    // heading degrees
     // ------------------------------------------------
-    canvas120x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 10, canvas120x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 10, canvas19x8);
+    // ------------------------------------------------
+    // heading
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(groundHeadingDegreesToNESW(atof(gnrmcData.ground_heading))).c_str(), STYLE_BOLD);
+    display.drawCanvas(54, 10, canvas19x8);
+
     // ------------------------------------------------
     // degrees latitude
     // ------------------------------------------------
@@ -15654,13 +15683,6 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 30, canvas74x8);
-    // ------------------------------------------------
-    // heading
-    // ------------------------------------------------
-    canvas19x8.clear();
-    display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 40, canvas19x8);
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
@@ -15682,6 +15704,13 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 70, canvas19x8);
+    // ------------------------------------------------
+    // altitude (full width)
+    // ------------------------------------------------
+    canvas120x8.clear();
+    display.setColor(systemData.color_content);
+    canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 90, canvas120x8);
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
