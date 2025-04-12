@@ -15510,7 +15510,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // load
     // ------------------------------------------------
-    DisplayDiscreteLoadPercentage(117, 0, 10);
+    DisplayDiscreteLoadPercentage(118, 0, 10);
     // ------------------------------------------------
     // satellites & sync
     // ------------------------------------------------
@@ -15569,13 +15569,13 @@ void UpdateUI(void * pvParamters) {
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
     if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(120, 122, canvas8x8);
+    display.drawCanvas(120, 121, canvas8x8);
     
     // ------------------------------------------------
     // yaw scale
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255));
-    display.drawHLine(64-52, 127, 64+54);
+    display.drawHLine(64-52, 127, 64+54); // axis
     display.drawVLine(64-54, 122, 127); // -180
     display.drawVLine(64-53, 122, 127); // -180
     display.drawVLine(64-52, 122, 127); // -180
@@ -15593,9 +15593,9 @@ void UpdateUI(void * pvParamters) {
     display.drawVLine(64+52, 122, 127); // 180
     display.drawVLine(64+53, 122, 127); // 180
     display.drawVLine(64+54, 122, 127); // 180
-    // // ------------------------------------------------
-    // // yaw slider clear position
-    // // ------------------------------------------------
+    // ------------------------------------------------
+    // yaw slider clear position
+    // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLACK);
     hud.pushSprite((int)mapped_yaw, 121, TFT_TRANSPARENT);
@@ -15623,7 +15623,7 @@ void UpdateUI(void * pvParamters) {
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
     if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
-    display.drawCanvas(0, 122, canvas8x8);
+    display.drawCanvas(0, 121, canvas8x8);
 
     // ------------------------------------------------
     // dev
@@ -15634,68 +15634,68 @@ void UpdateUI(void * pvParamters) {
     // gpattData.run_inetial_flag;
     // gpattData.ins;
     // ------------------------------------------------
-    // altitude (full width - 10 = 120 = approx (20 digits = 99999999999999999999 meters = 62137119223733392 miles). neptune is 4.611 billion km away!) 
+    // altitude (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
     canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 10, canvas120x8);
+    display.drawCanvas(1, 10, canvas120x8);
     // ------------------------------------------------
-    // degrees latitude (half width)
+    // degrees latitude
     // ------------------------------------------------
-    canvas62x8.clear();
+    canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 20, canvas62x8);
+    canvas74x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 20, canvas74x8);
     // ------------------------------------------------
-    // degrees longitude (half width)
+    // degrees longitude
     // ------------------------------------------------
-    canvas62x8.clear();
+    canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 30, canvas62x8);
+    canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 30, canvas74x8);
     // ------------------------------------------------
-    // heading 
+    // heading
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 40, canvas42x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 40, canvas19x8);
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(gpattData.pitch).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 50, canvas42x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 50, canvas19x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(gpattData.roll).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 60, canvas42x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 60, canvas19x8);
     // ------------------------------------------------
     // yaw
     // ------------------------------------------------
-    canvas42x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas42x8.printFixed(0, 0, String(gpattData.yaw).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 70, canvas42x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 70, canvas19x8);
     // ------------------------------------------------
-    // ground speed (half width)
+    // ground speed
     // ------------------------------------------------
     canvas62x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(gnrmcData.ground_speed).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 100, canvas62x8);
+    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 100, canvas62x8);
     // ------------------------------------------------
-    // mileage (full width - 10 = 120 = approx (20 digits = 99999999999999999999 meters = 62137119223733392 miles). neptune is 4.611 billion km away!) 
+    // mileage (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(gpattData.mileage).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 110, canvas120x8);
+    canvas120x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 110, canvas120x8);
     // ------------------------------------------------
     // UAP
     // ------------------------------------------------
