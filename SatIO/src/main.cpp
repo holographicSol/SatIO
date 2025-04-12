@@ -15665,14 +15665,14 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 10, canvas19x8);
     // ------------------------------------------------
     // heading
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 0, String(satData.ground_heading).c_str(), STYLE_BOLD);
+    canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 1, String(satData.ground_heading).c_str(), STYLE_BOLD);
     display.drawCanvas(47, 10, canvas28x8);
 
     // ------------------------------------------------
@@ -15680,56 +15680,56 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas74x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
+    canvas74x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 20, canvas74x8);
     // ------------------------------------------------
     // degrees longitude
     // ------------------------------------------------
     canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 30, canvas74x8);
+    canvas74x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(1, 30, canvas74x8);
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 50, canvas19x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 60, canvas19x8);
     // ------------------------------------------------
     // yaw
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(1, 1, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 70, canvas19x8);
     // ------------------------------------------------
     // altitude (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    canvas120x8.printFixed(1, 1, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 90, canvas120x8);
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
     canvas62x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    canvas62x8.printFixed(1, 1, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 100, canvas62x8);
     // ------------------------------------------------
     // mileage (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    canvas120x8.printFixed(1, 1, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
     display.drawCanvas(1, 110, canvas120x8);
     // ------------------------------------------------
     // UAP
