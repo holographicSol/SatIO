@@ -12427,8 +12427,18 @@ void UpdateUI(void * pvParamters) {
         display.clear();
         drawMainBorder();
         drawGeneralTitle("MATRIX", systemData.color_title, systemData.color_border);
+        display.setColor(systemData.color_border);
         display.drawRect(0, 12, 127, 26);
         display.drawVLine(64, 13, 25);
+
+        display.drawHLine(1, 51, 127);
+        display.drawHLine(1, 77, 127);
+        display.drawHLine(1, 102, 127);
+
+        display.drawVLine(25, 26, 127);
+        display.drawVLine(51, 26, 127);
+        display.drawVLine(76, 26, 127);
+        display.drawVLine(102, 26, 127);
       }
       // --------------------------------------------------
       // dynamic data
@@ -12444,7 +12454,7 @@ void UpdateUI(void * pvParamters) {
       else {DisplaySignal(1, 1, 2, 2);}
       // ------------------------------------------------
       int size=23;
-      int start=2;
+      int start=1;
       for (int i=0; i<5; i++) {
         // ------------------------------------------------
         // enabled/disabled
@@ -12463,71 +12473,71 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // 0-4 switch number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 30, canvas19x8);
+        canvas21x8.printFixed(0, 0, String("S" + String(i)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 30, canvas21x8);
         // ------------------------------------------------
         // 0-4 port number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 40, canvas19x8);
+        canvas21x8.printFixed(0, 0, String(matrixData.matrix_port_map[0][i]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 40, canvas21x8);
         // ------------------------------------------------
         // 5-9 switch number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+5)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 55, canvas19x8);
+        canvas21x8.printFixed(0, 0, String("S" + String(i+5)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 56, canvas21x8);
         // ------------------------------------------------
         // 5-9 port number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+5]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 65, canvas19x8);
+        canvas21x8.printFixed(0, 0, String(matrixData.matrix_port_map[0][i+5]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 66, canvas21x8);
         // ------------------------------------------------
         // 10-14 switch number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+10)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 81, canvas19x8);
+        canvas21x8.printFixed(0, 0, String("S" + String(i+10)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 82, canvas21x8);
         // ------------------------------------------------
         // 10-14 port number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+10]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 91, canvas19x8);
+        canvas21x8.printFixed(0, 0, String(matrixData.matrix_port_map[0][i+10]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 92, canvas21x8);
         // ------------------------------------------------
         // 15-19 switch number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_enabled[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String("S" + String(i+15)).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 106, canvas19x8);
+        canvas21x8.printFixed(0, 0, String("S" + String(i+15)).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 107, canvas21x8);
         // ------------------------------------------------
         // 15-19 port number
         // ------------------------------------------------
-        canvas19x8.clear();
+        canvas21x8.clear();
         display.setColor(RGB_COLOR16(64,64,64));
         if (matrixData.matrix_switch_state[0][i+15]==true) {display.setColor(RGB_COLOR16(0,255,0));}
-        canvas19x8.printFixed(1, 1, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
-        display.drawCanvas(start+1, 116, canvas19x8);
+        canvas21x8.printFixed(0, 0, String(matrixData.matrix_port_map[0][i+15]).c_str(), STYLE_BOLD );
+        display.drawCanvas(start+1, 117, canvas21x8);
         // ------------------------------------------------
         // adjust
         // ------------------------------------------------
-        start=start+25;
+        start=start+26;
       }
     }
 
@@ -15665,14 +15675,14 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(1, 1, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 10, canvas19x8);
     // ------------------------------------------------
     // heading
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 1, String(satData.ground_heading).c_str(), STYLE_BOLD);
+    canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 0, String(satData.ground_heading).c_str(), STYLE_BOLD);
     display.drawCanvas(47, 10, canvas28x8);
 
     // ------------------------------------------------
@@ -15680,57 +15690,57 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas74x8.printFixed(1, 1, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 20, canvas74x8);
+    canvas74x8.printFixed(0, 0, String(satData.degrees_latitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 20, canvas74x8);
     // ------------------------------------------------
     // degrees longitude
     // ------------------------------------------------
     canvas74x8.clear();
     display.setColor(systemData.color_content);
-    canvas74x8.printFixed(1, 1, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 30, canvas74x8);
+    canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 30, canvas74x8);
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(1, 1, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 50, canvas19x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 50, canvas19x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(1, 1, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 60, canvas19x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 60, canvas19x8);
     // ------------------------------------------------
     // yaw
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(1, 1, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 70, canvas19x8);
+    canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 70, canvas19x8);
     // ------------------------------------------------
     // altitude (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(1, 1, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 90, canvas120x8);
+    canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 90, canvas120x8);
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
     canvas62x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(1, 1, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 100, canvas62x8);
+    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 100, canvas62x8);
     // ------------------------------------------------
     // mileage (full width)
     // ------------------------------------------------
     canvas120x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(1, 1, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 110, canvas120x8);
+    canvas120x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 110, canvas120x8);
     // ------------------------------------------------
     // UAP
     // ------------------------------------------------
