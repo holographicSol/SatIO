@@ -299,6 +299,7 @@ void readI2C();
 void UIIndicators();
 void printAllTimes();
 void zero_matrix();
+String groundHeadingDegreesToNESW(float num);
 
 // --------------------------------------------------------------------------------------
 // helps avoid any potential race conditions where gps data is collected on another task
@@ -3782,6 +3783,7 @@ struct SatDatatruct {
   double degrees_longitude;                                      // degrees converted from absolute
   double degreesLat;                                             // used for converting absolute latitude and longitude
   double degreesLong;                                            // used for converting absolute latitude and longitude
+  String ground_heading = "";
 
   // ------------------------------------------------------------------------------------
   // temporary time
@@ -4141,6 +4143,10 @@ void calculateLocation(){
     // -----------------------------------------------------------------------------------------
     scanf("%f17", &satData.degrees_longitude);
   }
+}
+
+void setGroundHeadingName(float num) {
+  satData.ground_heading = groundHeadingDegreesToNESW(num);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -15660,14 +15666,14 @@ void UpdateUI(void * pvParamters) {
     canvas19x8.clear();
     display.setColor(systemData.color_content);
     canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
-    display.drawCanvas(1, 10, canvas19x8);
+    display.drawCanvas(0, 10, canvas19x8);
     // ------------------------------------------------
     // heading
     // ------------------------------------------------
-    canvas19x8.clear();
+    canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(groundHeadingDegreesToNESW(atof(gnrmcData.ground_heading))).c_str(), STYLE_BOLD);
-    display.drawCanvas(54, 10, canvas19x8);
+    canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 0, String(satData.ground_heading).c_str(), STYLE_BOLD);
+    display.drawCanvas(48, 10, canvas28x8);
 
     // ------------------------------------------------
     // degrees latitude
@@ -16889,6 +16895,7 @@ void loop() {
     if (systemData.satio_enabled==true) {
       // t0=micros();
       calculateLocation();
+      setGroundHeadingName(atof(gnrmcData.ground_heading));
       // bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
 
