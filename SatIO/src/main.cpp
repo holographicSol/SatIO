@@ -15673,7 +15673,7 @@ void UpdateUI(void * pvParamters) {
     canvas28x8.clear();
     display.setColor(systemData.color_content);
     canvas28x8.printFixed((int)(28/2)-((int)(strlen(String(satData.ground_heading).c_str())/2)*6), 0, String(satData.ground_heading).c_str(), STYLE_BOLD);
-    display.drawCanvas(48, 10, canvas28x8);
+    display.drawCanvas(47, 10, canvas28x8);
 
     // ------------------------------------------------
     // degrees latitude
