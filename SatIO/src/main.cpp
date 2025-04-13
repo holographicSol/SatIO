@@ -4237,6 +4237,21 @@ String formatDateTimeStamp(int hour, int minute, int second, int day, int month,
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                 CHECK DATETIME
+// ------------------------------------------------------------------------------------------------------------------------------
+
+bool isDatetimeAllDigits(char * day, char * month, char * year, char * hour, char *  minute, char * second) {
+  if (
+    is_all_digits(day) &&
+    is_all_digits(month) &&
+    is_all_digits(year) &&
+    is_all_digits(hour) &&
+    is_all_digits(minute) &&
+    is_all_digits(second)) {return true;}
+  return false;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                              SYNC RTC FROM GPS
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -4246,27 +4261,21 @@ void syncUTCTime() {
   // ----------------------------------------------------------------------------------------------
   /*                             EXTRACT UTC TIME & DATE FROM GPS                                */
   // ----------------------------------------------------------------------------------------------
-  memset(satData.tmp_day, 0, sizeof(satData.tmp_day));
   satData.tmp_day[0]=gnrmcData.utc_date[0];
   satData.tmp_day[1]=gnrmcData.utc_date[1];
-  memset(satData.tmp_month, 0, sizeof(satData.tmp_month));
   satData.tmp_month[0]=gnrmcData.utc_date[2];
   satData.tmp_month[1]=gnrmcData.utc_date[3];
-  memset(satData.tmp_year, 0, sizeof(satData.tmp_year));
   satData.tmp_year[0]=gnrmcData.utc_date[4];
   satData.tmp_year[1]=gnrmcData.utc_date[5];
-  memset(satData.tmp_hour, 0, sizeof(satData.tmp_hour));
   satData.tmp_hour[0]=gnrmcData.utc_time[0];
   satData.tmp_hour[1]=gnrmcData.utc_time[1];
-  memset(satData.tmp_minute, 0, sizeof(satData.tmp_minute));
   satData.tmp_minute[0]=gnrmcData.utc_time[2];
   satData.tmp_minute[1]=gnrmcData.utc_time[3];
-  memset(satData.tmp_second, 0, sizeof(satData.tmp_second));
   satData.tmp_second[0]=gnrmcData.utc_time[4];
   satData.tmp_second[1]=gnrmcData.utc_time[5];
-  memset(satData.tmp_millisecond, 0, sizeof(satData.tmp_millisecond));
   satData.tmp_millisecond[0]=gnrmcData.utc_time[7];
   satData.tmp_millisecond[1]=gnrmcData.utc_time[8];
+  // if (isDatetimeAllDigits(satData.tmp_day, satData.tmp_month, satData.tmp_year, satData.tmp_hour, satData.tmp_minute, satData.tmp_second)) {
   satData.tmp_day_int=atoi(satData.tmp_day);
   satData.tmp_month_int=atoi(satData.tmp_month);
   satData.tmp_year_int=atoi(satData.tmp_year);
@@ -4284,7 +4293,7 @@ void syncUTCTime() {
       // ----------------------------------------------------------------------------
       if (satData.tmp_millisecond_int==0) {
         first_gps_pass=false;
-        Serial.println("[rtc] synchronizing (first opportunity): " + String(rtc.now().timestamp()));
+        // Serial.println("[rtc] synchronizing (first opportunity): " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
         // --------------------------------------------------------------------------
@@ -4303,7 +4312,7 @@ void syncUTCTime() {
         satData.padded_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + "" + padDigitsZero(satData.rtcsync_minute) + "" + padDigitsZero(satData.rtcsync_second));
         satData.padded_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "" + padDigitsZero(satData.rtcsync_month) + "" + padDigitsZero(satData.rtcsync_year));
         rtc_sync_flag=true;
-        Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
+        // Serial.println("[rtc] synchronization (completed):       " + String(rtc.now().timestamp()));
       }
     }
     else {
@@ -4311,7 +4320,7 @@ void syncUTCTime() {
       /* Sync within the first 100 milliseconds of any minute                      */
       // ----------------------------------------------------------------------------
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int==0)) {
-        Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
+        // Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
         // --------------------------------------------------------------------------
@@ -4330,7 +4339,7 @@ void syncUTCTime() {
         satData.padded_rtc_sync_time=String(padDigitsZero(satData.rtcsync_hour) + "" + padDigitsZero(satData.rtcsync_minute) + "" + padDigitsZero(satData.rtcsync_second));
         satData.padded_rtc_sync_date=String(padDigitsZero(satData.rtcsync_day) + "" + padDigitsZero(satData.rtcsync_month) + "" + padDigitsZero(satData.rtcsync_year));
         rtc_sync_flag=true;
-        Serial.println("[rtc] synchronization (completed): " + String(rtc.now().timestamp()));
+        // Serial.println("[rtc] synchronization (completed): " + String(rtc.now().timestamp()));
       }
     }
   }
@@ -15678,10 +15687,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // heading degrees
     // ------------------------------------------------
-    canvas19x8.clear();
+    canvas42x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gnrmcData.ground_heading)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 10, canvas19x8);
+    canvas42x8.printFixed(0, 0, String(gnrmcData.ground_heading).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 10, canvas42x8);
     // ------------------------------------------------
     // heading
     // ------------------------------------------------
