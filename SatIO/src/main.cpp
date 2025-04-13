@@ -11995,6 +11995,11 @@ void UpdateUI(void * pvParamters) {
     // ----------------------------------------------------------------------------------------------------------------
     // this page has been mostly left for last while the human interface functionality has been built in. 
     // ----------------------------------------------------------------------------------------------------------------
+    /*
+    
+    astronarium: dynamic helio or earth centric model of our solar system.
+
+    */
     if (menu_page==page_home) {
       // ------------------------------------------------
       // static data
