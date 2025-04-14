@@ -289,6 +289,7 @@
 #include <TFT_eSPI.h>         // https://github.com/Bodmer/TFT_eSPI
 #include "lcdgfx.h"           // https://github.com/lexus2k/lcdgfx
 #include "lcdgfx_gui.h"       // https://github.com/lexus2k/lcdgfx
+#include <math.h>
 
 void beginSDCARD();
 void endSDCARD();
@@ -11952,6 +11953,204 @@ void DisplayUAP() {
 bool display_sync;
 bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
 
+// 20px remain = larger sun, add moon
+
+int sun_ui_x = 64;
+int sun_ui_y = 64;
+
+int moon_ui_x = 64;
+int moon_ui_y = 64;
+
+float mercury_ui_deg = 0;
+int mercury_ui_x = 64;
+int mercury_ui_y = 64;
+
+float venus_ui_deg = 0;
+int venus_ui_x = 64;
+int venus_ui_y = 61;
+
+float mars_ui_deg = 0;
+int mars_ui_x = 64;
+int mars_ui_y = 64;
+
+float jupiter_ui_deg = 0;
+int jupiter_ui_x = 64;
+int jupiter_ui_y = 64;
+
+float saturn_ui_deg = 0;
+int saturn_ui_x = 64;
+int saturn_ui_y = 64;
+
+float uranus_ui_deg = 0;
+int uranus_ui_x = 64;
+int uranus_ui_y = 64;
+
+float neptune_ui_deg = 0;
+int neptune_ui_x = 64;
+int neptune_ui_y = 64;
+
+void drawPanets() {
+
+  /* not to scale, is approximate and needs to be rotated */
+
+  // -----------------------------------------------------------------
+  //                                                               SUN
+  // -----------------------------------------------------------------
+  hud.createSprite(5, 5); // create the Sprite pixels width and height
+  hud.fillCircle(2, 2, 2, TFT_YELLOW);
+  hud.pushSprite(64, 64);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                           MERCURY
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLUE);
+  mercury_ui_x = 64 + 10 * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long)); // (approximately)
+  mercury_ui_y = 64 + 10 * cos(radians(siderealPlanetData.mercury_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                             VENUS
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLUE);
+  venus_ui_x = 64 + 16 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long)); // (approximately)
+  venus_ui_y = 64 + 16 * cos(radians(siderealPlanetData.venus_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                              MARS
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_RED);
+  mars_ui_x = 64 + 22 * sin(radians(siderealPlanetData.mars_helio_ecliptic_long)); // (approximately)
+  mars_ui_y = 64 + 22 * cos(radians(siderealPlanetData.mars_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                           JUPITER
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLUE);
+  jupiter_ui_x = 64 + 28 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long)); // (approximately)
+  jupiter_ui_y = 64 + 28 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                            SATURN
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_CASET);
+  saturn_ui_x = 64 + 34 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long)); // (approximately)
+  saturn_ui_y = 64 + 34 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                           NEPTUNE
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_GREEN);
+  neptune_ui_x = 64 + 40 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long)); // (approximately)
+  neptune_ui_y = 64 + 40 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                            URANUS
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_CYAN);
+  uranus_ui_x = 64 + 46 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long)); // (approximately)
+  uranus_ui_y = 64 + 46 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long)); // (approximately)
+  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  yield();
+  hud.deleteSprite();
+
+}
+
 void UpdateUI(void * pvParamters) {
 
   while (1) {
@@ -12052,6 +12251,7 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 14, canvas76x8);
       }
+      drawPanets();
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -16809,7 +17009,7 @@ void setup() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
   // ----------------------------------------------------------------------------------------------------------------------------
-  delay(3000);
+  // delay(3000);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // HSPI: SSD1351 OLED Display
