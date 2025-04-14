@@ -12251,7 +12251,11 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 14, canvas76x8);
       }
-      drawPanets();
+      // ------------------------------------------------
+      // solar system
+      // ------------------------------------------------
+      if (track_planet_period==false) {drawPanets();}
+      
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
