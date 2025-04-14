@@ -11991,7 +11991,7 @@ int neptune_ui_y = 64;
 
 void drawPanets() {
 
-  /* not to scale, is approximate and needs to be rotated */
+  /* not to scale, is approximate and needs to be rotated and add earth */
 
   // -----------------------------------------------------------------
   //                                                               SUN
