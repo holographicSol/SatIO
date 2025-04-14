@@ -12037,7 +12037,7 @@ void drawPanets() {
   // create new position
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_PINK);
+  hud.fillCircle(1, 1, 1, 0xFC9F);
   venus_ui_x = 64 + 16 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long)); // (approximately)
   venus_ui_y = 64 + 16 * cos(radians(siderealPlanetData.venus_helio_ecliptic_long)); // (approximately)
   hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
