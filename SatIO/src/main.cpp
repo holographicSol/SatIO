@@ -319,8 +319,6 @@ bool rtc_sync_flag=false;
 
 const int8_t ctsPin=-1;  // remap hardware serial TXD
 const int8_t rtsPin=-1;  // remap hardware serial RXD
-const byte txd_to_atmega=25; // 
-const byte rxd_from_gps=26;  //
 
 #define ISR_I2C_PERIPHERAL_PIN 25 // allows the Control Panel to interrupt us
 
@@ -16475,7 +16473,7 @@ void readGPS(void * pvParameters) {
         // -------------------------------------------------
         // suspend tasks
         // -------------------------------------------------
-        vTaskSuspend(UpdateUITask);
+        // vTaskSuspend(UpdateUITask);
         // -------------------------------------------------
         // check GNGGA
         // -------------------------------------------------
@@ -16515,7 +16513,7 @@ void readGPS(void * pvParameters) {
         // -------------------------------------------------
         // resume tasks
         // -------------------------------------------------
-        vTaskResume(UpdateUITask);
+        // vTaskResume(UpdateUITask);
         // ------------------------------------------------------------------------
         // set completion flag
         // ------------------------------------------------------------------------
@@ -16981,6 +16979,8 @@ void setup() {
       2,         /* Priority of the task */
       &GPSTask,  /* Task handle. */
       0);        /* Core where the task should run */
+    
+  delay(10);
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // xTask Update UI
@@ -16996,6 +16996,8 @@ void setup() {
       0);             /* Core where the task should run */
   }
 
+  delay(10);
+
   // ----------------------------------------------------------------------------------------------------------------------------
   // xTask Track Planets
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -17009,11 +17011,13 @@ void setup() {
       &TrackPlanetsTask,  /* Task handle. */
       0);                 /* Core where the task should run */
   }
+
+  delay(10);
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
   // ----------------------------------------------------------------------------------------------------------------------------
-  // delay(3000);
+  delay(3000);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // HSPI: SSD1351 OLED Display
