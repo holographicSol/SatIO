@@ -12100,7 +12100,7 @@ void drawPanets() {
   // create new position
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_CASET);
+  hud.drawCircle(1, 1, 1, TFT_WHITE);
   saturn_ui_x = 64 + 34 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long)); // (approximately)
   saturn_ui_y = 64 + 34 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long)); // (approximately)
   hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
