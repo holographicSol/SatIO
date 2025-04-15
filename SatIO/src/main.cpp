@@ -12085,9 +12085,6 @@ void drawPanets() {
   yield();
   hud.deleteSprite();
 
-  // Serial.println("[siderealPlanetData.venus_helio_ecliptic_long] " + String(siderealPlanetData.venus_helio_ecliptic_long));
-  Serial.println("[siderealPlanetData.earth_ecliptic_long] " + String(siderealPlanetData.earth_ecliptic_long));
-
   // -----------------------------------------------------------------
   //                                                              MARS
   // -----------------------------------------------------------------
@@ -12278,24 +12275,24 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // load
       // ------------------------------------------------
-      // DisplayDiscreteLoadPercentage(115, 3, 10);
+      DisplayDiscreteLoadPercentage(115, 2, 10);
       // ------------------------------------------------
       // signal
       // ------------------------------------------------
-      // DisplaySignal(1, 1, 3, 4);
+      DisplaySignal(0, 0, 2, 2);
       // ------------------------------------------------
       // sync rtc
       // ------------------------------------------------
-      // DisplayRTCSync(1, 1, 3, 14);
+      DisplayRTCSync(0, 0, 2, 12);
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
-      // if (crunching_time_data==false) {
-      //   canvas76x8.clear();
-      //   display.setColor(systemData.color_title);
-      //   canvas76x8.printFixed(1, 1, String(" " + String(satData.formatted_local_time)).c_str(), STYLE_BOLD);
-      //   display.drawCanvas(34, 4, canvas76x8);
-      // }
+      if (crunching_time_data==false) {
+        canvas76x8.clear();
+        display.setColor(systemData.color_title);
+        canvas76x8.printFixed(0, 0, String(" " + String(satData.formatted_local_time)).c_str(), STYLE_BOLD);
+        display.drawCanvas(34, 2, canvas76x8);
+      }
       // ------------------------------------------------
       // local date
       // ------------------------------------------------
@@ -12320,6 +12317,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
+      delay(500);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
