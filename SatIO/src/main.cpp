@@ -5887,7 +5887,7 @@ bool sdcardLoadMatrix(char * file) {
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER=exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       // ----------------------------------------------
       // tag: r
       // ----------------------------------------------
@@ -5909,15 +5909,21 @@ bool sdcardLoadMatrix(char * file) {
         // --------------------------------------------
         sdcardData.token=strtok(NULL, ",");
         strcpy(sdcardData.data_0, sdcardData.token);
-        if (is_all_digits(sdcardData.data_0)==true) {validData.bool_data_0=true; Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));}
-        else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
+        if (is_all_digits(sdcardData.data_0)==true) {
+          validData.bool_data_0=true;
+          // Serial.println("[Mi] [PASS] " +String(sdcardData.data_0));
+        }
+        // else {Serial.println("[Mi] [INVALID] " +String(sdcardData.data_0));}
         // --------------------------------------------
         // matrix switch function index
         // --------------------------------------------
         sdcardData.token=strtok(NULL, ",");
         strcpy(sdcardData.data_1, sdcardData.token);
-        if (is_all_digits(sdcardData.data_1)==true) {validData.bool_data_1=true; Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));}
-        else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
+        if (is_all_digits(sdcardData.data_1)==true) {
+          validData.bool_data_1=true;
+          // Serial.println("[Fi] [PASS] " +String(sdcardData.data_1));
+        }
+        // else {Serial.println("[Fi] [INVALID] " +String(sdcardData.data_1));}
         // --------------------------------------------
         // continue if we have valid index numbers
         // --------------------------------------------
@@ -5929,7 +5935,7 @@ bool sdcardLoadMatrix(char * file) {
           strcpy(sdcardData.data_2, sdcardData.token);
           memset(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], 0, sizeof(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           strcpy(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)], sdcardData.data_2);
-          Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
+          // Serial.println("[Fn] [MATRIX] " +String(matrixData.matrix_function[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]));
           // ------------------------------------------
           // matrix switch function value x
           // ------------------------------------------
@@ -5937,9 +5943,9 @@ bool sdcardLoadMatrix(char * file) {
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3)==true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]=atol(sdcardData.data_3);
-            Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
+            // Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
-          else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
+          // else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
           // ------------------------------------------
           // matrix switch function value y
           // ------------------------------------------
@@ -5947,9 +5953,9 @@ bool sdcardLoadMatrix(char * file) {
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4)==true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]=atol(sdcardData.data_4);
-            Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
+            // Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
-          else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
+          // else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
           // ------------------------------------------
           // matrix switch function value z
           // ------------------------------------------
@@ -5957,9 +5963,9 @@ bool sdcardLoadMatrix(char * file) {
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5)==true) {
             matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]=atol(sdcardData.data_5);
-            Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
+            // Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
-          else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
+          // else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
           // ------------------------------------------
           // matrix switch inverted function logic
           // ------------------------------------------
@@ -5981,9 +5987,9 @@ bool sdcardLoadMatrix(char * file) {
         strcpy(sdcardData.data_6, sdcardData.token);
         if (is_all_digits(sdcardData.data_6)==true) {
           matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]=atoi(sdcardData.data_6);
-          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
+          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_switch_enabled[0][atoi(sdcardData.data_0)]));
         }
-        else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
+        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_6));}
         // --------------------------------------------
         // port
         // --------------------------------------------
@@ -5991,9 +5997,9 @@ bool sdcardLoadMatrix(char * file) {
         if (is_all_digits_plus_char(sdcardData.data_7, '-')==true) {
           strcpy(sdcardData.data_7, sdcardData.token);
           matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]=atoi(sdcardData.data_7);
-          Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
+          // Serial.println("[E]  [MATRIX] " +String(matrixData.matrix_port_map[0][atoi(sdcardData.data_0)]));
         }
-        else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
+        // else {Serial.println("[E]  [INVALID] " +String(sdcardData.data_7));}
       }
     }
     // ------------------------------------------------
@@ -12001,7 +12007,8 @@ int uranus_ui_y = 64;
 int neptune_ui_x = 64;
 int neptune_ui_y = 64;
 
-int test_angle=0;
+float test_angle=90;
+float test_moon_angle=90;
 
 void drawPanets() {
 
@@ -12012,7 +12019,7 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(5, 5); // create the Sprite pixels width and height
   hud.fillCircle(2, 2, 2, TFT_YELLOW);
-  hud.pushSprite(64, 64);
+  hud.pushSprite(64, 65);
   yield();
   hud.deleteSprite();
 
@@ -12031,10 +12038,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_GREEN);
-  // mercury_ui_x = 64 + 10 * sin(radians(test_angle+90)); // (test)
-  // mercury_ui_y = 64 + 10 * cos(radians(test_angle+90)); // (test)
-  mercury_ui_x = 64 + 10 * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long+90)); // (approximately)
-  mercury_ui_y = 64 + 10 * cos(radians(siderealPlanetData.mercury_helio_ecliptic_long+90)); // (approximately)
+  // mercury_ui_x = 65 + 6 * sin(radians(test_angle+90)); // (test)
+  // mercury_ui_y = 66 + 6 * cos(radians(test_angle+90)); // (test)
+  mercury_ui_x = 65 + 6 * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long+90)); // (approximately)
+  mercury_ui_y = 65 + 6 * cos(radians(siderealPlanetData.mercury_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
   yield();
   hud.deleteSprite();
@@ -12054,10 +12061,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_YELLOW);
-  // venus_ui_x = 64 + 16 * sin(radians(test_angle+90)); // (test)
-  // venus_ui_y = 64 + 16 * cos(radians(test_angle+90)); // (test)
-  venus_ui_x = 64 + 16 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90)); // (approximately)
-  venus_ui_y = 64 + 16 * cos(radians(siderealPlanetData.venus_helio_ecliptic_long+90)); // (approximately)
+  // venus_ui_x = 65 + 12 * sin(radians(test_angle+90)); // (test)
+  // venus_ui_y = 66 + 12 * cos(radians(test_angle+90)); // (test)
+  venus_ui_x = 65 + 12 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90)); // (approximately)
+  venus_ui_y = 65 + 12 * cos(radians(siderealPlanetData.venus_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
   yield();
   hud.deleteSprite();
@@ -12077,11 +12084,34 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_BLUE);
-  // earth_ui_x = 64 + 22 * sin(radians(test_angle+90)); // (approximately)
-  // earth_ui_y = 64 + 22 * cos(radians(test_angle+90)); // (approximately)
-  earth_ui_x = 64 + 22 * sin(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
-  earth_ui_y = 64 + 22 * cos(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
+  // earth_ui_x = 65 + 20 * sin(radians(test_angle+90)); // (test)
+  // earth_ui_y = 66 + 20 * cos(radians(test_angle+90)); // (test)
+  earth_ui_x = 65 + 20 * sin(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
+  earth_ui_y = 65 + 20 * cos(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
   hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
+  //                                                              MOON
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_DARKGREY);
+  // moon_ui_x = earth_ui_x + 4 * sin(radians(test_moon_angle+90)); // (test)
+  // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
+  moon_ui_x = earth_ui_x + 4 * sin(radians(siderealPlanetData.moon_az+45)); // (approximately)
+  moon_ui_y =earth_ui_y + 4 * cos(radians(siderealPlanetData.moon_az+45)); // (approximately)
+  hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
   yield();
   hud.deleteSprite();
 
@@ -12100,10 +12130,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_RED);
-  // mars_ui_x = 64 + 28 * sin(radians(test_angle+90)); // (test)
-  // mars_ui_y = 64 + 28 * cos(radians(test_angle+90)); // (test)
-  mars_ui_x = 64 + 28 * sin(radians(siderealPlanetData.mars_helio_ecliptic_long+90)); // (approximately)
-  mars_ui_y = 64 + 28 * cos(radians(siderealPlanetData.mars_helio_ecliptic_long+90)); // (approximately)
+  // mars_ui_x = 65 + 28 * sin(radians(test_angle+90)); // (test)
+  // mars_ui_y = 66 + 28 * cos(radians(test_angle+90)); // (test)
+  mars_ui_x = 65 + 28 * sin(radians(siderealPlanetData.mars_helio_ecliptic_long+90)); // (approximately)
+  mars_ui_y = 65 + 28 * cos(radians(siderealPlanetData.mars_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
   yield();
   hud.deleteSprite();
@@ -12123,10 +12153,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_LIGHTGREY);
-  // jupiter_ui_x = 64 + 34 * sin(radians(test_angle+90)); // (test)
-  // jupiter_ui_y = 64 + 34 * cos(radians(test_angle+90)); // (test)
-  jupiter_ui_x = 64 + 34 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90)); // (approximately)
-  jupiter_ui_y = 64 + 34 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90)); // (approximately)
+  // jupiter_ui_x = 65 + 34 * sin(radians(test_angle+90)); // (test)
+  // jupiter_ui_y = 66 + 34 * cos(radians(test_angle+90)); // (test)
+  jupiter_ui_x = 65 + 34 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90)); // (approximately)
+  jupiter_ui_y = 65 + 34 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
   yield();
   hud.deleteSprite();
@@ -12146,10 +12176,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.drawCircle(1, 1, 1, TFT_YELLOW);
-  // saturn_ui_x = 64 + 40 * sin(radians(test_angle+90)); // (test)
-  // saturn_ui_y = 64 + 40 * cos(radians(test_angle+90)); // (test)
-  saturn_ui_x = 64 + 40 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90)); // (approximately)
-  saturn_ui_y = 64 + 40 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90)); // (approximately)
+  // saturn_ui_x = 65 + 40 * sin(radians(test_angle+90)); // (test)
+  // saturn_ui_y = 66 + 40 * cos(radians(test_angle+90)); // (test)
+  saturn_ui_x = 65 + 40 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90)); // (approximately)
+  saturn_ui_y = 65 + 40 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
   yield();
   hud.deleteSprite();
@@ -12169,10 +12199,10 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_GREEN);
-  // uranus_ui_x = 64 + 46 * sin(radians(test_angle+90)); // (test)
-  // uranus_ui_y = 64 + 46 * cos(radians(test_angle+90)); // (test)
-  uranus_ui_x = 64 + 46 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
-  uranus_ui_y = 64 + 46 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
+  // uranus_ui_x = 65 + 46 * sin(radians(test_angle+90)); // (test)
+  // uranus_ui_y = 66 + 46 * cos(radians(test_angle+90)); // (test)
+  uranus_ui_x = 65 + 46 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
+  uranus_ui_y = 65 + 46 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
   yield();
   hud.deleteSprite();
@@ -12192,14 +12222,19 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_CYAN);
-  // neptune_ui_x = 64 + 52 * sin(radians(test_angle+90)); // (test)
-  // neptune_ui_y = 64 + 52 * cos(radians(test_angle+90)); // (test)
-  neptune_ui_x = 64 + 52 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
-  neptune_ui_y = 64 + 52 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
+  // neptune_ui_x = 65 + 52 * sin(radians(test_angle+90)); // (test)
+  // neptune_ui_y = 66 + 52 * cos(radians(test_angle+90)); // (test)
+  neptune_ui_x = 65 + 52 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
+  neptune_ui_y = 65 + 52 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
   hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
   yield();
   hud.deleteSprite();
 
+  // -----------------------------------------------------------------
+  //                                                              TEST
+  // -----------------------------------------------------------------
+  // test_angle=test_angle+1; if (test_angle>360) {test_angle=0;}
+  // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
 void UpdateUI(void * pvParamters) {
