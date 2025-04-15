@@ -12116,8 +12116,7 @@ void drawPanets() {
   hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
   yield();
   hud.deleteSprite();
-
-  Serial.println("[radians(siderealPlanetData.moon_az-90)] " + String(radians(siderealPlanetData.moon_az-45)));
+  // Serial.println("[radians(siderealPlanetData.moon_az-90)] " + String(radians(siderealPlanetData.moon_az-45)));
 
   // -----------------------------------------------------------------
   //                                                              MARS
