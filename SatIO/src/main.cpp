@@ -47,7 +47,7 @@
                                 ESP32: io19 -> HW-125: DO (MISO)
                                 ESP32: io18 -> HW-125: SCK (SCLK)
 
-                                ESP32 HSPI: SSD1351 OLED (5v) (for interfacing):
+                                ESP32 HSPI: SSD1351 OLED (5v) (short wires recommended):
                                 ESP32: io14 -> SSD1351: SCL/SCLK
                                 ESP32: io12 -> SSD1351: MISO/DC
                                 ESP32: io13 -> SSD1351: SDA
