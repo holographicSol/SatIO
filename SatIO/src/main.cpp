@@ -12001,7 +12001,7 @@ int uranus_ui_y = 64;
 int neptune_ui_x = 64;
 int neptune_ui_y = 64;
 
-int test_angle=90;
+int test_angle=0;
 
 void drawPanets() {
 
@@ -12030,7 +12030,7 @@ void drawPanets() {
   // create new position
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_GREENYELLOW);
+  hud.fillCircle(1, 1, 1, TFT_GREEN);
   // mercury_ui_x = 64 + 10 * sin(radians(test_angle+90)); // (test)
   // mercury_ui_y = 64 + 10 * cos(radians(test_angle+90)); // (test)
   mercury_ui_x = 64 + 10 * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long+90)); // (approximately)
@@ -12053,7 +12053,7 @@ void drawPanets() {
   // create new position
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, 0xFC9F);
+  hud.fillCircle(1, 1, 1, TFT_YELLOW);
   // venus_ui_x = 64 + 16 * sin(radians(test_angle+90)); // (test)
   // venus_ui_y = 64 + 16 * cos(radians(test_angle+90)); // (test)
   venus_ui_x = 64 + 16 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90)); // (approximately)
@@ -12077,8 +12077,8 @@ void drawPanets() {
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_BLUE);
-  // earth_ui_x = 64 + 22 * sin(test_angle+90); // (approximately)
-  // earth_ui_y = 64 + 22 * cos(test_angle+90); // (approximately)
+  // earth_ui_x = 64 + 22 * sin(radians(test_angle+90)); // (approximately)
+  // earth_ui_y = 64 + 22 * cos(radians(test_angle+90)); // (approximately)
   earth_ui_x = 64 + 22 * sin(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
   earth_ui_y = 64 + 22 * cos(radians(siderealPlanetData.earth_ecliptic_long-90)); // (approximately)
   hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
@@ -12155,6 +12155,29 @@ void drawPanets() {
   hud.deleteSprite();
 
   // -----------------------------------------------------------------
+  //                                                           URANUS
+  // -----------------------------------------------------------------
+  // clear previous position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  yield();
+  hud.deleteSprite();
+  // -----------------------------------------------------------------
+  // create new position
+  // -----------------------------------------------------------------
+  hud.createSprite(3, 3); // create the Sprite pixels width and height
+  hud.fillCircle(1, 1, 1, TFT_GREEN);
+  // uranus_ui_x = 64 + 46 * sin(radians(test_angle+90)); // (test)
+  // uranus_ui_y = 64 + 46 * cos(radians(test_angle+90)); // (test)
+  uranus_ui_x = 64 + 46 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
+  uranus_ui_y = 64 + 46 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
+  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  yield();
+  hud.deleteSprite();
+
+  // -----------------------------------------------------------------
   //                                                           NEPTUNE
   // -----------------------------------------------------------------
   // clear previous position
@@ -12168,35 +12191,12 @@ void drawPanets() {
   // create new position
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_GREEN);
-  // neptune_ui_x = 64 + 46 * sin(radians(test_angle+90)); // (test)
-  // neptune_ui_y = 64 + 46 * cos(radians(test_angle+90)); // (test)
-  neptune_ui_x = 64 + 46 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
-  neptune_ui_y = 64 + 46 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
-  hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
-  yield();
-  hud.deleteSprite();
-
-  // -----------------------------------------------------------------
-  //                                                            URANUS
-  // -----------------------------------------------------------------
-  // clear previous position
-  // -----------------------------------------------------------------
-  hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
-  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
-  yield();
-  hud.deleteSprite();
-  // -----------------------------------------------------------------
-  // create new position
-  // -----------------------------------------------------------------
-  hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_CYAN);
-  // uranus_ui_x = 64 + 52 * sin(radians(test_angle+90)); // (test)
-  // uranus_ui_y = 64 + 52 * cos(radians(test_angle+90)); // (test)
-  uranus_ui_x = 64 + 52 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
-  uranus_ui_y = 64 + 52 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90)); // (approximately)
-  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  // neptune_ui_x = 64 + 52 * sin(radians(test_angle+90)); // (test)
+  // neptune_ui_y = 64 + 52 * cos(radians(test_angle+90)); // (test)
+  neptune_ui_x = 64 + 52 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
+  neptune_ui_y = 64 + 52 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90)); // (approximately)
+  hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
   yield();
   hud.deleteSprite();
 
