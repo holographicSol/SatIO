@@ -2814,7 +2814,7 @@ struct MatrixStruct {
     "Overload",
     "SwitchLink",
     "MatrixTimer",
-    "RTCTime",
+    "LocalTime",
     "DaySunday",
     "DayMonday",
     "DayTuesday",
@@ -6922,9 +6922,9 @@ void setTrackPlanets(void * pvParamaters) {
 
         myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
         myAstro.rejectDST();
-        myAstro.setGMTdate(satData.rtc_year, satData.rtc_month, satData.rtc_day);
-        myAstro.setGMTtime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
-        myAstro.setLocalTime(satData.rtc_hour, satData.rtc_minute, satData.rtc_second);
+        myAstro.setGMTdate(satData.local_year, satData.local_month, satData.local_day);
+        myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
+        myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
         
         trackPlanets();
       }
@@ -7216,47 +7216,47 @@ void matrixSwitch() {
         //                                                                                                                    RTC
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeOver")==0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LocalTimeOver")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_over_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_over_true(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_over_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_over_false(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeUnder")==0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LocalTimeUnder")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_under_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_under_true(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_under_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_under_false(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeEqual")==0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LocalTimeEqual")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_equal_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_equal_true(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_equal_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_equal_false(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
   
-        else if (strcmp(matrixData.matrix_function[Mi][Fi], "RTCTimeRange")==0) {
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "LocalTimeRange")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second),
             matrixData.matrix_function_xyz[Mi][Fi][0],
             matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
@@ -7264,91 +7264,91 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Sunday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayMonday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Monday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTuesday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Tuesday")==0) {tmp_matrix[Fi]=1;}
           }
         }
           
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayWednesday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Wednesday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayThursday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Thursday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayFriday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Friday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySaturday")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            if (strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
+            if (strcmp(satData.local_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            if (!strcmp(satData.rtc_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
+            if (!strcmp(satData.local_weekday, "Saturday")==0) {tmp_matrix[Fi]=1;}
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_equal_true(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.local_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_equal_false(satData.rtc_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.local_day, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateMonthX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_equal_true(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.local_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_equal_false(satData.rtc_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.local_month, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DateYearX")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_equal_true(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_true(satData.local_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_equal_false(satData.rtc_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
+            tmp_matrix[Fi]=check_equal_false(satData.local_year, (int)matrixData.matrix_function_xyz[Mi][Fi][0]);
           }
         }
 
@@ -8472,11 +8472,11 @@ void matrixSwitch() {
         // daytime: current time in range of sunrise and sunset
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "DayTime")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.sun_r, siderealPlanetData.sun_s);
           }
         }
@@ -8484,12 +8484,12 @@ void matrixSwitch() {
         // nighttime: current time not in range of sunrise and sunset
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NightTime")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.sun_r,
             siderealPlanetData.sun_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.sun_r,
             siderealPlanetData.sun_s);
           }
@@ -8498,20 +8498,20 @@ void matrixSwitch() {
         // sunrise time less than current time: true after sunrise until midnight
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunrise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_r, hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_r, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_r, hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         // sunset time less than current time: true after sunset until midnight                                                                  
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Sunset")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_true(siderealPlanetData.sun_s, hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_s, hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            tmp_matrix[Fi]=check_under_false(siderealPlanetData.sun_s, hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
@@ -8548,33 +8548,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonrise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.moon_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.moon_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "Moonset")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.moon_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.moon_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
@@ -8582,12 +8582,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.moon_r,
             siderealPlanetData.moon_s);
           }
@@ -8672,33 +8672,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.mercury_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.mercury_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercurySet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.mercury_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.mercury_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
@@ -8706,12 +8706,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mercury_r,
             siderealPlanetData.mercury_s);
           }
@@ -8750,33 +8750,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.venus_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.venus_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.venus_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.venus_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.venus_r, 
             siderealPlanetData.venus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.venus_r, 
             siderealPlanetData.venus_s);
           }
@@ -8784,12 +8784,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.venus_r,
             siderealPlanetData.venus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.venus_r,
             siderealPlanetData.venus_s);
           }
@@ -8828,33 +8828,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.mars_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.mars_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.mars_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.mars_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
@@ -8862,12 +8862,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.mars_r,
             siderealPlanetData.mars_s);
           }
@@ -8906,33 +8906,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.jupiter_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.jupiter_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
@@ -8940,12 +8940,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.jupiter_r,
             siderealPlanetData.jupiter_s);
           }
@@ -8984,33 +8984,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.saturn_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.saturn_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.saturn_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.saturn_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
@@ -9018,12 +9018,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.saturn_r,
             siderealPlanetData.saturn_s);
           }
@@ -9062,33 +9062,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.uranus_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.uranus_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.uranus_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.uranus_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
@@ -9096,12 +9096,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.uranus_r,
             siderealPlanetData.uranus_s);
           }
@@ -9140,33 +9140,33 @@ void matrixSwitch() {
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneRise")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.neptune_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.neptune_r,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneSet")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
             tmp_matrix[Fi]=check_under_true(siderealPlanetData.neptune_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
             tmp_matrix[Fi]=check_under_false(siderealPlanetData.neptune_s,
-            hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute));
+            hoursMinutesToInt(satData.local_hour, satData.local_minute));
           }
         }
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneUp")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
@@ -9174,12 +9174,12 @@ void matrixSwitch() {
 
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneDown")==0) {
           if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
-            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
           else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
-            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute),
+            tmp_matrix[Fi]=check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute),
             siderealPlanetData.neptune_r,
             siderealPlanetData.neptune_s);
           }
@@ -11387,20 +11387,20 @@ String getRelatedX(char * data) {
   if (strcmp("Overload", data)==0) {return String(systemData.overload);}
   // if (strcmp("SwitchLink", data)==0) {return String();}
   // if (strcmp("MatrixTimer", data)==0) {return String();}
-  if (strcmp("RTCTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("RTCTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("RTCTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("RTCTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.rtc_hour, satData.rtc_minute, satData.rtc_second));}
-  if (strcmp("DaySunday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DayMonday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DayTuesday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DayWednesday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DayThursday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DayFriday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DaySaturday", data)==0) {return String(satData.rtc_weekday);}
-  if (strcmp("DateDayX", data)==0) {return String(satData.rtc_day);}
-  if (strcmp("DateMonthX", data)==0) {return String(satData.rtc_month);}
-  if (strcmp("DateYearX", data)==0) {return String(satData.rtc_year);}
+  if (strcmp("LocalTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+  if (strcmp("LocalTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+  if (strcmp("LocalTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+  if (strcmp("LocalTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+  if (strcmp("DaySunday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DayMonday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DayTuesday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DayWednesday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DayThursday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DayFriday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DaySaturday", data)==0) {return String(satData.local_weekday);}
+  if (strcmp("DateDayX", data)==0) {return String(satData.local_day);}
+  if (strcmp("DateMonthX", data)==0) {return String(satData.local_month);}
+  if (strcmp("DateYearX", data)==0) {return String(satData.local_year);}
   if (strcmp("DegLatOver", data)==0) {return String(satData.degrees_latitude, 10);}
   if (strcmp("DegLatUnder", data)==0) {return String(satData.degrees_latitude, 10);}
   if (strcmp("DegLatEqual", data)==0) {return String(satData.degrees_latitude, 10);}
@@ -11505,8 +11505,8 @@ String getRelatedX(char * data) {
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.count_valid_elements);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
-  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(satData.rtc_hour, satData.rtc_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
   if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
   if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
