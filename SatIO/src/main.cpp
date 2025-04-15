@@ -12012,7 +12012,7 @@ float test_moon_angle=90;
 
 void drawPanets() {
 
-  /* not to scale, is approximate and needs to be rotated and add earth */
+  /* not to scale and is approximate */
 
   // -----------------------------------------------------------------
   //                                                               SUN
