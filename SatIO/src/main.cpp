@@ -6415,6 +6415,7 @@ void trackSun() {
 }
 
 void trackMoon() {
+  myAstro.doMoon();
   siderealPlanetData.moon_ra =myAstro.getRAdec();
   siderealPlanetData.moon_dec=myAstro.getDeclinationDec();
   myAstro.doRAdec2AltAz();
@@ -6425,6 +6426,7 @@ void trackMoon() {
   siderealPlanetData.moon_s =myAstro.getMoonsetTime();
   siderealPlanetData.moon_p =myAstro.getMoonPhase();
   siderealPlanetData.moon_lum=myAstro.getLunarLuminance();
+  // siderealPlanetData.moon_ecliptic_long=myAstro.getEclipticLongitude();
   // create and ouptput lunar tracking information
   if (systemData.output_moon_enabled==true) {
     memset(siderealPlanetData.sentence, 0, sizeof(siderealPlanetData.sentence));
@@ -12095,7 +12097,7 @@ void drawPanets() {
   // -----------------------------------------------------------------
   //                                                              MOON
   // -----------------------------------------------------------------
-  // clear previous position
+  // clear previous position (in development, may not be accurate)
   // -----------------------------------------------------------------
   hud.createSprite(3, 3); // create the Sprite pixels width and height
   hud.fillCircle(1, 1, 1, TFT_BLACK);
@@ -12109,11 +12111,13 @@ void drawPanets() {
   hud.fillCircle(1, 1, 1, TFT_DARKGREY);
   // moon_ui_x = earth_ui_x + 4 * sin(radians(test_moon_angle+90)); // (test)
   // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
-  moon_ui_x = earth_ui_x + 4 * sin(radians(siderealPlanetData.moon_az+45)); // (approximately)
-  moon_ui_y =earth_ui_y + 4 * cos(radians(siderealPlanetData.moon_az+45)); // (approximately)
+  moon_ui_x = earth_ui_x + 4 * cos(radians(siderealPlanetData.moon_az-45)); // (approximately)
+  moon_ui_y = earth_ui_y + 4 * sin(radians(siderealPlanetData.moon_az-45)); // (approximately)
   hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
   yield();
   hud.deleteSprite();
+
+  Serial.println("[radians(siderealPlanetData.moon_az-90)] " + String(radians(siderealPlanetData.moon_az-45)));
 
   // -----------------------------------------------------------------
   //                                                              MARS
