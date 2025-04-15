@@ -12290,7 +12290,7 @@ void UpdateUI(void * pvParamters) {
       if (crunching_time_data==false) {
         canvas76x8.clear();
         display.setColor(systemData.color_title);
-        canvas76x8.printFixed(0, 0, String(" " + String(satData.formatted_local_time)).c_str(), STYLE_BOLD);
+        canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 2, canvas76x8);
       }
       // ------------------------------------------------
@@ -12317,7 +12317,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
-      delay(500);
+      delay(100);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
