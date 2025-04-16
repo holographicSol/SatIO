@@ -12113,8 +12113,8 @@ void drawPanets() {
   // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
   // moon_ui_x = earth_ui_x + 4 * cos(radians(siderealPlanetData.moon_az-45)); // (inaccurate)
   // moon_ui_y = earth_ui_y + 4 * sin(radians(siderealPlanetData.moon_az-45)); // (inaccurate)
-  moon_ui_x = earth_ui_x + 4 * cos(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)-90)); // (dev)
-  moon_ui_y = earth_ui_y + 4 * sin(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)-90)); // (dev)
+  moon_ui_x = earth_ui_x + 4 * sin(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90)); // (dev)
+  moon_ui_y = earth_ui_y + 4 * cos(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90)); // (dev)
   hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
   yield();
   hud.deleteSprite();
