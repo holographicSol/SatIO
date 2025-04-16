@@ -12099,23 +12099,25 @@ void drawPanets() {
   // -----------------------------------------------------------------
   // clear previous position (in development, may not be accurate)
   // -----------------------------------------------------------------
-  hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
-  hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
-  yield();
-  hud.deleteSprite();
+  // hud.createSprite(3, 3); // create the Sprite pixels width and height
+  // hud.fillCircle(1, 1, 1, TFT_BLACK);
+  // hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
+  // yield();
+  // hud.deleteSprite();
   // -----------------------------------------------------------------
   // create new position
   // -----------------------------------------------------------------
-  hud.createSprite(3, 3); // create the Sprite pixels width and height
-  hud.fillCircle(1, 1, 1, TFT_DARKGREY);
+  // hud.createSprite(3, 3); // create the Sprite pixels width and height
+  // hud.fillCircle(1, 1, 1, TFT_DARKGREY);
   // moon_ui_x = earth_ui_x + 4 * sin(radians(test_moon_angle+90)); // (test)
   // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
-  moon_ui_x = earth_ui_x + 4 * cos(radians(siderealPlanetData.moon_az-45)); // (approximately)
-  moon_ui_y = earth_ui_y + 4 * sin(radians(siderealPlanetData.moon_az-45)); // (approximately)
-  hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
-  yield();
-  hud.deleteSprite();
+  // moon_ui_x = earth_ui_x + 4 * cos(radians(siderealPlanetData.moon_az-45)); // (inaccurate)
+  // moon_ui_y = earth_ui_y + 4 * sin(radians(siderealPlanetData.moon_az-45)); // (inaccurate)
+  // moon_ui_x = earth_ui_x + 4 * cos(radians(map(siderealPlanetData.moon_dec, -28, 28, 0, 360))); // (inaccurate)
+  // moon_ui_y = earth_ui_y + 4 * sin(radians(map(siderealPlanetData.moon_dec, -28, 28, 0, 360))); // (inaccurate)
+  // hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
+  // yield();
+  // hud.deleteSprite();
   // Serial.println("[radians(siderealPlanetData.moon_az-90)] " + String(radians(siderealPlanetData.moon_az-45)));
 
   // -----------------------------------------------------------------
