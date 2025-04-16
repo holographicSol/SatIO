@@ -971,9 +971,9 @@ LcdGfxMenu menuUniverse( menuUniverseItems, max_universe_items, {{2, 14}, {125, 
 //                                                                                                                   MENU DISPLAY 
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_display_items=8;
+const int max_display_items=9;
 const char *menuDisplayItems[max_display_items];
-LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 46}, {125, 125}} );
+LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 37}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    MENU SYSTEM
@@ -1165,6 +1165,21 @@ struct systemStruct {
     "OLOAD ms    100",
     "OLOAD       1 Second",
   };
+
+  // -----------------------------------------------------------------------------------------------------------------------
+  // home page feature
+  // -----------------------------------------------------------------------------------------------------------------------
+  int index_home_page_feature=1;
+  int max_home_page_feature_index=1;
+  char char_home_page_feature[2][56]={
+    "FEATURE  DATETIME",
+    "FEATURE  ASTRO.CLK"
+  };
+
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable ui features
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool astronarium=true;
 
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable system functions
@@ -5176,6 +5191,19 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // HOME PAGE FEATURE
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "INDEX_HOME_PAGE_FEATURE,");
+    itoa(systemData.index_home_page_feature, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // close
     // -----------------------------------------------
     exfile.close();
@@ -5772,6 +5800,19 @@ bool sdcardLoadSystemConfig(char * file) {
           PrintFileToken();
           systemData.index_overload_times=atoi(sdcardData.token);
           systemData.overload_max=systemData.overload_times[systemData.index_overload_times];
+        }
+      }
+
+      // ------------------------------------------------
+      // INDEX_HOME_PAGE_FEATURE
+      // ------------------------------------------------
+      if (strncmp(sdcardData.BUFFER, "INDEX_HOME_PAGE_FEATURE", strlen("INDEX_HOME_PAGE_FEATURE"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.index_home_page_feature=atoi(sdcardData.token);
         }
       }
 
@@ -11322,6 +11363,12 @@ void menuEnter() {
       if (systemData.index_display_color_subtitle>systemData.max_color_index) {systemData.index_display_color_subtitle=0;}
       systemData.color_subtitle=systemData.display_color[systemData.index_display_color_subtitle];
     }
+    // ------------------------------------------------
+    // iter home page feature
+    // ------------------------------------------------
+    if (menuDisplay.selection()==8) {systemData.index_home_page_feature++;
+      if (systemData.index_home_page_feature>systemData.max_home_page_feature_index) {systemData.index_home_page_feature=0;}
+    }
   }
 
   // ----------------------------------------------------------------
@@ -12333,19 +12380,27 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 2, canvas76x8);
       }
+
       // ------------------------------------------------
-      // local date
+      // feature standard
       // ------------------------------------------------
-      // if (crunching_time_data==false) {
-      //   canvas76x8.clear();
-      //   display.setColor(systemData.color_title);
-      //   canvas76x8.printFixed(1, 1, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
-      //   display.drawCanvas(34, 14, canvas76x8);
-      // }
+      if (systemData.index_home_page_feature==0) {
+        // ------------------------------------------------
+        // local date
+        // ------------------------------------------------
+        if (crunching_time_data==false) {
+          canvas76x8.clear();
+          display.setColor(systemData.color_title);
+          canvas76x8.printFixed(0, 0, String(satData.formatted_local_date).c_str(), STYLE_BOLD);
+          display.drawCanvas(34, 12, canvas76x8);
+        }
+      }
       // ------------------------------------------------
-      // solar system
+      // feature astronarium
       // ------------------------------------------------
-      if (track_planet_period==false) {drawPanets();}
+      else if (systemData.index_home_page_feature==1) {
+        if (track_planet_period==false) {drawPanets();}
+      }
       
       // ------------------------------------------------
       // menu
@@ -14619,6 +14674,7 @@ void UpdateUI(void * pvParamters) {
       menuDisplayItems[5]=systemData.char_display_menu_content_color[systemData.index_display_menu_content_color];
       menuDisplayItems[6]=systemData.char_display_title_color[systemData.index_display_title_color];
       menuDisplayItems[7]=systemData.char_display_subtitle_color[systemData.index_display_color_subtitle];
+      menuDisplayItems[8]=systemData.char_home_page_feature[systemData.index_home_page_feature];
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
