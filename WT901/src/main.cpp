@@ -33,10 +33,11 @@ TM1637 (2)       MEGA 2560
     CLK   <--->  A2
     DIO   <--->  51
     GND   <--->  GND
-  
-Display Acceleration X,Y,Z (pending deliveries).
 
+Todo:
+Display Acceleration X,Y,Z (pending deliveries).
 Display Magnetic Field X,Y,Z (pending deliveries).
+Setup this module as IIC slave.
 
 */
 
