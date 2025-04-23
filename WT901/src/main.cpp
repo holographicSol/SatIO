@@ -13,28 +13,30 @@ WT901CTTL       MEGA 2560
     RX   <--->  18(RX1)
     GND  <--->  GND
 
-Angle X
+Display Angle X
 TM1637 (0)       MEGA 2560
     VCC   <--->  5V
     CLK   <--->  A0
     DIO   <--->  53
     GND   <--->  GND
 
-Angle Y
+Display Angle Y
 TM1637 (1)       MEGA 2560
     VCC   <--->  5V
     CLK   <--->  A1
     DIO   <--->  52
     GND   <--->  GND
 
-Angle Z
+Display Angle Z
 TM1637 (2)       MEGA 2560
     VCC   <--->  5V
     CLK   <--->  A2
     DIO   <--->  51
     GND   <--->  GND
   
-Acceleration X,Y,Z (pending deliveries).
+Display Acceleration X,Y,Z (pending deliveries).
+
+Display Magnetic Field X,Y,Z (pending deliveries).
 
 */
 
@@ -307,69 +309,69 @@ void loop() {
   DisplayaAngleY((int)fAngle[1]);
   DisplayaAngleZ((int)fAngle[2]);
 
-    while (Serial1.available())
+  while (Serial1.available())
+  {
+    WitSerialDataIn(Serial1.read());
+  }
+  while (Serial.available()) 
+  {
+    CopeCmdData(Serial.read());
+  }
+  CmdProcess();
+  if(s_cDataUpdate)
+  {
+    for(int i=0; i < 3; i++)
     {
-      WitSerialDataIn(Serial1.read());
+      fAcc[i] = sReg[AX+i] / 32768.0f * 16.0f;
+      fGyro[i] = sReg[GX+i] / 32768.0f * 2000.0f;
+      fAngle[i] = sReg[Roll+i] / 32768.0f * 180.0f;
     }
-    while (Serial.available()) 
+    if(s_cDataUpdate & ACC_UPDATE)
     {
-      CopeCmdData(Serial.read());
+      Serial.print("acc:");
+      Serial.print(fAcc[0], 3);
+      Serial.print(" ");
+      Serial.print(fAcc[1], 3);
+      Serial.print(" ");
+      Serial.print(fAcc[2], 3);
+      Serial.print("\r\n");
+      s_cDataUpdate &= ~ACC_UPDATE;
     }
-		CmdProcess();
-		if(s_cDataUpdate)
-		{
-			for(int i=0; i < 3; i++)
-			{
-				fAcc[i] = sReg[AX+i] / 32768.0f * 16.0f;
-				fGyro[i] = sReg[GX+i] / 32768.0f * 2000.0f;
-				fAngle[i] = sReg[Roll+i] / 32768.0f * 180.0f;
-			}
-			if(s_cDataUpdate & ACC_UPDATE)
-			{
-				Serial.print("acc:");
-				Serial.print(fAcc[0], 3);
-				Serial.print(" ");
-				Serial.print(fAcc[1], 3);
-				Serial.print(" ");
-				Serial.print(fAcc[2], 3);
-				Serial.print("\r\n");
-				s_cDataUpdate &= ~ACC_UPDATE;
-			}
-			if(s_cDataUpdate & GYRO_UPDATE)
-			{
-				Serial.print("gyro:");
-				Serial.print(fGyro[0], 1);
-				Serial.print(" ");
-				Serial.print(fGyro[1], 1);
-				Serial.print(" ");
-				Serial.print(fGyro[2], 1);
-				Serial.print("\r\n");
-				s_cDataUpdate &= ~GYRO_UPDATE;
-			}
-			if(s_cDataUpdate & ANGLE_UPDATE)
-			{
-				Serial.print("angle:");
-				Serial.print(fAngle[0], 3);
-				Serial.print(" ");
-				Serial.print(fAngle[1], 3);
-				Serial.print(" ");
-				Serial.print(fAngle[2], 3);
-				Serial.print("\r\n");
-				s_cDataUpdate &= ~ANGLE_UPDATE;
-			}
-			if(s_cDataUpdate & MAG_UPDATE)
-			{
-				Serial.print("mag:");
-				Serial.print(sReg[HX]);
-				Serial.print(" ");
-				Serial.print(sReg[HY]);
-				Serial.print(" ");
-				Serial.print(sReg[HZ]);
-				Serial.print("\r\n");
-				s_cDataUpdate &= ~MAG_UPDATE;
-			}
-      s_cDataUpdate = 0;
-		}
+    if(s_cDataUpdate & GYRO_UPDATE)
+    {
+      Serial.print("gyro:");
+      Serial.print(fGyro[0], 1);
+      Serial.print(" ");
+      Serial.print(fGyro[1], 1);
+      Serial.print(" ");
+      Serial.print(fGyro[2], 1);
+      Serial.print("\r\n");
+      s_cDataUpdate &= ~GYRO_UPDATE;
+    }
+    if(s_cDataUpdate & ANGLE_UPDATE)
+    {
+      Serial.print("angle:");
+      Serial.print(fAngle[0], 3);
+      Serial.print(" ");
+      Serial.print(fAngle[1], 3);
+      Serial.print(" ");
+      Serial.print(fAngle[2], 3);
+      Serial.print("\r\n");
+      s_cDataUpdate &= ~ANGLE_UPDATE;
+    }
+    if(s_cDataUpdate & MAG_UPDATE)
+    {
+      Serial.print("mag:");
+      Serial.print(sReg[HX]);
+      Serial.print(" ");
+      Serial.print(sReg[HY]);
+      Serial.print(" ");
+      Serial.print(sReg[HZ]);
+      Serial.print("\r\n");
+      s_cDataUpdate &= ~MAG_UPDATE;
+    }
+    s_cDataUpdate = 0;
+  }
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
