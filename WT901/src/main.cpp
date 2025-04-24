@@ -93,6 +93,21 @@ const uint8_t CLK_PIN_2 = A2;
 const uint8_t DIO_PIN_2 = 51;
 TmiInterface tmiInterface_2(DIO_PIN_2, CLK_PIN_2, DELAY_MICROS);
 Tm1637Module<TmiInterface, NUM_DIGITS> ledModule_2(tmiInterface_2);
+// display 3
+const uint8_t CLK_PIN_3 = A3;
+const uint8_t DIO_PIN_3 = 50;
+TmiInterface tmiInterface_3(DIO_PIN_3, CLK_PIN_3, DELAY_MICROS);
+Tm1637Module<TmiInterface, NUM_DIGITS> ledModule_3(tmiInterface_3);
+// display 4
+const uint8_t CLK_PIN_4 = A4;
+const uint8_t DIO_PIN_4 = 49;
+TmiInterface tmiInterface_4(DIO_PIN_4, CLK_PIN_4, DELAY_MICROS);
+Tm1637Module<TmiInterface, NUM_DIGITS> ledModule_4(tmiInterface_4);
+// display 5
+const uint8_t CLK_PIN_5 = A5;
+const uint8_t DIO_PIN_5 = 48;
+TmiInterface tmiInterface_5(DIO_PIN_5, CLK_PIN_5, DELAY_MICROS);
+Tm1637Module<TmiInterface, NUM_DIGITS> ledModule_5(tmiInterface_5);
 // add/remove patterns as required
 const uint8_t NUM_PATTERNS = 12;
 const uint8_t PATTERNS[NUM_PATTERNS] = {
@@ -153,6 +168,36 @@ void setup() {
   ledModule_2.setPatternAt(3, PATTERNS[11]);
   ledModule_2.setBrightness(2);
   ledModule_2.flush();
+  // ------------------------------------------------------------------------------------------------------
+  //                                                                                               TM1637 3
+  tmiInterface_3.begin();
+  ledModule_3.begin();
+  ledModule_3.setPatternAt(0, PATTERNS[11]);
+  ledModule_3.setPatternAt(1, PATTERNS[11]);
+  ledModule_3.setPatternAt(2, PATTERNS[11]);
+  ledModule_3.setPatternAt(3, PATTERNS[11]);
+  ledModule_3.setBrightness(2);
+  ledModule_3.flush();
+  // ------------------------------------------------------------------------------------------------------
+  //                                                                                               TM1637 4
+  tmiInterface_4.begin();
+  ledModule_4.begin();
+  ledModule_4.setPatternAt(0, PATTERNS[11]);
+  ledModule_4.setPatternAt(1, PATTERNS[11]);
+  ledModule_4.setPatternAt(2, PATTERNS[11]);
+  ledModule_4.setPatternAt(3, PATTERNS[11]);
+  ledModule_4.setBrightness(2);
+  ledModule_4.flush();
+  // ------------------------------------------------------------------------------------------------------
+  //                                                                                               TM1637 5
+  tmiInterface_5.begin();
+  ledModule_5.begin();
+  ledModule_5.setPatternAt(0, PATTERNS[11]);
+  ledModule_5.setPatternAt(1, PATTERNS[11]);
+  ledModule_5.setPatternAt(2, PATTERNS[11]);
+  ledModule_5.setPatternAt(3, PATTERNS[11]);
+  ledModule_5.setBrightness(2);
+  ledModule_5.flush();
   // ------------------------------------------------------------------------------------------------------
   //                                                                                               COMPLETE
   delay(2000);
@@ -304,11 +349,152 @@ void DisplayaAngleZ(signed int value) {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       DISPLAY ACCELERATION X
+void DisplayaAccellerationX(signed int value) {
+  digitLen(value);
+  if (dlen==1) {
+    ledModule_3.setPatternAt(0, PATTERNS[10]);
+    ledModule_3.setPatternAt(1, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_3.setPatternAt(2, PATTERNS[11]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+    else {
+      ledModule_3.setPatternAt(2, PATTERNS[10]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+    }
+  }
+  if (dlen==2) {
+    ledModule_3.setPatternAt(0, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_3.setPatternAt(1, PATTERNS[11]);
+      ledModule_3.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+    else {
+      ledModule_3.setPatternAt(1, PATTERNS[10]);
+      ledModule_3.setPatternAt(2, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+  }
+  if (dlen==3) {
+    if (value < 0 ) {
+      ledModule_3.setPatternAt(0, PATTERNS[11]);
+      ledModule_3.setPatternAt(1, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_3.setPatternAt(2, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[3]).c_str())]);
+    }
+    else {
+      ledModule_3.setPatternAt(0, PATTERNS[10]);
+      ledModule_3.setPatternAt(1, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_3.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_3.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+  }
+  ledModule_3.flush();
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       DISPLAY ACCELERATION Y
+void DisplayaAccellerationY(signed int value) {
+  digitLen(value);
+  if (dlen==1) {
+    ledModule_4.setPatternAt(0, PATTERNS[10]);
+    ledModule_4.setPatternAt(1, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_4.setPatternAt(2, PATTERNS[11]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+    else {
+      ledModule_4.setPatternAt(2, PATTERNS[10]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+    }
+  }
+  if (dlen==2) {
+    ledModule_4.setPatternAt(0, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_4.setPatternAt(1, PATTERNS[11]);
+      ledModule_4.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+    else {
+      ledModule_4.setPatternAt(1, PATTERNS[10]);
+      ledModule_4.setPatternAt(2, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+  }
+  if (dlen==3) {
+    if (value < 0 ) {
+      ledModule_4.setPatternAt(0, PATTERNS[11]);
+      ledModule_4.setPatternAt(1, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_4.setPatternAt(2, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[3]).c_str())]);
+    }
+    else {
+      ledModule_4.setPatternAt(0, PATTERNS[10]);
+      ledModule_4.setPatternAt(1, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_4.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_4.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+  }
+  ledModule_4.flush();
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//                                                                                                       DISPLAY ACCELERATION Z
+void DisplayaAccellerationZ(signed int value) {
+  digitLen(value);
+  if (dlen==1) {
+    ledModule_5.setPatternAt(0, PATTERNS[10]);
+    ledModule_5.setPatternAt(1, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_5.setPatternAt(2, PATTERNS[11]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+    else {
+      ledModule_5.setPatternAt(2, PATTERNS[10]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+    }
+  }
+  if (dlen==2) {
+    ledModule_5.setPatternAt(0, PATTERNS[10]);
+    if (value < 0 ) {
+      ledModule_5.setPatternAt(1, PATTERNS[11]);
+      ledModule_5.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+    else {
+      ledModule_5.setPatternAt(1, PATTERNS[10]);
+      ledModule_5.setPatternAt(2, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+    }
+  }
+  if (dlen==3) {
+    if (value < 0 ) {
+      ledModule_5.setPatternAt(0, PATTERNS[11]);
+      ledModule_5.setPatternAt(1, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_5.setPatternAt(2, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[3]).c_str())]);
+    }
+    else {
+      ledModule_5.setPatternAt(0, PATTERNS[10]);
+      ledModule_5.setPatternAt(1, PATTERNS[atoi(String(String(value)[0]).c_str())]);
+      ledModule_5.setPatternAt(2, PATTERNS[atoi(String(String(value)[1]).c_str())]);
+      ledModule_5.setPatternAt(3, PATTERNS[atoi(String(String(value)[2]).c_str())]);
+    }
+  }
+  ledModule_5.flush();
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                         LOOP
 void loop() {
   DisplayaAngleX((int)fAngle[0]);
   DisplayaAngleY((int)fAngle[1]);
   DisplayaAngleZ((int)fAngle[2]);
+  DisplayaAngleX((int)fAcc[0]);
+  DisplayaAngleY((int)fAcc[1]);
+  DisplayaAngleZ((int)fAcc[2]);
 
   while (Serial1.available())
   {
