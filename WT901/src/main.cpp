@@ -36,7 +36,7 @@ TM1637 (2)       MEGA 2560
 
 Todo:
 Display Acceleration X,Y,Z (pending deliveries).
-Display Magnetic Field X,Y,Z (pending deliveries).
+Display Magnetic Field X,Y,Z (pending deliveries). requies 6 digit 7 segment displays.
 Setup this module as IIC slave.
 
 */
