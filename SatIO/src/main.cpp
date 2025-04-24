@@ -24,6 +24,11 @@ increase calculation potential.
   Short of quantum navigation on a microchip, GPS is currently used for navigation, navigation providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
+  Domino effects? Many things (potentially infinite) can be calculated from the existing functionality that there may not be an 
+  existing specific function for, like for example high tide where moon tracking can be utilized to track the tide and if you can track
+  the tide then more things may also be calculated without requiring anything but moon tracking data. This is just one example of potentially
+  infinite domino effects that can be calculated from existing data.
+
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
                                 
