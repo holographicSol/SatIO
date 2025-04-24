@@ -9,7 +9,7 @@
 
                                  SatIO is the system, a matrix is the program.
 
-What can SatIO tell you is true? A number of things in an equation including the number of programmabble functions,
+What can SatIO tell you is true? A number of things resulting from an equation including the number of programmabble functions,
 number of possible values provided by those functions, number of possible input values, number of functions per switch,
 number of switches (over a quintillion things). Currently SatIO has over a quintillion posssible combinations, each of which may provide
 answers to more than one question.
