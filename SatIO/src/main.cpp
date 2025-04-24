@@ -19,7 +19,10 @@ by what is plugged into the port controller.
 
 What can't SatIO tell you is true or do? A calculation requiring more memory than SatIO has available on any given platform that
 SatIO is running on. If however there is still memory and storage available, then more modules and raw sensors can be added to 
-increase calculation potential.   
+increase calculation potential.
+
+  Short of quantum navigation on a microchip, GPS is currently used for navigation, navigation providing values that many more values
+  can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
