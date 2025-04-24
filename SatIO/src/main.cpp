@@ -10,9 +10,9 @@
                                  SatIO is the system, a matrix is the program.
 
 What can SatIO tell you is true? A number of things in an equation including the number of programmabble functions,
-number of possible values provided by those functions, nuber of possible input values, number of functions per switch,
-number of switches. Currently SatIO has over a quintillion posssible combinations, each of which may provide answers to more
-than one question.
+number of possible values provided by those functions, number of possible input values, number of functions per switch,
+number of switches (over a quintillion things). Currently SatIO has over a quintillion posssible combinations, each of which may provide
+answers to more than one question.
 
 What can SatIO do? An infininate number of actions can be taken upon any combination of things being true, what is done is determined
 by what is plugged into the port controller.
