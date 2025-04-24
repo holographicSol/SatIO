@@ -29,6 +29,8 @@ increase calculation potential.
   the tide then more things may also be calculated further down the line from moon tracking data than high tide, without necessarily requiring anything
   other than moon tracking data alone. This is just one example of potentially infinite domino effects that can be calculated from existing data.
 
+  Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
+
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
                                 
