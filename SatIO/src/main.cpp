@@ -449,12 +449,12 @@ TFT_eSprite uap = TFT_eSprite(&tft);
 // sprite data: device/vehicle rotation
 // ------------------------------------
 int wt901_roll = 0; // rotation angle
-int mapped_wt901_roll; // mapped rotation angle
+int mapped_roll; // mapped rotation angle
 int offset_wt901_roll_0 = 90; // default (horizontal) is +90 degrees.
 uint16_t uap_piv_X; // x pivot of Sprite (middle)
 uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
-int uap_w = 40; // width of sprite
-int uap_h = 40; // height of sprite
+int uap_w = 28; // width of sprite
+int uap_h = 28; // height of sprite
 
 float gpatt_yaw=0;
 float mapped_yaw=0;
@@ -12626,28 +12626,28 @@ void DisplayUAP() {
   // ------------------------------------------------------------
   // draw object to be rotated
   // ------------------------------------------------------------
-  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y +80, TFT_BLUE); // uap
+  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y+56, TFT_BLUE); // uap
   uap.fillCircle(uap_piv_X-2, uap_piv_y, 2, TFT_GREEN); // uap orientation
 
   // ------------------------------------------------------------
   // calculate rotation
   // ------------------------------------------------------------
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
-  // mapped_wt901_roll = wt901_roll; // sim
-  mapped_wt901_roll = sensorData.wt901_ang_x;
-  mapped_wt901_roll = map(mapped_wt901_roll, -90.00, 90, 0, 360);
-  mapped_wt901_roll -= offset_wt901_roll_0;
+  // mapped_roll = wt901_roll; // sim
+  mapped_roll = sensorData.wt901_ang_x;
+  mapped_roll = map(mapped_roll, -90.00, 90, 0, 360);
+  mapped_roll -= offset_wt901_roll_0;
   
   // ------------------------------------------------------------
   // uncomment to force roll incrementation and debug
   // ------------------------------------------------------------
-  // Serial.println("[roll] "+String(wt901_roll)+" [ui offset] "+String(offset_wt901_roll_0)+" [ui value] "+String(mapped_wt901_roll));
+  // Serial.println("[roll] "+String(wt901_roll)+" [ui offset] "+String(offset_wt901_roll_0)+" [ui value] "+String(mapped_roll));
   // wt901_roll++; if (wt901_roll>360) {wt901_roll=0;} // sim
 
   // ------------------------------------------------------------
   // rotate sprite and free memory
   // ------------------------------------------------------------
-  uap.pushRotated((int)mapped_wt901_roll);
+  uap.pushRotated((int)mapped_roll);
   yield();
   uap.deleteSprite();
 }
@@ -16708,26 +16708,47 @@ void UpdateUI(void * pvParamters) {
     canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 30, canvas74x8);
     // ------------------------------------------------
-    // pitch
+    // angle x
     // ------------------------------------------------
-    canvas38x8.clear();
+    canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 40, canvas38x8);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 40, canvas28x8);
     // ------------------------------------------------
-    // roll
+    // angle y
     // ------------------------------------------------
-    canvas38x8.clear();
+    canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 50, canvas38x8);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 50, canvas28x8);
     // ------------------------------------------------
-    // yaw (temporarily different to uap yaw as this will stay the same)
+    // angle z
     // ------------------------------------------------
-    canvas38x8.clear();
+    canvas28x8.clear();
     display.setColor(systemData.color_content);
-    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 60, canvas38x8);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 60, canvas28x8);
+    // ------------------------------------------------
+    // acceleration x
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_x).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 40, canvas28x8);
+    // ------------------------------------------------
+    // acceleration y
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 50, canvas28x8);
+    // ------------------------------------------------
+    // acceleration z
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 60, canvas28x8);
     // ------------------------------------------------
     // altitude (full width)
     // ------------------------------------------------
@@ -16890,7 +16911,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_acc_x=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_x=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -16906,7 +16927,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_acc_y=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_y=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -16919,10 +16940,9 @@ void requestWT901() {
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_acc_z=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_z=atof(I2CLink.token);}
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16942,7 +16962,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_ang_x=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_x=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -16958,7 +16978,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_ang_y=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_y=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -16974,7 +16994,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_ang_z=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_z=atof(I2CLink.token);}
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16994,7 +17014,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_mag_x=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_x=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -17010,7 +17030,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_mag_y=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_y=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -17026,7 +17046,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_mag_z=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_z=atof(I2CLink.token);}
   }
 
   // -------------------------------------------------------------------------------------------
@@ -17046,7 +17066,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_gyr_x=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -17062,7 +17082,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_gyr_y=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
   }
 
   // ----------------------------------------------
@@ -17078,7 +17098,7 @@ void requestWT901() {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    sensorData.wt901_gyr_z=atof(I2CLink.token);
+    if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
   }
 }
 
