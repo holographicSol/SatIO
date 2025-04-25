@@ -16015,10 +16015,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
     // gpatt_pitch=90; // uncomment to test
-    gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
+    // gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
-    mapped_pitch = map(gpatt_pitch, 90, -90, 64-52, 64+50);
+    mapped_pitch = map(sensorData.wt901_ang_y, 90, -90, 64-52, 64+50);
     hud.pushSprite(121, (int)mapped_pitch, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
