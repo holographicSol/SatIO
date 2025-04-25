@@ -1,11 +1,33 @@
-                                    SatIO - Written by Benjamin Jack Cullen.
+                                  SatIO - Written by Benjamin Jack Cullen.
 
-                                               "The GPS Master"
+                                            "The GPS Master"
 
                       A general purpose programmable satellite, sensor and inertial platform.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
 
                                  SatIO is the system, a matrix is the program.
+
+What can SatIO tell you is true? A number of things resulting from an equation including the number of programmabble functions,
+number of possible values provided by those functions, number of possible input values, number of functions per switch,
+number of switches (over a quintillion things). Currently SatIO has over a quintillion posssible combinations, each of which may provide
+answers to more than one question.
+
+What can SatIO do? An infininate number of actions can be taken upon any combination of things being true, what is done is determined
+by what is plugged into the port controller.
+
+What can't SatIO tell you is true or do? A calculation requiring more memory than SatIO has available on any given platform that
+SatIO is running on. If however there is still memory and storage available, then more modules and raw sensors can be added to 
+increase calculation potential.
+
+  Short of quantum navigation on a microchip, GPS is currently used for navigation, navigation providing values that many more values
+  can be calculated from, providing there is not something potentially terminally wrong with the universe.
+
+  Domino effects? Many things (potentially infinite) can be calculated from the existing functionality that there may not be an 
+  existing specific function for, like for example high tide where moon tracking can be utilized to track the tide and if you can track
+  the tide then more things may also be calculated further down the line from moon tracking data than high tide, without necessarily requiring anything
+  other than moon tracking data alone. This is just one example of potentially infinite domino effects that can be calculated from existing data.
+
+  Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
@@ -45,7 +67,7 @@
                                 ESP32: io19 -> HW-125: DO (MISO)
                                 ESP32: io18 -> HW-125: SCK (SCLK)
 
-                                ESP32 HSPI: SSD1351 OLED (5v) (for interfacing):
+                                ESP32 HSPI: SSD1351 OLED (5v) (short wires recommended):
                                 ESP32: io14 -> SSD1351: SCL/SCLK
                                 ESP32: io12 -> SSD1351: MISO/DC
                                 ESP32: io13 -> SSD1351: SDA
