@@ -16117,24 +16117,24 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas38x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String(sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 40, canvas28x8);
+    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 40, canvas38x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas38x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String(sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 50, canvas28x8);
+    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 50, canvas38x8);
     // ------------------------------------------------
     // yaw (temporarily different to uap yaw as this will stay the same)
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas38x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String(sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 60, canvas28x8);
+    canvas38x8.printFixed(0, 0, String(sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 60, canvas38x8);
     // ------------------------------------------------
     // altitude (full width)
     // ------------------------------------------------
