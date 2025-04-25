@@ -318,7 +318,7 @@ void endSDCARD();
 void beginSSD1351();
 void endSSD1351();
 void sdcardQuickCheck();
-void readI2COnce();
+void I2CRequestScan();
 void requestWT901();
 void UIIndicators();
 void printAllTimes();
@@ -12349,13 +12349,15 @@ void drawPanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
+
+
 void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display. 
-  readI2COnce();
-  requestWT901();
+  // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display.
+  I2CRequestScan();
+  requestWT901(); // will be moved frrom here.
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -16491,7 +16493,7 @@ void requestWT901() {
 //                                                                                                                       I2C READ
 // ------------------------------------------------------------------------------------------------------------------------------
 
-void readI2COnce() {
+void I2CRequestScan() {
   // ---------------------------------------
   // make i2c request if interrupt flag true
   // --------------------------------------- 
