@@ -319,7 +319,7 @@ void beginSSD1351();
 void endSSD1351();
 void sdcardQuickCheck();
 void I2CRequestScan();
-// void requestWT901();
+void requestWT901();
 void UIIndicators();
 void printAllTimes();
 void zero_matrix();
@@ -1035,7 +1035,7 @@ DHT dht(CD74HC4067_SIG, DHTTYPE); // plug DHT11 into CD74HC406 analog/digital mu
 TaskHandle_t GPSTask;
 TaskHandle_t UpdateUITask;
 TaskHandle_t TrackPlanetsTask;
-TaskHandle_t RequestWT901Task;
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                            RTC
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12943,12 +12943,14 @@ void drawPanets() {
 }
 
 
+
 void UpdateUI(void * pvParamters) {
 
   while (1) {
 
   // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display.
   I2CRequestScan();
+  requestWT901(); // will be moved frrom here.
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -16917,260 +16919,256 @@ void writeI2C(int I2C_Address) {
 //                                                                                                         I2C REQUEST FROM WT901
 // ------------------------------------------------------------------------------------------------------------------------------
 
-void requestWT901(void * pvParamaters) {
+void requestWT901() {
 
-  while (1) {
+  // -----------------------
+  // reset module request counter
+  // -----------------------
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  strcpy(I2CLink.TMP_BUFFER_0, "$RST");
+  writeI2C(I2C_ADDR_WT901_0);
 
-    // -----------------------
-    // reset module request counter
-    // -----------------------
-    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-    strcpy(I2CLink.TMP_BUFFER_0, "$RST");
-    writeI2C(I2C_ADDR_WT901_0);
+  // -------------------------------------------------------------------------------------------
+  // ACCELERATION
+  // -------------------------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------------------------
-    // ACCELERATION
-    // -------------------------------------------------------------------------------------------
-
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration x
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_acc_x=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_x=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration x
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_acc_x=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_x=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration y
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_acc_y=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_y=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration y
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_acc_y=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_y=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration z
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_acc_z=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_z=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration z
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_acc_z=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_z=atof(I2CLink.token);}
     }
+  }
 
-    // -------------------------------------------------------------------------------------------
-    // ANGLE
-    // -------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------
+  // ANGLE
+  // -------------------------------------------------------------------------------------------
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration x
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_ang_x=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_x=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration x
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_ang_x=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_x=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration y
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_ang_y=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_y=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration y
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_ang_y=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_y=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration z
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_ang_z=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_z=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration z
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_ang_z=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_z=atof(I2CLink.token);}
     }
+  }
 
-    // -------------------------------------------------------------------------------------------
-    // MAGNETIC FIELD
-    // -------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------
+  // MAGNETIC FIELD
+  // -------------------------------------------------------------------------------------------
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration x
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_mag_x=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_x=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration x
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_mag_x=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_x=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration y
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_mag_y=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_y=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration y
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_mag_y=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_y=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration z
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_mag_z=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_z=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration z
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_mag_z=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_z=atof(I2CLink.token);}
     }
+  }
 
-    // -------------------------------------------------------------------------------------------
-    // GYRO
-    // -------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------
+  // GYRO
+  // -------------------------------------------------------------------------------------------
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration x
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_gyr_x=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration x
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_gyr_x=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration y
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_gyr_y=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration y
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_gyr_y=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
     }
+  }
 
-    // ----------------------------------------------
-    // make a request from found device
-    // ----------------------------------------------
-    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-    // ----------------------------------------------
-    // receive accelleration z
-    // ----------------------------------------------
-    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-    if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
-      // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-      I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-      if (I2CLink.token!=NULL) {
-        I2CLink.token=strtok(NULL, ",");
-        sensorData.wt901_gyr_z=atof(I2CLink.token);
-        // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
-      }
+  // ----------------------------------------------
+  // make a request from found device
+  // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // receive accelleration z
+  // ----------------------------------------------
+  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
+    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    if (I2CLink.token!=NULL) {
+      I2CLink.token=strtok(NULL, ",");
+      sensorData.wt901_gyr_z=atof(I2CLink.token);
+      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
     }
-    delay(10);
   }
 }
 
@@ -18121,21 +18119,6 @@ void setup() {
   }
 
   delay(10);
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // xTask GPS
-  // ----------------------------------------------------------------------------------------------------------------------------
-  xTaskCreatePinnedToCore(
-    requestWT901,   /* Function to implement the task */
-    "RequestWT901Task", /* Name of the task */
-    10240,     /* Stack size in words */
-    NULL,      /* Task input parameter */
-    2,         /* Priority of the task */
-    &RequestWT901Task,  /* Task handle. */
-    0);        /* Core where the task should run */
-  
-
-  delay(10);
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
@@ -18267,7 +18250,6 @@ void loop() {
       //                                                         SUSPEND TASKS
       // ---------------------------------------------------------------------
       vTaskSuspend(TrackPlanetsTask);
-      vTaskSuspend(RequestWT901Task);
       // ---------------------------------------------------------------------
       //                                                                MATRIX
       // ---------------------------------------------------------------------
@@ -18276,7 +18258,6 @@ void loop() {
       //                                                          RESUME TASKS
       // ---------------------------------------------------------------------
       vTaskResume(TrackPlanetsTask);
-      vTaskResume(RequestWT901Task);
     }
     else if (systemData.matrix_enabled==false) {
       if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
@@ -18318,7 +18299,6 @@ void loop() {
         //                                                           SUSPEND TASKS
         // -----------------------------------------------------------------------
         vTaskSuspend(TrackPlanetsTask);
-        vTaskSuspend(RequestWT901Task);
         // -----------------------------------------------------------------------
         //                                                                  MATRIX
         // -----------------------------------------------------------------------
@@ -18327,7 +18307,6 @@ void loop() {
         //                                                            RESUME TASKS
         // -----------------------------------------------------------------------
         vTaskResume(TrackPlanetsTask);
-        vTaskResume(RequestWT901Task);
       }
       else if (systemData.matrix_enabled==false) {
         if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
