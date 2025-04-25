@@ -17170,7 +17170,7 @@ void requestWT901(void * pvParamaters) {
         // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
       }
     }
-    delay(5);
+    delay(10);
   }
 }
 
