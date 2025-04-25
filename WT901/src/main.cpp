@@ -12355,7 +12355,7 @@ void UpdateUI(void * pvParamters) {
 
   // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display. 
   readI2COnce();
-  requestWT901();
+  // requestWT901();
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -17671,10 +17671,15 @@ void loop() {
     //                                                       SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=0;
+      load_distribution=2;
       // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
+
+    else if (load_distribution==2) {
+      load_distribution=0;
+      requestWT901();
     }
   }
 
