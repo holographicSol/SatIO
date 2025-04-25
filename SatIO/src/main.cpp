@@ -16580,23 +16580,23 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,255,0));
     display.drawVLine(127, 64-54, 64+54); // axis
-    display.drawHLine(122, 64-54, 127); // 90
-    display.drawHLine(122, 64-53, 127); // 90
-    display.drawHLine(122, 64-52, 127); // 90
+    display.drawHLine(123, 64-54, 127); // 90
+    display.drawHLine(123, 64-53, 127); // 90
+    display.drawHLine(123, 64-52, 127); // 90
     display.drawHLine(125, 64-38, 127); // 67.5
     display.drawHLine(125, 64-37, 127); // 67.5
-    display.drawHLine(122, 64-25, 127); // 45
+    display.drawHLine(123, 64-25, 127); // 45
     display.drawHLine(125, 64-13, 127); // 22.5
     display.drawHLine(125, 64-12, 127); // 22.5
-    display.drawHLine(121, 64, 127); // 0
+    display.drawHLine(123, 64, 127); // 0
     display.drawHLine(125, 64+13, 127); // -22.5
     display.drawHLine(125, 64+12, 127); // -22.5
-    display.drawHLine(122, 64+25, 127); // -45
+    display.drawHLine(123, 64+25, 127); // -45
     display.drawHLine(125, 64+38, 127); // -67.5
     display.drawHLine(125, 64+39, 127); // -67.5
-    display.drawHLine(122, 64+52, 127); // -90
-    display.drawHLine(122, 64+53, 127); // -90
-    display.drawHLine(122, 64+54, 127); // -90
+    display.drawHLine(123, 64+52, 127); // -90
+    display.drawHLine(123, 64+53, 127); // -90
+    display.drawHLine(123, 64+54, 127); // -90
     // ------------------------------------------------
     // pitch slider clear position
     // ------------------------------------------------
@@ -16627,23 +16627,23 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     display.setColor(RGB_COLOR16(0,0,255));
     display.drawHLine(64-52, 127, 64+54); // axis
-    display.drawVLine(64-54, 122, 127); // -180
-    display.drawVLine(64-53, 122, 127); // -180
-    display.drawVLine(64-52, 122, 127); // -180
+    display.drawVLine(64-54, 123, 127); // -180
+    display.drawVLine(64-53, 123, 127); // -180
+    display.drawVLine(64-52, 123, 127); // -180
     display.drawVLine(64-38, 125, 127); // -135
     display.drawVLine(64-37, 125, 127); // -135
-    display.drawVLine(64-25, 122, 127); // -90
+    display.drawVLine(64-25, 123, 127); // -90
     display.drawVLine(64-13, 125, 127); // -45
     display.drawVLine(64-12, 125, 127); // -45
-    display.drawVLine(64, 121, 127); // 0
+    display.drawVLine(64, 123, 127); // 0
     display.drawVLine(64+12, 125, 127); // 45
     display.drawVLine(64+13, 125, 127); // 45
-    display.drawVLine(64+25, 122, 127); // 90
+    display.drawVLine(64+25, 123, 127); // 90
     display.drawVLine(64+37, 125, 127); // 135
     display.drawVLine(64+38, 125, 127); // 135
-    display.drawVLine(64+52, 122, 127); // 180
-    display.drawVLine(64+53, 122, 127); // 180
-    display.drawVLine(64+54, 122, 127); // 180
+    display.drawVLine(64+52, 123, 127); // 180
+    display.drawVLine(64+53, 123, 127); // 180
+    display.drawVLine(64+54, 123, 127); // 180
     // ------------------------------------------------
     // yaw slider clear position
     // ------------------------------------------------
@@ -16711,68 +16711,77 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // angle x
     // ------------------------------------------------
-    canvas28x8.clear();
-    display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 50, canvas28x8);
+    canvas19x8.clear();
+    display.setColor(systemData.color_content); // positive high
+    if (sensorData.wt901_ang_x<0) {display.setColor(RGB_COLOR16(0,0,255));} // negative low
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_ang_x)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 50, canvas19x8);
     // ------------------------------------------------
     // acceleration x
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 60, canvas28x8);
+    if (sensorData.wt901_acc_x<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_acc_x)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 60, canvas19x8);
     // ------------------------------------------------
     // gyro x
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 70, canvas28x8);
+    if (sensorData.wt901_gyr_x<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_gyr_x)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 70, canvas19x8);
 
     // ------------------------------------------------
     // angle y
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 10, canvas28x8);
+    if (sensorData.wt901_ang_y<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_ang_y)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 10, canvas19x8);
     // ------------------------------------------------
     // acceleration y
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 20, canvas28x8);
+    if (sensorData.wt901_acc_y<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_acc_y)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 20, canvas19x8);
     // ------------------------------------------------
     // gyro y
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 30, canvas28x8);
+    if (sensorData.wt901_gyr_y<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_gyr_y)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 30, canvas19x8);
 
     // ------------------------------------------------
     // angle z
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 90, canvas28x8);
+    if (sensorData.wt901_ang_z<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_ang_z)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 90, canvas19x8);
     // ------------------------------------------------
     // acceleration z
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 100, canvas28x8);
+    if (sensorData.wt901_acc_z<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_acc_z)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 100, canvas19x8);
     // ------------------------------------------------
     // gyro z
     // ------------------------------------------------
-    canvas28x8.clear();
+    canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(93, 110, canvas28x8);
+    if (sensorData.wt901_gyr_z<0) {display.setColor(RGB_COLOR16(0,0,255));}
+    canvas19x8.printFixed(0, 0, String((int)abs(sensorData.wt901_gyr_z)).c_str(), STYLE_BOLD);
+    display.drawCanvas(100, 110, canvas19x8);
 
     // ------------------------------------------------
     // altitude (full width)
