@@ -16020,15 +16020,11 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // pitch slider debug
-    // ------------------------------------------------
-    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(mapped_pitch));
-    // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    if (sensorData.wt901_ang_y<-45 || sensorData.wt901_ang_y>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
     display.drawCanvas(120, 121, canvas8x8);
     
     // ------------------------------------------------
@@ -16062,11 +16058,8 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw slider new position
+    // yaw slider new position (temporarily gyro z)
     // ------------------------------------------------
-    // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
-    // gpatt_yaw=180; // uncomment to test
-    // gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
     mapped_yaw = map(sensorData.wt901_gyr_z, -180, 180, 64-52, 64+50);
@@ -16074,15 +16067,11 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw slider debug
-    // ------------------------------------------------
-    // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw] " + String(mapped_yaw) + " [x] " + String(mapped_yaw));
-    // ------------------------------------------------
-    // yaw warning
+    // yaw warning (temporarily gyro z)
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    if (sensorData.wt901_gyr_z<-90 || sensorData.wt901_gyr_z>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
     display.drawCanvas(0, 121, canvas8x8);
 
     // ------------------------------------------------
