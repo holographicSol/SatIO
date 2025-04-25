@@ -448,9 +448,9 @@ TFT_eSprite uap = TFT_eSprite(&tft);
 // ------------------------------------
 // sprite data: device/vehicle rotation
 // ------------------------------------
-int gpatt_roll = 0; // rotation angle
-int mapped_gpatt_roll; // mapped rotation angle
-int offset_gpatt_roll_0 = 90; // default (horizontal) is +90 degrees.
+int wt901_roll = 0; // rotation angle
+int mapped_wt901_roll; // mapped rotation angle
+int offset_wt901_roll_0 = 90; // default (horizontal) is +90 degrees.
 uint16_t uap_piv_X; // x pivot of Sprite (middle)
 uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
 int uap_w = 40; // width of sprite
@@ -12040,21 +12040,22 @@ void DisplayUAP() {
   // calculate rotation
   // ------------------------------------------------------------
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
-  mapped_gpatt_roll = gpatt_roll; // sim
-  // mapped_gpatt_roll = gpattData.roll; // INS
-  mapped_gpatt_roll = map(mapped_gpatt_roll, -90.00, 90, 0, 360);
-  mapped_gpatt_roll -= offset_gpatt_roll_0;
+  // mapped_wt901_roll = wt901_roll; // sim
+  mapped_wt901_roll = sensorData.wt901_ang_y;
+  Serial.println(sensorData.wt901_ang_y);
+  mapped_wt901_roll = map(mapped_wt901_roll, -90.00, 90, 0, 360);
+  mapped_wt901_roll -= offset_wt901_roll_0;
   
   // ------------------------------------------------------------
   // uncomment to force roll incrementation and debug
   // ------------------------------------------------------------
-  // Serial.println("[roll] "+String(gpatt_roll)+" [ui offset] "+String(offset_gpatt_roll_0)+" [ui value] "+String(mapped_gpatt_roll));
-  gpatt_roll++; if (gpatt_roll>360) {gpatt_roll=0;} // sim
+  // Serial.println("[roll] "+String(wt901_roll)+" [ui offset] "+String(offset_wt901_roll_0)+" [ui value] "+String(mapped_wt901_roll));
+  // wt901_roll++; if (wt901_roll>360) {wt901_roll=0;} // sim
 
   // ------------------------------------------------------------
   // rotate sprite and free memory
   // ------------------------------------------------------------
-  uap.pushRotated((int)mapped_gpatt_roll);
+  uap.pushRotated((int)mapped_wt901_roll);
   yield();
   uap.deleteSprite();
 }
@@ -16305,10 +16306,10 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_x=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_acc_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16320,10 +16321,10 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_y=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_acc_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16335,10 +16336,10 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_z=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_acc_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16354,10 +16355,10 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_ang_x=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_ang_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16369,10 +16370,12 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_ang_y=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    // Serial.println("[after] " + String(I2CLink.token));
+    sensorData.wt901_ang_y=atof(I2CLink.token);
+    // Serial.println("[wt901_ang_y] " + String(sensorData.wt901_ang_y));
   }
 
   // ----------------------------------------------
@@ -16384,10 +16387,10 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-   sensorData.wt901_ang_z=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_ang_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16403,10 +16406,10 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_x=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_mag_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16418,10 +16421,10 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_y=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_mag_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16433,10 +16436,10 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_z=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_mag_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16452,10 +16455,10 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_x=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_gyr_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16467,10 +16470,10 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_y=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_gyr_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16482,10 +16485,10 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 2)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_z=atof(I2CLink.INPUT_BUFFER);
+    I2CLink.token=strtok(NULL, ",");
+    sensorData.wt901_gyr_z=atof(I2CLink.token);
   }
 }
 
