@@ -278,7 +278,7 @@ increase calculation potential.
   ToDo: More data / calculate more data from existing data.
 
   ToDo: Macros. Currently there are no specific macros for programming a matrix entry, this is while the systems architecture and
-  essential framework have been developed asnd carefully cosnidered. If and when macros are implemented, macros should be programmable
+  essential framework have been developed and carefully cosnidered. If and when macros are implemented, macros should be programmable
   and or predefined. Until then matrix entries must be programmmed in via HIDs+UI and or hardcoded into the matrix before flashing the firmware.
 
   Complete PlatformIO project files, libraries and modified libraries:
