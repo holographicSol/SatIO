@@ -16013,9 +16013,6 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider new position
     // ------------------------------------------------
-    // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
-    // gpatt_pitch=90; // uncomment to test
-    // gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
     mapped_pitch = map(sensorData.wt901_ang_y, 90, -90, 64-52, 64+50);
@@ -16069,10 +16066,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
     // gpatt_yaw=180; // uncomment to test
-    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
+    // gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
-    mapped_yaw = map(gpatt_yaw, -180, 180, 64-52, 64+50);
+    mapped_yaw = map(sensorData.wt901_gyr_z, -180, 180, 64-52, 64+50);
     hud.pushSprite((int)mapped_yaw, 121, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
