@@ -277,6 +277,10 @@ increase calculation potential.
 
   ToDo: More data / calculate more data from existing data.
 
+  ToDo: Macros. Currently there are no specific macros for programming a matrix entry, this is while the systems architecture and
+  essential framework have been developed asnd carefully cosnidered. If and when macros are implemented, macros should be programmable
+  and or predefined. Until then matrix entries must be programmmed in via HIDs+UI and or hardcoded into the matrix before flashing the firmware.
+
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
 
@@ -18356,7 +18360,7 @@ void loop() {
     //                                                       SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=2;
+      load_distribution=0;
       // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
