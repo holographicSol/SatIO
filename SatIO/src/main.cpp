@@ -2840,12 +2840,12 @@ struct MatrixStruct {
   // -------------------------------------------------------------------------------------------------------
   // number of available base function names that can be used to program a matrix switch
   // -------------------------------------------------------------------------------------------------------
-  int max_matrix_function_names=134;
+  int max_matrix_function_names=146;
 
   // -------------------------------------------------------------------------------------------------------
   // function names for function name matrix
   // -------------------------------------------------------------------------------------------------------
-  char matrix_function_names[134][25]=
+  char matrix_function_names[146][25]=
   {
     "None",
     "Enabled",
@@ -2905,6 +2905,18 @@ struct MatrixStruct {
     "GNGGAValidCD",
     "GNRMCValidCD",
     "GPATTValidCD",
+    "WT901AccX",
+    "WT901AccY",
+    "WT901AccZ",
+    "WT901AngX",
+    "WT901AngY",
+    "WT901AngZ",
+    "WT901MagX",
+    "WT901MagY",
+    "WT901MagZ",
+    "WT901GyroX",
+    "WT901GyroY",
+    "WT901GyroZ",
     "SunAz",
     "SunAlt",
     "DayTime",
@@ -2991,7 +3003,7 @@ MatrixStruct matrixData;
 // this list is currently seperate from matrix_function_names in matrixData so that function names are not dependant on lcdgfx.
 // the lists would be preferrably merged (providing function names are still not tied to any particular display driver). 
 // ------------------------------------------------------------------------------------------------------------------------------
-const char *menuMatrixSetFunctionNameItems[134] =
+const char *menuMatrixSetFunctionNameItems[146] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -3127,18 +3139,18 @@ const char *menuMatrixSetFunctionNameItems[134] =
   matrixData.matrix_function_names[131],
   matrixData.matrix_function_names[132],
   matrixData.matrix_function_names[133],
-  // matrixData.matrix_function_names[134],
-  // matrixData.matrix_function_names[135],
-  // matrixData.matrix_function_names[136],
-  // matrixData.matrix_function_names[137],
-  // matrixData.matrix_function_names[138],
-  // matrixData.matrix_function_names[139],
-  // matrixData.matrix_function_names[140],
-  // matrixData.matrix_function_names[141],
-  // matrixData.matrix_function_names[142],
-  // matrixData.matrix_function_names[143],
-  // matrixData.matrix_function_names[144],
-  // matrixData.matrix_function_names[145],
+  matrixData.matrix_function_names[134],
+  matrixData.matrix_function_names[135],
+  matrixData.matrix_function_names[136],
+  matrixData.matrix_function_names[137],
+  matrixData.matrix_function_names[138],
+  matrixData.matrix_function_names[139],
+  matrixData.matrix_function_names[140],
+  matrixData.matrix_function_names[141],
+  matrixData.matrix_function_names[142],
+  matrixData.matrix_function_names[143],
+  matrixData.matrix_function_names[144],
+  matrixData.matrix_function_names[145],
   // matrixData.matrix_function_names[146],
   // matrixData.matrix_function_names[147],
   // matrixData.matrix_function_names[148],
@@ -3250,7 +3262,7 @@ const char *menuMatrixSetFunctionNameItems[134] =
   // matrixData.matrix_function_names[254],
   // matrixData.matrix_function_names[255],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 134, {{2, 86}, {125, 125}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 146, {{2, 86}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -9292,6 +9304,575 @@ void matrixSwitch() {
           tmp_matrix[Fi]=check_equal_true(gnrmcData.count_valid_elements, 14);}
         else if (strcmp(matrixData.matrix_function[Mi][Fi], "GPATTValidCD")==0) {
           tmp_matrix[Fi]=check_equal_true(gpattData.count_valid_elements, 41);}
+        
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     WT901 ACCELERATION
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.dht11_h_0,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_acc_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccYOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccYUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccYEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccYRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_acc_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccZOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccZUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccZEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccZRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_acc_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                            WT901 ANGLE
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngXOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngXEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngXRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_ang_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngYOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngYUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngYEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngYRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_ang_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngZOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngZUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngZEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AngZRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_ang_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                   WT901 MAGNETIC FIELD
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagXOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagXUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagXEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagXRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_mag_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagYOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagYUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagYEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagYRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_mag_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagZOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagZUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagZEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901MagZRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_mag_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                             WT901 GYRO
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroXOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroXUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroXEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroXRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_gyr_x,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroYOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroYUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroYEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroYRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_gyr_y,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroZOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroZUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroZEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901GyroZRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.wt901_gyr_z,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+            matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
 
         // ----------------------------------------------------------------------------------------------------------------------
         //                                                                                                       DHT11_0 HUMIDITY
@@ -11600,6 +12181,18 @@ String getRelatedX(char * data) {
   if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.count_valid_elements);}
   if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.count_valid_elements);}
   if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.count_valid_elements);}
+  if (strncmp("WT901AccX", data, 8)==0) {return String(sensorData.wt901_acc_x, 3);}
+  if (strncmp("WT901AccY", data, 8)==0) {return String(sensorData.wt901_acc_y, 3);}
+  if (strncmp("WT901AccZ", data, 8)==0) {return String(sensorData.wt901_acc_z, 3);}
+  if (strncmp("WT901AngX", data, 8)==0) {return String(sensorData.wt901_ang_x, 3);}
+  if (strncmp("WT901AngY", data, 8)==0) {return String(sensorData.wt901_ang_y, 3);}
+  if (strncmp("WT901AngZ", data, 8)==0) {return String(sensorData.wt901_ang_z, 3);}
+  if (strncmp("WT901MagX", data, 8)==0) {return String(sensorData.wt901_mag_x, 3);}
+  if (strncmp("WT901MagY", data, 8)==0) {return String(sensorData.wt901_mag_y, 3);}
+  if (strncmp("WT901MagZ", data, 8)==0) {return String(sensorData.wt901_mag_z, 3);}
+  if (strncmp("WT901GyroX", data, 8)==0) {return String(sensorData.wt901_gyr_x, 3);}
+  if (strncmp("WT901GyroY", data, 8)==0) {return String(sensorData.wt901_gyr_y, 3);}
+  if (strncmp("WT901GyroZ", data, 8)==0) {return String(sensorData.wt901_gyr_z, 3);}
   if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
   if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
   if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
