@@ -12041,8 +12041,7 @@ void DisplayUAP() {
   // ------------------------------------------------------------
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
   // mapped_wt901_roll = wt901_roll; // sim
-  mapped_wt901_roll = sensorData.wt901_ang_y;
-  Serial.println(sensorData.wt901_ang_y);
+  mapped_wt901_roll = sensorData.wt901_ang_x;
   mapped_wt901_roll = map(mapped_wt901_roll, -90.00, 90, 0, 360);
   mapped_wt901_roll -= offset_wt901_roll_0;
   
@@ -16014,25 +16013,18 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // pitch slider new position
     // ------------------------------------------------
-    // gpatt_pitch=atof(gpattData.pitch); // uncomment to use INS
-    // gpatt_pitch=90; // uncomment to test
-    gpatt_pitch++; if (gpatt_pitch>90) {gpatt_pitch=-90;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_BLUE);
-    mapped_pitch = map(gpatt_pitch, 90, -90, 64-52, 64+50);
+    mapped_pitch = map(sensorData.wt901_ang_y, 90, -90, 64-52, 64+50);
     hud.pushSprite(121, (int)mapped_pitch, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
-    // ------------------------------------------------
-    // pitch slider debug
-    // ------------------------------------------------
-    // Serial.println("[gpatt_pitch] " + String(gpatt_pitch) + " [mapped_pitch]" + String(mapped_pitch) + " [x] " + String(mapped_pitch));
     // ------------------------------------------------
     // pitch warning
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_pitch<-45 || gpatt_pitch>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    if (sensorData.wt901_ang_y<-45 || sensorData.wt901_ang_y>45) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
     display.drawCanvas(120, 121, canvas8x8);
     
     // ------------------------------------------------
@@ -16066,27 +16058,20 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw slider new position
+    // yaw slider new position (temporarily gyro z as 'holding the line')
     // ------------------------------------------------
-    // gpatt_yaw=atof(gpattData.yaw); // uncomment to use INS
-    // gpatt_yaw=180; // uncomment to test
-    gpatt_yaw++; if (gpatt_yaw>180) {gpatt_yaw=-180;} // uncomment to simulate
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
-    mapped_yaw = map(gpatt_yaw, -180, 180, 64-52, 64+50);
+    mapped_yaw = map(sensorData.wt901_gyr_z, -180, 180, 64-52, 64+50);
     hud.pushSprite((int)mapped_yaw, 121, TFT_TRANSPARENT);
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw slider debug
-    // ------------------------------------------------
-    // Serial.println("[gpatt_yaw] " + String(gpatt_yaw) + " [mapped_yaw] " + String(mapped_yaw) + " [x] " + String(mapped_yaw));
-    // ------------------------------------------------
-    // yaw warning
+    // yaw warning (temporarily gyro z as 'holding the line')
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
-    if (gpatt_yaw<-90 || gpatt_yaw>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
+    if (sensorData.wt901_gyr_z<-90 || sensorData.wt901_gyr_z>90) {canvas8x8.printFixed(2, 0, "!", STYLE_BOLD);}
     display.drawCanvas(0, 121, canvas8x8);
 
     // ------------------------------------------------
@@ -16132,21 +16117,21 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 50, canvas19x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 60, canvas19x8);
     // ------------------------------------------------
-    // yaw
+    // yaw (temporarily different to uap yaw as this will stay the same)
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 70, canvas19x8);
     // ------------------------------------------------
     // altitude (full width)
@@ -16308,6 +16293,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_acc_x=atof(I2CLink.token);
   }
@@ -16323,6 +16309,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_acc_y=atof(I2CLink.token);
   }
@@ -16338,6 +16325,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_acc_z=atof(I2CLink.token);
   }
@@ -16357,6 +16345,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_ang_x=atof(I2CLink.token);
   }
@@ -16372,10 +16361,9 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
-    // Serial.println("[after] " + String(I2CLink.token));
     sensorData.wt901_ang_y=atof(I2CLink.token);
-    // Serial.println("[wt901_ang_y] " + String(sensorData.wt901_ang_y));
   }
 
   // ----------------------------------------------
@@ -16389,6 +16377,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_ang_z=atof(I2CLink.token);
   }
@@ -16408,6 +16397,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_mag_x=atof(I2CLink.token);
   }
@@ -16423,6 +16413,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_mag_y=atof(I2CLink.token);
   }
@@ -16438,6 +16429,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_mag_z=atof(I2CLink.token);
   }
@@ -16457,6 +16449,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_gyr_x=atof(I2CLink.token);
   }
@@ -16472,6 +16465,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_gyr_y=atof(I2CLink.token);
   }
@@ -16487,6 +16481,7 @@ void requestWT901() {
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     I2CLink.token=strtok(NULL, ",");
     sensorData.wt901_gyr_z=atof(I2CLink.token);
   }
@@ -17676,7 +17671,7 @@ void loop() {
     //                                                       SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=0;
+      load_distribution=2;
       // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
