@@ -453,8 +453,8 @@ int mapped_roll; // mapped rotation angle
 int offset_wt901_roll_0 = 90; // default (horizontal) is +90 degrees.
 uint16_t uap_piv_X; // x pivot of Sprite (middle)
 uint16_t uap_piv_y; // y pivot of Sprite (10 pixels from bottom)
-int uap_w = 28; // width of sprite
-int uap_h = 28; // height of sprite
+int uap_w = 24; // width of sprite
+int uap_h = 24; // height of sprite
 
 float gpatt_yaw=0;
 float mapped_yaw=0;
@@ -12626,7 +12626,7 @@ void DisplayUAP() {
   // ------------------------------------------------------------
   // draw object to be rotated
   // ------------------------------------------------------------
-  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y+56, TFT_BLUE); // uap
+  uap.fillRect(uap_piv_X - 1, 1, 2, uap_piv_y+48, TFT_BLUE); // uap
   uap.fillCircle(uap_piv_X-2, uap_piv_y, 2, TFT_GREEN); // uap orientation
 
   // ------------------------------------------------------------
@@ -16707,69 +16707,94 @@ void UpdateUI(void * pvParamters) {
     display.setColor(systemData.color_content);
     canvas74x8.printFixed(0, 0, String(satData.degrees_longitude, 7).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 30, canvas74x8);
+
     // ------------------------------------------------
     // angle x
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
     canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 40, canvas28x8);
-    // ------------------------------------------------
-    // angle y
-    // ------------------------------------------------
-    canvas28x8.clear();
-    display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 50, canvas28x8);
-    // ------------------------------------------------
-    // angle z
-    // ------------------------------------------------
-    canvas28x8.clear();
-    display.setColor(systemData.color_content);
-    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 60, canvas28x8);
+    display.drawCanvas(89, 50, canvas28x8);
     // ------------------------------------------------
     // acceleration x
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
     canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_x).c_str(), STYLE_BOLD);
-    display.drawCanvas(89, 40, canvas28x8);
+    display.drawCanvas(89, 60, canvas28x8);
+    // ------------------------------------------------
+    // gyro x
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_x).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 70, canvas28x8);
+
+    // ------------------------------------------------
+    // angle y
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 10, canvas28x8);
     // ------------------------------------------------
     // acceleration y
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
     canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(89, 50, canvas28x8);
+    display.drawCanvas(89, 20, canvas28x8);
+    // ------------------------------------------------
+    // gyro y
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 30, canvas28x8);
+
+    // ------------------------------------------------
+    // angle z
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 90, canvas28x8);
     // ------------------------------------------------
     // acceleration z
     // ------------------------------------------------
     canvas28x8.clear();
     display.setColor(systemData.color_content);
     canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_acc_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(89, 60, canvas28x8);
+    display.drawCanvas(89, 100, canvas28x8);
+    // ------------------------------------------------
+    // gyro z
+    // ------------------------------------------------
+    canvas28x8.clear();
+    display.setColor(systemData.color_content);
+    canvas28x8.printFixed(0, 0, String((int)sensorData.wt901_gyr_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(89, 110, canvas28x8);
+
     // ------------------------------------------------
     // altitude (full width)
     // ------------------------------------------------
-    canvas120x8.clear();
+    canvas60x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 90, canvas120x8);
+    canvas60x8.printFixed(0, 0, String(atoi(gnggaData.altitude)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 90, canvas60x8);
     // ------------------------------------------------
     // ground speed
     // ------------------------------------------------
-    canvas62x8.clear();
+    canvas60x8.clear();
     display.setColor(systemData.color_content);
-    canvas62x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 100, canvas62x8);
+    canvas60x8.printFixed(0, 0, String(atoi(gnrmcData.ground_speed)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 100, canvas60x8);
     // ------------------------------------------------
     // mileage (full width)
     // ------------------------------------------------
-    canvas120x8.clear();
+    canvas60x8.clear();
     display.setColor(systemData.color_content);
-    canvas120x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
-    display.drawCanvas(0, 110, canvas120x8);
+    canvas60x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 110, canvas60x8);
     // ------------------------------------------------
     // UAP
     // ------------------------------------------------
