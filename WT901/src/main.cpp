@@ -16058,7 +16058,7 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw slider new position (temporarily gyro z)
+    // yaw slider new position (temporarily gyro z as 'holding the line')
     // ------------------------------------------------
     hud.createSprite(5, 5);
     hud.fillRect(0, 0, 4, 4, TFT_GREEN);
@@ -16067,7 +16067,7 @@ void UpdateUI(void * pvParamters) {
     yield();
     hud.deleteSprite();
     // ------------------------------------------------
-    // yaw warning (temporarily gyro z)
+    // yaw warning (temporarily gyro z as 'holding the line')
     // ------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
@@ -16117,21 +16117,21 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.pitch)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_y).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 50, canvas19x8);
     // ------------------------------------------------
     // roll
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.roll)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_x).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 60, canvas19x8);
     // ------------------------------------------------
-    // yaw
+    // yaw (temporarily different to uap yaw as this will stay the same)
     // ------------------------------------------------
     canvas19x8.clear();
     display.setColor(systemData.color_content);
-    canvas19x8.printFixed(0, 0, String(atoi(gpattData.yaw)).c_str(), STYLE_BOLD);
+    canvas19x8.printFixed(0, 0, String(sensorData.wt901_ang_z).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 70, canvas19x8);
     // ------------------------------------------------
     // altitude (full width)
