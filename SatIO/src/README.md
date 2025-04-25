@@ -16306,7 +16306,7 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_acc_x=atof(I2CLink.INPUT_BUFFER);
@@ -16321,7 +16321,7 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_acc_y=atof(I2CLink.INPUT_BUFFER);
@@ -16336,7 +16336,7 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_acc_z=atof(I2CLink.INPUT_BUFFER);
@@ -16355,7 +16355,7 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_ang_x=atof(I2CLink.INPUT_BUFFER);
@@ -16370,7 +16370,7 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_ang_y=atof(I2CLink.INPUT_BUFFER);
@@ -16385,7 +16385,7 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
    sensorData.wt901_ang_z=atof(I2CLink.INPUT_BUFFER);
@@ -16404,7 +16404,7 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_mag_x=atof(I2CLink.INPUT_BUFFER);
@@ -16419,7 +16419,7 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_mag_y=atof(I2CLink.INPUT_BUFFER);
@@ -16434,7 +16434,7 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_mag_z=atof(I2CLink.INPUT_BUFFER);
@@ -16453,7 +16453,7 @@ void requestWT901() {
   // receive accelleration x
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_gyr_x=atof(I2CLink.INPUT_BUFFER);
@@ -16468,7 +16468,7 @@ void requestWT901() {
   // receive accelleration y
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_gyr_y=atof(I2CLink.INPUT_BUFFER);
@@ -16483,7 +16483,7 @@ void requestWT901() {
   // receive accelleration z
   // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 4)==0) {
+  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
     sensorData.wt901_gyr_z=atof(I2CLink.INPUT_BUFFER);
