@@ -12042,7 +12042,7 @@ void DisplayUAP() {
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
   // mapped_wt901_roll = wt901_roll; // sim
   mapped_wt901_roll = sensorData.wt901_ang_y;
-  // Serial.println(sensorData.wt901_ang_y);
+  Serial.println(sensorData.wt901_ang_y);
   mapped_wt901_roll = map(mapped_wt901_roll, -90.00, 90, 0, 360);
   mapped_wt901_roll -= offset_wt901_roll_0;
   
@@ -16309,7 +16309,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_x=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_acc_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16324,7 +16324,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_y=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_acc_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16339,7 +16339,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_acc_z=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_acc_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16358,7 +16358,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_ang_x=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_ang_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16373,7 +16373,8 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_ang_y=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_ang_y=atof(I2CLink.token);
+    // Serial.println("[wt901_ang_y] " + String(sensorData.wt901_ang_y));
   }
 
   // ----------------------------------------------
@@ -16388,7 +16389,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-   sensorData.wt901_ang_z=atof(I2CLink.INPUT_BUFFER);
+   sensorData.wt901_ang_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16407,7 +16408,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_x=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_mag_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16422,7 +16423,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_y=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_mag_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16437,7 +16438,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_mag_z=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_mag_z=atof(I2CLink.token);
   }
 
   // -------------------------------------------------------------------------------------------
@@ -16456,7 +16457,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_x=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_gyr_x=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16471,7 +16472,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_y=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_gyr_y=atof(I2CLink.token);
   }
 
   // ----------------------------------------------
@@ -16486,7 +16487,7 @@ void requestWT901() {
   if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
     // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
     I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    sensorData.wt901_gyr_z=atof(I2CLink.INPUT_BUFFER);
+    sensorData.wt901_gyr_z=atof(I2CLink.token);
   }
 }
 
