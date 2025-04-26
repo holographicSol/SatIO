@@ -1163,7 +1163,7 @@ struct systemStruct {
   // overload can help the user ascertain if user defined timings are being met (through observation during and after matrix setup),
   // if the system is overloading according to user defined overload time, then user should reconsider how far user is trying to push
   // the system. overload does not reflect any utilization of hardware, overload is to observe the system is operating withing a
-  // required range of timing, where and if timing is required to be below a vertain threshold where otherwise events may and or
+  // required range of timing, where and if timing is required to be below a certain threshold where otherwise events may and or
   // will be missed. if GPS and no timing is of concern then overload max can be set high and ignored if overload is true. 
   bool overload=false;         
   int i_overload=0;            // count overloads
