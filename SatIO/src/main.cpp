@@ -1159,7 +1159,13 @@ struct systemStruct {
   int loops_a_second=0;
   int total_loops_a_second=0;
   float load_percentage=0;
-  bool overload=false;         // are loop times withing specified loop time max
+  // are loop times withing specified loop time max. if the system is programmed with any specifically required timings then
+  // overload can help the user ascertain if user defined timings are being met (through observation during and after matrix setup),
+  // if the system is overloading according to user defined overload time, then user should reconsider how far user is trying to push
+  // the system. overload does not reflect any utilization of hardware, overload is to observe the system is operating withing a
+  // required range of timing, where and if timing is required to be below a vertain threshold where otherwise events may and or
+  // will be missed. if GPS and no timing is of concern then overload max can be set high and ignored if overload is true. 
+  bool overload=false;         
   int i_overload=0;            // count overloads
   int overload_max=100000;     // main loop overload time in micros (default 100 milliseconds)
   int index_overload_times=10; // index of currently used time
