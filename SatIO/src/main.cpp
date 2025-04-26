@@ -1167,7 +1167,7 @@ struct systemStruct {
   // will be missed. if GPS and no timing is of concern then overload max can be set high and ignored if overload is true. 
   bool overload=false;         
   int i_overload=0;            // count overloads
-  int overload_max=100000;     // main loop overload time in micros (default 100 milliseconds)
+  int overload_max=100000;     // main loop overload time in micros (default 100 milliseconds for WTGPS300P output)
   int index_overload_times=10; // index of currently used time
   int max_overload_times=11;   // max overload menu values
   int overload_times[12]={
