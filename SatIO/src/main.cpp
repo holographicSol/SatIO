@@ -1159,7 +1159,7 @@ struct systemStruct {
   int loops_a_second=0;
   int total_loops_a_second=0;
   float load_percentage=0;
-  // are loop times withing specified loop time max. if the system is programmed with any specifically required timings then
+  // are loop times within specified loop time max. if the system is programmed with any specifically required timings then
   // overload can help the user ascertain if user defined timings are being met (through observation during and after matrix setup),
   // if the system is overloading according to user defined overload time, then user should reconsider how far user is trying to push
   // the system. overload does not reflect any utilization of hardware, overload is to observe the system is operating withing a
