@@ -12960,7 +12960,7 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  interaction_updateui=true; // temporarily always true (this bool was originally created for display write efficiency)
+  // interaction_updateui=true; // debug always true (this bool was originally created for display write efficiency)
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -13072,13 +13072,13 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuHome.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
-      // delay(100);
+      delay(100);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13110,7 +13110,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_content);
         display.setColor(systemData.color_menu_border);
         menuMain.showMenuBorder(display);
@@ -13288,7 +13288,7 @@ void UpdateUI(void * pvParamters) {
           // draw highlighted
           // --------------------------------------------
           if (interaction_updateui==true) {
-            // interaction_updateui=false;
+            interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
             menuMatrixSwitchSelect.showMenuBorder(display);
             display.setColor(systemData.color_menu_content);
@@ -13424,7 +13424,7 @@ void UpdateUI(void * pvParamters) {
           // draw highlighted
           // --------------------------------------------
           if (interaction_updateui==true) {
-            // interaction_updateui=false;
+            interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
             menuMatrixFunctionSelect.showMenuBorder(display);
             display.setColor(systemData.color_menu_content);
@@ -14004,7 +14004,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixConfigureFunction.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14138,7 +14138,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixSetFunctionName.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14188,7 +14188,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuFile.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14242,7 +14242,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14296,7 +14296,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14350,7 +14350,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14427,7 +14427,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuGPS.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15230,7 +15230,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuSerial.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15296,7 +15296,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuUniverse.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15345,7 +15345,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuDisplay.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15460,7 +15460,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuSystem.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15645,7 +15645,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        // interaction_updateui=false;
+        interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuTimeAndDate.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -16843,7 +16843,7 @@ void UpdateUI(void * pvParamters) {
   // ---------------------------------------------------------
   // delay next iteration of task
   // ---------------------------------------------------------
-  delay(1);
+  delay(5);
   }
 }
 
