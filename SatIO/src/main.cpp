@@ -12960,7 +12960,7 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  // interaction_updateui=true; // debug always true (this bool was originally created for display write efficiency)
+  I2CRequestScan();
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -18268,9 +18268,9 @@ void loop() {
     // --------------------------------------------------------------------
     else if (load_distribution==2) {
       load_distribution=3;
-      // t0=micros();
-      I2CRequestScan();
-      // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // // t0=micros();
+      // I2CRequestScan();
+      // // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
 
     // --------------------------------------------------------------------
