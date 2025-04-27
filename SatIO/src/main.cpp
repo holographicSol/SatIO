@@ -12960,9 +12960,7 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
-  // this call should not happen while ui is being updated, ui is updated here on a task, so currently the call is here so that this always happens before writing to display.
-  I2CRequestScan();
-  // requestWT901(); // will be moved from here to somewhere else. (currently disabled while being developed)
+  interaction_updateui=true; // temporarily always true (this bool was originally created for display write efficiency)
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -13074,13 +13072,13 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuHome.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
-      delay(100);
+      // delay(100);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -13112,7 +13110,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_content);
         display.setColor(systemData.color_menu_border);
         menuMain.showMenuBorder(display);
@@ -13290,7 +13288,7 @@ void UpdateUI(void * pvParamters) {
           // draw highlighted
           // --------------------------------------------
           if (interaction_updateui==true) {
-            interaction_updateui=false;
+            // interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
             menuMatrixSwitchSelect.showMenuBorder(display);
             display.setColor(systemData.color_menu_content);
@@ -13426,7 +13424,7 @@ void UpdateUI(void * pvParamters) {
           // draw highlighted
           // --------------------------------------------
           if (interaction_updateui==true) {
-            interaction_updateui=false;
+            // interaction_updateui=false;
             display.setColor(systemData.color_menu_border);
             menuMatrixFunctionSelect.showMenuBorder(display);
             display.setColor(systemData.color_menu_content);
@@ -14006,7 +14004,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixConfigureFunction.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14140,7 +14138,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixSetFunctionName.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14190,7 +14188,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuFile.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14244,7 +14242,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14298,7 +14296,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14352,7 +14350,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuMatrixFilepath.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -14429,7 +14427,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuGPS.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15232,7 +15230,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuSerial.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15298,7 +15296,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuUniverse.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15347,7 +15345,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuDisplay.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15462,7 +15460,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuSystem.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -15647,7 +15645,7 @@ void UpdateUI(void * pvParamters) {
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
-        interaction_updateui=false;
+        // interaction_updateui=false;
         display.setColor(systemData.color_menu_border);
         menuTimeAndDate.showMenuBorder(display);
         display.setColor(systemData.color_menu_content);
@@ -16858,10 +16856,11 @@ void UpdateUI(void * pvParamters) {
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[16]; // bytes to be sent
-  char INPUT_BUFFER[16];  // chars received
-  char TMP_BUFFER_0[16];  // chars of bytes to be sent
-  char TMP_BUFFER_1[16];  // some space for type conversions
+  int i_token=0;
+  byte OUTPUT_BUFFER[32]; // bytes to be sent
+  char INPUT_BUFFER[32];  // chars received
+  char TMP_BUFFER_0[32];  // chars of bytes to be sent
+  char TMP_BUFFER_1[32];  // some space for type conversions
   int I2CADDRESSINDEX=0;
   int I2CADDRESSRANGEMIN=0;   // for performance this should be modifiable, can be min zero
   int I2CADDRESSRANGEMAX=50; // for performance this should be modifiable, can be max 127
@@ -16931,257 +16930,144 @@ void writeI2C(int I2C_Address) {
 //                                                                                                         I2C REQUEST FROM WT901
 // ------------------------------------------------------------------------------------------------------------------------------
 
+
 void requestWT901() {
 
-  // -----------------------
-  // reset module request counter
-  // -----------------------
+  // int t0 = millis();
+
+  // ----------------------------------------------
+  // write
+  // ----------------------------------------------
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$RST");
+  strcpy(I2CLink.TMP_BUFFER_0, "$A");
   writeI2C(I2C_ADDR_WT901_0);
-
-  // -------------------------------------------------------------------------------------------
-  // ACCELERATION
-  // -------------------------------------------------------------------------------------------
-
   // ----------------------------------------------
-  // make a request from found device
+  // request
   // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
-  // receive accelleration x
+  // read
   // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACX,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
+  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // tokenize
+  // ----------------------------------------------
+  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.i_token=0;
+  if (strncmp(I2CLink.INPUT_BUFFER, "$A,", 2)==0) {
+    while (I2CLink.token != NULL) {
+      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+      if (I2CLink.i_token==0) {sensorData.wt901_acc_x=atof(I2CLink.token);}
+      if (I2CLink.i_token==1) {sensorData.wt901_acc_y=atof(I2CLink.token);}
+      if (I2CLink.i_token==2) {sensorData.wt901_acc_z=atof(I2CLink.token);}
       I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_acc_x=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_x=atof(I2CLink.token);}
+      I2CLink.i_token++;
     }
   }
 
   // ----------------------------------------------
-  // make a request from found device
+  // write
   // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  strcpy(I2CLink.TMP_BUFFER_0, "$B");
+  writeI2C(I2C_ADDR_WT901_0);
+  // ----------------------------------------------
+  // request
+  // ----------------------------------------------
   Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
-  // receive accelleration y
+  // read
   // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACY,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
+  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // tokenize
+  // ----------------------------------------------
+  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.i_token=0;
+  if (strncmp(I2CLink.INPUT_BUFFER, "$B,", 2)==0) {
+    while (I2CLink.token != NULL) {
+      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+      if (I2CLink.i_token==0) {sensorData.wt901_ang_x=atof(I2CLink.token);}
+      if (I2CLink.i_token==1) {sensorData.wt901_ang_y=atof(I2CLink.token);}
+      if (I2CLink.i_token==2) {sensorData.wt901_ang_z=atof(I2CLink.token);}
       I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_acc_y=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_y=atof(I2CLink.token);}
+      I2CLink.i_token++;
     }
   }
 
   // ----------------------------------------------
-  // make a request from found device
+  // write
   // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  strcpy(I2CLink.TMP_BUFFER_0, "$C");
+  writeI2C(I2C_ADDR_WT901_0);
+  // ----------------------------------------------
+  // request
+  // ----------------------------------------------
   Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
-  // receive accelleration z
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ACZ,", 5)==0) {
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_acc_z=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_acc_z=atof(I2CLink.token);}
-    }
-  }
-
-  // -------------------------------------------------------------------------------------------
-  // ANGLE
-  // -------------------------------------------------------------------------------------------
-
-  // ----------------------------------------------
-  // make a request from found device
+  // read
   // ----------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration x
-  // ----------------------------------------------
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANX,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
+  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // tokenize
+  // ----------------------------------------------
+  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.i_token=0;
+  if (strncmp(I2CLink.INPUT_BUFFER, "$C,", 2)==0) {
+    while (I2CLink.token != NULL) {
+      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+      if (I2CLink.i_token==0) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
+      if (I2CLink.i_token==1) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
+      if (I2CLink.i_token==2) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
       I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_ang_x=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_x=atof(I2CLink.token);}
+      I2CLink.i_token++;
     }
   }
 
   // ----------------------------------------------
-  // make a request from found device
+  // write
   // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  strcpy(I2CLink.TMP_BUFFER_0, "$D");
+  writeI2C(I2C_ADDR_WT901_0);
+  // ----------------------------------------------
+  // request
+  // ----------------------------------------------
   Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
-  // receive accelleration y
+  // read
   // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANY,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
+  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
+  // ----------------------------------------------
+  // tokenize
+  // ----------------------------------------------
+  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.i_token=0;
+  if (strncmp(I2CLink.INPUT_BUFFER, "$D,", 2)==0) {
+    while (I2CLink.token != NULL) {
+      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+      if (I2CLink.i_token==0) {sensorData.wt901_mag_x=atof(I2CLink.token);}
+      if (I2CLink.i_token==1) {sensorData.wt901_mag_y=atof(I2CLink.token);}
+      if (I2CLink.i_token==2) {sensorData.wt901_mag_z=atof(I2CLink.token);}
       I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_ang_y=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_y=atof(I2CLink.token);}
+      I2CLink.i_token++;
     }
   }
 
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration z
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$ANZ,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_ang_z=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_ang_z=atof(I2CLink.token);}
-    }
-  }
-
-  // -------------------------------------------------------------------------------------------
-  // MAGNETIC FIELD
-  // -------------------------------------------------------------------------------------------
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration x
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFX,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_mag_x=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_x=atof(I2CLink.token);}
-    }
-  }
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration y
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFY,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_mag_y=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_y=atof(I2CLink.token);}
-    }
-  }
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration z
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$MFZ,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_mag_z=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_mag_z=atof(I2CLink.token);}
-    }
-  }
-
-  // -------------------------------------------------------------------------------------------
-  // GYRO
-  // -------------------------------------------------------------------------------------------
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration x
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYX,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_gyr_x=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
-    }
-  }
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration y
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYY,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_gyr_y=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
-    }
-  }
-
-  // ----------------------------------------------
-  // make a request from found device
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // receive accelleration z
-  // ----------------------------------------------
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  if (strncmp(I2CLink.INPUT_BUFFER, "$GYZ,", 5)==0) {
-    // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
-    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-    if (I2CLink.token!=NULL) {
-      I2CLink.token=strtok(NULL, ",");
-      sensorData.wt901_gyr_z=atof(I2CLink.token);
-      // if (is_positive_negative_num(I2CLink.token)==true) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
-    }
-  }
+  // Serial.println("[requestWT901] " + String(millis()-t0));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -18188,6 +18074,9 @@ void loop() {
   // systemData.t_bench=true;
   systemData.loops_a_second++;
 
+  // I2CRequestScan();
+  // requestWT901();
+
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SUSPEND/RESUME GPS
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -18368,10 +18257,30 @@ void loop() {
     //                                                       SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=0;
+      load_distribution=2;
       // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
+
+    // --------------------------------------------------------------------
+    //                                                     I2C REQUEST SCAN
+    // --------------------------------------------------------------------
+    else if (load_distribution==2) {
+      load_distribution=3;
+      // t0=micros();
+      I2CRequestScan();
+      // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    }
+
+    // --------------------------------------------------------------------
+    //                                                        REQUEST WT901
+    // --------------------------------------------------------------------
+    else if (load_distribution==3) {
+      load_distribution=0;
+      // t0=micros();
+      requestWT901();
+      // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
