@@ -150,7 +150,7 @@ void receiveEvent(int) {
 int loops_between_requests=0;
 void requestEvent() {
 
-  Serial.println("[loops_between_requests] " + String(loops_between_requests));
+  // Serial.println("[loops_between_requests] " + String(loops_between_requests));
 
   if (I2CLink.request_counter==0) {
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
