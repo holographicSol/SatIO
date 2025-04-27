@@ -142,14 +142,15 @@ void receiveEvent(int) {
   // parse incoming data
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
   if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
-  if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
-  if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
-  if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
-  // if (strcmp(I2CLink.token, "$RST")==0) {I2CLink.request_counter=0;}
+  else if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
+  else if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
+  else if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
 }
 
 int loops_between_requests=0;
 void requestEvent() {
+
+  Serial.println("[loops_between_requests] " + String(loops_between_requests));
 
   if (I2CLink.request_counter==0) {
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
@@ -203,21 +204,25 @@ void requestEvent() {
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
   memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
   strcat(I2CLink.TMP_BUFFER0, "$D,");
-  dtostrf(sReg[HX], 1, 3, I2CLink.TMP_BUFFER1);
+  tmp_mag_x0 = mag_x_high;
+  if (abs(mag_x_low) > mag_x_high) {tmp_mag_x0=mag_x_low;} // special magnetic field resolution compensation
+  dtostrf(tmp_mag_x0, 1, 3, I2CLink.TMP_BUFFER1);
   strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
   strcat(I2CLink.TMP_BUFFER0, ",");
   memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-  dtostrf(sReg[HY], 1, 3, I2CLink.TMP_BUFFER1);
+  tmp_mag_y0 = mag_y_high;
+  if (abs(mag_y_low) > mag_y_high) {tmp_mag_y0=mag_y_low;} // special magnetic field resolution compensation
+  dtostrf(tmp_mag_y0, 1, 3, I2CLink.TMP_BUFFER1);
   strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
   strcat(I2CLink.TMP_BUFFER0, ",");
   memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-  dtostrf(sReg[HZ], 1, 3, I2CLink.TMP_BUFFER1);
+  tmp_mag_z0 = mag_z_high;
+  if (abs(mag_z_low) > mag_z_high) {tmp_mag_z0=mag_z_low;} // special magnetic field resolution compensation
+  dtostrf(tmp_mag_z0, 1, 3, I2CLink.TMP_BUFFER1);
   strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
   }
 
-  // strcat(I2CLink.TMP_BUFFER0, "\r\n");
   // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
-
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
