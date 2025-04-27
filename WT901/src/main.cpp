@@ -111,10 +111,10 @@ float gyr_z_high = 0;
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[16];
-  char INPUT_BUFFER[16];
-  char TMP_BUFFER0[16];
-  char TMP_BUFFER1[16];
+  byte OUTPUT_BUFFER[32];
+  char INPUT_BUFFER[32];
+  char TMP_BUFFER0[32];
+  char TMP_BUFFER1[32];
   int request_counter=0;
   bool valid_request=false;
 };
@@ -141,143 +141,86 @@ void receiveEvent(int) {
 
   // parse incoming data
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-  if (strcmp(I2CLink.token, "$RST")==0) {I2CLink.request_counter=0;}
+  if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
+  if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
+  if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
+  if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
+  // if (strcmp(I2CLink.token, "$RST")==0) {I2CLink.request_counter=0;}
 }
 
 int loops_between_requests=0;
 void requestEvent() {
-  // Serial.println("[requestEvent]");
 
-  // used to ascertain benefits of resolution compensation in special cases
-  // Serial.println("[loops_between_requests] " + String(loops_between_requests));
-  loops_between_requests=0;
-
-  I2CLink.valid_request=false;
-  clearTMPBuffer();
-
-  // ---------------------------------------------------
-  // acceleration
-  // ---------------------------------------------------
   if (I2CLink.request_counter==0) {
-    strcat(I2CLink.TMP_BUFFER0, "$ACX,");
-    dtostrf(fAcc[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==1) {
-    strcat(I2CLink.TMP_BUFFER0, "$ACY,");
-    dtostrf(fAcc[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++; I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==2) {
-    strcat(I2CLink.TMP_BUFFER0, "$ACZ,");
-    dtostrf(fAcc[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  // ---------------------------------------------------
-  // angle
-  // ---------------------------------------------------
-  else if (I2CLink.request_counter==3) {
-    strcat(I2CLink.TMP_BUFFER0, "$ANX,");
-    dtostrf(fAngle[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==4) {
-    strcat(I2CLink.TMP_BUFFER0, "$ANY,");
-    dtostrf(fAngle[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==5) {
-    strcat(I2CLink.TMP_BUFFER0, "$ANZ,");
-    dtostrf(fAngle[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  // ---------------------------------------------------
-  // magnetic field
-  // ---------------------------------------------------
-  else if (I2CLink.request_counter==6) {
-    strcat(I2CLink.TMP_BUFFER0, "$MFX,");
-    // special resolution compensation for magnetic field x
-    tmp_mag_x0=abs(mag_x_low);
-    tmp_mag_x1=mag_x_high;
-    if (tmp_mag_x0>mag_x_high) {tmp_mag_x1=mag_x_low;}
-    dtostrf(tmp_mag_x1, 1, 0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-    mag_x_low=sReg[HX];
-    mag_x_high=sReg[HX];
-  }
-  else if (I2CLink.request_counter==7) {
-    strcat(I2CLink.TMP_BUFFER0, "$MFY,");
-    // special resolution compensation for magnetic field y
-    tmp_mag_y0=abs(mag_y_low);
-    tmp_mag_y1=mag_y_high;
-    if (tmp_mag_y0>mag_y_high) {tmp_mag_y1=mag_y_low;}
-    dtostrf(tmp_mag_y1, 1, 0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-    mag_y_low=sReg[HY];
-    mag_y_high=sReg[HY];
-  }
-  else if (I2CLink.request_counter==8) {
-    strcat(I2CLink.TMP_BUFFER0, "$MFZ,");
-    // special resolution compensation for magnetic field z
-    tmp_mag_z0=abs(mag_z_low);
-    tmp_mag_z1=mag_z_high;
-    if (tmp_mag_z0>mag_z_high) {tmp_mag_z1=mag_z_low;}
-    dtostrf(sReg[HZ], 1, 0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-    mag_z_low=sReg[HZ];
-    mag_z_high=sReg[HZ];
-  }
-  // ---------------------------------------------------
-  // gyro
-  // ---------------------------------------------------
-  else if (I2CLink.request_counter==9)  {
-    strcat(I2CLink.TMP_BUFFER0, "$GYX,");
-    dtostrf(fGyro[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==10) {
-    strcat(I2CLink.TMP_BUFFER0, "$GYY,");
-    dtostrf(fGyro[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
-  }
-  else if (I2CLink.request_counter==11) {
-    strcat(I2CLink.TMP_BUFFER0, "$GYZ,");
-    dtostrf(fGyro[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    I2CLink.request_counter++;
-    I2CLink.valid_request=true;
+  memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  strcat(I2CLink.TMP_BUFFER0, "$A,");
+  dtostrf(fAcc[0], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fAcc[1], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fAcc[2], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
   }
 
-  if (I2CLink.valid_request==true) {
-    // write bytes of chars
-    memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-    for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
-    Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-  }
-  // clear buffers ready for masters request sweep if multiple i2c devices interrupt on the same masters pin
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  else if (I2CLink.request_counter==1) {
   memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  strcat(I2CLink.TMP_BUFFER0, "$B,");
+  dtostrf(fAngle[0], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fAngle[1], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fAngle[2], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  }
+
+  else if (I2CLink.request_counter==2) {
+  memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  strcat(I2CLink.TMP_BUFFER0, "$C,");
+  dtostrf(fGyro[0], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fGyro[1], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(fGyro[2], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  }
+
+  else if (I2CLink.request_counter==3) {
+  memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  strcat(I2CLink.TMP_BUFFER0, "$D,");
+  dtostrf(sReg[HX], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(sReg[HY], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, ",");
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  dtostrf(sReg[HZ], 1, 3, I2CLink.TMP_BUFFER1);
+  strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+  }
+
+  // strcat(I2CLink.TMP_BUFFER0, "\r\n");
+  // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
+
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
+  Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -304,7 +247,7 @@ void setup() {
 
   // ------------------------------------------------------------------------------------------------------
   //                                                                                               COMPLETE
-  delay(2000);
+  // delay(2000);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
