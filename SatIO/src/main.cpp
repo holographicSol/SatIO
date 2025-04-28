@@ -16848,13 +16848,13 @@ void UpdateUI(void * pvParamters) {
       display.drawVLine(25, 13, 44); // vertical seperator 0
       display.setColor(systemData.color_subtitle);
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("X").c_str(), STYLE_BOLD);
+      canvas19x8.printFixed(1, 1, String("MFX").c_str(), STYLE_BOLD);
       display.drawCanvas(3, 14, canvas19x8);
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("Y").c_str(), STYLE_BOLD);
+      canvas19x8.printFixed(1, 1, String("MFY").c_str(), STYLE_BOLD);
       display.drawCanvas(3, 24, canvas19x8);
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("Z").c_str(), STYLE_BOLD);
+      canvas19x8.printFixed(1, 1, String("MFZ").c_str(), STYLE_BOLD);
       display.drawCanvas(3, 34, canvas19x8);
     }
     // ------------------------------------------------
