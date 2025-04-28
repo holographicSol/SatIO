@@ -16844,18 +16844,21 @@ void UpdateUI(void * pvParamters) {
       drawMainBorder();
       drawGeneralTitle("MAG FIELD", systemData.color_title, systemData.color_border);
       display.setColor(systemData.color_border);
-      display.drawHLine(1, 45, 127);  // seperate rise and set from rest of content
-      display.drawVLine(25, 13, 44); // vertical seperator 0
+      display.drawHLine(1, 50, 127);
+      display.drawHLine(1, 89, 127);
       display.setColor(systemData.color_subtitle);
+
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("MFX").c_str(), STYLE_BOLD);
+      canvas19x8.printFixed(1, 1, "MFX", STYLE_BOLD);
       display.drawCanvas(3, 14, canvas19x8);
+
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("MFY").c_str(), STYLE_BOLD);
-      display.drawCanvas(3, 24, canvas19x8);
+      canvas19x8.printFixed(1, 1, "MFY", STYLE_BOLD);
+      display.drawCanvas(3, 52, canvas19x8);
+
       canvas19x8.clear();
-      canvas19x8.printFixed(1, 1, String("MFZ").c_str(), STYLE_BOLD);
-      display.drawCanvas(3, 34, canvas19x8);
+      canvas19x8.printFixed(1, 1, "MFZ", STYLE_BOLD);
+      display.drawCanvas(3, 91, canvas19x8);
     }
     // ------------------------------------------------
     // dynamic data
@@ -16879,14 +16882,23 @@ void UpdateUI(void * pvParamters) {
     canvas92x8.clear();
     display.setColor(systemData.color_content);
     canvas92x8.printFixed(1, 1, String(sensorData.wt901_mag_y).c_str(), STYLE_BOLD);
-    display.drawCanvas(28, 24, canvas92x8);
+    display.drawCanvas(28, 52, canvas92x8);
     canvas92x8.clear();
     display.setColor(systemData.color_content);
     canvas92x8.printFixed(1, 1, String(sensorData.wt901_mag_z).c_str(), STYLE_BOLD);
-    display.drawCanvas(28, 34, canvas92x8);
+    display.drawCanvas(28, 91, canvas92x8);
     // ------------------------------------------------
     // magnetic field x axis graph
     // ------------------------------------------------
+
+    // ------------------------------------------------
+    // magnetic field y axis graph
+    // ------------------------------------------------
+
+    // ------------------------------------------------
+    // magnetic field z axis graph
+    // ------------------------------------------------
+
   }
 
   // -------------------------------------------------------
