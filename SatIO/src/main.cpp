@@ -829,6 +829,9 @@ static int page_timeanddate_main                =300;
 // ----------------------------------------------------
 static int page_attitude                          =400;
 // ----------------------------------------------------
+// MAGNETIC FIELD
+// ----------------------------------------------------
+static int page_view_magnetic_field               =420;
 
 // ----------------------------------------------------
 // COMPACT VERTICAL UI SPACING
@@ -866,22 +869,23 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=11;
+const int max_main_menu_items=12;
 const char *menuMainItems[max_main_menu_items] =
 {
-    "    MATRIX       ", // 0
-    "    VIEW MATRIX  ", // 1
-    "    FILE         ", // 2
-    "    GPS          ", // 3
-    "    SERIAL       ", // 4
-    "    SYSTEM       ", // 5
-    "    UNIVERSE     ", // 6
-    "    DISPLAY      ", // 7
-    "    CD74HC4067   ", // 8
-    "    TIME & DATE  ", // 9
-    "    HUD          ", // 10
+    "  MATRIX         ", // 0
+    "  VIEW MATRIX    ", // 1
+    "  FILE           ", // 2
+    "  GPS            ", // 3
+    "  SERIAL         ", // 4
+    "  SYSTEM         ", // 5
+    "  UNIVERSE       ", // 6
+    "  DISPLAY        ", // 7
+    "  CD74HC4067     ", // 8
+    "  TIME & DATE    ", // 9
+    "  HUD            ", // 10
+    "  VIEW MAG FIELD ", // 11
 };
-LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 20}, {125, 125}} );
+LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 15}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                      MENU MATRIX SWITCH SELECT
@@ -11287,6 +11291,7 @@ void menuBack() {
   else if (menu_page==page_universe_view_uranus) {menu_page=page_universe_main;}
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
   else if (menu_page==page_attitude) {menu_page=page_main_menu;}
+  else if (menu_page==page_view_magnetic_field) {menu_page=page_main_menu;}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -11374,6 +11379,13 @@ void menuEnter() {
     else if (menuMain.selection()==10) {
       menu_page=page_attitude;
     }
+    // ------------------------------------------------
+    // go to view magnetic field page
+    // ------------------------------------------------
+    else if (menuMain.selection()==11) {
+      menu_page=page_view_magnetic_field;
+    }
+    
   }
   // ----------------------------------------------------------------
   // matrix switch configuration page
@@ -16556,7 +16568,7 @@ void UpdateUI(void * pvParamters) {
       2: output through port controller.
       3: available in matrix for optional programmable joystick events.
     */
-   if (menu_page==page_attitude) {
+   else if (menu_page==page_attitude) {
     // ------------------------------------------------
     // static data
     // ------------------------------------------------
@@ -16818,6 +16830,63 @@ void UpdateUI(void * pvParamters) {
     // UAP
     // ------------------------------------------------
     DisplayUAP();
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------
+  //                                                                                                   MAGNETIC FIELD
+  // ----------------------------------------------------------------------------------------------------------------
+  else if (menu_page==page_view_magnetic_field) {
+    // ------------------------------------------------
+    // static data
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+      previous_menu_page=menu_page; display.clear();
+      drawMainBorder();
+      drawGeneralTitle("MAG FIELD", systemData.color_title, systemData.color_border);
+      display.setColor(systemData.color_border);
+      display.drawHLine(1, 45, 127);  // seperate rise and set from rest of content
+      display.drawVLine(25, 13, 44); // vertical seperator 0
+      display.setColor(systemData.color_subtitle);
+      canvas19x8.clear();
+      canvas19x8.printFixed(1, 1, String("X").c_str(), STYLE_BOLD);
+      display.drawCanvas(3, 14, canvas19x8);
+      canvas19x8.clear();
+      canvas19x8.printFixed(1, 1, String("Y").c_str(), STYLE_BOLD);
+      display.drawCanvas(3, 24, canvas19x8);
+      canvas19x8.clear();
+      canvas19x8.printFixed(1, 1, String("Z").c_str(), STYLE_BOLD);
+      display.drawCanvas(3, 34, canvas19x8);
+    }
+    // ------------------------------------------------
+    // dynamic data
+    // ------------------------------------------------
+    // ------------------------------------------------
+    // load
+    // ------------------------------------------------
+    DisplayDiscreteLoadPercentage(115, 3, 10);
+    // ------------------------------------------------
+    // satellites & sync
+    // ------------------------------------------------
+    if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 2);}
+    else {DisplaySignal(1, 1, 2, 2);}
+    // ------------------------------------------------
+    // magnetic field xyz
+    // ------------------------------------------------
+    canvas92x8.clear();
+    display.setColor(systemData.color_content);
+    canvas92x8.printFixed(1, 1, String(sensorData.wt901_mag_x).c_str(), STYLE_BOLD);
+    display.drawCanvas(28, 14, canvas92x8);
+    canvas92x8.clear();
+    display.setColor(systemData.color_content);
+    canvas92x8.printFixed(1, 1, String(sensorData.wt901_mag_y).c_str(), STYLE_BOLD);
+    display.drawCanvas(28, 24, canvas92x8);
+    canvas92x8.clear();
+    display.setColor(systemData.color_content);
+    canvas92x8.printFixed(1, 1, String(sensorData.wt901_mag_z).c_str(), STYLE_BOLD);
+    display.drawCanvas(28, 34, canvas92x8);
+    // ------------------------------------------------
+    // magnetic field x axis graph
+    // ------------------------------------------------
   }
 
   // -------------------------------------------------------
@@ -18264,23 +18333,13 @@ void loop() {
     }
 
     // --------------------------------------------------------------------
-    //                                                     I2C REQUEST SCAN
-    // --------------------------------------------------------------------
-    else if (load_distribution==2) {
-      load_distribution=3;
-      // // t0=micros();
-      // I2CRequestScan();
-      // // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    }
-
-    // --------------------------------------------------------------------
     //                                                        REQUEST WT901
     // --------------------------------------------------------------------
-    else if (load_distribution==3) {
+    else if (load_distribution==2) {
       load_distribution=0;
-      // t0=micros();
+      // // t0=micros();
       requestWT901();
-      // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
