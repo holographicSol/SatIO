@@ -98,9 +98,9 @@ TimeStruct timeData;
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[10];
-  char INPUT_BUFFER[10];
-  char TMP_BUFFER[10];
+  byte OUTPUT_BUFFER[32];
+  char INPUT_BUFFER[32];
+  char TMP_BUFFER[32];
 };
 I2CLinkStruct I2CLink;
 
@@ -177,7 +177,6 @@ void receiveEvent(int) {
     else if (strcmp(I2CLink.token, "1") == 0) {digitalWrite(LEDOVERLOADR, HIGH); digitalWrite(LEDOVERLOADG, HIGH);}
   }
 }
-
 
 void requestEvent() {
   // Write Bytes of Chars
