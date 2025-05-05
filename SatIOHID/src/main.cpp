@@ -151,10 +151,10 @@ char device_name_tag[5] = "$CP,"; // control pad
 
 struct I2CLinkStruct {
   char * token;
-  byte OUTPUT_BUFFER[10];
-  char INPUT_BUFFER[10];
-  char TMP_BUFFER0[10];
-  char TMP_BUFFER1[10];
+  byte OUTPUT_BUFFER[32];
+  char INPUT_BUFFER[32];
+  char TMP_BUFFER0[32];
+  char TMP_BUFFER1[32];
 };
 I2CLinkStruct I2CLink;
 
