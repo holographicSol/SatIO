@@ -24,6 +24,9 @@ Wiring Read/Write Interrupt indicator:
 ATMEGA2560 SDA 20 -> ESP32 12
 ATMEGA2560 SCL 21 -> ESP32 5
 
+Wiring Matrix Indicators:
+ATMEGA2560 48 -> 20x individually addressable WS2812B's
+
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -33,18 +36,25 @@ ATMEGA2560 SCL 21 -> ESP32 5
 #include <Arduino.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <TimeLib.h>
-#include <CD74HC4067.h>
 #include <Wire.h>
+#include <FastLED.h>
 
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     INDICATORS
+
+// MATRIX INDICATORS
+#define NUM_LEDS 20
+#define DATA_PIN 48
+CRGB leds[NUM_LEDS];
+
+// SIGNAL
 #define LEDSATSIGNALR 51
 #define LEDSATSIGNALG 52
 #define LEDSATSIGNALB 53
 
+// OVERLOAD
 #define LEDOVERLOADR 46
 #define LEDOVERLOADG 47
-
-#define MAX_BUFF 256
 
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -112,7 +122,7 @@ void receiveEvent(int) {
   // Serial.println("[slave] read data");
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // get tag token
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
@@ -212,6 +222,10 @@ void satIOPortController() {
     // set port high/low
     digitalWrite(matrix_port_map[0][i], matrix_switch_state[0][i]);
 
+    // set matrix indicator
+    if (matrix_switch_state[0][i]==1) {leds[i] = CRGB::Yellow; FastLED.show();}
+    else {leds[i] = CRGB::Black; FastLED.show();}
+
     // uncomment to debug
     // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
   }
@@ -225,6 +239,9 @@ void setup() {
   // Serial
   Serial.setTimeout(50); // ensure this is set before begin()
   Serial.begin(115200);  while(!Serial);
+
+  // Matrix indicators
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 
   // Matrix switches
   for (int i=0; i<20; i++) {
