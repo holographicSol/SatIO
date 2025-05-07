@@ -1225,7 +1225,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   bool matrix_enabled=true;          // enables/disables matrix switching
   bool matrix_run_on_startup=true;   // enables/disable matrix switch on startup as specified by system configuration file
-  bool port_controller_enabled=true; // may be false by default but is default true for now.
+  bool matrix_io_enabled=true; // may be false by default but is default true for now.
 
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable GPS processing
@@ -4845,11 +4845,11 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
-    // PORT_CONTROLLER_ENABLED
+    // MATRIX_IO_ENABLED
     // -----------------------------------------------
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
-    strcat(sdcardData.file_data, "PORT_CONTROLLER_ENABLED,");
-    itoa(systemData.port_controller_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, "MATRIX_IO_ENABLED,");
+    itoa(systemData.matrix_io_enabled, sdcardData.tmp, 10);
     strcat(sdcardData.file_data, sdcardData.tmp);
     strcat(sdcardData.file_data, ",");
     Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
@@ -5457,15 +5457,15 @@ bool sdcardLoadSystemConfig(char * file) {
       }
 
       // ------------------------------------------------
-      // PORT_CONTROLLER_ENABLED
+      // MATRIX_IO_ENABLED
       // ------------------------------------------------
-      if (strncmp(sdcardData.BUFFER, "PORT_CONTROLLER_ENABLED", strlen("PORT_CONTROLLER_ENABLED"))==0) {
+      if (strncmp(sdcardData.BUFFER, "MATRIX_IO_ENABLED", strlen("MATRIX_IO_ENABLED"))==0) {
         sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token=strtok(NULL, ",");
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
-          if (atoi(sdcardData.token)==0) {systemData.port_controller_enabled=false;} else {systemData.port_controller_enabled=true;}
+          if (atoi(sdcardData.token)==0) {systemData.matrix_io_enabled=false;} else {systemData.matrix_io_enabled=true;}
         }
       }
 
@@ -12040,7 +12040,7 @@ void menuEnter() {
     // ------------------------------------------------
     // enable/disable port controller
     // ------------------------------------------------
-    else if (menuSystem.selection()==3) {systemData.port_controller_enabled^=true;}
+    else if (menuSystem.selection()==3) {systemData.matrix_io_enabled^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -15466,7 +15466,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // enable/disable port controller
       // ------------------------------------------------
-      if (systemData.port_controller_enabled==true) {menuSystemItems[3]="IO ENABLED";}
+      if (systemData.matrix_io_enabled==true) {menuSystemItems[3]="IO ENABLED";}
       else {menuSystemItems[3]="IO DISABLED";}
       // ------------------------------------------------
       // menu
@@ -16890,6 +16890,7 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // magnetic field x axis graph
     // ------------------------------------------------
+    
 
     // ------------------------------------------------
     // magnetic field y axis graph
@@ -17410,6 +17411,7 @@ void writePortControllerGPSSignalLED() {
     if (gps_signal==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
     else if (gps_signal==1) {strcat(I2CLink.TMP_BUFFER_0, "1");}
     else if (gps_signal==2) {strcat(I2CLink.TMP_BUFFER_0, "2");}
+    
     // -----------------------
     // write instruction
     // -----------------------
@@ -17445,9 +17447,34 @@ void writePortControllerOverloadValue() {
 }
 
 // ------------------------------------------------
+// Write Matrix Enabled/Disabled
+// ------------------------------------------------
+void writePortControllerIOEnabled() {
+  // -----------------------
+  // tag
+  // -----------------------
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  strcpy(I2CLink.TMP_BUFFER_0, "$MENABLED,");
+  // -----------------------
+  // data
+  // -----------------------
+  if (systemData.matrix_io_enabled==false) {strcat(I2CLink.TMP_BUFFER_0, "0");}
+  else {strcat(I2CLink.TMP_BUFFER_0, "1");}
+  // -----------------------
+  // write instruction
+  // -----------------------
+  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+  // -----------------------
+  // debug
+  // -----------------------
+  // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
+}
+
+// ------------------------------------------------
 // Write To Enabled Port Controller
 // ------------------------------------------------
 void writeToEnabledPortController() {
+  writePortControllerIOEnabled();
   writePortControllerPortMap();
   writePortControllerSwitchState();
   writePortControllerGPSSignalLED();
@@ -17458,6 +17485,7 @@ void writeToEnabledPortController() {
 // Write To Semi-Disabled Port Controller (No Matrix Instructions)
 // ---------------------------------------------------------------
 void writeToSemiDisabledPortController() {
+  writePortControllerIOEnabled();
   writePortControllerGPSSignalLED();
   writePortControllerOverloadValue();
 }
@@ -18303,7 +18331,7 @@ void loop() {
   //                                                                                                              PORT CONTROLLER
   // ----------------------------------------------------------------------------------------------------------------------------
   // t0=micros();
-  if (systemData.port_controller_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
+  if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
   else {
     if (port_controller_run_state_flag==false) {
       setAllMatrixSwitchesStateFalse();
