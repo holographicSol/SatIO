@@ -497,11 +497,11 @@ static void CmdProcess(void) {
   switch(s_cCmd)
   {
     case 'a': if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n"); break;
-    case 'm':	if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
-    case 'e':	if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
-    case 'u':	if (WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
-    case 'U':	if (WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
-    case 'B':	if (WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    case 'm': if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
+    case 'e': if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
+    case 'u': if (WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
+    case 'U': if (WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
+    case 'B': if (WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
               else {Serial1.begin(c_uiBaud[WIT_BAUD_115200]); Serial.print(" 115200 Baud rate modified successfully\r\n");} break;
 		case 'b':	if (WitSetUartBaud(WIT_BAUD_9600) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
               else {Serial1.begin(c_uiBaud[WIT_BAUD_9600]); Serial.print(" 9600 Baud rate modified successfully\r\n");} break;
