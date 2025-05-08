@@ -4,16 +4,9 @@
 
 The WT901 is a IMU sensor device, detecting acceleration, angular velocity, angle as well as magnetic filed.
 
-Todo:
-Enable/disable resolution compensation.
-Push buttons:
-  Calibrate angle.
-  Calibrate magnetic field.
-  Enable/disable serial output.
-  Enable/disable IIC slave mode.
-  Enable/disable LEDs.
-  Enable/disable OLED display.
-  Enable/disable 7 segment displays.
+Configurable over Serial.
+Configurable over IIC.
+
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
