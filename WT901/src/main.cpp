@@ -493,10 +493,9 @@ static void ShowHelp(void)
 //                                                                                                                     CmdProcess
 // ------------------------------------------------------------------------------------------------------------------------------
 
-static void CmdProcess(void)
-{
-	switch(s_cCmd)
-	{
+static void CmdProcess(void) {
+  switch(s_cCmd)
+  {
     case 'a': if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n"); break;
     case 'm':	if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
     case 'e':	if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
