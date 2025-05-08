@@ -143,21 +143,54 @@ void receiveEvent(int) {
 
   // Serial.println("[receiveEvent]");
 
-  // -----------------------------------------------
+  // ------------------------------------------------
   // read incoming data
-  // -----------------------------------------------
+  // ------------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
-  // -----------------------------------------------
-  // parse incoming data
-  // -----------------------------------------------
+  // ------------------------------------------------
+  // data: set request counter for next request event
+  // ------------------------------------------------
   I2CLink.token=strtok(I2CLink.INPUT_BUFFER, ",");
   if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
   else if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
   else if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
   else if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
+
+  // ------------------------------------------------
+  // configuration: allow configuration over IIC
+  // ------------------------------------------------
+  else if (strcmp(I2CLink.token, "$CAL-ACC")==0) {if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n");}
+  else if (strcmp(I2CLink.token, "$CAL-MAG0")==0) {if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
+  else if (strcmp(I2CLink.token, "$CAL-MAG1")==0) {if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
+  else if (strcmp(I2CLink.token, "$BANDWIDTH-INCREASE")==0) {if (WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n");}
+  else if (strcmp(I2CLink.token, "$BANDWIDTH-REDUCE")==0) {if (WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n");}
+  else if (strcmp(I2CLink.token, "$BAUDRATE-INCREASE")==0) {
+    if (WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else {Serial1.begin(c_uiBaud[WIT_BAUD_115200]); Serial.print(" 115200 Baud rate modified successfully\r\n");}
+  }
+  else if (strcmp(I2CLink.token, "$BAUDRATE-REDUCE")==0) {
+    if (WitSetUartBaud(WIT_BAUD_9600) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else {Serial1.begin(c_uiBaud[WIT_BAUD_9600]); Serial.print(" 9600 Baud rate modified successfully\r\n");}
+  }
+  else if (strcmp(I2CLink.token, "$RETURNRATE-INCREASE")==0) {
+    if (WitSetOutputRate(RRATE_10HZ) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else Serial.print("\r\nSet Baud Success\r\n");
+  }
+  else if (strcmp(I2CLink.token, "$RETURNRATE-REDUCE")==0) {
+    if (WitSetOutputRate(RRATE_1HZ) != WIT_HAL_OK)  Serial.print("\r\nSet Baud Error\r\n");
+    else Serial.print("\r\nSet Baud Success\r\n");
+  }
+  else if (strcmp(ucData, "$RC-ACC")==0) {enable_resolution_compensation_acc=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_acc));}
+  else if (strcmp(ucData, "$CV-ACC")==0) {enable_resolution_compensation_acc=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_acc));}
+  else if (strcmp(ucData, "$RC-ANG")==0) {enable_resolution_compensation_ang=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_ang));}
+  else if (strcmp(ucData, "$CV-ANG")==0) {enable_resolution_compensation_ang=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_ang));}
+  else if (strcmp(ucData, "$RC-GYR")==0) {enable_resolution_compensation_gyr=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
+  else if (strcmp(ucData, "$CV-GYR")==0) {enable_resolution_compensation_gyr=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
+  else if (strcmp(ucData, "$RC-MAG")==0) {enable_resolution_compensation_mag=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
+  else if (strcmp(ucData, "$CC-MAG")==0) {enable_resolution_compensation_mag=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -715,7 +748,7 @@ static void Delayms(uint16_t ucMs) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                              SensorDataUpdata
+//                                                                                                               SensorDataUpdata
 // ------------------------------------------------------------------------------------------------------------------------------
 
 static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum) {
