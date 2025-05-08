@@ -489,15 +489,24 @@ void setup() {
 void loop() {
   loops_between_requests++;
 
-  while (Serial1.available())
-  {
-    WitSerialDataIn(Serial1.read());
-  }
-  while (Serial.available()) 
-  {
-    CopeCmdData(Serial.read());
-  }
+  // -----------------------------------------------
+  // read WT901
+  // -----------------------------------------------
+  while (Serial1.available()) {WitSerialDataIn(Serial1.read());}
+
+  // -----------------------------------------------
+  // read commands
+  // -----------------------------------------------
+  while (Serial.available()) {CopeCmdData(Serial.read());}
+  
+  // -----------------------------------------------
+  // process commands
+  // -----------------------------------------------
   CmdProcess();
+
+  // -----------------------------------------------
+  // update WT901 data
+  // -----------------------------------------------
   if (s_cDataUpdate)
   {
     for(int i=0; i < 3; i++)
