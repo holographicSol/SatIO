@@ -54,6 +54,12 @@ bool enable_resolution_compensation_b=false;
 bool enable_resolution_compensation_c=false;
 bool enable_resolution_compensation_d=true;
 
+// -----------------------------------------------------------------------
+// resolution compensation increases probability of catching value spikes.
+// enabled: return max spike to master.
+// disabled: return most recent value to master. 
+// -----------------------------------------------------------------------
+
 // -------------------------------------------------
 // acceleration resolution compensation
 // -------------------------------------------------
