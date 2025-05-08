@@ -425,25 +425,24 @@ void CopeCmdData(unsigned char ucData) {
   // --------------------------------------------------
   // append current char to chars
   // --------------------------------------------------
-	s_ucData[s_ucRxCnt++]=ucData;
+  s_ucData[s_ucRxCnt++]=ucData;
   // --------------------------------------------------
   // return now while below expected command length
   // --------------------------------------------------
-	if (s_ucRxCnt<3) {return;}
+  if (s_ucRxCnt<3) {return;}
   // --------------------------------------------------
   // handle potential overflow
   // --------------------------------------------------
-	if (s_ucRxCnt >= 50) {s_ucRxCnt=0;}
+  if (s_ucRxCnt >= 50) {s_ucRxCnt=0;}
 
   // --------------------------------------------------
   // continue if all expected chars have been collected
   // --------------------------------------------------
-	if (s_ucRxCnt >= 3) {
-
+  if (s_ucRxCnt >= 3) {
     // ------------------------------------------------------------------
     // accept one character command ending in carriage return and newline
     // ------------------------------------------------------------------
-		if ((s_ucData[1] == '\r') && (s_ucData[2] == '\n')) {
+    if ((s_ucData[1] == '\r') && (s_ucData[2] == '\n')) {
       // ----------------------------------------------
       // isolate command char for command processing
       // ----------------------------------------------
@@ -451,19 +450,19 @@ void CopeCmdData(unsigned char ucData) {
       // ----------------------------------------------
       // reset
       // ----------------------------------------------
-			memset(s_ucData,0,50);
-			s_ucRxCnt=0;
-		}
+      memset(s_ucData,0,50);
+      s_ucRxCnt=0;
+    }
 
     // ------------------------------------------------
     // shift and continue
     // ------------------------------------------------
-		else {
-			s_ucData[0]=s_ucData[1];
-			s_ucData[1]=s_ucData[2];
-			s_ucRxCnt=2;
-		}
-	}
+    else {
+      s_ucData[0]=s_ucData[1];
+      s_ucData[1]=s_ucData[2];
+      s_ucRxCnt=2;
+    }
+  }
 }
                    
 // ------------------------------------------------------------------------------------------------------------------------------
