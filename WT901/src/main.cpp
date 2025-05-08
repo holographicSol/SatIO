@@ -515,8 +515,8 @@ static void CmdProcess(void) {
     case 'o': serial_output_content=false; break;
     case 'h':	ShowHelp(); break;
     default : break;
-	}
-	s_cCmd=0xff;
+  }
+  s_cCmd=0xff;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
