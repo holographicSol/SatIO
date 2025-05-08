@@ -5,40 +5,16 @@ WT901 IIC Module written by Benjamin Jack Cullen and adapted from official examp
 The WT901 is a IMU sensor device, detecting acceleration, angular
 velocity, angle as well as magnetic filed.
 
-7 segment displays have been chosen over small OLED displays for brightness and ability to remain on without damage.
-
-WT901CTTL       MEGA 2560
-    VCC  <--->  5V/3.3V
-    TX   <--->  19(TX1)
-    RX   <--->  18(RX1)
-    GND  <--->  GND
-
-Display Angle X
-TM1637 (0)       MEGA 2560
-    VCC   <--->  5V
-    CLK   <--->  A0
-    DIO   <--->  53
-    GND   <--->  GND
-
-Display Angle Y
-TM1637 (1)       MEGA 2560
-    VCC   <--->  5V
-    CLK   <--->  A1
-    DIO   <--->  52
-    GND   <--->  GND
-
-Display Angle Z
-TM1637 (2)       MEGA 2560
-    VCC   <--->  5V
-    CLK   <--->  A2
-    DIO   <--->  51
-    GND   <--->  GND
-
 Todo:
-Display Acceleration X,Y,Z (pending deliveries).
-Display Magnetic Field X,Y,Z (pending deliveries). requies 6 digit 7 segment displays.
-Setup this module as IIC slave.
-
+Enable/disable resolution compensation.
+Push buttons:
+  Calibrate angle.
+  Calibrate magnetic field.
+  Enable/disable serial output.
+  Enable/disable IIC slave mode.
+  Enable/disable LEDs.
+  Enable/disable OLED display.
+  Enable/disable 7 segment displays.
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
