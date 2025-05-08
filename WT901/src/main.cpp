@@ -446,7 +446,7 @@ void CopeCmdData(unsigned char ucData) {
       // ----------------------------------------------
       // isolate command char for command processing
       // ----------------------------------------------
-			s_cCmd=s_ucData[0];
+      s_cCmd=s_ucData[0];
       // ----------------------------------------------
       // reset
       // ----------------------------------------------
