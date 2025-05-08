@@ -56,8 +56,8 @@ bool enable_resolution_compensation_d=true;
 // ----------------------------------------------------------------------------------------------------
 // resolution compensation increases probability of catching value spikes.
 // this is useful where a master may be occupied and would otherwise miss potentially interesting data.
-// enabled: return max spike to master.
-// disabled: return most recent value to master. 
+// enabled: return max spike value (from values stored between each request) to master.
+// disabled: return most recent value to master.
 // ----------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------
