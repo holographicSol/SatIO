@@ -34,8 +34,9 @@ Push buttons:
 #define ANGLE_UPDATE	0x04
 #define MAG_UPDATE		0x08
 #define READ_UPDATE		0x80
-static volatile char s_cDataUpdate=0, s_cCmd=0xff; 
-void CopeCmdData(unsigned char ucData);
+static volatile char s_cDataUpdate=0, s_cCmd=0xff;
+char ucData[50];
+void CopeCmdData();
 static void CmdProcess(void);
 static void AutoScanSensor(void);
 static void SensorUartSend(uint8_t *p_data, uint32_t uiSize);
@@ -48,10 +49,10 @@ float fAcc[3], fGyro[3], fAngle[3];
 // configuration flags
 // -------------------------------------------------
 bool enable_serial_output_content=false;
-bool enable_resolution_compensation_a=false;
-bool enable_resolution_compensation_b=false;
-bool enable_resolution_compensation_c=false;
-bool enable_resolution_compensation_d=true;
+bool enable_resolution_compensation_acc=false;
+bool enable_resolution_compensation_ang=false;
+bool enable_resolution_compensation_gyr=false;
+bool enable_resolution_compensation_mag=true;
 
 // ----------------------------------------------------------------------------------------------------
 // resolution compensation increases probability of catching value spikes.
@@ -175,7 +176,7 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$A,");
-    if (enable_resolution_compensation_a==true) {
+    if (enable_resolution_compensation_acc==true) {
       // ---------------------------------------------
       // Acceleration X (special resolution compensation)
       // ---------------------------------------------
@@ -242,7 +243,7 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$B,");
-    if (enable_resolution_compensation_b==true) {
+    if (enable_resolution_compensation_ang==true) {
       // ---------------------------------------------
       // Angle X (special resolution compensation)
       // ---------------------------------------------
@@ -309,7 +310,7 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$C,");
-    if (enable_resolution_compensation_c==true) {
+    if (enable_resolution_compensation_gyr==true) {
       // ---------------------------------------------
       // Gyro X (special resolution compensation)
       // ---------------------------------------------
@@ -376,7 +377,7 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$D,");
-    if (enable_resolution_compensation_d==true) {
+    if (enable_resolution_compensation_mag==true) {
       // ---------------------------------------------
       // Mag X (special resolution compensation)
       // ---------------------------------------------
@@ -497,7 +498,10 @@ void loop() {
   // -----------------------------------------------
   // read commands
   // -----------------------------------------------
-  while (Serial.available()) {CopeCmdData(Serial.read());}
+  while (Serial.available()) {
+    memset(ucData, 0, sizeof(ucData));
+    Serial.readBytesUntil('\n', ucData, sizeof(ucData));
+  }
 
   // -----------------------------------------------
   // process commands
@@ -524,7 +528,7 @@ void loop() {
     if (s_cDataUpdate & ACC_UPDATE)
     {
       s_cDataUpdate &= ~ACC_UPDATE;
-      if (enable_resolution_compensation_a==true) {
+      if (enable_resolution_compensation_acc==true) {
         if (fAcc[0]>acc_x_high) {acc_x_high=fAcc[0];}
         if (fAcc[0]<acc_x_low) {acc_x_low=fAcc[0];}
         if (fAcc[1]>acc_y_high) {acc_y_high=fAcc[1];}
@@ -548,7 +552,7 @@ void loop() {
     if (s_cDataUpdate & GYRO_UPDATE)
     {
       s_cDataUpdate &= ~GYRO_UPDATE;
-      if (enable_resolution_compensation_b==true) {
+      if (enable_resolution_compensation_ang==true) {
         if (fGyro[0]>gyr_x_high) {gyr_x_high=fGyro[0];}
         if (fGyro[0]<gyr_x_low) {gyr_x_low=fGyro[0];}
         if (fGyro[1]>gyr_y_high) {gyr_y_high=fGyro[1];}
@@ -572,7 +576,7 @@ void loop() {
     if (s_cDataUpdate & ANGLE_UPDATE)
     {
       s_cDataUpdate &= ~ANGLE_UPDATE;
-      if (enable_resolution_compensation_c==true) {
+      if (enable_resolution_compensation_gyr==true) {
         if (fAngle[0]>ang_x_high) {ang_x_high=fAngle[0];}
         if (fAngle[0]<ang_x_low) {ang_x_low=fAngle[0];}
         if (fAngle[1]>ang_y_high) {ang_y_high=fAngle[1];}
@@ -596,7 +600,7 @@ void loop() {
     if (s_cDataUpdate & MAG_UPDATE)
     {
       s_cDataUpdate &= ~MAG_UPDATE;
-      if (enable_resolution_compensation_d==true) {
+      if (enable_resolution_compensation_mag==true) {
         if (sReg[HX]>mag_x_high) {mag_x_high=sReg[HX];}
         if (sReg[HX]<mag_x_low) {mag_x_low=sReg[HX];}
         if (sReg[HY]>mag_y_high) {mag_y_high=sReg[HY];}
@@ -618,58 +622,6 @@ void loop() {
   }
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                    CopeCmdData
-// ------------------------------------------------------------------------------------------------------------------------------
-// read one character from RX buffer each time CopeCmdData is called.
-// ------------------------------------------------------------------------------------------------------------------------------
-
-static unsigned char s_ucData[50], s_ucRxCnt=0;
-
-void CopeCmdData(unsigned char ucData) {
-  // --------------------------------------------------
-  // append current char to chars
-  // --------------------------------------------------
-  s_ucData[s_ucRxCnt++]=ucData;
-  // --------------------------------------------------
-  // return now while below expected command length
-  // --------------------------------------------------
-  if (s_ucRxCnt<3) {return;}
-  // --------------------------------------------------
-  // handle potential overflow
-  // --------------------------------------------------
-  if (s_ucRxCnt >= 50) {s_ucRxCnt=0;}
-
-  // --------------------------------------------------
-  // continue if all expected chars have been collected
-  // --------------------------------------------------
-  if (s_ucRxCnt >= 3) {
-    // ------------------------------------------------------------------
-    // accept one character command ending in carriage return and newline
-    // ------------------------------------------------------------------
-    if ((s_ucData[1] == '\r') && (s_ucData[2] == '\n')) {
-      // ----------------------------------------------
-      // isolate command char for command processing
-      // ----------------------------------------------
-      s_cCmd=s_ucData[0];
-      // ----------------------------------------------
-      // reset
-      // ----------------------------------------------
-      memset(s_ucData,0,50);
-      s_ucRxCnt=0;
-    }
-
-    // ------------------------------------------------
-    // shift and continue
-    // ------------------------------------------------
-    else {
-      s_ucData[0]=s_ucData[1];
-      s_ucData[1]=s_ucData[2];
-      s_ucRxCnt=2;
-    }
-  }
-}
-                   
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       ShowHelp
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -699,33 +651,42 @@ static void ShowHelp(void)
 // ------------------------------------------------------------------------------------------------------------------------------
 
 static void CmdProcess(void) {
-  switch(s_cCmd)
-  {
-    case 'a': if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n"); break;
-    case 'm': if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
-    case 'e': if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n"); break;
-    case 'u': if (WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
-    case 'U': if (WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n"); break;
-    case 'B': if (WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
-              else {Serial1.begin(c_uiBaud[WIT_BAUD_115200]); Serial.print(" 115200 Baud rate modified successfully\r\n");}
-              break;
-    case 'b':	if (WitSetUartBaud(WIT_BAUD_9600) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
-              else {Serial1.begin(c_uiBaud[WIT_BAUD_9600]); Serial.print(" 9600 Baud rate modified successfully\r\n");}
-              break;
-    case 'r': if (WitSetOutputRate(RRATE_1HZ) != WIT_HAL_OK)  Serial.print("\r\nSet Baud Error\r\n");
-              else Serial.print("\r\nSet Baud Success\r\n");
-              break;
-    case 'R': if (WitSetOutputRate(RRATE_10HZ) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
-              else Serial.print("\r\nSet Baud Success\r\n");
-              break;
-    case 'C': if (WitSetContent(RSW_ACC|RSW_GYRO|RSW_ANGLE|RSW_MAG) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n"); break;
-    case 'c': if (WitSetContent(RSW_ACC) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n"); break;
-    case 'O': enable_serial_output_content=true; break;
-    case 'o': enable_serial_output_content=false; break;
-    case 'h':	ShowHelp(); break;
-    default : break;
+  if (strcmp(ucData, "h\r")==0) {ShowHelp();}
+
+  else if (strcmp(ucData, "a\r")==0) {if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n");}
+  else if (strcmp(ucData, "m\r")==0) {if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
+  else if (strcmp(ucData, "e\r")==0) {if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
+  else if (strcmp(ucData, "u\r")==0) {if (WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n");}
+  else if (strcmp(ucData, "U\r")==0) {if (WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) Serial.print("\r\nSet Bandwidth Error\r\n");}
+  else if (strcmp(ucData, "B\r")==0) {
+    if (WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else {Serial1.begin(c_uiBaud[WIT_BAUD_115200]); Serial.print(" 115200 Baud rate modified successfully\r\n");}
   }
-  s_cCmd=0xff;
+  else if (strcmp(ucData, "b\r")==0) {
+    if (WitSetUartBaud(WIT_BAUD_9600) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else {Serial1.begin(c_uiBaud[WIT_BAUD_9600]); Serial.print(" 9600 Baud rate modified successfully\r\n");}
+  }
+  else if (strcmp(ucData, "r\r")==0) {
+    if (WitSetOutputRate(RRATE_1HZ) != WIT_HAL_OK)  Serial.print("\r\nSet Baud Error\r\n");
+    else Serial.print("\r\nSet Baud Success\r\n");
+  }
+  else if (strcmp(ucData, "R\r")==0) {
+    if (WitSetOutputRate(RRATE_10HZ) != WIT_HAL_OK) Serial.print("\r\nSet Baud Error\r\n");
+    else Serial.print("\r\nSet Baud Success\r\n");
+  }
+  else if (strcmp(ucData, "C\r")==0) {if (WitSetContent(RSW_ACC|RSW_GYRO|RSW_ANGLE|RSW_MAG) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n");}
+  else if (strcmp(ucData, "c\r")==0) {if (WitSetContent(RSW_ACC) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n");}
+  else if (strcmp(ucData, "O\r")==0) {enable_serial_output_content=true;}
+  else if (strcmp(ucData, "o\r")==0) {enable_serial_output_content=false;}
+  else if (strcmp(ucData, "rc-acc\r")==0) {enable_resolution_compensation_acc=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_acc));}
+  else if (strcmp(ucData, "cv-acc\r")==0) {enable_resolution_compensation_acc=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_acc));}
+  else if (strcmp(ucData, "rc-ang\r")==0) {enable_resolution_compensation_ang=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_ang));}
+  else if (strcmp(ucData, "cv-ang\r")==0) {enable_resolution_compensation_ang=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_ang));}
+  else if (strcmp(ucData, "rc-gyr\r")==0) {enable_resolution_compensation_gyr=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
+  else if (strcmp(ucData, "cv-gyr\r")==0) {enable_resolution_compensation_gyr=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
+  else if (strcmp(ucData, "rc-mag\r")==0) {enable_resolution_compensation_mag=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
+  else if (strcmp(ucData, "cv-mag\r")==0) {enable_resolution_compensation_mag=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
+  memset(ucData, 0, sizeof(ucData));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
