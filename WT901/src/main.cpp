@@ -540,8 +540,8 @@ static void Delayms(uint16_t ucMs) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum) {
-  signed int i;
-  for(i=0; i < uiRegNum; i++) {
+
+  for(unsigned int i=0; i<uiRegNum; i++) {
     
     switch(uiReg)
     {
@@ -561,7 +561,7 @@ static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum) {
 
 static void AutoScanSensor(void)
 {
-	signed int i, iRetry;
+	unsigned int i, iRetry;
 	
 	for(i=0; i < sizeof(c_uiBaud)/sizeof(c_uiBaud[0]); i++)
 	{
