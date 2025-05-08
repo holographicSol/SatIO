@@ -471,22 +471,22 @@ void CopeCmdData(unsigned char ucData) {
 
 static void ShowHelp(void)
 {
-	Serial.println("---------------------------------------------------------------------------------------------------");
-	Serial.println("                                               HELP                                                ");
-	Serial.println("UART SEND: a\\r\\n   Acceleration calibration.");
-	Serial.println("UART SEND: m\\r\\n   Enter Magnetic field calibration. To end calibration send: e\\r\\n");
-	Serial.println("UART SEND: U\\r\\n   Bandwidth increase.");
-	Serial.println("UART SEND: u\\r\\n   Bandwidth reduction.");
-	Serial.println("UART SEND: B\\r\\n   Baud rate increased to 115200.");
-	Serial.println("UART SEND: b\\r\\n   Baud rate reduction to 9600.");
-	Serial.println("UART SEND: R\\r\\n   The return rate increases to 10Hz.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                               HELP                                                ");
+  Serial.println("UART SEND: a\\r\\n   Acceleration calibration.");
+  Serial.println("UART SEND: m\\r\\n   Enter Magnetic field calibration. To end calibration send: e\\r\\n");
+  Serial.println("UART SEND: U\\r\\n   Bandwidth increase.");
+  Serial.println("UART SEND: u\\r\\n   Bandwidth reduction.");
+  Serial.println("UART SEND: B\\r\\n   Baud rate increased to 115200.");
+  Serial.println("UART SEND: b\\r\\n   Baud rate reduction to 9600.");
+  Serial.println("UART SEND: R\\r\\n   The return rate increases to 10Hz.");
   Serial.println("UART SEND: r\\r\\n   The return rate reduction to 1Hz.");
   Serial.println("UART SEND: C\\r\\n   Basic return content: acceleration, angular velocity, angle, magnetic field.");
   Serial.println("UART SEND: c\\r\\n   Return content: acceleration.");
   Serial.println("UART SEND: O\\r\\n   Enable return content.");
   Serial.println("UART SEND: o\\r\\n   Disable return content.");
   Serial.println("UART SEND: h\\r\\n   Help.");
-	Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("---------------------------------------------------------------------------------------------------");
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
