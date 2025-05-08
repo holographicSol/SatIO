@@ -48,7 +48,11 @@ float fAcc[3], fGyro[3], fAngle[3];
 // -------------------------------------------------
 // configuration flags
 // -------------------------------------------------
-bool serial_output_content=false;
+bool enable_serial_output_content=false;
+bool enable_resolution_compensation_a=false;
+bool enable_resolution_compensation_b=false;
+bool enable_resolution_compensation_c=false;
+bool enable_resolution_compensation_d=true;
 
 // -------------------------------------------------
 // acceleration resolution compensation
@@ -165,16 +169,64 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$A,");
-    dtostrf(fAcc[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fAcc[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fAcc[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    if (enable_resolution_compensation_a==true) {
+      // ---------------------------------------------
+      // Acceleration X (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_acc_x0=acc_x_high;
+      if (abs(acc_x_low) > acc_x_high) {tmp_acc_x0=acc_x_low;}
+      dtostrf(tmp_acc_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Acceleration Y (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_acc_y0=acc_y_high;
+      if (abs(acc_y_low) > acc_y_high) {tmp_acc_y0=acc_y_low;}
+      dtostrf(tmp_acc_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Acceleration Z (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_acc_z0=acc_z_high;
+      if (abs(acc_z_low) > acc_z_high) {tmp_acc_z0=acc_z_low;}
+      dtostrf(tmp_acc_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    else {
+      // ---------------------------------------------
+      // Acceleration X
+      // ---------------------------------------------
+      dtostrf(fAcc[0], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Acceleration X
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fAcc[1], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Acceleration X
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fAcc[2], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    // ---------------------------------------------
+    // normalize stored highs/lows
+    // ---------------------------------------------
+    acc_x_high=fAcc[0];
+    acc_x_low=fAcc[0];
+    acc_y_high=fAcc[1];
+    acc_y_low=fAcc[1];
+    acc_z_high=fAcc[2];
+    acc_z_low=fAcc[2];
   }
 
   // -----------------------------------------------
@@ -184,16 +236,64 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$B,");
-    dtostrf(fAngle[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fAngle[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fAngle[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    if (enable_resolution_compensation_b==true) {
+      // ---------------------------------------------
+      // Angle X (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_ang_x0=ang_x_high;
+      if (abs(ang_x_low) > ang_x_high) {tmp_ang_x0=ang_x_low;}
+      dtostrf(tmp_ang_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Angle Y (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_ang_y0=ang_y_high;
+      if (abs(ang_y_low) > ang_y_high) {tmp_ang_y0=ang_y_low;}
+      dtostrf(tmp_ang_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Angle Z (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_ang_z0=ang_z_high;
+      if (abs(ang_z_low) > ang_z_high) {tmp_ang_z0=ang_z_low;}
+      dtostrf(tmp_ang_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    else {
+      // ---------------------------------------------
+      // Angle X
+      // ---------------------------------------------
+      dtostrf(fAngle[0], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Angle X
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fAngle[1], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Angle X
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fAngle[2], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    // ---------------------------------------------
+    // normalize stored highs/lows
+    // ---------------------------------------------
+    ang_x_high=fAngle[0];
+    ang_x_low=fAngle[0];
+    ang_y_high=fAngle[1];
+    ang_y_low=fAngle[1];
+    ang_z_high=fAngle[2];
+    ang_z_low=fAngle[2];
   }
 
   // -----------------------------------------------
@@ -203,16 +303,64 @@ void requestEvent() {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$C,");
-    dtostrf(fGyro[0], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fGyro[1], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    dtostrf(fGyro[2], 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    if (enable_resolution_compensation_c==true) {
+      // ---------------------------------------------
+      // Gyro X (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_gyr_x0=gyr_x_high;
+      if (abs(gyr_x_low) > gyr_x_high) {tmp_gyr_x0=gyr_x_low;}
+      dtostrf(tmp_gyr_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Gyro Y (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_gyr_y0=gyr_y_high;
+      if (abs(gyr_y_low) > gyr_y_high) {tmp_gyr_y0=gyr_y_low;}
+      dtostrf(tmp_gyr_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Gyro Z (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_gyr_z0=gyr_z_high;
+      if (abs(gyr_z_low) > gyr_z_high) {tmp_gyr_z0=gyr_z_low;}
+      dtostrf(tmp_gyr_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    else {
+      // ---------------------------------------------
+      // Gyro X
+      // ---------------------------------------------
+      dtostrf(fGyro[0], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Gyro Y
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fGyro[1], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Gyro Z
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(fGyro[2], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    // ---------------------------------------------
+    // normalize stored highs/lows
+    // ---------------------------------------------
+    gyr_x_high=fGyro[0];
+    gyr_x_low=fGyro[0];
+    gyr_y_high=fGyro[1];
+    gyr_y_low=fGyro[1];
+    gyr_z_high=fGyro[2];
+    gyr_z_low=fGyro[2];
   }
 
   // -----------------------------------------------
@@ -220,33 +368,57 @@ void requestEvent() {
   // -----------------------------------------------
   else if (I2CLink.request_counter==3) {
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$D,");
-    // ---------------------------------------------
-    // X (special resolution compensation)
-    // ---------------------------------------------
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    tmp_mag_x0=mag_x_high;
-    if (abs(mag_x_low) > mag_x_high) {tmp_mag_x0=mag_x_low;}
-    dtostrf(tmp_mag_x0, 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    // ---------------------------------------------
-    // Y (special resolution compensation)
-    // ---------------------------------------------
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    tmp_mag_y0=mag_y_high;
-    if (abs(mag_y_low) > mag_y_high) {tmp_mag_y0=mag_y_low;}
-    dtostrf(tmp_mag_y0, 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, ",");
-    // ---------------------------------------------
-    // Z (special resolution compensation)
-    // ---------------------------------------------
-    memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-    tmp_mag_z0=mag_z_high;
-    if (abs(mag_z_low) > mag_z_high) {tmp_mag_z0=mag_z_low;}
-    dtostrf(tmp_mag_z0, 1, 3, I2CLink.TMP_BUFFER1);
-    strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    if (enable_resolution_compensation_d==true) {
+      // ---------------------------------------------
+      // Mag X (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_mag_x0=mag_x_high;
+      if (abs(mag_x_low) > mag_x_high) {tmp_mag_x0=mag_x_low;}
+      dtostrf(tmp_mag_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Mag Y (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_mag_y0=mag_y_high;
+      if (abs(mag_y_low) > mag_y_high) {tmp_mag_y0=mag_y_low;}
+      dtostrf(tmp_mag_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Mag Z (special resolution compensation)
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      tmp_mag_z0=mag_z_high;
+      if (abs(mag_z_low) > mag_z_high) {tmp_mag_z0=mag_z_low;}
+      dtostrf(tmp_mag_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
+    else {
+      // ---------------------------------------------
+      // Mag X
+      // ---------------------------------------------
+      dtostrf(sReg[HX], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Mag Y
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(sReg[HY], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, ",");
+      // ---------------------------------------------
+      // Mag Z
+      // ---------------------------------------------
+      memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+      dtostrf(sReg[HZ], 1, 3, I2CLink.TMP_BUFFER1);
+      strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+    }
     // ---------------------------------------------
     // normalize stored highs/lows
     // ---------------------------------------------
@@ -331,13 +503,15 @@ void loop() {
     if (s_cDataUpdate & ACC_UPDATE)
     {
       s_cDataUpdate &= ~ACC_UPDATE;
-      // if (fAcc[0]>acc_x_high) {acc_x_high=fAcc[0];}
-      // if (fAcc[0]<acc_x_low) {acc_x_low=fAcc[0];}
-      // if (fAcc[1]>acc_y_high) {acc_y_high=fAcc[1];}
-      // if (fAcc[1]<acc_y_low) {acc_y_low=fAcc[1];}
-      // if (fAcc[2]>acc_z_high) {acc_z_high=fAcc[2];}
-      // if (fAcc[2]<acc_z_low) {acc_z_low=fAcc[2];}
-      if (serial_output_content==true) {
+      if (enable_resolution_compensation_a==true) {
+        if (fAcc[0]>acc_x_high) {acc_x_high=fAcc[0];}
+        if (fAcc[0]<acc_x_low) {acc_x_low=fAcc[0];}
+        if (fAcc[1]>acc_y_high) {acc_y_high=fAcc[1];}
+        if (fAcc[1]<acc_y_low) {acc_y_low=fAcc[1];}
+        if (fAcc[2]>acc_z_high) {acc_z_high=fAcc[2];}
+        if (fAcc[2]<acc_z_low) {acc_z_low=fAcc[2];}
+      }
+      if (enable_serial_output_content==true) {
         Serial.print("$ACC,");
         Serial.print(fAcc[0], 3);
         Serial.print(",");
@@ -350,13 +524,15 @@ void loop() {
     if (s_cDataUpdate & GYRO_UPDATE)
     {
       s_cDataUpdate &= ~GYRO_UPDATE;
-      // if (fGyro[0]>gyr_x_high) {gyr_x_high=fGyro[0];}
-      // if (fGyro[0]<gyr_x_low) {gyr_x_low=fGyro[0];}
-      // if (fGyro[1]>gyr_y_high) {gyr_y_high=fGyro[1];}
-      // if (fGyro[1]<gyr_y_low) {gyr_y_low=fGyro[1];}
-      // if (fGyro[2]>gyr_z_high) {gyr_z_high=fGyro[2];}
-      // if (fGyro[2]<gyr_z_low) {gyr_z_low=fGyro[2];}
-      if (serial_output_content==true) {
+      if (enable_resolution_compensation_b==true) {
+        if (fGyro[0]>gyr_x_high) {gyr_x_high=fGyro[0];}
+        if (fGyro[0]<gyr_x_low) {gyr_x_low=fGyro[0];}
+        if (fGyro[1]>gyr_y_high) {gyr_y_high=fGyro[1];}
+        if (fGyro[1]<gyr_y_low) {gyr_y_low=fGyro[1];}
+        if (fGyro[2]>gyr_z_high) {gyr_z_high=fGyro[2];}
+        if (fGyro[2]<gyr_z_low) {gyr_z_low=fGyro[2];}
+      }
+      if (enable_serial_output_content==true) {
         Serial.print("$GYR,");
         Serial.print(fGyro[0], 1);
         Serial.print(",");
@@ -369,13 +545,15 @@ void loop() {
     if (s_cDataUpdate & ANGLE_UPDATE)
     {
       s_cDataUpdate &= ~ANGLE_UPDATE;
-      // if (fAngle[0]>ang_x_high) {ang_x_high=fAngle[0];}
-      // if (fAngle[0]<ang_x_low) {ang_x_low=fAngle[0];}
-      // if (fAngle[1]>ang_y_high) {ang_y_high=fAngle[1];}
-      // if (fAngle[1]<ang_y_low) {ang_y_low=fAngle[1];}
-      // if (fAngle[2]>ang_z_high) {ang_z_high=fAngle[2];}
-      // if (fAngle[2]<ang_z_low) {ang_z_low=fAngle[2];}
-      if (serial_output_content==true) {
+      if (enable_resolution_compensation_c==true) {
+        if (fAngle[0]>ang_x_high) {ang_x_high=fAngle[0];}
+        if (fAngle[0]<ang_x_low) {ang_x_low=fAngle[0];}
+        if (fAngle[1]>ang_y_high) {ang_y_high=fAngle[1];}
+        if (fAngle[1]<ang_y_low) {ang_y_low=fAngle[1];}
+        if (fAngle[2]>ang_z_high) {ang_z_high=fAngle[2];}
+        if (fAngle[2]<ang_z_low) {ang_z_low=fAngle[2];}
+      }
+      if (enable_serial_output_content==true) {
         Serial.print("$ANG,");
         Serial.print(fAngle[0], 3);
         Serial.print(",");
@@ -388,13 +566,15 @@ void loop() {
     if (s_cDataUpdate & MAG_UPDATE)
     {
       s_cDataUpdate &= ~MAG_UPDATE;
-      if (sReg[HX]>mag_x_high) {mag_x_high=sReg[HX];}
-      if (sReg[HX]<mag_x_low) {mag_x_low=sReg[HX];}
-      if (sReg[HY]>mag_y_high) {mag_y_high=sReg[HY];}
-      if (sReg[HY]<mag_y_low) {mag_y_low=sReg[HY];}
-      if (sReg[HZ]>mag_z_high) {mag_z_high=sReg[HZ];}
-      if (sReg[HZ]<mag_z_low) {mag_z_low=sReg[HZ];}
-      if (serial_output_content==true) {
+      if (enable_resolution_compensation_d==true) {
+        if (sReg[HX]>mag_x_high) {mag_x_high=sReg[HX];}
+        if (sReg[HX]<mag_x_low) {mag_x_low=sReg[HX];}
+        if (sReg[HY]>mag_y_high) {mag_y_high=sReg[HY];}
+        if (sReg[HY]<mag_y_low) {mag_y_low=sReg[HY];}
+        if (sReg[HZ]>mag_z_high) {mag_z_high=sReg[HZ];}
+        if (sReg[HZ]<mag_z_low) {mag_z_low=sReg[HZ];}
+      }
+      if (enable_serial_output_content==true) {
         Serial.print("$MAG,");
         Serial.print(sReg[HX]);
         Serial.print(",");
@@ -510,8 +690,8 @@ static void CmdProcess(void) {
               break;
     case 'C': if (WitSetContent(RSW_ACC|RSW_GYRO|RSW_ANGLE|RSW_MAG) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n"); break;
     case 'c': if (WitSetContent(RSW_ACC) != WIT_HAL_OK) Serial.print("\r\nSet RSW Error\r\n"); break;
-    case 'O': serial_output_content=true; break;
-    case 'o': serial_output_content=false; break;
+    case 'O': enable_serial_output_content=true; break;
+    case 'o': enable_serial_output_content=false; break;
     case 'h':	ShowHelp(); break;
     default : break;
   }
