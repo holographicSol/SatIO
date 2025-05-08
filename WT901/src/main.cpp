@@ -39,10 +39,6 @@ Display Acceleration X,Y,Z (pending deliveries).
 Display Magnetic Field X,Y,Z (pending deliveries). requies 6 digit 7 segment displays.
 Setup this module as IIC slave.
 
-roll,pitch LEDS (x18):
- 1      2      3      4     5   6     7     8       9
-0-25% 25-50% 50-75% 75-100% 0 0-25% 25-50% 50-75% 75-100%
-
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
