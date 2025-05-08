@@ -44,10 +44,14 @@ static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum);
 static void Delayms(uint16_t ucMs);
 const uint32_t c_uiBaud[8]={0,4800, 9600, 19200, 38400, 57600, 115200, 230400};
 float fAcc[3], fGyro[3], fAngle[3];
+
+// -------------------------------------------------
+// configuration flags
+// -------------------------------------------------
 bool serial_output_content=false;
 
 // -------------------------------------------------
-// resolution compensation values
+// acceleration resolution compensation
 // -------------------------------------------------
 float acc_x_low=0;
 float acc_x_high=0;
@@ -55,14 +59,36 @@ float acc_y_low=0;
 float acc_y_high=0;
 float acc_z_low=0;
 float acc_z_high=0;
-
+float tmp_acc_x0=0;
+float tmp_acc_y0=0;
+float tmp_acc_z0=0;
+// -------------------------------------------------
+// angle resolution compensation
+// -------------------------------------------------
 float ang_x_low=0;
 float ang_x_high=0;
 float ang_y_low=0;
 float ang_y_high=0;
 float ang_z_low=0;
 float ang_z_high=0;
-
+float tmp_ang_x0=0;
+float tmp_ang_y0=0;
+float tmp_ang_z0=0;
+// -------------------------------------------------
+// gyro resolution compensation
+// -------------------------------------------------
+float gyr_x_low=0;
+float gyr_x_high=0;
+float gyr_y_low=0;
+float gyr_y_high=0;
+float gyr_z_low=0;
+float gyr_z_high=0;
+float tmp_gyr_x0=0;
+float tmp_gyr_y0=0;
+float tmp_gyr_z0=0;
+// -------------------------------------------------
+// magnetic field resolution compensation
+// -------------------------------------------------
 float mag_x_low=0;
 float mag_x_high=0;
 float mag_y_low=0;
@@ -72,13 +98,6 @@ float mag_z_high=0;
 float tmp_mag_x0=0;
 float tmp_mag_y0=0;
 float tmp_mag_z0=0;
-
-float gyr_x_low=0;
-float gyr_x_high=0;
-float gyr_y_low=0;
-float gyr_y_high=0;
-float gyr_z_low=0;
-float gyr_z_high=0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C DATA
@@ -499,8 +518,7 @@ static void CmdProcess(void) {
 //                                                                                                                 SensorUartSend
 // ------------------------------------------------------------------------------------------------------------------------------
 
-static void SensorUartSend(uint8_t *p_data, uint32_t uiSize)
-{
+static void SensorUartSend(uint8_t *p_data, uint32_t uiSize) {
   Serial1.write(p_data, uiSize);
   Serial1.flush();
 }
@@ -509,8 +527,7 @@ static void SensorUartSend(uint8_t *p_data, uint32_t uiSize)
 //                                                                                                                        Delayms
 // ------------------------------------------------------------------------------------------------------------------------------
 
-static void Delayms(uint16_t ucMs)
-{
+static void Delayms(uint16_t ucMs) {
   delay(ucMs);
 }
 
@@ -518,30 +535,19 @@ static void Delayms(uint16_t ucMs)
 //                                                                                                              SensorDataUpdata
 // ------------------------------------------------------------------------------------------------------------------------------
 
-static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum)
-{
-	signed int i;
-  for(i=0; i < uiRegNum; i++)
-  {
-      switch(uiReg)
-      {
-          case AZ:
-      s_cDataUpdate |= ACC_UPDATE;
-          break;
-          case GZ:
-      s_cDataUpdate |= GYRO_UPDATE;
-          break;
-          case HZ:
-      s_cDataUpdate |= MAG_UPDATE;
-          break;
-          case Yaw:
-      s_cDataUpdate |= ANGLE_UPDATE;
-          break;
-          default:
-      s_cDataUpdate |= READ_UPDATE;
-    break;
-      }
-  uiReg++;
+static void SensorDataUpdata(uint32_t uiReg, uint32_t uiRegNum) {
+  signed int i;
+  for(i=0; i < uiRegNum; i++) {
+    
+    switch(uiReg)
+    {
+      case AZ: s_cDataUpdate |= ACC_UPDATE; break;
+      case GZ: s_cDataUpdate |= GYRO_UPDATE; break;
+      case HZ: s_cDataUpdate |= MAG_UPDATE; break;
+      case Yaw: s_cDataUpdate |= ANGLE_UPDATE; break;
+      default: s_cDataUpdate |= READ_UPDATE; break;
+    }
+    uiReg++;
   }
 }
 
