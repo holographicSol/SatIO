@@ -421,8 +421,7 @@ void loop() {
 
 static unsigned char s_ucData[50], s_ucRxCnt=0;
 
-void CopeCmdData(unsigned char ucData)
-{
+void CopeCmdData(unsigned char ucData) {
   // --------------------------------------------------
   // append current char to chars
   // --------------------------------------------------
