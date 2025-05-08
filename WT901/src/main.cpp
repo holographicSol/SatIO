@@ -630,29 +630,27 @@ static void ShowHelp(void)
 {
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("                                               HELP                                                ");
-  Serial.println("UART SEND: a\\r\\n   Acceleration calibration.");
-  Serial.println("UART SEND: m\\r\\n   Enter Magnetic field calibration. To end calibration send: e\\r\\n");
-  Serial.println("UART SEND: U\\r\\n   Bandwidth increase.");
-  Serial.println("UART SEND: u\\r\\n   Bandwidth reduction.");
-  Serial.println("UART SEND: B\\r\\n   Baud rate increased to 115200.");
-  Serial.println("UART SEND: b\\r\\n   Baud rate reduction to 9600.");
-  Serial.println("UART SEND: R\\r\\n   The return rate increases to 10Hz.");
-  Serial.println("UART SEND: r\\r\\n   The return rate reduction to 1Hz.");
-  Serial.println("UART SEND: C\\r\\n   Basic return content: acceleration, angular velocity, angle, magnetic field.");
-  Serial.println("UART SEND: c\\r\\n   Return content: acceleration.");
-  Serial.println("UART SEND: O\\r\\n   Enable return content.");
-  Serial.println("UART SEND: o\\r\\n   Disable return content.");
-
-  Serial.println("UART SEND: rc-acc\\r\\n   Enable resolution compensation (acceleration).");
-  Serial.println("UART SEND: cv-acc\\r\\n   Disable resolution compensation content (acceleration).");
-  Serial.println("UART SEND: rc-ang\\r\\n   Enable resolution compensation (angle).");
-  Serial.println("UART SEND: cv-ang\\r\\n   Disable resolution compensation (angle).");
-  Serial.println("UART SEND: rc-gyr\\r\\n   Enable resolution compensation (gyro).");
-  Serial.println("UART SEND: cv-gyr\\r\\n   Disable resolution compensation (gyro).");
-  Serial.println("UART SEND: rc-mag\\r\\n   Enable resolution compensation (magnetic field).");
-  Serial.println("UART SEND: cv-mag\\r\\n   Disable resolution compensation (magnetic field).");
-
-  Serial.println("UART SEND: h\\r\\n   Help.");
+  Serial.println("UART SEND: a        Acceleration calibration.");
+  Serial.println("UART SEND: m        Enter Magnetic field calibration. To end calibration UART SEND: e");
+  Serial.println("UART SEND: U        Bandwidth increase.");
+  Serial.println("UART SEND: u        Bandwidth reduction.");
+  Serial.println("UART SEND: B        Baud rate increased to 115200.");
+  Serial.println("UART SEND: b        Baud rate reduction to 9600.");
+  Serial.println("UART SEND: R        The return rate increases to 10Hz.");
+  Serial.println("UART SEND: r        The return rate reduction to 1Hz.");
+  Serial.println("UART SEND: C        Basic return content: acceleration, angular velocity, angle, magnetic field.");
+  Serial.println("UART SEND: c        Return content: acceleration.");
+  Serial.println("UART SEND: O        Enable return content.");
+  Serial.println("UART SEND: o        Disable return content.");
+  Serial.println("UART SEND: rc-acc   Enable resolution compensation (acceleration).");
+  Serial.println("UART SEND: cv-acc   Disable resolution compensation content (acceleration).");
+  Serial.println("UART SEND: rc-ang   Enable resolution compensation (angle).");
+  Serial.println("UART SEND: cv-ang   Disable resolution compensation (angle).");
+  Serial.println("UART SEND: rc-gyr   Enable resolution compensation (gyro).");
+  Serial.println("UART SEND: cv-gyr   Disable resolution compensation (gyro).");
+  Serial.println("UART SEND: rc-mag   Enable resolution compensation (magnetic field).");
+  Serial.println("UART SEND: cv-mag   Disable resolution compensation (magnetic field).");
+  Serial.println("UART SEND: h        Display this help messgae.");
   Serial.println("---------------------------------------------------------------------------------------------------");
 }
 
