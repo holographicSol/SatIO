@@ -1,9 +1,8 @@
 /*
 
-WT901 IIC Module written by Benjamin Jack Cullen and adapted from official example code written by Witmotion.
+9-Axis Gyro Module written by Benjamin Jack Cullen and adapted from official example code written by Witmotion.
 
-The WT901 is a IMU sensor device, detecting acceleration, angular
-velocity, angle as well as magnetic filed.
+The WT901 is a IMU sensor device, detecting acceleration, angular velocity, angle as well as magnetic filed.
 
 Todo:
 Enable/disable resolution compensation.
