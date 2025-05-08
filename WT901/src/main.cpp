@@ -642,6 +642,16 @@ static void ShowHelp(void)
   Serial.println("UART SEND: c\\r\\n   Return content: acceleration.");
   Serial.println("UART SEND: O\\r\\n   Enable return content.");
   Serial.println("UART SEND: o\\r\\n   Disable return content.");
+
+  Serial.println("UART SEND: rc-acc\\r\\n   Enable resolution compensation (acceleration).");
+  Serial.println("UART SEND: cv-acc\\r\\n   Disable resolution compensation content (acceleration).");
+  Serial.println("UART SEND: rc-ang\\r\\n   Enable resolution compensation (angle).");
+  Serial.println("UART SEND: cv-ang\\r\\n   Disable resolution compensation (angle).");
+  Serial.println("UART SEND: rc-gyr\\r\\n   Enable resolution compensation (gyro).");
+  Serial.println("UART SEND: cv-gyr\\r\\n   Disable resolution compensation (gyro).");
+  Serial.println("UART SEND: rc-mag\\r\\n   Enable resolution compensation (magnetic field).");
+  Serial.println("UART SEND: cv-mag\\r\\n   Disable resolution compensation (magnetic field).");
+
   Serial.println("UART SEND: h\\r\\n   Help.");
   Serial.println("---------------------------------------------------------------------------------------------------");
 }
