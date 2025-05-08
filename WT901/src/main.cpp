@@ -498,7 +498,7 @@ void loop() {
   // read commands
   // -----------------------------------------------
   while (Serial.available()) {CopeCmdData(Serial.read());}
-  
+
   // -----------------------------------------------
   // process commands
   // -----------------------------------------------
@@ -509,12 +509,18 @@ void loop() {
   // -----------------------------------------------
   if (s_cDataUpdate)
   {
+    // ---------------------------------------------
+    // update values
+    // ---------------------------------------------
     for(int i=0; i < 3; i++)
     {
       fAcc[i]=sReg[AX+i] / 32768.0f * 16.0f;
       fGyro[i]=sReg[GX+i] / 32768.0f * 2000.0f;
       fAngle[i]=sReg[Roll+i] / 32768.0f * 180.0f;
     }
+    // ---------------------------------------------
+    // process acceleration
+    // ---------------------------------------------
     if (s_cDataUpdate & ACC_UPDATE)
     {
       s_cDataUpdate &= ~ACC_UPDATE;
@@ -536,6 +542,9 @@ void loop() {
         Serial.print("\r\n");
       }
     }
+    // ---------------------------------------------
+    // process gyro
+    // ---------------------------------------------
     if (s_cDataUpdate & GYRO_UPDATE)
     {
       s_cDataUpdate &= ~GYRO_UPDATE;
@@ -557,6 +566,9 @@ void loop() {
         Serial.print("\r\n");
       }
     }
+    // ---------------------------------------------
+    // process angle
+    // ---------------------------------------------
     if (s_cDataUpdate & ANGLE_UPDATE)
     {
       s_cDataUpdate &= ~ANGLE_UPDATE;
@@ -578,6 +590,9 @@ void loop() {
         Serial.print("\r\n");
       }
     }
+    // ---------------------------------------------
+    // process magnetic field
+    // ---------------------------------------------
     if (s_cDataUpdate & MAG_UPDATE)
     {
       s_cDataUpdate &= ~MAG_UPDATE;
