@@ -7,13 +7,17 @@ The WT901 is a IMU sensor device, detecting acceleration, angular velocity, angl
 Configurable over Serial.
 Configurable over IIC.
 
+LEDs:
 roll: x9 LEDs
 pitch: x9 LEDs
-yaw: x1 LED (North)
 
-Data in: x1 LED (yellow)
-Data out: x1 LED (red)
+command: x1 LED (yellow)
+data: x1 LED (red)
 baud rate: x1 LED (red, yellow, green, blue, purple, white)
+
+Buttons:
+calibrate acc.
+calibrate mag.
 
 */
 
@@ -130,9 +134,9 @@ float tmp_mag_x0=0;
 float tmp_mag_y0=0;
 float tmp_mag_z0=0;
 
-// -------------------------------------------------
-// angle percentages 
-// -------------------------------------------------
+// -----------------------------------------------------
+// angle percentages: currently used for indicators only
+// -----------------------------------------------------
 float mapped_ang_x=0;
 float mapped_ang_y=0;
 float ang_x_percent=0;
@@ -236,10 +240,11 @@ void receiveEvent(int) {
 //                                                                                                             I2C REQUEST EVENTS
 // ------------------------------------------------------------------------------------------------------------------------------
 
-int loops_between_requests=0;
+uint32_t loops_between_requests=0;
 void requestEvent() {
 
   // Serial.println("[loops_between_requests] " + String(loops_between_requests));
+  // loops_between_requests=0;
                                                                                            
   // -----------------------------------------------
   //                                    ACCELERATION
@@ -575,9 +580,9 @@ void UpdateLEDs() {
 
 void loop() {
   // for (int i=0; i<NUM_LEDS; i++) {leds[i] = CRGB::White; FastLED.show(); delay(30); leds[i] = CRGB::Black; FastLED.show(); delay(30);}
-  UpdateLEDs();
+  // UpdateLEDs(); // experimental and reduces performance
 
-  loops_between_requests++;
+  // loops_between_requests++;
 
   // -----------------------------------------------
   // read WT901
