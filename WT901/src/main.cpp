@@ -557,6 +557,16 @@ void UpdateLEDs() {
   if (ang_x_percent>62.5 && ang_x_percent<=75) {LEDOffExcept(6); leds[6] = CRGB::Red; FastLED.show();}
   if (ang_x_percent>75 && ang_x_percent<=87.5) {LEDOffExcept(7); leds[7] = CRGB::Red; FastLED.show();}
   if (ang_x_percent>87.5 && ang_x_percent<=100) {LEDOffExcept(8); leds[8] = CRGB::Red; FastLED.show();}
+  // pitch
+  if (ang_y_percent>=0 && ang_y_percent<12.5) {LEDOffExcept(9); leds[9] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>=12.5 && ang_y_percent<25) {LEDOffExcept(10); leds[10] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>=25 && ang_y_percent<37.5) {LEDOffExcept(11); leds[11] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>=37.5 && ang_y_percent<50) {LEDOffExcept(12); leds[12] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent==50) {LEDOffExcept(13); leds[13] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>50 && ang_y_percent<=62.5) {LEDOffExcept(14); leds[14] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>62.5 && ang_y_percent<=75) {LEDOffExcept(15); leds[15] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>75 && ang_y_percent<=87.5) {LEDOffExcept(16); leds[16] = CRGB::Green; FastLED.show();}
+  if (ang_y_percent>87.5 && ang_y_percent<=100) {LEDOffExcept(17); leds[17] = CRGB::Green; FastLED.show();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
