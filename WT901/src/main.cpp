@@ -541,7 +541,7 @@ void setup() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void LEDOffExcept(int start, int end, int n) {
-  for (int i=start; i<end; i++) {
+  for (int i=start; i<=end; i++) {
     if (i!=n) {leds[i] = CRGB::Black; FastLED.show();}
   }
 }
