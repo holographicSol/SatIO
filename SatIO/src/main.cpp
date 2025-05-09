@@ -12659,7 +12659,7 @@ void DisplayUAP() {
   tft.setPivot(64, 64); // set the TFT pivot point that the sprite will rotate around
   // mapped_roll = wt901_roll; // sim
   mapped_roll = sensorData.wt901_ang_x;
-  mapped_roll = map(mapped_roll, -90.00, 90, 0, 360);
+  mapped_roll = map(mapped_roll, -180.00, 180, 0, 360);
   mapped_roll -= offset_wt901_roll_0;
   
   // ------------------------------------------------------------
