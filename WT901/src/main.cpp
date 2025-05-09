@@ -7,6 +7,14 @@ The WT901 is a IMU sensor device, detecting acceleration, angular velocity, angl
 Configurable over Serial.
 Configurable over IIC.
 
+roll: x9 LEDs
+pitch: x9 LEDs
+yaw: x1 LED (North)
+
+Data in: x1 LED (yellow)
+Data out: x1 LED (red)
+baud rate: x1 LED (red, yellow, green, blue, purple, white)
+
 */
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -17,6 +25,25 @@ Configurable over IIC.
 #include "./REG.h"
 #include "./wit_c_sdk.h"
 #include <Wire.h>
+#include <FastLED.h>
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     INDICATORS
+// ------------------------------------------------------------------------------------------------------------------------------
+
+/*
+Indicators:
+0-19: Matrix Switch State
+20: MATRIX IO ENABLED/DISABLED
+21: DATA
+22: OVERLOAD
+23: SIGNAL
+*/
+
+// INDICATORS
+#define NUM_LEDS 18
+#define DATA_PIN 31
+CRGB leds[NUM_LEDS];
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        WT901
@@ -102,6 +129,14 @@ float mag_z_high=0;
 float tmp_mag_x0=0;
 float tmp_mag_y0=0;
 float tmp_mag_z0=0;
+
+// -------------------------------------------------
+// angle percentages 
+// -------------------------------------------------
+float mapped_ang_x=0;
+float mapped_ang_y=0;
+float ang_x_percent=0;
+float ang_y_percent=0;
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                       I2C DATA
@@ -218,8 +253,6 @@ void requestEvent() {
       // Acceleration X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_acc_x0=acc_x_high;
-      if (abs(acc_x_low) > acc_x_high) {tmp_acc_x0=acc_x_low;}
       dtostrf(tmp_acc_x0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -227,8 +260,6 @@ void requestEvent() {
       // Acceleration Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_acc_y0=acc_y_high;
-      if (abs(acc_y_low) > acc_y_high) {tmp_acc_y0=acc_y_low;}
       dtostrf(tmp_acc_y0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -236,8 +267,6 @@ void requestEvent() {
       // Acceleration Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_acc_z0=acc_z_high;
-      if (abs(acc_z_low) > acc_z_high) {tmp_acc_z0=acc_z_low;}
       dtostrf(tmp_acc_z0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
@@ -285,8 +314,6 @@ void requestEvent() {
       // Angle X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_ang_x0=ang_x_high;
-      if (abs(ang_x_low) > ang_x_high) {tmp_ang_x0=ang_x_low;}
       dtostrf(tmp_ang_x0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -294,8 +321,6 @@ void requestEvent() {
       // Angle Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_ang_y0=ang_y_high;
-      if (abs(ang_y_low) > ang_y_high) {tmp_ang_y0=ang_y_low;}
       dtostrf(tmp_ang_y0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -303,8 +328,6 @@ void requestEvent() {
       // Angle Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_ang_z0=ang_z_high;
-      if (abs(ang_z_low) > ang_z_high) {tmp_ang_z0=ang_z_low;}
       dtostrf(tmp_ang_z0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
@@ -352,8 +375,6 @@ void requestEvent() {
       // Gyro X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_gyr_x0=gyr_x_high;
-      if (abs(gyr_x_low) > gyr_x_high) {tmp_gyr_x0=gyr_x_low;}
       dtostrf(tmp_gyr_x0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -361,8 +382,6 @@ void requestEvent() {
       // Gyro Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_gyr_y0=gyr_y_high;
-      if (abs(gyr_y_low) > gyr_y_high) {tmp_gyr_y0=gyr_y_low;}
       dtostrf(tmp_gyr_y0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -370,8 +389,6 @@ void requestEvent() {
       // Gyro Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_gyr_z0=gyr_z_high;
-      if (abs(gyr_z_low) > gyr_z_high) {tmp_gyr_z0=gyr_z_low;}
       dtostrf(tmp_gyr_z0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
@@ -419,8 +436,6 @@ void requestEvent() {
       // Mag X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_mag_x0=mag_x_high;
-      if (abs(mag_x_low) > mag_x_high) {tmp_mag_x0=mag_x_low;}
       dtostrf(tmp_mag_x0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -428,8 +443,6 @@ void requestEvent() {
       // Mag Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_mag_y0=mag_y_high;
-      if (abs(mag_y_low) > mag_y_high) {tmp_mag_y0=mag_y_low;}
       dtostrf(tmp_mag_y0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
@@ -437,8 +450,6 @@ void requestEvent() {
       // Mag Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      tmp_mag_z0=mag_z_high;
-      if (abs(mag_z_low) > mag_z_high) {tmp_mag_z0=mag_z_low;}
       dtostrf(tmp_mag_z0, 1, 3, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
@@ -494,6 +505,11 @@ void setup() {
   // -----------------------------------------------
   Serial.begin(115200);
 
+  // ------------------------------------------------------------
+  // Indicators
+  // ------------------------------------------------------------
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
   // -----------------------------------------------
   // WT901
   // -----------------------------------------------
@@ -521,10 +537,36 @@ void setup() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                     INDICATORS
+// ------------------------------------------------------------------------------------------------------------------------------
+
+void LEDOffExcept(int n) {
+  for (int i=0; i<9; i++) {
+    if (i!=n) {leds[i] = CRGB::Black; FastLED.show();}
+  }
+}
+
+void UpdateLEDs() {
+  // roll
+  if (ang_x_percent>=0 && ang_x_percent<12.5) {LEDOffExcept(0); leds[0] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>=12.5 && ang_x_percent<25) {LEDOffExcept(1); leds[1] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>=25 && ang_x_percent<37.5) {LEDOffExcept(2); leds[2] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>=37.5 && ang_x_percent<50) {LEDOffExcept(3); leds[3] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent==50) {LEDOffExcept(4); leds[4] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>50 && ang_x_percent<=62.5) {LEDOffExcept(5); leds[5] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>62.5 && ang_x_percent<=75) {LEDOffExcept(6); leds[6] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>75 && ang_x_percent<=87.5) {LEDOffExcept(7); leds[7] = CRGB::Red; FastLED.show();}
+  if (ang_x_percent>87.5 && ang_x_percent<=100) {LEDOffExcept(8); leds[8] = CRGB::Red; FastLED.show();}
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void loop() {
+  // for (int i=0; i<NUM_LEDS; i++) {leds[i] = CRGB::White; FastLED.show(); delay(30); leds[i] = CRGB::Black; FastLED.show(); delay(30);}
+  UpdateLEDs();
+
   loops_between_requests++;
 
   // -----------------------------------------------
@@ -565,6 +607,9 @@ void loop() {
     if (s_cDataUpdate & ACC_UPDATE)
     {
       s_cDataUpdate &= ~ACC_UPDATE;
+      // -----------------------
+      // resolution compensation
+      // -----------------------
       if (enable_resolution_compensation_acc==true) {
         if (fAcc[0]>acc_x_high) {acc_x_high=fAcc[0];}
         if (fAcc[0]<acc_x_low) {acc_x_low=fAcc[0];}
@@ -572,7 +617,16 @@ void loop() {
         if (fAcc[1]<acc_y_low) {acc_y_low=fAcc[1];}
         if (fAcc[2]>acc_z_high) {acc_z_high=fAcc[2];}
         if (fAcc[2]<acc_z_low) {acc_z_low=fAcc[2];}
+        tmp_acc_x0=acc_x_high;
+        if (abs(acc_x_low) > acc_x_high) {tmp_acc_x0=acc_x_low;}
+        tmp_acc_y0=acc_y_high;
+        if (abs(acc_y_low) > acc_y_high) {tmp_acc_y0=acc_y_low;}
+        tmp_acc_z0=acc_z_high;
+        if (abs(acc_z_low) > acc_z_high) {tmp_acc_z0=acc_z_low;}
       }
+      // -----------------------
+      // current value
+      // -----------------------
       if (enable_serial_output_content==true) {
         Serial.print("$ACC,");
         Serial.print(fAcc[0], 3);
@@ -580,6 +634,54 @@ void loop() {
         Serial.print(fAcc[1], 3);
         Serial.print(",");
         Serial.print(fAcc[2], 3);
+        Serial.print("\r\n");
+      }
+    }
+    // ---------------------------------------------
+    // process angle
+    // ---------------------------------------------
+    if (s_cDataUpdate & ANGLE_UPDATE)
+    {
+      // -----------------------
+      // update angle
+      // -----------------------
+      s_cDataUpdate &= ~ANGLE_UPDATE;
+      mapped_ang_x = map(fAngle[0], -90.00, 90, 0, 100);
+      mapped_ang_y = map(fAngle[1], -90.00, 90, 0, 100);
+      // -----------------------
+      // resolution compensation
+      // -----------------------
+      if (enable_resolution_compensation_gyr==true) {
+        if (fAngle[0]>ang_x_high) {ang_x_high=fAngle[0];}
+        if (fAngle[0]<ang_x_low) {ang_x_low=fAngle[0];}
+        if (fAngle[1]>ang_y_high) {ang_y_high=fAngle[1];}
+        if (fAngle[1]<ang_y_low) {ang_y_low=fAngle[1];}
+        if (fAngle[2]>ang_z_high) {ang_z_high=fAngle[2];}
+        if (fAngle[2]<ang_z_low) {ang_z_low=fAngle[2];}
+        tmp_ang_x0=ang_x_high;
+        if (abs(ang_x_low) > ang_x_high) {tmp_ang_x0=ang_x_low;}
+        tmp_ang_y0=ang_y_high;
+        if (abs(ang_y_low) > ang_y_high) {tmp_ang_y0=ang_y_low;}
+        tmp_ang_z0=ang_z_high;
+        if (abs(ang_z_low) > ang_z_high) {tmp_ang_z0=ang_z_low;}
+        mapped_ang_x = map(tmp_ang_x0, -90.00, 90, 0, 100);
+        mapped_ang_y = map(tmp_ang_y0, -90.00, 90, 0, 100);
+      }
+      // -----------------------
+      // create percentages
+      // -----------------------
+      ang_x_percent = 100 * ((float)mapped_ang_x / 100);
+      ang_y_percent = 100 * ((float)mapped_ang_y / 100);
+      // -----------------------
+      // serial
+      // -----------------------
+      if (enable_serial_output_content==true) {
+        Serial.print("$ANG,");
+        Serial.print(fAngle[0], 3);
+        Serial.print(",");
+        Serial.print(fAngle[1], 3);
+        Serial.print(",");
+        Serial.print(fAngle[2], 3);
         Serial.print("\r\n");
       }
     }
@@ -596,6 +698,12 @@ void loop() {
         if (fGyro[1]<gyr_y_low) {gyr_y_low=fGyro[1];}
         if (fGyro[2]>gyr_z_high) {gyr_z_high=fGyro[2];}
         if (fGyro[2]<gyr_z_low) {gyr_z_low=fGyro[2];}
+        tmp_gyr_x0=gyr_x_high;
+        if (abs(gyr_x_low) > gyr_x_high) {tmp_gyr_x0=gyr_x_low;}
+        tmp_gyr_y0=gyr_y_high;
+        if (abs(gyr_y_low) > gyr_y_high) {tmp_gyr_y0=gyr_y_low;}
+        tmp_gyr_z0=gyr_z_high;
+        if (abs(gyr_z_low) > gyr_z_high) {tmp_gyr_z0=gyr_z_low;}
       }
       if (enable_serial_output_content==true) {
         Serial.print("$GYR,");
@@ -604,30 +712,6 @@ void loop() {
         Serial.print(fGyro[1], 1);
         Serial.print(",");
         Serial.print(fGyro[2], 1);
-        Serial.print("\r\n");
-      }
-    }
-    // ---------------------------------------------
-    // process angle
-    // ---------------------------------------------
-    if (s_cDataUpdate & ANGLE_UPDATE)
-    {
-      s_cDataUpdate &= ~ANGLE_UPDATE;
-      if (enable_resolution_compensation_gyr==true) {
-        if (fAngle[0]>ang_x_high) {ang_x_high=fAngle[0];}
-        if (fAngle[0]<ang_x_low) {ang_x_low=fAngle[0];}
-        if (fAngle[1]>ang_y_high) {ang_y_high=fAngle[1];}
-        if (fAngle[1]<ang_y_low) {ang_y_low=fAngle[1];}
-        if (fAngle[2]>ang_z_high) {ang_z_high=fAngle[2];}
-        if (fAngle[2]<ang_z_low) {ang_z_low=fAngle[2];}
-      }
-      if (enable_serial_output_content==true) {
-        Serial.print("$ANG,");
-        Serial.print(fAngle[0], 3);
-        Serial.print(",");
-        Serial.print(fAngle[1], 3);
-        Serial.print(",");
-        Serial.print(fAngle[2], 3);
         Serial.print("\r\n");
       }
     }
@@ -644,6 +728,12 @@ void loop() {
         if (sReg[HY]<mag_y_low) {mag_y_low=sReg[HY];}
         if (sReg[HZ]>mag_z_high) {mag_z_high=sReg[HZ];}
         if (sReg[HZ]<mag_z_low) {mag_z_low=sReg[HZ];}
+        tmp_mag_x0=mag_x_high;
+        if (abs(mag_x_low) > mag_x_high) {tmp_mag_x0=mag_x_low;}
+        tmp_mag_y0=mag_y_high;
+        if (abs(mag_y_low) > mag_y_high) {tmp_mag_y0=mag_y_low;}
+        tmp_mag_z0=mag_z_high;
+        if (abs(mag_z_low) > mag_z_high) {tmp_mag_z0=mag_z_low;}
       }
       if (enable_serial_output_content==true) {
         Serial.print("$MAG,");
