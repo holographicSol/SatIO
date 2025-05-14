@@ -1017,6 +1017,14 @@ const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 76}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                MENU CD74HC4067
+// ------------------------------------------------------------------------------------------------------------------------------
+
+const int max_CD74HC4067_items=16;
+const char *menuCD74HC4067Items[max_CD74HC4067_items];
+LcdGfxMenu menuCD74HC4067( menuCD74HC4067Items, max_CD74HC4067_items, {{2, 14}, {125, 37}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MENU TIME & DATE
 // ------------------------------------------------------------------------------------------------------------------------------
 
@@ -1266,6 +1274,44 @@ struct systemStruct {
   bool output_saturn_enabled=false;  // enables/disables output sentence over serial
   bool output_uranus_enabled=false;  // enables/disables output sentence over serial
   bool output_neptune_enabled=false; // enables/disables output sentence over serial
+
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable CD74HC4067 channel
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool CD74HC4067_channel_enabled[16]={
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  };
+  // bool CD74HC4067_channel_0_enabled=false;
+  // bool CD74HC4067_channel_1_enabled=false;
+  // bool CD74HC4067_channel_2_enabled=false;
+  // bool CD74HC4067_channel_3_enabled=false;
+  // bool CD74HC4067_channel_4_enabled=false;
+  // bool CD74HC4067_channel_5_enabled=false;
+  // bool CD74HC4067_channel_6_enabled=false;
+  // bool CD74HC4067_channel_7_enabled=false;
+  // bool CD74HC4067_channel_8_enabled=false;
+  // bool CD74HC4067_channel_9_enabled=false;
+  // bool CD74HC4067_channel_10_enabled=false;
+  // bool CD74HC4067_channel_11_enabled=false;
+  // bool CD74HC4067_channel_12_enabled=false;
+  // bool CD74HC4067_channel_13_enabled=false;
+  // bool CD74HC4067_channel_14_enabled=false;
+  // bool CD74HC4067_channel_15_enabled=false;
 
   // -----------------------------------------------------------------------------------------------------------------------
   // oled protection
@@ -5261,6 +5307,214 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // CD74HC4067_CHANNEL_0
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_0,");
+    itoa(systemData.CD74HC4067_channel_enabled[0], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_1
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_1,");
+    itoa(systemData.CD74HC4067_channel_enabled[1], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_2
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_2,");
+    itoa(systemData.CD74HC4067_channel_enabled[2], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_3
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_3,");
+    itoa(systemData.CD74HC4067_channel_enabled[3], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_4
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_4,");
+    itoa(systemData.CD74HC4067_channel_enabled[4], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_5
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_5,");
+    itoa(systemData.CD74HC4067_channel_enabled[5], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_6
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_6,");
+    itoa(systemData.CD74HC4067_channel_enabled[6], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_7
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_7,");
+    itoa(systemData.CD74HC4067_channel_enabled[7], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_8
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_8,");
+    itoa(systemData.CD74HC4067_channel_enabled[8], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_9
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_9,");
+    itoa(systemData.CD74HC4067_channel_enabled[9], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_10
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_10,");
+    itoa(systemData.CD74HC4067_channel_enabled[10], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_11
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_11,");
+    itoa(systemData.CD74HC4067_channel_enabled[11], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_12
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_12,");
+    itoa(systemData.CD74HC4067_channel_enabled[12], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_13
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_13,");
+    itoa(systemData.CD74HC4067_channel_enabled[13], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_14
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_14,");
+    itoa(systemData.CD74HC4067_channel_enabled[14], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
+    // CD74HC4067_CHANNEL_15
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "CD74HC4067_CHANNEL_15,");
+    itoa(systemData.CD74HC4067_channel_enabled[15], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // HOME PAGE FEATURE
     // -----------------------------------------------
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
@@ -5862,7 +6116,7 @@ bool sdcardLoadSystemConfig(char * file) {
       // ------------------------------------------------
       // INDEX_OVERLOAD_MAX
       // ------------------------------------------------
-      if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX"))==0) {
+      else if (strncmp(sdcardData.BUFFER, "INDEX_OVERLOAD_MAX", strlen("INDEX_OVERLOAD_MAX"))==0) {
         sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token=strtok(NULL, ",");
@@ -5876,13 +6130,206 @@ bool sdcardLoadSystemConfig(char * file) {
       // ------------------------------------------------
       // INDEX_HOME_PAGE_FEATURE
       // ------------------------------------------------
-      if (strncmp(sdcardData.BUFFER, "INDEX_HOME_PAGE_FEATURE", strlen("INDEX_HOME_PAGE_FEATURE"))==0) {
+      else if (strncmp(sdcardData.BUFFER, "INDEX_HOME_PAGE_FEATURE", strlen("INDEX_HOME_PAGE_FEATURE"))==0) {
         sdcardData.token=strtok(sdcardData.BUFFER, ",");
         PrintFileToken();
         sdcardData.token=strtok(NULL, ",");
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.index_home_page_feature=atoi(sdcardData.token);
+        }
+      }
+
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_0
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_0", strlen("CD74HC4067_CHANNEL_0"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[0]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_1
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_1", strlen("CD74HC4067_CHANNEL_1"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[1]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_2
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_2", strlen("CD74HC4067_CHANNEL_2"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[2]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_3
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_3", strlen("CD74HC4067_CHANNEL_3"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[3]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_4
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_4", strlen("CD74HC4067_CHANNEL_4"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[4]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_5
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_5", strlen("CD74HC4067_CHANNEL_5"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[5]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_6
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_6", strlen("CD74HC4067_CHANNEL_6"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[6]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_7
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_7", strlen("CD74HC4067_CHANNEL_7"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[7]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_8
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_8", strlen("CD74HC4067_CHANNEL_8"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[8]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_9
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_9", strlen("CD74HC4067_CHANNEL_9"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[9]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_10
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_10", strlen("CD74HC4067_CHANNEL_10"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[10]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_11
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_11", strlen("CD74HC4067_CHANNEL_11"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[11]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_12
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_12", strlen("CD74HC4067_CHANNEL_12"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[12]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_13
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_13", strlen("CD74HC4067_CHANNEL_13"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[13]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_14
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_14", strlen("CD74HC4067_CHANNEL_14"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[14]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // CD74HC4067_CHANNEL_15
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "CD74HC4067_CHANNEL_15", strlen("CD74HC4067_CHANNEL_15"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.CD74HC4067_channel_enabled[15]=atoi(sdcardData.token);
         }
       }
 
@@ -11184,6 +11631,7 @@ void menuUp() {
   else if (menu_page==page_display_main) {menuDisplay.up();}
   else if (menu_page==page_system_main) {menuSystem.up();}
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.up();}
+  else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.up();}
   
 }
 
@@ -11213,6 +11661,7 @@ void menuDown() {
   else if (menu_page==page_display_main) {menuDisplay.down();}
   else if (menu_page==page_system_main) {menuSystem.down();}
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.down();}
+  else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12060,6 +12509,13 @@ void menuEnter() {
     // enable/disable auto offset
     // ------------------------------------------------
     else if (menuTimeAndDate.selection()==1) {satData.utc_auto_offset_flag^=true;}
+  }
+
+  // ----------------------------------------------------------------
+  // CD74HC4067 page
+  // ----------------------------------------------------------------
+  else if (menu_page==page_CD74HC4067_main) {
+    systemData.CD74HC4067_channel_enabled[menuCD74HC4067.selection()]^=true;
   }
 
   // ----------------------------------------------------------------
@@ -15493,21 +15949,21 @@ void UpdateUI(void * pvParamters) {
         drawMainBorder();
         drawGeneralTitle("CD74HC4067", systemData.color_title, systemData.color_border);
         display.setColor(systemData.color_border);
-        display.drawHLine(1, 36, 127);
-        display.drawVLine(64, 13, 127);
+        display.drawHLine(1, 40, 127);
+        display.drawVLine(64, 41, 127);
         display.setColor(systemData.color_subtitle);
         // ------------------------------------------------
         // sensor value column 0
         // ------------------------------------------------
-        canvas60x8.clear();
-        canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD);
-        display.drawCanvas(1, 20, canvas60x8);
+        // canvas60x8.clear();
+        // canvas60x8.printFixed((60/2)-((strlen("0-7")/2)*6), 1, "0-7", STYLE_BOLD);
+        // display.drawCanvas(1, 32, canvas60x8);
         // ------------------------------------------------
         // sensor value column 1
         // ------------------------------------------------
-        canvas60x8.clear();
-        canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD);
-        display.drawCanvas(66, 20, canvas60x8);
+        // canvas60x8.clear();
+        // canvas60x8.printFixed((60/2)-((strlen("8-15")/2)*6), 1, "8-15", STYLE_BOLD);
+        // display.drawCanvas(66, 32, canvas60x8);
         // ------------------------------------------------
       }
       // ------------------------------------------------
@@ -15592,6 +16048,68 @@ void UpdateUI(void * pvParamters) {
       display.setColor(systemData.color_content);
       canvas60x8.printFixed(1, 1, String(sensorData.sensor_15, 4).c_str(), STYLE_BOLD);
       display.drawCanvas(67, 112, canvas60x8);
+
+      // ------------------------------------------------
+      // enable disable CD74HC4067 channel
+      // ------------------------------------------------
+      if (systemData.CD74HC4067_channel_enabled[0]==true) {menuCD74HC4067Items[0]="CH_0 ENABLED";}
+      else {menuCD74HC4067Items[0]="CH_0 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[1]==true) {menuCD74HC4067Items[1]="CH_1 ENABLED";}
+      else {menuCD74HC4067Items[1]="CH_1 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[2]==true) {menuCD74HC4067Items[2]="CH_2 ENABLED";}
+      else {menuCD74HC4067Items[2]="CH_2 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[3]==true) {menuCD74HC4067Items[3]="CH_3 ENABLED";}
+      else {menuCD74HC4067Items[3]="CH_3 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[4]==true) {menuCD74HC4067Items[4]="CH_4 ENABLED";}
+      else {menuCD74HC4067Items[4]="CH_4 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[5]==true) {menuCD74HC4067Items[5]="CH_5 ENABLED";}
+      else {menuCD74HC4067Items[5]="CH_5 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[6]==true) {menuCD74HC4067Items[6]="CH_6 ENABLED";}
+      else {menuCD74HC4067Items[6]="CH_6 DISABLED";}
+      
+      if (systemData.CD74HC4067_channel_enabled[7]==true) {menuCD74HC4067Items[7]="CH_7 ENABLED";}
+      else {menuCD74HC4067Items[7]="CH_7 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[8]==true) {menuCD74HC4067Items[8]="CH_8 ENABLED";}
+      else {menuCD74HC4067Items[8]="CH_8 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[9]==true) {menuCD74HC4067Items[9]="CH_9 ENABLED";}
+      else {menuCD74HC4067Items[9]="CH_9 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[10]==true) {menuCD74HC4067Items[10]="CH_10 ENABLED";}
+      else {menuCD74HC4067Items[10]="CH_10 DISABLED";}
+      
+      if (systemData.CD74HC4067_channel_enabled[11]==true) {menuCD74HC4067Items[11]="CH_11 ENABLED";}
+      else {menuCD74HC4067Items[11]="CH_11 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[12]==true) {menuCD74HC4067Items[12]="CH_12 ENABLED";}
+      else {menuCD74HC4067Items[12]="CH_12 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[13]==true) {menuCD74HC4067Items[13]="CH_13 ENABLED";}
+      else {menuCD74HC4067Items[13]="CH_13 DISABLED";}
+
+      if (systemData.CD74HC4067_channel_enabled[14]==true) {menuCD74HC4067Items[14]="CH_14 ENABLED";}
+      else {menuCD74HC4067Items[14]="CH_14 DISABLED";}
+      
+      if (systemData.CD74HC4067_channel_enabled[15]==true) {menuCD74HC4067Items[15]="CH_15 ENABLED";}
+      else {menuCD74HC4067Items[15]="CH_15 DISABLED";}
+      // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
+      if (interaction_updateui==true) {
+        interaction_updateui=false;
+        display.setColor(systemData.color_menu_border);
+        menuCD74HC4067.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuCD74HC4067.showMenuContent(display);
+        // ----------------------------------------------
+      }
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -17653,118 +18171,125 @@ bool sensor_0_issue_flag=false;
 
 void getSensorData() {
 
+  /*
+  ToDo: NAN sensor values for sensor disabled
+  */
+
   // ------------------------------------------------------------------------------------------
   // step over each multiplexer analog/digital channel
   // ------------------------------------------------------------------------------------------
   for (int i_chan=0; i_chan < 16; i_chan++) {
-    // --------------------------------------------------
-    // set multiplexer channel
-    // --------------------------------------------------
-    setMultiplexChannel_CD74HC4067(i_chan);
-    // --------------------------------------------------
-    // sensor 0
-    // --------------------------------------------------
-    if (i_chan==0) {
-      sensorData.dht11_h_0=dht.readHumidity();
-      sensorData.dht11_c_0=dht.readTemperature();     // celsius default
-      sensorData.dht11_f_0=dht.readTemperature(true); // fahreheit=true
-      if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
-        if (sensor_0_issue_flag==false) {Serial.println("[dht11] failed"); sensor_0_issue_flag=true;}
+
+    if (systemData.CD74HC4067_channel_enabled[i_chan]==true) {
+      // --------------------------------------------------
+      // set multiplexer channel
+      // --------------------------------------------------
+      setMultiplexChannel_CD74HC4067(i_chan);
+      // --------------------------------------------------
+      // sensor 0
+      // --------------------------------------------------
+      if (i_chan==0) {
+        sensorData.dht11_h_0=dht.readHumidity();
+        sensorData.dht11_c_0=dht.readTemperature();     // celsius default
+        sensorData.dht11_f_0=dht.readTemperature(true); // fahreheit=true
+        if (isnan(sensorData.dht11_h_0) || isnan(sensorData.dht11_c_0) || isnan(sensorData.dht11_f_0)) {
+          if (sensor_0_issue_flag==false) {Serial.println("[dht11] failed"); sensor_0_issue_flag=true;}
+        }
+        else {if (sensor_0_issue_flag==true) {Serial.println("[dht11] succeeded"); sensor_0_issue_flag=false;}}
+        sensorData.dht11_hif_0=dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
+        sensorData.dht11_hic_0=dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit=false
+        sensorData.sensor_0=sensorData.dht11_hic_0; // custum sensor 0
       }
-      else {if (sensor_0_issue_flag==true) {Serial.println("[dht11] succeeded"); sensor_0_issue_flag=false;}}
-      sensorData.dht11_hif_0=dht.computeHeatIndex(sensorData.dht11_f_0, sensorData.dht11_h_0);        // fahreheit default
-      sensorData.dht11_hic_0=dht.computeHeatIndex(sensorData.dht11_c_0, sensorData.dht11_h_0, false); // fahreheit=false
-      sensorData.sensor_0=sensorData.dht11_hic_0; // custum sensor 0
-    }
-    // --------------------------------------------------
-    // sensor 1
-    // --------------------------------------------------
-    else if (i_chan==1) {
-      sensorData.sensor_1=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 2
-    // --------------------------------------------------
-    else if (i_chan==2) {
-      sensorData.sensor_2=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 3
-    // --------------------------------------------------
-    else if (i_chan==3) {
-      sensorData.sensor_3=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 4
-    // --------------------------------------------------
-    else if (i_chan==4) {
-      sensorData.sensor_4=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 5
-    // --------------------------------------------------
-    else if (i_chan==5) {
-      sensorData.sensor_5=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 6
-    // --------------------------------------------------
-    else if (i_chan==6) {
-      sensorData.sensor_6=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 7
-    // --------------------------------------------------
-    else if (i_chan==7) {
-      sensorData.sensor_7=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 8
-    // --------------------------------------------------
-    else if (i_chan==8) {
-      sensorData.sensor_8=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 9
-    // --------------------------------------------------
-    else if (i_chan==9) {
-      sensorData.sensor_9=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 10
-    // --------------------------------------------------
-    else if (i_chan==10) {
-      sensorData.sensor_10=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 11
-    // --------------------------------------------------
-    else if (i_chan==11) {
-      sensorData.sensor_11=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 12
-    // --------------------------------------------------
-    else if (i_chan==12) {
-      sensorData.sensor_12=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 13
-    // --------------------------------------------------
-    else if (i_chan==13) {
-      sensorData.sensor_13=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 14
-    // --------------------------------------------------
-    else if (i_chan==14) {
-      sensorData.sensor_14=analogRead(CD74HC4067_SIG);
-    }
-    // --------------------------------------------------
-    // sensor 15
-    // --------------------------------------------------
-    else if (i_chan==15) {
-      sensorData.sensor_15=analogRead(CD74HC4067_SIG);
+      // --------------------------------------------------
+      // sensor 1
+      // --------------------------------------------------
+      else if (i_chan==1) {
+        sensorData.sensor_1=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 2
+      // --------------------------------------------------
+      else if (i_chan==2) {
+        sensorData.sensor_2=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 3
+      // --------------------------------------------------
+      else if (i_chan==3) {
+        sensorData.sensor_3=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 4
+      // --------------------------------------------------
+      else if (i_chan==4) {
+        sensorData.sensor_4=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 5
+      // --------------------------------------------------
+      else if (i_chan==5) {
+        sensorData.sensor_5=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 6
+      // --------------------------------------------------
+      else if (i_chan==6) {
+        sensorData.sensor_6=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 7
+      // --------------------------------------------------
+      else if (i_chan==7) {
+        sensorData.sensor_7=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 8
+      // --------------------------------------------------
+      else if (i_chan==8) {
+        sensorData.sensor_8=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 9
+      // --------------------------------------------------
+      else if (i_chan==9) {
+        sensorData.sensor_9=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 10
+      // --------------------------------------------------
+      else if (i_chan==10) {
+        sensorData.sensor_10=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 11
+      // --------------------------------------------------
+      else if (i_chan==11) {
+        sensorData.sensor_11=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 12
+      // --------------------------------------------------
+      else if (i_chan==12) {
+        sensorData.sensor_12=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 13
+      // --------------------------------------------------
+      else if (i_chan==13) {
+        sensorData.sensor_13=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 14
+      // --------------------------------------------------
+      else if (i_chan==14) {
+        sensorData.sensor_14=analogRead(CD74HC4067_SIG);
+      }
+      // --------------------------------------------------
+      // sensor 15
+      // --------------------------------------------------
+      else if (i_chan==15) {
+        sensorData.sensor_15=analogRead(CD74HC4067_SIG);
+      }
     }
   }
   // --------------------------------------------------
