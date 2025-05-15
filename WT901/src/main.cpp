@@ -7,9 +7,6 @@ The WT901 is a IMU sensor device, detecting acceleration, angular velocity, angl
 Configurable over Serial.
 Configurable over IIC.
 
-LEDs:
-roll: x9 LEDs
-pitch: x9 LEDs
 
 command: x1 LED (yellow)
 data: x1 LED (red)
@@ -36,15 +33,11 @@ calibrate mag.
 // ------------------------------------------------------------------------------------------------------------------------------
 
 /*
-Indicators:
-0-19: Matrix Switch State
-20: MATRIX IO ENABLED/DISABLED
-21: DATA
-22: OVERLOAD
-23: SIGNAL
+0: data
+1: calibrate accelleration (1 second on)
+2: calibrate magnetic field (yellow while in callibration mode)
 */
 
-// INDICATORS
 #define NUM_LEDS 18
 #define DATA_PIN 12
 CRGB leds[NUM_LEDS];
@@ -182,7 +175,7 @@ void receiveEvent(int) {
   // ------------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // ------------------------------------------------
   // data: set request counter for next request event
@@ -236,6 +229,10 @@ void receiveEvent(int) {
   else if (strcmp(ucData, "$CV-GYR")==0) {enable_resolution_compensation_gyr=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
   else if (strcmp(ucData, "$RC-MAG")==0) {enable_resolution_compensation_mag=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
   else if (strcmp(ucData, "$CC-MAG")==0) {enable_resolution_compensation_mag=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
+  
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  clearTMPBuffer();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -495,10 +492,15 @@ void requestEvent() {
   // -----------------------------------------------
   // SEND
   // -----------------------------------------------
-  // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
+  Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER0[i];}
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
+
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
+  memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
+  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -554,32 +556,6 @@ void LEDOffExcept(int start, int end, int n) {
 }
 
 void UpdateLEDs() {
-  // roll
-  if (tmp_ang_x_percent!=ang_x_percent) {
-    tmp_ang_x_percent=ang_x_percent;
-    if (ang_x_percent>=0 && ang_x_percent<12.5) {LEDOffExcept(0, 8, 0); leds[0] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>=12.5 && ang_x_percent<25) {LEDOffExcept(0, 8, 1); leds[1] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>=25 && ang_x_percent<37.5) {LEDOffExcept(0, 8, 2); leds[2] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>=37.5 && ang_x_percent<50) {LEDOffExcept(0, 8, 3); leds[3] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent==50) {LEDOffExcept(0, 8, 4); leds[4] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>50 && ang_x_percent<=62.5) {LEDOffExcept(0, 8, 5); leds[5] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>62.5 && ang_x_percent<=75) {LEDOffExcept(0, 8, 6); leds[6] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>75 && ang_x_percent<=87.5) {LEDOffExcept(0, 8, 7); leds[7] = CRGB::Red; FastLED.show();}
-    if (ang_x_percent>87.5 && ang_x_percent<=100) {LEDOffExcept(0, 8, 8); leds[8] = CRGB::Red; FastLED.show();}
-  }
-  // pitch
-  if (tmp_ang_y_percent!=ang_y_percent) {
-    tmp_ang_y_percent=ang_y_percent;
-    if (ang_y_percent>=0 && ang_y_percent<12.5) {LEDOffExcept(9, 17, 9); leds[9] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>=12.5 && ang_y_percent<25) {LEDOffExcept(9, 17, 10); leds[10] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>=25 && ang_y_percent<37.5) {LEDOffExcept(9, 17, 11); leds[11] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>=37.5 && ang_y_percent<50) {LEDOffExcept(9, 17, 12); leds[12] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent==50) {LEDOffExcept(9, 17, 13); leds[13] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>50 && ang_y_percent<=62.5) {LEDOffExcept(9, 17, 14); leds[14] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>62.5 && ang_y_percent<=75) {LEDOffExcept(9, 17, 15); leds[15] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>75 && ang_y_percent<=87.5) {LEDOffExcept(9, 17, 16); leds[16] = CRGB::Green; FastLED.show();}
-    if (ang_y_percent>87.5 && ang_y_percent<=100) {LEDOffExcept(9, 17, 17); leds[17] = CRGB::Green; FastLED.show();}
-  }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -587,10 +563,12 @@ void UpdateLEDs() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void loop() {
-  // for (int i=0; i<NUM_LEDS; i++) {leds[i] = CRGB::White; FastLED.show(); delay(30); leds[i] = CRGB::Black; FastLED.show(); delay(30);}
-  UpdateLEDs(); // comment if tuning for perfromance. this may be just a feature to aid in development.
-
   // loops_between_requests++;
+
+  // -----------------------------------------------
+  // Update LEDs
+  // -----------------------------------------------
+  // UpdateLEDs(); // comment if tuning for perfromance. this may be just a feature to aid in development.
 
   // -----------------------------------------------
   // read WT901
