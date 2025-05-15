@@ -13449,7 +13449,7 @@ int neptune_ui_y = 64;
 float test_angle=90;
 float test_moon_angle=90;
 
-void drawPanets() {
+void drawPlanets() {
 
   /* not to scale and is approximate */
 
@@ -13806,7 +13806,7 @@ void UpdateUI(void * pvParamters) {
       // feature astronarium
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
-        if (track_planet_period==false) {drawPanets();}
+        if (track_planet_period==false) {drawPlanets();}
       }
       
       // ------------------------------------------------
@@ -13819,7 +13819,7 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
-      delay(100);
+      // delay(100);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
