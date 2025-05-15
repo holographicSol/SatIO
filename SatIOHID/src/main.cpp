@@ -166,7 +166,7 @@ void receiveEvent(int) {
   // read incoming data
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[received] " + String(INPUT_BUFFER));
+  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // parse incoming data
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
@@ -175,6 +175,7 @@ void receiveEvent(int) {
 
 void requestEvent() {
 
+  Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
   // write bytes of chars
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
@@ -283,9 +284,9 @@ void deBounce() {
 //                                                                                                                           MAIN
 
 void loop() {
-
-  /* check button pressed interrupt flags */
-
+  // -----------------------------------------
+  //check button pressed interrupt flags
+  // -----------------------------------------
   if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I0"); interruptMaster();
     Serial.println("[button] ISR0 pressed");
   }
@@ -298,9 +299,9 @@ void loop() {
   if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I3"); interruptMaster();
     Serial.println("[button] ISR3 pressed");
   }
-
-  /* poll button presses */
-
+  // -----------------------------------------
+  //poll button presses
+  // -----------------------------------------
   for (int i=0; i<31; i++) {
     if (digitalRead(BTNMATRIX[i])==LOW) {
       Serial.println("[button] " + String(i) + " pressed");
@@ -310,7 +311,6 @@ void loop() {
       strcat(I2CLink.TMP_BUFFER0, "B,");
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1)); itoa(i, I2CLink.TMP_BUFFER1, 10);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
-      interruptMaster();
     }
   }
 }
