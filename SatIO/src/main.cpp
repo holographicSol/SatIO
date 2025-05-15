@@ -7024,7 +7024,6 @@ void setupSDCard() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void sdcardQuickCheck() {
-  // vTaskSuspend(UpdateUITask);
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
@@ -7053,7 +7052,6 @@ void sdcardQuickCheck() {
     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
     display.begin();
   }
-  // vTaskResume(UpdateUITask);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -13697,11 +13695,16 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
-
+bool update_ui_complete=false;
 
 void UpdateUI(void * pvParamters) {
 
   while (1) {
+
+  // -----------------------------------------------------------------
+  //                                         UPDATE UI COMPLETION FLAG
+  // -----------------------------------------------------------------
+  update_ui_complete=false;
 
   // -----------------------------------------------------------------
   //                                                   OLED PROTECTION
@@ -13819,6 +13822,9 @@ void UpdateUI(void * pvParamters) {
         display.setColor(systemData.color_menu_content);
         menuHome.showMenuContent(display);
       }
+      // ------------------------------------------------
+      // update display less on the home page 
+      // ------------------------------------------------
       // delay(100);
     }
 
@@ -17784,6 +17790,10 @@ void UpdateUI(void * pvParamters) {
   }
   
   // ---------------------------------------------------------
+  // set flag
+  // ---------------------------------------------------------
+  update_ui_complete=true;
+  // ---------------------------------------------------------
   // delay next iteration of task
   // ---------------------------------------------------------
   delay(5);
@@ -18036,7 +18046,6 @@ void requestControlPad() {
     // ------------------------------------------------------------------------------------------------------------------------------
     // READ RESPONSE
     // ------------------------------------------------------------------------------------------------------------------------------
-    interaction_updateui=true;
     // ------------------------------------------------
     // record activity time
     // ------------------------------------------------
@@ -18095,6 +18104,11 @@ void requestControlPad() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
     }
+    // ---------------------------------------------------------------------
+    // trip interaction_updateui flag once writing to display has completed.
+    // ---------------------------------------------------------------------
+    while (!update_ui_complete==true) {delay(1);}
+    interaction_updateui=true;
   }
 }
 
@@ -18377,10 +18391,6 @@ void readGPS(void * pvParameters) {
       // --------------------------------------------------------------------------
       if (serial1Data.gngga_bool==true && serial1Data.gnrmc_bool==true && serial1Data.gpatt_bool==true) {
         // -------------------------------------------------
-        // suspend tasks
-        // -------------------------------------------------
-        // vTaskSuspend(UpdateUITask);
-        // -------------------------------------------------
         // check GNGGA
         // -------------------------------------------------
         if (systemData.gngga_enabled==true){
@@ -18416,10 +18426,6 @@ void readGPS(void * pvParameters) {
           if (gpattData.valid_checksum==true) {clearGPATT(); GPATT();}
           else {gpattData.bad_checksum_validity++; if (gpattData.bad_checksum_validity>99) {gpattData.bad_checksum_validity=0;}}
         }
-        // -------------------------------------------------
-        // resume tasks
-        // -------------------------------------------------
-        // vTaskResume(UpdateUITask);
         // ------------------------------------------------------------------------
         // set completion flag
         // ------------------------------------------------------------------------
