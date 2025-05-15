@@ -821,6 +821,10 @@ static int page_display_main                    =180;
 // ----------------------------------------------------
 static int page_CD74HC4067_main                 =200;
 // ----------------------------------------------------
+// TCA9548A
+// ----------------------------------------------------
+static int page_TCA9548A_main                     =250;
+// ----------------------------------------------------
 // TIME & DATE
 // ----------------------------------------------------
 static int page_timeanddate_main                =300;
@@ -869,7 +873,7 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=12;
+const int max_main_menu_items=13;
 const char *menuMainItems[max_main_menu_items] =
 {
     "  MATRIX         ", // 0
@@ -881,9 +885,10 @@ const char *menuMainItems[max_main_menu_items] =
     "  UNIVERSE       ", // 6
     "  DISPLAY        ", // 7
     "  CD74HC4067     ", // 8
-    "  TIME & DATE    ", // 9
-    "  HUD            ", // 10
-    "  VIEW MAG FIELD ", // 11
+    "  TCA9548A       ", // 9
+    "  TIME & DATE    ", // 10
+    "  HUD            ", // 11
+    "  VIEW MAG FIELD ", // 12
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 15}, {125, 125}} );
 
@@ -1023,6 +1028,14 @@ LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 76}, {125, 125}} 
 const int max_CD74HC4067_items=16;
 const char *menuCD74HC4067Items[max_CD74HC4067_items];
 LcdGfxMenu menuCD74HC4067( menuCD74HC4067Items, max_CD74HC4067_items, {{2, 14}, {125, 37}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  MENU TCA9548A
+// ------------------------------------------------------------------------------------------------------------------------------
+
+const int max_TCA9548A_items=8;
+const char *menuTCA9548AItems[max_TCA9548A_items];
+LcdGfxMenu menuTCA9548A( menuTCA9548AItems, max_TCA9548A_items, {{2, 14}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                               MENU TIME & DATE
@@ -1296,22 +1309,20 @@ struct systemStruct {
     false,
     false
   };
-  // bool CD74HC4067_channel_0_enabled=false;
-  // bool CD74HC4067_channel_1_enabled=false;
-  // bool CD74HC4067_channel_2_enabled=false;
-  // bool CD74HC4067_channel_3_enabled=false;
-  // bool CD74HC4067_channel_4_enabled=false;
-  // bool CD74HC4067_channel_5_enabled=false;
-  // bool CD74HC4067_channel_6_enabled=false;
-  // bool CD74HC4067_channel_7_enabled=false;
-  // bool CD74HC4067_channel_8_enabled=false;
-  // bool CD74HC4067_channel_9_enabled=false;
-  // bool CD74HC4067_channel_10_enabled=false;
-  // bool CD74HC4067_channel_11_enabled=false;
-  // bool CD74HC4067_channel_12_enabled=false;
-  // bool CD74HC4067_channel_13_enabled=false;
-  // bool CD74HC4067_channel_14_enabled=false;
-  // bool CD74HC4067_channel_15_enabled=false;
+
+  // -----------------------------------------------------------------------------------------------------------------------
+  // enable/disable TCA9548A channel
+  // -----------------------------------------------------------------------------------------------------------------------
+  bool TCA9548A_channel_enabled[8]={
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  };
 
   // -----------------------------------------------------------------------------------------------------------------------
   // oled protection
@@ -5515,6 +5526,117 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // TCA9548A_CHANNEL_0
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_0,");
+    itoa(systemData.TCA9548A_channel_enabled[0], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_1
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_1,");
+    itoa(systemData.TCA9548A_channel_enabled[1], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_2
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_2,");
+    itoa(systemData.TCA9548A_channel_enabled[2], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_3
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_3,");
+    itoa(systemData.TCA9548A_channel_enabled[3], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_4
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_4,");
+    itoa(systemData.TCA9548A_channel_enabled[4], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_5
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_5,");
+    itoa(systemData.TCA9548A_channel_enabled[5], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_6
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_6,");
+    itoa(systemData.TCA9548A_channel_enabled[6], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+
+    // -----------------------------------------------
+    // TCA9548A_CHANNEL_7
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "TCA9548A_CHANNEL_7,");
+    itoa(systemData.TCA9548A_channel_enabled[7], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // HOME PAGE FEATURE
     // -----------------------------------------------
     memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
@@ -6330,6 +6452,102 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.CD74HC4067_channel_enabled[15]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_0
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_0", strlen("TCA9548A_CHANNEL_0"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[0]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_1
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_1", strlen("TCA9548A_CHANNEL_1"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[1]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_2
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_2", strlen("TCA9548A_CHANNEL_2"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[2]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_3
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_3", strlen("TCA9548A_CHANNEL_3"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[3]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_4
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_4", strlen("TCA9548A_CHANNEL_4"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[4]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_5
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_5", strlen("TCA9548A_CHANNEL_5"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[5]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_6
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_6", strlen("TCA9548A_CHANNEL_6"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[6]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // TCA9548A_CHANNEL_7
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "TCA9548A_CHANNEL_7", strlen("TCA9548A_CHANNEL_7"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.TCA9548A_channel_enabled[7]=atoi(sdcardData.token);
         }
       }
 
@@ -11632,6 +11850,7 @@ void menuUp() {
   else if (menu_page==page_system_main) {menuSystem.up();}
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.up();}
   else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.up();}
+  else if (menu_page==page_TCA9548A_main) {menuTCA9548A.up();}
   
 }
 
@@ -11662,6 +11881,7 @@ void menuDown() {
   else if (menu_page==page_system_main) {menuSystem.down();}
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.down();}
   else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.down();}
+  else if (menu_page==page_TCA9548A_main) {menuTCA9548A.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -11725,6 +11945,7 @@ void menuBack() {
   else if (menu_page==page_display_main) {menu_page=page_main_menu;}
   else if (menu_page==page_system_main) {menu_page=page_main_menu;}
   else if (menu_page==page_CD74HC4067_main) {menu_page=page_main_menu;}
+  else if (menu_page==page_TCA9548A_main) {menu_page=page_main_menu;}
   else if (menu_page==page_timeanddate_main) {menu_page=page_main_menu;}
   else if (menu_page==page_gps_view_gngga) {menu_page=page_gps_main;}
   else if (menu_page==page_gps_view_gnrmc) {menu_page=page_gps_main;}
@@ -11817,21 +12038,27 @@ void menuEnter() {
       menu_page=page_CD74HC4067_main;
     }
     // ------------------------------------------------
-    // go to time and date menu
+    // go to TCA9548A menu
     // ------------------------------------------------
     else if (menuMain.selection()==9) {
+      menu_page=page_TCA9548A_main;
+    }
+    // ------------------------------------------------
+    // go to time and date menu
+    // ------------------------------------------------
+    else if (menuMain.selection()==10) {
       menu_page=page_timeanddate_main;
     }
     // ------------------------------------------------
     // go to attitude page
     // ------------------------------------------------
-    else if (menuMain.selection()==10) {
+    else if (menuMain.selection()==11) {
       menu_page=page_attitude;
     }
     // ------------------------------------------------
     // go to view magnetic field page
     // ------------------------------------------------
-    else if (menuMain.selection()==11) {
+    else if (menuMain.selection()==12) {
       menu_page=page_view_magnetic_field;
     }
     
@@ -12516,6 +12743,13 @@ void menuEnter() {
   // ----------------------------------------------------------------
   else if (menu_page==page_CD74HC4067_main) {
     systemData.CD74HC4067_channel_enabled[menuCD74HC4067.selection()]^=true;
+  }
+
+  // ----------------------------------------------------------------
+  // TCA9548A page
+  // ----------------------------------------------------------------
+  else if (menu_page==page_TCA9548A_main) {
+    systemData.TCA9548A_channel_enabled[menuTCA9548A.selection()]^=true;
   }
 
   // ----------------------------------------------------------------
@@ -16113,6 +16347,70 @@ void UpdateUI(void * pvParamters) {
     }
 
     // ----------------------------------------------------------------------------------------------------------------
+    //                                                                                                    TCA9548A MENU
+    // ----------------------------------------------------------------------------------------------------------------
+    else if (menu_page==page_TCA9548A_main) {
+      // ------------------------------------------------
+      // static data
+      // ------------------------------------------------
+      if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+        previous_menu_page=menu_page; display.clear();
+        drawMainBorder();
+        drawGeneralTitle("TCA9548A", systemData.color_title, systemData.color_border);
+      }
+      // ------------------------------------------------
+      // dynamic data
+      // ------------------------------------------------
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 3, 10);
+      // ------------------------------------------------
+      // satellites & sync
+      // ------------------------------------------------
+      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 2);}
+      else {DisplaySignal(1, 1, 2, 2);}
+      // ------------------------------------------------
+      // enable disable TCA9548A channel
+      // ------------------------------------------------
+      if (systemData.TCA9548A_channel_enabled[0]==true) {menuTCA9548AItems[0]="CH_0 ENABLED";}
+      else {menuTCA9548AItems[0]="CH_0 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[1]==true) {menuTCA9548AItems[1]="CH_1 ENABLED";}
+      else {menuTCA9548AItems[1]="CH_1 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[2]==true) {menuTCA9548AItems[2]="CH_2 ENABLED";}
+      else {menuTCA9548AItems[2]="CH_2 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[3]==true) {menuTCA9548AItems[3]="CH_3 ENABLED";}
+      else {menuTCA9548AItems[3]="CH_3 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[4]==true) {menuTCA9548AItems[4]="CH_4 ENABLED";}
+      else {menuTCA9548AItems[4]="CH_4 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[5]==true) {menuTCA9548AItems[5]="CH_5 ENABLED";}
+      else {menuTCA9548AItems[5]="CH_5 DISABLED";}
+
+      if (systemData.TCA9548A_channel_enabled[6]==true) {menuTCA9548AItems[6]="CH_6 ENABLED";}
+      else {menuTCA9548AItems[6]="CH_6 DISABLED";}
+      
+      if (systemData.TCA9548A_channel_enabled[7]==true) {menuTCA9548AItems[7]="CH_7 ENABLED";}
+      else {menuTCA9548AItems[7]="CH_7 DISABLED";}
+      
+      // ------------------------------------------------
+      // menu
+      // ------------------------------------------------
+      if (interaction_updateui==true) {
+        interaction_updateui=false;
+        display.setColor(systemData.color_menu_border);
+        menuTCA9548A.showMenuBorder(display);
+        display.setColor(systemData.color_menu_content);
+        menuTCA9548A.showMenuContent(display);
+        // ----------------------------------------------
+      }
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
     //                                                                                                 TIME & DATE MENU
     // ----------------------------------------------------------------------------------------------------------------
     else if (menu_page==page_timeanddate_main) {
@@ -18301,49 +18599,53 @@ void getSensorData() {
   // step over each I2C multiplexer channel (using the IIC extension bus is recommended except for reasons where the IIC multiplexer is required)
   // --------------------------------------------------------------------------------------------------------------------------------------------
   for (int i_chan=0; i_chan < 8; i_chan++) {
-    // --------------------------------------------------
-    // set multiplexer channel
-    // --------------------------------------------------
-    setMultiplexChannel_TCA9548A(i_chan);
-    // --------------------------------------------------
-    // I2C channel 0
-    // --------------------------------------------------
-    if (i_chan==0) {
-    }
-    // --------------------------------------------------
-    // I2C channel 1
-    // --------------------------------------------------
-    else if (i_chan==1) {
-    }
-    // --------------------------------------------------
-    // I2C channel 2
-    // --------------------------------------------------
-    else if (i_chan==2) {
-    }
-    // --------------------------------------------------
-    // I2C channel 3
-    // --------------------------------------------------
-    else if (i_chan==3) {
-    }
-    // --------------------------------------------------
-    // I2C channel 4
-    // --------------------------------------------------
-    else if (i_chan==4) {
-    }
-    // --------------------------------------------------
-    // I2C channel 5
-    // --------------------------------------------------
-    else if (i_chan==5) {
-    }
-    // --------------------------------------------------
-    // I2C channel 6
-    // --------------------------------------------------
-    else if (i_chan==6) {
-    }
-    // --------------------------------------------------
-    // I2C channel 7
-    // --------------------------------------------------
-    else if (i_chan==7) {
+
+    if (systemData.TCA9548A_channel_enabled[i_chan]==true) {
+
+      // --------------------------------------------------
+      // set multiplexer channel
+      // --------------------------------------------------
+      setMultiplexChannel_TCA9548A(i_chan);
+      // --------------------------------------------------
+      // I2C channel 0
+      // --------------------------------------------------
+      if (i_chan==0) {
+      }
+      // --------------------------------------------------
+      // I2C channel 1
+      // --------------------------------------------------
+      else if (i_chan==1) {
+      }
+      // --------------------------------------------------
+      // I2C channel 2
+      // --------------------------------------------------
+      else if (i_chan==2) {
+      }
+      // --------------------------------------------------
+      // I2C channel 3
+      // --------------------------------------------------
+      else if (i_chan==3) {
+      }
+      // --------------------------------------------------
+      // I2C channel 4
+      // --------------------------------------------------
+      else if (i_chan==4) {
+      }
+      // --------------------------------------------------
+      // I2C channel 5
+      // --------------------------------------------------
+      else if (i_chan==5) {
+      }
+      // --------------------------------------------------
+      // I2C channel 6
+      // --------------------------------------------------
+      else if (i_chan==6) {
+      }
+      // --------------------------------------------------
+      // I2C channel 7
+      // --------------------------------------------------
+      else if (i_chan==7) {
+      }
     }
   }
   // --------------------------------------------------
