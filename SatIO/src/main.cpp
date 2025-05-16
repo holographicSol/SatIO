@@ -4044,35 +4044,35 @@ struct SensorDataStruct {
   float dht11_hic_0=0.0;
   bool dht11_0_display_hic=true;
   float    sensor_0=0.0;
-  uint16_t sensor_1=0.0;
-  uint16_t sensor_2=0.0;
-  uint16_t sensor_3=0.0;
-  uint16_t sensor_4=0.0;
-  uint16_t sensor_5=0.0;
-  uint16_t sensor_6=0.0;
-  uint16_t sensor_7=0.0;
-  uint16_t sensor_8=0.0;
-  uint16_t sensor_9=0.0;
-  uint16_t sensor_10=0.0;
-  uint16_t sensor_11=0.0;
-  uint16_t sensor_12=0.0;
-  uint16_t sensor_13=0.0;
-  uint16_t sensor_14=0.0;
-  uint16_t sensor_15=0.0;
+  float sensor_1=0.0;
+  float sensor_2=0.0;
+  float sensor_3=0.0;
+  float sensor_4=0.0;
+  float sensor_5=0.0;
+  float sensor_6=0.0;
+  float sensor_7=0.0;
+  float sensor_8=0.0;
+  float sensor_9=0.0;
+  float sensor_10=0.0;
+  float sensor_11=0.0;
+  float sensor_12=0.0;
+  float sensor_13=0.0;
+  float sensor_14=0.0;
+  float sensor_15=0.0;
 
   // ----------------------------------------------------
   // TCA9548A x8 i2C Multiplexer
   // ----------------------------------------------------
   // default names and data types can be customized
   // ----------------------------------------------------
-  uint16_t i2c_sensor_0 = 0.0;
-  uint16_t i2c_sensor_1 = 0.0;
-  uint16_t i2c_sensor_2 = 0.0;
-  uint16_t i2c_sensor_3 = 0.0;
-  uint16_t i2c_sensor_4 = 0.0;
-  uint16_t i2c_sensor_5 = 0.0;
-  uint16_t i2c_sensor_6 = 0.0;
-  uint16_t i2c_sensor_7 = 0.0;
+  float i2c_sensor_0 = 0.0;
+  float i2c_sensor_1 = 0.0;
+  float i2c_sensor_2 = 0.0;
+  float i2c_sensor_3 = 0.0;
+  float i2c_sensor_4 = 0.0;
+  float i2c_sensor_5 = 0.0;
+  float i2c_sensor_6 = 0.0;
+  float i2c_sensor_7 = 0.0;
 
   // ----------------------------------------------------
   // WT901
@@ -18450,11 +18450,37 @@ void readGPS(void * pvParameters) {
 
 bool sensor_0_issue_flag=false;
 
-void getSensorData() {
+void setCD74HC4067_NAN() {
+  sensorData.sensor_0=NAN;
+  sensorData.sensor_1=NAN;
+  sensorData.sensor_2=NAN;
+  sensorData.sensor_3=NAN;
+  sensorData.sensor_4=NAN;
+  sensorData.sensor_5=NAN;
+  sensorData.sensor_6=NAN;
+  sensorData.sensor_7=NAN;
+  sensorData.sensor_8=NAN;
+  sensorData.sensor_9=NAN;
+  sensorData.sensor_10=NAN;
+  sensorData.sensor_11=NAN;
+  sensorData.sensor_12=NAN;
+  sensorData.sensor_13=NAN;
+  sensorData.sensor_14=NAN;
+  sensorData.sensor_15=NAN;
+}
 
-  /*
-  ToDo: NAN sensor values for sensor disabled
-  */
+void setTCA9548A_NAN() {
+  sensorData.sensor_0=NAN;
+  sensorData.sensor_1=NAN;
+  sensorData.sensor_2=NAN;
+  sensorData.sensor_3=NAN;
+  sensorData.sensor_4=NAN;
+  sensorData.sensor_5=NAN;
+  sensorData.sensor_6=NAN;
+  sensorData.sensor_7=NAN;
+}
+
+void getSensorData() {
 
   // ------------------------------------------------------------------------------------------
   // step over each multiplexer analog/digital channel
@@ -18573,12 +18599,31 @@ void getSensorData() {
           sensorData.sensor_15=analogRead(CD74HC4067_SIG);
         }
       }
+      else {
+        if (i_chan==0) {sensorData.sensor_0=NAN;}
+        else if (i_chan==1) {sensorData.sensor_1=NAN;}
+        else if (i_chan==2) {sensorData.sensor_2=NAN;}
+        else if (i_chan==3) {sensorData.sensor_3=NAN;}
+        else if (i_chan==4) {sensorData.sensor_4=NAN;}
+        else if (i_chan==5) {sensorData.sensor_5=NAN;}
+        else if (i_chan==6) {sensorData.sensor_6=NAN;}
+        else if (i_chan==7) {sensorData.sensor_7=NAN;}
+        else if (i_chan==8) {sensorData.sensor_8=NAN;}
+        else if (i_chan==9) {sensorData.sensor_9=NAN;}
+        else if (i_chan==10) {sensorData.sensor_10=NAN;}
+        else if (i_chan==11) {sensorData.sensor_11=NAN;}
+        else if (i_chan==12) {sensorData.sensor_12=NAN;}
+        else if (i_chan==13) {sensorData.sensor_13=NAN;}
+        else if (i_chan==14) {sensorData.sensor_14=NAN;}
+        else if (i_chan==15) {sensorData.sensor_15=NAN;}
+      }
     }
     // --------------------------------------------------
     // set multiplexer channel back to zero
     // --------------------------------------------------
     // setMultiplexChannel_CD74HC4067(0);
   }
+  else {setCD74HC4067_NAN();}
 
   // --------------------------------------------------------------------------------------------------------------------------------------------
   // step over each I2C multiplexer channel (using the IIC extension bus is recommended except for reasons where the IIC multiplexer is required)
@@ -18988,7 +19033,7 @@ bool cleared_dynamic_data_gpatt=false;
 bool second_time_period=false;
 int remain_rtc_sync_flag=0;
 int sdcard_check_counter=0;
-
+// int i_request_wt901;
 
 void loop() {
   bench("-----");
@@ -18996,7 +19041,9 @@ void loop() {
   // systemData.t_bench=true;
   systemData.loops_a_second++;
 
+  // t0=micros();
   requestControlPad();
+  // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                          SUSPEND/RESUME GPS
@@ -19189,9 +19236,10 @@ void loop() {
     // --------------------------------------------------------------------
     else if (load_distribution==2) {
       load_distribution=0;
-      // // t0=micros();
+      // t0=micros();
       requestWT901();
-      // // bench("[I2CRequestScan] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // i_request_wt901++;
+      // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
@@ -19258,6 +19306,9 @@ void loop() {
     // ---------------------------------------------------------------------
     if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
     if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
+
+    // Serial.println("[reset i_request_wt901] times ran: " + String(i_request_wt901));
+    // i_request_wt901=0;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -19269,7 +19320,7 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
   // bench("[overload] " + String(systemData.overload));
-  // bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
+  bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
