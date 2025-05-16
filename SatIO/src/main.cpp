@@ -19062,6 +19062,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_y\r")==0) {Serial.println("[sensorData.wt901_gyr_y] " + String(sensorData.wt901_gyr_y));}
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_z\r")==0) {Serial.println("[sensorData.wt901_gyr_z] " + String(sensorData.wt901_gyr_z));}
 
+  // needs a tweak to always run before update ui
   else if (strcmp(CMD_BUFFER, "menu up\r")==0) {Serial.println("[menu up]"); menuUp();}
   else if (strcmp(CMD_BUFFER, "menu down\r")==0) {Serial.println("[menu down]"); menuDown();}
   else if (strcmp(CMD_BUFFER, "menu left\r")==0) {Serial.println("[menu left]"); menuLeft();}
