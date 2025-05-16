@@ -18554,27 +18554,9 @@ void readGPS(void * pvParameters) {
   }
 }
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     CmdProcess
-// ------------------------------------------------------------------------------------------------------------------------------
-static void PrintHelp() {
-  Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println("                                               SATIO                                               ");
-  Serial.println("");
-  Serial.println("[ HELP ]");
-  Serial.println("");
-  Serial.println("h    Display this help message.");
-  Serial.println("");
-  Serial.println("---------------------------------------------------------------------------------------------------");
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     CmdProcess
-// ------------------------------------------------------------------------------------------------------------------------------
-/*
-  The following commands are intended to allow SatIO to be controlled via other systems, embedded systems, scripts and humans.
-*/
-// ------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                         CmdProcess
+// ----------------------------------------------------------------------------------------------------------------------------------
 
 String TMP_CMD_STRING_0;
 String TMP_CMD_STRING_1;
@@ -18595,10 +18577,47 @@ char *TMP_CMD_TOKEN;
 int ITER_TMP_CMD_TOKEN;
 int COMMAND_PASS=0;
 
+static void PrintHelp() {
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                               SATIO                                               ");
+  Serial.println("");
+  Serial.println("[ HELP ]");
+  Serial.println("");
+  Serial.println("h    Display this help message.");
+  Serial.println("");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+}
+
+void PrintMatrixData() {
+  for (int Mi=0; Mi<matrixData.max_matrices; Mi++) {
+    Serial.println("-----------------------------------------------------");
+
+    Serial.println("[matrix switch] " + String(Mi));
+    Serial.println("[port] " + String(matrixData.matrix_port_map[0][Mi]));
+    Serial.println("[enabled] " + String(matrixData.matrix_switch_enabled[0][Mi]));
+    Serial.println("[active] " + String(matrixData.matrix_switch_state[0][Mi]));
+
+    for (int Fi=0; Fi<matrixData.max_matrix_functions; Fi++) {
+      Serial.println("    [function " + String(Fi) + " name] " + String(matrixData.matrix_function[Mi][Fi]));
+      Serial.println("    [function " + String(Fi) + " expression] " + String(matrixData.matrix_switch_expression_index[Mi][Fi]));
+      Serial.println("    [function " + String(Fi) + " inverted] " + String(matrixData.matrix_switch_inverted_logic[Mi][Fi]));
+      Serial.println("    [function " + String(Fi) + " x] " + String(matrixData.matrix_function_xyz[Mi][Fi][0]));
+      Serial.println("    [function " + String(Fi) + " y] " + String(matrixData.matrix_function_xyz[Mi][Fi][1]));
+      Serial.println("    [function " + String(Fi) + " z] " + String(matrixData.matrix_function_xyz[Mi][Fi][2]));
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+/*
+  The following commands are intended to allow SatIO to be controlled via other systems, embedded systems, scripts and humans.
+*/
+// ----------------------------------------------------------------------------------------------------------------------------------
+
 static void CmdProcess(void) {
-  // ------------------------------------------------
+  // --------------------------------------------------
   // process commands conditionally (some efficiency)
-  // ------------------------------------------------
+  // --------------------------------------------------
   if (strlen(CMD_BUFFER)>=1) {
     // ------------------------------------------------
     // uncomment to debug
@@ -18749,6 +18768,12 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "print neptune elat\r")==0) {Serial.println("[neptune_ecliptic_lat] " + String(siderealPlanetData.neptune_ecliptic_lat));}
     else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long] " + String(siderealPlanetData.neptune_ecliptic_long));}
     // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                 SPECIFIC REQUEST SERIAL OUTPUT: MATRIX VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix -v\r")==0) {
+      PrintMatrixData();
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix enabled\r")==0) {Serial.println("[matrix_enabled_i] " + String(matrixData.matrix_enabled_i));}
@@ -18842,17 +18867,6 @@ static void CmdProcess(void) {
       Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
-      TMP_CMD_STRING_0=String("");
-      for (int i=0; i<matrixData.max_matrix_function_names; i++) {
-        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[" + String(i) + "] ";
-        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_names[i])+String("\n");
-      }
-      Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING_0));
-    }
-    // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                     SPECIFIC REQUEST SERIAL OUTPUT: MATRIX EXPRESSIONS VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix expressions -v\r")==0) {
@@ -18863,6 +18877,17 @@ static void CmdProcess(void) {
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
       }
       Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrix_function_names; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[" + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_names[i])+String("\n");
+      }
+      Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GNGGA
