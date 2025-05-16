@@ -742,6 +742,7 @@ const uint8_t rtcsync_red[]={
 /* try to ensure space for developments by leaving a space of 20 pages between each page group */
 // ----------------------------------------------------------------------------------------------
 
+bool update_ui_complete=false;
 bool update_ui=true;
 bool ui_cleared=false;
 bool interaction_updateui=true; // performance and efficiency: make true when content should be updated. can be true for any reason.
@@ -12441,6 +12442,7 @@ void menuEnter() {
         // ------------------------------------------
         // go to
         // ------------------------------------------
+        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
         menu_page=page_save_system_config_indicator;
         UIIndicators();
         // ------------------------------------------
@@ -12483,6 +12485,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
+        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
         menu_page=page_restore_default_matrix_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -12535,6 +12538,7 @@ void menuEnter() {
       // --------------------------------------------
       // go to
       // --------------------------------------------
+      while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
       menu_page=page_save_matrix_file_indicator;
       UIIndicators();
       // --------------------------------------------
@@ -12589,6 +12593,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
+        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
         menu_page=page_load_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -12643,6 +12648,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
+        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
         menu_page=page_delete_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -13785,8 +13791,6 @@ void drawPlanets() {
   // test_angle=test_angle+1; if (test_angle>360) {test_angle=0;}
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
-
-bool update_ui_complete=false;
 
 void UpdateUI(void * pvParamters) {
 
