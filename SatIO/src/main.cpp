@@ -18776,6 +18776,15 @@ static void CmdProcess(void) {
     Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING));
   }
 
+  else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
+    TMP_CMD_STRING=String("");
+    for (int i=0; i<matrixData.max_matrices; i++) {
+      TMP_CMD_STRING=TMP_CMD_STRING+"[" + String(i) + "] ";
+      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function_names[i])+String("\n");
+    }
+    Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING));
+  }
+
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
