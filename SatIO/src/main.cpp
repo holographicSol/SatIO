@@ -18555,7 +18555,8 @@ serial print:
 switch x:
 */
 
-String TMP_CMD_STRING;
+String TMP_CMD_STRING_0;
+String TMP_CMD_STRING_1;
 
 static void CmdProcess(void) {
   // ------------------------------------------------
@@ -18701,7 +18702,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print mercury rv\r")==0) {Serial.println("[mercury_radius_vector] " + String(siderealPlanetData.mercury_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print mercury dis\r")==0) {Serial.println("[mercury_distance] " + String(siderealPlanetData.mercury_distance));}
   else if (strcmp(CMD_BUFFER, "print mercury elat\r")==0) {Serial.println("[mercury_ecliptic_lat] " + String(siderealPlanetData.mercury_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mercury elon\r")==0) {Serial.println("[mercury_ecliptic_long;] " + String(siderealPlanetData.mercury_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print mercury elon\r")==0) {Serial.println("[mercury_ecliptic_long] " + String(siderealPlanetData.mercury_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print venus ra\r")==0) {Serial.println("[venus_ra] " + String(siderealPlanetData.venus_ra));}
   else if (strcmp(CMD_BUFFER, "print venus dec\r")==0) {Serial.println("[venus_dec] " + String(siderealPlanetData.venus_dec));}
@@ -18714,7 +18715,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print venus rv\r")==0) {Serial.println("[venus_radius_vector] " + String(siderealPlanetData.venus_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print venus dis\r")==0) {Serial.println("[venus_distance] " + String(siderealPlanetData.venus_distance));}
   else if (strcmp(CMD_BUFFER, "print venus elat\r")==0) {Serial.println("[venus_ecliptic_lat] " + String(siderealPlanetData.venus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print venus elon\r")==0) {Serial.println("[venus_ecliptic_long;] " + String(siderealPlanetData.venus_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print venus elon\r")==0) {Serial.println("[venus_ecliptic_long] " + String(siderealPlanetData.venus_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print mars ra\r")==0) {Serial.println("[mars_ra] " + String(siderealPlanetData.mars_ra));}
   else if (strcmp(CMD_BUFFER, "print mars dec\r")==0) {Serial.println("[mars_dec] " + String(siderealPlanetData.mars_dec));}
@@ -18727,7 +18728,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print mars rv\r")==0) {Serial.println("[mars_radius_vector] " + String(siderealPlanetData.mars_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print mars dis\r")==0) {Serial.println("[mars_distance] " + String(siderealPlanetData.mars_distance));}
   else if (strcmp(CMD_BUFFER, "print mars elat\r")==0) {Serial.println("[mars_ecliptic_lat] " + String(siderealPlanetData.mars_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mars elon\r")==0) {Serial.println("[mars_ecliptic_long;] " + String(siderealPlanetData.mars_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print mars elon\r")==0) {Serial.println("[mars_ecliptic_long] " + String(siderealPlanetData.mars_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print jupiter ra\r")==0) {Serial.println("[jupiter_ra] " + String(siderealPlanetData.jupiter_ra));}
   else if (strcmp(CMD_BUFFER, "print jupiter dec\r")==0) {Serial.println("[jupiter_dec] " + String(siderealPlanetData.jupiter_dec));}
@@ -18740,7 +18741,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print jupiter rv\r")==0) {Serial.println("[jupiter_radius_vector] " + String(siderealPlanetData.jupiter_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print jupiter dis\r")==0) {Serial.println("[jupiter_distance] " + String(siderealPlanetData.jupiter_distance));}
   else if (strcmp(CMD_BUFFER, "print jupiter elat\r")==0) {Serial.println("[jupiter_ecliptic_lat] " + String(siderealPlanetData.jupiter_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print jupiter elon\r")==0) {Serial.println("[jupiter_ecliptic_long;] " + String(siderealPlanetData.jupiter_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print jupiter elon\r")==0) {Serial.println("[jupiter_ecliptic_long] " + String(siderealPlanetData.jupiter_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print saturn ra\r")==0) {Serial.println("[saturn_ra] " + String(siderealPlanetData.saturn_ra));}
   else if (strcmp(CMD_BUFFER, "print saturn dec\r")==0) {Serial.println("[saturn_dec] " + String(siderealPlanetData.saturn_dec));}
@@ -18753,7 +18754,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print saturn rv\r")==0) {Serial.println("[saturn_radius_vector] " + String(siderealPlanetData.saturn_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print saturn dis\r")==0) {Serial.println("[saturn_distance] " + String(siderealPlanetData.saturn_distance));}
   else if (strcmp(CMD_BUFFER, "print saturn elat\r")==0) {Serial.println("[saturn_ecliptic_lat] " + String(siderealPlanetData.saturn_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print saturn elon\r")==0) {Serial.println("[saturn_ecliptic_long;] " + String(siderealPlanetData.saturn_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print saturn elon\r")==0) {Serial.println("[saturn_ecliptic_long] " + String(siderealPlanetData.saturn_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print uranus ra\r")==0) {Serial.println("[uranus_ra] " + String(siderealPlanetData.uranus_ra));}
   else if (strcmp(CMD_BUFFER, "print uranus dec\r")==0) {Serial.println("[uranus_dec] " + String(siderealPlanetData.uranus_dec));}
@@ -18766,7 +18767,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print uranus rv\r")==0) {Serial.println("[uranus_radius_vector] " + String(siderealPlanetData.uranus_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print uranus dis\r")==0) {Serial.println("[uranus_distance] " + String(siderealPlanetData.uranus_distance));}
   else if (strcmp(CMD_BUFFER, "print uranus elat\r")==0) {Serial.println("[uranus_ecliptic_lat] " + String(siderealPlanetData.uranus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print uranus elon\r")==0) {Serial.println("[uranus_ecliptic_long;] " + String(siderealPlanetData.uranus_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print uranus elon\r")==0) {Serial.println("[uranus_ecliptic_long] " + String(siderealPlanetData.uranus_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print neptune ra\r")==0) {Serial.println("[neptune_ra] " + String(siderealPlanetData.neptune_ra));}
   else if (strcmp(CMD_BUFFER, "print neptune dec\r")==0) {Serial.println("[neptune_dec] " + String(siderealPlanetData.neptune_dec));}
@@ -18779,7 +18780,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print neptune rv\r")==0) {Serial.println("[neptune_radius_vector] " + String(siderealPlanetData.neptune_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print neptune dis\r")==0) {Serial.println("[neptune_distance] " + String(siderealPlanetData.neptune_distance));}
   else if (strcmp(CMD_BUFFER, "print neptune elat\r")==0) {Serial.println("[neptune_ecliptic_lat] " + String(siderealPlanetData.neptune_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long;] " + String(siderealPlanetData.neptune_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long] " + String(siderealPlanetData.neptune_ecliptic_long));}
 
 
   else if (strcmp(CMD_BUFFER, "print matrix enabled\r")==0) {Serial.println("[matrix_enabled_i] " + String(matrixData.matrix_enabled_i));}
@@ -18789,92 +18790,177 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print matrix inactive\r")==0) {Serial.println("[matrix_inactive_i] " + String(matrixData.matrix_inactive_i));}
 
   else if (strcmp(CMD_BUFFER, "print matrix active -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_state[0][i])+String("\n");
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_state[0][i])+String("\n");
     }
-    Serial.println("[matrix_switch_state]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_switch_state]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix enabled -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_enabled[0][i])+String("\n");
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_enabled[0][i])+String("\n");
     }
-    Serial.println("[matrix_switch_enabled]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_switch_enabled]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix inverted -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_inverted_logic[i1][i2])+String(" ");}
-      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_inverted_logic[i1][i2])+String(" ");}
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
     }
-    Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix timers -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_timers[0][i])+String("\n");
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_timers[0][i])+String("\n");
     }
-    Serial.println("[matrix_timers]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_timers]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix ports -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_port_map[0][i])+String("\n");
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_port_map[0][i])+String("\n");
     }
-    Serial.println("[matrix_port_map]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_port_map]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix functions -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function[i1][i2])+String(", ");}
-      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function[i1][i2])+String(", ");}
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
     }
-    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix functions xyz -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
       for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {
-        TMP_CMD_STRING=TMP_CMD_STRING+"\n           ";
-        for (int i3=0; i3<3; i3++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(", ");}
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"\n           ";
+        for (int i3=0; i3<3; i3++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(", ");}
       }
-      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
     }
-    Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i=0; i<matrixData.max_matrix_function_names; i++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[" + String(i) + "] ";
-      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function_names[i])+String("\n");
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[" + String(i) + "] ";
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_names[i])+String("\n");
     }
-    Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING_0));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix expressions -v\r")==0) {
-    TMP_CMD_STRING=String("");
+    TMP_CMD_STRING_0=String("");
     for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
-      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
+      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
     }
-    Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING_0));
   }
+
+
+  else if (strcmp(CMD_BUFFER, "print gngga utc_time\r")==0) {Serial.println("[gnggaData.utc_time] " + String(gnggaData.utc_time));}
+  else if (strcmp(CMD_BUFFER, "print gngga latitude\r")==0) {Serial.println("[gnggaData.latitude] " + String(gnggaData.latitude));}
+  else if (strcmp(CMD_BUFFER, "print gngga latitude_hemisphere\r")==0) {Serial.println("[gnggaData.latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));}
+  else if (strcmp(CMD_BUFFER, "print gngga longitude\r")==0) {Serial.println("[gnggaData.longitude] " + String(gnggaData.longitude));}
+  else if (strcmp(CMD_BUFFER, "print gngga longitude_hemisphere\r")==0) {Serial.println("[gnggaData.longitude_hemisphere] " + String(gnggaData.longitude_hemisphere));}
+  else if (strcmp(CMD_BUFFER, "print gngga solution_status\r")==0) {Serial.println("[gnggaData.solution_status] " + String(gnggaData.solution_status));}
+  else if (strcmp(CMD_BUFFER, "print gngga satellite_count_gngga\r")==0) {Serial.println("[gnggaData.satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));}
+  else if (strcmp(CMD_BUFFER, "print gngga hdop_precision_factor\r")==0) {Serial.println("[gnggaData.hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));}
+  else if (strcmp(CMD_BUFFER, "print gngga altitude\r")==0) {Serial.println("[gnggaData.altitude] " + String(gnggaData.altitude));}
+  else if (strcmp(CMD_BUFFER, "print gngga altitude_units\r")==0) {Serial.println("[gnggaData.altitude_units] " + String(gnggaData.altitude_units));}
+  else if (strcmp(CMD_BUFFER, "print gngga geoidal\r")==0) {Serial.println("[gnggaData.geoidal] " + String(gnggaData.geoidal));}
+  else if (strcmp(CMD_BUFFER, "print gngga geoidal_units\r")==0) {Serial.println("[gnggaData.geoidal_units] " + String(gnggaData.geoidal_units));}
+  else if (strcmp(CMD_BUFFER, "print gngga differential_delay\r")==0) {Serial.println("[gnggaData.differential_delay] " + String(gnggaData.differential_delay));}
+
+
+  else if (strcmp(CMD_BUFFER, "print gnrmc utc_time\r")==0) {Serial.println("[gnrmcData.utc_time] " + String( gnrmcData.utc_time));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc positioning_status\r")==0) {Serial.println("[gnrmcData.positioning_status] " + String( gnrmcData.positioning_status));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc latitude\r")==0) {Serial.println("[gnrmcData.latitude] " + String( gnrmcData.latitude));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc latitude_hemisphere\r")==0) {Serial.println("[gnrmcData.latitude_hemisphere] " + String( gnrmcData.latitude_hemisphere));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc longitude\r")==0) {Serial.println("[gnrmcData.longitude] " + String( gnrmcData.longitude));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc longitude_hemisphere\r")==0) {Serial.println("[gnrmcData.longitude_hemisphere] " + String( gnrmcData.longitude_hemisphere));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc ground_speed\r")==0) {Serial.println("[gnrmcData.ground_speed] " + String( gnrmcData.ground_speed));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc ground_heading\r")==0) {Serial.println("[gnrmcData.ground_heading] " + String( gnrmcData.ground_heading));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc utc_date\r")==0) {Serial.println("[gnrmcData.utc_date] " + String( gnrmcData.utc_date));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle\r")==0) {Serial.println("[gnrmcData.installation_angle] " + String( gnrmcData.installation_angle));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle_direction\r")==0) {Serial.println("[gnrmcData.installation_angle_direction] " + String( gnrmcData.installation_angle_direction));}
+  else if (strcmp(CMD_BUFFER, "print gnrmc mode_indication\r")==0) {Serial.println("[gnrmcData.mode_indication] " + String( gnrmcData.mode_indication));}
+
+
+  else if (strcmp(CMD_BUFFER, "print gpatt pitch\r")==0) {Serial.println("[gpattData.pitch] " + String( gpattData.pitch));}
+  else if (strcmp(CMD_BUFFER, "print gpatt roll\r")==0) {Serial.println("[gpattData.roll] " + String( gpattData.roll));}
+  else if (strcmp(CMD_BUFFER, "print gpatt yaw\r")==0) {Serial.println("[gpattData.yaw] " + String( gpattData.yaw));}
+  else if (strcmp(CMD_BUFFER, "print gpatt software_version\r")==0) {Serial.println("[gpattData.software_version] " + String( gpattData.software_version));}
+  else if (strcmp(CMD_BUFFER, "print gpatt product_id\r")==0) {Serial.println("[gpattData.product_id] " + String( gpattData.product_id));}
+  else if (strcmp(CMD_BUFFER, "print gpatt ins\r")==0) {Serial.println("[gpattData.ins] " + String( gpattData.ins));}
+  else if (strcmp(CMD_BUFFER, "print gpatt hardware_version\r")==0) {Serial.println("[gpattData.hardware_version] " + String( gpattData.hardware_version));}
+  else if (strcmp(CMD_BUFFER, "print gpatt run_state_flag\r")==0) {Serial.println("[gpattData.run_state_flag] " + String( gpattData.run_state_flag));}
+  else if (strcmp(CMD_BUFFER, "print gpatt mis_angle_num\r")==0) {Serial.println("[gpattData.mis_angle_num] " + String( gpattData.mis_angle_num));}
+  else if (strcmp(CMD_BUFFER, "print gpatt static_flag\r")==0) {Serial.println("[gpattData.static_flag] " + String( gpattData.static_flag));}
+  else if (strcmp(CMD_BUFFER, "print gpatt user_code\r")==0) {Serial.println("[gpattData.user_code] " + String( gpattData.user_code));}
+  else if (strcmp(CMD_BUFFER, "print gpatt gst_data\r")==0) {Serial.println("[gpattData.gst_data] " + String( gpattData.gst_data));}
+  else if (strcmp(CMD_BUFFER, "print gpatt line_flag\r")==0) {Serial.println("[gpattData.line_flag] " + String( gpattData.line_flag));}
+  else if (strcmp(CMD_BUFFER, "print gpatt mis_att_flag\r")==0) {Serial.println("[gpattData.mis_att_flag] " + String( gpattData.mis_att_flag));}
+  else if (strcmp(CMD_BUFFER, "print gpatt imu_kind\r")==0) {Serial.println("[gpattData.imu_kind] " + String( gpattData.imu_kind));}
+  else if (strcmp(CMD_BUFFER, "print gpatt ubi_car_kind\r")==0) {Serial.println("[gpattData.ubi_car_kind] " + String( gpattData.ubi_car_kind));}
+  else if (strcmp(CMD_BUFFER, "print gpatt mileage\r")==0) {Serial.println("[gpattData.mileage] " + String( gpattData.mileage));}
+  else if (strcmp(CMD_BUFFER, "print gpatt run_inetial_flag\r")==0) {Serial.println("[gpattData.run_inetial_flag] " + String( gpattData.run_inetial_flag));}
+  else if (strcmp(CMD_BUFFER, "print gpatt speed_enable\r")==0) {Serial.println("[gpattData.speed_enable] " + String( gpattData.speed_enable));}
+  else if (strcmp(CMD_BUFFER, "print gpatt speed_num\r")==0) {Serial.println("[gpattData.speed_num] " + String( gpattData.speed_num));}
+
+
+  else if (strcmp(CMD_BUFFER, "switch convert coordinates\r")==0) {satData.convert_coordinates^=true;}
+  else if (strcmp(CMD_BUFFER, "set convert coordinates GNGGA\r")==0) {
+    memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+    strcpy(satData.coordinate_conversion_mode, "GNGGA");
+  }
+  else if (strcmp(CMD_BUFFER, "set convert coordinates GNRMC\r")==0) {
+    memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+    strcpy(satData.coordinate_conversion_mode, "GNRMC");
+  }
+  else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
+    TMP_CMD_STRING_0="";
+    TMP_CMD_STRING_0 = String(CMD_BUFFER);
+    TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
+    if ((atol(TMP_CMD_STRING_0.c_str()) <= 179769313486232) && (atol(TMP_CMD_STRING_0.c_str()) >= -179769313486232)) {
+      satData.utc_second_offset=atol(TMP_CMD_STRING_0.c_str());
+    }
+    // Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+    // Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));
+  }
+  else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
+
+  else if (strcmp(CMD_BUFFER, "print satio degrees_latitude\r")==0) {Serial.println("[satData.degrees_latitude] " + String(satData.degrees_latitude));}
+  else if (strcmp(CMD_BUFFER, "print satio degrees_longitude\r")==0) {Serial.println("[satData.degrees_longitude] " + String(satData.degrees_longitude));}
+  else if (strcmp(CMD_BUFFER, "print satio ground_heading\r")==0) {Serial.println("[satData.ground_heading] " + String(satData.ground_heading));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_local_time\r")==0) {Serial.println("[satData.formatted_local_time] " + String(satData.formatted_local_time));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_local_date\r")==0) {Serial.println("[satData.formatted_local_date] " + String(satData.formatted_local_date));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_time\r")==0) {Serial.println("[satData.formatted_rtc_sync_time] " + String(satData.formatted_rtc_sync_time));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_date\r")==0) {Serial.println("[satData.formatted_rtc_sync_date] " + String(satData.formatted_rtc_sync_date));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_time\r")==0) {Serial.println("[satData.formatted_rtc_time] " + String(satData.formatted_rtc_time));}
+  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_date\r")==0) {Serial.println("[satData.formatted_rtc_date] " + String(satData.formatted_rtc_date));}
+  else if (strcmp(CMD_BUFFER, "print satio utc_second_offset\r")==0) {Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));}
+  else if (strcmp(CMD_BUFFER, "print satio utc_auto_offset_flag\r")==0) {Serial.println("[satData.utc_auto_offset_flag] " + String(satData.utc_auto_offset_flag));}
 
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
