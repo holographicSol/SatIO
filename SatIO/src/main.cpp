@@ -19075,6 +19075,19 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
   else if (strcmp(CMD_BUFFER, "menu home\r")==0) {Serial.println("[menu home]"); menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
 
+  // requires further sanitization
+  else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
+    Serial.println("[enter digits]");
+    TMP_CMD_STRING_0="";
+    TMP_CMD_STRING_0 = String(CMD_BUFFER);
+    TMP_CMD_STRING_0.replace("enter digits ", "");
+    if ((atol(TMP_CMD_STRING_0.c_str()) <= 99) && (atol(TMP_CMD_STRING_0.c_str()) >= -99)) {
+      memset(input_data, 0, sizeof(input_data));
+      strcpy(input_data, TMP_CMD_STRING_0.c_str());
+    }
+    Serial.println("[input_data] " + String(input_data));
+  }
+
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
 
