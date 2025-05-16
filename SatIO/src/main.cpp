@@ -19083,7 +19083,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                  SET MATRIX FUNCTION INVERSION
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix invert \r", 19)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix invert \r", 18)==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -19112,7 +19112,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                 SET MATRIX FUNCTION EXPRESSION
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix express \r", 20)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix express \r", 19)==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
