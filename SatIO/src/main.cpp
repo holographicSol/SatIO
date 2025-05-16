@@ -2984,7 +2984,7 @@ struct MatrixStruct {
   // -------------------------------------------------------------------------------------------------------
   char expression[5][16] =
   {
-    "NoEx", // empty for functions that take no expression
+    "", // empty for functions that take no expression
     "Equal",
     "Over",
     "Under",
@@ -12275,7 +12275,6 @@ void menuEnter() {
       // remove expression
       // ------------------------------------------------
       matrixData.tempStr=String(matrixData.temp);
-      matrixData.tempStr.replace("NoEx", "");
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
@@ -14117,16 +14116,128 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
-      if (interaction_updateui==true) {
-        // ------------------------------------------------------------------------------------------------------------
-        // clear any previously highlighted menus
-        // ------------------------------------------------------------------------------------------------------------
-        if (previous_menu_column_selection!=menu_column_selection) {
-          canvas126x24.clear();
-          display.setColor(systemData.color_content);
-          display.drawCanvas(1, 13, canvas126x24);
-          previous_menu_column_selection=menu_column_selection;
+      
+      // ------------------------------------------------------------------------------------------------------------
+      // clear any previously highlighted menus
+      // ------------------------------------------------------------------------------------------------------------
+      if (previous_menu_column_selection!=menu_column_selection) {
+        canvas126x24.clear();
+        display.setColor(systemData.color_content);
+        display.drawCanvas(1, 13, canvas126x24);
+        previous_menu_column_selection=menu_column_selection;
+      }
+
+      // ------------------------------------------------------------------------------------------------------------
+      // matrix switch port button
+      // ------------------------------------------------------------------------------------------------------------
+      if (menu_column_selection==1) {
+        // --------------------------------------------
+        // draw highlighted
+        // --------------------------------------------
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "P");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+        canvas19x8.clear();
+        // --------------------------------------------
+        // indicate if port number is -1 (none)
+        // --------------------------------------------
+        if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
+        else {display.setColor(RGB_COLOR16(255,0,0));}
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+        display.drawCanvas(38, 21, canvas19x8);
+        display.setColor(systemData.color_menu_content);
+        display.drawRect(35, 18, 62, 18+15);
+      }
+      else {
+        // --------------------------------------------
+        // draw unhighlighted
+        // --------------------------------------------
+        memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+        strcpy(TMP_UI_DATA_0, "P");
+        strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
+        canvas19x8.clear();
+        // --------------------------------------------
+        // indicate if port number is -1 (none)
+        // --------------------------------------------
+        if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
+        else {display.setColor(RGB_COLOR16(255,0,0));}
+        canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
+        display.drawCanvas(39, 21, canvas19x8);
+      }
+      // ------------------------------------------------------------------------------------------------------------
+      // matrix switch enable/disable button
+      // ------------------------------------------------------------------------------------------------------------
+      if (menu_column_selection==2) {
+        // --------------------------------------------
+        // draw highlighted
+        // --------------------------------------------
+        canvas8x8.clear();
+        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(0,0,255));
+          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD );
         }
+        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(255,0,0));
+          canvas8x8.printFixed(2, 1, "D", STYLE_BOLD );
+        }
+        display.drawCanvas(68, 21, canvas8x8);
+        display.setColor(systemData.color_menu_content);
+        display.drawRect(65, 18, 80, 18+15);
+      }
+      else {
+        // --------------------------------------------
+        // draw unhighlighted
+        // --------------------------------------------
+        canvas8x8.clear();
+        if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(0,0,255));
+          canvas8x8.printFixed(1, 1, "E", STYLE_BOLD);
+        }
+        else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(255,0,0));
+          canvas8x8.printFixed(2, 1, "D", STYLE_BOLD);
+        }
+        display.drawCanvas(68, 21, canvas8x8);
+      }
+      // ------------------------------------------------------------------------------------------------------------
+      // matrix switch inverted logic button
+      // ------------------------------------------------------------------------------------------------------------
+      if (menu_column_selection==3) {
+        // --------------------------------------------
+        // draw highlighted
+        // --------------------------------------------
+        canvas8x8.clear();
+        display.setColor(systemData.color_content);
+        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(255,255,0));
+          canvas8x8.printFixed(2, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
+        }
+        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(0,0,255));
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
+        }
+        display.drawCanvas(84, 21, canvas8x8);
+        display.setColor(systemData.color_menu_content);
+        display.drawRect(82, 18, 96, 18+15);
+      }
+      else {
+        // --------------------------------------------
+        // draw unhighlighted
+        // --------------------------------------------
+        canvas8x8.clear();
+        display.setColor(systemData.color_content);
+        if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
+          display.setColor(RGB_COLOR16(255,255,0));
+          canvas8x8.printFixed(2, 1, "I", STYLE_BOLD); // inverted function logic (not switch logic, this is per function on a switch) 
+        }
+        else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
+          display.setColor(RGB_COLOR16(0,0,255));
+          canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
+        }
+        display.drawCanvas(84, 21, canvas8x8);
+      }
+
+      if (interaction_updateui==true) {
         // ------------------------------------------------------------------------------------------------------------
         // matrix switch menu
         // ------------------------------------------------------------------------------------------------------------
@@ -14154,115 +14265,7 @@ void UpdateUI(void * pvParamters) {
           canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
           display.drawCanvas(10, 21, canvas19x8);
         }
-        // ------------------------------------------------------------------------------------------------------------
-        // matrix switch port button
-        // ------------------------------------------------------------------------------------------------------------
-        if (menu_column_selection==1) {
-          // --------------------------------------------
-          // draw highlighted
-          // --------------------------------------------
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "P");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
-          canvas19x8.clear();
-          // --------------------------------------------
-          // indicate if port number is -1 (none)
-          // --------------------------------------------
-          if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
-          else {display.setColor(RGB_COLOR16(255,0,0));}
-          canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-          display.drawCanvas(38, 21, canvas19x8);
-          display.setColor(systemData.color_menu_content);
-          display.drawRect(35, 18, 62, 18+15);
-        }
-        else {
-          // --------------------------------------------
-          // draw unhighlighted
-          // --------------------------------------------
-          memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-          strcpy(TMP_UI_DATA_0, "P");
-          strcat(TMP_UI_DATA_0, String(matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]).c_str());
-          canvas19x8.clear();
-          // --------------------------------------------
-          // indicate if port number is -1 (none)
-          // --------------------------------------------
-          if (matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]>=0) {display.setColor(RGB_COLOR16(0,0,255));}
-          else {display.setColor(RGB_COLOR16(255,0,0));}
-          canvas19x8.printFixed(1, 1, TMP_UI_DATA_0, STYLE_BOLD);
-          display.drawCanvas(39, 21, canvas19x8);
-        }
-        // ------------------------------------------------------------------------------------------------------------
-        // matrix switch enable/disable button
-        // ------------------------------------------------------------------------------------------------------------
-        if (menu_column_selection==2) {
-          // --------------------------------------------
-          // draw highlighted
-          // --------------------------------------------
-          canvas8x8.clear();
-          if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-            display.setColor(RGB_COLOR16(0,0,255));
-            canvas8x8.printFixed(1, 1, "E", STYLE_BOLD );
-          }
-          else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-            display.setColor(RGB_COLOR16(255,0,0));
-            canvas8x8.printFixed(2, 1, "D", STYLE_BOLD );
-          }
-          display.drawCanvas(68, 21, canvas8x8);
-          display.setColor(systemData.color_menu_content);
-          display.drawRect(65, 18, 80, 18+15);
-        }
-        else {
-          // --------------------------------------------
-          // draw unhighlighted
-          // --------------------------------------------
-          canvas8x8.clear();
-          if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==true) {
-            display.setColor(RGB_COLOR16(0,0,255));
-            canvas8x8.printFixed(1, 1, "E", STYLE_BOLD);
-          }
-          else if (matrixData.matrix_switch_enabled[0][menuMatrixSwitchSelect.selection()]==false) {
-            display.setColor(RGB_COLOR16(255,0,0));
-            canvas8x8.printFixed(2, 1, "D", STYLE_BOLD);
-          }
-          display.drawCanvas(68, 21, canvas8x8);
-        }
-        // ------------------------------------------------------------------------------------------------------------
-        // matrix switch inverted logic button
-        // ------------------------------------------------------------------------------------------------------------
-        if (menu_column_selection==3) {
-          // --------------------------------------------
-          // draw highlighted
-          // --------------------------------------------
-          canvas8x8.clear();
-          display.setColor(systemData.color_content);
-          if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-            display.setColor(RGB_COLOR16(255,255,0));
-            canvas8x8.printFixed(2, 1, "I", STYLE_BOLD ); // inverted function logic (not switch logic, this is per function on a switch) 
-          }
-          else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-            display.setColor(RGB_COLOR16(0,0,255));
-            canvas8x8.printFixed(1, 1, "S", STYLE_BOLD ); // standard function logic (not switch logic, this is per function on a switch) 
-          }
-          display.drawCanvas(84, 21, canvas8x8);
-          display.setColor(systemData.color_menu_content);
-          display.drawRect(82, 18, 96, 18+15);
-        }
-        else {
-          // --------------------------------------------
-          // draw unhighlighted
-          // --------------------------------------------
-          canvas8x8.clear();
-          display.setColor(systemData.color_content);
-          if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==true) {
-            display.setColor(RGB_COLOR16(255,255,0));
-            canvas8x8.printFixed(2, 1, "I", STYLE_BOLD); // inverted function logic (not switch logic, this is per function on a switch) 
-          }
-          else if (matrixData.matrix_switch_inverted_logic[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]==false) {
-            display.setColor(RGB_COLOR16(0,0,255));
-            canvas8x8.printFixed(1, 1, "S", STYLE_BOLD); // standard function logic (not switch logic, this is per function on a switch) 
-          }
-          display.drawCanvas(84, 21, canvas8x8);
-        }
+
         // ------------------------------------------------------------------------------------------------------------
         // matrix switch function menu
         // ------------------------------------------------------------------------------------------------------------
@@ -18574,8 +18577,19 @@ String TMP_CMD_STRING_1;
 String TMP_CMD_STRING_2;
 String TMP_CMD_STRING_3;
 String TMP_CMD_STRING_4;
+String TMP_CMD_STRING_5;
+String TMP_CMD_STRING_6;
+String TMP_CMD_STRING_7;
+String TMP_CMD_STRING_8;
+String TMP_CMD_STRING_9;
+String TMP_CMD_STRING_10;
+String TMP_CMD_STRING_11;
+String TMP_CMD_STRING_12;
+String TMP_CMD_STRING_13;
+String TMP_CMD_STRING_14;
 char *TMP_CMD_TOKEN;
 int ITER_TMP_CMD_TOKEN;
+int COMMAND_PASS=0;
 
 static void CmdProcess(void) {
   // ------------------------------------------------
@@ -19009,33 +19023,184 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                MATRIX SWITCHES
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "switch matrix\r")==0) {systemData.matrix_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch matrix startup\r")==0) {systemData.matrix_run_on_startup^=true;}
-      else if (strcmp(CMD_BUFFER, "switch matrix io\r")==0) {systemData.matrix_io_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch matrix enabled\r")==0) {systemData.matrix_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch matrix startup enabled\r")==0) {systemData.matrix_run_on_startup^=true;}
+      else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;}
       // ------------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                              SET MATRIX SWITCH
+      //                                                                                                      SET MATRIX SWITCH ENABLED
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix switch \r", 17)==0) {
+      else if (strncmp(CMD_BUFFER, "switch matrix io \r", 17)==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
-        Serial.println("[token] " + String(TMP_CMD_TOKEN));
         ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
         while (TMP_CMD_TOKEN!=NULL) {
-          if      (ITER_TMP_CMD_TOKEN==3) {Serial.println("[set matrix switch] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==4) {Serial.println("[set matrix switch function] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==5) {Serial.println("[set matrix switch function x] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==6) {Serial.println("[set matrix switch function y] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==7) {Serial.println("[set matrix switch function z] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==8) {Serial.println("[set matrix switch function inverted] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==9) {Serial.println("[set matrix switch function expression] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==10) {Serial.println("[set matrix switch port] " + String(TMP_CMD_TOKEN));}
-          else if (ITER_TMP_CMD_TOKEN==11) {Serial.println("[set matrix switch enabled] " + String(TMP_CMD_TOKEN));}
+          if      (ITER_TMP_CMD_TOKEN==3) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==4) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==2) {
+          // --------------------------------------------------------------------
+          // set enabled/disabled
+          // --------------------------------------------------------------------
+          matrixData.matrix_switch_enabled[0][atoi(TMP_CMD_STRING_0.c_str())]=atoi(TMP_CMD_STRING_1.c_str());
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                              SET MATRIX SWITCH
+      // ------------------------------------------------------------------------------------------------------------------------------
+      /*
+      example: set matrix switch 1 0 None 0 0 0 0 0 -1 0
+      example: set matrix switch 1 0 Enabled 0 0 0 0 0 40 1
+      */
+     // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "set matrix switch \r", 17)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==3) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==4) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==5) {if (is_all_alpha(TMP_CMD_TOKEN)) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==6) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_3=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==7) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_4=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==8) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_5=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==9) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_6=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==10) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_7=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==11) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '-')) {TMP_CMD_STRING_8=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==12) {TMP_CMD_STRING_9=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
+        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
+        Serial.println("[TMP_CMD_STRING_3] " + String(TMP_CMD_STRING_3));
+        Serial.println("[TMP_CMD_STRING_4] " + String(TMP_CMD_STRING_4));
+        Serial.println("[TMP_CMD_STRING_5] " + String(TMP_CMD_STRING_5));
+        Serial.println("[TMP_CMD_STRING_6] " + String(TMP_CMD_STRING_6));
+        Serial.println("[TMP_CMD_STRING_7] " + String(TMP_CMD_STRING_7));
+        Serial.println("[TMP_CMD_STRING_8] " + String(TMP_CMD_STRING_8));
+        Serial.println("[TMP_CMD_STRING_9] " + String(TMP_CMD_STRING_9));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==10) {
+          // --------------------------------------------------------------------
+          // set function name
+          // --------------------------------------------------------------------
+          memset(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], 0, sizeof(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]));
+          strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
+          // --------------------------------------------------------------------
+          // set function xyz
+          // --------------------------------------------------------------------
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][0]=atol(TMP_CMD_STRING_3.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][1]=atol(TMP_CMD_STRING_4.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][2]=atol(TMP_CMD_STRING_5.c_str());
+          // --------------------------------------------------------------------
+          // set function inverted
+          // --------------------------------------------------------------------
+          matrixData.matrix_switch_inverted_logic[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]=atoi(TMP_CMD_STRING_6.c_str());
+          // --------------------------------------------------------------------
+          // set expression
+          // --------------------------------------------------------------------
+          matrixData.matrix_switch_expression_index[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]=atoi(TMP_CMD_STRING_7.c_str());
+          // --------------------------------------------------------------------
+          // set switch port
+          // --------------------------------------------------------------------
+          matrixData.matrix_port_map[0][atoi(TMP_CMD_STRING_0.c_str())]=atoi(TMP_CMD_STRING_8.c_str());
+          // --------------------------------------------------------------------
+          // set enabled/disabled
+          // --------------------------------------------------------------------
+          matrixData.matrix_switch_enabled[0][atoi(TMP_CMD_STRING_0.c_str())]=atoi(TMP_CMD_STRING_9.c_str());
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                      SET MATRIX FUNCTION + XYZ
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "set matrix function xyz \r", 24)==0) {
+        Serial.println("[set matrix function] " + String(CMD_BUFFER));
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==4) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==5) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==6) {if (is_all_alpha(TMP_CMD_TOKEN)) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==7) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_3=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==8) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_4=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==9) {TMP_CMD_STRING_5=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
+        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
+        Serial.println("[TMP_CMD_STRING_3] " + String(TMP_CMD_STRING_3));
+        Serial.println("[TMP_CMD_STRING_4] " + String(TMP_CMD_STRING_4));
+        Serial.println("[TMP_CMD_STRING_5] " + String(TMP_CMD_STRING_5));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==6) {
+          // --------------------------------------------------------------------
+          // set function name
+          // --------------------------------------------------------------------
+          memset(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], 0, sizeof(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]));
+          strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
+          // --------------------------------------------------------------------
+          // set function xyz
+          // --------------------------------------------------------------------
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][0]=atol(TMP_CMD_STRING_3.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][1]=atol(TMP_CMD_STRING_4.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][2]=atol(TMP_CMD_STRING_5.c_str());
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                            SET MATRIX FUNCTION
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "set matrix function \r", 20)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==3) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==4) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==5) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
+        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==3) {
+          // --------------------------------------------------------------------
+          // set function name
+          // --------------------------------------------------------------------
+          memset(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], 0, sizeof(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]));
+          strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
+        }
+        else {Serial.println("[command failed]");}
       }
 
-      // TEST: set matrix switch 9 0 ENABLED 0 0 0 0 0 -1 1
-      // TEST: print matrix available functions -v
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                           TODO
+      // ------------------------------------------------------------------------------------------------------------------------------
       // set matrix switch function
       // set matrix switch xyz
       // set matrix switch function inverted
