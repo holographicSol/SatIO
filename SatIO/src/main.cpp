@@ -18873,7 +18873,7 @@ static void CmdProcess(void) {
       for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
       TMP_CMD_STRING=TMP_CMD_STRING+'\n';
     }
-    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING));
+    Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING));
   }
 
 
