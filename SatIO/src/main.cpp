@@ -19081,6 +19081,35 @@ static void CmdProcess(void) {
         else {Serial.println("[command failed]");}
       }
       // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                  SET MATRIX FUNCTION INVERSION
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "switch matrix invert \r", 19)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==3) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==4) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==5) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
+        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==3) {
+          // --------------------------------------------------------------------
+          // set function inverted
+          // --------------------------------------------------------------------
+          matrixData.matrix_switch_inverted_logic[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]=atoi(TMP_CMD_STRING_2.c_str());
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                              SET MATRIX SWITCH
       // ------------------------------------------------------------------------------------------------------------------------------
       /*
