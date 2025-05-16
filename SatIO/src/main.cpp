@@ -18572,9 +18572,9 @@ static void PrintHelp() {
 //                                                                                                                     CmdProcess
 // ------------------------------------------------------------------------------------------------------------------------------
 /*
-serial print:
-switch x:
+  The following commands are intended to allow SatIO to be controlled via other systems, embedded systems, scripts and humans.
 */
+// ------------------------------------------------------------------------------------------------------------------------------
 
 String TMP_CMD_STRING_0;
 String TMP_CMD_STRING_1;
