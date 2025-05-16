@@ -1026,7 +1026,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 37}, {125, 125
 //                                                                                                                    MENU SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_system_items=4;
+const int max_system_items=5;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 76}, {125, 125}} );
 
@@ -1182,6 +1182,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   bool debug=false;   // print verbose information over serial
   bool t_bench=false; // prints bennchmark information for tuning
+  bool debug_bridge=false;  // allows commands to be received over serial (strongly recommend default false unless you know what you are doing)
 
   // -----------------------------------------------------------------------------------------------------------------------
   // display
@@ -12839,6 +12840,10 @@ void menuEnter() {
     // enable/disable port controller
     // ------------------------------------------------
     else if (menuSystem.selection()==3) {systemData.matrix_io_enabled^=true;}
+    // ------------------------------------------------
+    // enable/disable debug bridge
+    // ------------------------------------------------
+    else if (menuSystem.selection()==4) {systemData.debug_bridge^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -16299,6 +16304,11 @@ void UpdateUI(void * pvParamters) {
       if (systemData.matrix_io_enabled==true) {menuSystemItems[3]="IO ENABLED";}
       else {menuSystemItems[3]="IO DISABLED";}
       // ------------------------------------------------
+      // enable/disable debug bridge
+      // ------------------------------------------------
+      if (systemData.debug_bridge==true) {menuSystemItems[4]="D.BRIDGE ENABLED";}
+      else {menuSystemItems[4]="D.BRIDGE DISABLED";}
+      // ------------------------------------------------
       // menu
       // ------------------------------------------------
       if (interaction_updateui==true) {
@@ -18571,521 +18581,530 @@ static void CmdProcess(void) {
   // process commands
   // ------------------------------------------------
   if (strcmp(CMD_BUFFER, "-h\r")==0) {PrintHelp();}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                          BENCH
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "--bench\r")==0) {systemData.t_bench^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                       OVERLOAD
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "set overload 0\r")==0) {systemData.index_overload_times=0;}
-  else if (strcmp(CMD_BUFFER, "set overload 1\r")==0) {systemData.index_overload_times=1;}
-  else if (strcmp(CMD_BUFFER, "set overload 2\r")==0) {systemData.index_overload_times=2;}
-  else if (strcmp(CMD_BUFFER, "set overload 3\r")==0) {systemData.index_overload_times=3;}
-  else if (strcmp(CMD_BUFFER, "set overload 4\r")==0) {systemData.index_overload_times=4;}
-  else if (strcmp(CMD_BUFFER, "set overload 5\r")==0) {systemData.index_overload_times=5;}
-  else if (strcmp(CMD_BUFFER, "set overload 6\r")==0) {systemData.index_overload_times=6;}
-  else if (strcmp(CMD_BUFFER, "set overload 7\r")==0) {systemData.index_overload_times=7;}
-  else if (strcmp(CMD_BUFFER, "set overload 8\r")==0) {systemData.index_overload_times=8;}
-  else if (strcmp(CMD_BUFFER, "set overload 9\r")==0) {systemData.index_overload_times=9;}
-  else if (strcmp(CMD_BUFFER, "set overload 10\r")==0) {systemData.index_overload_times=10;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                         MATRIX
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch matrix\r")==0) {systemData.matrix_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch matrix startup\r")==0) {systemData.matrix_run_on_startup^=true;}
-  else if (strcmp(CMD_BUFFER, "switch matrix io\r")==0) {systemData.matrix_io_enabled^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                            GPS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch satio\r")==0) {systemData.satio_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch gngga\r")==0) {systemData.gngga_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch gnrmc\r")==0) {systemData.gnrmc_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch gpatt\r")==0) {systemData.gpatt_enabled^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                               SIDERAL TRACKING
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch track sun\r")==0) {systemData.sidereal_track_sun^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track moon\r")==0) {systemData.sidereal_track_moon^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track mercury\r")==0) {systemData.sidereal_track_mercury^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track venus\r")==0) {systemData.sidereal_track_venus^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track mars\r")==0) {systemData.sidereal_track_mars^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track jupiter\r")==0) {systemData.sidereal_track_jupiter^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
-  else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
-  else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                       IIC MULTIPLEXER CHANNELS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch iic chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch iic chan all")==0) {systemData.CD74HC4067_enabled^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                            ANALOG/DIGITAL MULTIPLEXER CHANNELS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
-  else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                        DISPLAY
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch display timeout")==0) {systemData.display_auto_off^=true;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 0\r")==0) {systemData.index_display_autooff_times=0;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 1\r")==0) {systemData.index_display_autooff_times=1;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 2\r")==0) {systemData.index_display_autooff_times=2;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 3\r")==0) {systemData.index_display_autooff_times=3;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 4\r")==0) {systemData.index_display_autooff_times=4;}
-  else if (strcmp(CMD_BUFFER, "set display timeout 5\r")==0) {systemData.index_display_autooff_times=5;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: EARTH
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print earth el\r")==0) {Serial.println("[earth_ecliptic_long] " + String(siderealPlanetData.earth_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                            SPECIFIC REQUEST SERIAL OUTPUT: SUN
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print sun ra\r")==0) {Serial.println("[sun_ra] " + String(siderealPlanetData.sun_ra));}
-  else if (strcmp(CMD_BUFFER, "print sun dec\r")==0) {Serial.println("[sun_dec] " + String(siderealPlanetData.sun_dec));}
-  else if (strcmp(CMD_BUFFER, "print sun az\r")==0) {Serial.println("[sun_az] " + String(siderealPlanetData.sun_az));}
-  else if (strcmp(CMD_BUFFER, "print sun alt\r")==0) {Serial.println("[sun_alt] " + String(siderealPlanetData.sun_alt));}
-  else if (strcmp(CMD_BUFFER, "print sun r\r")==0) {Serial.println("[sun_r] " + String(siderealPlanetData.sun_r));}
-  else if (strcmp(CMD_BUFFER, "print sun s\r")==0) {Serial.println("[sun_s] " + String(siderealPlanetData.sun_s));}
-  else if (strcmp(CMD_BUFFER, "print sun helat\r")==0) {Serial.println("[sun_helio_ecliptic_lat] " + String(siderealPlanetData.sun_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print sun helon\r")==0) {Serial.println("[sun_helio_ecliptic_long] " + String(siderealPlanetData.sun_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print sun rv\r")==0) {Serial.println("[sun_radius_vector] " + String(siderealPlanetData.sun_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print sun dis\r")==0) {Serial.println("[sun_distance] " + String(siderealPlanetData.sun_distance));}
-  else if (strcmp(CMD_BUFFER, "print sun elat\r")==0) {Serial.println("[sun_ecliptic_lat] " + String(siderealPlanetData.sun_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print sun elon\r")==0) {Serial.println("[sun_ecliptic_long] " + String(siderealPlanetData.sun_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MOON
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print moon ra\r")==0) {Serial.println("[moon_ra] " + String(siderealPlanetData.moon_ra));}
-  else if (strcmp(CMD_BUFFER, "print moon dec\r")==0) {Serial.println("[moon_dec] " + String(siderealPlanetData.moon_dec));}
-  else if (strcmp(CMD_BUFFER, "print moon az\r")==0) {Serial.println("[moon_az] " + String(siderealPlanetData.moon_az));}
-  else if (strcmp(CMD_BUFFER, "print moon alt\r")==0) {Serial.println("[moon_alt] " + String(siderealPlanetData.moon_alt));}
-  else if (strcmp(CMD_BUFFER, "print moon r\r")==0) {Serial.println("[moon_r] " + String(siderealPlanetData.moon_r));}
-  else if (strcmp(CMD_BUFFER, "print moon s\r")==0) {Serial.println("[moon_s] " + String(siderealPlanetData.moon_s));}
-  else if (strcmp(CMD_BUFFER, "print moon p\r")==0) {Serial.println("[moon_p] " + String(siderealPlanetData.moon_p_name[(int)siderealPlanetData.moon_p]));}
-  else if (strcmp(CMD_BUFFER, "print moon l\r")==0) {Serial.println("[moon_lum] " + String(siderealPlanetData.moon_lum));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MERCURY
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print mercury ra\r")==0) {Serial.println("[mercury_ra] " + String(siderealPlanetData.mercury_ra));}
-  else if (strcmp(CMD_BUFFER, "print mercury dec\r")==0) {Serial.println("[mercury_dec] " + String(siderealPlanetData.mercury_dec));}
-  else if (strcmp(CMD_BUFFER, "print mercury az\r")==0) {Serial.println("[mercury_az] " + String(siderealPlanetData.mercury_az));}
-  else if (strcmp(CMD_BUFFER, "print mercury alt\r")==0) {Serial.println("[mercury_alt] " + String(siderealPlanetData.mercury_alt));}
-  else if (strcmp(CMD_BUFFER, "print mercury r\r")==0) {Serial.println("[mercury_r] " + String(siderealPlanetData.mercury_r));}
-  else if (strcmp(CMD_BUFFER, "print mercury s\r")==0) {Serial.println("[mercury_s] " + String(siderealPlanetData.mercury_s));}
-  else if (strcmp(CMD_BUFFER, "print mercury hlat\r")==0) {Serial.println("[mercury_helio_ecliptic_lat] " + String(siderealPlanetData.mercury_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mercury hlon\r")==0) {Serial.println("[mercury_helio_ecliptic_long] " + String(siderealPlanetData.mercury_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print mercury rv\r")==0) {Serial.println("[mercury_radius_vector] " + String(siderealPlanetData.mercury_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print mercury dis\r")==0) {Serial.println("[mercury_distance] " + String(siderealPlanetData.mercury_distance));}
-  else if (strcmp(CMD_BUFFER, "print mercury elat\r")==0) {Serial.println("[mercury_ecliptic_lat] " + String(siderealPlanetData.mercury_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mercury elon\r")==0) {Serial.println("[mercury_ecliptic_long] " + String(siderealPlanetData.mercury_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: VENUS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print venus ra\r")==0) {Serial.println("[venus_ra] " + String(siderealPlanetData.venus_ra));}
-  else if (strcmp(CMD_BUFFER, "print venus dec\r")==0) {Serial.println("[venus_dec] " + String(siderealPlanetData.venus_dec));}
-  else if (strcmp(CMD_BUFFER, "print venus az\r")==0) {Serial.println("[venus_az] " + String(siderealPlanetData.venus_az));}
-  else if (strcmp(CMD_BUFFER, "print venus alt\r")==0) {Serial.println("[venus_alt] " + String(siderealPlanetData.venus_alt));}
-  else if (strcmp(CMD_BUFFER, "print venus r\r")==0) {Serial.println("[venus_r] " + String(siderealPlanetData.venus_r));}
-  else if (strcmp(CMD_BUFFER, "print venus s\r")==0) {Serial.println("[venus_s] " + String(siderealPlanetData.venus_s));}
-  else if (strcmp(CMD_BUFFER, "print venus hlat\r")==0) {Serial.println("[venus_helio_ecliptic_lat] " + String(siderealPlanetData.venus_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print venus hlon\r")==0) {Serial.println("[venus_helio_ecliptic_long] " + String(siderealPlanetData.venus_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print venus rv\r")==0) {Serial.println("[venus_radius_vector] " + String(siderealPlanetData.venus_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print venus dis\r")==0) {Serial.println("[venus_distance] " + String(siderealPlanetData.venus_distance));}
-  else if (strcmp(CMD_BUFFER, "print venus elat\r")==0) {Serial.println("[venus_ecliptic_lat] " + String(siderealPlanetData.venus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print venus elon\r")==0) {Serial.println("[venus_ecliptic_long] " + String(siderealPlanetData.venus_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MARS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print mars ra\r")==0) {Serial.println("[mars_ra] " + String(siderealPlanetData.mars_ra));}
-  else if (strcmp(CMD_BUFFER, "print mars dec\r")==0) {Serial.println("[mars_dec] " + String(siderealPlanetData.mars_dec));}
-  else if (strcmp(CMD_BUFFER, "print mars az\r")==0) {Serial.println("[mars_az] " + String(siderealPlanetData.mars_az));}
-  else if (strcmp(CMD_BUFFER, "print mars alt\r")==0) {Serial.println("[mars_alt] " + String(siderealPlanetData.mars_alt));}
-  else if (strcmp(CMD_BUFFER, "print mars r\r")==0) {Serial.println("[mars_r] " + String(siderealPlanetData.mars_r));}
-  else if (strcmp(CMD_BUFFER, "print mars s\r")==0) {Serial.println("[mars_s] " + String(siderealPlanetData.mars_s));}
-  else if (strcmp(CMD_BUFFER, "print mars hlat\r")==0) {Serial.println("[mars_helio_ecliptic_lat] " + String(siderealPlanetData.mars_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mars hlon\r")==0) {Serial.println("[mars_helio_ecliptic_long] " + String(siderealPlanetData.mars_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print mars rv\r")==0) {Serial.println("[mars_radius_vector] " + String(siderealPlanetData.mars_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print mars dis\r")==0) {Serial.println("[mars_distance] " + String(siderealPlanetData.mars_distance));}
-  else if (strcmp(CMD_BUFFER, "print mars elat\r")==0) {Serial.println("[mars_ecliptic_lat] " + String(siderealPlanetData.mars_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mars elon\r")==0) {Serial.println("[mars_ecliptic_long] " + String(siderealPlanetData.mars_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: JUPITER
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print jupiter ra\r")==0) {Serial.println("[jupiter_ra] " + String(siderealPlanetData.jupiter_ra));}
-  else if (strcmp(CMD_BUFFER, "print jupiter dec\r")==0) {Serial.println("[jupiter_dec] " + String(siderealPlanetData.jupiter_dec));}
-  else if (strcmp(CMD_BUFFER, "print jupiter az\r")==0) {Serial.println("[jupiter_az] " + String(siderealPlanetData.jupiter_az));}
-  else if (strcmp(CMD_BUFFER, "print jupiter alt\r")==0) {Serial.println("[jupiter_alt] " + String(siderealPlanetData.jupiter_alt));}
-  else if (strcmp(CMD_BUFFER, "print jupiter r\r")==0) {Serial.println("[jupiter_r] " + String(siderealPlanetData.jupiter_r));}
-  else if (strcmp(CMD_BUFFER, "print jupiter s\r")==0) {Serial.println("[jupiter_s] " + String(siderealPlanetData.jupiter_s));}
-  else if (strcmp(CMD_BUFFER, "print jupiter hlat\r")==0) {Serial.println("[jupiter_helio_ecliptic_lat] " + String(siderealPlanetData.jupiter_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print jupiter hlon\r")==0) {Serial.println("[jupiter_helio_ecliptic_long] " + String(siderealPlanetData.jupiter_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print jupiter rv\r")==0) {Serial.println("[jupiter_radius_vector] " + String(siderealPlanetData.jupiter_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print jupiter dis\r")==0) {Serial.println("[jupiter_distance] " + String(siderealPlanetData.jupiter_distance));}
-  else if (strcmp(CMD_BUFFER, "print jupiter elat\r")==0) {Serial.println("[jupiter_ecliptic_lat] " + String(siderealPlanetData.jupiter_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print jupiter elon\r")==0) {Serial.println("[jupiter_ecliptic_long] " + String(siderealPlanetData.jupiter_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                         SPECIFIC REQUEST SERIAL OUTPUT: SATURN
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print saturn ra\r")==0) {Serial.println("[saturn_ra] " + String(siderealPlanetData.saturn_ra));}
-  else if (strcmp(CMD_BUFFER, "print saturn dec\r")==0) {Serial.println("[saturn_dec] " + String(siderealPlanetData.saturn_dec));}
-  else if (strcmp(CMD_BUFFER, "print saturn az\r")==0) {Serial.println("[saturn_az] " + String(siderealPlanetData.saturn_az));}
-  else if (strcmp(CMD_BUFFER, "print saturn alt\r")==0) {Serial.println("[saturn_alt] " + String(siderealPlanetData.saturn_alt));}
-  else if (strcmp(CMD_BUFFER, "print saturn r\r")==0) {Serial.println("[saturn_r] " + String(siderealPlanetData.saturn_r));}
-  else if (strcmp(CMD_BUFFER, "print saturn s\r")==0) {Serial.println("[saturn_s] " + String(siderealPlanetData.saturn_s));}
-  else if (strcmp(CMD_BUFFER, "print saturn hlat\r")==0) {Serial.println("[saturn_helio_ecliptic_lat] " + String(siderealPlanetData.saturn_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print saturn hlon\r")==0) {Serial.println("[saturn_helio_ecliptic_long] " + String(siderealPlanetData.saturn_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print saturn rv\r")==0) {Serial.println("[saturn_radius_vector] " + String(siderealPlanetData.saturn_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print saturn dis\r")==0) {Serial.println("[saturn_distance] " + String(siderealPlanetData.saturn_distance));}
-  else if (strcmp(CMD_BUFFER, "print saturn elat\r")==0) {Serial.println("[saturn_ecliptic_lat] " + String(siderealPlanetData.saturn_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print saturn elon\r")==0) {Serial.println("[saturn_ecliptic_long] " + String(siderealPlanetData.saturn_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                         SPECIFIC REQUEST SERIAL OUTPUT: URANUS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print uranus ra\r")==0) {Serial.println("[uranus_ra] " + String(siderealPlanetData.uranus_ra));}
-  else if (strcmp(CMD_BUFFER, "print uranus dec\r")==0) {Serial.println("[uranus_dec] " + String(siderealPlanetData.uranus_dec));}
-  else if (strcmp(CMD_BUFFER, "print uranus az\r")==0) {Serial.println("[uranus_az] " + String(siderealPlanetData.uranus_az));}
-  else if (strcmp(CMD_BUFFER, "print uranus alt\r")==0) {Serial.println("[uranus_alt] " + String(siderealPlanetData.uranus_alt));}
-  else if (strcmp(CMD_BUFFER, "print uranus r\r")==0) {Serial.println("[uranus_r] " + String(siderealPlanetData.uranus_r));}
-  else if (strcmp(CMD_BUFFER, "print uranus s\r")==0) {Serial.println("[uranus_s] " + String(siderealPlanetData.uranus_s));}
-  else if (strcmp(CMD_BUFFER, "print uranus hlat\r")==0) {Serial.println("[uranus_helio_ecliptic_lat] " + String(siderealPlanetData.uranus_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print uranus hlon\r")==0) {Serial.println("[uranus_helio_ecliptic_long] " + String(siderealPlanetData.uranus_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print uranus rv\r")==0) {Serial.println("[uranus_radius_vector] " + String(siderealPlanetData.uranus_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print uranus dis\r")==0) {Serial.println("[uranus_distance] " + String(siderealPlanetData.uranus_distance));}
-  else if (strcmp(CMD_BUFFER, "print uranus elat\r")==0) {Serial.println("[uranus_ecliptic_lat] " + String(siderealPlanetData.uranus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print uranus elon\r")==0) {Serial.println("[uranus_ecliptic_long] " + String(siderealPlanetData.uranus_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: NEPTUNE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print neptune ra\r")==0) {Serial.println("[neptune_ra] " + String(siderealPlanetData.neptune_ra));}
-  else if (strcmp(CMD_BUFFER, "print neptune dec\r")==0) {Serial.println("[neptune_dec] " + String(siderealPlanetData.neptune_dec));}
-  else if (strcmp(CMD_BUFFER, "print neptune az\r")==0) {Serial.println("[neptune_az] " + String(siderealPlanetData.neptune_az));}
-  else if (strcmp(CMD_BUFFER, "print neptune alt\r")==0) {Serial.println("[neptune_alt] " + String(siderealPlanetData.neptune_alt));}
-  else if (strcmp(CMD_BUFFER, "print neptune r\r")==0) {Serial.println("[neptune_r] " + String(siderealPlanetData.neptune_r));}
-  else if (strcmp(CMD_BUFFER, "print neptune s\r")==0) {Serial.println("[neptune_s] " + String(siderealPlanetData.neptune_s));}
-  else if (strcmp(CMD_BUFFER, "print neptune hlat\r")==0) {Serial.println("[neptune_helio_ecliptic_lat] " + String(siderealPlanetData.neptune_helio_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print neptune hlon\r")==0) {Serial.println("[neptune_helio_ecliptic_long] " + String(siderealPlanetData.neptune_helio_ecliptic_long));}
-  else if (strcmp(CMD_BUFFER, "print neptune rv\r")==0) {Serial.println("[neptune_radius_vector] " + String(siderealPlanetData.neptune_radius_vector));}
-  else if (strcmp(CMD_BUFFER, "print neptune dis\r")==0) {Serial.println("[neptune_distance] " + String(siderealPlanetData.neptune_distance));}
-  else if (strcmp(CMD_BUFFER, "print neptune elat\r")==0) {Serial.println("[neptune_ecliptic_lat] " + String(siderealPlanetData.neptune_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long] " + String(siderealPlanetData.neptune_ecliptic_long));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix enabled\r")==0) {Serial.println("[matrix_enabled_i] " + String(matrixData.matrix_enabled_i));}
-  else if (strcmp(CMD_BUFFER, "print matrix disabled\r")==0) {Serial.println("[matrix_disabled_i] " + String(matrixData.matrix_disabled_i));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                         SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ACTIVE/INACTIVE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix active\r")==0) {Serial.println("[matrix_active_i] " + String(matrixData.matrix_active_i));}
-  else if (strcmp(CMD_BUFFER, "print matrix inactive\r")==0) {Serial.println("[matrix_inactive_i] " + String(matrixData.matrix_inactive_i));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix enabled -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_enabled[0][i])+String("\n");
-    }
-    Serial.println("[matrix_switch_enabled]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                 SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ACTIVE/INACTIVE VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix active -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_state[0][i])+String("\n");
-    }
-    Serial.println("[matrix_switch_state]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX INVERTED VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix inverted -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_inverted_logic[i1][i2])+String(" ");}
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
-    }
-    Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                          SPECIFIC REQUEST SERIAL OUTPUT: MATRIX TIMERS VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix timers -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_timers[0][i])+String("\n");
-    }
-    Serial.println("[matrix_timers]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MATRIX PORTS VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix ports -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_port_map[0][i])+String("\n");
-    }
-    Serial.println("[matrix_port_map]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                       SPECIFIC REQUEST SERIAL OUTPUT: MATRIX FUNCTIONS VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix functions -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function[i1][i2])+String(", ");}
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
-    }
-    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                   SPECIFIC REQUEST SERIAL OUTPUT: MATRIX FUNCTIONS XYZ VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix functions xyz -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {
-        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"\n           ";
-        for (int i3=0; i3<3; i3++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(", ");}
+  
+  if (systemData.debug_bridge==false) {
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                          BENCH
+    // ------------------------------------------------------------------------------------------------------------------------------
+    if (strcmp(CMD_BUFFER, "--bench\r")==0) {systemData.t_bench^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                       OVERLOAD
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set overload 0\r")==0) {systemData.index_overload_times=0;}
+    else if (strcmp(CMD_BUFFER, "set overload 1\r")==0) {systemData.index_overload_times=1;}
+    else if (strcmp(CMD_BUFFER, "set overload 2\r")==0) {systemData.index_overload_times=2;}
+    else if (strcmp(CMD_BUFFER, "set overload 3\r")==0) {systemData.index_overload_times=3;}
+    else if (strcmp(CMD_BUFFER, "set overload 4\r")==0) {systemData.index_overload_times=4;}
+    else if (strcmp(CMD_BUFFER, "set overload 5\r")==0) {systemData.index_overload_times=5;}
+    else if (strcmp(CMD_BUFFER, "set overload 6\r")==0) {systemData.index_overload_times=6;}
+    else if (strcmp(CMD_BUFFER, "set overload 7\r")==0) {systemData.index_overload_times=7;}
+    else if (strcmp(CMD_BUFFER, "set overload 8\r")==0) {systemData.index_overload_times=8;}
+    else if (strcmp(CMD_BUFFER, "set overload 9\r")==0) {systemData.index_overload_times=9;}
+    else if (strcmp(CMD_BUFFER, "set overload 10\r")==0) {systemData.index_overload_times=10;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                         MATRIX
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch matrix\r")==0) {systemData.matrix_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch matrix startup\r")==0) {systemData.matrix_run_on_startup^=true;}
+    else if (strcmp(CMD_BUFFER, "switch matrix io\r")==0) {systemData.matrix_io_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                            GPS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch satio\r")==0) {systemData.satio_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gngga\r")==0) {systemData.gngga_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gnrmc\r")==0) {systemData.gnrmc_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gpatt\r")==0) {systemData.gpatt_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                               SIDERAL TRACKING
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch track sun\r")==0) {systemData.sidereal_track_sun^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track moon\r")==0) {systemData.sidereal_track_moon^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track mercury\r")==0) {systemData.sidereal_track_mercury^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track venus\r")==0) {systemData.sidereal_track_venus^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track mars\r")==0) {systemData.sidereal_track_mars^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track jupiter\r")==0) {systemData.sidereal_track_jupiter^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                       IIC MULTIPLEXER CHANNELS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch iic chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan all")==0) {systemData.CD74HC4067_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                            ANALOG/DIGITAL MULTIPLEXER CHANNELS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                        DISPLAY
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch display timeout")==0) {systemData.display_auto_off^=true;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 0\r")==0) {systemData.index_display_autooff_times=0;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 1\r")==0) {systemData.index_display_autooff_times=1;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 2\r")==0) {systemData.index_display_autooff_times=2;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 3\r")==0) {systemData.index_display_autooff_times=3;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 4\r")==0) {systemData.index_display_autooff_times=4;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 5\r")==0) {systemData.index_display_autooff_times=5;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: EARTH
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print earth el\r")==0) {Serial.println("[earth_ecliptic_long] " + String(siderealPlanetData.earth_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                            SPECIFIC REQUEST SERIAL OUTPUT: SUN
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print sun ra\r")==0) {Serial.println("[sun_ra] " + String(siderealPlanetData.sun_ra));}
+    else if (strcmp(CMD_BUFFER, "print sun dec\r")==0) {Serial.println("[sun_dec] " + String(siderealPlanetData.sun_dec));}
+    else if (strcmp(CMD_BUFFER, "print sun az\r")==0) {Serial.println("[sun_az] " + String(siderealPlanetData.sun_az));}
+    else if (strcmp(CMD_BUFFER, "print sun alt\r")==0) {Serial.println("[sun_alt] " + String(siderealPlanetData.sun_alt));}
+    else if (strcmp(CMD_BUFFER, "print sun r\r")==0) {Serial.println("[sun_r] " + String(siderealPlanetData.sun_r));}
+    else if (strcmp(CMD_BUFFER, "print sun s\r")==0) {Serial.println("[sun_s] " + String(siderealPlanetData.sun_s));}
+    else if (strcmp(CMD_BUFFER, "print sun helat\r")==0) {Serial.println("[sun_helio_ecliptic_lat] " + String(siderealPlanetData.sun_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print sun helon\r")==0) {Serial.println("[sun_helio_ecliptic_long] " + String(siderealPlanetData.sun_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print sun rv\r")==0) {Serial.println("[sun_radius_vector] " + String(siderealPlanetData.sun_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print sun dis\r")==0) {Serial.println("[sun_distance] " + String(siderealPlanetData.sun_distance));}
+    else if (strcmp(CMD_BUFFER, "print sun elat\r")==0) {Serial.println("[sun_ecliptic_lat] " + String(siderealPlanetData.sun_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print sun elon\r")==0) {Serial.println("[sun_ecliptic_long] " + String(siderealPlanetData.sun_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MOON
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print moon ra\r")==0) {Serial.println("[moon_ra] " + String(siderealPlanetData.moon_ra));}
+    else if (strcmp(CMD_BUFFER, "print moon dec\r")==0) {Serial.println("[moon_dec] " + String(siderealPlanetData.moon_dec));}
+    else if (strcmp(CMD_BUFFER, "print moon az\r")==0) {Serial.println("[moon_az] " + String(siderealPlanetData.moon_az));}
+    else if (strcmp(CMD_BUFFER, "print moon alt\r")==0) {Serial.println("[moon_alt] " + String(siderealPlanetData.moon_alt));}
+    else if (strcmp(CMD_BUFFER, "print moon r\r")==0) {Serial.println("[moon_r] " + String(siderealPlanetData.moon_r));}
+    else if (strcmp(CMD_BUFFER, "print moon s\r")==0) {Serial.println("[moon_s] " + String(siderealPlanetData.moon_s));}
+    else if (strcmp(CMD_BUFFER, "print moon p\r")==0) {Serial.println("[moon_p] " + String(siderealPlanetData.moon_p_name[(int)siderealPlanetData.moon_p]));}
+    else if (strcmp(CMD_BUFFER, "print moon l\r")==0) {Serial.println("[moon_lum] " + String(siderealPlanetData.moon_lum));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MERCURY
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print mercury ra\r")==0) {Serial.println("[mercury_ra] " + String(siderealPlanetData.mercury_ra));}
+    else if (strcmp(CMD_BUFFER, "print mercury dec\r")==0) {Serial.println("[mercury_dec] " + String(siderealPlanetData.mercury_dec));}
+    else if (strcmp(CMD_BUFFER, "print mercury az\r")==0) {Serial.println("[mercury_az] " + String(siderealPlanetData.mercury_az));}
+    else if (strcmp(CMD_BUFFER, "print mercury alt\r")==0) {Serial.println("[mercury_alt] " + String(siderealPlanetData.mercury_alt));}
+    else if (strcmp(CMD_BUFFER, "print mercury r\r")==0) {Serial.println("[mercury_r] " + String(siderealPlanetData.mercury_r));}
+    else if (strcmp(CMD_BUFFER, "print mercury s\r")==0) {Serial.println("[mercury_s] " + String(siderealPlanetData.mercury_s));}
+    else if (strcmp(CMD_BUFFER, "print mercury hlat\r")==0) {Serial.println("[mercury_helio_ecliptic_lat] " + String(siderealPlanetData.mercury_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print mercury hlon\r")==0) {Serial.println("[mercury_helio_ecliptic_long] " + String(siderealPlanetData.mercury_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print mercury rv\r")==0) {Serial.println("[mercury_radius_vector] " + String(siderealPlanetData.mercury_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print mercury dis\r")==0) {Serial.println("[mercury_distance] " + String(siderealPlanetData.mercury_distance));}
+    else if (strcmp(CMD_BUFFER, "print mercury elat\r")==0) {Serial.println("[mercury_ecliptic_lat] " + String(siderealPlanetData.mercury_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print mercury elon\r")==0) {Serial.println("[mercury_ecliptic_long] " + String(siderealPlanetData.mercury_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: VENUS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print venus ra\r")==0) {Serial.println("[venus_ra] " + String(siderealPlanetData.venus_ra));}
+    else if (strcmp(CMD_BUFFER, "print venus dec\r")==0) {Serial.println("[venus_dec] " + String(siderealPlanetData.venus_dec));}
+    else if (strcmp(CMD_BUFFER, "print venus az\r")==0) {Serial.println("[venus_az] " + String(siderealPlanetData.venus_az));}
+    else if (strcmp(CMD_BUFFER, "print venus alt\r")==0) {Serial.println("[venus_alt] " + String(siderealPlanetData.venus_alt));}
+    else if (strcmp(CMD_BUFFER, "print venus r\r")==0) {Serial.println("[venus_r] " + String(siderealPlanetData.venus_r));}
+    else if (strcmp(CMD_BUFFER, "print venus s\r")==0) {Serial.println("[venus_s] " + String(siderealPlanetData.venus_s));}
+    else if (strcmp(CMD_BUFFER, "print venus hlat\r")==0) {Serial.println("[venus_helio_ecliptic_lat] " + String(siderealPlanetData.venus_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print venus hlon\r")==0) {Serial.println("[venus_helio_ecliptic_long] " + String(siderealPlanetData.venus_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print venus rv\r")==0) {Serial.println("[venus_radius_vector] " + String(siderealPlanetData.venus_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print venus dis\r")==0) {Serial.println("[venus_distance] " + String(siderealPlanetData.venus_distance));}
+    else if (strcmp(CMD_BUFFER, "print venus elat\r")==0) {Serial.println("[venus_ecliptic_lat] " + String(siderealPlanetData.venus_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print venus elon\r")==0) {Serial.println("[venus_ecliptic_long] " + String(siderealPlanetData.venus_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MARS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print mars ra\r")==0) {Serial.println("[mars_ra] " + String(siderealPlanetData.mars_ra));}
+    else if (strcmp(CMD_BUFFER, "print mars dec\r")==0) {Serial.println("[mars_dec] " + String(siderealPlanetData.mars_dec));}
+    else if (strcmp(CMD_BUFFER, "print mars az\r")==0) {Serial.println("[mars_az] " + String(siderealPlanetData.mars_az));}
+    else if (strcmp(CMD_BUFFER, "print mars alt\r")==0) {Serial.println("[mars_alt] " + String(siderealPlanetData.mars_alt));}
+    else if (strcmp(CMD_BUFFER, "print mars r\r")==0) {Serial.println("[mars_r] " + String(siderealPlanetData.mars_r));}
+    else if (strcmp(CMD_BUFFER, "print mars s\r")==0) {Serial.println("[mars_s] " + String(siderealPlanetData.mars_s));}
+    else if (strcmp(CMD_BUFFER, "print mars hlat\r")==0) {Serial.println("[mars_helio_ecliptic_lat] " + String(siderealPlanetData.mars_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print mars hlon\r")==0) {Serial.println("[mars_helio_ecliptic_long] " + String(siderealPlanetData.mars_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print mars rv\r")==0) {Serial.println("[mars_radius_vector] " + String(siderealPlanetData.mars_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print mars dis\r")==0) {Serial.println("[mars_distance] " + String(siderealPlanetData.mars_distance));}
+    else if (strcmp(CMD_BUFFER, "print mars elat\r")==0) {Serial.println("[mars_ecliptic_lat] " + String(siderealPlanetData.mars_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print mars elon\r")==0) {Serial.println("[mars_ecliptic_long] " + String(siderealPlanetData.mars_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: JUPITER
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print jupiter ra\r")==0) {Serial.println("[jupiter_ra] " + String(siderealPlanetData.jupiter_ra));}
+    else if (strcmp(CMD_BUFFER, "print jupiter dec\r")==0) {Serial.println("[jupiter_dec] " + String(siderealPlanetData.jupiter_dec));}
+    else if (strcmp(CMD_BUFFER, "print jupiter az\r")==0) {Serial.println("[jupiter_az] " + String(siderealPlanetData.jupiter_az));}
+    else if (strcmp(CMD_BUFFER, "print jupiter alt\r")==0) {Serial.println("[jupiter_alt] " + String(siderealPlanetData.jupiter_alt));}
+    else if (strcmp(CMD_BUFFER, "print jupiter r\r")==0) {Serial.println("[jupiter_r] " + String(siderealPlanetData.jupiter_r));}
+    else if (strcmp(CMD_BUFFER, "print jupiter s\r")==0) {Serial.println("[jupiter_s] " + String(siderealPlanetData.jupiter_s));}
+    else if (strcmp(CMD_BUFFER, "print jupiter hlat\r")==0) {Serial.println("[jupiter_helio_ecliptic_lat] " + String(siderealPlanetData.jupiter_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print jupiter hlon\r")==0) {Serial.println("[jupiter_helio_ecliptic_long] " + String(siderealPlanetData.jupiter_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print jupiter rv\r")==0) {Serial.println("[jupiter_radius_vector] " + String(siderealPlanetData.jupiter_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print jupiter dis\r")==0) {Serial.println("[jupiter_distance] " + String(siderealPlanetData.jupiter_distance));}
+    else if (strcmp(CMD_BUFFER, "print jupiter elat\r")==0) {Serial.println("[jupiter_ecliptic_lat] " + String(siderealPlanetData.jupiter_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print jupiter elon\r")==0) {Serial.println("[jupiter_ecliptic_long] " + String(siderealPlanetData.jupiter_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                         SPECIFIC REQUEST SERIAL OUTPUT: SATURN
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print saturn ra\r")==0) {Serial.println("[saturn_ra] " + String(siderealPlanetData.saturn_ra));}
+    else if (strcmp(CMD_BUFFER, "print saturn dec\r")==0) {Serial.println("[saturn_dec] " + String(siderealPlanetData.saturn_dec));}
+    else if (strcmp(CMD_BUFFER, "print saturn az\r")==0) {Serial.println("[saturn_az] " + String(siderealPlanetData.saturn_az));}
+    else if (strcmp(CMD_BUFFER, "print saturn alt\r")==0) {Serial.println("[saturn_alt] " + String(siderealPlanetData.saturn_alt));}
+    else if (strcmp(CMD_BUFFER, "print saturn r\r")==0) {Serial.println("[saturn_r] " + String(siderealPlanetData.saturn_r));}
+    else if (strcmp(CMD_BUFFER, "print saturn s\r")==0) {Serial.println("[saturn_s] " + String(siderealPlanetData.saturn_s));}
+    else if (strcmp(CMD_BUFFER, "print saturn hlat\r")==0) {Serial.println("[saturn_helio_ecliptic_lat] " + String(siderealPlanetData.saturn_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print saturn hlon\r")==0) {Serial.println("[saturn_helio_ecliptic_long] " + String(siderealPlanetData.saturn_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print saturn rv\r")==0) {Serial.println("[saturn_radius_vector] " + String(siderealPlanetData.saturn_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print saturn dis\r")==0) {Serial.println("[saturn_distance] " + String(siderealPlanetData.saturn_distance));}
+    else if (strcmp(CMD_BUFFER, "print saturn elat\r")==0) {Serial.println("[saturn_ecliptic_lat] " + String(siderealPlanetData.saturn_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print saturn elon\r")==0) {Serial.println("[saturn_ecliptic_long] " + String(siderealPlanetData.saturn_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                         SPECIFIC REQUEST SERIAL OUTPUT: URANUS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print uranus ra\r")==0) {Serial.println("[uranus_ra] " + String(siderealPlanetData.uranus_ra));}
+    else if (strcmp(CMD_BUFFER, "print uranus dec\r")==0) {Serial.println("[uranus_dec] " + String(siderealPlanetData.uranus_dec));}
+    else if (strcmp(CMD_BUFFER, "print uranus az\r")==0) {Serial.println("[uranus_az] " + String(siderealPlanetData.uranus_az));}
+    else if (strcmp(CMD_BUFFER, "print uranus alt\r")==0) {Serial.println("[uranus_alt] " + String(siderealPlanetData.uranus_alt));}
+    else if (strcmp(CMD_BUFFER, "print uranus r\r")==0) {Serial.println("[uranus_r] " + String(siderealPlanetData.uranus_r));}
+    else if (strcmp(CMD_BUFFER, "print uranus s\r")==0) {Serial.println("[uranus_s] " + String(siderealPlanetData.uranus_s));}
+    else if (strcmp(CMD_BUFFER, "print uranus hlat\r")==0) {Serial.println("[uranus_helio_ecliptic_lat] " + String(siderealPlanetData.uranus_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print uranus hlon\r")==0) {Serial.println("[uranus_helio_ecliptic_long] " + String(siderealPlanetData.uranus_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print uranus rv\r")==0) {Serial.println("[uranus_radius_vector] " + String(siderealPlanetData.uranus_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print uranus dis\r")==0) {Serial.println("[uranus_distance] " + String(siderealPlanetData.uranus_distance));}
+    else if (strcmp(CMD_BUFFER, "print uranus elat\r")==0) {Serial.println("[uranus_ecliptic_lat] " + String(siderealPlanetData.uranus_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print uranus elon\r")==0) {Serial.println("[uranus_ecliptic_long] " + String(siderealPlanetData.uranus_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: NEPTUNE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print neptune ra\r")==0) {Serial.println("[neptune_ra] " + String(siderealPlanetData.neptune_ra));}
+    else if (strcmp(CMD_BUFFER, "print neptune dec\r")==0) {Serial.println("[neptune_dec] " + String(siderealPlanetData.neptune_dec));}
+    else if (strcmp(CMD_BUFFER, "print neptune az\r")==0) {Serial.println("[neptune_az] " + String(siderealPlanetData.neptune_az));}
+    else if (strcmp(CMD_BUFFER, "print neptune alt\r")==0) {Serial.println("[neptune_alt] " + String(siderealPlanetData.neptune_alt));}
+    else if (strcmp(CMD_BUFFER, "print neptune r\r")==0) {Serial.println("[neptune_r] " + String(siderealPlanetData.neptune_r));}
+    else if (strcmp(CMD_BUFFER, "print neptune s\r")==0) {Serial.println("[neptune_s] " + String(siderealPlanetData.neptune_s));}
+    else if (strcmp(CMD_BUFFER, "print neptune hlat\r")==0) {Serial.println("[neptune_helio_ecliptic_lat] " + String(siderealPlanetData.neptune_helio_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print neptune hlon\r")==0) {Serial.println("[neptune_helio_ecliptic_long] " + String(siderealPlanetData.neptune_helio_ecliptic_long));}
+    else if (strcmp(CMD_BUFFER, "print neptune rv\r")==0) {Serial.println("[neptune_radius_vector] " + String(siderealPlanetData.neptune_radius_vector));}
+    else if (strcmp(CMD_BUFFER, "print neptune dis\r")==0) {Serial.println("[neptune_distance] " + String(siderealPlanetData.neptune_distance));}
+    else if (strcmp(CMD_BUFFER, "print neptune elat\r")==0) {Serial.println("[neptune_ecliptic_lat] " + String(siderealPlanetData.neptune_ecliptic_lat));}
+    else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long] " + String(siderealPlanetData.neptune_ecliptic_long));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix enabled\r")==0) {Serial.println("[matrix_enabled_i] " + String(matrixData.matrix_enabled_i));}
+    else if (strcmp(CMD_BUFFER, "print matrix disabled\r")==0) {Serial.println("[matrix_disabled_i] " + String(matrixData.matrix_disabled_i));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                         SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ACTIVE/INACTIVE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix active\r")==0) {Serial.println("[matrix_active_i] " + String(matrixData.matrix_active_i));}
+    else if (strcmp(CMD_BUFFER, "print matrix inactive\r")==0) {Serial.println("[matrix_inactive_i] " + String(matrixData.matrix_inactive_i));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix enabled -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrices; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_enabled[0][i])+String("\n");
       }
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+      Serial.println("[matrix_switch_enabled]\n" + String(TMP_CMD_STRING_0));
     }
-    Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i=0; i<matrixData.max_matrix_function_names; i++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[" + String(i) + "] ";
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_names[i])+String("\n");
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                 SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ACTIVE/INACTIVE VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix active -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrices; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_state[0][i])+String("\n");
+      }
+      Serial.println("[matrix_switch_state]\n" + String(TMP_CMD_STRING_0));
     }
-    Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                     SPECIFIC REQUEST SERIAL OUTPUT: MATRIX EXPRESSIONS VERBOSE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print matrix expressions -v\r")==0) {
-    TMP_CMD_STRING_0=String("");
-    for (int i1=0; i1<matrixData.max_matrices; i1++) {
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
-      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
-      TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX INVERTED VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix inverted -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i1=0; i1<matrixData.max_matrices; i1++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_inverted_logic[i1][i2])+String(" ");}
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+      }
+      Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING_0));
     }
-    Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING_0));
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GNGGA
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print gngga utc_time\r")==0) {Serial.println("[gnggaData.utc_time] " + String(gnggaData.utc_time));}
-  else if (strcmp(CMD_BUFFER, "print gngga latitude\r")==0) {Serial.println("[gnggaData.latitude] " + String(gnggaData.latitude));}
-  else if (strcmp(CMD_BUFFER, "print gngga latitude_hemisphere\r")==0) {Serial.println("[gnggaData.latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));}
-  else if (strcmp(CMD_BUFFER, "print gngga longitude\r")==0) {Serial.println("[gnggaData.longitude] " + String(gnggaData.longitude));}
-  else if (strcmp(CMD_BUFFER, "print gngga longitude_hemisphere\r")==0) {Serial.println("[gnggaData.longitude_hemisphere] " + String(gnggaData.longitude_hemisphere));}
-  else if (strcmp(CMD_BUFFER, "print gngga solution_status\r")==0) {Serial.println("[gnggaData.solution_status] " + String(gnggaData.solution_status));}
-  else if (strcmp(CMD_BUFFER, "print gngga satellite_count_gngga\r")==0) {Serial.println("[gnggaData.satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));}
-  else if (strcmp(CMD_BUFFER, "print gngga hdop_precision_factor\r")==0) {Serial.println("[gnggaData.hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));}
-  else if (strcmp(CMD_BUFFER, "print gngga altitude\r")==0) {Serial.println("[gnggaData.altitude] " + String(gnggaData.altitude));}
-  else if (strcmp(CMD_BUFFER, "print gngga altitude_units\r")==0) {Serial.println("[gnggaData.altitude_units] " + String(gnggaData.altitude_units));}
-  else if (strcmp(CMD_BUFFER, "print gngga geoidal\r")==0) {Serial.println("[gnggaData.geoidal] " + String(gnggaData.geoidal));}
-  else if (strcmp(CMD_BUFFER, "print gngga geoidal_units\r")==0) {Serial.println("[gnggaData.geoidal_units] " + String(gnggaData.geoidal_units));}
-  else if (strcmp(CMD_BUFFER, "print gngga differential_delay\r")==0) {Serial.println("[gnggaData.differential_delay] " + String(gnggaData.differential_delay));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GNRMC
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print gnrmc utc_time\r")==0) {Serial.println("[gnrmcData.utc_time] " + String( gnrmcData.utc_time));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc positioning_status\r")==0) {Serial.println("[gnrmcData.positioning_status] " + String( gnrmcData.positioning_status));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc latitude\r")==0) {Serial.println("[gnrmcData.latitude] " + String( gnrmcData.latitude));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc latitude_hemisphere\r")==0) {Serial.println("[gnrmcData.latitude_hemisphere] " + String( gnrmcData.latitude_hemisphere));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc longitude\r")==0) {Serial.println("[gnrmcData.longitude] " + String( gnrmcData.longitude));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc longitude_hemisphere\r")==0) {Serial.println("[gnrmcData.longitude_hemisphere] " + String( gnrmcData.longitude_hemisphere));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc ground_speed\r")==0) {Serial.println("[gnrmcData.ground_speed] " + String( gnrmcData.ground_speed));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc ground_heading\r")==0) {Serial.println("[gnrmcData.ground_heading] " + String( gnrmcData.ground_heading));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc utc_date\r")==0) {Serial.println("[gnrmcData.utc_date] " + String( gnrmcData.utc_date));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle\r")==0) {Serial.println("[gnrmcData.installation_angle] " + String( gnrmcData.installation_angle));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle_direction\r")==0) {Serial.println("[gnrmcData.installation_angle_direction] " + String( gnrmcData.installation_angle_direction));}
-  else if (strcmp(CMD_BUFFER, "print gnrmc mode_indication\r")==0) {Serial.println("[gnrmcData.mode_indication] " + String( gnrmcData.mode_indication));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GPATT
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print gpatt pitch\r")==0) {Serial.println("[gpattData.pitch] " + String( gpattData.pitch));}
-  else if (strcmp(CMD_BUFFER, "print gpatt roll\r")==0) {Serial.println("[gpattData.roll] " + String( gpattData.roll));}
-  else if (strcmp(CMD_BUFFER, "print gpatt yaw\r")==0) {Serial.println("[gpattData.yaw] " + String( gpattData.yaw));}
-  else if (strcmp(CMD_BUFFER, "print gpatt software_version\r")==0) {Serial.println("[gpattData.software_version] " + String( gpattData.software_version));}
-  else if (strcmp(CMD_BUFFER, "print gpatt product_id\r")==0) {Serial.println("[gpattData.product_id] " + String( gpattData.product_id));}
-  else if (strcmp(CMD_BUFFER, "print gpatt ins\r")==0) {Serial.println("[gpattData.ins] " + String( gpattData.ins));}
-  else if (strcmp(CMD_BUFFER, "print gpatt hardware_version\r")==0) {Serial.println("[gpattData.hardware_version] " + String( gpattData.hardware_version));}
-  else if (strcmp(CMD_BUFFER, "print gpatt run_state_flag\r")==0) {Serial.println("[gpattData.run_state_flag] " + String( gpattData.run_state_flag));}
-  else if (strcmp(CMD_BUFFER, "print gpatt mis_angle_num\r")==0) {Serial.println("[gpattData.mis_angle_num] " + String( gpattData.mis_angle_num));}
-  else if (strcmp(CMD_BUFFER, "print gpatt static_flag\r")==0) {Serial.println("[gpattData.static_flag] " + String( gpattData.static_flag));}
-  else if (strcmp(CMD_BUFFER, "print gpatt user_code\r")==0) {Serial.println("[gpattData.user_code] " + String( gpattData.user_code));}
-  else if (strcmp(CMD_BUFFER, "print gpatt gst_data\r")==0) {Serial.println("[gpattData.gst_data] " + String( gpattData.gst_data));}
-  else if (strcmp(CMD_BUFFER, "print gpatt line_flag\r")==0) {Serial.println("[gpattData.line_flag] " + String( gpattData.line_flag));}
-  else if (strcmp(CMD_BUFFER, "print gpatt mis_att_flag\r")==0) {Serial.println("[gpattData.mis_att_flag] " + String( gpattData.mis_att_flag));}
-  else if (strcmp(CMD_BUFFER, "print gpatt imu_kind\r")==0) {Serial.println("[gpattData.imu_kind] " + String( gpattData.imu_kind));}
-  else if (strcmp(CMD_BUFFER, "print gpatt ubi_car_kind\r")==0) {Serial.println("[gpattData.ubi_car_kind] " + String( gpattData.ubi_car_kind));}
-  else if (strcmp(CMD_BUFFER, "print gpatt mileage\r")==0) {Serial.println("[gpattData.mileage] " + String( gpattData.mileage));}
-  else if (strcmp(CMD_BUFFER, "print gpatt run_inetial_flag\r")==0) {Serial.println("[gpattData.run_inetial_flag] " + String( gpattData.run_inetial_flag));}
-  else if (strcmp(CMD_BUFFER, "print gpatt speed_enable\r")==0) {Serial.println("[gpattData.speed_enable] " + String( gpattData.speed_enable));}
-  else if (strcmp(CMD_BUFFER, "print gpatt speed_num\r")==0) {Serial.println("[gpattData.speed_num] " + String( gpattData.speed_num));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                               SWITCH SATIO CONVERT COORDINATES
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch convert coordinates\r")==0) {satData.convert_coordinates^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                             SET SATIO CONVERT COORDINATES MODE
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "set convert coordinates GNGGA\r")==0) {
-    memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
-    strcpy(satData.coordinate_conversion_mode, "GNGGA");
-  }
-  else if (strcmp(CMD_BUFFER, "set convert coordinates GNRMC\r")==0) {
-    memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
-    strcpy(satData.coordinate_conversion_mode, "GNRMC");
-  }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    SET SATIO UTC SECOND OFFSET
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
-    TMP_CMD_STRING_0="";
-    TMP_CMD_STRING_0 = String(CMD_BUFFER);
-    TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
-    if ((atol(TMP_CMD_STRING_0.c_str()) <= 179769313486232) && (atol(TMP_CMD_STRING_0.c_str()) >= -179769313486232)) {
-      satData.utc_second_offset=atol(TMP_CMD_STRING_0.c_str());
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                          SPECIFIC REQUEST SERIAL OUTPUT: MATRIX TIMERS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix timers -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrices; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_timers[0][i])+String("\n");
+      }
+      Serial.println("[matrix_timers]\n" + String(TMP_CMD_STRING_0));
     }
-    // Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-    // Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MATRIX PORTS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix ports -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrices; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_port_map[0][i])+String("\n");
+      }
+      Serial.println("[matrix_port_map]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                       SPECIFIC REQUEST SERIAL OUTPUT: MATRIX FUNCTIONS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix functions -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i1=0; i1<matrixData.max_matrices; i1++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function[i1][i2])+String(", ");}
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+      }
+      Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                   SPECIFIC REQUEST SERIAL OUTPUT: MATRIX FUNCTIONS XYZ VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix functions xyz -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i1=0; i1<matrixData.max_matrices; i1++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {
+          TMP_CMD_STRING_0=TMP_CMD_STRING_0+"\n           ";
+          for (int i3=0; i3<3; i3++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(", ");}
+        }
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+      }
+      Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i=0; i<matrixData.max_matrix_function_names; i++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[" + String(i) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_names[i])+String("\n");
+      }
+      Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                     SPECIFIC REQUEST SERIAL OUTPUT: MATRIX EXPRESSIONS VERBOSE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix expressions -v\r")==0) {
+      TMP_CMD_STRING_0=String("");
+      for (int i1=0; i1<matrixData.max_matrices; i1++) {
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
+      }
+      Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING_0));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GNGGA
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print gngga utc_time\r")==0) {Serial.println("[gnggaData.utc_time] " + String(gnggaData.utc_time));}
+    else if (strcmp(CMD_BUFFER, "print gngga latitude\r")==0) {Serial.println("[gnggaData.latitude] " + String(gnggaData.latitude));}
+    else if (strcmp(CMD_BUFFER, "print gngga latitude_hemisphere\r")==0) {Serial.println("[gnggaData.latitude_hemisphere] " + String(gnggaData.latitude_hemisphere));}
+    else if (strcmp(CMD_BUFFER, "print gngga longitude\r")==0) {Serial.println("[gnggaData.longitude] " + String(gnggaData.longitude));}
+    else if (strcmp(CMD_BUFFER, "print gngga longitude_hemisphere\r")==0) {Serial.println("[gnggaData.longitude_hemisphere] " + String(gnggaData.longitude_hemisphere));}
+    else if (strcmp(CMD_BUFFER, "print gngga solution_status\r")==0) {Serial.println("[gnggaData.solution_status] " + String(gnggaData.solution_status));}
+    else if (strcmp(CMD_BUFFER, "print gngga satellite_count_gngga\r")==0) {Serial.println("[gnggaData.satellite_count_gngga] " + String(gnggaData.satellite_count_gngga));}
+    else if (strcmp(CMD_BUFFER, "print gngga hdop_precision_factor\r")==0) {Serial.println("[gnggaData.hdop_precision_factor] " + String(gnggaData.hdop_precision_factor));}
+    else if (strcmp(CMD_BUFFER, "print gngga altitude\r")==0) {Serial.println("[gnggaData.altitude] " + String(gnggaData.altitude));}
+    else if (strcmp(CMD_BUFFER, "print gngga altitude_units\r")==0) {Serial.println("[gnggaData.altitude_units] " + String(gnggaData.altitude_units));}
+    else if (strcmp(CMD_BUFFER, "print gngga geoidal\r")==0) {Serial.println("[gnggaData.geoidal] " + String(gnggaData.geoidal));}
+    else if (strcmp(CMD_BUFFER, "print gngga geoidal_units\r")==0) {Serial.println("[gnggaData.geoidal_units] " + String(gnggaData.geoidal_units));}
+    else if (strcmp(CMD_BUFFER, "print gngga differential_delay\r")==0) {Serial.println("[gnggaData.differential_delay] " + String(gnggaData.differential_delay));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GNRMC
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print gnrmc utc_time\r")==0) {Serial.println("[gnrmcData.utc_time] " + String( gnrmcData.utc_time));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc positioning_status\r")==0) {Serial.println("[gnrmcData.positioning_status] " + String( gnrmcData.positioning_status));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc latitude\r")==0) {Serial.println("[gnrmcData.latitude] " + String( gnrmcData.latitude));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc latitude_hemisphere\r")==0) {Serial.println("[gnrmcData.latitude_hemisphere] " + String( gnrmcData.latitude_hemisphere));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc longitude\r")==0) {Serial.println("[gnrmcData.longitude] " + String( gnrmcData.longitude));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc longitude_hemisphere\r")==0) {Serial.println("[gnrmcData.longitude_hemisphere] " + String( gnrmcData.longitude_hemisphere));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc ground_speed\r")==0) {Serial.println("[gnrmcData.ground_speed] " + String( gnrmcData.ground_speed));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc ground_heading\r")==0) {Serial.println("[gnrmcData.ground_heading] " + String( gnrmcData.ground_heading));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc utc_date\r")==0) {Serial.println("[gnrmcData.utc_date] " + String( gnrmcData.utc_date));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle\r")==0) {Serial.println("[gnrmcData.installation_angle] " + String( gnrmcData.installation_angle));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc installation_angle_direction\r")==0) {Serial.println("[gnrmcData.installation_angle_direction] " + String( gnrmcData.installation_angle_direction));}
+    else if (strcmp(CMD_BUFFER, "print gnrmc mode_indication\r")==0) {Serial.println("[gnrmcData.mode_indication] " + String( gnrmcData.mode_indication));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: GPATT
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print gpatt pitch\r")==0) {Serial.println("[gpattData.pitch] " + String( gpattData.pitch));}
+    else if (strcmp(CMD_BUFFER, "print gpatt roll\r")==0) {Serial.println("[gpattData.roll] " + String( gpattData.roll));}
+    else if (strcmp(CMD_BUFFER, "print gpatt yaw\r")==0) {Serial.println("[gpattData.yaw] " + String( gpattData.yaw));}
+    else if (strcmp(CMD_BUFFER, "print gpatt software_version\r")==0) {Serial.println("[gpattData.software_version] " + String( gpattData.software_version));}
+    else if (strcmp(CMD_BUFFER, "print gpatt product_id\r")==0) {Serial.println("[gpattData.product_id] " + String( gpattData.product_id));}
+    else if (strcmp(CMD_BUFFER, "print gpatt ins\r")==0) {Serial.println("[gpattData.ins] " + String( gpattData.ins));}
+    else if (strcmp(CMD_BUFFER, "print gpatt hardware_version\r")==0) {Serial.println("[gpattData.hardware_version] " + String( gpattData.hardware_version));}
+    else if (strcmp(CMD_BUFFER, "print gpatt run_state_flag\r")==0) {Serial.println("[gpattData.run_state_flag] " + String( gpattData.run_state_flag));}
+    else if (strcmp(CMD_BUFFER, "print gpatt mis_angle_num\r")==0) {Serial.println("[gpattData.mis_angle_num] " + String( gpattData.mis_angle_num));}
+    else if (strcmp(CMD_BUFFER, "print gpatt static_flag\r")==0) {Serial.println("[gpattData.static_flag] " + String( gpattData.static_flag));}
+    else if (strcmp(CMD_BUFFER, "print gpatt user_code\r")==0) {Serial.println("[gpattData.user_code] " + String( gpattData.user_code));}
+    else if (strcmp(CMD_BUFFER, "print gpatt gst_data\r")==0) {Serial.println("[gpattData.gst_data] " + String( gpattData.gst_data));}
+    else if (strcmp(CMD_BUFFER, "print gpatt line_flag\r")==0) {Serial.println("[gpattData.line_flag] " + String( gpattData.line_flag));}
+    else if (strcmp(CMD_BUFFER, "print gpatt mis_att_flag\r")==0) {Serial.println("[gpattData.mis_att_flag] " + String( gpattData.mis_att_flag));}
+    else if (strcmp(CMD_BUFFER, "print gpatt imu_kind\r")==0) {Serial.println("[gpattData.imu_kind] " + String( gpattData.imu_kind));}
+    else if (strcmp(CMD_BUFFER, "print gpatt ubi_car_kind\r")==0) {Serial.println("[gpattData.ubi_car_kind] " + String( gpattData.ubi_car_kind));}
+    else if (strcmp(CMD_BUFFER, "print gpatt mileage\r")==0) {Serial.println("[gpattData.mileage] " + String( gpattData.mileage));}
+    else if (strcmp(CMD_BUFFER, "print gpatt run_inetial_flag\r")==0) {Serial.println("[gpattData.run_inetial_flag] " + String( gpattData.run_inetial_flag));}
+    else if (strcmp(CMD_BUFFER, "print gpatt speed_enable\r")==0) {Serial.println("[gpattData.speed_enable] " + String( gpattData.speed_enable));}
+    else if (strcmp(CMD_BUFFER, "print gpatt speed_num\r")==0) {Serial.println("[gpattData.speed_num] " + String( gpattData.speed_num));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                               SWITCH SATIO CONVERT COORDINATES
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch convert coordinates\r")==0) {satData.convert_coordinates^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                             SET SATIO CONVERT COORDINATES MODE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set convert coordinates GNGGA\r")==0) {
+      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+      strcpy(satData.coordinate_conversion_mode, "GNGGA");
+    }
+    else if (strcmp(CMD_BUFFER, "set convert coordinates GNRMC\r")==0) {
+      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+      strcpy(satData.coordinate_conversion_mode, "GNRMC");
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                    SET SATIO UTC SECOND OFFSET
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
+      TMP_CMD_STRING_0="";
+      TMP_CMD_STRING_0 = String(CMD_BUFFER);
+      TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
+      if ((atol(TMP_CMD_STRING_0.c_str()) <= 179769313486232) && (atol(TMP_CMD_STRING_0.c_str()) >= -179769313486232)) {
+        satData.utc_second_offset=atol(TMP_CMD_STRING_0.c_str());
+      }
+      // Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+      // Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                               SET SATIO UTC SECOND OFFSET FLAG
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: SATIO
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print satio degrees_latitude\r")==0) {Serial.println("[satData.degrees_latitude] " + String(satData.degrees_latitude));}
+    else if (strcmp(CMD_BUFFER, "print satio degrees_longitude\r")==0) {Serial.println("[satData.degrees_longitude] " + String(satData.degrees_longitude));}
+    else if (strcmp(CMD_BUFFER, "print satio ground_heading\r")==0) {Serial.println("[satData.ground_heading] " + String(satData.ground_heading));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_local_time\r")==0) {Serial.println("[satData.formatted_local_time] " + String(satData.formatted_local_time));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_local_date\r")==0) {Serial.println("[satData.formatted_local_date] " + String(satData.formatted_local_date));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_time\r")==0) {Serial.println("[satData.formatted_rtc_sync_time] " + String(satData.formatted_rtc_sync_time));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_date\r")==0) {Serial.println("[satData.formatted_rtc_sync_date] " + String(satData.formatted_rtc_sync_date));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_time\r")==0) {Serial.println("[satData.formatted_rtc_time] " + String(satData.formatted_rtc_time));}
+    else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_date\r")==0) {Serial.println("[satData.formatted_rtc_date] " + String(satData.formatted_rtc_date));}
+    else if (strcmp(CMD_BUFFER, "print satio utc_second_offset\r")==0) {Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));}
+    else if (strcmp(CMD_BUFFER, "print satio utc_auto_offset_flag\r")==0) {Serial.println("[satData.utc_auto_offset_flag] " + String(satData.utc_auto_offset_flag));}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                 SWITCH SENSORS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch dht11_0_display_hic\r")==0) {sensorData.dht11_0_display_hic^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: SENSORS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print dht11_h_0\r")==0) {Serial.println("[sensorData.dht11_h_0] " + String(sensorData.dht11_h_0));}
+    else if (strcmp(CMD_BUFFER, "print dht11_c_0\r")==0) {Serial.println("[sensorData.dht11_c_0] " + String(sensorData.dht11_c_0));}
+    else if (strcmp(CMD_BUFFER, "print dht11_f_0\r")==0) {Serial.println("[sensorData.dht11_f_0] " + String(sensorData.dht11_f_0));}
+    else if (strcmp(CMD_BUFFER, "print dht11_hic_0\r")==0) {Serial.println("[sensorData.dht11_hic_0] " + String(sensorData.dht11_hic_0));}
+    else if (strcmp(CMD_BUFFER, "print dht11_hif_0\r")==0) {Serial.println("[sensorData.dht11_hif_0] " + String(sensorData.dht11_hif_0));}
+    else if (strcmp(CMD_BUFFER, "print sensor_0\r")==0) {Serial.println("[sensorData.sensor_0] " + String(sensorData.sensor_0));}
+    else if (strcmp(CMD_BUFFER, "print sensor_1\r")==0) {Serial.println("[sensorData.sensor_1] " + String(sensorData.sensor_1));}
+    else if (strcmp(CMD_BUFFER, "print sensor_2\r")==0) {Serial.println("[sensorData.sensor_2] " + String(sensorData.sensor_2));}
+    else if (strcmp(CMD_BUFFER, "print sensor_3\r")==0) {Serial.println("[sensorData.sensor_3] " + String(sensorData.sensor_3));}
+    else if (strcmp(CMD_BUFFER, "print sensor_4\r")==0) {Serial.println("[sensorData.sensor_4] " + String(sensorData.sensor_4));}
+    else if (strcmp(CMD_BUFFER, "print sensor_5\r")==0) {Serial.println("[sensorData.sensor_5] " + String(sensorData.sensor_5));}
+    else if (strcmp(CMD_BUFFER, "print sensor_6\r")==0) {Serial.println("[sensorData.sensor_6] " + String(sensorData.sensor_6));}
+    else if (strcmp(CMD_BUFFER, "print sensor_7\r")==0) {Serial.println("[sensorData.sensor_7] " + String(sensorData.sensor_7));}
+    else if (strcmp(CMD_BUFFER, "print sensor_8\r")==0) {Serial.println("[sensorData.sensor_8] " + String(sensorData.sensor_8));}
+    else if (strcmp(CMD_BUFFER, "print sensor_9\r")==0) {Serial.println("[sensorData.sensor_9] " + String(sensorData.sensor_9));}
+    else if (strcmp(CMD_BUFFER, "print sensor_10\r")==0) {Serial.println("[sensorData.sensor_10] " + String(sensorData.sensor_10));}
+    else if (strcmp(CMD_BUFFER, "print sensor_11\r")==0) {Serial.println("[sensorData.sensor_11] " + String(sensorData.sensor_11));}
+    else if (strcmp(CMD_BUFFER, "print sensor_12\r")==0) {Serial.println("[sensorData.sensor_12] " + String(sensorData.sensor_12));}
+    else if (strcmp(CMD_BUFFER, "print sensor_13\r")==0) {Serial.println("[sensorData.sensor_13] " + String(sensorData.sensor_13));}
+    else if (strcmp(CMD_BUFFER, "print sensor_14\r")==0) {Serial.println("[sensorData.sensor_14] " + String(sensorData.sensor_14));}
+    else if (strcmp(CMD_BUFFER, "print sensor_15\r")==0) {Serial.println("[sensorData.sensor_15] " + String(sensorData.sensor_15));}
+    else if (strcmp(CMD_BUFFER, "print wt901_ang_x\r")==0) {Serial.println("[sensorData.wt901_ang_x] " + String(sensorData.wt901_ang_x));}
+    else if (strcmp(CMD_BUFFER, "print wt901_ang_y\r")==0) {Serial.println("[sensorData.wt901_ang_y] " + String(sensorData.wt901_ang_y));}
+    else if (strcmp(CMD_BUFFER, "print wt901_ang_z\r")==0) {Serial.println("[sensorData.wt901_ang_z] " + String(sensorData.wt901_ang_z));}
+    else if (strcmp(CMD_BUFFER, "print wt901_mag_x\r")==0) {Serial.println("[sensorData.wt901_mag_x] " + String(sensorData.wt901_mag_x));}
+    else if (strcmp(CMD_BUFFER, "print wt901_mag_y\r")==0) {Serial.println("[sensorData.wt901_mag_y] " + String(sensorData.wt901_mag_y));}
+    else if (strcmp(CMD_BUFFER, "print wt901_mag_z\r")==0) {Serial.println("[sensorData.wt901_mag_z] " + String(sensorData.wt901_mag_z));}
+    else if (strcmp(CMD_BUFFER, "print wt901_acc_x\r")==0) {Serial.println("[sensorData.wt901_acc_x] " + String(sensorData.wt901_acc_x));}
+    else if (strcmp(CMD_BUFFER, "print wt901_acc_y\r")==0) {Serial.println("[sensorData.wt901_acc_y] " + String(sensorData.wt901_acc_y));}
+    else if (strcmp(CMD_BUFFER, "print wt901_acc_z\r")==0) {Serial.println("[sensorData.wt901_acc_z] " + String(sensorData.wt901_acc_z));}
+    else if (strcmp(CMD_BUFFER, "print wt901_gyr_x\r")==0) {Serial.println("[sensorData.wt901_gyr_x] " + String(sensorData.wt901_gyr_x));}
+    else if (strcmp(CMD_BUFFER, "print wt901_gyr_y\r")==0) {Serial.println("[sensorData.wt901_gyr_y] " + String(sensorData.wt901_gyr_y));}
+    else if (strcmp(CMD_BUFFER, "print wt901_gyr_z\r")==0) {Serial.println("[sensorData.wt901_gyr_z] " + String(sensorData.wt901_gyr_z));}
   }
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                               SET SATIO UTC SECOND OFFSET FLAG
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: SATIO
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print satio degrees_latitude\r")==0) {Serial.println("[satData.degrees_latitude] " + String(satData.degrees_latitude));}
-  else if (strcmp(CMD_BUFFER, "print satio degrees_longitude\r")==0) {Serial.println("[satData.degrees_longitude] " + String(satData.degrees_longitude));}
-  else if (strcmp(CMD_BUFFER, "print satio ground_heading\r")==0) {Serial.println("[satData.ground_heading] " + String(satData.ground_heading));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_local_time\r")==0) {Serial.println("[satData.formatted_local_time] " + String(satData.formatted_local_time));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_local_date\r")==0) {Serial.println("[satData.formatted_local_date] " + String(satData.formatted_local_date));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_time\r")==0) {Serial.println("[satData.formatted_rtc_sync_time] " + String(satData.formatted_rtc_sync_time));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_sync_date\r")==0) {Serial.println("[satData.formatted_rtc_sync_date] " + String(satData.formatted_rtc_sync_date));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_time\r")==0) {Serial.println("[satData.formatted_rtc_time] " + String(satData.formatted_rtc_time));}
-  else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_date\r")==0) {Serial.println("[satData.formatted_rtc_date] " + String(satData.formatted_rtc_date));}
-  else if (strcmp(CMD_BUFFER, "print satio utc_second_offset\r")==0) {Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));}
-  else if (strcmp(CMD_BUFFER, "print satio utc_auto_offset_flag\r")==0) {Serial.println("[satData.utc_auto_offset_flag] " + String(satData.utc_auto_offset_flag));}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                 SWITCH SENSORS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "switch dht11_0_display_hic\r")==0) {sensorData.dht11_0_display_hic^=true;}
-  // ------------------------------------------------------------------------------------------------------------------------------
-  //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: SENSORS
-  // ------------------------------------------------------------------------------------------------------------------------------
-  else if (strcmp(CMD_BUFFER, "print dht11_h_0\r")==0) {Serial.println("[sensorData.dht11_h_0] " + String(sensorData.dht11_h_0));}
-  else if (strcmp(CMD_BUFFER, "print dht11_c_0\r")==0) {Serial.println("[sensorData.dht11_c_0] " + String(sensorData.dht11_c_0));}
-  else if (strcmp(CMD_BUFFER, "print dht11_f_0\r")==0) {Serial.println("[sensorData.dht11_f_0] " + String(sensorData.dht11_f_0));}
-  else if (strcmp(CMD_BUFFER, "print dht11_hic_0\r")==0) {Serial.println("[sensorData.dht11_hic_0] " + String(sensorData.dht11_hic_0));}
-  else if (strcmp(CMD_BUFFER, "print dht11_hif_0\r")==0) {Serial.println("[sensorData.dht11_hif_0] " + String(sensorData.dht11_hif_0));}
-  else if (strcmp(CMD_BUFFER, "print sensor_0\r")==0) {Serial.println("[sensorData.sensor_0] " + String(sensorData.sensor_0));}
-  else if (strcmp(CMD_BUFFER, "print sensor_1\r")==0) {Serial.println("[sensorData.sensor_1] " + String(sensorData.sensor_1));}
-  else if (strcmp(CMD_BUFFER, "print sensor_2\r")==0) {Serial.println("[sensorData.sensor_2] " + String(sensorData.sensor_2));}
-  else if (strcmp(CMD_BUFFER, "print sensor_3\r")==0) {Serial.println("[sensorData.sensor_3] " + String(sensorData.sensor_3));}
-  else if (strcmp(CMD_BUFFER, "print sensor_4\r")==0) {Serial.println("[sensorData.sensor_4] " + String(sensorData.sensor_4));}
-  else if (strcmp(CMD_BUFFER, "print sensor_5\r")==0) {Serial.println("[sensorData.sensor_5] " + String(sensorData.sensor_5));}
-  else if (strcmp(CMD_BUFFER, "print sensor_6\r")==0) {Serial.println("[sensorData.sensor_6] " + String(sensorData.sensor_6));}
-  else if (strcmp(CMD_BUFFER, "print sensor_7\r")==0) {Serial.println("[sensorData.sensor_7] " + String(sensorData.sensor_7));}
-  else if (strcmp(CMD_BUFFER, "print sensor_8\r")==0) {Serial.println("[sensorData.sensor_8] " + String(sensorData.sensor_8));}
-  else if (strcmp(CMD_BUFFER, "print sensor_9\r")==0) {Serial.println("[sensorData.sensor_9] " + String(sensorData.sensor_9));}
-  else if (strcmp(CMD_BUFFER, "print sensor_10\r")==0) {Serial.println("[sensorData.sensor_10] " + String(sensorData.sensor_10));}
-  else if (strcmp(CMD_BUFFER, "print sensor_11\r")==0) {Serial.println("[sensorData.sensor_11] " + String(sensorData.sensor_11));}
-  else if (strcmp(CMD_BUFFER, "print sensor_12\r")==0) {Serial.println("[sensorData.sensor_12] " + String(sensorData.sensor_12));}
-  else if (strcmp(CMD_BUFFER, "print sensor_13\r")==0) {Serial.println("[sensorData.sensor_13] " + String(sensorData.sensor_13));}
-  else if (strcmp(CMD_BUFFER, "print sensor_14\r")==0) {Serial.println("[sensorData.sensor_14] " + String(sensorData.sensor_14));}
-  else if (strcmp(CMD_BUFFER, "print sensor_15\r")==0) {Serial.println("[sensorData.sensor_15] " + String(sensorData.sensor_15));}
-  else if (strcmp(CMD_BUFFER, "print wt901_ang_x\r")==0) {Serial.println("[sensorData.wt901_ang_x] " + String(sensorData.wt901_ang_x));}
-  else if (strcmp(CMD_BUFFER, "print wt901_ang_y\r")==0) {Serial.println("[sensorData.wt901_ang_y] " + String(sensorData.wt901_ang_y));}
-  else if (strcmp(CMD_BUFFER, "print wt901_ang_z\r")==0) {Serial.println("[sensorData.wt901_ang_z] " + String(sensorData.wt901_ang_z));}
-  else if (strcmp(CMD_BUFFER, "print wt901_mag_x\r")==0) {Serial.println("[sensorData.wt901_mag_x] " + String(sensorData.wt901_mag_x));}
-  else if (strcmp(CMD_BUFFER, "print wt901_mag_y\r")==0) {Serial.println("[sensorData.wt901_mag_y] " + String(sensorData.wt901_mag_y));}
-  else if (strcmp(CMD_BUFFER, "print wt901_mag_z\r")==0) {Serial.println("[sensorData.wt901_mag_z] " + String(sensorData.wt901_mag_z));}
-  else if (strcmp(CMD_BUFFER, "print wt901_acc_x\r")==0) {Serial.println("[sensorData.wt901_acc_x] " + String(sensorData.wt901_acc_x));}
-  else if (strcmp(CMD_BUFFER, "print wt901_acc_y\r")==0) {Serial.println("[sensorData.wt901_acc_y] " + String(sensorData.wt901_acc_y));}
-  else if (strcmp(CMD_BUFFER, "print wt901_acc_z\r")==0) {Serial.println("[sensorData.wt901_acc_z] " + String(sensorData.wt901_acc_z));}
-  else if (strcmp(CMD_BUFFER, "print wt901_gyr_x\r")==0) {Serial.println("[sensorData.wt901_gyr_x] " + String(sensorData.wt901_gyr_x));}
-  else if (strcmp(CMD_BUFFER, "print wt901_gyr_y\r")==0) {Serial.println("[sensorData.wt901_gyr_y] " + String(sensorData.wt901_gyr_y));}
-  else if (strcmp(CMD_BUFFER, "print wt901_gyr_z\r")==0) {Serial.println("[sensorData.wt901_gyr_z] " + String(sensorData.wt901_gyr_z));}
 
-  // may result in race condition if ControlPad buttons pressed while serial commands being sent (race condition not yet observed)
-  else if (strcmp(CMD_BUFFER, "menu up\r")==0) {Serial.println("[menu up]"); menuUp(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu down\r")==0) {Serial.println("[menu down]"); menuDown(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu left\r")==0) {Serial.println("[menu left]"); menuLeft(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu back\r")==0) {Serial.println("[menu back]"); menuBack(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-  else if (strcmp(CMD_BUFFER, "menu home\r")==0) {Serial.println("[menu home]"); menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  // ------------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                   DEBUG BRIDGE
+  // ------------------------------------------------------------------------------------------------------------------------------
+  else if (systemData.debug_bridge==true) {
 
-  // requires further sanitization
-  else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
-    Serial.println("[enter digits]");
-    TMP_CMD_STRING_0="";
-    TMP_CMD_STRING_0 = String(CMD_BUFFER);
-    TMP_CMD_STRING_0.replace("enter digits ", "");
-    if ((atol(TMP_CMD_STRING_0.c_str()) <= 99) && (atol(TMP_CMD_STRING_0.c_str()) >= -99)) {
-      memset(input_data, 0, sizeof(input_data));
-      strcpy(input_data, TMP_CMD_STRING_0.c_str());
+    // may result in race condition if ControlPad buttons pressed while serial commands being sent (race condition not yet observed)
+    if      (strcmp(CMD_BUFFER, "menu up\r")==0)    {Serial.println("[menu up]");    menuUp();            while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu down\r")==0)  {Serial.println("[menu down]");  menuDown();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu left\r")==0)  {Serial.println("[menu left]");  menuLeft();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();         while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu back\r")==0)  {Serial.println("[menu back]");  menuBack();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();         while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+    else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+
+    // requires further sanitization
+    else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
+      Serial.println("[enter digits]");
+      TMP_CMD_STRING_0="";
+      TMP_CMD_STRING_0 = String(CMD_BUFFER);
+      TMP_CMD_STRING_0.replace("enter digits ", "");
+      if ((atol(TMP_CMD_STRING_0.c_str()) <= 99) && (atol(TMP_CMD_STRING_0.c_str()) >= -99)) {
+        memset(input_data, 0, sizeof(input_data));
+        strcpy(input_data, TMP_CMD_STRING_0.c_str());
+      }
+      Serial.println("[input_data] " + String(input_data));
     }
-    Serial.println("[input_data] " + String(input_data));
   }
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
