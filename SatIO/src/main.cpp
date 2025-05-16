@@ -18620,7 +18620,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print mercury rv\r")==0) {Serial.println("[mercury_radius_vector] " + String(siderealPlanetData.mercury_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print mercury dis\r")==0) {Serial.println("[mercury_distance] " + String(siderealPlanetData.mercury_distance));}
   else if (strcmp(CMD_BUFFER, "print mercury elat\r")==0) {Serial.println("[mercury_ecliptic_lat] " + String(siderealPlanetData.mercury_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mercury elon;\r")==0) {Serial.println("[mercury_ecliptic_long;] " + String(siderealPlanetData.mercury_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print mercury elon\r")==0) {Serial.println("[mercury_ecliptic_long;] " + String(siderealPlanetData.mercury_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print venus ra\r")==0) {Serial.println("[venus_ra] " + String(siderealPlanetData.venus_ra));}
   else if (strcmp(CMD_BUFFER, "print venus dec\r")==0) {Serial.println("[venus_dec] " + String(siderealPlanetData.venus_dec));}
@@ -18633,7 +18633,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print venus rv\r")==0) {Serial.println("[venus_radius_vector] " + String(siderealPlanetData.venus_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print venus dis\r")==0) {Serial.println("[venus_distance] " + String(siderealPlanetData.venus_distance));}
   else if (strcmp(CMD_BUFFER, "print venus elat\r")==0) {Serial.println("[venus_ecliptic_lat] " + String(siderealPlanetData.venus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print venus elon;\r")==0) {Serial.println("[venus_ecliptic_long;] " + String(siderealPlanetData.venus_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print venus elon\r")==0) {Serial.println("[venus_ecliptic_long;] " + String(siderealPlanetData.venus_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print mars ra\r")==0) {Serial.println("[mars_ra] " + String(siderealPlanetData.mars_ra));}
   else if (strcmp(CMD_BUFFER, "print mars dec\r")==0) {Serial.println("[mars_dec] " + String(siderealPlanetData.mars_dec));}
@@ -18646,7 +18646,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print mars rv\r")==0) {Serial.println("[mars_radius_vector] " + String(siderealPlanetData.mars_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print mars dis\r")==0) {Serial.println("[mars_distance] " + String(siderealPlanetData.mars_distance));}
   else if (strcmp(CMD_BUFFER, "print mars elat\r")==0) {Serial.println("[mars_ecliptic_lat] " + String(siderealPlanetData.mars_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print mars elon;\r")==0) {Serial.println("[mars_ecliptic_long;] " + String(siderealPlanetData.mars_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print mars elon\r")==0) {Serial.println("[mars_ecliptic_long;] " + String(siderealPlanetData.mars_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print jupiter ra\r")==0) {Serial.println("[jupiter_ra] " + String(siderealPlanetData.jupiter_ra));}
   else if (strcmp(CMD_BUFFER, "print jupiter dec\r")==0) {Serial.println("[jupiter_dec] " + String(siderealPlanetData.jupiter_dec));}
@@ -18659,7 +18659,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print jupiter rv\r")==0) {Serial.println("[jupiter_radius_vector] " + String(siderealPlanetData.jupiter_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print jupiter dis\r")==0) {Serial.println("[jupiter_distance] " + String(siderealPlanetData.jupiter_distance));}
   else if (strcmp(CMD_BUFFER, "print jupiter elat\r")==0) {Serial.println("[jupiter_ecliptic_lat] " + String(siderealPlanetData.jupiter_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print jupiter elon;\r")==0) {Serial.println("[jupiter_ecliptic_long;] " + String(siderealPlanetData.jupiter_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print jupiter elon\r")==0) {Serial.println("[jupiter_ecliptic_long;] " + String(siderealPlanetData.jupiter_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print saturn ra\r")==0) {Serial.println("[saturn_ra] " + String(siderealPlanetData.saturn_ra));}
   else if (strcmp(CMD_BUFFER, "print saturn dec\r")==0) {Serial.println("[saturn_dec] " + String(siderealPlanetData.saturn_dec));}
@@ -18672,7 +18672,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print saturn rv\r")==0) {Serial.println("[saturn_radius_vector] " + String(siderealPlanetData.saturn_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print saturn dis\r")==0) {Serial.println("[saturn_distance] " + String(siderealPlanetData.saturn_distance));}
   else if (strcmp(CMD_BUFFER, "print saturn elat\r")==0) {Serial.println("[saturn_ecliptic_lat] " + String(siderealPlanetData.saturn_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print saturn elon;\r")==0) {Serial.println("[saturn_ecliptic_long;] " + String(siderealPlanetData.saturn_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print saturn elon\r")==0) {Serial.println("[saturn_ecliptic_long;] " + String(siderealPlanetData.saturn_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print uranus ra\r")==0) {Serial.println("[uranus_ra] " + String(siderealPlanetData.uranus_ra));}
   else if (strcmp(CMD_BUFFER, "print uranus dec\r")==0) {Serial.println("[uranus_dec] " + String(siderealPlanetData.uranus_dec));}
@@ -18685,7 +18685,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print uranus rv\r")==0) {Serial.println("[uranus_radius_vector] " + String(siderealPlanetData.uranus_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print uranus dis\r")==0) {Serial.println("[uranus_distance] " + String(siderealPlanetData.uranus_distance));}
   else if (strcmp(CMD_BUFFER, "print uranus elat\r")==0) {Serial.println("[uranus_ecliptic_lat] " + String(siderealPlanetData.uranus_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print uranus elon;\r")==0) {Serial.println("[uranus_ecliptic_long;] " + String(siderealPlanetData.uranus_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print uranus elon\r")==0) {Serial.println("[uranus_ecliptic_long;] " + String(siderealPlanetData.uranus_ecliptic_long));}
 
   else if (strcmp(CMD_BUFFER, "print neptune ra\r")==0) {Serial.println("[neptune_ra] " + String(siderealPlanetData.neptune_ra));}
   else if (strcmp(CMD_BUFFER, "print neptune dec\r")==0) {Serial.println("[neptune_dec] " + String(siderealPlanetData.neptune_dec));}
@@ -18698,7 +18698,7 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print neptune rv\r")==0) {Serial.println("[neptune_radius_vector] " + String(siderealPlanetData.neptune_radius_vector));}
   else if (strcmp(CMD_BUFFER, "print neptune dis\r")==0) {Serial.println("[neptune_distance] " + String(siderealPlanetData.neptune_distance));}
   else if (strcmp(CMD_BUFFER, "print neptune elat\r")==0) {Serial.println("[neptune_ecliptic_lat] " + String(siderealPlanetData.neptune_ecliptic_lat));}
-  else if (strcmp(CMD_BUFFER, "print neptune elon;\r")==0) {Serial.println("[neptune_ecliptic_long;] " + String(siderealPlanetData.neptune_ecliptic_long));}
+  else if (strcmp(CMD_BUFFER, "print neptune elon\r")==0) {Serial.println("[neptune_ecliptic_long;] " + String(siderealPlanetData.neptune_ecliptic_long));}
 
 
   else if (strcmp(CMD_BUFFER, "print matrix enabled\r")==0) {Serial.println("[matrix_enabled_i] " + String(matrixData.matrix_enabled_i));}
