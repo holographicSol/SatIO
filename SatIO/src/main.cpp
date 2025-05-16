@@ -19062,14 +19062,14 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_y\r")==0) {Serial.println("[sensorData.wt901_gyr_y] " + String(sensorData.wt901_gyr_y));}
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_z\r")==0) {Serial.println("[sensorData.wt901_gyr_z] " + String(sensorData.wt901_gyr_z));}
 
-  // needs a tweak to always run before update ui
-  else if (strcmp(CMD_BUFFER, "menu up\r")==0) {Serial.println("[menu up]"); menuUp();}
-  else if (strcmp(CMD_BUFFER, "menu down\r")==0) {Serial.println("[menu down]"); menuDown();}
-  else if (strcmp(CMD_BUFFER, "menu left\r")==0) {Serial.println("[menu left]"); menuLeft();}
-  else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();}
-  else if (strcmp(CMD_BUFFER, "menu back\r")==0) {Serial.println("[menu back]"); menuBack();}
-  else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();}
-  else if (strcmp(CMD_BUFFER, "menu home\r")==0) {Serial.println("[menu home]"); menu_page=page_home;}
+  // may result in race condition if ControlPad buttons pressed while serial commands being sent (race condition not yet observed)
+  else if (strcmp(CMD_BUFFER, "menu up\r")==0) {Serial.println("[menu up]"); menuUp(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu down\r")==0) {Serial.println("[menu down]"); menuDown(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu left\r")==0) {Serial.println("[menu left]"); menuLeft(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu back\r")==0) {Serial.println("[menu back]"); menuBack(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter(); while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+  else if (strcmp(CMD_BUFFER, "menu home\r")==0) {Serial.println("[menu home]"); menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
