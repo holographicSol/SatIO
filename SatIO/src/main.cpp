@@ -18735,6 +18735,34 @@ static void CmdProcess(void) {
     Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING));
   }
 
+  else if (strcmp(CMD_BUFFER, "print matrix timers -v\r")==0) {
+    TMP_CMD_STRING=String("");
+    for (int i=0; i<matrixData.max_matrices; i++) {
+      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_timers[0][i])+String("\n");
+    }
+    Serial.println("[matrix_timers]\n" + String(TMP_CMD_STRING));
+  }
+
+  else if (strcmp(CMD_BUFFER, "print matrix ports -v\r")==0) {
+    TMP_CMD_STRING=String("");
+    for (int i=0; i<matrixData.max_matrices; i++) {
+      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i) + "] ";
+      TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_port_map[0][i])+String("\n");
+    }
+    Serial.println("[matrix_port_map]\n" + String(TMP_CMD_STRING));
+  }
+
+  else if (strcmp(CMD_BUFFER, "print matrix functions -v\r")==0) {
+    TMP_CMD_STRING=String("");
+    for (int i1=0; i1<matrixData.max_matrices; i1++) {
+      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
+      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function[i1][i2])+String(", ");}
+      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+    }
+    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING));
+  }
+
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
