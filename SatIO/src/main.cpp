@@ -288,7 +288,7 @@ increase calculation potential.
 
   Design concepts:
   Nano SatIO (Passive): ESP32 + GPS + 9 Axis Gyro.
-                        No Port Controller, no Control Pad, no UI etc. As small as possible, streaming out data over USB.
+                        No Port Controller, no Control Pad, no UI etc. As small as possible, streaming out data over USB/IIC/etc.
                         Requires another system to utilize output data.
                         A few pushbuttons and LEDs for simple manipulations.
   Full SatIO (Active): ESP32 + GPS + 9 Axis Gyro + Port Controller + Control Pad + UI etc. Can be built out to any logical size/scale and is standalone.
