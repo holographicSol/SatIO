@@ -19308,11 +19308,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                           TODO
       // ------------------------------------------------------------------------------------------------------------------------------
-      // set matrix switch function
-      // set matrix switch xyz
-      // set matrix switch function inverted
-      // set matrix switch function expression
-      // set matrix switch port
+      // function: simplify >1 instances of set function expression. 
       // save matrix file
       // delete matrix file
       // load matrix file
