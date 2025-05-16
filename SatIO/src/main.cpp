@@ -1474,6 +1474,11 @@ struct systemStruct {
 };
 systemStruct systemData;
 
+void WaitToUpdateUI() {
+   while (!update_ui_complete==true) {delay(1);}
+   interaction_updateui=true;
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                PRINT FUNCTIONS
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12442,7 +12447,7 @@ void menuEnter() {
         // ------------------------------------------
         // go to
         // ------------------------------------------
-        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
+        WaitToUpdateUI();
         menu_page=page_save_system_config_indicator;
         UIIndicators();
         // ------------------------------------------
@@ -12485,7 +12490,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
-        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
+        WaitToUpdateUI();
         menu_page=page_restore_default_matrix_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -12538,7 +12543,7 @@ void menuEnter() {
       // --------------------------------------------
       // go to
       // --------------------------------------------
-      while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
+      WaitToUpdateUI();
       menu_page=page_save_matrix_file_indicator;
       UIIndicators();
       // --------------------------------------------
@@ -12593,7 +12598,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
-        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
+        WaitToUpdateUI();
         menu_page=page_load_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -12648,7 +12653,7 @@ void menuEnter() {
         // --------------------------------------------
         // go to
         // --------------------------------------------
-        while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;
+        WaitToUpdateUI();
         menu_page=page_delete_matrix_file_indicator;
         UIIndicators();
         // --------------------------------------------
@@ -18215,8 +18220,7 @@ void requestControlPad() {
     // ---------------------------------------------------------------------
     // trip interaction_updateui flag once writing to display has completed.
     // ---------------------------------------------------------------------
-    while (!update_ui_complete==true) {delay(1);}
-    interaction_updateui=true;
+    if (systemData.DISPLAY_ENABLED==true) {WaitToUpdateUI();}
   }
 }
 
@@ -18595,7 +18599,7 @@ static void CmdProcess(void) {
   // ------------------------------------------------
   // process commands conditionally (some efficiency)
   // ------------------------------------------------
-  if (strlen(CMD_BUFFER)>0) {
+  if (strlen(CMD_BUFFER)>=1) {
     // ------------------------------------------------
     // uncomment to debug
     // ------------------------------------------------
@@ -18974,13 +18978,13 @@ static void CmdProcess(void) {
       //                                                                                                                MENU NAVIGATION
       // ------------------------------------------------------------------------------------------------------------------------------
       // may result in race condition if ControlPad buttons pressed while serial commands being sent (race condition not yet observed)
-      if      (strcmp(CMD_BUFFER, "menu up\r")==0)    {Serial.println("[menu up]");    menuUp();            while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu down\r")==0)  {Serial.println("[menu down]");  menuDown();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu left\r")==0)  {Serial.println("[menu left]");  menuLeft();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();         while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu back\r")==0)  {Serial.println("[menu back]");  menuBack();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();         while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-      else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
+      if      (strcmp(CMD_BUFFER, "menu up\r")==0)    {Serial.println("[menu up]");    menuUp();}
+      else if (strcmp(CMD_BUFFER, "menu down\r")==0)  {Serial.println("[menu down]");  menuDown();}
+      else if (strcmp(CMD_BUFFER, "menu left\r")==0)  {Serial.println("[menu left]");  menuLeft();}
+      else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();}
+      else if (strcmp(CMD_BUFFER, "menu back\r")==0)  {Serial.println("[menu back]");  menuBack();}
+      else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();}
+      else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                              MENU ENTER DIGITS
       // ------------------------------------------------------------------------------------------------------------------------------
@@ -19308,7 +19312,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                           TODO
       // ------------------------------------------------------------------------------------------------------------------------------
-      // function: simplify >1 instances of set function expression. 
+      // function: simplify >1 instances of set function expression.
       // save matrix file
       // delete matrix file
       // load matrix file
@@ -19422,6 +19426,12 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
     }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                 TRIP UPDATE UI
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // this covers any command that should be reflected in ui. comment here and instead add specifically to required commands to be more efficient
+    // ------------------------------------------------------------------------------------------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {WaitToUpdateUI();}
   }
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
