@@ -18556,7 +18556,7 @@ static void PrintHelp() {
   Serial.println("");
   Serial.println("[ HELP ]");
   Serial.println("");
-  Serial.println("-h    Display this help message.");
+  Serial.println("h    Display this help message.");
   Serial.println("");
   Serial.println("---------------------------------------------------------------------------------------------------");
 }
@@ -18580,112 +18580,13 @@ static void CmdProcess(void) {
   // ------------------------------------------------
   // process commands
   // ------------------------------------------------
-  if (strcmp(CMD_BUFFER, "-h\r")==0) {PrintHelp();}
+  if (strcmp(CMD_BUFFER, "h\r")==0) {PrintHelp();}
   
   if (systemData.debug_bridge==false) {
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                                                          BENCH
     // ------------------------------------------------------------------------------------------------------------------------------
-    if (strcmp(CMD_BUFFER, "--bench\r")==0) {systemData.t_bench^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                       OVERLOAD
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "set overload 0\r")==0) {systemData.index_overload_times=0;}
-    else if (strcmp(CMD_BUFFER, "set overload 1\r")==0) {systemData.index_overload_times=1;}
-    else if (strcmp(CMD_BUFFER, "set overload 2\r")==0) {systemData.index_overload_times=2;}
-    else if (strcmp(CMD_BUFFER, "set overload 3\r")==0) {systemData.index_overload_times=3;}
-    else if (strcmp(CMD_BUFFER, "set overload 4\r")==0) {systemData.index_overload_times=4;}
-    else if (strcmp(CMD_BUFFER, "set overload 5\r")==0) {systemData.index_overload_times=5;}
-    else if (strcmp(CMD_BUFFER, "set overload 6\r")==0) {systemData.index_overload_times=6;}
-    else if (strcmp(CMD_BUFFER, "set overload 7\r")==0) {systemData.index_overload_times=7;}
-    else if (strcmp(CMD_BUFFER, "set overload 8\r")==0) {systemData.index_overload_times=8;}
-    else if (strcmp(CMD_BUFFER, "set overload 9\r")==0) {systemData.index_overload_times=9;}
-    else if (strcmp(CMD_BUFFER, "set overload 10\r")==0) {systemData.index_overload_times=10;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                         MATRIX
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch matrix\r")==0) {systemData.matrix_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch matrix startup\r")==0) {systemData.matrix_run_on_startup^=true;}
-    else if (strcmp(CMD_BUFFER, "switch matrix io\r")==0) {systemData.matrix_io_enabled^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                            GPS
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch satio\r")==0) {systemData.satio_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch gngga\r")==0) {systemData.gngga_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch gnrmc\r")==0) {systemData.gnrmc_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch gpatt\r")==0) {systemData.gpatt_enabled^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                               SIDERAL TRACKING
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch track sun\r")==0) {systemData.sidereal_track_sun^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track moon\r")==0) {systemData.sidereal_track_moon^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track mercury\r")==0) {systemData.sidereal_track_mercury^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track venus\r")==0) {systemData.sidereal_track_venus^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track mars\r")==0) {systemData.sidereal_track_mars^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track jupiter\r")==0) {systemData.sidereal_track_jupiter^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
-    else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
-    else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                       IIC MULTIPLEXER CHANNELS
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch iic chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch iic chan all")==0) {systemData.CD74HC4067_enabled^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                            ANALOG/DIGITAL MULTIPLEXER CHANNELS
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
-    else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                        DISPLAY
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch display timeout")==0) {systemData.display_auto_off^=true;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 0\r")==0) {systemData.index_display_autooff_times=0;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 1\r")==0) {systemData.index_display_autooff_times=1;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 2\r")==0) {systemData.index_display_autooff_times=2;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 3\r")==0) {systemData.index_display_autooff_times=3;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 4\r")==0) {systemData.index_display_autooff_times=4;}
-    else if (strcmp(CMD_BUFFER, "set display timeout 5\r")==0) {systemData.index_display_autooff_times=5;}
+    if (strcmp(CMD_BUFFER, "bench\r")==0) {systemData.t_bench^=true;}
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: EARTH
     // ------------------------------------------------------------------------------------------------------------------------------
@@ -18992,38 +18893,6 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "print gpatt speed_enable\r")==0) {Serial.println("[gpattData.speed_enable] " + String( gpattData.speed_enable));}
     else if (strcmp(CMD_BUFFER, "print gpatt speed_num\r")==0) {Serial.println("[gpattData.speed_num] " + String( gpattData.speed_num));}
     // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               SWITCH SATIO CONVERT COORDINATES
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch convert coordinates\r")==0) {satData.convert_coordinates^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                             SET SATIO CONVERT COORDINATES MODE
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "set convert coordinates GNGGA\r")==0) {
-      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
-      strcpy(satData.coordinate_conversion_mode, "GNGGA");
-    }
-    else if (strcmp(CMD_BUFFER, "set convert coordinates GNRMC\r")==0) {
-      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
-      strcpy(satData.coordinate_conversion_mode, "GNRMC");
-    }
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                    SET SATIO UTC SECOND OFFSET
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
-      TMP_CMD_STRING_0="";
-      TMP_CMD_STRING_0 = String(CMD_BUFFER);
-      TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
-      if ((atol(TMP_CMD_STRING_0.c_str()) <= 179769313486232) && (atol(TMP_CMD_STRING_0.c_str()) >= -179769313486232)) {
-        satData.utc_second_offset=atol(TMP_CMD_STRING_0.c_str());
-      }
-      // Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-      // Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));
-    }
-    // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                               SET SATIO UTC SECOND OFFSET FLAG
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                          SPECIFIC REQUEST SERIAL OUTPUT: SATIO
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print satio degrees_latitude\r")==0) {Serial.println("[satData.degrees_latitude] " + String(satData.degrees_latitude));}
@@ -19084,6 +18953,9 @@ static void CmdProcess(void) {
   // ------------------------------------------------------------------------------------------------------------------------------
   else if (systemData.debug_bridge==true) {
 
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                MENU NAVIGATION
+    // ------------------------------------------------------------------------------------------------------------------------------
     // may result in race condition if ControlPad buttons pressed while serial commands being sent (race condition not yet observed)
     if      (strcmp(CMD_BUFFER, "menu up\r")==0)    {Serial.println("[menu up]");    menuUp();            while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
     else if (strcmp(CMD_BUFFER, "menu down\r")==0)  {Serial.println("[menu down]");  menuDown();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
@@ -19092,7 +18964,9 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "menu back\r")==0)  {Serial.println("[menu back]");  menuBack();          while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
     else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();         while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
     else if (strcmp(CMD_BUFFER, "menu home\r")==0)  {Serial.println("[menu home]");  menu_page=page_home; while (!update_ui_complete==true) {delay(1);} interaction_updateui=true;}
-
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                              MENU ENTER DIGITS
+    // ------------------------------------------------------------------------------------------------------------------------------
     // requires further sanitization
     else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
       Serial.println("[enter digits]");
@@ -19105,6 +18979,137 @@ static void CmdProcess(void) {
       }
       Serial.println("[input_data] " + String(input_data));
     }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                        DISPLAY
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch display timeout")==0) {systemData.display_auto_off^=true;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 0\r")==0) {systemData.index_display_autooff_times=0;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 1\r")==0) {systemData.index_display_autooff_times=1;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 2\r")==0) {systemData.index_display_autooff_times=2;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 3\r")==0) {systemData.index_display_autooff_times=3;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 4\r")==0) {systemData.index_display_autooff_times=4;}
+    else if (strcmp(CMD_BUFFER, "set display timeout 5\r")==0) {systemData.index_display_autooff_times=5;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                       OVERLOAD
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set overload 0\r")==0) {systemData.index_overload_times=0;}
+    else if (strcmp(CMD_BUFFER, "set overload 1\r")==0) {systemData.index_overload_times=1;}
+    else if (strcmp(CMD_BUFFER, "set overload 2\r")==0) {systemData.index_overload_times=2;}
+    else if (strcmp(CMD_BUFFER, "set overload 3\r")==0) {systemData.index_overload_times=3;}
+    else if (strcmp(CMD_BUFFER, "set overload 4\r")==0) {systemData.index_overload_times=4;}
+    else if (strcmp(CMD_BUFFER, "set overload 5\r")==0) {systemData.index_overload_times=5;}
+    else if (strcmp(CMD_BUFFER, "set overload 6\r")==0) {systemData.index_overload_times=6;}
+    else if (strcmp(CMD_BUFFER, "set overload 7\r")==0) {systemData.index_overload_times=7;}
+    else if (strcmp(CMD_BUFFER, "set overload 8\r")==0) {systemData.index_overload_times=8;}
+    else if (strcmp(CMD_BUFFER, "set overload 9\r")==0) {systemData.index_overload_times=9;}
+    else if (strcmp(CMD_BUFFER, "set overload 10\r")==0) {systemData.index_overload_times=10;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                         MATRIX
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch matrix\r")==0) {systemData.matrix_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch matrix startup\r")==0) {systemData.matrix_run_on_startup^=true;}
+    else if (strcmp(CMD_BUFFER, "switch matrix io\r")==0) {systemData.matrix_io_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                            GPS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch satio\r")==0) {systemData.satio_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gngga\r")==0) {systemData.gngga_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gnrmc\r")==0) {systemData.gnrmc_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch gpatt\r")==0) {systemData.gpatt_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                               SIDERAL TRACKING
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch track sun\r")==0) {systemData.sidereal_track_sun^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track moon\r")==0) {systemData.sidereal_track_moon^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track mercury\r")==0) {systemData.sidereal_track_mercury^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track venus\r")==0) {systemData.sidereal_track_venus^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track mars\r")==0) {systemData.sidereal_track_mars^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track jupiter\r")==0) {systemData.sidereal_track_jupiter^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
+    else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
+    else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                       IIC MULTIPLEXER CHANNELS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch iic chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch iic chan all")==0) {systemData.CD74HC4067_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                            ANALOG/DIGITAL MULTIPLEXER CHANNELS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
+    else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                               SWITCH SATIO CONVERT COORDINATES
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch convert coordinates\r")==0) {satData.convert_coordinates^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                             SET SATIO CONVERT COORDINATES MODE
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set convert coordinates GNGGA\r")==0) {
+      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+      strcpy(satData.coordinate_conversion_mode, "GNGGA");
+    }
+    else if (strcmp(CMD_BUFFER, "set convert coordinates GNRMC\r")==0) {
+      memset(satData.coordinate_conversion_mode, 0, sizeof(satData.coordinate_conversion_mode));
+      strcpy(satData.coordinate_conversion_mode, "GNRMC");
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                    SET SATIO UTC SECOND OFFSET
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
+      TMP_CMD_STRING_0="";
+      TMP_CMD_STRING_0 = String(CMD_BUFFER);
+      TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
+      if ((atol(TMP_CMD_STRING_0.c_str()) <= 179769313486232) && (atol(TMP_CMD_STRING_0.c_str()) >= -179769313486232)) {
+        satData.utc_second_offset=atol(TMP_CMD_STRING_0.c_str());
+      }
+      // Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+      // Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                               SET SATIO UTC SECOND OFFSET FLAG
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
   }
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
