@@ -2732,7 +2732,7 @@ struct MatrixStruct {
     },
   };
 
-  bool matrix_switch_expression_index[20][10]={
+  int matrix_switch_expression_index[20][10]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
     },
@@ -2982,7 +2982,7 @@ struct MatrixStruct {
   // -------------------------------------------------------------------------------------------------------
   char expression[5][16] =
   {
-    "", // empty for functions that take no expression
+    "NoEx", // empty for functions that take no expression
     "Equal",
     "Over",
     "Under",
@@ -12260,9 +12260,10 @@ void menuEnter() {
       // ------------------------------------------------
       // iterate over expression
       // ------------------------------------------------
-      matrixData.i_expression++;
-      if (matrixData.i_expression > 4) {matrixData.i_expression=0;}
-      matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]=matrixData.i_expression;
+      matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]++;
+      if (matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()] > 4) {
+        matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]=0;
+      }
       // ------------------------------------------------
       // put current str in temp
       // ------------------------------------------------
@@ -12272,6 +12273,7 @@ void menuEnter() {
       // remove expression
       // ------------------------------------------------
       matrixData.tempStr=String(matrixData.temp);
+      matrixData.tempStr.replace("NoEx", "");
       matrixData.tempStr.replace("Under", "");
       matrixData.tempStr.replace("Over", "");
       matrixData.tempStr.replace("Equal", "");
@@ -12279,7 +12281,7 @@ void menuEnter() {
       // ------------------------------------------------
       // concatinate base function name with expression
       // ------------------------------------------------
-      matrixData.tempStr=matrixData.tempStr + matrixData.expression[matrixData.i_expression];
+      matrixData.tempStr=matrixData.tempStr + matrixData.expression[matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]];
       // ------------------------------------------------
       // copy new name into matrix
       // ------------------------------------------------
@@ -18862,6 +18864,16 @@ static void CmdProcess(void) {
       TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_function_names[i])+String("\n");
     }
     Serial.println("[matrix_function_names]\n" + String(TMP_CMD_STRING));
+  }
+
+  else if (strcmp(CMD_BUFFER, "print matrix expressions -v\r")==0) {
+    TMP_CMD_STRING=String("");
+    for (int i1=0; i1<matrixData.max_matrices; i1++) {
+      TMP_CMD_STRING=TMP_CMD_STRING+"[switch " + String(i1) + "] ";
+      for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
+      TMP_CMD_STRING=TMP_CMD_STRING+'\n';
+    }
+    Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING));
   }
 
 
