@@ -19029,7 +19029,7 @@ static void CmdProcess(void) {
           else if (ITER_TMP_CMD_TOKEN==9) {Serial.println("[set matrix switch function expression] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==10) {Serial.println("[set matrix switch port] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==11) {Serial.println("[set matrix switch enabled] " + String(TMP_CMD_TOKEN));}
-          TMP_CMD_TOKEN=strtok(NULL, ",");
+          TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
       }
