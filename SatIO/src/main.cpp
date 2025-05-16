@@ -19033,7 +19033,6 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print dht11_f_0\r")==0) {Serial.println("[sensorData.dht11_f_0] " + String(sensorData.dht11_f_0));}
   else if (strcmp(CMD_BUFFER, "print dht11_hic_0\r")==0) {Serial.println("[sensorData.dht11_hic_0] " + String(sensorData.dht11_hic_0));}
   else if (strcmp(CMD_BUFFER, "print dht11_hif_0\r")==0) {Serial.println("[sensorData.dht11_hif_0] " + String(sensorData.dht11_hif_0));}
-
   else if (strcmp(CMD_BUFFER, "print sensor_0\r")==0) {Serial.println("[sensorData.sensor_0] " + String(sensorData.sensor_0));}
   else if (strcmp(CMD_BUFFER, "print sensor_1\r")==0) {Serial.println("[sensorData.sensor_1] " + String(sensorData.sensor_1));}
   else if (strcmp(CMD_BUFFER, "print sensor_2\r")==0) {Serial.println("[sensorData.sensor_2] " + String(sensorData.sensor_2));}
@@ -19050,7 +19049,6 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print sensor_13\r")==0) {Serial.println("[sensorData.sensor_13] " + String(sensorData.sensor_13));}
   else if (strcmp(CMD_BUFFER, "print sensor_14\r")==0) {Serial.println("[sensorData.sensor_14] " + String(sensorData.sensor_14));}
   else if (strcmp(CMD_BUFFER, "print sensor_15\r")==0) {Serial.println("[sensorData.sensor_15] " + String(sensorData.sensor_15));}
-
   else if (strcmp(CMD_BUFFER, "print wt901_ang_x\r")==0) {Serial.println("[sensorData.wt901_ang_x] " + String(sensorData.wt901_ang_x));}
   else if (strcmp(CMD_BUFFER, "print wt901_ang_y\r")==0) {Serial.println("[sensorData.wt901_ang_y] " + String(sensorData.wt901_ang_y));}
   else if (strcmp(CMD_BUFFER, "print wt901_ang_z\r")==0) {Serial.println("[sensorData.wt901_ang_z] " + String(sensorData.wt901_ang_z));}
@@ -19063,6 +19061,14 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_x\r")==0) {Serial.println("[sensorData.wt901_gyr_x] " + String(sensorData.wt901_gyr_x));}
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_y\r")==0) {Serial.println("[sensorData.wt901_gyr_y] " + String(sensorData.wt901_gyr_y));}
   else if (strcmp(CMD_BUFFER, "print wt901_gyr_z\r")==0) {Serial.println("[sensorData.wt901_gyr_z] " + String(sensorData.wt901_gyr_z));}
+
+  else if (strcmp(CMD_BUFFER, "menu up\r")==0) {Serial.println("[menu up]"); menuUp();}
+  else if (strcmp(CMD_BUFFER, "menu down\r")==0) {Serial.println("[menu down]"); menuDown();}
+  else if (strcmp(CMD_BUFFER, "menu left\r")==0) {Serial.println("[menu left]"); menuLeft();}
+  else if (strcmp(CMD_BUFFER, "menu right\r")==0) {Serial.println("[menu right]"); menuRight();}
+  else if (strcmp(CMD_BUFFER, "menu back\r")==0) {Serial.println("[menu back]"); menuBack();}
+  else if (strcmp(CMD_BUFFER, "menu enter\r")==0) {Serial.println("[menu enter]"); menuEnter();}
+  else if (strcmp(CMD_BUFFER, "menu home\r")==0) {Serial.println("[menu home]"); menu_page=page_home;}
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
