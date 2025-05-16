@@ -18591,21 +18591,21 @@ static void PrintHelp() {
 void PrintMatrixData() {
   for (int Mi=0; Mi<matrixData.max_matrices; Mi++) {
     Serial.println("-----------------------------------------------------");
-
     Serial.println("[matrix switch] " + String(Mi));
     Serial.println("[port] " + String(matrixData.matrix_port_map[0][Mi]));
     Serial.println("[enabled] " + String(matrixData.matrix_switch_enabled[0][Mi]));
     Serial.println("[active] " + String(matrixData.matrix_switch_state[0][Mi]));
 
     for (int Fi=0; Fi<matrixData.max_matrix_functions; Fi++) {
-      Serial.println("    [function " + String(Fi) + " name] " + String(matrixData.matrix_function[Mi][Fi]));
-      Serial.println("    [function " + String(Fi) + " expression] " + String(matrixData.matrix_switch_expression_index[Mi][Fi]));
-      Serial.println("    [function " + String(Fi) + " inverted] " + String(matrixData.matrix_switch_inverted_logic[Mi][Fi]));
-      Serial.println("    [function " + String(Fi) + " x] " + String(matrixData.matrix_function_xyz[Mi][Fi][0]));
-      Serial.println("    [function " + String(Fi) + " y] " + String(matrixData.matrix_function_xyz[Mi][Fi][1]));
-      Serial.println("    [function " + String(Fi) + " z] " + String(matrixData.matrix_function_xyz[Mi][Fi][2]));
+      Serial.println("[function " + String(Fi) + " name] " + String(matrixData.matrix_function[Mi][Fi]));
+      Serial.println("[function " + String(Fi) + " expression] " + String(matrixData.matrix_switch_expression_index[Mi][Fi]));
+      Serial.println("[function " + String(Fi) + " inverted] " + String(matrixData.matrix_switch_inverted_logic[Mi][Fi]));
+      Serial.println("[function " + String(Fi) + " x] " + String(matrixData.matrix_function_xyz[Mi][Fi][0]));
+      Serial.println("[function " + String(Fi) + " y] " + String(matrixData.matrix_function_xyz[Mi][Fi][1]));
+      Serial.println("[function " + String(Fi) + " z] " + String(matrixData.matrix_function_xyz[Mi][Fi][2]));
     }
   }
+  Serial.println("-----------------------------------------------------");
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
