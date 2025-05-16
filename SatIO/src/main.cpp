@@ -18787,6 +18787,7 @@ static void CmdProcess(void) {
     //                                                                SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix enabled -v\r")==0) {
+      Serial.println("[Matrix Enabled]");
       for (int i=0; i<matrixData.max_matrices; i++) {
         Serial.println("[switch " + String(i) + "] " + String(matrixData.matrix_switch_enabled[0][i]));
       }
@@ -18795,6 +18796,7 @@ static void CmdProcess(void) {
     //                                                                 SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ACTIVE/INACTIVE VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix active -v\r")==0) {
+      Serial.println("[Matrix Active]");
       for (int i=0; i<matrixData.max_matrices; i++) {
         Serial.println("[switch " + String(i) + "] " + String(matrixData.matrix_switch_state[0][i]));
       }
@@ -18809,12 +18811,13 @@ static void CmdProcess(void) {
         for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_inverted_logic[i1][i2])+String(" ");}
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
       }
-      Serial.println("[matrix_switch_inverted_logic]\n" + String(TMP_CMD_STRING_0));
+      Serial.println("[Matrix Inverted Function]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                          SPECIFIC REQUEST SERIAL OUTPUT: MATRIX TIMERS VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix timers -v\r")==0) {
+      Serial.println("[Matrix Timers]");
       for (int i=0; i<matrixData.max_matrices; i++) {
         Serial.println("[switch " + String(i) + "] " + String(matrixData.matrix_timers[0][i]));
       }
@@ -18823,6 +18826,7 @@ static void CmdProcess(void) {
     //                                                                           SPECIFIC REQUEST SERIAL OUTPUT: MATRIX PORTS VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix ports -v\r")==0) {
+      Serial.println("[Matrix Port Map]");
       for (int i=0; i<matrixData.max_matrices; i++) {
         Serial.println("[switch " + String(i) + "] " + String(matrixData.matrix_port_map[0][i]));
       }
@@ -18837,7 +18841,7 @@ static void CmdProcess(void) {
         for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function[i1][i2])+String(", ");}
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
       }
-      Serial.println("[matrix_function]\n" + String(TMP_CMD_STRING_0));
+      Serial.println("[Matrix Functions]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                   SPECIFIC REQUEST SERIAL OUTPUT: MATRIX FUNCTIONS XYZ VERBOSE
@@ -18845,14 +18849,14 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "print matrix functions xyz -v\r")==0) {
       TMP_CMD_STRING_0=String("");
       for (int i1=0; i1<matrixData.max_matrices; i1++) {
-        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
+        TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "]";
         for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {
-          TMP_CMD_STRING_0=TMP_CMD_STRING_0+"\n           ";
-          for (int i3=0; i3<3; i3++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(", ");}
+          TMP_CMD_STRING_0=TMP_CMD_STRING_0+"\n";
+          for (int i3=0; i3<3; i3++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_function_xyz[i1][i2][i3])+String(",");}
         }
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
       }
-      Serial.println("[matrix_function_xyz]\n" + String(TMP_CMD_STRING_0));
+      Serial.println("[Matrix Functions XYZ]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                     SPECIFIC REQUEST SERIAL OUTPUT: MATRIX EXPRESSIONS VERBOSE
@@ -18861,10 +18865,10 @@ static void CmdProcess(void) {
       TMP_CMD_STRING_0=String("");
       for (int i1=0; i1<matrixData.max_matrices; i1++) {
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+"[switch " + String(i1) + "] ";
-        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_expression_index[i1][i2])+String(", ");}
+        for (int i2=0; i2<matrixData.max_matrix_functions; i2++) {TMP_CMD_STRING_0=TMP_CMD_STRING_0+String(matrixData.matrix_switch_expression_index[i1][i2])+String(",");}
         TMP_CMD_STRING_0=TMP_CMD_STRING_0+'\n';
       }
-      Serial.println("[matrix_expressions]\n" + String(TMP_CMD_STRING_0));
+      Serial.println("[Matrix Expressions]\n" + String(TMP_CMD_STRING_0));
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
