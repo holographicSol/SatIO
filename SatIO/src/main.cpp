@@ -286,6 +286,12 @@ increase calculation potential.
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
 
+  Design concepts:
+  Nano SatIO (Passive): ESP32 + GPS + 9 Axis Gyro.
+                        No Port Controller, no Control Pad, no UI etc. As small as possible, streaming out data over USB.
+                        Requires another system to utilize output data.
+                        A few pushbuttons and LEDs for simple manipulations.
+  Full SatIO (Active): ESP32 + GPS + 9 Axis Gyro + Port Controller + Control Pad + UI etc. Can be built out to any logical size/scale and is standalone.
 
 */
 
@@ -19048,7 +19054,7 @@ void loop() {
   // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                          SUSPEND/RESUME GPS
+  //                                                                                                           SUSPEND/RESUME GPS
   // ----------------------------------------------------------------------------------------------------------------------------
   // suspend/resume task once if all gps parsing was disabled. this is done here rather than on another task.
   // ----------------------------------------------------------------------------------------------------------------------------
