@@ -19015,12 +19015,11 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                              SET MATRIX SWITCH
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix switch \r", 18)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix switch \r", 17)==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         Serial.println("[token] " + String(TMP_CMD_TOKEN));
         ITER_TMP_CMD_TOKEN=0;
         while (TMP_CMD_TOKEN!=NULL) {
-          TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
           if      (ITER_TMP_CMD_TOKEN==3) {Serial.println("[set matrix switch] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==4) {Serial.println("[set matrix switch function] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==5) {Serial.println("[set matrix switch function x] " + String(TMP_CMD_TOKEN));}
@@ -19030,11 +19029,13 @@ static void CmdProcess(void) {
           else if (ITER_TMP_CMD_TOKEN==9) {Serial.println("[set matrix switch function expression] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==10) {Serial.println("[set matrix switch port] " + String(TMP_CMD_TOKEN));}
           else if (ITER_TMP_CMD_TOKEN==11) {Serial.println("[set matrix switch enabled] " + String(TMP_CMD_TOKEN));}
+          TMP_CMD_TOKEN=strtok(NULL, ",");
           ITER_TMP_CMD_TOKEN++;
         }
       }
 
-      // print matrix available functions -v
+      // TEST: set matrix switch 9 0 ENABLED 0 0 0 0 0 -1 1
+      // TEST: print matrix available functions -v
       // set matrix switch function
       // set matrix switch xyz
       // set matrix switch function inverted
