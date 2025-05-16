@@ -18709,13 +18709,13 @@ static void CmdProcess(void) {
 
   else if (strcmp(CMD_BUFFER, "print matrix active -v\r")==0) {
     TMP_CMD_STRING=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_state[0][i])+String(",");}
+    for (int i=0; i<matrixData.max_matrices; i++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_state[0][i])+String(" ");}
     Serial.println("[matrix_switch_state] " + String(TMP_CMD_STRING));
   }
 
   else if (strcmp(CMD_BUFFER, "print matrix enabled -v\r")==0) {
     TMP_CMD_STRING=String("");
-    for (int i=0; i<matrixData.max_matrices; i++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_enabled[0][i])+String(",");}
+    for (int i=0; i<matrixData.max_matrices; i++) {TMP_CMD_STRING=TMP_CMD_STRING+String(matrixData.matrix_switch_enabled[0][i])+String(" ");}
     Serial.println("[matrix_switch_enabled] " + String(TMP_CMD_STRING));
   }
 
