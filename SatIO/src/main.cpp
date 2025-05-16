@@ -19135,6 +19135,28 @@ static void CmdProcess(void) {
           // set expression
           // --------------------------------------------------------------------
           matrixData.matrix_switch_expression_index[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]=atoi(TMP_CMD_STRING_2.c_str());
+          // ------------------------------------------------
+          // put current str in temp
+          // ------------------------------------------------
+          memset(matrixData.temp, 0, sizeof(matrixData.temp));
+          strcpy(matrixData.temp, matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]);
+          // ------------------------------------------------
+          // remove expression
+          // ------------------------------------------------
+          matrixData.tempStr=String(matrixData.temp);
+          matrixData.tempStr.replace("Under", "");
+          matrixData.tempStr.replace("Over", "");
+          matrixData.tempStr.replace("Equal", "");
+          matrixData.tempStr.replace("Range", "");
+          // ------------------------------------------------
+          // concatinate base function name with expression
+          // ------------------------------------------------
+          matrixData.tempStr=matrixData.tempStr + matrixData.expression[matrixData.matrix_switch_expression_index[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]];
+          // ------------------------------------------------
+          // copy new name into matrix
+          // ------------------------------------------------
+          memset(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], 0, sizeof(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]));
+          strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], matrixData.tempStr.c_str());
         }
         else {Serial.println("[command failed]");}
       }
