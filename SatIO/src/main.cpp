@@ -1182,7 +1182,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   bool debug=false;   // print verbose information over serial
   bool t_bench=false; // prints bennchmark information for tuning
-  bool debug_bridge=false;  // allows commands to be received over serial (strongly recommend default false unless you know what you are doing)
+  bool debug_bridge=false;  // allows commands to be received over serial (strongly recommend firmware default false unless you know what you are doing)
 
   // -----------------------------------------------------------------------------------------------------------------------
   // display
