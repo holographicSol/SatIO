@@ -1565,6 +1565,7 @@ struct SDCardStruct {
   char data_6[56];
   char data_7[56];
   char data_8[56];
+  char data_9[56];
   char file_data[1024];
   char delim[56]=",";
   char tmp[56];
@@ -2669,6 +2670,69 @@ struct MatrixStruct {
   // reflects matrix switch inverted logic bool (per function)
   // -------------------------------------------------------------------------------------------------------
   bool matrix_switch_inverted_logic[20][10]={
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 2
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 3
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 4
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 5
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 6
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 7
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 8
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 9
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 10
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 11
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 12
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 13
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 14
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 15
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 16
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 17
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 18
+    },
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 19
+    },
+  };
+
+  bool matrix_switch_expression_index[20][10]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
     },
@@ -6698,7 +6762,7 @@ bool sdcardLoadMatrix(char * file) {
       memset(sdcardData.BUFFER, 0, sizeof(sdcardData.BUFFER));
       sdcardData.SBUFFER=exfile.readStringUntil('\n');
       sdcardData.SBUFFER.toCharArray(sdcardData.BUFFER, sdcardData.SBUFFER.length()+1);
-      // Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
+      Serial.println("[sdcard] [reading] " + String(sdcardData.BUFFER));
       // ----------------------------------------------
       // tag: r
       // ----------------------------------------------
@@ -6709,6 +6773,7 @@ bool sdcardLoadMatrix(char * file) {
         memset(sdcardData.data_0, 0, sizeof(sdcardData.data_0)); memset(sdcardData.data_1, 0, sizeof(sdcardData.data_1)); memset(sdcardData.data_2, 0, sizeof(sdcardData.data_2));
         memset(sdcardData.data_3, 0, sizeof(sdcardData.data_3)); memset(sdcardData.data_4, 0, sizeof(sdcardData.data_4)); memset(sdcardData.data_5, 0, sizeof(sdcardData.data_5));
         memset(sdcardData.data_6, 0, sizeof(sdcardData.data_6)); memset(sdcardData.data_7, 0, sizeof(sdcardData.data_7)); memset(sdcardData.data_8, 0, sizeof(sdcardData.data_8));
+        memset(sdcardData.data_9, 0, sizeof(sdcardData.data_9));
         validData.bool_data_0=false;
         validData.bool_data_1=false;
         // --------------------------------------------
@@ -6783,6 +6848,12 @@ bool sdcardLoadMatrix(char * file) {
           sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_8, sdcardData.token);
           if (is_all_digits(sdcardData.data_8)==true) {matrixData.matrix_switch_inverted_logic[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_8);}
+          // ------------------------------------------
+          // matrix switch expression index
+          // ------------------------------------------
+          sdcardData.token=strtok(NULL, ",");
+          strcpy(sdcardData.data_9, sdcardData.token);
+          if (is_all_digits(sdcardData.data_9)==true) {matrixData.matrix_switch_expression_index[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)]=atoi(sdcardData.data_9);}
         }
       }
       // ----------------------------------------------
@@ -6899,6 +6970,13 @@ bool sdcardSaveMatrix(char * file) {
         memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
         itoa(matrixData.matrix_switch_inverted_logic[Mi][Fi], sdcardData.tmp, 10);
         strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+        // --------------------------------------------
+        // matrix switch expression index
+        // --------------------------------------------
+        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
+        itoa(matrixData.matrix_switch_expression_index[Mi][Fi], sdcardData.tmp, 10);
+        strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+
         // --------------------------------------------
         // write line
         // --------------------------------------------
@@ -12184,6 +12262,7 @@ void menuEnter() {
       // ------------------------------------------------
       matrixData.i_expression++;
       if (matrixData.i_expression > 4) {matrixData.i_expression=0;}
+      matrixData.matrix_switch_expression_index[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]=matrixData.i_expression;
       // ------------------------------------------------
       // put current str in temp
       // ------------------------------------------------
