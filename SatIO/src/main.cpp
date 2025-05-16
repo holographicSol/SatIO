@@ -18907,10 +18907,6 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "print satio utc_second_offset\r")==0) {Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));}
     else if (strcmp(CMD_BUFFER, "print satio utc_auto_offset_flag\r")==0) {Serial.println("[satData.utc_auto_offset_flag] " + String(satData.utc_auto_offset_flag));}
     // ------------------------------------------------------------------------------------------------------------------------------
-    //                                                                                                                 SWITCH SENSORS
-    // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strcmp(CMD_BUFFER, "switch dht11_0_display_hic\r")==0) {sensorData.dht11_0_display_hic^=true;}
-    // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: SENSORS
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print dht11_h_0\r")==0) {Serial.println("[sensorData.dht11_h_0] " + String(sensorData.dht11_h_0));}
@@ -19078,6 +19074,10 @@ static void CmdProcess(void) {
     else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
     else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
     else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                                                 SWITCH SENSORS
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "switch dht11_0_display_hic\r")==0) {sensorData.dht11_0_display_hic^=true;}
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                               SWITCH SATIO CONVERT COORDINATES
     // ------------------------------------------------------------------------------------------------------------------------------
