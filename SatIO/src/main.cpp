@@ -19021,6 +19021,35 @@ static void CmdProcess(void) {
   else if (strcmp(CMD_BUFFER, "print satio formatted_rtc_date\r")==0) {Serial.println("[satData.formatted_rtc_date] " + String(satData.formatted_rtc_date));}
   else if (strcmp(CMD_BUFFER, "print satio utc_second_offset\r")==0) {Serial.println("[satData.utc_second_offset] " + String(satData.utc_second_offset));}
   else if (strcmp(CMD_BUFFER, "print satio utc_auto_offset_flag\r")==0) {Serial.println("[satData.utc_auto_offset_flag] " + String(satData.utc_auto_offset_flag));}
+  // ------------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                 SWITCH SENSORS
+  // ------------------------------------------------------------------------------------------------------------------------------
+  else if (strcmp(CMD_BUFFER, "switch dht11_0_display_hic\r")==0) {sensorData.dht11_0_display_hic^=true;}
+  // ------------------------------------------------------------------------------------------------------------------------------
+  //                                                                                        SPECIFIC REQUEST SERIAL OUTPUT: SENSORS
+  // ------------------------------------------------------------------------------------------------------------------------------
+  else if (strcmp(CMD_BUFFER, "print dht11_h_0\r")==0) {Serial.println("[sensorData.dht11_h_0] " + String(sensorData.dht11_h_0));}
+  else if (strcmp(CMD_BUFFER, "print dht11_c_0\r")==0) {Serial.println("[sensorData.dht11_c_0] " + String(sensorData.dht11_c_0));}
+  else if (strcmp(CMD_BUFFER, "print dht11_f_0\r")==0) {Serial.println("[sensorData.dht11_f_0] " + String(sensorData.dht11_f_0));}
+  else if (strcmp(CMD_BUFFER, "print dht11_hic_0\r")==0) {Serial.println("[sensorData.dht11_hic_0] " + String(sensorData.dht11_hic_0));}
+  else if (strcmp(CMD_BUFFER, "print dht11_hif_0\r")==0) {Serial.println("[sensorData.dht11_hif_0] " + String(sensorData.dht11_hif_0));}
+  
+  else if (strcmp(CMD_BUFFER, "print sensor_0\r")==0) {Serial.println("[sensorData.sensor_0] " + String(sensorData.sensor_0));}
+  else if (strcmp(CMD_BUFFER, "print sensor_1\r")==0) {Serial.println("[sensorData.sensor_1] " + String(sensorData.sensor_1));}
+  else if (strcmp(CMD_BUFFER, "print sensor_2\r")==0) {Serial.println("[sensorData.sensor_2] " + String(sensorData.sensor_2));}
+  else if (strcmp(CMD_BUFFER, "print sensor_3\r")==0) {Serial.println("[sensorData.sensor_3] " + String(sensorData.sensor_3));}
+  else if (strcmp(CMD_BUFFER, "print sensor_4\r")==0) {Serial.println("[sensorData.sensor_4] " + String(sensorData.sensor_4));}
+  else if (strcmp(CMD_BUFFER, "print sensor_5\r")==0) {Serial.println("[sensorData.sensor_5] " + String(sensorData.sensor_5));}
+  else if (strcmp(CMD_BUFFER, "print sensor_6\r")==0) {Serial.println("[sensorData.sensor_6] " + String(sensorData.sensor_6));}
+  else if (strcmp(CMD_BUFFER, "print sensor_7\r")==0) {Serial.println("[sensorData.sensor_7] " + String(sensorData.sensor_7));}
+  else if (strcmp(CMD_BUFFER, "print sensor_8\r")==0) {Serial.println("[sensorData.sensor_8] " + String(sensorData.sensor_8));}
+  else if (strcmp(CMD_BUFFER, "print sensor_9\r")==0) {Serial.println("[sensorData.sensor_9] " + String(sensorData.sensor_9));}
+  else if (strcmp(CMD_BUFFER, "print sensor_10\r")==0) {Serial.println("[sensorData.sensor_10] " + String(sensorData.sensor_10));}
+  else if (strcmp(CMD_BUFFER, "print sensor_11\r")==0) {Serial.println("[sensorData.sensor_11] " + String(sensorData.sensor_11));}
+  else if (strcmp(CMD_BUFFER, "print sensor_12\r")==0) {Serial.println("[sensorData.sensor_12] " + String(sensorData.sensor_12));}
+  else if (strcmp(CMD_BUFFER, "print sensor_13\r")==0) {Serial.println("[sensorData.sensor_13] " + String(sensorData.sensor_13));}
+  else if (strcmp(CMD_BUFFER, "print sensor_14\r")==0) {Serial.println("[sensorData.sensor_14] " + String(sensorData.sensor_14));}
+  else if (strcmp(CMD_BUFFER, "print sensor_15\r")==0) {Serial.println("[sensorData.sensor_15] " + String(sensorData.sensor_15));}
 
   memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
 }
