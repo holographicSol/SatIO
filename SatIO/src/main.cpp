@@ -18870,6 +18870,7 @@ static void CmdProcess(void) {
     //                                                             SPECIFIC REQUEST SERIAL OUTPUT: AVAILABLE MATRIX FUNCTIONS VERBOSE
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix available functions -v\r")==0) {
+      Serial.println("[Available Matrix Functions] ");
       for (int i=0; i<matrixData.max_matrix_function_names; i++) {
         Serial.println("[" + String(i) + "] " + String(matrixData.matrix_function_names[i]));
       }
