@@ -19022,7 +19022,7 @@ static void CmdProcess(void) {
       ITER_TMP_CMD_TOKEN=0;
       COMMAND_PASS=0;
       while (TMP_CMD_TOKEN!=NULL) {
-        if      (ITER_TMP_CMD_TOKEN==2) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+        if      (ITER_TMP_CMD_TOKEN==2) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;} // sanitize last token
         TMP_CMD_TOKEN=strtok(NULL, " ");
         ITER_TMP_CMD_TOKEN++;
       }
