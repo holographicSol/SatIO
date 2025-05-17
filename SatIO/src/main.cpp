@@ -12082,6 +12082,270 @@ void menuBack() {
   else if (menu_page==page_view_magnetic_field) {menu_page=page_main_menu;}
 }
 
+void saveSystemHandleUI(int return_page) {
+  Serial.println("[saveSystemHandleUI]");
+  // --------------------------------------------
+  // DISPLAY
+  // --------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // ------------------------------------------
+    // go to
+    // ------------------------------------------
+    WaitToUpdateUI();
+    menu_page=page_save_system_config_indicator;
+    UIIndicators();
+    // ------------------------------------------
+    // end spi device
+    // ------------------------------------------
+    endSPIDevice(SSD1351_CS);
+  }
+  // --------------------------------------------
+  // SDCARD
+  // --------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sdcardSaveSystemConfig(sdcardData.sysconf);
+  sd.end();
+  endSPIDevice(SD_CS);
+  // --------------------------------------------
+  // DISPLAY
+  // --------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    delay(1000);
+    // ------------------------------------------
+    // begin spi device
+    // ------------------------------------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+    // --------------------------------------------
+    // go to
+    // --------------------------------------------
+    menu_page=return_page;
+  }
+}
+
+void restoreSystemDefaultsHandleUI(int return_page) {
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // go to
+    // --------------------------------------------
+    WaitToUpdateUI();
+    menu_page=page_restore_default_matrix_indicator;
+    UIIndicators();
+    // --------------------------------------------
+    // end spi device
+    // --------------------------------------------
+    endSPIDevice(SSD1351_CS);
+  }
+  // ----------------------------------------------
+  // SDCARD
+  // ----------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  // ToDo: restore defaults
+  sd.end();
+  endSPIDevice(SD_CS);
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    delay(1000);
+    // --------------------------------------------
+    // begin spi device
+    // --------------------------------------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+    display.begin();
+    // --------------------------------------------
+    // go to
+    // --------------------------------------------
+    menu_page=return_page;
+  }
+}
+
+void createMatrixMenuFileName() {
+  // ----------------------------------------------
+  // generate filename according to selection index
+  // ----------------------------------------------
+  memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
+  strcpy(sdcardData.newfilename, "/MATRIX/M_");
+  memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
+  itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
+  strcat(sdcardData.newfilename, sdcardData.tmp);
+  strcat(sdcardData.newfilename, ".SAVE");
+}
+
+void createMatrixFileNameN(int n) {
+  // ----------------------------------------------
+  // generate filename according to selection index
+  // ----------------------------------------------
+  memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
+  strcpy(sdcardData.newfilename, "/MATRIX/M_");
+  memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
+  itoa(n, sdcardData.tmp, 10);
+  strcat(sdcardData.newfilename, sdcardData.tmp);
+  strcat(sdcardData.newfilename, ".SAVE");
+}
+
+void saveMatrixHandleUI(int return_page) {
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // go to
+    // --------------------------------------------
+    WaitToUpdateUI();
+    menu_page=page_save_matrix_file_indicator;
+    UIIndicators();
+    // --------------------------------------------
+    // end spi device
+    // --------------------------------------------
+    endSPIDevice(SSD1351_CS);
+  }
+  // ----------------------------------------------
+  // SDCARD
+  // ----------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sdcardSaveMatrix(sdcardData.newfilename);
+  sd.end();
+  endSPIDevice(SD_CS);
+  // ------------------------------------------------
+  // DISPLAY
+  // ------------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // ----------------------------------------------
+    // begin spi device
+    // ----------------------------------------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+    // ----------------------------------------------
+    // go to
+    // ----------------------------------------------
+    menu_page=return_page;
+  }
+}
+
+void loadMatrixHandleUI(int return_page) {
+  // ------------------------------------------------
+  // handle empty slots
+  // ------------------------------------------------
+  if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+    // ----------------------------------------------
+    // DISPLAY
+    // ----------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // --------------------------------------------
+      // go to
+      // --------------------------------------------
+      WaitToUpdateUI();
+      menu_page=page_load_matrix_file_indicator;
+      UIIndicators();
+      // --------------------------------------------
+      // end spi device
+      // --------------------------------------------
+      endSPIDevice(SSD1351_CS);
+    }
+    // ----------------------------------------------
+    // SDCARD
+    // ----------------------------------------------
+    beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+    sdcardLoadMatrix(sdcardData.newfilename);
+    sd.end();
+    endSPIDevice(SD_CS);
+    // ----------------------------------------------
+    // DISPLAY
+    // ----------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // --------------------------------------------
+      // begin spi device
+      // --------------------------------------------
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
+    }
+  }
+  // ------------------------------------------------
+  // go to
+  // ------------------------------------------------
+  menu_page=return_page;
+}
+
+void deleteMatrixHandleUI(int return_page) {
+  // ------------------------------------------------
+  // handle empty slots
+  if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
+    // ----------------------------------------------
+    // DISPLAY
+    // ----------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // --------------------------------------------
+      // go to
+      // --------------------------------------------
+      WaitToUpdateUI();
+      menu_page=page_delete_matrix_file_indicator;
+      UIIndicators();
+      // --------------------------------------------
+      // end spi device
+      // --------------------------------------------
+      endSPIDevice(SSD1351_CS);
+    }
+    // ----------------------------------------------
+    // SDCARD
+    // ----------------------------------------------
+    beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+    sdcardDeleteMatrix(sdcardData.newfilename);
+    sd.end();
+    endSPIDevice(SD_CS);
+    // ----------------------------------------------
+    // DISPLAY
+    // ----------------------------------------------
+    if (systemData.DISPLAY_ENABLED==true) {
+      // --------------------------------------------
+      // begin spi device
+      // --------------------------------------------
+      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+      display.begin();
+    }
+  }
+  // ------------------------------------------------
+  // go to
+  // ------------------------------------------------
+  menu_page=return_page;
+}
+
+void listMatrixFilesHandleUI(int return_page) {
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // end spi device
+    // --------------------------------------------
+    endSPIDevice(SSD1351_CS);
+  }
+  // ----------------------------------------------
+  // SDCARD
+  // ----------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+  sd.end();
+  endSPIDevice(SD_CS);
+  // ----------------------------------------------
+  // DISPLAY
+  // ----------------------------------------------
+  if (systemData.DISPLAY_ENABLED==true) {
+    // --------------------------------------------
+    // begin spi device
+    // --------------------------------------------
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    display.begin();
+    // --------------------------------------------
+    // go to
+    // --------------------------------------------
+    menu_page=return_page;
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU ENTER
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12334,192 +12598,35 @@ void menuEnter() {
     // goto save matrix page
     // ------------------------------------------------
     else if (menuFile.selection()==1) {
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // end spi device
-        // --------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        menu_page=page_file_save_matrix;
-      }
+      listMatrixFilesHandleUI(page_file_save_matrix);
     }
 
     // ------------------------------------------------
     // goto load matrix page
     // ------------------------------------------------
     else if (menuFile.selection()==2) {
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // end spi device
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        menu_page=page_file_load_matrix;
-      }
+      listMatrixFilesHandleUI(page_file_load_matrix);
     }
 
     // ------------------------------------------------
     // goto delete matrix page
     // ------------------------------------------------
     else if (menuFile.selection()==3) {
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // end spi device
-        // --------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        menu_page=page_file_delete_matrix;
-      }
+      listMatrixFilesHandleUI(page_file_delete_matrix);
     }
 
     // ----------------------------------------------
-    // save system settings page
+    // save system settings
     // ----------------------------------------------
     else if (menuFile.selection()==4) {
-      // --------------------------------------------
-      // DISPLAY
-      // --------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // ------------------------------------------
-        // go to
-        // ------------------------------------------
-        WaitToUpdateUI();
-        menu_page=page_save_system_config_indicator;
-        UIIndicators();
-        // ------------------------------------------
-        // end spi device
-        // ------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // --------------------------------------------
-      // SDCARD
-      // --------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardSaveSystemConfig(sdcardData.sysconf);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // --------------------------------------------
-      // DISPLAY
-      // --------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        delay(1000);
-        // ------------------------------------------
-        // begin spi device
-        // ------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        menu_page=page_file_main;
-      }
+      saveSystemHandleUI(page_file_main);
     }
 
     // ------------------------------------------------
-    // restore default system settings page
+    // restore default system settings
     // ------------------------------------------------
     else if (menuFile.selection()==5) {
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        WaitToUpdateUI();
-        menu_page=page_restore_default_matrix_indicator;
-        UIIndicators();
-        // --------------------------------------------
-        // end spi device
-        // --------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      // ToDo: restore defaults
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        delay(1000);
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-        display.begin();
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        menu_page=page_file_main;
-      }
+      restoreSystemDefaultsHandleUI(page_file_main);
     }
   }
 
@@ -12527,162 +12634,24 @@ void menuEnter() {
   // save matrix menu page
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
-    // ----------------------------------------------
-    // generate filename according to selection index
-    // ----------------------------------------------
-    memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
-    strcpy(sdcardData.newfilename, "/MATRIX/M_");
-    memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
-    itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
-    strcat(sdcardData.newfilename, sdcardData.tmp);
-    strcat(sdcardData.newfilename, ".SAVE");
-    // ----------------------------------------------
-    // DISPLAY
-    // ----------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // --------------------------------------------
-      // go to
-      // --------------------------------------------
-      WaitToUpdateUI();
-      menu_page=page_save_matrix_file_indicator;
-      UIIndicators();
-      // --------------------------------------------
-      // end spi device
-      // --------------------------------------------
-      endSPIDevice(SSD1351_CS);
-    }
-    // ----------------------------------------------
-    // SDCARD
-    // ----------------------------------------------
-    beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-    sdcardSaveMatrix(sdcardData.newfilename);
-    sd.end();
-    endSPIDevice(SD_CS);
-    // ------------------------------------------------
-    // DISPLAY
-    // ------------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // ----------------------------------------------
-      // begin spi device
-      // ----------------------------------------------
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-      // ----------------------------------------------
-      // go to
-      // ----------------------------------------------
-      menu_page=page_file_main;
-    }
+    createMatrixMenuFileName();
+    saveMatrixHandleUI(page_file_main);
   }
 
   // --------------------------------------------------
   // load matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_load_matrix) {
-    // ------------------------------------------------
-    // handle empty slots
-    // ------------------------------------------------
-    if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
-      // ----------------------------------------------
-      // generate filename according to selection index
-      // ----------------------------------------------
-      memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
-      strcpy(sdcardData.newfilename, "/MATRIX/M_");
-      memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
-      itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
-      strcat(sdcardData.newfilename, sdcardData.tmp);
-      strcat(sdcardData.newfilename, ".SAVE");
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        WaitToUpdateUI();
-        menu_page=page_load_matrix_file_indicator;
-        UIIndicators();
-        // --------------------------------------------
-        // end spi device
-        // --------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardLoadMatrix(sdcardData.newfilename);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-      }
-    }
-    // ------------------------------------------------
-    // go to
-    // ------------------------------------------------
-    menu_page=page_file_main;
+    createMatrixMenuFileName();
+    loadMatrixHandleUI(page_file_main);
   }
 
   // --------------------------------------------------
   // delete matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_delete_matrix) {
-    // ------------------------------------------------
-    // handle empty slots
-    if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
-      // ----------------------------------------------
-      // generate filename according to selection index
-      // ----------------------------------------------
-      memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
-      strcpy(sdcardData.newfilename, "/MATRIX/M_");
-      memset(sdcardData.tmp, 0, sizeof(sdcardData.tmp));
-      itoa(menuMatrixFilepath.selection(), sdcardData.tmp, 10);
-      strcat(sdcardData.newfilename, sdcardData.tmp);
-      strcat(sdcardData.newfilename, ".SAVE");
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // go to
-        // --------------------------------------------
-        WaitToUpdateUI();
-        menu_page=page_delete_matrix_file_indicator;
-        UIIndicators();
-        // --------------------------------------------
-        // end spi device
-        // --------------------------------------------
-        endSPIDevice(SSD1351_CS);
-      }
-      // ----------------------------------------------
-      // SDCARD
-      // ----------------------------------------------
-      beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-      sdcardDeleteMatrix(sdcardData.newfilename);
-      sd.end();
-      endSPIDevice(SD_CS);
-      // ----------------------------------------------
-      // DISPLAY
-      // ----------------------------------------------
-      if (systemData.DISPLAY_ENABLED==true) {
-        // --------------------------------------------
-        // begin spi device
-        // --------------------------------------------
-        beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-        display.begin();
-      }
-    }
-    // ------------------------------------------------
-    // go to
-    // ------------------------------------------------
-    menu_page=page_file_main;
+    createMatrixMenuFileName();
+    deleteMatrixHandleUI(page_file_main);
   }
 
   // ----------------------------------------------------------------
@@ -19710,7 +19679,87 @@ static void CmdProcess(void) {
         }
         else {Serial.println("[command failed]");}
       }
-
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                      SAVE SYSTEM CONFIGURATION
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strcmp(CMD_BUFFER, "list matrix files\r")==0) {
+        saveSystemHandleUI(menu_page);
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                      SAVE SYSTEM CONFIGURATION
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strcmp(CMD_BUFFER, "save system\r")==0) {
+        saveSystemHandleUI(menu_page);
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                    SAVE MATRIX
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "save matrix \r", 12)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==2) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==1) {
+          createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
+          saveMatrixHandleUI(menu_page);
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                    LOAD MATRIX
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "load matrix \r", 12)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==2) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==1) {
+          createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
+          loadMatrixHandleUI(menu_page);
+        }
+        else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                  DELETE MATRIX
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "delete matrix \r", 14)==0) {
+        TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
+        ITER_TMP_CMD_TOKEN=0;
+        COMMAND_PASS=0;
+        while (TMP_CMD_TOKEN!=NULL) {
+          if      (ITER_TMP_CMD_TOKEN==2) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          TMP_CMD_TOKEN=strtok(NULL, " ");
+          ITER_TMP_CMD_TOKEN++;
+        }
+        // --------------------------------------------------------------------
+        // uncomment to debug
+        // --------------------------------------------------------------------
+        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
+        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
+        if (COMMAND_PASS==1) {
+          createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
+          deleteMatrixHandleUI(menu_page);
+        }
+        else {Serial.println("[command failed]");}
+      }
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                           TODO
       // ------------------------------------------------------------------------------------------------------------------------------
