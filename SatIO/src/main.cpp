@@ -1027,7 +1027,7 @@ LcdGfxMenu menuDisplay( menuDisplayItems, max_display_items, {{2, 37}, {125, 125
 //                                                                                                                    MENU SYSTEM
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_system_items=5;
+const int max_system_items=6;
 const char *menuSystemItems[max_system_items];
 LcdGfxMenu menuSystem( menuSystemItems, max_system_items, {{2, 76}, {125, 125}} );
 
@@ -1255,17 +1255,18 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable system functions
   // -----------------------------------------------------------------------------------------------------------------------
-  bool matrix_enabled=true;          // enables/disables matrix switching
-  bool matrix_run_on_startup=true;   // enables/disable matrix switch on startup as specified by system configuration file
-  bool matrix_io_enabled=true; // may be false by default but is default true for now.
+  bool matrix_enabled=true;        // enables/disables matrix switching
+  bool matrix_run_on_startup=true; // enables/disable matrix switch on startup as specified by system configuration file
+  bool matrix_io_enabled=true;     // may be false by default but is default true for now.
+  bool wt901_enabled=true;         // may be false by default but is default true for now.
 
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable GPS processing
   // -----------------------------------------------------------------------------------------------------------------------
-  bool satio_enabled=true;           // enables/disables further processing of GPS data (coordinate degrees, etc.)
-  bool gngga_enabled=true;           // enables/disables processing GNGGA sentence data
-  bool gnrmc_enabled=true;           // enables/disables processing GNRMC sentence data
-  bool gpatt_enabled=true;           // enables/disables processing GPATT sentence data
+  bool satio_enabled=true; // enables/disables further processing of GPS data (coordinate degrees, etc.)
+  bool gngga_enabled=true; // enables/disables processing GNGGA sentence data
+  bool gnrmc_enabled=true; // enables/disables processing GNRMC sentence data
+  bool gpatt_enabled=true; // enables/disables processing GPATT sentence data
 
   // -----------------------------------------------------------------------------------------------------------------------
   // enable/disable planet and object tracking
@@ -5746,6 +5747,19 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // WT901_ENABLED
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "WT901_ENABLED,");
+    itoa(systemData.wt901_enabled, sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // close
     // -----------------------------------------------
     exfile.close();
@@ -6668,6 +6682,18 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.TCA9548A_channel_enabled[7]=atoi(sdcardData.token);
+        }
+      }
+      // ------------------------------------------------
+      // WT901_ENABLED
+      // ------------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "WT901_ENABLED", strlen("WT901_ENABLED"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          systemData.wt901_enabled=atoi(sdcardData.token);
         }
       }
 
@@ -12857,6 +12883,10 @@ void menuEnter() {
     // enable/disable debug bridge
     // ------------------------------------------------
     else if (menuSystem.selection()==4) {systemData.debug_bridge^=true;}
+    // ------------------------------------------------
+    // enable/disable wt901
+    // ------------------------------------------------
+    else if (menuSystem.selection()==5) {systemData.wt901_enabled^=true;}
   }
 
   // ----------------------------------------------------------------
@@ -16325,6 +16355,11 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       if (systemData.debug_bridge==true) {menuSystemItems[4]="D.BRIDGE ENABLED";}
       else {menuSystemItems[4]="D.BRIDGE DISABLED";}
+      // ------------------------------------------------
+      // enable/disable wt901
+      // ------------------------------------------------
+      if (systemData.wt901_enabled==true) {menuSystemItems[5]="WT901 ENABLED";}
+      else {menuSystemItems[5]="WT901 DISABLED";}
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -20624,7 +20659,7 @@ void loop() {
     else if (load_distribution==2) {
       load_distribution=0;
       // t0=micros();
-      requestWT901();
+      if (systemData.wt901_enabled==true) {requestWT901();}
       // i_request_wt901++;
       // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
