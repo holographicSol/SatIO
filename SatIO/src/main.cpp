@@ -18920,6 +18920,17 @@ static void PrintHelp() {
   Serial.println("switch track uranus               Enables/Disables Tracking Uranus.");
   Serial.println("switch track neptune              Enables/Disables Tracking Neptune.");
   Serial.println();
+  Serial.println("run track planets                 Run Track PLanets Once.");
+  Serial.println("run track sun                     Run Track Sun Once.");
+  Serial.println("run track moon                    Run Track Moon Once.");
+  Serial.println("run track mercury                 Run Track Mercury Once.");
+  Serial.println("run track venus                   Run Track Venus Once.");
+  Serial.println("run track mars                    Run Track Mars Once.");
+  Serial.println("run track jupiter                 Run Track Jupiter Once.");
+  Serial.println("run track saturn                  Run Track Saturn Once.");
+  Serial.println("run track uranus                  Run Track Uranus Once.");
+  Serial.println("run track neptune                 Run Track Neptune Once.");
+  Serial.println();
   Serial.println("switch ad-plex chan 0             Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan 1             Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan 2             Enables/Disables Analog/Digital Multiplexer Channel.");
@@ -19775,6 +19786,18 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
       else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
       else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
+
+      else if (strcmp(CMD_BUFFER, "run track planets\r")==0) {trackPlanets();}
+      else if (strcmp(CMD_BUFFER, "run track sun\r")==0) {trackSun();}
+      else if (strcmp(CMD_BUFFER, "run track moon\r")==0) {trackMoon();}
+      else if (strcmp(CMD_BUFFER, "run track mercury\r")==0) {trackMercury();}
+      else if (strcmp(CMD_BUFFER, "run track venus\r")==0) {trackVenus();}
+      else if (strcmp(CMD_BUFFER, "run track mars\r")==0) {trackMars();}
+      else if (strcmp(CMD_BUFFER, "run track jupiter\r")==0) {trackJupiter();}
+      else if (strcmp(CMD_BUFFER, "run track saturn\r")==0) {trackSaturn();}
+      else if (strcmp(CMD_BUFFER, "run track uranus\r")==0) {trackUranus();}
+      else if (strcmp(CMD_BUFFER, "run track neptune\r")==0) {trackNeptune();}
+
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                       IIC MULTIPLEXER CHANNELS
       // ------------------------------------------------------------------------------------------------------------------------------
@@ -20662,6 +20685,20 @@ void loop() {
       load_distribution=0;
       // t0=micros();
       if (systemData.wt901_enabled==true) {requestWT901();}
+      else {
+        sensorData.wt901_acc_x=NAN;
+        sensorData.wt901_acc_y=NAN;
+        sensorData.wt901_acc_z=NAN;
+        sensorData.wt901_ang_x=NAN;
+        sensorData.wt901_ang_y=NAN;
+        sensorData.wt901_ang_z=NAN;
+        sensorData.wt901_gyr_x=NAN;
+        sensorData.wt901_gyr_y=NAN;
+        sensorData.wt901_gyr_z=NAN;
+        sensorData.wt901_mag_x=NAN;
+        sensorData.wt901_mag_y=NAN;
+        sensorData.wt901_mag_z=NAN;
+      }
       // i_request_wt901++;
       // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
