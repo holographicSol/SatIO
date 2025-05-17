@@ -2,19 +2,21 @@
 
 [ Add Matrix Function ]
 
-1: CTRL+F: MatrixStruct -> add to matrix_function_names.
+1: Optional: Create new variable(s) (related xyz).
 
-2: CTRL+F: MatrixStruct -> increase max_matrix_function_names.
+2: CTRL+F: MatrixStruct -> add to matrix_function_names.
 
-3: CTRL+F: menuMatrixSetFunctionNameItems -> increase max and items.
+3: CTRL+F: MatrixStruct -> increase max_matrix_function_names.
 
-4: CTRL+F: void matrixSwitch() -> express switching conditions for associated values.
+4: CTRL+F: menuMatrixSetFunctionNameItems -> increase max and items.
 
-5: CTRL+F: getRelatedX() -> add as required.
+5: CTRL+F: void matrixSwitch() -> express switching conditions for associated values.
 
-6: CTRL+F: getRelatedY() -> add as required.
+6: CTRL+F: getRelatedX() -> add as required.
 
-7: CTRL+F: getRelatedZ() -> add as required.
+7: CTRL+F: getRelatedY() -> add as required.
+
+8: CTRL+F: getRelatedZ() -> add as required.
 
 The new function should now show up in available functions and can be used
 with expressions (over, under, equal, range).
