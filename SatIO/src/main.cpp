@@ -12643,7 +12643,7 @@ void menuEnter() {
   // save matrix menu page
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
-    setMatrixDefault();
+    // setMatrixDefault();
     createMatrixMenuFileName();
     saveMatrixHandleUI(page_file_main);
   }
@@ -19721,7 +19721,7 @@ static void CmdProcess(void) {
         Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
         Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
-          setMatrixDefault();
+          // setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
           saveMatrixHandleUI(menu_page);
         }
