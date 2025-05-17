@@ -12643,7 +12643,6 @@ void menuEnter() {
   // save matrix menu page
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
-    // setMatrixDefault();
     createMatrixMenuFileName();
     saveMatrixHandleUI(page_file_main);
   }
@@ -19373,15 +19372,11 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       // requires further sanitization
       else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
-        Serial.println("[enter digits]");
-        TMP_CMD_STRING_0="";
         TMP_CMD_STRING_0 = String(CMD_BUFFER);
-        TMP_CMD_STRING_0.replace("enter digits ", "");
         if ((atol(TMP_CMD_STRING_0.c_str()) <= 99) && (atol(TMP_CMD_STRING_0.c_str()) >= -99)) {
           memset(input_data, 0, sizeof(input_data));
           strcpy(input_data, TMP_CMD_STRING_0.c_str());
         }
-        Serial.println("[input_data] " + String(input_data));
       }
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                        DISPLAY
@@ -19426,12 +19421,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==2) {
           // --------------------------------------------------------------------
           // set enabled/disabled
@@ -19453,12 +19442,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==2) {
           // --------------------------------------------------------------------
           // set switch port
@@ -19481,13 +19464,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==3) {
           // --------------------------------------------------------------------
           // set function inverted
@@ -19510,13 +19486,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==3) {
           // --------------------------------------------------------------------
           // set expression
@@ -19573,20 +19542,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
-        Serial.println("[TMP_CMD_STRING_3] " + String(TMP_CMD_STRING_3));
-        Serial.println("[TMP_CMD_STRING_4] " + String(TMP_CMD_STRING_4));
-        Serial.println("[TMP_CMD_STRING_5] " + String(TMP_CMD_STRING_5));
-        Serial.println("[TMP_CMD_STRING_6] " + String(TMP_CMD_STRING_6));
-        Serial.println("[TMP_CMD_STRING_7] " + String(TMP_CMD_STRING_7));
-        Serial.println("[TMP_CMD_STRING_8] " + String(TMP_CMD_STRING_8));
-        Serial.println("[TMP_CMD_STRING_9] " + String(TMP_CMD_STRING_9));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==10) {
           // --------------------------------------------------------------------
           // set function name
@@ -19622,7 +19577,6 @@ static void CmdProcess(void) {
       //                                                                                                      SET MATRIX FUNCTION + XYZ
       // ------------------------------------------------------------------------------------------------------------------------------
       else if (strncmp(CMD_BUFFER, "set matrix function xyz \r", 24)==0) {
-        Serial.println("[set matrix function] " + String(CMD_BUFFER));
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -19636,16 +19590,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
-        Serial.println("[TMP_CMD_STRING_3] " + String(TMP_CMD_STRING_3));
-        Serial.println("[TMP_CMD_STRING_4] " + String(TMP_CMD_STRING_4));
-        Serial.println("[TMP_CMD_STRING_5] " + String(TMP_CMD_STRING_5));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==6) {
           // --------------------------------------------------------------------
           // set function name
@@ -19675,13 +19619,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[TMP_CMD_STRING_1] " + String(TMP_CMD_STRING_1));
-        Serial.println("[TMP_CMD_STRING_2] " + String(TMP_CMD_STRING_2));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==3) {
           // --------------------------------------------------------------------
           // set function name
@@ -19715,13 +19652,7 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
-          // setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
           saveMatrixHandleUI(menu_page);
         }
@@ -19739,11 +19670,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
           setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
@@ -19763,11 +19689,6 @@ static void CmdProcess(void) {
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
-        // --------------------------------------------------------------------
-        // uncomment to debug
-        // --------------------------------------------------------------------
-        Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
-        Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
           setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
@@ -19775,17 +19696,6 @@ static void CmdProcess(void) {
         }
         else {Serial.println("[command failed]");}
       }
-      // ------------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                                           TODO
-      // ------------------------------------------------------------------------------------------------------------------------------
-      // function: simplify >1 instances of set function expression.
-      // save matrix file
-      // delete matrix file
-      // load matrix file
-      // save system configuration file
-      // zero matrix
-      // restore defaults (perhaps not over serial, period.)
-
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                            GPS
       // ------------------------------------------------------------------------------------------------------------------------------
