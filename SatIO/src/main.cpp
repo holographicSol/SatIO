@@ -12315,6 +12315,7 @@ void loadMatrixHandleUI(int return_page) {
 void deleteMatrixHandleUI(int return_page) {
   // ------------------------------------------------
   // handle empty slots
+  // ------------------------------------------------
   if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
     // ----------------------------------------------
     // Indicator On
@@ -12336,52 +12337,42 @@ void deleteMatrixHandleUI(int return_page) {
 }
 
 void listMatrixFilesHandleUI(int return_page) {
+  // ----------------------------------------------
+  // wait for ui task to complete before suspension
+  // ----------------------------------------------
   WaitToUpdateUI();
   vTaskSuspend(UpdateUITask);
-
-  // Serial.println("[check] 0");
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    // Serial.println("[check] 1");
     // --------------------------------------------
     // end spi device
     // --------------------------------------------
     endSPIDevice(SSD1351_CS);
-    // Serial.println("[check] 2");
   }
   // ----------------------------------------------
   // SDCARD
   // ----------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  // Serial.println("[check] 3");
   sdcardCreateMatrixFileSlotList();
-  // Serial.println("[check] 4");
   sd.end();
-  // Serial.println("[check] 5");
   endSPIDevice(SD_CS);
-  // Serial.println("[check] 6");
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    // delay(500);
     // --------------------------------------------
     // begin spi device
     // --------------------------------------------
     beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
-    // Serial.println("[check] 7");
     display.begin();
-    // Serial.println("[check] 8");
     // --------------------------------------------
     // go to
     // --------------------------------------------
     WaitToUpdateUI();
     menu_page=return_page;
-    // Serial.println("[check] 9");
   }
-
    vTaskResume(UpdateUITask);
 }
 
@@ -12698,9 +12689,9 @@ void menuEnter() {
   // delete matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_delete_matrix) {
+    setMatrixDefault();
     createMatrixMenuFileName();
     deleteMatrixHandleUI(page_file_delete_matrix);
-    setMatrixDefault();
   }
 
   // ----------------------------------------------------------------
