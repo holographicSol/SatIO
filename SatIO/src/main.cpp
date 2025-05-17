@@ -18583,6 +18583,22 @@ static void PrintHelp() {
   Serial.println("");
   Serial.println("[ REQUEST DATA ]");
   Serial.println();
+  Serial.println("switch output satio               ");
+  Serial.println("switch output gngga               ");
+  Serial.println("switch output gnrmc               ");
+  Serial.println("switch output gpatt               ");
+  Serial.println("switch output matrix              ");
+  Serial.println("switch output sensors             ");
+  Serial.println("switch output sun                 ");
+  Serial.println("switch output moon                ");
+  Serial.println("switch output mercury             ");
+  Serial.println("switch output venus               ");
+  Serial.println("switch output mars                ");
+  Serial.println("switch output jupiter             ");
+  Serial.println("switch output saturn              ");
+  Serial.println("switch output uranus              ");
+  Serial.println("switch output neptune             ");
+  Serial.println();
   Serial.println("print satio degrees_latitude              SATIO Degrees Latitude.");
   Serial.println("print satio degrees_longitude             SATIO Degrees Longitude.");
   Serial.println("print satio ground_heading                SATIO Ground Heading.");
@@ -18849,21 +18865,6 @@ static void PrintHelp() {
   Serial.println("switch track saturn               ");
   Serial.println("switch track uranus               ");
   Serial.println("switch track neptune              ");
-  Serial.println("switch output satio               ");
-  Serial.println("switch output gngga               ");
-  Serial.println("switch output gnrmc               ");
-  Serial.println("switch output gpatt               ");
-  Serial.println("switch output matrix              ");
-  Serial.println("switch output sensors             ");
-  Serial.println("switch output sun                 ");
-  Serial.println("switch output moon                ");
-  Serial.println("switch output mercury             ");
-  Serial.println("switch output venus               ");
-  Serial.println("switch output mars                ");
-  Serial.println("switch output jupiter             ");
-  Serial.println("switch output saturn              ");
-  Serial.println("switch output uranus              ");
-  Serial.println("switch output neptune             ");
   Serial.println("switch iic chan 0                 ");
   Serial.println("switch iic chan 1                 ");
   Serial.println("switch iic chan 2                 ");
@@ -18941,6 +18942,25 @@ static void CmdProcess(void) {
     // process commands
     // ------------------------------------------------
     if (strcmp(CMD_BUFFER, "h\r")==0) {PrintHelp();}
+
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
     
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                                                          BENCH
@@ -19668,24 +19688,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
       else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
       else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
-      // ------------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                   ENABLE/DISABLE SERIAL OUTPUT
-      // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "switch output satio\r")==0) {systemData.output_satio_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output gngga\r")==0) {systemData.output_gngga_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output gnrmc\r")==0) {systemData.output_gnrmc_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output gpatt\r")==0) {systemData.output_gpatt_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output matrix\r")==0) {systemData.output_matrix_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output sensors\r")==0) {systemData.output_sensors_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output sun\r")==0) {systemData.output_sun_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output moon\r")==0) {systemData.output_moon_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output mercury\r")==0) {systemData.output_mercury_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output venus\r")==0) {systemData.output_venus_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output mars\r")==0) {systemData.output_mars_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output jupiter\r")==0) {systemData.output_jupiter_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output saturn\r")==0) {systemData.output_saturn_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output uranus\r")==0) {systemData.output_uranus_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch output neptune\r")==0) {systemData.output_neptune_enabled^=true;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                       IIC MULTIPLEXER CHANNELS
       // ------------------------------------------------------------------------------------------------------------------------------
