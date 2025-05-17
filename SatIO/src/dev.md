@@ -1,3 +1,5 @@
+-----
+
 [ Add Matrix Function ]
 
 1: CTRL+F: MatrixStruct -> add to matrix_function_names.
@@ -17,7 +19,7 @@
 The new function should now show up in available functions and can be used
 with expressions (over, under, equal, range).
 
-
+-----
 
 [ Add Menu Page ]
 
@@ -35,7 +37,7 @@ with expressions (over, under, equal, range).
 
 The new menu page should now show up in the UI and be fully functional.
 
-
+-----
 
 [ Add New System Configuration Value ]
 
@@ -46,3 +48,5 @@ The new menu page should now show up in the UI and be fully functional.
 3: CTRL+F: sdcardLoadSystemConfig(char * file) -> add as required.
 
 The new value will be loaded every startup after system configuration has been saved.
+
+-----
