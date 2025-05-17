@@ -12347,6 +12347,27 @@ void listMatrixFilesHandleUI(int return_page) {
   }
 }
 
+void setMatrixDefault() {
+  // ----------------------------------------------
+  // set states
+  // ----------------------------------------------
+  setAllMatrixSwitchesEnabledTrue();
+  setAllMatrixSwitchesStateFalse();
+  // ----------------------------------------------
+  // write states
+  // ----------------------------------------------
+  writePortControllerSwitchState();
+  // ----------------------------------------------
+  // zero matrix
+  // ----------------------------------------------
+  zero_matrix();
+  // ----------------------------------------------
+  // update filename and file path
+  // ----------------------------------------------
+  memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
+  memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     MENU ENTER
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12579,24 +12600,7 @@ void menuEnter() {
     // new matrix
     // ------------------------------------------------
     if (menuFile.selection()==0) {
-      // ----------------------------------------------
-      // set states
-      // ----------------------------------------------
-      setAllMatrixSwitchesEnabledTrue();
-      setAllMatrixSwitchesStateFalse();
-      // ----------------------------------------------
-      // write states
-      // ----------------------------------------------
-      writePortControllerSwitchState();
-      // ----------------------------------------------
-      // zero matrix
-      // ----------------------------------------------
-      zero_matrix();
-      // ----------------------------------------------
-      // update filename and file path
-      // ----------------------------------------------
-      memset(sdcardData.matrix_filepath, 0, sizeof(sdcardData.matrix_filepath));
-      memset(sdcardData.matrix_filename, 0, sizeof(sdcardData.matrix_filename));
+      setMatrixDefault();
     }
 
     // ------------------------------------------------
@@ -12639,6 +12643,7 @@ void menuEnter() {
   // save matrix menu page
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
+    setMatrixDefault();
     createMatrixMenuFileName();
     saveMatrixHandleUI(page_file_main);
   }
@@ -12647,6 +12652,7 @@ void menuEnter() {
   // load matrix menu page
   // --------------------------------------------------
   else if (menu_page==page_file_load_matrix) {
+    setMatrixDefault();
     createMatrixMenuFileName();
     loadMatrixHandleUI(page_file_main);
   }
@@ -12657,6 +12663,7 @@ void menuEnter() {
   else if (menu_page==page_file_delete_matrix) {
     createMatrixMenuFileName();
     deleteMatrixHandleUI(page_file_main);
+    setMatrixDefault();
   }
 
   // ----------------------------------------------------------------
@@ -19714,6 +19721,7 @@ static void CmdProcess(void) {
         Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
         Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
+          setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
           saveMatrixHandleUI(menu_page);
         }
@@ -19737,6 +19745,7 @@ static void CmdProcess(void) {
         Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
         Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
+          setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
           loadMatrixHandleUI(menu_page);
         }
@@ -19760,6 +19769,7 @@ static void CmdProcess(void) {
         Serial.println("[TMP_CMD_STRING_0] " + String(TMP_CMD_STRING_0));
         Serial.println("[COMMAND_PASS] " + String(COMMAND_PASS));
         if (COMMAND_PASS==1) {
+          setMatrixDefault();
           createMatrixFileNameN(atoi(TMP_CMD_STRING_0.c_str()));
           deleteMatrixHandleUI(menu_page);
         }
