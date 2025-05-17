@@ -18613,6 +18613,7 @@ static void PrintHelp() {
   Serial.println("print satio utc_auto_offset_flag          Return SATIO UTC Second Offset Flag.");
   Serial.println();
   Serial.println("print matrix -v                           Return all matrix data.");
+  Serial.println("print matrix n                            Return matrix data for specified n.");
   Serial.println("print matrix enabled                      Return all enabled matrix switches.");
   Serial.println("print matrix disabled                     Return all disabled matrix switches.");
   Serial.println("print matrix active                       Return all active matrix switches.");
@@ -18936,6 +18937,25 @@ void PrintMatrixData() {
   Serial.println("-----------------------------------------------------");
 }
 
+void PrintMatrixNData(int Mi) {
+  Serial.println("-----------------------------------------------------");
+  Serial.println("[matrix switch] " + String(Mi));
+  Serial.println("[port] " + String(matrixData.matrix_port_map[0][Mi]));
+  Serial.println("[enabled] " + String(matrixData.matrix_switch_enabled[0][Mi]));
+  Serial.println("[active] " + String(matrixData.matrix_switch_state[0][Mi]));
+
+  for (int Fi=0; Fi<matrixData.max_matrix_functions; Fi++) {
+    Serial.println("[function " + String(Fi) + " name] " + String(matrixData.matrix_function[Mi][Fi]));
+    Serial.println("[function " + String(Fi) + " expression] " + String(matrixData.matrix_switch_expression_index[Mi][Fi]));
+    Serial.println("[function " + String(Fi) + " inverted] " + String(matrixData.matrix_switch_inverted_logic[Mi][Fi]));
+    Serial.println("[function " + String(Fi) + " x] " + String(matrixData.matrix_function_xyz[Mi][Fi][0]));
+    Serial.println("[function " + String(Fi) + " y] " + String(matrixData.matrix_function_xyz[Mi][Fi][1]));
+    Serial.println("[function " + String(Fi) + " z] " + String(matrixData.matrix_function_xyz[Mi][Fi][2]));
+  }
+
+  Serial.println("-----------------------------------------------------");
+}
+
 // ----------------------------------------------------------------------------------------------------------------------------------
 /*
   The following commands are intended to allow SatIO to be controlled via other systems, embedded systems, scripts and humans.
@@ -18993,6 +19013,12 @@ static void CmdProcess(void) {
     // ------------------------------------------------------------------------------------------------------------------------------
     else if (strcmp(CMD_BUFFER, "print matrix -v\r")==0) {
       PrintMatrixData();
+    }
+    // ------------------------------------------------------------------------------------------------------------------------------
+    //                                                                                       SPECIFIC REQUEST SERIAL OUTPUT: MATRIX N
+    // ------------------------------------------------------------------------------------------------------------------------------
+    else if (strcmp(CMD_BUFFER, "print matrix -v\r")==0) {
+      PrintMatrixNData();
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED
