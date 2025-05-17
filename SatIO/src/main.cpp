@@ -6756,7 +6756,7 @@ void sdcardCreateMatrixFileSlotList() {
     if (sd.exists(temp_filepath_0.c_str())) {
       memset(sdcardData.matrix_filenames[i], 0, 56);
       strcpy(sdcardData.matrix_filenames[i], temp_filepath_0.c_str());
-      Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
+      Serial.println("[sdcard] found: " + String(sdcardData.matrix_filenames[i]));
       }
     // ------------------------------------------------
     // add to slot i
@@ -6783,7 +6783,7 @@ void sdcardListMatrixFiles() {
     // print
     // ------------------------------------------------
     if (sd.exists(temp_filepath_0.c_str())) {
-      Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
+      Serial.println("[sdcard] found: " + String(sdcardData.matrix_filenames[i]));
       }
   }
 }
