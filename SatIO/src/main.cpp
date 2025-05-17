@@ -18581,7 +18581,7 @@ static void PrintHelp() {
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("                                               SATIO                                               ");
   Serial.println("");
-  Serial.println("[ REQUEST DATA ]");
+  Serial.println("[ INFORMATION ]");
   Serial.println();
   Serial.println("switch output satio               ");
   Serial.println("switch output gngga               ");
@@ -18824,7 +18824,7 @@ static void PrintHelp() {
   Serial.println("print neptune elat                        Neptune Ecliptic Latitude.");
   Serial.println("print neptune elon                        Neptune Ecliptic Longitude.");
   Serial.println();
-  Serial.println("[ SETUP ] Requires debug bridge enabled.");
+  Serial.println("[ CONTROL ] Requires debug bridge enabled.");
   Serial.println();
   Serial.println("menu left                         Navigate UI Menu.");
   Serial.println("menu right                        Navigate UI Menu.");
