@@ -20,6 +20,7 @@
 
 The new function should now show up in available functions and can be used programmably 
 with expressions (over, under, equal, range) and can be saved/loaded from matrix files.
+Every function added dramatically increases the number of SatIO programmable combinations.
 
 -----
 
