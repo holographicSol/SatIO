@@ -19037,7 +19037,6 @@ static void CmdProcess(void) {
         PrintMatrixNData(atoi(TMP_CMD_STRING_1.c_str()));
       }
       else {Serial.println("[command failed]");}
-      }
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                        SPECIFIC REQUEST SERIAL OUTPUT: MATRIX ENABLED/DISABLED
