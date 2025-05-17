@@ -6733,9 +6733,10 @@ void sdcardMakeSystemDirs() {for (int i=0; i < 2; i++) {sdcardMakeDir(sdcardData
  Files that do not exist will be populated with EMPTY.
 */
 
-String temp_search_str;
+String file_template_0 = "/MATRIX/M_REPLACE.SAVE";
+String temp_filepath_0;
 
-void sdcardCreateMatrixFileSlotList(char * filepath) {
+void sdcardCreateMatrixFileSlotList() {
   // ------------------------------------------------
   // iterate
   // ------------------------------------------------
@@ -6747,14 +6748,14 @@ void sdcardCreateMatrixFileSlotList(char * filepath) {
     // ------------------------------------------------
     // formulate search string
     // ------------------------------------------------
-    temp_search_str=filepath;
-    temp_search_str.replace("REPLACE", String(i));
+    temp_filepath_0=file_template_0;
+    temp_filepath_0.replace("REPLACE", String(i));
     // ------------------------------------------------
     // add to slot i
     // ------------------------------------------------
-    if (sd.exists(temp_search_str.c_str())) {
+    if (sd.exists(temp_filepath_0.c_str())) {
       memset(sdcardData.matrix_filenames[i], 0, 56);
-      strcpy(sdcardData.matrix_filenames[i], temp_search_str.c_str());
+      strcpy(sdcardData.matrix_filenames[i], temp_filepath_0.c_str());
       Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
       }
     // ------------------------------------------------
@@ -6765,10 +6766,10 @@ void sdcardCreateMatrixFileSlotList(char * filepath) {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                             SDCARD: LIST FILES
+//                                                                                                      SDCARD: LIST MATRIX FILES
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
-void sdcardListMatrixFiles(char * filepath) {
+void sdcardListMatrixFiles() {
   // ------------------------------------------------
   // iterate
   // ------------------------------------------------
@@ -6776,12 +6777,12 @@ void sdcardListMatrixFiles(char * filepath) {
     // ------------------------------------------------
     // formulate search string
     // ------------------------------------------------
-    temp_search_str=filepath;
-    temp_search_str.replace("REPLACE", String(i));
+    temp_filepath_0=file_template_0;
+    temp_filepath_0.replace("REPLACE", String(i));
     // ------------------------------------------------
     // print
     // ------------------------------------------------
-    if (sd.exists(temp_search_str.c_str())) {
+    if (sd.exists(temp_filepath_0.c_str())) {
       Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
       }
   }
@@ -7097,7 +7098,7 @@ void sdcardDeleteMatrix(char * file) {
       // ---------------------------------
       // recreate matrix filenames
       // ---------------------------------
-      sdcardCreateMatrixFileSlotList("/MATRIX/M_REPLACE.SAVE");
+      sdcardCreateMatrixFileSlotList();
       // ---------------------------------
       // zero the matrix
       // ---------------------------------
@@ -12342,7 +12343,7 @@ void listMatrixFilesHandleUI(int return_page) {
   // SDCARD
   // ----------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  sdcardCreateMatrixFileSlotList("/MATRIX/M_REPLACE.SAVE");
+  sdcardCreateMatrixFileSlotList();
   sd.end();
   endSPIDevice(SD_CS);
   // ----------------------------------------------
