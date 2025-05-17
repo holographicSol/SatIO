@@ -6712,12 +6712,12 @@ void sdcardMakeDir(char * dir){
 void sdcardMakeSystemDirs() {for (int i=0; i < 2; i++) {sdcardMakeDir(sdcardData.system_dirs[i]);}}
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                      SDCARD: PUT ALL MATRIX FILENAMES IN ARRAY
+//                                                                                                       SDCARD: CREATE FILE LIST
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
 /* discovers and compiles an array of matrix filenames */
 
-void sdcardListMatrixFiles(char * dir, char * name, char * ext) {
+void sdcardCreateFileList(char * dir, char * name, char * ext) {
   char tempname[56];
   char temppath[56];
   char temp_i[4];
@@ -6735,13 +6735,43 @@ void sdcardListMatrixFiles(char * dir, char * name, char * ext) {
     strcat(tempname, "_");
     strcat(tempname, temp_i);
     strcat(tempname, ext);
-    Serial.println("[sdcard] calculating: " + String(temppath));
+    // Serial.println("[sdcard] calculating: " + String(temppath));
     if (sd.exists(temppath)) {
-      Serial.println("[sdcard] calculated filename found: " + String(temppath));
-      memset(sdcardData.matrix_filenames[i], 0, 56); strcpy(sdcardData.matrix_filenames[i], temppath);
-      Serial.println("[matrix_filenames] " + String(sdcardData.matrix_filenames[i]));
+      // Serial.println("[sdcard] found: " + String(temppath));
+      memset(sdcardData.matrix_filenames[i], 0, 56);
+      strcpy(sdcardData.matrix_filenames[i], temppath);
+      Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
       }
     else {strcpy(sdcardData.matrix_filenames[i], "EMPTY");}
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                             SDCARD: LIST FILES
+// ------------------------------------------------------------------------------------------------------------------------------ 
+
+void sdcardListFiles(char * dir, char * name, char * ext) {
+  char tempname[56];
+  char temppath[56];
+  char temp_i[4];
+  for (int i=0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
+  for (int i=0; i < sdcardData.max_matrix_filenames; i++) {
+    memset(temppath, 0, 56);
+    strcpy(temppath, dir);
+    strcat(temppath, name);
+    strcat(temppath, "_");
+    itoa(i, temp_i, 10);
+    strcat(temppath, temp_i);
+    strcat(temppath, ext);
+    memset(tempname, 0, 56);
+    strcat(tempname, name);
+    strcat(tempname, "_");
+    strcat(tempname, temp_i);
+    strcat(tempname, ext);
+    // Serial.println("[sdcard] calculating: " + String(temppath));
+    if (sd.exists(temppath)) {
+      Serial.println("[sdcard] found: " + String(temppath));
+      }
   }
 }
 
@@ -7055,7 +7085,7 @@ void sdcardDeleteMatrix(char * file) {
       // ---------------------------------
       // recreate matrix filenames
       // ---------------------------------
-      sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+      sdcardCreateFileList(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
       // ---------------------------------
       // zero the matrix
       // ---------------------------------
@@ -12178,7 +12208,7 @@ void createMatrixMenuFileName() {
 
 void createMatrixFileNameN(int n) {
   // ----------------------------------------------
-  // generate filename according to selection index
+  // generate filename according to arg
   // ----------------------------------------------
   memset(sdcardData.newfilename, 0, sizeof(sdcardData.newfilename));
   strcpy(sdcardData.newfilename, "/MATRIX/M_");
@@ -12188,7 +12218,7 @@ void createMatrixFileNameN(int n) {
   strcat(sdcardData.newfilename, ".SAVE");
 }
 
-void saveMatrixHandleUI(int return_page) {
+void goToIndicatorPage(int p) {
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
@@ -12197,20 +12227,16 @@ void saveMatrixHandleUI(int return_page) {
     // go to
     // --------------------------------------------
     WaitToUpdateUI();
-    menu_page=page_save_matrix_file_indicator;
+    menu_page=p;
     UIIndicators();
     // --------------------------------------------
     // end spi device
     // --------------------------------------------
     endSPIDevice(SSD1351_CS);
   }
-  // ----------------------------------------------
-  // SDCARD
-  // ----------------------------------------------
-  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  sdcardSaveMatrix(sdcardData.newfilename);
-  sd.end();
-  endSPIDevice(SD_CS);
+}
+
+void leaveIndicatorPage(int return_page) {
   // ------------------------------------------------
   // DISPLAY
   // ------------------------------------------------
@@ -12227,26 +12253,33 @@ void saveMatrixHandleUI(int return_page) {
   }
 }
 
+void saveMatrixHandleUI(int return_page) {
+  // ----------------------------------------------
+  // Indicator On
+  // ----------------------------------------------
+  goToIndicatorPage(page_save_matrix_file_indicator);
+  // ----------------------------------------------
+  // SDCARD
+  // ----------------------------------------------
+  beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  sdcardSaveMatrix(sdcardData.newfilename);
+  sd.end();
+  endSPIDevice(SD_CS);
+  // ----------------------------------------------
+  // Indicator Off
+  // ----------------------------------------------
+  leaveIndicatorPage(return_page);
+}
+
 void loadMatrixHandleUI(int return_page) {
   // ------------------------------------------------
   // handle empty slots
   // ------------------------------------------------
   if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
     // ----------------------------------------------
-    // DISPLAY
+    // Indicator On
     // ----------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // --------------------------------------------
-      // go to
-      // --------------------------------------------
-      WaitToUpdateUI();
-      menu_page=page_load_matrix_file_indicator;
-      UIIndicators();
-      // --------------------------------------------
-      // end spi device
-      // --------------------------------------------
-      endSPIDevice(SSD1351_CS);
-    }
+    goToIndicatorPage(page_load_matrix_file_indicator);
     // ----------------------------------------------
     // SDCARD
     // ----------------------------------------------
@@ -12255,20 +12288,10 @@ void loadMatrixHandleUI(int return_page) {
     sd.end();
     endSPIDevice(SD_CS);
     // ----------------------------------------------
-    // DISPLAY
+    // Indicator Off
     // ----------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // --------------------------------------------
-      // begin spi device
-      // --------------------------------------------
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-    }
+    leaveIndicatorPage(return_page);
   }
-  // ------------------------------------------------
-  // go to
-  // ------------------------------------------------
-  menu_page=return_page;
 }
 
 void deleteMatrixHandleUI(int return_page) {
@@ -12276,20 +12299,9 @@ void deleteMatrixHandleUI(int return_page) {
   // handle empty slots
   if (!strcmp(sdcardData.matrix_filenames[menuMatrixFilepath.selection()], "EMPTY")==0) {
     // ----------------------------------------------
-    // DISPLAY
+    // Indicator On
     // ----------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // --------------------------------------------
-      // go to
-      // --------------------------------------------
-      WaitToUpdateUI();
-      menu_page=page_delete_matrix_file_indicator;
-      UIIndicators();
-      // --------------------------------------------
-      // end spi device
-      // --------------------------------------------
-      endSPIDevice(SSD1351_CS);
-    }
+    goToIndicatorPage(page_delete_matrix_file_indicator);
     // ----------------------------------------------
     // SDCARD
     // ----------------------------------------------
@@ -12298,20 +12310,10 @@ void deleteMatrixHandleUI(int return_page) {
     sd.end();
     endSPIDevice(SD_CS);
     // ----------------------------------------------
-    // DISPLAY
+    // Indicator Off
     // ----------------------------------------------
-    if (systemData.DISPLAY_ENABLED==true) {
-      // --------------------------------------------
-      // begin spi device
-      // --------------------------------------------
-      beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
-      display.begin();
-    }
+    leaveIndicatorPage(return_page);
   }
-  // ------------------------------------------------
-  // go to
-  // ------------------------------------------------
-  menu_page=return_page;
 }
 
 void listMatrixFilesHandleUI(int return_page) {
@@ -12328,7 +12330,7 @@ void listMatrixFilesHandleUI(int return_page) {
   // SDCARD
   // ----------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  sdcardListMatrixFiles(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
+  sdcardCreateFileList(sdcardData.system_dirs[0], sdcardData.matrix_fname, sdcardData.save_ext);
   sd.end();
   endSPIDevice(SD_CS);
   // ----------------------------------------------
@@ -19627,12 +19629,6 @@ static void CmdProcess(void) {
           strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
         }
         else {Serial.println("[command failed]");}
-      }
-      // ------------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                      SAVE SYSTEM CONFIGURATION
-      // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "list matrix files\r")==0) {
-        saveSystemHandleUI(menu_page);
       }
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SAVE SYSTEM CONFIGURATION
