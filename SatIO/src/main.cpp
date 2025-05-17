@@ -7072,6 +7072,10 @@ bool sdcardSaveMatrix(char * file) {
     exfile.close();
     Serial.println("[sdcard] saved file successfully: " + String(file));
     UpdateMatrixFileNameFilePath(file);
+    // ---------------------------------
+    // recreate matrix filenames
+    // ---------------------------------
+    sdcardCreateMatrixFileSlotList();
     return true;
   }
   // ------------------------------------------------
@@ -7174,7 +7178,6 @@ void sdcardQuickCheck() {
   // SDCARD
   // ----------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-  sd.end();
   if (sd.cardBegin(SD_CONFIG)) {Serial.println("[sdcard] initialized");}
   else {Serial.println("[sdcard] could not begin card");}
   sd.end();
@@ -12270,6 +12273,7 @@ void saveMatrixHandleUI(int return_page) {
   // ----------------------------------------------
   // Indicator On
   // ----------------------------------------------
+  WaitToUpdateUI();
   goToIndicatorPage(page_save_matrix_file_indicator);
   // ----------------------------------------------
   // SDCARD
@@ -12292,6 +12296,7 @@ void loadMatrixHandleUI(int return_page) {
     // ----------------------------------------------
     // Indicator On
     // ----------------------------------------------
+    WaitToUpdateUI();
     goToIndicatorPage(page_load_matrix_file_indicator);
     // ----------------------------------------------
     // SDCARD
@@ -12314,6 +12319,7 @@ void deleteMatrixHandleUI(int return_page) {
     // ----------------------------------------------
     // Indicator On
     // ----------------------------------------------
+    WaitToUpdateUI();
     goToIndicatorPage(page_delete_matrix_file_indicator);
     // ----------------------------------------------
     // SDCARD
@@ -12330,36 +12336,53 @@ void deleteMatrixHandleUI(int return_page) {
 }
 
 void listMatrixFilesHandleUI(int return_page) {
+  WaitToUpdateUI();
+  vTaskSuspend(UpdateUITask);
+
+  Serial.println("[check] 0");
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
+    Serial.println("[check] 1");
     // --------------------------------------------
     // end spi device
     // --------------------------------------------
     endSPIDevice(SSD1351_CS);
+    Serial.println("[check] 2");
   }
   // ----------------------------------------------
   // SDCARD
   // ----------------------------------------------
   beginSPIDevice(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+  Serial.println("[check] 3");
   sdcardCreateMatrixFileSlotList();
+  Serial.println("[check] 4");
   sd.end();
+  Serial.println("[check] 5");
   endSPIDevice(SD_CS);
+  Serial.println("[check] 6");
   // ----------------------------------------------
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
+    // delay(500);
     // --------------------------------------------
     // begin spi device
     // --------------------------------------------
-    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS); 
+    beginSPIDevice(SSD1351_SCLK, SSD1351_MISO, SSD1351_MOSI, SSD1351_CS);
+    Serial.println("[check] 7");
     display.begin();
+    Serial.println("[check] 8");
     // --------------------------------------------
     // go to
     // --------------------------------------------
+    WaitToUpdateUI();
     menu_page=return_page;
+    Serial.println("[check] 9");
   }
+
+   vTaskResume(UpdateUITask);
 }
 
 void setMatrixDefault() {
@@ -12659,7 +12682,7 @@ void menuEnter() {
   // ------------------------------------------------
   else if (menu_page==page_file_save_matrix) {
     createMatrixMenuFileName();
-    saveMatrixHandleUI(page_file_main);
+    saveMatrixHandleUI(page_file_save_matrix);
   }
 
   // --------------------------------------------------
@@ -12668,7 +12691,7 @@ void menuEnter() {
   else if (menu_page==page_file_load_matrix) {
     setMatrixDefault();
     createMatrixMenuFileName();
-    loadMatrixHandleUI(page_file_main);
+    loadMatrixHandleUI(page_file_load_matrix);
   }
 
   // --------------------------------------------------
@@ -12676,7 +12699,7 @@ void menuEnter() {
   // --------------------------------------------------
   else if (menu_page==page_file_delete_matrix) {
     createMatrixMenuFileName();
-    deleteMatrixHandleUI(page_file_main);
+    deleteMatrixHandleUI(page_file_delete_matrix);
     setMatrixDefault();
   }
 
