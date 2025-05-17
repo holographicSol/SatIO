@@ -6733,8 +6733,8 @@ void sdcardMakeSystemDirs() {for (int i=0; i < 2; i++) {sdcardMakeDir(sdcardData
  Files that do not exist will be populated with EMPTY.
 */
 
-String file_template_0 = "/MATRIX/M_REPLACE.SAVE";
-String temp_filepath_0;
+String filepath_template_0 = "/MATRIX/M_REPLACE.SAVE";
+String search_filepath_0;
 
 void sdcardCreateMatrixFileSlotList() {
   // ------------------------------------------------
@@ -6748,14 +6748,14 @@ void sdcardCreateMatrixFileSlotList() {
     // ------------------------------------------------
     // formulate search string
     // ------------------------------------------------
-    temp_filepath_0=file_template_0;
-    temp_filepath_0.replace("REPLACE", String(i));
+    search_filepath_0=filepath_template_0;
+    search_filepath_0.replace("REPLACE", String(i));
     // ------------------------------------------------
     // add to slot i
     // ------------------------------------------------
-    if (sd.exists(temp_filepath_0.c_str())) {
+    if (sd.exists(search_filepath_0.c_str())) {
       memset(sdcardData.matrix_filenames[i], 0, 56);
-      strcpy(sdcardData.matrix_filenames[i], temp_filepath_0.c_str());
+      strcpy(sdcardData.matrix_filenames[i], search_filepath_0.c_str());
       Serial.println("[sdcard] found: " + String(sdcardData.matrix_filenames[i]));
       }
     // ------------------------------------------------
@@ -6777,12 +6777,12 @@ void sdcardListMatrixFiles() {
     // ------------------------------------------------
     // formulate search string
     // ------------------------------------------------
-    temp_filepath_0=file_template_0;
-    temp_filepath_0.replace("REPLACE", String(i));
+    search_filepath_0=filepath_template_0;
+    search_filepath_0.replace("REPLACE", String(i));
     // ------------------------------------------------
     // print
     // ------------------------------------------------
-    if (sd.exists(temp_filepath_0.c_str())) {
+    if (sd.exists(search_filepath_0.c_str())) {
       Serial.println("[sdcard] found: " + String(sdcardData.matrix_filenames[i]));
       }
   }
