@@ -18832,6 +18832,7 @@ static void PrintHelp() {
   Serial.println("menu enter                        Navigate UI Menu.");
   Serial.println("menu home                         Navigate UI Menu.");
   Serial.println("enter digits                      Input digits.");
+  Serial.println();
   Serial.println("switch display timeout            Enables/Disables Display Timeout.");
   Serial.println("set display timeout 0             Set Display Timeout 3 seconds.");
   Serial.println("set display timeout 1             Set Display Timeout 5 seconds.");
@@ -18839,6 +18840,7 @@ static void PrintHelp() {
   Serial.println("set display timeout 3             Set Display Timeout 15 seconds.");
   Serial.println("set display timeout 4             Set Display Timeout 30 seconds.");
   Serial.println("set display timeout 5             Set Display Timeout 1 minute.");
+  Serial.println();
   Serial.println("set overload 0                    Set Overload Threshold 1 microsecond.");
   Serial.println("set overload 1                    Set Overload Threshold 2 microsecond.");
   Serial.println("set overload 2                    Set Overload Threshold 3 microsecond.");
@@ -18850,13 +18852,16 @@ static void PrintHelp() {
   Serial.println("set overload 8                    Set Overload Threshold 10 millisecond.");
   Serial.println("set overload 9                    Set Overload Threshold 100 millisecond.");
   Serial.println("set overload 10                   Set Overload Threshold 1 second.");
+  Serial.println();
   Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
+  Serial.println();
   Serial.println("switch satio                      Enables/Disables SatIO features.");
   Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
   Serial.println("switch gnrmc                      Enables/Disables Parsing GNRMC Data.");
   Serial.println("switch gpatt                      Enables/Disables Parsing GPATT Data.");
+  Serial.println();
   Serial.println("switch track sun                  Enables/Disables Tracking Sun.");
   Serial.println("switch track moon                 Enables/Disables Tracking Moon.");
   Serial.println("switch track mercury              Enables/Disables Tracking Mercury.");
@@ -18866,6 +18871,7 @@ static void PrintHelp() {
   Serial.println("switch track saturn               Enables/Disables Tracking Saturn.");
   Serial.println("switch track uranus               Enables/Disables Tracking Uranus.");
   Serial.println("switch track neptune              Enables/Disables Tracking Neptune.");
+  Serial.println();
   Serial.println("switch ad-plex chan 0                 Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan 1                 Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan 2                 Enables/Disables Analog/Digital Multiplexer Channel.");
@@ -18883,6 +18889,7 @@ static void PrintHelp() {
   Serial.println("switch ad-plex chan 14                Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan 15                Enables/Disables Analog/Digital Multiplexer Channel.");
   Serial.println("switch ad-plex chan all               Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println();
   Serial.println("switch iic-plex chan 0                Enables/Disables IIC Multiplexer Channel.");
   Serial.println("switch iic-plex chan 1                Enables/Disables IIC Multiplexer Channel.");
   Serial.println("switch iic-plex chan 2                Enables/Disables IIC Multiplexer Channel.");
@@ -18892,11 +18899,14 @@ static void PrintHelp() {
   Serial.println("switch iic-plex chan 6                Enables/Disables IIC Multiplexer Channel.");
   Serial.println("switch iic-plex chan 7                Enables/Disables IIC Multiplexer Channel.");
   Serial.println("switch iic-plex chan all              Enables/Disables IIC Multiplexer Channel.");
-  Serial.println("switch dht11_0_display_hic        ");
-  Serial.println("switch convert coordinates        ");
-  Serial.println("set convert coordinates GNGGA     ");
-  Serial.println("set convert coordinates GNRMC     ");
-  Serial.println("set utc_auto_offset_flag          ");
+  Serial.println();
+  Serial.println("switch dht11_0_display_hic            Enables/Disables DHT11 Heat Index Celsius/Fahrenheit.");
+  Serial.println();
+  Serial.println("switch convert coordinates            Enables/Disables SatIO Coordinate Degrees Conversions.");
+  Serial.println("set convert coordinates GNGGA         Set Coordinate Degrees Conversions From GNGGA Data.");
+  Serial.println("set convert coordinates GNRMC         Set Coordinate Degrees Conversions From GNRMC Data.");
+  Serial.println("set utc_second_offset                 Set UTC Second Offset.");
+  // Serial.println("set utc_auto_offset_flag              "); // currently manual only
   // Serial.println("bench                                     ");
   Serial.println();
   Serial.println("h                                         Display this help message.");
@@ -19754,7 +19764,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                               SET SATIO UTC SECOND OFFSET FLAG
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;}
+      // else if (strcmp(CMD_BUFFER, "set utc_auto_offset_flag\r")==0) {satData.utc_auto_offset_flag^=true;} // currently manual only
     }
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                                                 TRIP UPDATE UI
