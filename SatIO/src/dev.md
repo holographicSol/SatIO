@@ -18,7 +18,7 @@
 
 8: CTRL+F: getRelatedZ() -> add as required.
 
-The new function should now show up in available functions and can be used
+The new function should now show up in available functions and can be used programmably 
 with expressions (over, under, equal, range) and can be saved/loaded from matrix files.
 
 -----
