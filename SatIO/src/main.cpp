@@ -18909,7 +18909,7 @@ static void PrintHelp() {
   // Serial.println("set utc_auto_offset_flag              "); // currently manual only
   // Serial.println("bench                                     ");
   Serial.println();
-  Serial.println("h                                         Display this help message.");
+  Serial.println("h                                 Display this help message.");
   Serial.println("");
   Serial.println("---------------------------------------------------------------------------------------------------");
 }
