@@ -10,7 +10,7 @@
 
 4: CTRL+F: menuMatrixSetFunctionNameItems -> increase max and items.
 
-5: CTRL+F: void matrixSwitch() -> express switching conditions for associated values.
+5: CTRL+F: void matrixSwitch() -> express switching conditions for associated values (see existing conditions in matrixSwitch()).
 
 6: CTRL+F: getRelatedX() -> add as required.
 
