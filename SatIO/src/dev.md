@@ -2,7 +2,7 @@
 
 [ Add Matrix Function ]
 
-1: Optional: Create new variable(s) (related xyz).
+1: Optional: Create new variable(s) (related xyz) as required.
 
 2: CTRL+F: MatrixStruct -> add to matrix_function_names.
 
