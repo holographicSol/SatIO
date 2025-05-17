@@ -6768,27 +6768,25 @@ void sdcardCreateMatrixFileSlotList(char * filepath) {
 //                                                                                                             SDCARD: LIST FILES
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
-void sdcardListFiles(char * dir, char * name, char * ext) {
-  char tempname[56];
-  char temppath[56];
-  char temp_i[4];
-  for (int i=0; i < sdcardData.max_matrix_filenames; i++) {memset(sdcardData.matrix_filenames[i], 0, 56);}
+void sdcardListMatrixFiles(char * filepath) {
+  // ------------------------------------------------
+  // iterate
+  // ------------------------------------------------
   for (int i=0; i < sdcardData.max_matrix_filenames; i++) {
-    memset(temppath, 0, 56);
-    strcpy(temppath, dir);
-    strcat(temppath, name);
-    strcat(temppath, "_");
-    itoa(i, temp_i, 10);
-    strcat(temppath, temp_i);
-    strcat(temppath, ext);
-    memset(tempname, 0, 56);
-    strcat(tempname, name);
-    strcat(tempname, "_");
-    strcat(tempname, temp_i);
-    strcat(tempname, ext);
-    // Serial.println("[sdcard] calculating: " + String(temppath));
-    if (sd.exists(temppath)) {
-      Serial.println("[sdcard] found: " + String(temppath));
+    // ------------------------------------------------
+    // clear existing slots
+    // ------------------------------------------------
+    memset(sdcardData.matrix_filenames[i], 0, 56);
+    // ------------------------------------------------
+    // formulate search string
+    // ------------------------------------------------
+    temp_search_str=filepath;
+    temp_search_str.replace("REPLACE", String(i));
+    // ------------------------------------------------
+    // print
+    // ------------------------------------------------
+    if (sd.exists(temp_search_str.c_str())) {
+      Serial.println("[sdcard] found:" + String(sdcardData.matrix_filenames[i]));
       }
   }
 }
