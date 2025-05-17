@@ -335,6 +335,7 @@ void requestWT901();
 void UIIndicators();
 void printAllTimes();
 void zero_matrix();
+void writePortControllerSwitchState();
 String groundHeadingDegreesToNESW(float num);
 
 char CMD_BUFFER[1024];
@@ -12579,12 +12580,16 @@ void menuEnter() {
     // ------------------------------------------------
     if (menuFile.selection()==0) {
       // ----------------------------------------------
-      // disable and turn off all matrix switches
+      // set states
       // ----------------------------------------------
-      setAllMatrixSwitchesEnabledFalse();
+      setAllMatrixSwitchesEnabledTrue();
       setAllMatrixSwitchesStateFalse();
       // ----------------------------------------------
-      // zero the matrix and clear current matrix file path
+      // write states
+      // ----------------------------------------------
+      writePortControllerSwitchState();
+      // ----------------------------------------------
+      // zero matrix
       // ----------------------------------------------
       zero_matrix();
       // ----------------------------------------------
