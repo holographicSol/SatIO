@@ -18903,6 +18903,7 @@ static void PrintHelp() {
   Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
+  Serial.println("switch wt901 enabled              Enables/Disables WT901 requests.");
   Serial.println();
   Serial.println("switch satio                      Enables/Disables SatIO features.");
   Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
@@ -19472,6 +19473,7 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch matrix enabled\r")==0) {systemData.matrix_enabled^=true;}
       else if (strcmp(CMD_BUFFER, "switch matrix startup enabled\r")==0) {systemData.matrix_run_on_startup^=true;}
       else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch wt901 enabled\r")==0) {systemData.wt901_enabled^=true;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SET MATRIX SWITCH ENABLED
       // ------------------------------------------------------------------------------------------------------------------------------
