@@ -6774,10 +6774,6 @@ void sdcardListMatrixFiles(char * filepath) {
   // ------------------------------------------------
   for (int i=0; i < sdcardData.max_matrix_filenames; i++) {
     // ------------------------------------------------
-    // clear existing slots
-    // ------------------------------------------------
-    memset(sdcardData.matrix_filenames[i], 0, 56);
-    // ------------------------------------------------
     // formulate search string
     // ------------------------------------------------
     temp_search_str=filepath;
