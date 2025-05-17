@@ -1,6 +1,6 @@
 -----
 
-[ Add Matrix Function ]
+[ Add New Matrix Function ]
 
 1: Optional: Create new variable(s) (related xyz) as required.
 
@@ -23,7 +23,7 @@ with expressions (over, under, equal, range).
 
 -----
 
-[ Add Menu Page ]
+[ Add New Menu Page ]
 
 1: CTRL+F: DISPLAY VARIABLES -> add page number and menu as required.
 
