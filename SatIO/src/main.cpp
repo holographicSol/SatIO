@@ -18826,71 +18826,72 @@ static void PrintHelp() {
   Serial.println();
   Serial.println("[ SETUP ] Requires debug bridge enabled.");
   Serial.println();
-  Serial.println("menu left                         ");
-  Serial.println("menu right                        ");
-  Serial.println("menu back                         ");
-  Serial.println("menu enter                        ");
-  Serial.println("menu home                         ");
-  Serial.println("switch display timeout            ");
-  Serial.println("set display timeout 0             ");
-  Serial.println("set display timeout 1             ");
-  Serial.println("set display timeout 2             ");
-  Serial.println("set display timeout 3             ");
-  Serial.println("set display timeout 4             ");
-  Serial.println("set display timeout 5             ");
-  Serial.println("set overload 0                    ");
-  Serial.println("set overload 1                    ");
-  Serial.println("set overload 2                    ");
-  Serial.println("set overload 3                    ");
-  Serial.println("set overload 4                    ");
-  Serial.println("set overload 5                    ");
-  Serial.println("set overload 6                    ");
-  Serial.println("set overload 7                    ");
-  Serial.println("set overload 8                    ");
-  Serial.println("set overload 9                    ");
-  Serial.println("set overload 10                   ");
-  Serial.println("switch matrix enabled             ");
-  Serial.println("switch matrix startup enabled     ");
-  Serial.println("switch matrix io enabled          ");
-  Serial.println("switch satio                      ");
-  Serial.println("switch gngga                      ");
-  Serial.println("switch gnrmc                      ");
-  Serial.println("switch gpatt                      ");
-  Serial.println("switch track sun                  ");
-  Serial.println("switch track moon                 ");
-  Serial.println("switch track mercury              ");
-  Serial.println("switch track venus                ");
-  Serial.println("switch track mars                 ");
-  Serial.println("switch track jupiter              ");
-  Serial.println("switch track saturn               ");
-  Serial.println("switch track uranus               ");
-  Serial.println("switch track neptune              ");
-  Serial.println("switch iic chan 0                 ");
-  Serial.println("switch iic chan 1                 ");
-  Serial.println("switch iic chan 2                 ");
-  Serial.println("switch iic chan 3                 ");
-  Serial.println("switch iic chan 4                 ");
-  Serial.println("switch iic chan 5                 ");
-  Serial.println("switch iic chan 6                 ");
-  Serial.println("switch iic chan 7                 ");
-  Serial.println("switch iic chan 8                 ");
-  Serial.println("switch iic chan 9                 ");
-  Serial.println("switch iic chan 10                ");
-  Serial.println("switch iic chan 11                ");
-  Serial.println("switch iic chan 12                ");
-  Serial.println("switch iic chan 13                ");
-  Serial.println("switch iic chan 14                ");
-  Serial.println("switch iic chan 15                ");
-  Serial.println("switch iic chan all               ");
-  Serial.println("switch analog digital chan 0      ");
-  Serial.println("switch analog digital chan 1      ");
-  Serial.println("switch analog digital chan 2      ");
-  Serial.println("switch analog digital chan 3      ");
-  Serial.println("switch analog digital chan 4      ");
-  Serial.println("switch analog digital chan 5      ");
-  Serial.println("switch analog digital chan 6      ");
-  Serial.println("switch analog digital chan 7      ");
-  Serial.println("switch analog digital chan all    ");
+  Serial.println("menu left                         Navigate UI Menu.");
+  Serial.println("menu right                        Navigate UI Menu.");
+  Serial.println("menu back                         Navigate UI Menu.");
+  Serial.println("menu enter                        Navigate UI Menu.");
+  Serial.println("menu home                         Navigate UI Menu.");
+  Serial.println("enter digits                      Input digits.");
+  Serial.println("switch display timeout            Enables/Disables Display Timeout.");
+  Serial.println("set display timeout 0             Set Display Timeout 3 seconds.");
+  Serial.println("set display timeout 1             Set Display Timeout 5 seconds.");
+  Serial.println("set display timeout 2             Set Display Timeout 10 seconds.");
+  Serial.println("set display timeout 3             Set Display Timeout 15 seconds.");
+  Serial.println("set display timeout 4             Set Display Timeout 30 seconds.");
+  Serial.println("set display timeout 5             Set Display Timeout 1 minute.");
+  Serial.println("set overload 0                    Set Overload Threshold 1 microsecond.");
+  Serial.println("set overload 1                    Set Overload Threshold 2 microsecond.");
+  Serial.println("set overload 2                    Set Overload Threshold 3 microsecond.");
+  Serial.println("set overload 3                    Set Overload Threshold 4 microsecond.");
+  Serial.println("set overload 4                    Set Overload Threshold 5 microsecond.");
+  Serial.println("set overload 5                    Set Overload Threshold 10 microsecond.");
+  Serial.println("set overload 6                    Set Overload Threshold 50 microsecond.");
+  Serial.println("set overload 7                    Set Overload Threshold 1 millisecond.");
+  Serial.println("set overload 8                    Set Overload Threshold 10 millisecond.");
+  Serial.println("set overload 9                    Set Overload Threshold 100 millisecond.");
+  Serial.println("set overload 10                   Set Overload Threshold 1 second.");
+  Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
+  Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
+  Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
+  Serial.println("switch satio                      Enables/Disables SatIO features.");
+  Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
+  Serial.println("switch gnrmc                      Enables/Disables Parsing GNRMC Data.");
+  Serial.println("switch gpatt                      Enables/Disables Parsing GPATT Data.");
+  Serial.println("switch track sun                  Enables/Disables Tracking Sun.");
+  Serial.println("switch track moon                 Enables/Disables Tracking Moon.");
+  Serial.println("switch track mercury              Enables/Disables Tracking Mercury.");
+  Serial.println("switch track venus                Enables/Disables Tracking Venus.");
+  Serial.println("switch track mars                 Enables/Disables Tracking Mars.");
+  Serial.println("switch track jupiter              Enables/Disables Tracking Jupiter.");
+  Serial.println("switch track saturn               Enables/Disables Tracking Saturn.");
+  Serial.println("switch track uranus               Enables/Disables Tracking Uranus.");
+  Serial.println("switch track neptune              Enables/Disables Tracking Neptune.");
+  Serial.println("switch ad-plex chan 0                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 1                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 2                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 3                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 4                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 5                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 6                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 7                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 8                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 9                 Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 10                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 11                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 12                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 13                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 14                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan 15                Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch ad-plex chan all               Enables/Disables Analog/Digital Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 0                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 1                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 2                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 3                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 4                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 5                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 6                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan 7                Enables/Disables IIC Multiplexer Channel.");
+  Serial.println("switch iic-plex chan all              Enables/Disables IIC Multiplexer Channel.");
   Serial.println("switch dht11_0_display_hic        ");
   Serial.println("switch convert coordinates        ");
   Serial.println("set convert coordinates GNGGA     ");
@@ -19689,35 +19690,35 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                       IIC MULTIPLEXER CHANNELS
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "switch iic chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch iic chan all")==0) {systemData.CD74HC4067_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 0")==0) {systemData.CD74HC4067_channel_enabled[0]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 1")==0) {systemData.CD74HC4067_channel_enabled[1]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan ")==0) {systemData.CD74HC4067_channel_enabled[2]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 3")==0) {systemData.CD74HC4067_channel_enabled[3]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 4")==0) {systemData.CD74HC4067_channel_enabled[4]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 5")==0) {systemData.CD74HC4067_channel_enabled[5]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 6")==0) {systemData.CD74HC4067_channel_enabled[6]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 7")==0) {systemData.CD74HC4067_channel_enabled[7]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 8")==0) {systemData.CD74HC4067_channel_enabled[8]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 9")==0) {systemData.CD74HC4067_channel_enabled[9]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 10")==0) {systemData.CD74HC4067_channel_enabled[10]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 11")==0) {systemData.CD74HC4067_channel_enabled[11]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 12")==0) {systemData.CD74HC4067_channel_enabled[12]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 13")==0) {systemData.CD74HC4067_channel_enabled[13]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 14")==0) {systemData.CD74HC4067_channel_enabled[14]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan 15")==0) {systemData.CD74HC4067_channel_enabled[15]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch iic-plex chan all")==0) {systemData.CD74HC4067_enabled^=true;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                            ANALOG/DIGITAL MULTIPLEXER CHANNELS
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
-      else if (strcmp(CMD_BUFFER, "switch analog digital chan all")==0) {systemData.TCA9548A_enabled^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 0\r")==0) {systemData.TCA9548A_channel_enabled[0]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 1\r")==0) {systemData.TCA9548A_channel_enabled[1]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 2\r")==0) {systemData.TCA9548A_channel_enabled[2]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 3\r")==0) {systemData.TCA9548A_channel_enabled[3]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 4\r")==0) {systemData.TCA9548A_channel_enabled[4]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 5\r")==0) {systemData.TCA9548A_channel_enabled[5]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 6\r")==0) {systemData.TCA9548A_channel_enabled[6]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan 7\r")==0) {systemData.TCA9548A_channel_enabled[7]^=true;}
+      else if (strcmp(CMD_BUFFER, "switch ad-plex chan all")==0) {systemData.TCA9548A_enabled^=true;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                 SWITCH SENSORS
       // ------------------------------------------------------------------------------------------------------------------------------
