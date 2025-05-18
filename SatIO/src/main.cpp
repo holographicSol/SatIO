@@ -18612,11 +18612,6 @@ String TMP_CMD_STRING_6;
 String TMP_CMD_STRING_7;
 String TMP_CMD_STRING_8;
 String TMP_CMD_STRING_9;
-String TMP_CMD_STRING_10;
-String TMP_CMD_STRING_11;
-String TMP_CMD_STRING_12;
-String TMP_CMD_STRING_13;
-String TMP_CMD_STRING_14;
 char *TMP_CMD_TOKEN;
 int ITER_TMP_CMD_TOKEN;
 int COMMAND_PASS=0;
@@ -18910,6 +18905,27 @@ static void PrintHelp() {
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
   Serial.println("switch wt901 enabled              Enables/Disables WT901 requests.");
+  Serial.println();
+  Serial.println("set pc 0 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 1 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 2 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 3 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 4 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 5 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 6 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 7 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 8 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 9 0                        Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 10 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 11 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 12 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 13 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 14 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 15 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 16 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 17 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 18 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
+  Serial.println("set pc 19 0                       Sets portcontroller matrix switch high/low. Overridden by matrix.");
   Serial.println();
   Serial.println("switch satio                      Enables/Disables SatIO features.");
   Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
@@ -19491,6 +19507,47 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch matrix startup enabled\r")==0) {systemData.matrix_run_on_startup^=true;}
       else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;}
       else if (strcmp(CMD_BUFFER, "switch wt901 enabled\r")==0) {systemData.wt901_enabled^=true;}
+
+      else if (strcmp(CMD_BUFFER, "set pc 0 0\r")==0) {matrixData.matrix_switch_state[0][0]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 0 1\r")==0) {matrixData.matrix_switch_state[0][0]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 1 0\r")==0) {matrixData.matrix_switch_state[0][1]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 1 1\r")==0) {matrixData.matrix_switch_state[0][1]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 2 0\r")==0) {matrixData.matrix_switch_state[0][2]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 2 1\r")==0) {matrixData.matrix_switch_state[0][2]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 3 0\r")==0) {matrixData.matrix_switch_state[0][3]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 3 1\r")==0) {matrixData.matrix_switch_state[0][3]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 4 0\r")==0) {matrixData.matrix_switch_state[0][4]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 4 1\r")==0) {matrixData.matrix_switch_state[0][4]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 5 0\r")==0) {matrixData.matrix_switch_state[0][5]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 5 1\r")==0) {matrixData.matrix_switch_state[0][5]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 6 0\r")==0) {matrixData.matrix_switch_state[0][6]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 6 1\r")==0) {matrixData.matrix_switch_state[0][6]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 7 0\r")==0) {matrixData.matrix_switch_state[0][7]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 7 1\r")==0) {matrixData.matrix_switch_state[0][7]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 8 0\r")==0) {matrixData.matrix_switch_state[0][8]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 8 1\r")==0) {matrixData.matrix_switch_state[0][8]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 9 0\r")==0) {matrixData.matrix_switch_state[0][9]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 9 1\r")==0) {matrixData.matrix_switch_state[0][9]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 10 0\r")==0) {matrixData.matrix_switch_state[0][10]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 10 1\r")==0) {matrixData.matrix_switch_state[0][10]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 11 0\r")==0) {matrixData.matrix_switch_state[0][11]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 11 1\r")==0) {matrixData.matrix_switch_state[0][11]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 12 0\r")==0) {matrixData.matrix_switch_state[0][12]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 12 1\r")==0) {matrixData.matrix_switch_state[0][12]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 13 0\r")==0) {matrixData.matrix_switch_state[0][13]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 13 1\r")==0) {matrixData.matrix_switch_state[0][13]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 14 0\r")==0) {matrixData.matrix_switch_state[0][14]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 14 1\r")==0) {matrixData.matrix_switch_state[0][14]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 15 0\r")==0) {matrixData.matrix_switch_state[0][15]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 15 1\r")==0) {matrixData.matrix_switch_state[0][15]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 16 0\r")==0) {matrixData.matrix_switch_state[0][16]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 16 1\r")==0) {matrixData.matrix_switch_state[0][16]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 17 0\r")==0) {matrixData.matrix_switch_state[0][17]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 17 1\r")==0) {matrixData.matrix_switch_state[0][17]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 18 0\r")==0) {matrixData.matrix_switch_state[0][18]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 18 1\r")==0) {matrixData.matrix_switch_state[0][18]=false;}
+      else if (strcmp(CMD_BUFFER, "set pc 19 0\r")==0) {matrixData.matrix_switch_state[0][19]=true;}
+      else if (strcmp(CMD_BUFFER, "set pc 19 1\r")==0) {matrixData.matrix_switch_state[0][19]=false;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SET MATRIX SWITCH ENABLED
       // ------------------------------------------------------------------------------------------------------------------------------
