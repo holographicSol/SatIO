@@ -6006,6 +6006,247 @@ void sdcardSaveSystemConfig(char * file) {
     exfile.println("");
 
     // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M0
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M0,");
+    itoa(matrixData.matrix_indicator_colors[0][0], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M1
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M1,");
+    itoa(matrixData.matrix_indicator_colors[0][1], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M2
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M2,");
+    itoa(matrixData.matrix_indicator_colors[0][2], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M3
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M3,");
+    itoa(matrixData.matrix_indicator_colors[0][3], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M4
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M4,");
+    itoa(matrixData.matrix_indicator_colors[0][4], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M5
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M5,");
+    itoa(matrixData.matrix_indicator_colors[0][5], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M6
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M6,");
+    itoa(matrixData.matrix_indicator_colors[0][6], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M7
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M7,");
+    itoa(matrixData.matrix_indicator_colors[0][7], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M8
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M8,");
+    itoa(matrixData.matrix_indicator_colors[0][8], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M9
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M9,");
+    itoa(matrixData.matrix_indicator_colors[0][9], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M10
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M10,");
+    itoa(matrixData.matrix_indicator_colors[0][10], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M11
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M11,");
+    itoa(matrixData.matrix_indicator_colors[0][11], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M12
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M12,");
+    itoa(matrixData.matrix_indicator_colors[0][12], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M13
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M13,");
+    itoa(matrixData.matrix_indicator_colors[0][13], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M14
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M14,");
+    itoa(matrixData.matrix_indicator_colors[0][14], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M15
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M15,");
+    itoa(matrixData.matrix_indicator_colors[0][15], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M16
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M16,");
+    itoa(matrixData.matrix_indicator_colors[0][16], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M17
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M17,");
+    itoa(matrixData.matrix_indicator_colors[0][17], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M18
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M18,");
+    itoa(matrixData.matrix_indicator_colors[0][18], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+    // -----------------------------------------------
+    // MATRIX_INDICATOR_COLOR_M19
+    // -----------------------------------------------
+    memset(sdcardData.file_data, 0, sizeof(sdcardData.file_data));
+    strcat(sdcardData.file_data, "MATRIX_INDICATOR_COLOR_M19,");
+    itoa(matrixData.matrix_indicator_colors[0][19], sdcardData.tmp, 10);
+    strcat(sdcardData.file_data, sdcardData.tmp);
+    strcat(sdcardData.file_data, ",");
+    Serial.println("[sdcard] [writing] " + String(sdcardData.file_data));
+    exfile.println("");
+    exfile.println(sdcardData.file_data);
+    exfile.println("");
+
+    // -----------------------------------------------
     // close
     // -----------------------------------------------
     exfile.close();
@@ -6940,6 +7181,247 @@ bool sdcardLoadSystemConfig(char * file) {
         if (is_all_digits(sdcardData.token)==true) {
           PrintFileToken();
           systemData.wt901_enabled=atoi(sdcardData.token);
+        }
+      }
+      
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M10
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M10", strlen("MATRIX_INDICATOR_COLOR_M10"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][10]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M11
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M11", strlen("MATRIX_INDICATOR_COLOR_M11"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][11]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M12
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M12", strlen("MATRIX_INDICATOR_COLOR_M12"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][12]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M13
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M13", strlen("MATRIX_INDICATOR_COLOR_M13"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][13]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M14
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M14", strlen("MATRIX_INDICATOR_COLOR_M14"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][14]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M15
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M15", strlen("MATRIX_INDICATOR_COLOR_M15"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][15]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M16
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M16", strlen("MATRIX_INDICATOR_COLOR_M16"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][16]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M17
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M17", strlen("MATRIX_INDICATOR_COLOR_M17"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][17]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M18
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M18", strlen("MATRIX_INDICATOR_COLOR_M18"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][18]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M19
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M19", strlen("MATRIX_INDICATOR_COLOR_M19"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][19]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M0
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M0", strlen("MATRIX_INDICATOR_COLOR_M0"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][0]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M1
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M1", strlen("MATRIX_INDICATOR_COLOR_M1"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][1]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M2
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M2", strlen("MATRIX_INDICATOR_COLOR_M2"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][2]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M3
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M3", strlen("MATRIX_INDICATOR_COLOR_M3"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][3]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M4
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M4", strlen("MATRIX_INDICATOR_COLOR_M4"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][4]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M5
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M5", strlen("MATRIX_INDICATOR_COLOR_M5"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][5]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M6
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M6", strlen("MATRIX_INDICATOR_COLOR_M6"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][6]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M7
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M7", strlen("MATRIX_INDICATOR_COLOR_M7"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][7]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M8
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M8", strlen("MATRIX_INDICATOR_COLOR_M8"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][8]=atoi(sdcardData.token);
+        }
+      }
+      // -----------------------------------------------
+      // MATRIX_INDICATOR_COLOR_M9
+      // -----------------------------------------------
+      else if (strncmp(sdcardData.BUFFER, "MATRIX_INDICATOR_COLOR_M9", strlen("MATRIX_INDICATOR_COLOR_M9"))==0) {
+        sdcardData.token=strtok(sdcardData.BUFFER, ",");
+        PrintFileToken();
+        sdcardData.token=strtok(NULL, ",");
+        if (is_all_digits(sdcardData.token)==true) {
+          PrintFileToken();
+          matrixData.matrix_indicator_colors[0][9]=atoi(sdcardData.token);
         }
       }
 
