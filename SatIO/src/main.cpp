@@ -19778,6 +19778,7 @@ static void CmdProcess(void) {
       //                                                                                                               SIDERAL TRACKING
       // ------------------------------------------------------------------------------------------------------------------------------
       // toggle automatic
+      // ------------------------------------------------------------------------------------------------------------------------------
       else if (strcmp(CMD_BUFFER, "switch track sun\r")==0) {systemData.sidereal_track_sun^=true;}
       else if (strcmp(CMD_BUFFER, "switch track moon\r")==0) {systemData.sidereal_track_moon^=true;}
       else if (strcmp(CMD_BUFFER, "switch track mercury\r")==0) {systemData.sidereal_track_mercury^=true;}
@@ -19787,7 +19788,9 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch track saturn\r")==0) {systemData.sidereal_track_saturn^=true;}
       else if (strcmp(CMD_BUFFER, "switch track uranus\r")==0) {systemData.sidereal_track_uranus^=true;}
       else if (strcmp(CMD_BUFFER, "switch track neptune\r")==0) {systemData.sidereal_track_neptune^=true;}
+      // ------------------------------------------------------------------------------------------------------------------------------
       // run once
+      // ------------------------------------------------------------------------------------------------------------------------------
       else if (strcmp(CMD_BUFFER, "run track planets\r")==0) {trackPlanets();}
       else if (strcmp(CMD_BUFFER, "run track sun\r")==0) {trackSun();}
       else if (strcmp(CMD_BUFFER, "run track moon\r")==0) {trackMoon();}
