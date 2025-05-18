@@ -19537,7 +19537,7 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "switch matrix startup enabled\r")==0) {systemData.matrix_run_on_startup^=true;}
       else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;} // enable matrix switch gpio on port portcontroller
       /*
-      the following commands may be overridden for set and enabled matrix switch entries if automatic switching is enabled.
+      the following commands may be overridden if automatic switching is enabled.
       these commands allow for setting port controller output high low from other systems and or manually.
       */
       else if (strcmp(CMD_BUFFER, "set pcio 0 0\r")==0) {matrixData.matrix_switch_state[0][0]=false;}
