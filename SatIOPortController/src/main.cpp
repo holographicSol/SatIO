@@ -107,8 +107,8 @@ signed int tmp_matrix_port_map[1][20] = {
 int indicator_number=0;
 long matrix_indicator_colors[1][20] = {
   {
-    1,1,1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,1,1
+    4,4,4,4,4,4,4,4,4,4,
+    4,4,4,4,4,4,4,4,4,4
   }
 };
 
