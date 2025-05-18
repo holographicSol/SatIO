@@ -12915,7 +12915,6 @@ void saveSystemHandleUI(int return_page) {
   // DISPLAY
   // --------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    // delay(1000);
     wait_1S_to_update_ui=true;
     // ------------------------------------------
     // begin spi device
@@ -12956,7 +12955,6 @@ void restoreSystemDefaultsHandleUI(int return_page) {
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    // delay(1000);
     wait_1S_to_update_ui=true;
     // --------------------------------------------
     // begin spi device
@@ -14595,6 +14593,9 @@ void UpdateUI(void * pvParamters) {
 
   while (1) {
 
+  // ----------------------------------------------------------------------------------------------------------------------
+  // used to provide indicators enough time to be displayed while also not blocking requestControlPad() called in main loop
+  // ----------------------------------------------------------------------------------------------------------------------
   if (wait_1S_to_update_ui==true) {delay(1000);}
   wait_1S_to_update_ui=false;
 
