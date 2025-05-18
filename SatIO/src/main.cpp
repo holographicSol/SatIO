@@ -18900,6 +18900,12 @@ static void PrintHelp() {
   Serial.println("set overload 9                    Set Overload Threshold 100 millisecond.");
   Serial.println("set overload 10                   Set Overload Threshold 1 second.");
   Serial.println();
+  Serial.println("new matrix                        Clears any current matrix value.");
+  Serial.println("save matrix n                     Saves current matrix to save slot specified by n.");
+  Serial.println("load matrix n                     Loads matrix from save slot specified by n.");
+  Serial.println("delete matrix n                   Deletes matrix in save slot specified by n.");
+  Serial.println("save system                       Saves current system configuration.");
+  Serial.println();
   Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
@@ -19704,6 +19710,12 @@ static void CmdProcess(void) {
           strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
         }
         else {Serial.println("[command failed]");}
+      }
+      // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                     NEW MATRIX
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strcmp(CMD_BUFFER, "new matrix\r")==0) {
+        setMatrixDefault();
       }
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SAVE SYSTEM CONFIGURATION
