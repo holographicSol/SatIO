@@ -1486,6 +1486,210 @@ struct systemStruct {
   };
   int index_display_color_subtitle=2;
   int color_subtitle=display_color[index_display_color_subtitle];
+
+  // ----------------------------------------------------------------
+  // indicator colors
+  // ----------------------------------------------------------------
+char char_indicator_colors_m0[8][56]={
+    "M.SWITCH 0  BLACK",
+    "M.SWITCH 0  RED",
+    "M.SWITCH 0  YELLOW",
+    "M.SWITCH 0  GREEN",
+    "M.SWITCH 0  BLUE",
+    "M.SWITCH 0  CYAN",
+    "M.SWITCH 0  PURPLE",
+    "M.SWITCH 0  WHITE"
+  };
+char char_indicator_colors_m1[8][56]={
+    "M.SWITCH 1  BLACK",
+    "M.SWITCH 1  RED",
+    "M.SWITCH 1  YELLOW",
+    "M.SWITCH 1  GREEN",
+    "M.SWITCH 1  BLUE",
+    "M.SWITCH 1  CYAN",
+    "M.SWITCH 1  PURPLE",
+    "M.SWITCH 1  WHITE"
+  };
+char char_indicator_colors_m2[8][56]={
+    "M.SWITCH 2  BLACK",
+    "M.SWITCH 2  RED",
+    "M.SWITCH 2  YELLOW",
+    "M.SWITCH 2  GREEN",
+    "M.SWITCH 2  BLUE",
+    "M.SWITCH 2  CYAN",
+    "M.SWITCH 2  PURPLE",
+    "M.SWITCH 2  WHITE"
+  };
+char char_indicator_colors_m3[8][56]={
+    "M.SWITCH 3  BLACK",
+    "M.SWITCH 3  RED",
+    "M.SWITCH 3  YELLOW",
+    "M.SWITCH 3  GREEN",
+    "M.SWITCH 3  BLUE",
+    "M.SWITCH 3  CYAN",
+    "M.SWITCH 3  PURPLE",
+    "M.SWITCH 3  WHITE"
+  };
+char char_indicator_colors_m4[8][56]={
+    "M.SWITCH 4  BLACK",
+    "M.SWITCH 4  RED",
+    "M.SWITCH 4  YELLOW",
+    "M.SWITCH 4  GREEN",
+    "M.SWITCH 4  BLUE",
+    "M.SWITCH 4  CYAN",
+    "M.SWITCH 4  PURPLE",
+    "M.SWITCH 4  WHITE"
+  };
+char char_indicator_colors_m5[8][56]={
+    "M.SWITCH 5  BLACK",
+    "M.SWITCH 5  RED",
+    "M.SWITCH 5  YELLOW",
+    "M.SWITCH 5  GREEN",
+    "M.SWITCH 5  BLUE",
+    "M.SWITCH 5  CYAN",
+    "M.SWITCH 5  PURPLE",
+    "M.SWITCH 5  WHITE"
+  };
+char char_indicator_colors_m6[8][56]={
+    "M.SWITCH 6  BLACK",
+    "M.SWITCH 6  RED",
+    "M.SWITCH 6  YELLOW",
+    "M.SWITCH 6  GREEN",
+    "M.SWITCH 6  BLUE",
+    "M.SWITCH 6  CYAN",
+    "M.SWITCH 6  PURPLE",
+    "M.SWITCH 6  WHITE"
+  };
+char char_indicator_colors_m7[8][56]={
+    "M.SWITCH 7  BLACK",
+    "M.SWITCH 7  RED",
+    "M.SWITCH 7  YELLOW",
+    "M.SWITCH 7  GREEN",
+    "M.SWITCH 7  BLUE",
+    "M.SWITCH 7  CYAN",
+    "M.SWITCH 7  PURPLE",
+    "M.SWITCH 7  WHITE"
+  };
+char char_indicator_colors_m8[8][56]={
+    "M.SWITCH 8  BLACK",
+    "M.SWITCH 8  RED",
+    "M.SWITCH 8  YELLOW",
+    "M.SWITCH 8  GREEN",
+    "M.SWITCH 8  BLUE",
+    "M.SWITCH 8  CYAN",
+    "M.SWITCH 8  PURPLE",
+    "M.SWITCH 8  WHITE"
+  };
+char char_indicator_colors_m9[8][56]={
+    "M.SWITCH 9  BLACK",
+    "M.SWITCH 9  RED",
+    "M.SWITCH 9  YELLOW",
+    "M.SWITCH 9  GREEN",
+    "M.SWITCH 9  BLUE",
+    "M.SWITCH 9  CYAN",
+    "M.SWITCH 9  PURPLE",
+    "M.SWITCH 9  WHITE"
+  };
+char char_indicator_colors_m10[8][56]={
+    "M.SWITCH 10  BLACK",
+    "M.SWITCH 10  RED",
+    "M.SWITCH 10  YELLOW",
+    "M.SWITCH 10  GREEN",
+    "M.SWITCH 10  BLUE",
+    "M.SWITCH 10  CYAN",
+    "M.SWITCH 10  PURPLE",
+    "M.SWITCH 10  WHITE"
+  };
+char char_indicator_colors_m11[8][56]={
+    "M.SWITCH 11  BLACK",
+    "M.SWITCH 11  RED",
+    "M.SWITCH 11  YELLOW",
+    "M.SWITCH 11  GREEN",
+    "M.SWITCH 11  BLUE",
+    "M.SWITCH 11  CYAN",
+    "M.SWITCH 11  PURPLE",
+    "M.SWITCH 11  WHITE"
+  };
+char char_indicator_colors_m12[8][56]={
+    "M.SWITCH 12  BLACK",
+    "M.SWITCH 12  RED",
+    "M.SWITCH 12  YELLOW",
+    "M.SWITCH 12  GREEN",
+    "M.SWITCH 12  BLUE",
+    "M.SWITCH 12  CYAN",
+    "M.SWITCH 12  PURPLE",
+    "M.SWITCH 12  WHITE"
+  };
+char char_indicator_colors_m13[8][56]={
+    "M.SWITCH 13  BLACK",
+    "M.SWITCH 13  RED",
+    "M.SWITCH 13  YELLOW",
+    "M.SWITCH 13  GREEN",
+    "M.SWITCH 13  BLUE",
+    "M.SWITCH 13  CYAN",
+    "M.SWITCH 13  PURPLE",
+    "M.SWITCH 13  WHITE"
+  };
+char char_indicator_colors_m14[8][56]={
+    "M.SWITCH 14  BLACK",
+    "M.SWITCH 14  RED",
+    "M.SWITCH 14  YELLOW",
+    "M.SWITCH 14  GREEN",
+    "M.SWITCH 14  BLUE",
+    "M.SWITCH 14  CYAN",
+    "M.SWITCH 14  PURPLE",
+    "M.SWITCH 14  WHITE"
+  };
+char char_indicator_colors_m15[8][56]={
+    "M.SWITCH 15  BLACK",
+    "M.SWITCH 15  RED",
+    "M.SWITCH 15  YELLOW",
+    "M.SWITCH 15  GREEN",
+    "M.SWITCH 15  BLUE",
+    "M.SWITCH 15  CYAN",
+    "M.SWITCH 15  PURPLE",
+    "M.SWITCH 15  WHITE"
+  };
+char char_indicator_colors_m16[8][56]={
+    "M.SWITCH 16  BLACK",
+    "M.SWITCH 16  RED",
+    "M.SWITCH 16  YELLOW",
+    "M.SWITCH 16  GREEN",
+    "M.SWITCH 16  BLUE",
+    "M.SWITCH 16  CYAN",
+    "M.SWITCH 16  PURPLE",
+    "M.SWITCH 16  WHITE"
+  };
+char char_indicator_colors_m17[8][56]={
+    "M.SWITCH 17  BLACK",
+    "M.SWITCH 17  RED",
+    "M.SWITCH 17  YELLOW",
+    "M.SWITCH 17  GREEN",
+    "M.SWITCH 17  BLUE",
+    "M.SWITCH 17  CYAN",
+    "M.SWITCH 17  PURPLE",
+    "M.SWITCH 17  WHITE"
+  };
+char char_indicator_colors_m18[8][56]={
+    "M.SWITCH 18  BLACK",
+    "M.SWITCH 18  RED",
+    "M.SWITCH 18  YELLOW",
+    "M.SWITCH 18  GREEN",
+    "M.SWITCH 18  BLUE",
+    "M.SWITCH 18  CYAN",
+    "M.SWITCH 18  PURPLE",
+    "M.SWITCH 18  WHITE"
+  };
+char char_indicator_colors_m19[8][56]={
+    "M.SWITCH 19  BLACK",
+    "M.SWITCH 19  RED",
+    "M.SWITCH 19  YELLOW",
+    "M.SWITCH 19  GREEN",
+    "M.SWITCH 19  BLUE",
+    "M.SWITCH 19  CYAN",
+    "M.SWITCH 19  PURPLE",
+    "M.SWITCH 19  WHITE"
+  };
 };
 systemStruct systemData;
 
@@ -13322,7 +13526,7 @@ String groundHeadingDegreesToNESW(float num) {
 //                                                                                                                             UI
 // ------------------------------------------------------------------------------------------------------------------------------
 
-char TMP_UI_DATA_0[56];
+char TMP_UI_DATA_0[128];
 
 // -------------------------------------------------------------------
 //                                                           UI BORDER
@@ -17982,7 +18186,7 @@ void UpdateUI(void * pvParamters) {
   }
 
   // ----------------------------------------------------------------------------------------------------------------
-  //                                                                                                MATRIX INDICATORS
+  //                                                                                                   LED INDICATORS
   // ----------------------------------------------------------------------------------------------------------------
   else if (menu_page==page_indicators) {
     // ------------------------------------------------
@@ -17992,6 +18196,8 @@ void UpdateUI(void * pvParamters) {
       previous_menu_page=menu_page; display.clear();
       drawMainBorder();
       drawGeneralTitle("INDICATORS", systemData.color_title, systemData.color_border);
+
+
     }
     // ------------------------------------------------
     // dynamic data
@@ -18005,71 +18211,29 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 2);}
     else {DisplaySignal(1, 1, 2, 2);}
-
     // ------------------------------------------------
     // iter matrix indicator colors
     // ------------------------------------------------
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 0: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][0]])).c_str());
-    menuIndicatorsItems[0]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 1: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][1]])).c_str());
-    menuIndicatorsItems[1]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 2: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][2]])).c_str());
-    menuIndicatorsItems[2]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 3: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][3]])).c_str());
-    menuIndicatorsItems[3]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 4: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][4]])).c_str());
-    menuIndicatorsItems[4]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 5: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][5]])).c_str());
-    menuIndicatorsItems[5]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 6: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][6]])).c_str());
-    menuIndicatorsItems[6]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 7: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][7]])).c_str());
-    menuIndicatorsItems[7]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 8: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][8]])).c_str());
-    menuIndicatorsItems[8]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 9: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][9]])).c_str());
-    menuIndicatorsItems[9]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 10: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][10]])).c_str());
-    menuIndicatorsItems[10]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 11: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][11]])).c_str());
-    menuIndicatorsItems[11]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 12: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][12]])).c_str());
-    menuIndicatorsItems[12]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 13: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][13]])).c_str());
-    menuIndicatorsItems[13]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 14: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][14]])).c_str());
-    menuIndicatorsItems[14]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 15: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][15]])).c_str());
-    menuIndicatorsItems[15]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 16: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][16]])).c_str());
-    menuIndicatorsItems[16]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 17: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][17]])).c_str());
-    menuIndicatorsItems[17]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 18: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][18]])).c_str());
-    menuIndicatorsItems[18]=TMP_UI_DATA_0;
-    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
-    strcpy(TMP_UI_DATA_0, String("M.SWITCH 19: "+String(matrixData.available_matrix_indicator_colors[matrixData.matrix_indicator_colors[0][19]])).c_str());
-    menuIndicatorsItems[19]=TMP_UI_DATA_0;
-
+    menuIndicatorsItems[0]=systemData.char_indicator_colors_m0[matrixData.matrix_indicator_colors[0][0]];
+    menuIndicatorsItems[1]=systemData.char_indicator_colors_m1[matrixData.matrix_indicator_colors[0][1]];
+    menuIndicatorsItems[2]=systemData.char_indicator_colors_m2[matrixData.matrix_indicator_colors[0][2]];
+    menuIndicatorsItems[3]=systemData.char_indicator_colors_m3[matrixData.matrix_indicator_colors[0][3]];
+    menuIndicatorsItems[4]=systemData.char_indicator_colors_m4[matrixData.matrix_indicator_colors[0][4]];
+    menuIndicatorsItems[5]=systemData.char_indicator_colors_m5[matrixData.matrix_indicator_colors[0][5]];
+    menuIndicatorsItems[6]=systemData.char_indicator_colors_m6[matrixData.matrix_indicator_colors[0][6]];
+    menuIndicatorsItems[7]=systemData.char_indicator_colors_m7[matrixData.matrix_indicator_colors[0][7]];
+    menuIndicatorsItems[8]=systemData.char_indicator_colors_m8[matrixData.matrix_indicator_colors[0][8]];
+    menuIndicatorsItems[9]=systemData.char_indicator_colors_m9[matrixData.matrix_indicator_colors[0][9]];
+    menuIndicatorsItems[10]=systemData.char_indicator_colors_m10[matrixData.matrix_indicator_colors[0][10]];
+    menuIndicatorsItems[11]=systemData.char_indicator_colors_m11[matrixData.matrix_indicator_colors[0][11]];
+    menuIndicatorsItems[12]=systemData.char_indicator_colors_m12[matrixData.matrix_indicator_colors[0][12]];
+    menuIndicatorsItems[13]=systemData.char_indicator_colors_m13[matrixData.matrix_indicator_colors[0][13]];
+    menuIndicatorsItems[14]=systemData.char_indicator_colors_m14[matrixData.matrix_indicator_colors[0][14]];
+    menuIndicatorsItems[15]=systemData.char_indicator_colors_m15[matrixData.matrix_indicator_colors[0][15]];
+    menuIndicatorsItems[16]=systemData.char_indicator_colors_m16[matrixData.matrix_indicator_colors[0][16]];
+    menuIndicatorsItems[17]=systemData.char_indicator_colors_m17[matrixData.matrix_indicator_colors[0][17]];
+    menuIndicatorsItems[18]=systemData.char_indicator_colors_m18[matrixData.matrix_indicator_colors[0][18]];
+    menuIndicatorsItems[19]=systemData.char_indicator_colors_m19[matrixData.matrix_indicator_colors[0][19]];
     // ------------------------------------------------
     // menu
     // ------------------------------------------------
