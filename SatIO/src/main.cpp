@@ -1490,205 +1490,205 @@ struct systemStruct {
   // ----------------------------------------------------------------
   // indicator colors
   // ----------------------------------------------------------------
-char char_indicator_colors_m0[8][64]={
-    "M.SWITCH 0  BLACK",
-    "M.SWITCH 0  RED",
-    "M.SWITCH 0  YELLOW",
-    "M.SWITCH 0  GREEN",
-    "M.SWITCH 0  BLUE",
-    "M.SWITCH 0  CYAN",
-    "M.SWITCH 0  PURPLE",
-    "M.SWITCH 0  WHITE"
+  char char_indicator_colors_m0[8][56]={
+      "M.SWITCH 0 BLACK",
+      "M.SWITCH 0 RED",
+      "M.SWITCH 0 YELLOW",
+      "M.SWITCH 0 GREEN",
+      "M.SWITCH 0 BLUE",
+      "M.SWITCH 0 CYAN",
+      "M.SWITCH 0 PURPLE",
+      "M.SWITCH 0 WHITE"
   };
-char char_indicator_colors_m1[8][64]={
-    "M.SWITCH 1  BLACK",
-    "M.SWITCH 1  RED",
-    "M.SWITCH 1  YELLOW",
-    "M.SWITCH 1  GREEN",
-    "M.SWITCH 1  BLUE",
-    "M.SWITCH 1  CYAN",
-    "M.SWITCH 1  PURPLE",
-    "M.SWITCH 1  WHITE"
+  char char_indicator_colors_m1[8][56]={
+      "M.SWITCH 1 BLACK",
+      "M.SWITCH 1 RED",
+      "M.SWITCH 1 YELLOW",
+      "M.SWITCH 1 GREEN",
+      "M.SWITCH 1 BLUE",
+      "M.SWITCH 1 CYAN",
+      "M.SWITCH 1 PURPLE",
+      "M.SWITCH 1 WHITE"
   };
-char char_indicator_colors_m2[8][64]={
-    "M.SWITCH 2  BLACK",
-    "M.SWITCH 2  RED",
-    "M.SWITCH 2  YELLOW",
-    "M.SWITCH 2  GREEN",
-    "M.SWITCH 2  BLUE",
-    "M.SWITCH 2  CYAN",
-    "M.SWITCH 2  PURPLE",
-    "M.SWITCH 2  WHITE"
+  char char_indicator_colors_m2[8][56]={
+      "M.SWITCH 2 BLACK",
+      "M.SWITCH 2 RED",
+      "M.SWITCH 2 YELLOW",
+      "M.SWITCH 2 GREEN",
+      "M.SWITCH 2 BLUE",
+      "M.SWITCH 2 CYAN",
+      "M.SWITCH 2 PURPLE",
+      "M.SWITCH 2 WHITE"
   };
-char char_indicator_colors_m3[8][64]={
-    "M.SWITCH 3  BLACK",
-    "M.SWITCH 3  RED",
-    "M.SWITCH 3  YELLOW",
-    "M.SWITCH 3  GREEN",
-    "M.SWITCH 3  BLUE",
-    "M.SWITCH 3  CYAN",
-    "M.SWITCH 3  PURPLE",
-    "M.SWITCH 3  WHITE"
+  char char_indicator_colors_m3[8][56]={
+      "M.SWITCH 3 BLACK",
+      "M.SWITCH 3 RED",
+      "M.SWITCH 3 YELLOW",
+      "M.SWITCH 3 GREEN",
+      "M.SWITCH 3 BLUE",
+      "M.SWITCH 3 CYAN",
+      "M.SWITCH 3 PURPLE",
+      "M.SWITCH 3 WHITE"
   };
-char char_indicator_colors_m4[8][64]={
-    "M.SWITCH 4  BLACK",
-    "M.SWITCH 4  RED",
-    "M.SWITCH 4  YELLOW",
-    "M.SWITCH 4  GREEN",
-    "M.SWITCH 4  BLUE",
-    "M.SWITCH 4  CYAN",
-    "M.SWITCH 4  PURPLE",
-    "M.SWITCH 4  WHITE"
+  char char_indicator_colors_m4[8][56]={
+      "M.SWITCH 4 BLACK",
+      "M.SWITCH 4 RED",
+      "M.SWITCH 4 YELLOW",
+      "M.SWITCH 4 GREEN",
+      "M.SWITCH 4 BLUE",
+      "M.SWITCH 4 CYAN",
+      "M.SWITCH 4 PURPLE",
+      "M.SWITCH 4 WHITE"
   };
-char char_indicator_colors_m5[8][64]={
-    "M.SWITCH 5  BLACK",
-    "M.SWITCH 5  RED",
-    "M.SWITCH 5  YELLOW",
-    "M.SWITCH 5  GREEN",
-    "M.SWITCH 5  BLUE",
-    "M.SWITCH 5  CYAN",
-    "M.SWITCH 5  PURPLE",
-    "M.SWITCH 5  WHITE"
+  char char_indicator_colors_m5[8][56]={
+      "M.SWITCH 5 BLACK",
+      "M.SWITCH 5 RED",
+      "M.SWITCH 5 YELLOW",
+      "M.SWITCH 5 GREEN",
+      "M.SWITCH 5 BLUE",
+      "M.SWITCH 5 CYAN",
+      "M.SWITCH 5 PURPLE",
+      "M.SWITCH 5 WHITE"
   };
-char char_indicator_colors_m6[8][64]={
-    "M.SWITCH 6  BLACK",
-    "M.SWITCH 6  RED",
-    "M.SWITCH 6  YELLOW",
-    "M.SWITCH 6  GREEN",
-    "M.SWITCH 6  BLUE",
-    "M.SWITCH 6  CYAN",
-    "M.SWITCH 6  PURPLE",
-    "M.SWITCH 6  WHITE"
+  char char_indicator_colors_m6[8][56]={
+      "M.SWITCH 6 BLACK",
+      "M.SWITCH 6 RED",
+      "M.SWITCH 6 YELLOW",
+      "M.SWITCH 6 GREEN",
+      "M.SWITCH 6 BLUE",
+      "M.SWITCH 6 CYAN",
+      "M.SWITCH 6 PURPLE",
+      "M.SWITCH 6 WHITE"
   };
-char char_indicator_colors_m7[8][64]={
-    "M.SWITCH 7  BLACK",
-    "M.SWITCH 7  RED",
-    "M.SWITCH 7  YELLOW",
-    "M.SWITCH 7  GREEN",
-    "M.SWITCH 7  BLUE",
-    "M.SWITCH 7  CYAN",
-    "M.SWITCH 7  PURPLE",
-    "M.SWITCH 7  WHITE"
+  char char_indicator_colors_m7[8][56]={
+      "M.SWITCH 7 BLACK",
+      "M.SWITCH 7 RED",
+      "M.SWITCH 7 YELLOW",
+      "M.SWITCH 7 GREEN",
+      "M.SWITCH 7 BLUE",
+      "M.SWITCH 7 CYAN",
+      "M.SWITCH 7 PURPLE",
+      "M.SWITCH 7 WHITE"
   };
-char char_indicator_colors_m8[8][64]={
-    "M.SWITCH 8  BLACK",
-    "M.SWITCH 8  RED",
-    "M.SWITCH 8  YELLOW",
-    "M.SWITCH 8  GREEN",
-    "M.SWITCH 8  BLUE",
-    "M.SWITCH 8  CYAN",
-    "M.SWITCH 8  PURPLE",
-    "M.SWITCH 8  WHITE"
+  char char_indicator_colors_m8[8][56]={
+      "M.SWITCH 8 BLACK",
+      "M.SWITCH 8 RED",
+      "M.SWITCH 8 YELLOW",
+      "M.SWITCH 8 GREEN",
+      "M.SWITCH 8 BLUE",
+      "M.SWITCH 8 CYAN",
+      "M.SWITCH 8 PURPLE",
+      "M.SWITCH 8 WHITE"
   };
-char char_indicator_colors_m9[8][64]={
-    "M.SWITCH 9  BLACK",
-    "M.SWITCH 9  RED",
-    "M.SWITCH 9  YELLOW",
-    "M.SWITCH 9  GREEN",
-    "M.SWITCH 9  BLUE",
-    "M.SWITCH 9  CYAN",
-    "M.SWITCH 9  PURPLE",
-    "M.SWITCH 9  WHITE"
+  char char_indicator_colors_m9[8][56]={
+      "M.SWITCH 9 BLACK",
+      "M.SWITCH 9 RED",
+      "M.SWITCH 9 YELLOW",
+      "M.SWITCH 9 GREEN",
+      "M.SWITCH 9 BLUE",
+      "M.SWITCH 9 CYAN",
+      "M.SWITCH 9 PURPLE",
+      "M.SWITCH 9 WHITE"
   };
-char char_indicator_colors_m10[8][64]={
-    "M.SWITCH 10  BLACK",
-    "M.SWITCH 10  RED",
-    "M.SWITCH 10  YELLOW",
-    "M.SWITCH 10  GREEN",
-    "M.SWITCH 10  BLUE",
-    "M.SWITCH 10  CYAN",
-    "M.SWITCH 10  PURPLE",
-    "M.SWITCH 10  WHITE"
+  char char_indicator_colors_m10[8][56]={
+      "M.SWITCH 10 BLACK",
+      "M.SWITCH 10 RED",
+      "M.SWITCH 10 YELLOW",
+      "M.SWITCH 10 GREEN",
+      "M.SWITCH 10 BLUE",
+      "M.SWITCH 10 CYAN",
+      "M.SWITCH 10 PURPLE",
+      "M.SWITCH 10 WHITE"
   };
-char char_indicator_colors_m11[8][64]={
-    "M.SWITCH 11  BLACK",
-    "M.SWITCH 11  RED",
-    "M.SWITCH 11  YELLOW",
-    "M.SWITCH 11  GREEN",
-    "M.SWITCH 11  BLUE",
-    "M.SWITCH 11  CYAN",
-    "M.SWITCH 11  PURPLE",
-    "M.SWITCH 11  WHITE"
+  char char_indicator_colors_m11[8][56]={
+      "M.SWITCH 11 BLACK",
+      "M.SWITCH 11 RED",
+      "M.SWITCH 11 YELLOW",
+      "M.SWITCH 11 GREEN",
+      "M.SWITCH 11 BLUE",
+      "M.SWITCH 11 CYAN",
+      "M.SWITCH 11 PURPLE",
+      "M.SWITCH 11 WHITE"
   };
-char char_indicator_colors_m12[8][64]={
-    "M.SWITCH 12  BLACK",
-    "M.SWITCH 12  RED",
-    "M.SWITCH 12  YELLOW",
-    "M.SWITCH 12  GREEN",
-    "M.SWITCH 12  BLUE",
-    "M.SWITCH 12  CYAN",
-    "M.SWITCH 12  PURPLE",
-    "M.SWITCH 12  WHITE"
+  char char_indicator_colors_m12[8][56]={
+      "M.SWITCH 12 BLACK",
+      "M.SWITCH 12 RED",
+      "M.SWITCH 12 YELLOW",
+      "M.SWITCH 12 GREEN",
+      "M.SWITCH 12 BLUE",
+      "M.SWITCH 12 CYAN",
+      "M.SWITCH 12 PURPLE",
+      "M.SWITCH 12 WHITE"
   };
-char char_indicator_colors_m13[8][64]={
-    "M.SWITCH 13  BLACK",
-    "M.SWITCH 13  RED",
-    "M.SWITCH 13  YELLOW",
-    "M.SWITCH 13  GREEN",
-    "M.SWITCH 13  BLUE",
-    "M.SWITCH 13  CYAN",
-    "M.SWITCH 13  PURPLE",
-    "M.SWITCH 13  WHITE"
+  char char_indicator_colors_m13[8][56]={
+      "M.SWITCH 13 BLACK",
+      "M.SWITCH 13 RED",
+      "M.SWITCH 13 YELLOW",
+      "M.SWITCH 13 GREEN",
+      "M.SWITCH 13 BLUE",
+      "M.SWITCH 13 CYAN",
+      "M.SWITCH 13 PURPLE",
+      "M.SWITCH 13 WHITE"
   };
-char char_indicator_colors_m14[8][64]={
-    "M.SWITCH 14  BLACK",
-    "M.SWITCH 14  RED",
-    "M.SWITCH 14  YELLOW",
-    "M.SWITCH 14  GREEN",
-    "M.SWITCH 14  BLUE",
-    "M.SWITCH 14  CYAN",
-    "M.SWITCH 14  PURPLE",
-    "M.SWITCH 14  WHITE"
+  char char_indicator_colors_m14[8][56]={
+      "M.SWITCH 14 BLACK",
+      "M.SWITCH 14 RED",
+      "M.SWITCH 14 YELLOW",
+      "M.SWITCH 14 GREEN",
+      "M.SWITCH 14 BLUE",
+      "M.SWITCH 14 CYAN",
+      "M.SWITCH 14 PURPLE",
+      "M.SWITCH 14 WHITE"
   };
-char char_indicator_colors_m15[8][64]={
-    "M.SWITCH 15  BLACK",
-    "M.SWITCH 15  RED",
-    "M.SWITCH 15  YELLOW",
-    "M.SWITCH 15  GREEN",
-    "M.SWITCH 15  BLUE",
-    "M.SWITCH 15  CYAN",
-    "M.SWITCH 15  PURPLE",
-    "M.SWITCH 15  WHITE"
+  char char_indicator_colors_m15[8][56]={
+      "M.SWITCH 15 BLACK",
+      "M.SWITCH 15 RED",
+      "M.SWITCH 15 YELLOW",
+      "M.SWITCH 15 GREEN",
+      "M.SWITCH 15 BLUE",
+      "M.SWITCH 15 CYAN",
+      "M.SWITCH 15 PURPLE",
+      "M.SWITCH 15 WHITE"
   };
-char char_indicator_colors_m16[8][64]={
-    "M.SWITCH 16  BLACK",
-    "M.SWITCH 16  RED",
-    "M.SWITCH 16  YELLOW",
-    "M.SWITCH 16  GREEN",
-    "M.SWITCH 16  BLUE",
-    "M.SWITCH 16  CYAN",
-    "M.SWITCH 16  PURPLE",
-    "M.SWITCH 16  WHITE"
+  char char_indicator_colors_m16[8][56]={
+      "M.SWITCH 16 BLACK",
+      "M.SWITCH 16 RED",
+      "M.SWITCH 16 YELLOW",
+      "M.SWITCH 16 GREEN",
+      "M.SWITCH 16 BLUE",
+      "M.SWITCH 16 CYAN",
+      "M.SWITCH 16 PURPLE",
+      "M.SWITCH 16 WHITE"
   };
-char char_indicator_colors_m17[8][64]={
-    "M.SWITCH 17  BLACK",
-    "M.SWITCH 17  RED",
-    "M.SWITCH 17  YELLOW",
-    "M.SWITCH 17  GREEN",
-    "M.SWITCH 17  BLUE",
-    "M.SWITCH 17  CYAN",
-    "M.SWITCH 17  PURPLE",
-    "M.SWITCH 17  WHITE"
+  char char_indicator_colors_m17[8][56]={
+      "M.SWITCH 17 BLACK",
+      "M.SWITCH 17 RED",
+      "M.SWITCH 17 YELLOW",
+      "M.SWITCH 17 GREEN",
+      "M.SWITCH 17 BLUE",
+      "M.SWITCH 17 CYAN",
+      "M.SWITCH 17 PURPLE",
+      "M.SWITCH 17 WHITE"
   };
-char char_indicator_colors_m18[8][64]={
-    "M.SWITCH 18  BLACK",
-    "M.SWITCH 18  RED",
-    "M.SWITCH 18  YELLOW",
-    "M.SWITCH 18  GREEN",
-    "M.SWITCH 18  BLUE",
-    "M.SWITCH 18  CYAN",
-    "M.SWITCH 18  PURPLE",
-    "M.SWITCH 18  WHITE"
+  char char_indicator_colors_m18[8][56]={
+      "M.SWITCH 18 BLACK",
+      "M.SWITCH 18 RED",
+      "M.SWITCH 18 YELLOW",
+      "M.SWITCH 18 GREEN",
+      "M.SWITCH 18 BLUE",
+      "M.SWITCH 18 CYAN",
+      "M.SWITCH 18 PURPLE",
+      "M.SWITCH 18 WHITE"
   };
-char char_indicator_colors_m19[8][64]={
-    "M.SWITCH 19  BLACK",
-    "M.SWITCH 19  RED",
-    "M.SWITCH 19  YELLOW",
-    "M.SWITCH 19  GREEN",
-    "M.SWITCH 19  BLUE",
-    "M.SWITCH 19  CYAN",
-    "M.SWITCH 19  PURPLE",
-    "M.SWITCH 19  WHITE"
+  char char_indicator_colors_m19[8][56]={
+      "M.SWITCH 19 BLACK",
+      "M.SWITCH 19 RED",
+      "M.SWITCH 19 YELLOW",
+      "M.SWITCH 19 GREEN",
+      "M.SWITCH 19 BLUE",
+      "M.SWITCH 19 CYAN",
+      "M.SWITCH 19 PURPLE",
+      "M.SWITCH 19 WHITE"
   };
 };
 systemStruct systemData;
