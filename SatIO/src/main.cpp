@@ -18901,13 +18901,13 @@ static void PrintHelp() {
   Serial.println("delete matrix n                   Deletes matrix in save slot specified by n.");
   Serial.println("save system                       Saves current system configuration.");
   Serial.println();
-  Serial.println("set matrix enabled 0              Disables Running Matrix Switch.");
-  Serial.println("set matrix enabled 1              Enables Running Matrix Switch.");
-  Serial.println();
   Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
   Serial.println("switch wt901 enabled              Enables/Disables WT901 requests.");
+  Serial.println();
+  Serial.println("set matrix enabled 0              Disables Running Matrix Switch.");
+  Serial.println("set matrix enabled 1              Enables Running Matrix Switch.");
   Serial.println();
   Serial.println("set pcio 0 0                      Sets portcontroller matrix switch low. Overridden by matrix.");
   Serial.println("set pcio 0 1                      Sets portcontroller matrix switch high. Overridden by matrix.");
@@ -19524,16 +19524,22 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set overload 9\r")==0) {systemData.index_overload_times=9;}
       else if (strcmp(CMD_BUFFER, "set overload 10\r")==0) {systemData.index_overload_times=10;}
       // ------------------------------------------------------------------------------------------------------------------------------
+      //                                                                                                                          WT901
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strcmp(CMD_BUFFER, "switch wt901 enabled\r")==0) {systemData.wt901_enabled^=true;}
+      // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                MATRIX SWITCHES
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strcmp(CMD_BUFFER, "switch matrix enabled\r")==0) {systemData.matrix_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "set matrix enabled 0\r")==0) {systemData.matrix_enabled=false;}
-      else if (strcmp(CMD_BUFFER, "set matrix enabled 1\r")==0) {systemData.matrix_enabled=true;}
+      else if (strcmp(CMD_BUFFER, "switch matrix enabled\r")==0) {systemData.matrix_enabled^=true;} // toggle automatic switching
+      else if (strcmp(CMD_BUFFER, "set matrix enabled 0\r")==0) {systemData.matrix_enabled=false;}  // disable automatic switching
+      else if (strcmp(CMD_BUFFER, "set matrix enabled 1\r")==0) {systemData.matrix_enabled=true;}   // enabled automatic switching
 
       else if (strcmp(CMD_BUFFER, "switch matrix startup enabled\r")==0) {systemData.matrix_run_on_startup^=true;}
-      else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;}
-      else if (strcmp(CMD_BUFFER, "switch wt901 enabled\r")==0) {systemData.wt901_enabled^=true;}
-
+      else if (strcmp(CMD_BUFFER, "switch matrix io enabled\r")==0) {systemData.matrix_io_enabled^=true;} // enable matrix switch gpio on port portcontroller
+      /*
+      the following commands may be overridden for set and enabled matrix switch entries if automatic switching is enabled.
+      these commands allow for setting port controller output high low from other systems and or manually.
+      */
       else if (strcmp(CMD_BUFFER, "set pcio 0 0\r")==0) {matrixData.matrix_switch_state[0][0]=false;}
       else if (strcmp(CMD_BUFFER, "set pcio 0 1\r")==0) {matrixData.matrix_switch_state[0][0]=true;}
       else if (strcmp(CMD_BUFFER, "set pcio 1 0\r")==0) {matrixData.matrix_switch_state[0][1]=false;}
