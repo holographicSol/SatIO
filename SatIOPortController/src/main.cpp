@@ -40,11 +40,11 @@ ATMEGA2560 48 -> 24x individually addressable WS2812B's
 
 /*
 Indicators:
-0-19: Matrix Switch State
-20: MATRIX IO ENABLED/DISABLED
-21: DATA
-22: OVERLOAD
-23: SIGNAL
+0-19: Matrix Switch State (high/low).
+20:   IIC switching enabled/disabled.
+21:   Data.
+22:   Overload.
+23:   Signal.
 */
 
 // INDICATORS
