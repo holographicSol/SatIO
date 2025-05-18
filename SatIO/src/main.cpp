@@ -846,6 +846,10 @@ static int page_attitude                          =400;
 // MAGNETIC FIELD
 // ----------------------------------------------------
 static int page_view_magnetic_field               =420;
+// ----------------------------------------------------
+// INDICATOR PAGE
+// ----------------------------------------------------
+static int page_indicators                        =500;
 
 // ----------------------------------------------------
 // COMPACT VERTICAL UI SPACING
@@ -883,7 +887,7 @@ LcdGfxMenu menuHome( menuHomeItems, max_home_items, {{1, 1}, {1, 1}} );
 //                                                                                                                      MENU MAIN
 // ------------------------------------------------------------------------------------------------------------------------------
 
-const int max_main_menu_items=13;
+const int max_main_menu_items=14;
 const char *menuMainItems[max_main_menu_items] =
 {
     "  MATRIX         ", // 0
@@ -899,6 +903,7 @@ const char *menuMainItems[max_main_menu_items] =
     "  TIME & DATE    ", // 10
     "  HUD            ", // 11
     "  VIEW MAG FIELD ", // 12
+    "  INDICATORS     ", // 13
 };
 LcdGfxMenu menuMain( menuMainItems, max_main_menu_items, {{2, 15}, {125, 125}} );
 
@@ -1054,6 +1059,14 @@ LcdGfxMenu menuTCA9548A( menuTCA9548AItems, max_TCA9548A_items, {{2, 14}, {125, 
 const int max_timeanddate_items=2;
 const char *menuTimeAndDateItems[max_timeanddate_items];
 LcdGfxMenu menuTimeAndDate( menuTimeAndDateItems, max_timeanddate_items, {{2, 92}, {125, 125}} );
+
+// ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                               MENU TIME & DATE
+// ------------------------------------------------------------------------------------------------------------------------------
+
+const int max_indicators_items=20;
+const char *menuIndicatorsItems[max_indicators_items];
+LcdGfxMenu menuIndicators( menuIndicatorsItems, max_indicators_items, {{2, 14}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                          DHT11
@@ -2649,7 +2662,7 @@ struct MatrixStruct {
   String tempStr="";
 
   // -------------------------------------------------------------------------------------------------------
-  // reflects matrix switch active/inactive states each loop of matrix switch function
+  // matrix switch active/inactive states each loop of matrix switch function
   // -------------------------------------------------------------------------------------------------------
   bool matrix_switch_state[1][20]={
     {
@@ -2659,7 +2672,7 @@ struct MatrixStruct {
   };
 
   // -------------------------------------------------------------------------------------------------------
-  // reflects matrix switch active/inactive states each loop of matrix switch function
+  // matrix switch active/inactive states each loop of matrix switch function
   // -------------------------------------------------------------------------------------------------------
   bool tmp_matrix_switch_state[1][20]={
     {
@@ -2669,7 +2682,7 @@ struct MatrixStruct {
   };
 
   // -------------------------------------------------------------------------------------------------------
-  // reflects matrix switch enabled/disabled
+  // matrix switch enabled/disabled
   // -------------------------------------------------------------------------------------------------------
   int matrix_switch_enabled[1][20]={
     {
@@ -2679,13 +2692,42 @@ struct MatrixStruct {
   };
 
   // -------------------------------------------------------------------------------------------------------
-  // reflects matrix switch output mode: 0=high/low
+  // matrix switch output mode: 0=high/low
   // -------------------------------------------------------------------------------------------------------
   int matrix_switch_output_mode[1][20]={
     {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     }
+  };
+
+  // ------------------------------------------------------------
+  // matrix indicator colors
+  // ------------------------------------------------------------
+  int indicator_number=0;
+  long matrix_indicator_colors[1][20] = {
+    {
+      1,1,1,1,1,1,1,1,1,1,
+      1,1,1,1,1,1,1,1,1,1
+    }
+  };
+  long tmp_matrix_indicator_colors[1][20] = {
+    {
+      1,1,1,1,1,1,1,1,1,1,
+      1,1,1,1,1,1,1,1,1,1
+    }
+  };
+
+  int max_indicator_colors=7;
+  char available_matrix_indicator_colors[8][56] = {
+    "Black",
+    "Red",
+    "Yellow",
+    "Green",
+    "Blue",
+    "Cyan",
+    "Purple",
+    "White",
   };
 
   // -------------------------------------------------------------------------------------------------------
@@ -12042,6 +12084,7 @@ void menuUp() {
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.up();}
   else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.up();}
   else if (menu_page==page_TCA9548A_main) {menuTCA9548A.up();}
+  else if (menu_page==page_indicators) {menuIndicators.up();}
   
 }
 
@@ -12073,6 +12116,7 @@ void menuDown() {
   else if (menu_page==page_timeanddate_main) {menuTimeAndDate.down();}
   else if (menu_page==page_CD74HC4067_main) {menuCD74HC4067.down();}
   else if (menu_page==page_TCA9548A_main) {menuTCA9548A.down();}
+  else if (menu_page==page_indicators) {menuIndicators.down();}
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -12153,6 +12197,7 @@ void menuBack() {
   else if (menu_page==page_universe_view_neptune) {menu_page=page_universe_main;}
   else if (menu_page==page_attitude) {menu_page=page_main_menu;}
   else if (menu_page==page_view_magnetic_field) {menu_page=page_main_menu;}
+  else if (menu_page==page_indicators) {menu_page=page_main_menu;}
 }
 
 void saveSystemHandleUI(int return_page) {
@@ -12519,6 +12564,12 @@ void menuEnter() {
     // ------------------------------------------------
     else if (menuMain.selection()==12) {
       menu_page=page_view_magnetic_field;
+    }
+    // ------------------------------------------------
+    // go to matrix indicators page
+    // ------------------------------------------------
+    else if (menuMain.selection()==13) {
+      menu_page=page_indicators;
     }
     
   }
@@ -12934,6 +12985,17 @@ void menuEnter() {
     // switch enabled/disabled
     // ------------------------------------------------
     else if (menuTCA9548A.selection()==8) {systemData.TCA9548A_enabled^=true;}
+  }
+
+  // ----------------------------------------------------------------
+  // indicators page
+  // ----------------------------------------------------------------
+  else if (menu_page==page_indicators) {
+    if (menuIndicators.selection() >= 0 && menuIndicators.selection() <=19) {
+      matrixData.indicator_number=menuIndicators.selection();
+      matrixData.matrix_indicator_colors[0][matrixData.indicator_number]++;
+      if (matrixData.matrix_indicator_colors[0][matrixData.indicator_number]>matrixData.max_indicator_colors) {matrixData.matrix_indicator_colors[0][matrixData.indicator_number]=0;}
+    }
   }
 
   // ----------------------------------------------------------------
@@ -17871,15 +17933,12 @@ void UpdateUI(void * pvParamters) {
       display.drawHLine(1, 50, 127);
       display.drawHLine(1, 89, 127);
       display.setColor(systemData.color_subtitle);
-
       canvas19x8.clear();
       canvas19x8.printFixed(1, 1, "MFX", STYLE_BOLD);
       display.drawCanvas(3, 14, canvas19x8);
-
       canvas19x8.clear();
       canvas19x8.printFixed(1, 1, "MFY", STYLE_BOLD);
       display.drawCanvas(3, 52, canvas19x8);
-
       canvas19x8.clear();
       canvas19x8.printFixed(1, 1, "MFZ", STYLE_BOLD);
       display.drawCanvas(3, 91, canvas19x8);
@@ -17914,16 +17973,114 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // magnetic field x axis graph
     // ------------------------------------------------
-    
-
     // ------------------------------------------------
     // magnetic field y axis graph
     // ------------------------------------------------
-
     // ------------------------------------------------
     // magnetic field z axis graph
     // ------------------------------------------------
+  }
 
+  // ----------------------------------------------------------------------------------------------------------------
+  //                                                                                                MATRIX INDICATORS
+  // ----------------------------------------------------------------------------------------------------------------
+  else if (menu_page==page_indicators) {
+    // ------------------------------------------------
+    // static data
+    // ------------------------------------------------
+    if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
+      previous_menu_page=menu_page; display.clear();
+      drawMainBorder();
+      drawGeneralTitle("INDICATORS", systemData.color_title, systemData.color_border);
+    }
+    // ------------------------------------------------
+    // dynamic data
+    // ------------------------------------------------
+    // ------------------------------------------------
+    // load
+    // ------------------------------------------------
+    DisplayDiscreteLoadPercentage(115, 3, 10);
+    // ------------------------------------------------
+    // satellites & sync
+    // ------------------------------------------------
+    if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 2);}
+    else {DisplaySignal(1, 1, 2, 2);}
+
+    // ------------------------------------------------
+    // iter matrix indicator colors
+    // ------------------------------------------------
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 0"+String(matrixData.matrix_indicator_colors[0][0])).c_str());
+    menuIndicatorsItems[0]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 1"+String(matrixData.matrix_indicator_colors[0][1])).c_str());
+    menuIndicatorsItems[1]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 2"+String(matrixData.matrix_indicator_colors[0][2])).c_str());
+    menuIndicatorsItems[2]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 3"+String(matrixData.matrix_indicator_colors[0][3])).c_str());
+    menuIndicatorsItems[3]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 4"+String(matrixData.matrix_indicator_colors[0][4])).c_str());
+    menuIndicatorsItems[4]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 5"+String(matrixData.matrix_indicator_colors[0][5])).c_str());
+    menuIndicatorsItems[5]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 6"+String(matrixData.matrix_indicator_colors[0][6])).c_str());
+    menuIndicatorsItems[6]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 7"+String(matrixData.matrix_indicator_colors[0][7])).c_str());
+    menuIndicatorsItems[7]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 8"+String(matrixData.matrix_indicator_colors[0][8])).c_str());
+    menuIndicatorsItems[8]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 9"+String(matrixData.matrix_indicator_colors[0][9])).c_str());
+    menuIndicatorsItems[9]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 10"+String(matrixData.matrix_indicator_colors[0][10])).c_str());
+    menuIndicatorsItems[10]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 11"+String(matrixData.matrix_indicator_colors[0][11])).c_str());
+    menuIndicatorsItems[11]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 12"+String(matrixData.matrix_indicator_colors[0][12])).c_str());
+    menuIndicatorsItems[12]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 13"+String(matrixData.matrix_indicator_colors[0][13])).c_str());
+    menuIndicatorsItems[13]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 14"+String(matrixData.matrix_indicator_colors[0][14])).c_str());
+    menuIndicatorsItems[14]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 15"+String(matrixData.matrix_indicator_colors[0][15])).c_str());
+    menuIndicatorsItems[15]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 16"+String(matrixData.matrix_indicator_colors[0][16])).c_str());
+    menuIndicatorsItems[16]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 17"+String(matrixData.matrix_indicator_colors[0][17])).c_str());
+    menuIndicatorsItems[17]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 18"+String(matrixData.matrix_indicator_colors[0][18])).c_str());
+    menuIndicatorsItems[18]=TMP_UI_DATA_0;
+    memset(TMP_UI_DATA_0, 0, sizeof(TMP_UI_DATA_0));
+    strcpy(TMP_UI_DATA_0, String("MATRIX SWITCH 19"+String(matrixData.matrix_indicator_colors[0][19])).c_str());
+    menuIndicatorsItems[19]=TMP_UI_DATA_0;
+
+    // ------------------------------------------------
+    // menu
+    // ------------------------------------------------
+    if (interaction_updateui==true) {
+      interaction_updateui=false;
+      display.setColor(systemData.color_content);
+      display.setColor(systemData.color_menu_border);
+      menuIndicators.showMenuBorder(display);
+      display.setColor(systemData.color_menu_content);
+      menuIndicators.showMenuContent(display);
+    }
   }
 
   // -------------------------------------------------------
@@ -18359,6 +18516,48 @@ void writePortControllerSwitchState() {
 }
 
 // ------------------------------------------------
+// Write Matrix Indicator Colors
+// ------------------------------------------------
+void writePortControllerMatrixIndicatorColors() {
+  for (int i=0; i < 20; i++) {
+    // -----------------------
+    // check for change
+    // -----------------------
+    if (matrixData.matrix_indicator_colors[0][i] != matrixData.tmp_matrix_indicator_colors[0][i]) {
+      // -----------------------
+      // update
+      // -----------------------
+      matrixData.tmp_matrix_indicator_colors[0][i]=matrixData.matrix_indicator_colors[0][i];
+      // -----------------------
+      // tag
+      // -----------------------
+      memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+      strcpy(I2CLink.TMP_BUFFER_0, "$I,");
+      // -----------------------
+      // matrix switch index
+      // -----------------------
+      memset(I2CLink.TMP_BUFFER_1, 0, sizeof(I2CLink.TMP_BUFFER_1));
+      itoa(i, I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      strcat(I2CLink.TMP_BUFFER_0, ",");
+      // -----------------------
+      // data
+      // -----------------------
+      itoa(matrixData.matrix_indicator_colors[0][i], I2CLink.TMP_BUFFER_1, 10);
+      strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_1);
+      // -----------------------
+      // write instruction
+      // -----------------------
+      writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+      // -----------------------
+      // debug
+      // -----------------------
+      // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
+    }
+  }
+}
+
+// ------------------------------------------------
 // Write GPS Signal LED
 // ------------------------------------------------
 
@@ -18437,6 +18636,7 @@ void writePortControllerIOEnabled() {
 // Write To Enabled Port Controller
 // ------------------------------------------------
 void writeToEnabledPortController() {
+  writePortControllerMatrixIndicatorColors();
   writePortControllerIOEnabled();
   writePortControllerPortMap();
   writePortControllerSwitchState();
