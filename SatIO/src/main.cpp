@@ -747,6 +747,7 @@ bool update_ui_complete=false;
 bool update_ui=true;
 bool ui_cleared=false;
 bool interaction_updateui=true; // performance and efficiency: make true when content should be updated. can be true for any reason.
+bool wait_1S_to_update_ui=false;
 
 signed int menu_page=0;
 int previous_menu_page;
@@ -12914,7 +12915,8 @@ void saveSystemHandleUI(int return_page) {
   // DISPLAY
   // --------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    delay(1000);
+    // delay(1000);
+    wait_1S_to_update_ui=true;
     // ------------------------------------------
     // begin spi device
     // ------------------------------------------
@@ -12954,7 +12956,8 @@ void restoreSystemDefaultsHandleUI(int return_page) {
   // DISPLAY
   // ----------------------------------------------
   if (systemData.DISPLAY_ENABLED==true) {
-    delay(1000);
+    // delay(1000);
+    wait_1S_to_update_ui=true;
     // --------------------------------------------
     // begin spi device
     // --------------------------------------------
@@ -14591,6 +14594,9 @@ void drawPlanets() {
 void UpdateUI(void * pvParamters) {
 
   while (1) {
+
+  if (wait_1S_to_update_ui==true) {delay(1000);}
+  wait_1S_to_update_ui=false;
 
   // -----------------------------------------------------------------
   //                                         UPDATE UI COMPLETION FLAG
