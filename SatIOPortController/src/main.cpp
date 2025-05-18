@@ -1,9 +1,9 @@
 /*
+Written by Benjamin Jack Cullen.
 
-Serial Link - Stable inter-microcontroller serial communication. Written by Benjamin Jack Cullen
-
-SatIOPortController - Receives messages from SatIO over serial and manipulates IO accordingly.
+SatIOPortController - Receives messages over IIC and manipulates ports accordingly.
                       This file should be flashed to ATMEGA2560.
+                      Indicator LEDs for panels/switches/etc configurable over IIC.
 
 Wiring For Keystudio ATMEGA2560 R3 Development Board with Sheild v1.3:
 
@@ -20,11 +20,7 @@ Wiring Overload Indicator:
 ATMEGA2560 46 -> LEDR
 ATMEGA2560 47 -> LEDGW
 
-Wiring Read/Write Interrupt indicator:
-ATMEGA2560 SDA 20 -> ESP32 12
-ATMEGA2560 SCL 21 -> ESP32 5
-
-Wiring Matrix Indicators:
+Wiring Matrix LED Indicators:
 ATMEGA2560 48 -> 24x individually addressable WS2812B's
 
 */
@@ -107,8 +103,8 @@ signed int tmp_matrix_port_map[1][20] = {
 int indicator_number=0;
 long matrix_indicator_colors[1][20] = {
   {
-    4,4,4,4,4,4,4,4,4,4,
-    4,4,4,4,4,4,4,4,4,4
+    1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1
   }
 };
 
