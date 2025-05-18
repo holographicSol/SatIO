@@ -104,6 +104,7 @@ signed int tmp_matrix_port_map[1][20] = {
 // ------------------------------------------------------------
 // Matrix Indicator Colors
 // ------------------------------------------------------------
+int indicator_number=0;
 long matrix_indicator_colors[1][20] = {
   {
     1,1,1,1,1,1,1,1,1,1,
@@ -159,7 +160,7 @@ void receiveEvent(int) {
   // ------------------------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // ------------------------------------------------------------
   // Tokenize data tag
@@ -215,6 +216,18 @@ void receiveEvent(int) {
     I2CLink.token = strtok(NULL, ",");
     matrix_switch_state[0][portmap_number] = atoi(I2CLink.token);
     Serial.println("[portmap] " + String(portmap_number) + String(" [port state] ") + String(matrix_switch_state[0][portmap_number]));
+  }
+
+  // ------------------------------------------------------------
+  // Matrix Indicators
+  // ------------------------------------------------------------
+  else if (strcmp(I2CLink.token, "$I")==0) {
+    I2CLink.token = strtok(NULL, ",");
+    indicator_number = atoi(I2CLink.token);
+    I2CLink.token = strtok(NULL, ",");
+    matrix_indicator_colors[0][indicator_number] = atoi(I2CLink.token);
+    leds[indicator_number] = available_matrix_indicator_colors[matrix_indicator_colors[0][indicator_number]];
+    Serial.println("[indicator] led index: " + String(indicator_number) + " color index: " + String(matrix_indicator_colors[0][indicator_number]));
   }
 }
 
