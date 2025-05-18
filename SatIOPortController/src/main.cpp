@@ -101,6 +101,27 @@ signed int tmp_matrix_port_map[1][20] = {
   }
 };
 
+// ------------------------------------------------------------
+// Matrix Indicator Colors
+// ------------------------------------------------------------
+long matrix_indicator_colors[1][20] = {
+  {
+    1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1
+  }
+};
+
+long available_matrix_indicator_colors[8] = {
+  CRGB::Black,
+  CRGB::Red,
+  CRGB::Yellow,
+  CRGB::Green,
+  CRGB::Blue,
+  CRGB::Cyan,
+  CRGB::Purple,
+  CRGB::White,
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    TIME STRUCT
 
@@ -241,7 +262,7 @@ void satIOPortController() {
     // ------------------------------------------------------------
     // set matrix indicator
     // ------------------------------------------------------------
-    if (matrix_switch_state[0][i]==1) {leds[i] = CRGB::Red; FastLED.show();}
+    if (matrix_switch_state[0][i]==1) {leds[i] = available_matrix_indicator_colors[matrix_indicator_colors[0][i]]; FastLED.show();}
     else {leds[i] = CRGB::Black; FastLED.show();}
 
     // ------------------------------------------------------------
@@ -253,8 +274,8 @@ void satIOPortController() {
   // ------------------------------------------------------------
   // Indicate matrix enabled (matrix data is being received)
   // ------------------------------------------------------------
-  if (matrix_io_enabled==true) {leds[20] = CRGB::Blue; FastLED.show();}
-  else {leds[20] = CRGB::Red; FastLED.show();}
+  if (matrix_io_enabled==true) {leds[20] = CRGB::Red; FastLED.show();}
+  else {leds[20] = CRGB::Black; FastLED.show();}
 
   // ------------------------------------------------------------
   // Indicate data received
