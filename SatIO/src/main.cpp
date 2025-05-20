@@ -19803,6 +19803,186 @@ static void PrintHelp() {
   Serial.println("set pcio 19 0                     Sets portcontroller matrix switch low. Overridden by matrix.");
   Serial.println("set pcio 19 1                     Sets portcontroller matrix switch high. Overridden by matrix.");
   Serial.println();
+  Serial.println("set pcioi 0 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 0 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 0 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 0 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 0 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 0 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 0 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 0 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 1 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 1 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 1 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 1 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 1 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 1 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 1 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 1 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 2 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 2 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 2 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 2 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 2 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 2 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 2 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 2 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 3 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 3 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 3 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 3 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 3 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 3 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 3 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 3 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 4 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 4 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 4 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 4 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 4 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 4 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 4 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 4 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 5 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 5 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 5 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 5 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 5 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 5 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 5 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 5 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 6 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 6 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 6 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 6 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 6 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 6 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 6 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 6 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 7 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 7 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 7 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 7 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 7 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 7 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 7 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 7 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 8 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 8 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 8 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 8 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 8 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 8 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 8 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 8 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 9 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 9 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 9 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 9 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 9 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 9 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 9 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 9 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 10 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 10 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 10 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 10 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 10 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 10 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 10 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 10 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 11 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 11 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 11 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 11 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 11 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 11 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 11 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 11 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 12 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 12 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 12 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 12 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 12 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 12 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 12 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 12 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 13 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 13 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 13 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 13 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 13 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 13 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 13 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 13 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 14 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 14 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 14 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 14 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 14 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 14 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 14 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 14 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 15 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 15 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 15 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 15 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 15 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 15 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 15 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 15 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 16 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 16 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 16 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 16 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 16 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 16 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 16 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 16 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 17 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 17 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 17 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 17 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 17 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 17 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 17 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 17 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 18 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 18 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 18 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 18 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 18 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 18 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 18 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 18 7                     Change Indicator color: White");
+
+  Serial.println("set pcioi 19 0                     Change Indicator color: Black");
+  Serial.println("set pcioi 19 1                     Change Indicator color: Red");
+  Serial.println("set pcioi 19 2                     Change Indicator color: Yellow");
+  Serial.println("set pcioi 19 3                     Change Indicator color: Green");
+  Serial.println("set pcioi 19 4                     Change Indicator color: Blue");
+  Serial.println("set pcioi 19 5                     Change Indicator color: Cyan");
+  Serial.println("set pcioi 19 6                     Change Indicator color: Purple");
+  Serial.println("set pcioi 19 7                     Change Indicator color: White");
+  Serial.println();
   Serial.println("switch satio                      Enables/Disables SatIO features.");
   Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
   Serial.println("switch gnrmc                      Enables/Disables Parsing GNRMC Data.");
@@ -20433,6 +20613,166 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcio 18 1\r")==0) {matrixData.matrix_switch_state[0][18]=true;}
       else if (strcmp(CMD_BUFFER, "set pcio 19 0\r")==0) {matrixData.matrix_switch_state[0][19]=false;}
       else if (strcmp(CMD_BUFFER, "set pcio 19 1\r")==0) {matrixData.matrix_switch_state[0][19]=true;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 0\r")==0) {matrixData.matrix_indicator_colors[0][0]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 1\r")==0) {matrixData.matrix_indicator_colors[0][0]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 2\r")==0) {matrixData.matrix_indicator_colors[0][0]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 3\r")==0) {matrixData.matrix_indicator_colors[0][0]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 4\r")==0) {matrixData.matrix_indicator_colors[0][0]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 5\r")==0) {matrixData.matrix_indicator_colors[0][0]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 0 6\r")==0) {matrixData.matrix_indicator_colors[0][0]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 0\r")==0) {matrixData.matrix_indicator_colors[0][1]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 1\r")==0) {matrixData.matrix_indicator_colors[0][1]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 2\r")==0) {matrixData.matrix_indicator_colors[0][1]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 3\r")==0) {matrixData.matrix_indicator_colors[0][1]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 4\r")==0) {matrixData.matrix_indicator_colors[0][1]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 5\r")==0) {matrixData.matrix_indicator_colors[0][1]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 1 6\r")==0) {matrixData.matrix_indicator_colors[0][1]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 0\r")==0) {matrixData.matrix_indicator_colors[0][2]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 1\r")==0) {matrixData.matrix_indicator_colors[0][2]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 2\r")==0) {matrixData.matrix_indicator_colors[0][2]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 3\r")==0) {matrixData.matrix_indicator_colors[0][2]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 4\r")==0) {matrixData.matrix_indicator_colors[0][2]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 5\r")==0) {matrixData.matrix_indicator_colors[0][2]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 2 6\r")==0) {matrixData.matrix_indicator_colors[0][2]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 0\r")==0) {matrixData.matrix_indicator_colors[0][3]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 1\r")==0) {matrixData.matrix_indicator_colors[0][3]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 2\r")==0) {matrixData.matrix_indicator_colors[0][3]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 3\r")==0) {matrixData.matrix_indicator_colors[0][3]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 4\r")==0) {matrixData.matrix_indicator_colors[0][3]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 5\r")==0) {matrixData.matrix_indicator_colors[0][3]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 3 6\r")==0) {matrixData.matrix_indicator_colors[0][3]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 0\r")==0) {matrixData.matrix_indicator_colors[0][4]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 1\r")==0) {matrixData.matrix_indicator_colors[0][4]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 2\r")==0) {matrixData.matrix_indicator_colors[0][4]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 3\r")==0) {matrixData.matrix_indicator_colors[0][4]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 4\r")==0) {matrixData.matrix_indicator_colors[0][4]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 5\r")==0) {matrixData.matrix_indicator_colors[0][4]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 4 6\r")==0) {matrixData.matrix_indicator_colors[0][4]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 0\r")==0) {matrixData.matrix_indicator_colors[0][5]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 1\r")==0) {matrixData.matrix_indicator_colors[0][5]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 2\r")==0) {matrixData.matrix_indicator_colors[0][5]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 3\r")==0) {matrixData.matrix_indicator_colors[0][5]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 4\r")==0) {matrixData.matrix_indicator_colors[0][5]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 5\r")==0) {matrixData.matrix_indicator_colors[0][5]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 5 6\r")==0) {matrixData.matrix_indicator_colors[0][5]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 0\r")==0) {matrixData.matrix_indicator_colors[0][6]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 1\r")==0) {matrixData.matrix_indicator_colors[0][6]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 2\r")==0) {matrixData.matrix_indicator_colors[0][6]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 3\r")==0) {matrixData.matrix_indicator_colors[0][6]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 4\r")==0) {matrixData.matrix_indicator_colors[0][6]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 5\r")==0) {matrixData.matrix_indicator_colors[0][6]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 6 6\r")==0) {matrixData.matrix_indicator_colors[0][6]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 0\r")==0) {matrixData.matrix_indicator_colors[0][7]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 1\r")==0) {matrixData.matrix_indicator_colors[0][7]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 2\r")==0) {matrixData.matrix_indicator_colors[0][7]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 3\r")==0) {matrixData.matrix_indicator_colors[0][7]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 4\r")==0) {matrixData.matrix_indicator_colors[0][7]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 5\r")==0) {matrixData.matrix_indicator_colors[0][7]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 7 6\r")==0) {matrixData.matrix_indicator_colors[0][7]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 0\r")==0) {matrixData.matrix_indicator_colors[0][8]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 1\r")==0) {matrixData.matrix_indicator_colors[0][8]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 2\r")==0) {matrixData.matrix_indicator_colors[0][8]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 3\r")==0) {matrixData.matrix_indicator_colors[0][8]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 4\r")==0) {matrixData.matrix_indicator_colors[0][8]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 5\r")==0) {matrixData.matrix_indicator_colors[0][8]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 8 6\r")==0) {matrixData.matrix_indicator_colors[0][8]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 0\r")==0) {matrixData.matrix_indicator_colors[0][9]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 1\r")==0) {matrixData.matrix_indicator_colors[0][9]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 2\r")==0) {matrixData.matrix_indicator_colors[0][9]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 3\r")==0) {matrixData.matrix_indicator_colors[0][9]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 4\r")==0) {matrixData.matrix_indicator_colors[0][9]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 5\r")==0) {matrixData.matrix_indicator_colors[0][9]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 9 6\r")==0) {matrixData.matrix_indicator_colors[0][9]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 0\r")==0) {matrixData.matrix_indicator_colors[0][10]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 1\r")==0) {matrixData.matrix_indicator_colors[0][10]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 2\r")==0) {matrixData.matrix_indicator_colors[0][10]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 3\r")==0) {matrixData.matrix_indicator_colors[0][10]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 4\r")==0) {matrixData.matrix_indicator_colors[0][10]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 5\r")==0) {matrixData.matrix_indicator_colors[0][10]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 10 6\r")==0) {matrixData.matrix_indicator_colors[0][10]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 0\r")==0) {matrixData.matrix_indicator_colors[0][11]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 1\r")==0) {matrixData.matrix_indicator_colors[0][11]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 2\r")==0) {matrixData.matrix_indicator_colors[0][11]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 3\r")==0) {matrixData.matrix_indicator_colors[0][11]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 4\r")==0) {matrixData.matrix_indicator_colors[0][11]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 5\r")==0) {matrixData.matrix_indicator_colors[0][11]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 11 6\r")==0) {matrixData.matrix_indicator_colors[0][11]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 0\r")==0) {matrixData.matrix_indicator_colors[0][12]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 1\r")==0) {matrixData.matrix_indicator_colors[0][12]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 2\r")==0) {matrixData.matrix_indicator_colors[0][12]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 3\r")==0) {matrixData.matrix_indicator_colors[0][12]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 4\r")==0) {matrixData.matrix_indicator_colors[0][12]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 5\r")==0) {matrixData.matrix_indicator_colors[0][12]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 12 6\r")==0) {matrixData.matrix_indicator_colors[0][12]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 0\r")==0) {matrixData.matrix_indicator_colors[0][13]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 1\r")==0) {matrixData.matrix_indicator_colors[0][13]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 2\r")==0) {matrixData.matrix_indicator_colors[0][13]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 3\r")==0) {matrixData.matrix_indicator_colors[0][13]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 4\r")==0) {matrixData.matrix_indicator_colors[0][13]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 5\r")==0) {matrixData.matrix_indicator_colors[0][13]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 13 6\r")==0) {matrixData.matrix_indicator_colors[0][13]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 0\r")==0) {matrixData.matrix_indicator_colors[0][14]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 1\r")==0) {matrixData.matrix_indicator_colors[0][14]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 2\r")==0) {matrixData.matrix_indicator_colors[0][14]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 3\r")==0) {matrixData.matrix_indicator_colors[0][14]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 4\r")==0) {matrixData.matrix_indicator_colors[0][14]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 5\r")==0) {matrixData.matrix_indicator_colors[0][14]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 14 6\r")==0) {matrixData.matrix_indicator_colors[0][14]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 0\r")==0) {matrixData.matrix_indicator_colors[0][15]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 1\r")==0) {matrixData.matrix_indicator_colors[0][15]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 2\r")==0) {matrixData.matrix_indicator_colors[0][15]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 3\r")==0) {matrixData.matrix_indicator_colors[0][15]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 4\r")==0) {matrixData.matrix_indicator_colors[0][15]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 5\r")==0) {matrixData.matrix_indicator_colors[0][15]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 15 6\r")==0) {matrixData.matrix_indicator_colors[0][15]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 0\r")==0) {matrixData.matrix_indicator_colors[0][16]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 1\r")==0) {matrixData.matrix_indicator_colors[0][16]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 2\r")==0) {matrixData.matrix_indicator_colors[0][16]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 3\r")==0) {matrixData.matrix_indicator_colors[0][16]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 4\r")==0) {matrixData.matrix_indicator_colors[0][16]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 5\r")==0) {matrixData.matrix_indicator_colors[0][16]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 16 6\r")==0) {matrixData.matrix_indicator_colors[0][16]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 0\r")==0) {matrixData.matrix_indicator_colors[0][17]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 1\r")==0) {matrixData.matrix_indicator_colors[0][17]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 2\r")==0) {matrixData.matrix_indicator_colors[0][17]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 3\r")==0) {matrixData.matrix_indicator_colors[0][17]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 4\r")==0) {matrixData.matrix_indicator_colors[0][17]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 5\r")==0) {matrixData.matrix_indicator_colors[0][17]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 17 6\r")==0) {matrixData.matrix_indicator_colors[0][17]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 0\r")==0) {matrixData.matrix_indicator_colors[0][18]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 1\r")==0) {matrixData.matrix_indicator_colors[0][18]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 2\r")==0) {matrixData.matrix_indicator_colors[0][18]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 3\r")==0) {matrixData.matrix_indicator_colors[0][18]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 4\r")==0) {matrixData.matrix_indicator_colors[0][18]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 5\r")==0) {matrixData.matrix_indicator_colors[0][18]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 18 6\r")==0) {matrixData.matrix_indicator_colors[0][18]=6;}
+
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 0\r")==0) {matrixData.matrix_indicator_colors[0][19]=0;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 1\r")==0) {matrixData.matrix_indicator_colors[0][19]=1;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 2\r")==0) {matrixData.matrix_indicator_colors[0][19]=2;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 3\r")==0) {matrixData.matrix_indicator_colors[0][19]=3;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 4\r")==0) {matrixData.matrix_indicator_colors[0][19]=4;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 5\r")==0) {matrixData.matrix_indicator_colors[0][19]=5;}
+      else if (strcmp(CMD_BUFFER, "set pcioi 19 6\r")==0) {matrixData.matrix_indicator_colors[0][19]=6;}
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SET MATRIX SWITCH ENABLED
       // ------------------------------------------------------------------------------------------------------------------------------
