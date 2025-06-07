@@ -337,6 +337,8 @@ void printAllTimes();
 void zero_matrix();
 void writePortControllerSwitchState();
 String groundHeadingDegreesToNESW(float num);
+String getRelatedX(char * data);
+String getRelatedY(char * data);
 
 char CMD_BUFFER[1024];
 
@@ -1197,7 +1199,7 @@ struct systemStruct {
   // -----------------------------------------------------------------------------------------------------------------------
   bool debug=false;   // print verbose information over serial
   bool t_bench=false; // prints bennchmark information for tuning
-  bool debug_bridge=true;  // allows commands to be received over serial (strongly recommend firmware default false unless you know what you are doing)
+  bool debug_bridge=false;  // allows commands to be received over serial (strongly recommend firmware default false unless you know what you are doing)
 
   // -----------------------------------------------------------------------------------------------------------------------
   // display
@@ -12696,9 +12698,25 @@ void setAllMatrixSwitchesStateTrue() {
 
 void inputChar(char * data) {
   // -----------------------------------------------------------------
+  // auto: automatic input
+  // -----------------------------------------------------------------
+  if ((strcmp(data, ".")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {
+    // copy x
+    if (enter_digits_key==2) {
+      memset(input_data, 0, sizeof(input_data));
+      strcpy(input_data, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      }
+    // copy y
+    if (enter_digits_key==3) {
+      memset(input_data, 0, sizeof(input_data));
+      strcpy(input_data, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
+      }
+    }
+  }
+  // -----------------------------------------------------------------
   // allow signing as first char regardless of how large the number is
   // -----------------------------------------------------------------
-  if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
+  else if ((strcmp(data, "-")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {strcat(input_data, data);}}
   else {
     // ---------------------------
     // port
@@ -13300,9 +13318,9 @@ void menuEnter() {
   else if (menu_page==page_input_data) {
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=page_matrix_logic_main;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atoi(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==5) {satData.utc_second_offset=atol(input_data); menu_page=page_timeanddate_main;}
     enter_digits_key=-1;
   }
@@ -14882,7 +14900,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 2U).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 68, canvas108x8);
       // ------------------------------------------------
       // matrix switch function y
@@ -15434,21 +15452,21 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_3+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function y
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1], 10).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_4+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function z
         // ------------------------------------------------
         canvas108x8.clear();
         display.setColor(systemData.color_content);
-        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
+        canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2], 10).c_str(), STYLE_BOLD);
         display.drawCanvas(17, ui_content_5+8, canvas108x8);
         // ------------------------------------------------
         // matrix switch function real x
@@ -15633,21 +15651,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_3+8, canvas108x8);
       // ------------------------------------------------
       // matrix switch function y
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_4+8, canvas108x8);
       // ------------------------------------------------
       // matrix switch function z
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, ui_content_5+8, canvas108x8);
       // ------------------------------------------------
       // menu
@@ -19178,10 +19196,6 @@ void writePortControllerMatrixIndicatorColors() {
     // -----------------------
     if (matrixData.matrix_indicator_colors[0][i] != matrixData.tmp_matrix_indicator_colors[0][i]) {
       // -----------------------
-      // update
-      // -----------------------
-      matrixData.tmp_matrix_indicator_colors[0][i]=matrixData.matrix_indicator_colors[0][i];
-      // -----------------------
       // tag
       // -----------------------
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
@@ -19202,6 +19216,10 @@ void writePortControllerMatrixIndicatorColors() {
       // write instruction
       // -----------------------
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+      // -----------------------
+      // update
+      // -----------------------
+      matrixData.tmp_matrix_indicator_colors[0][i]=matrixData.matrix_indicator_colors[0][i];
       // -----------------------
       // debug
       // -----------------------
@@ -20621,7 +20639,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 0 4\r")==0) {matrixData.matrix_indicator_colors[0][0]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 0 5\r")==0) {matrixData.matrix_indicator_colors[0][0]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 0 6\r")==0) {matrixData.matrix_indicator_colors[0][0]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 1 0\r")==0) {matrixData.matrix_indicator_colors[0][1]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 1 1\r")==0) {matrixData.matrix_indicator_colors[0][1]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 1 2\r")==0) {matrixData.matrix_indicator_colors[0][1]=2;}
@@ -20629,7 +20646,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 1 4\r")==0) {matrixData.matrix_indicator_colors[0][1]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 1 5\r")==0) {matrixData.matrix_indicator_colors[0][1]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 1 6\r")==0) {matrixData.matrix_indicator_colors[0][1]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 2 0\r")==0) {matrixData.matrix_indicator_colors[0][2]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 2 1\r")==0) {matrixData.matrix_indicator_colors[0][2]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 2 2\r")==0) {matrixData.matrix_indicator_colors[0][2]=2;}
@@ -20637,7 +20653,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 2 4\r")==0) {matrixData.matrix_indicator_colors[0][2]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 2 5\r")==0) {matrixData.matrix_indicator_colors[0][2]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 2 6\r")==0) {matrixData.matrix_indicator_colors[0][2]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 3 0\r")==0) {matrixData.matrix_indicator_colors[0][3]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 3 1\r")==0) {matrixData.matrix_indicator_colors[0][3]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 3 2\r")==0) {matrixData.matrix_indicator_colors[0][3]=2;}
@@ -20645,7 +20660,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 3 4\r")==0) {matrixData.matrix_indicator_colors[0][3]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 3 5\r")==0) {matrixData.matrix_indicator_colors[0][3]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 3 6\r")==0) {matrixData.matrix_indicator_colors[0][3]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 4 0\r")==0) {matrixData.matrix_indicator_colors[0][4]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 4 1\r")==0) {matrixData.matrix_indicator_colors[0][4]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 4 2\r")==0) {matrixData.matrix_indicator_colors[0][4]=2;}
@@ -20653,7 +20667,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 4 4\r")==0) {matrixData.matrix_indicator_colors[0][4]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 4 5\r")==0) {matrixData.matrix_indicator_colors[0][4]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 4 6\r")==0) {matrixData.matrix_indicator_colors[0][4]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 5 0\r")==0) {matrixData.matrix_indicator_colors[0][5]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 5 1\r")==0) {matrixData.matrix_indicator_colors[0][5]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 5 2\r")==0) {matrixData.matrix_indicator_colors[0][5]=2;}
@@ -20661,7 +20674,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 5 4\r")==0) {matrixData.matrix_indicator_colors[0][5]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 5 5\r")==0) {matrixData.matrix_indicator_colors[0][5]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 5 6\r")==0) {matrixData.matrix_indicator_colors[0][5]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 6 0\r")==0) {matrixData.matrix_indicator_colors[0][6]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 6 1\r")==0) {matrixData.matrix_indicator_colors[0][6]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 6 2\r")==0) {matrixData.matrix_indicator_colors[0][6]=2;}
@@ -20669,7 +20681,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 6 4\r")==0) {matrixData.matrix_indicator_colors[0][6]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 6 5\r")==0) {matrixData.matrix_indicator_colors[0][6]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 6 6\r")==0) {matrixData.matrix_indicator_colors[0][6]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 7 0\r")==0) {matrixData.matrix_indicator_colors[0][7]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 7 1\r")==0) {matrixData.matrix_indicator_colors[0][7]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 7 2\r")==0) {matrixData.matrix_indicator_colors[0][7]=2;}
@@ -20677,7 +20688,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 7 4\r")==0) {matrixData.matrix_indicator_colors[0][7]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 7 5\r")==0) {matrixData.matrix_indicator_colors[0][7]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 7 6\r")==0) {matrixData.matrix_indicator_colors[0][7]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 8 0\r")==0) {matrixData.matrix_indicator_colors[0][8]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 8 1\r")==0) {matrixData.matrix_indicator_colors[0][8]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 8 2\r")==0) {matrixData.matrix_indicator_colors[0][8]=2;}
@@ -20685,7 +20695,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 8 4\r")==0) {matrixData.matrix_indicator_colors[0][8]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 8 5\r")==0) {matrixData.matrix_indicator_colors[0][8]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 8 6\r")==0) {matrixData.matrix_indicator_colors[0][8]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 9 0\r")==0) {matrixData.matrix_indicator_colors[0][9]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 9 1\r")==0) {matrixData.matrix_indicator_colors[0][9]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 9 2\r")==0) {matrixData.matrix_indicator_colors[0][9]=2;}
@@ -20693,7 +20702,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 9 4\r")==0) {matrixData.matrix_indicator_colors[0][9]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 9 5\r")==0) {matrixData.matrix_indicator_colors[0][9]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 9 6\r")==0) {matrixData.matrix_indicator_colors[0][9]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 10 0\r")==0) {matrixData.matrix_indicator_colors[0][10]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 10 1\r")==0) {matrixData.matrix_indicator_colors[0][10]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 10 2\r")==0) {matrixData.matrix_indicator_colors[0][10]=2;}
@@ -20701,7 +20709,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 10 4\r")==0) {matrixData.matrix_indicator_colors[0][10]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 10 5\r")==0) {matrixData.matrix_indicator_colors[0][10]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 10 6\r")==0) {matrixData.matrix_indicator_colors[0][10]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 11 0\r")==0) {matrixData.matrix_indicator_colors[0][11]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 11 1\r")==0) {matrixData.matrix_indicator_colors[0][11]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 11 2\r")==0) {matrixData.matrix_indicator_colors[0][11]=2;}
@@ -20709,7 +20716,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 11 4\r")==0) {matrixData.matrix_indicator_colors[0][11]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 11 5\r")==0) {matrixData.matrix_indicator_colors[0][11]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 11 6\r")==0) {matrixData.matrix_indicator_colors[0][11]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 12 0\r")==0) {matrixData.matrix_indicator_colors[0][12]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 12 1\r")==0) {matrixData.matrix_indicator_colors[0][12]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 12 2\r")==0) {matrixData.matrix_indicator_colors[0][12]=2;}
@@ -20717,7 +20723,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 12 4\r")==0) {matrixData.matrix_indicator_colors[0][12]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 12 5\r")==0) {matrixData.matrix_indicator_colors[0][12]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 12 6\r")==0) {matrixData.matrix_indicator_colors[0][12]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 13 0\r")==0) {matrixData.matrix_indicator_colors[0][13]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 13 1\r")==0) {matrixData.matrix_indicator_colors[0][13]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 13 2\r")==0) {matrixData.matrix_indicator_colors[0][13]=2;}
@@ -20725,7 +20730,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 13 4\r")==0) {matrixData.matrix_indicator_colors[0][13]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 13 5\r")==0) {matrixData.matrix_indicator_colors[0][13]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 13 6\r")==0) {matrixData.matrix_indicator_colors[0][13]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 14 0\r")==0) {matrixData.matrix_indicator_colors[0][14]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 14 1\r")==0) {matrixData.matrix_indicator_colors[0][14]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 14 2\r")==0) {matrixData.matrix_indicator_colors[0][14]=2;}
@@ -20733,7 +20737,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 14 4\r")==0) {matrixData.matrix_indicator_colors[0][14]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 14 5\r")==0) {matrixData.matrix_indicator_colors[0][14]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 14 6\r")==0) {matrixData.matrix_indicator_colors[0][14]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 15 0\r")==0) {matrixData.matrix_indicator_colors[0][15]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 15 1\r")==0) {matrixData.matrix_indicator_colors[0][15]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 15 2\r")==0) {matrixData.matrix_indicator_colors[0][15]=2;}
@@ -20741,7 +20744,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 15 4\r")==0) {matrixData.matrix_indicator_colors[0][15]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 15 5\r")==0) {matrixData.matrix_indicator_colors[0][15]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 15 6\r")==0) {matrixData.matrix_indicator_colors[0][15]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 16 0\r")==0) {matrixData.matrix_indicator_colors[0][16]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 16 1\r")==0) {matrixData.matrix_indicator_colors[0][16]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 16 2\r")==0) {matrixData.matrix_indicator_colors[0][16]=2;}
@@ -20749,7 +20751,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 16 4\r")==0) {matrixData.matrix_indicator_colors[0][16]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 16 5\r")==0) {matrixData.matrix_indicator_colors[0][16]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 16 6\r")==0) {matrixData.matrix_indicator_colors[0][16]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 17 0\r")==0) {matrixData.matrix_indicator_colors[0][17]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 17 1\r")==0) {matrixData.matrix_indicator_colors[0][17]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 17 2\r")==0) {matrixData.matrix_indicator_colors[0][17]=2;}
@@ -20757,7 +20758,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 17 4\r")==0) {matrixData.matrix_indicator_colors[0][17]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 17 5\r")==0) {matrixData.matrix_indicator_colors[0][17]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 17 6\r")==0) {matrixData.matrix_indicator_colors[0][17]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 18 0\r")==0) {matrixData.matrix_indicator_colors[0][18]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 18 1\r")==0) {matrixData.matrix_indicator_colors[0][18]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 18 2\r")==0) {matrixData.matrix_indicator_colors[0][18]=2;}
@@ -20765,7 +20765,6 @@ static void CmdProcess(void) {
       else if (strcmp(CMD_BUFFER, "set pcioi 18 4\r")==0) {matrixData.matrix_indicator_colors[0][18]=4;}
       else if (strcmp(CMD_BUFFER, "set pcioi 18 5\r")==0) {matrixData.matrix_indicator_colors[0][18]=5;}
       else if (strcmp(CMD_BUFFER, "set pcioi 18 6\r")==0) {matrixData.matrix_indicator_colors[0][18]=6;}
-
       else if (strcmp(CMD_BUFFER, "set pcioi 19 0\r")==0) {matrixData.matrix_indicator_colors[0][19]=0;}
       else if (strcmp(CMD_BUFFER, "set pcioi 19 1\r")==0) {matrixData.matrix_indicator_colors[0][19]=1;}
       else if (strcmp(CMD_BUFFER, "set pcioi 19 2\r")==0) {matrixData.matrix_indicator_colors[0][19]=2;}
@@ -21766,26 +21765,39 @@ bool cleared_dynamic_data_gpatt=false;
 bool second_time_period=false;
 int remain_rtc_sync_flag=0;
 int sdcard_check_counter=0;
-// int i_request_wt901;
+int i_request_wt901;
 
 void loop() {
-  bench("-----");
+  systemData.t_bench=true;
+  // bench("-----");
+
   timeData.mainLoopTimeStart=micros();
-  // systemData.t_bench=true;
   systemData.loops_a_second++;
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              SERIAL COMMANDS
+  // ----------------------------------------------------------------------------------------------------------------------------
 
   // -----------------------------------------------
   // read commands
   // -----------------------------------------------
+  // t0=micros();
   while (Serial.available()) {
     memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
     Serial.readBytesUntil('\n', CMD_BUFFER, sizeof(CMD_BUFFER));
   }
+  // bench("[CmdRead] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
   // -----------------------------------------------
   // process commands
   // -----------------------------------------------
+  // t0=micros();
   CmdProcess();
+  // bench("[CmdProcess] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  CONTROL PAD
+  // ----------------------------------------------------------------------------------------------------------------------------
   // t0=micros();
   requestControlPad();
   // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
@@ -21795,12 +21807,14 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // suspend/resume task once if all gps parsing was disabled. this is done here rather than on another task.
   // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
     suspended_gps_task=true;
     first_gps_pass=true;
   }
   else {if (suspended_gps_task==true) {vTaskResume(GPSTask);} suspended_gps_task=false;}
+  // bench("[SuspendGPS] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                  DYNAMIC DATA (STATION MODE)
@@ -21810,10 +21824,12 @@ void loop() {
   // syncing manually and periodically will increase perfromance if required.
   // ----------------------------------------------------------------------------------------------------------------------------
   // gps_signal 0 reflects either zero satellites or signal unknown due to gngga disabled.
+  // t0=micros();
   if (systemData.satio_enabled==false) {gps_signal=0; if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
   if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
   if (systemData.gpatt_enabled==false) {if (cleared_dynamic_data_gpatt==false) {clearGPATT(); cleared_dynamic_data_gpatt=true;} else {cleared_dynamic_data_gpatt=false;}}
+  // bench("[ClearDynamicData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                          GPS
@@ -21997,7 +22013,7 @@ void loop() {
         sensorData.wt901_mag_y=NAN;
         sensorData.wt901_mag_z=NAN;
       }
-      // i_request_wt901++;
+      i_request_wt901++;
       // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
@@ -22067,7 +22083,7 @@ void loop() {
     if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
 
     // Serial.println("[reset i_request_wt901] times ran: " + String(i_request_wt901));
-    // i_request_wt901=0;
+    i_request_wt901=0;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -22079,10 +22095,10 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
   // bench("[overload] " + String(systemData.overload));
-  bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
+  // bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
   // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
 
-  delay(1);
+  // delay(1);
 }
