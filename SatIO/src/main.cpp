@@ -19107,10 +19107,6 @@ void writePortControllerPortMap() {
     // -----------------------
     if (matrixData.matrix_port_map[0][i] != matrixData.tmp_matrix_port_map[0][i]) {
       // -----------------------
-      // update
-      // -----------------------
-      matrixData.tmp_matrix_port_map[0][i]=matrixData.matrix_port_map[0][i];
-      // -----------------------
       // tag
       // -----------------------
       memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
@@ -19132,6 +19128,10 @@ void writePortControllerPortMap() {
       // -----------------------
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
       // -----------------------
+      // update
+      // -----------------------
+      matrixData.tmp_matrix_port_map[0][i]=matrixData.matrix_port_map[0][i];
+      // -----------------------
       // debug
       // -----------------------
       // debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
@@ -19149,10 +19149,6 @@ void writePortControllerSwitchState() {
     // check for change
     // -----------------------
     if (matrixData.matrix_switch_state[0][i] != matrixData.tmp_matrix_switch_state[0][i]) {
-      // -----------------------
-      // update
-      // -----------------------
-      matrixData.tmp_matrix_switch_state[0][i]=matrixData.matrix_switch_state[0][i];
       // -----------------------
       // tag
       // -----------------------
@@ -19174,6 +19170,10 @@ void writePortControllerSwitchState() {
       // write instruction
       // -----------------------
       writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+      // -----------------------
+      // update
+      // -----------------------
+      matrixData.tmp_matrix_switch_state[0][i]=matrixData.matrix_switch_state[0][i];
       // -----------------------
       // debug
       // -----------------------
@@ -19240,7 +19240,6 @@ void writePortControllerGPSSignalLED() {
     if (gps_signal==0) {strcat(I2CLink.TMP_BUFFER_0, "0");}
     else if (gps_signal==1) {strcat(I2CLink.TMP_BUFFER_0, "1");}
     else if (gps_signal==2) {strcat(I2CLink.TMP_BUFFER_0, "2");}
-    
     // -----------------------
     // write instruction
     // -----------------------
@@ -22067,7 +22066,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    // Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
+    Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
     // ---------------------------------------------------------------------
