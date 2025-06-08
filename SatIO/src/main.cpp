@@ -759,8 +759,8 @@ int previous_menu_column_selection;
 bool make_i2c_request=false;
 int unixtime_i2C_reponse;
 
-char input_data[128];
-char tmp_input_data[128];
+char input_data[1024];
+char tmp_input_data[1024];
 char allow_input_data=false;
 signed int enter_digits_key=-1;
 
@@ -7626,7 +7626,7 @@ bool sdcardLoadMatrix(char * file) {
           sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_3, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_3)==true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]=atol(sdcardData.data_3);
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]=strtod(sdcardData.data_3, NULL);
             // Serial.println("[X]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][0]));
           }
           // else {Serial.println("[X] [INVALID] " + String(sdcardData.data_3));}
@@ -7636,7 +7636,7 @@ bool sdcardLoadMatrix(char * file) {
           sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_4, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_4)==true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]=atol(sdcardData.data_4);
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]=strtod(sdcardData.data_4, NULL);
             // Serial.println("[Y]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][1]));
           }
           // else {Serial.println("[Y] [INVALID] " + String(sdcardData.data_4));}
@@ -7646,7 +7646,7 @@ bool sdcardLoadMatrix(char * file) {
           sdcardData.token=strtok(NULL, ",");
           strcpy(sdcardData.data_5, sdcardData.token);
           if (is_positive_negative_num(sdcardData.data_5)==true) {
-            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]=atol(sdcardData.data_5);
+            matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]=strtod(sdcardData.data_5, NULL);
             // Serial.println("[Z]  [MATRIX] " +String(matrixData.matrix_function_xyz[atoi(sdcardData.data_0)][atoi(sdcardData.data_1)][2]));
           }
           // else {Serial.println("[Z] [INVALID] " + String(sdcardData.data_5));}
@@ -7757,21 +7757,15 @@ bool sdcardSaveMatrix(char * file) {
         // --------------------------------------------
         // matrix switch function value x
         // --------------------------------------------
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][0]);
-        strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+        strcat(sdcardData.file_data, String(matrixData.matrix_function_xyz[Mi][Fi][0], 10).c_str()); strcat(sdcardData.file_data, sdcardData.delim);
         // --------------------------------------------
         // matrix switch function value y
         // --------------------------------------------
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][1]);
-        strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+        strcat(sdcardData.file_data, String(matrixData.matrix_function_xyz[Mi][Fi][1], 10).c_str()); strcat(sdcardData.file_data, sdcardData.delim);
         // --------------------------------------------
         // matrix switch function value z
         // --------------------------------------------
-        memset(sdcardData.tmp, 0 , sizeof(sdcardData.tmp));
-        sprintf(sdcardData.tmp, "%f", matrixData.matrix_function_xyz[Mi][Fi][2]);
-        strcat(sdcardData.file_data, sdcardData.tmp); strcat(sdcardData.file_data, sdcardData.delim);
+        strcat(sdcardData.file_data, String(matrixData.matrix_function_xyz[Mi][Fi][2], 10).c_str()); strcat(sdcardData.file_data, sdcardData.delim);
         // --------------------------------------------
         // matrix switch inverted function logic
         // --------------------------------------------
@@ -13316,13 +13310,15 @@ void menuEnter() {
   // set digits page
   // ----------------------------------------------------------------
   else if (menu_page==page_input_data) {
+    // Serial.println("[input_data] " + String(input_data, 10));
     allow_input_data=false;
     if (enter_digits_key==1) {matrixData.matrix_port_map[0][menuMatrixSwitchSelect.selection()]=atoi(input_data); menu_page=page_matrix_logic_main;}
-    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
-    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=atol(input_data); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==2) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==3) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
+    else if (enter_digits_key==4) {matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]=strtod(input_data, NULL); menu_page=page_matrix_logic_select_setup;}
     else if (enter_digits_key==5) {satData.utc_second_offset=atol(input_data); menu_page=page_timeanddate_main;}
     enter_digits_key=-1;
+    // Serial.println("[matrix x] " + String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10));
   }
 
   // ----------------------------------------------------------------
@@ -14900,21 +14896,21 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 2U).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][0], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 68, canvas108x8);
       // ------------------------------------------------
       // matrix switch function y
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][1], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 78, canvas108x8);
       // ------------------------------------------------
       // matrix switch function z
       // ------------------------------------------------
       canvas108x8.clear();
       display.setColor(systemData.color_content);
-      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2]).c_str(), STYLE_BOLD);
+      canvas108x8.printFixed(1, 1, String(matrixData.matrix_function_xyz[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()][2], 10).c_str(), STYLE_BOLD);
       display.drawCanvas(17, 88, canvas108x8);
       // ------------------------------------------------
       // matrix switch function real x
@@ -15529,7 +15525,7 @@ void UpdateUI(void * pvParamters) {
       // --------------------------------------------------
       display.setColor(RGB_COLOR16(0,255,0));
       canvas120x8.clear();
-      canvas120x8.printFixed((125/2)-((strlen(String(input_data).c_str())/2)*6), 1, input_data, STYLE_BOLD);
+      canvas120x8.printFixed((125/2)-((strlen(String(input_data, 10).c_str())/2)*6), 1, String(input_data, 10).c_str(), STYLE_BOLD);
       display.drawCanvas(2, 112, canvas120x8);
     }
 
