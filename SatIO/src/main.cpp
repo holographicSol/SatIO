@@ -12695,12 +12695,12 @@ void inputChar(char * data) {
   // auto: automatic input
   // -----------------------------------------------------------------
   if ((strcmp(data, ".")==0) && (strlen(input_data)==0)) {if (allow_input_data==true) {
-    // copy x
+    // copy real x into matrix x
     if (enter_digits_key==2) {
       memset(input_data, 0, sizeof(input_data));
       strcpy(input_data, getRelatedX(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
       }
-    // copy y
+    // copy real y into matrix y
     if (enter_digits_key==3) {
       memset(input_data, 0, sizeof(input_data));
       strcpy(input_data, getRelatedY(matrixData.matrix_function[menuMatrixSwitchSelect.selection()][menuMatrixFunctionSelect.selection()]).c_str());
