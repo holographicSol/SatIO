@@ -285,7 +285,7 @@ void deBounce() {
 
 void loop() {
   // -----------------------------------------
-  //check button pressed interrupt flags
+  // check button pressed interrupt flags
   // -----------------------------------------
   if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I0"); interruptMaster();
     Serial.println("[button] ISR0 pressed");
@@ -300,7 +300,7 @@ void loop() {
     Serial.println("[button] ISR3 pressed");
   }
   // -----------------------------------------
-  //poll button presses
+  // poll button presses
   // -----------------------------------------
   for (int i=0; i<31; i++) {
     if (digitalRead(BTNMATRIX[i])==LOW) {
@@ -311,6 +311,8 @@ void loop() {
       strcat(I2CLink.TMP_BUFFER0, "B,");
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1)); itoa(i, I2CLink.TMP_BUFFER1, 10);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
+      interruptMaster();
+      break;
     }
   }
 }
