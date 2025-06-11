@@ -19009,6 +19009,7 @@ void requestWT901() {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void requestControlPad() {
+  // Serial.println("[requestControlPad] checking for a request.");
   // ----------------------------------------------
   // make request
   // ----------------------------------------------
@@ -21711,6 +21712,10 @@ void setup() {
   }
 
   delay(10);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // todo: run startup tests
+  // ----------------------------------------------------------------------------------------------------------------------------
   
   // ----------------------------------------------------------------------------------------------------------------------------
   // wait a moment before entering main loop
@@ -21794,7 +21799,7 @@ void loop() {
   //                                                                                                                  CONTROL PAD
   // ----------------------------------------------------------------------------------------------------------------------------
   // t0=micros();
-  requestControlPad();
+  if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
   // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -22026,7 +22031,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                  INTERVAL ACCUMULATOR
     // ---------------------------------------------------------------------
-    if (timeData.accumulated_intervals>DBL_MAX-1) {
+    if (timeData.accumulated_intervals>DBL_MAX-2) {
       timeData.accumulated_intervals=0;
       Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
       for (int i=0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
@@ -22052,21 +22057,21 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
     // ---------------------------------------------------------------------
-    if (timeData.uptime_seconds>LONG_MAX-1) {
+    if (timeData.uptime_seconds>LONG_MAX-2) {
       timeData.uptime_seconds=0;
       Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
     }
     // ---------------------------------------------------------------------
     //                                                    SECOND ACCUMULATOR
     // ---------------------------------------------------------------------
-    if (timeData.accumulated_seconds>LONG_MAX-1) {
+    if (timeData.accumulated_seconds>LONG_MAX-2) {
       timeData.accumulated_seconds=0;
       Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
     }
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
+    // Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
     // ---------------------------------------------------------------------
@@ -22095,5 +22100,5 @@ void loop() {
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
 
-  // delay(1);
+  delay(1);
 }
