@@ -1,6 +1,7 @@
                                   SatIO - Written by Benjamin Jack Cullen.
 
                                             "The GPS Master"
+                  This project may be renamed to UAP or something similar in the future.
 
                       A general purpose programmable satellite, sensor and inertial platform.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
