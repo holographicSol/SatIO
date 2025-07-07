@@ -18623,6 +18623,7 @@ void UpdateUI(void * pvParamters) {
     // UAP
     // ------------------------------------------------
     DisplayUAP();
+    delay(10); // optional delay
   }
 
   // ----------------------------------------------------------------------------------------------------------------
@@ -19303,12 +19304,15 @@ void writePortControllerIOEnabled() {
 // Write To Enabled Port Controller
 // ------------------------------------------------
 void writeToEnabledPortController() {
-  writePortControllerMatrixIndicatorColors();
   writePortControllerIOEnabled();
   writePortControllerPortMap();
   writePortControllerSwitchState();
-  writePortControllerGPSSignalLED();
-  writePortControllerOverloadValue();
+  // ------------------------------------------------
+  // (uncomment to enable leds)
+  // ------------------------------------------------
+  // writePortControllerMatrixIndicatorColors();
+  // writePortControllerGPSSignalLED();
+  // writePortControllerOverloadValue();
 }
 
 // ---------------------------------------------------------------
@@ -22043,7 +22047,7 @@ void loop() {
   // -----------------------------------------------------------------------
   if (interrupt_second_counter>0) {
     // ---------------------------------------------------------------------
-    //                                                    INTERRUPT COUNTER
+    //                                                     INTERRUPT COUNTER
     // ---------------------------------------------------------------------
     portENTER_CRITICAL(&second_timer_mux);
     interrupt_second_counter=0;
