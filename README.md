@@ -242,6 +242,22 @@
   
     ToDO: set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and possibly modification to matrix (to handle NAN).
 
+    Currently all SatIO output is automated by the programmable matrix.
+    Provide manual output, ideally with variable triggers, analog sticks and buttons.
+    This will allow SatIO output to be both automated and manual, right out the back of the SatIO.
+    Pretty awesome.
+    
+    joypad(s): build custom solution / X-Box controller.
+    
+    joypad function is to provide on board variable manual output to the port controller through SatIO:
+    	(1) joy output values through SatIO to port controller.
+    	(2) joy input values can be used in programmable matrix.
+    	(3) joy input values should be observable in the HUD.
+    
+    X-Box controller: dual analogue stick + buttons + triggers
+    
+    Custom controller: is not restricted to or limited by available x-box buttons sticks and           triggers.
+
 -----
 
 Complete PlatformIO project files, libraries and modified libraries:
