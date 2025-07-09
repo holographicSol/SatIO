@@ -397,6 +397,30 @@ void setup() {
   }
 
   // ------------------------------------------------------------
+  // Joy Sticks
+  // ------------------------------------------------------------
+  pinMode(A0, OUTPUT); // joy 0: up
+  pinMode(A1, OUTPUT); // joy 0: down
+  pinMode(A2, OUTPUT); // joy 0: left
+  pinMode(A3, OUTPUT); // joy 0: right
+  pinMode(A4, OUTPUT); // joy 1: up
+  pinMode(A5, OUTPUT); // joy 1: down
+  pinMode(A6, OUTPUT); // joy 1: left
+  pinMode(A7, OUTPUT); // joy 1: right
+  pinMode(52, OUTPUT); // joy 1: click
+  pinMode(53, OUTPUT); // joy 1: click
+  analogWrite(A0, 0);
+  analogWrite(A1, 0);
+  analogWrite(A2, 0);
+  analogWrite(A3, 0);
+  analogWrite(A4, 0);
+  analogWrite(A5, 0);
+  analogWrite(A6, 0);
+  analogWrite(A7, 0);
+  digitalWrite(52, LOW);
+  digitalWrite(53, LOW);
+
+  // ------------------------------------------------------------
   // Initialize I2C communications as Slave
   // ------------------------------------------------------------
   Wire.begin(SLAVE_ADDR);
