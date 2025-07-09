@@ -135,6 +135,7 @@ TimeStruct timeData;
 #define SLAVE_ADDR 9
 
 struct I2CLinkStruct {
+  int i_token;
   char * token;
   byte OUTPUT_BUFFER[32];
   char INPUT_BUFFER[32];
@@ -143,10 +144,34 @@ struct I2CLinkStruct {
 I2CLinkStruct I2CLink;
 
 // ------------------------------------------------------------------------------------------------------------------------------
+//                                                                                                                  DATA: SENSORS
+// ------------------------------------------------------------------------------------------------------------------------------
+
+struct SensorDataStruct {
+  // ----------------------------------------------------
+  // Analog Sticks
+  // ----------------------------------------------------
+  int as_0_u=0;
+  int as_0_d=0;
+  int as_0_l=0;
+  int as_0_r=0;
+  int as_0_c=1;
+  int as_1_u=0;
+  int as_1_d=0;
+  int as_1_l=0;
+  int as_1_r=0;
+  int as_1_c=1;
+};
+SensorDataStruct sensorData;
+
+// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                     I2C EVENTS
 // ------------------------------------------------------------------------------------------------------------------------------
 
+bool receive_event=false;
+
 void receiveEvent(int) {
+  receive_event=true;
 
   // ------------------------------------------------------------
   // Indicate data received (uncomment to enable leds)
@@ -227,6 +252,26 @@ void receiveEvent(int) {
   //   leds[indicator_number] = available_matrix_indicator_colors[matrix_indicator_colors[0][indicator_number]];
   //   Serial.println("[indicator] led index: " + String(indicator_number) + " color index: " + String(matrix_indicator_colors[0][indicator_number]));
   // }
+
+  else if (strcmp(I2CLink.token, "$JOY")==0) {
+    I2CLink.token=strtok(NULL, ",");
+    I2CLink.i_token=0;
+    while (I2CLink.token != NULL) {
+      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+      if (I2CLink.i_token==0) {sensorData.as_0_u=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==1) {sensorData.as_0_d=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==2) {sensorData.as_0_l=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==3) {sensorData.as_0_r=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==4) {sensorData.as_0_c=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==5) {sensorData.as_1_u=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==6) {sensorData.as_1_d=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==7) {sensorData.as_1_l=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==8) {sensorData.as_1_r=atoi(I2CLink.token);}
+      else if (I2CLink.i_token==9) {sensorData.as_1_c=atoi(I2CLink.token);}
+      I2CLink.token=strtok(NULL, ",");
+      I2CLink.i_token++;
+    }
+  }
 }
 
 void requestEvent() {
@@ -254,7 +299,7 @@ void satIOPortController() {
         // set a depricated port mapping to default values
         // ------------------------------------------------------------
         digitalWrite(matrix_port_map[0][i], LOW);
-        pinMode(matrix_port_map[0][i], INPUT);
+        // pinMode(matrix_port_map[0][i], INPUT);
 
         // Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
 
@@ -262,7 +307,7 @@ void satIOPortController() {
         // setup new port
         // ------------------------------------------------------------
         matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
-        pinMode(matrix_port_map[0][i], OUTPUT);
+        // pinMode(matrix_port_map[0][i], OUTPUT);
       }
     }
 
@@ -273,7 +318,7 @@ void satIOPortController() {
 
 
     // ------------------------------------------------------------
-    // uncomment to enable leds
+    // (uncomment to enable leds)
     // ------------------------------------------------------------
     // if (matrix_switch_state[0][i]==1) {leds[i] = available_matrix_indicator_colors[matrix_indicator_colors[0][i]]; FastLED.show();}
     // else {leds[i] = CRGB::Black; FastLED.show();}
@@ -285,31 +330,45 @@ void satIOPortController() {
     // Serial.println("[" + String(matrix_port_map[0][i]) + "] " + String(digitalRead(matrix_port_map[0][i])));
   }
 
-  // ------------------------------------------------------------
-  // Indicate matrix enabled (matrix data is being received) (uncomment to enable leds)
-  // ------------------------------------------------------------
+  // // ------------------------------------------------------------
+  // // Indicate matrix enabled (matrix data is being received) (uncomment to enable leds)
+  // // ------------------------------------------------------------
   // if (matrix_io_enabled==true) {leds[20] = CRGB::Red; FastLED.show();}
   // else {leds[20] = CRGB::Black; FastLED.show();}
 
-  // ------------------------------------------------------------
-  // Indicate data received (uncomment to enable leds)
-  // ------------------------------------------------------------
+  // // ------------------------------------------------------------
+  // // Indicate data received (uncomment to enable leds)
+  // // ------------------------------------------------------------
   // if (data_received==true) {leds[21] = CRGB::Red; FastLED.show();}
   // else {leds[21] = CRGB::Black; FastLED.show();}
 
-  // ------------------------------------------------------------
-  // Indicate overload (uncomment to enable leds)
-  // ------------------------------------------------------------
+  // // ------------------------------------------------------------
+  // // Indicate overload (uncomment to enable leds)
+  // // ------------------------------------------------------------
   // if (overload==true) {leds[22] = CRGB::Yellow; FastLED.show();}
   // else {leds[22] = CRGB::Black; FastLED.show();}
 
-  // ------------------------------------------------------------
-  // Indicate GPS signal (uncomment to enable leds)
-  // ------------------------------------------------------------
+  // // ------------------------------------------------------------
+  // // Indicate GPS signal (uncomment to enable leds)
+  // // ------------------------------------------------------------
   // if      (gps_signal==0) {leds[23] = CRGB::Red; FastLED.show();}
   // else if (gps_signal==1) {leds[23] = CRGB::Green; FastLED.show();}
   // else if (gps_signal==2) {leds[23] = CRGB::Blue; FastLED.show();}
   // else                    {leds[23] = CRGB::Red; FastLED.show();}
+
+  // ---------------------------------------------------------------------------------------------------------------
+  // Joy Sticks: Currently mapped to 1024 for sensors but can be left unmapped if outputting to MCU on the same pin.
+  // ---------------------------------------------------------------------------------------------------------------
+  analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024));
+  analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024));
+  analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024));
+  analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024));
+  digitalWrite(52, sensorData.as_0_c);
+  analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024));
+  analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024));
+  analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024));
+  analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024));
+  digitalWrite(53, sensorData.as_0_c);
 }
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -375,7 +434,7 @@ void loop() {
   // ------------------------------------------------------------
   // run port controller function
   // ------------------------------------------------------------
-  satIOPortController();
+  if (receive_event==true) {satIOPortController(); receive_event=false;}
   
   delay(1);
 
