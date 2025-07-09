@@ -8937,7 +8937,7 @@ void matrixSwitch() {
         //                                                                                                                    RTC
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "LocalTime", 9)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "LocalTime", strlen("LocalTime"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "LocalTimeOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -8986,7 +8986,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Day", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Day", strlen("Day"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "DaySunday")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9052,7 +9052,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Date", 4)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Date", strlen("Date"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "DateDayX")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9086,7 +9086,7 @@ void matrixSwitch() {
         //                                                                                                                  SATIO
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Deg", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Deg", strlen("Deg"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "DegLatOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9199,7 +9199,7 @@ void matrixSwitch() {
         //                                                                                                                  GNGGA
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGA", 12)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGA", strlen("UTCTimeGNGGA"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNGGAOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9259,7 +9259,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SatCount", 8)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SatCount", strlen("SatCount"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "SatCountOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9308,7 +9308,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGA", 9)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGA", strlen("HemiGNGGA"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNGGANorth")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9347,7 +9347,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GPSPrecision", 12)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GPSPrecision", strlen("GPSPrecision"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "GPSPrecisionOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9396,7 +9396,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Alt", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "AltGNGGA", strlen("AltGNGGA"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "AltGNGGAOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9449,7 +9449,7 @@ void matrixSwitch() {
         //                                                                                                                  GNRMC
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMC", 12)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMC", strlen("UTCTimeGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCTimeGNRMCOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9498,7 +9498,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMC", 9)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMC", strlen("HemiGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "HemiGNRMCNorth")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9537,7 +9537,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GSpeed", 6)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMC", strlen("GSpeedGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "GSpeedGNRMCOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9586,7 +9586,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Heading", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMC", strlen("HeadingGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "HeadingGNRMCOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9635,7 +9635,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMC", 12)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMC", strlen("UTCDateGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "UTCDateGNRMCOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9702,7 +9702,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mode", 4)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMC", strlen("ModeGNRMC"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "ModeGNRMCA")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9745,7 +9745,7 @@ void matrixSwitch() {
         //                                                                                                                  GPATT
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Pitch", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "PitchGPATT", strlen("PitchGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "PitchGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9794,7 +9794,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Roll", 4)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "RollGPATT", strlen("RollGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "RollGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9843,7 +9843,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Yaw", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "YawGPATT", strlen("YawGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "YawGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9892,7 +9892,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GSTData", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATT", strlen("GSTDataGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "GSTDataGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9941,7 +9941,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mileage", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "MileageGPATT", strlen("MileageGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "MileageGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -9990,7 +9990,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SpeedNum", 8)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATT", strlen("SpeedNumGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "SpeedNumGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10039,7 +10039,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "LFlag", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATT", strlen("LFlagGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "LFlagGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10088,7 +10088,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "INS", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "INSGPATT", strlen("INSGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "INSGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10137,7 +10137,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "RSFlag", 6)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATT", strlen("RSFlagGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "RSFlagGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10186,7 +10186,7 @@ void matrixSwitch() {
           }
         }
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SFlag", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATT", strlen("SFlagGPATT"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "SFlagGPATTOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10239,7 +10239,7 @@ void matrixSwitch() {
         //                                                                                                     SIDEREAL TIME: SUN
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Sun", 3)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Sun", strlen("Sun"))==0) {
         
           if (strcmp(matrixData.matrix_function[Mi][Fi], "SunAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10318,7 +10318,7 @@ void matrixSwitch() {
         //                                                                                                    SIDEREAL TIME: MOON
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Moon", 4)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Moon", strlen("Moon"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "MoonAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10445,7 +10445,7 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: MERCURY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mercury", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mercury", strlen("Mercury"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "MercuryAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10526,7 +10526,7 @@ void matrixSwitch() {
         //                                                                                                   SIDEREAL TIME: VENUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Venus", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Venus", strlen("Venus"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "VenusAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10607,7 +10607,7 @@ void matrixSwitch() {
         //                                                                                                    SIDEREAL TIME: MARS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mars", 4)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Mars", strlen("Mars"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "MarsAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10688,7 +10688,7 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: JUPITER
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Jupiter", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Jupiter", strlen("Jupiter"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "JupiterAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10769,7 +10769,7 @@ void matrixSwitch() {
         //                                                                                                  SIDEREAL TIME: SATURN
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Saturn", 6)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Saturn", strlen("Saturn"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "SaturnAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10850,7 +10850,7 @@ void matrixSwitch() {
         //                                                                                                  SIDEREAL TIME: URANUS
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Uranus", 6)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Uranus", strlen("Uranus"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "UranusAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -10931,7 +10931,7 @@ void matrixSwitch() {
         //                                                                                                 SIDEREAL TIME: NEPTUNE
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Neptune", 7)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Neptune", strlen("Neptune"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "NeptuneAzRange")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -11030,7 +11030,7 @@ void matrixSwitch() {
         //                                                                                                     WT901 ACCELERATION
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "WT901", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "WT901", strlen("WT901"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "WT901AccXOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -11601,7 +11601,7 @@ void matrixSwitch() {
         //                                                                                                       DHT11_0 HUMIDITY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "DHT11", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "DHT11H0", strlen("DHT11H0"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -11854,7 +11854,7 @@ void matrixSwitch() {
         //                                                                                                               SENSOR 0
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Sensor", 6)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "Sensor", strlen("Sensor"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "Sensor0Over")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -12657,7 +12657,9 @@ void matrixSwitch() {
         //                                                                                                        Joy Stick 0: Up
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0", 5)==0) {
+        // change N to len
+        // experiment with further increasing efficiency: JoyS0 broken down into JoyS0Up,JoyS0Down etc.
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0Up", strlen("JoyS0Up"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0UpOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -12704,12 +12706,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                      Joy Stick 0: Down
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Down
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0DownOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0Down", strlen("JoyS0Down"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0DownOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_0_d,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -12754,12 +12759,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                      Joy Stick 0: Left
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Left
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0LeftOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0Left", strlen("JoyS0Left"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0LeftOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_0_l,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -12804,12 +12812,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                     Joy Stick 0: Right
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Right
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0RightOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0Right", strlen("JoyS0Right"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0RightOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_0_r,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -12854,12 +12865,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                     Joy Stick 0: Click
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Click
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0ClickOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS0Click", strlen("JoyS0Click"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS0ClickOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_0_c,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -12910,7 +12924,7 @@ void matrixSwitch() {
         //                                                                                                        Joy Stick 1: Up
         // ----------------------------------------------------------------------------------------------------------------------
         
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1", 5)==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1Up", strlen("JoyS1Up"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1UpOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
@@ -12957,12 +12971,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                      Joy Stick 0: Down
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Down
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1DownOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1Down", strlen("JoyS1Down"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1DownOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_1_d,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -13007,12 +13024,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                      Joy Stick 0: Left
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Left
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1LeftOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1Left", strlen("JoyS1Left"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1LeftOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_1_l,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -13057,12 +13077,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                     Joy Stick 0: Right
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Right
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1RightOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1Right", strlen("JoyS1Right"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1RightOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_1_r,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -13107,12 +13130,15 @@ void matrixSwitch() {
                 matrixData.matrix_function_xyz[Mi][Fi][1]);
             }
           }
+        }
 
-          // ----------------------------------------------------------------------------------------------------------------------
-          //                                                                                                     Joy Stick 0: Click
-          // ----------------------------------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Click
+        // ----------------------------------------------------------------------------------------------------------------------
 
-          else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1ClickOver")==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "JoyS1Click", strlen("JoyS1Click"))==0) {
+
+          if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyS1ClickOver")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
               tmp_matrix[Fi]=check_over_true(sensorData.as_1_c,
               matrixData.matrix_function_xyz[Mi][Fi][0]);
@@ -14364,316 +14390,395 @@ String getRelatedX(char * data) {
   if (strcmp("Overload", data)==0) {return String(systemData.overload);}
   // if (strcmp("SwitchLink", data)==0) {return String();}
   // if (strcmp("MatrixTimer", data)==0) {return String();}
-  if (strcmp("LocalTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
-  if (strcmp("LocalTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
-  if (strcmp("LocalTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
-  if (strcmp("LocalTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
-  if (strcmp("DaySunday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DayMonday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DayTuesday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DayWednesday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DayThursday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DayFriday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DaySaturday", data)==0) {return String(satData.local_weekday);}
-  if (strcmp("DateDayX", data)==0) {return String(satData.local_day);}
-  if (strcmp("DateMonthX", data)==0) {return String(satData.local_month);}
-  if (strcmp("DateYearX", data)==0) {return String(satData.local_year);}
-  if (strcmp("DegLatOver", data)==0) {return String(satData.degrees_latitude, 10);}
-  if (strcmp("DegLatUnder", data)==0) {return String(satData.degrees_latitude, 10);}
-  if (strcmp("DegLatEqual", data)==0) {return String(satData.degrees_latitude, 10);}
-  if (strcmp("DegLatRange", data)==0) {return String(satData.degrees_latitude, 10);}
-  if (strcmp("DegLonOver", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegLonUnder", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegLonEqual", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
-  if (strcmp("DegLatLonRange", data)==0) {return String(satData.degrees_latitude, 10);}
-  if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
-  if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
-  if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
-  if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
-  if (strcmp("SatCountEqual", data)==0) {return String(gnggaData.satellite_count_gngga);}
-  if (strcmp("SatCountRange", data)==0) {return String(gnggaData.satellite_count_gngga);}
-  if (strcmp("HemiGNGGANorth", data)==0) {return String(gnggaData.latitude_hemisphere);}
-  if (strcmp("HemiGNGGASouth", data)==0) {return String(gnggaData.latitude_hemisphere);}
-  if (strcmp("HemiGNGGAEast", data)==0) {return String(gnggaData.latitude_hemisphere);}
-  if (strcmp("HemiGNGGAWest", data)==0) {return String(gnggaData.latitude_hemisphere);}
-  if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
-  if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
-  if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
-  if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
-  if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude, 2);}
-  if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude, 2);}
-  if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude, 2);}
-  if (strcmp("AltGNGGARange", data)==0) {return String(gnggaData.altitude, 2);}
-  if (strcmp("UTCTimeGNRMCOver", data)==0) {return String(gnrmcData.utc_time);}
-  if (strcmp("UTCTimeGNRMCUnder", data)==0) {return String(gnrmcData.utc_time);}
-  if (strcmp("UTCTimeGNRMCEqual", data)==0) {return String(gnrmcData.utc_time);}
-  if (strcmp("UTCTimeGNRMCRange", data)==0) {return String(gnrmcData.utc_time);}
-  if (strcmp("PosStatusGNRMCA", data)==0) {return String(gnrmcData.positioning_status);}
-  if (strcmp("PosStatusGNRMCV", data)==0) {return String(gnrmcData.positioning_status);}
-  if (strcmp("ModeGNRMCA", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
-  if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
-  if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
-  if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
-  if (strcmp("HemiGNRMCWest", data)==0) {return String(gnrmcData.latitude_hemisphere);}
-  if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed, 2);}
-  if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed, 2);}
-  if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed, 2);}
-  if (strcmp("GSpeedGNRMCRange", data)==0) {return String(gnrmcData.ground_speed, 2);}
-  if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading, 2);}
-  if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading, 2);}
-  if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading, 2);}
-  if (strcmp("HeadingGNRMCRange", data)==0) {return String(gnrmcData.ground_heading, 2);}
-  if (strcmp("UTCDateGNRMCOver", data)==0) {return String(gnrmcData.utc_date);}
-  if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
-  if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
-  if (strcmp("UTCDateGNRMCRange", data)==0) {return String(gnrmcData.utc_date);}
-  if (strcmp("LFlagGPATTOver", data)==0) {return String(gpattData.line_flag);}
-  if (strcmp("LFlagGPATTUnder", data)==0) {return String(gpattData.line_flag);}
-  if (strcmp("LFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
-  if (strcmp("LFlagGPATTRange", data)==0) {return String(gpattData.line_flag);}
-  if (strcmp("SFlagGPATTOver", data)==0) {return String(gpattData.static_flag);}
-  if (strcmp("SFlagGPATTUnder", data)==0) {return String(gpattData.static_flag);}
-  if (strcmp("SFlagGPATTEqual", data)==0) {return String(gpattData.static_flag);}
-  if (strcmp("SFlagGPATTRange", data)==0) {return String(gpattData.static_flag);}
-  if (strcmp("RSFlagGPATTOver", data)==0) {return String(gpattData.run_state_flag);}
-  if (strcmp("RSFlagGPATTUnder", data)==0) {return String(gpattData.run_state_flag);}
-  if (strcmp("RSFlagGPATTEqual", data)==0) {return String(gpattData.run_state_flag);}
-  if (strcmp("RSFlagGPATTRange", data)==0) {return String(gpattData.run_state_flag);}
-  if (strcmp("INSGPATTOver", data)==0) {return String(gpattData.ins);}
-  if (strcmp("INSGPATTUnder", data)==0) {return String(gpattData.ins);}
-  if (strcmp("INSGPATTEqual", data)==0) {return String(gpattData.ins);}
-  if (strcmp("INSGPATTRange", data)==0) {return String(gpattData.ins);}
-  if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
-  if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
-  if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
-  if (strcmp("SpeedNumGPATTRange", data)==0) {return String(gpattData.speed_num);}
-  if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage, 2);}
-  if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage, 2);}
-  if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage, 2);}
-  if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage, 2);}
-  if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
-  if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
-  if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
-  if (strcmp("GSTDataGPATTRange", data)==0) {return String(gpattData.gst_data);}
-  if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw, 2);}
-  if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw, 2);}
-  if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw, 2);}
-  if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw, 2);}
-  if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll, 2);}
-  if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll, 2);}
-  if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll, 2);}
-  if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll, 2);}
-  if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch, 2);}
-  if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch, 2);}
-  if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch, 2);}
-  if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch, 2);}
-  if (strcmp("GNGGAValidCS", data)==0) {return String(gnggaData.valid_checksum);}
-  if (strcmp("GNRMCValidCS", data)==0) {return String(gnrmcData.valid_checksum);}
-  if (strcmp("GPATTValidCS", data)==0) {return String(gpattData.valid_checksum);}
-  if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.count_valid_elements);}
-  if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.count_valid_elements);}
-  if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.count_valid_elements);}
-  if (strncmp("WT901AccX", data, 8)==0) {return String(sensorData.wt901_acc_x, 3);}
-  if (strncmp("WT901AccY", data, 8)==0) {return String(sensorData.wt901_acc_y, 3);}
-  if (strncmp("WT901AccZ", data, 8)==0) {return String(sensorData.wt901_acc_z, 3);}
-  if (strncmp("WT901AngX", data, 8)==0) {return String(sensorData.wt901_ang_x, 3);}
-  if (strncmp("WT901AngY", data, 8)==0) {return String(sensorData.wt901_ang_y, 3);}
-  if (strncmp("WT901AngZ", data, 8)==0) {return String(sensorData.wt901_ang_z, 3);}
-  if (strncmp("WT901MagX", data, 8)==0) {return String(sensorData.wt901_mag_x, 3);}
-  if (strncmp("WT901MagY", data, 8)==0) {return String(sensorData.wt901_mag_y, 3);}
-  if (strncmp("WT901MagZ", data, 8)==0) {return String(sensorData.wt901_mag_z, 3);}
-  if (strncmp("WT901GyroX", data, 8)==0) {return String(sensorData.wt901_gyr_x, 3);}
-  if (strncmp("WT901GyroY", data, 8)==0) {return String(sensorData.wt901_gyr_y, 3);}
-  if (strncmp("WT901GyroZ", data, 8)==0) {return String(sensorData.wt901_gyr_z, 3);}
-  if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
-  if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
-  if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
-  if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
-  if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
-  if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
-  if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
-  if (strcmp("MoonAltRange", data)==0) {return String(siderealPlanetData.moon_alt);}
-  if (strcmp("MoonUp", data)==0) {return String(siderealPlanetData.moon_r);}
-  if (strcmp("MoonDown", data)==0) {return String(siderealPlanetData.moon_s);}
-  if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
-  if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
-  if (strcmp("MoonPhaseOver", data)==0) {return String((int)siderealPlanetData.moon_p);}
-  if (strcmp("MoonPhaseUnder", data)==0) {return String((int)siderealPlanetData.moon_p);}
-  if (strcmp("MoonPhaseEqual", data)==0) {return String((int)siderealPlanetData.moon_p);}
-  if (strcmp("MoonPhaseRange", data)==0) {return String((int)siderealPlanetData.moon_p);}
-  if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
-  if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
-  if (strcmp("MercuryUp", data)==0) {return String(siderealPlanetData.mercury_r);}
-  if (strcmp("MercuryDown", data)==0) {return String(siderealPlanetData.mercury_s);}
-  if (strcmp("MercuryRise", data)==0) {return String(siderealPlanetData.mercury_r);}
-  if (strcmp("MercurySet", data)==0) {return String(siderealPlanetData.mercury_s);}
-  if (strcmp("VenusAzRange", data)==0) {return String(siderealPlanetData.venus_az);}
-  if (strcmp("VenusAltRange", data)==0) {return String(siderealPlanetData.venus_alt);}
-  if (strcmp("VenusUp", data)==0) {return String(siderealPlanetData.venus_r);}
-  if (strcmp("VenusDown", data)==0) {return String(siderealPlanetData.venus_s);}
-  if (strcmp("VenusRise", data)==0) {return String(siderealPlanetData.venus_r);}
-  if (strcmp("VenusSet", data)==0) {return String(siderealPlanetData.venus_s);}
-  if (strcmp("MarsAzRange", data)==0) {return String(siderealPlanetData.mars_az);}
-  if (strcmp("MarsAltRange", data)==0) {return String(siderealPlanetData.mars_alt);}
-  if (strcmp("MarsUp", data)==0) {return String(siderealPlanetData.mars_r);}
-  if (strcmp("MarsDown", data)==0) {return String(siderealPlanetData.mars_s);}
-  if (strcmp("MarsRise", data)==0) {return String(siderealPlanetData.mars_r);}
-  if (strcmp("MarsSet", data)==0) {return String(siderealPlanetData.mars_s);}
-  if (strcmp("JupiterAzRange", data)==0) {return String(siderealPlanetData.jupiter_az);}
-  if (strcmp("JupiterAltRange", data)==0) {return String(siderealPlanetData.jupiter_alt);}
-  if (strcmp("JupiterUp", data)==0) {return String(siderealPlanetData.jupiter_r);}
-  if (strcmp("JupiterDown", data)==0) {return String(siderealPlanetData.jupiter_s);}
-  if (strcmp("JupiterRise", data)==0) {return String(siderealPlanetData.jupiter_r);}
-  if (strcmp("JupiterSet", data)==0) {return String(siderealPlanetData.jupiter_s);}
-  if (strcmp("SaturnAzRange", data)==0) {return String(siderealPlanetData.saturn_az);}
-  if (strcmp("SaturnAltRange", data)==0) {return String(siderealPlanetData.saturn_alt);}
-  if (strcmp("SaturnUp", data)==0) {return String(siderealPlanetData.saturn_r);}
-  if (strcmp("SaturnDown", data)==0) {return String(siderealPlanetData.saturn_s);}
-  if (strcmp("SaturnRise", data)==0) {return String(siderealPlanetData.saturn_r);}
-  if (strcmp("SaturnSet", data)==0) {return String(siderealPlanetData.saturn_s);}
-  if (strcmp("UranusAzRange", data)==0) {return String(siderealPlanetData.uranus_az);}
-  if (strcmp("UranusAltRange", data)==0) {return String(siderealPlanetData.uranus_alt);}
-  if (strcmp("UranusUp", data)==0) {return String(siderealPlanetData.uranus_r);}
-  if (strcmp("UranusDown", data)==0) {return String(siderealPlanetData.uranus_s);}
-  if (strcmp("UranusRise", data)==0) {return String(siderealPlanetData.uranus_r);}
-  if (strcmp("UranusSet", data)==0) {return String(siderealPlanetData.uranus_s);}
-  if (strcmp("NeptuneAzRange", data)==0) {return String(siderealPlanetData.neptune_az);}
-  if (strcmp("NeptuneAltRange", data)==0) {return String(siderealPlanetData.neptune_alt);}
-  if (strcmp("NeptuneUp", data)==0) {return String(siderealPlanetData.neptune_r);}
-  if (strcmp("NeptuneDown", data)==0) {return String(siderealPlanetData.neptune_s);}
-  if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
-  if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
-  if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11H0Over", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11H0Equal", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11H0Range", data)==0) {return String(sensorData.dht11_h_0);}
-  if (strcmp("DHT11C0Under", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11C0Over", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11C0Equal", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11C0Range", data)==0) {return String(sensorData.dht11_c_0);}
-  if (strcmp("DHT11F0Under", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11F0Over", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11F0Equal", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11F0Range", data)==0) {return String(sensorData.dht11_f_0);}
-  if (strcmp("DHT11HIC0Under", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11HIC0Over", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11HIC0Equal", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11HIC0Range", data)==0) {return String(sensorData.dht11_hic_0);}
-  if (strcmp("DHT11HIF0Under", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11HIF0Over", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11HIF0Equal", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("DHT11HIF0Range", data)==0) {return String(sensorData.dht11_hif_0);}
-  if (strcmp("Sensor0Over", data)==0) {return String(sensorData.sensor_0);}
-  if (strcmp("Sensor0Under", data)==0) {return String(sensorData.sensor_0);}
-  if (strcmp("Sensor0Equal", data)==0) {return String(sensorData.sensor_0);}
-  if (strcmp("Sensor0Range", data)==0) {return String(sensorData.sensor_0);}
-  if (strcmp("Sensor1Over", data)==0) {return String(sensorData.sensor_1);}
-  if (strcmp("Sensor1Under", data)==0) {return String(sensorData.sensor_1);}
-  if (strcmp("Sensor1Equal", data)==0) {return String(sensorData.sensor_1);}
-  if (strcmp("Sensor1Range", data)==0) {return String(sensorData.sensor_1);}
-  if (strcmp("Sensor2Over", data)==0) {return String(sensorData.sensor_2);}
-  if (strcmp("Sensor2Under", data)==0) {return String(sensorData.sensor_2);}
-  if (strcmp("Sensor2Equal", data)==0) {return String(sensorData.sensor_2);}
-  if (strcmp("Sensor2Range", data)==0) {return String(sensorData.sensor_2);}
-  if (strcmp("Sensor3Over", data)==0) {return String(sensorData.sensor_3);}
-  if (strcmp("Sensor3Under", data)==0) {return String(sensorData.sensor_3);}
-  if (strcmp("Sensor3Equal", data)==0) {return String(sensorData.sensor_3);}
-  if (strcmp("Sensor3Range", data)==0) {return String(sensorData.sensor_3);}
-  if (strcmp("Sensor4Over", data)==0) {return String(sensorData.sensor_4);}
-  if (strcmp("Sensor4Under", data)==0) {return String(sensorData.sensor_4);}
-  if (strcmp("Sensor4Equal", data)==0) {return String(sensorData.sensor_4);}
-  if (strcmp("Sensor4Range", data)==0) {return String(sensorData.sensor_4);}
-  if (strcmp("Sensor5Over", data)==0) {return String(sensorData.sensor_5);}
-  if (strcmp("Sensor5Under", data)==0) {return String(sensorData.sensor_5);}
-  if (strcmp("Sensor5Equal", data)==0) {return String(sensorData.sensor_5);}
-  if (strcmp("Sensor5Range", data)==0) {return String(sensorData.sensor_5);}
-  if (strcmp("Sensor6Over", data)==0) {return String(sensorData.sensor_6);}
-  if (strcmp("Sensor6Under", data)==0) {return String(sensorData.sensor_6);}
-  if (strcmp("Sensor6Equal", data)==0) {return String(sensorData.sensor_6);}
-  if (strcmp("Sensor6Range", data)==0) {return String(sensorData.sensor_6);}
-  if (strcmp("Sensor7Over", data)==0) {return String(sensorData.sensor_7);}
-  if (strcmp("Sensor7Under", data)==0) {return String(sensorData.sensor_7);}
-  if (strcmp("Sensor7Equal", data)==0) {return String(sensorData.sensor_7);}
-  if (strcmp("Sensor7Range", data)==0) {return String(sensorData.sensor_7);}
-  if (strcmp("Sensor8Over", data)==0) {return String(sensorData.sensor_8);}
-  if (strcmp("Sensor8Under", data)==0) {return String(sensorData.sensor_8);}
-  if (strcmp("Sensor8Equal", data)==0) {return String(sensorData.sensor_8);}
-  if (strcmp("Sensor8Range", data)==0) {return String(sensorData.sensor_8);}
-  if (strcmp("Sensor9Over", data)==0) {return String(sensorData.sensor_9);}
-  if (strcmp("Sensor9Under", data)==0) {return String(sensorData.sensor_9);}
-  if (strcmp("Sensor9Equal", data)==0) {return String(sensorData.sensor_9);}
-  if (strcmp("Sensor9Range", data)==0) {return String(sensorData.sensor_9);}
-  if (strcmp("Sensor10Over", data)==0) {return String(sensorData.sensor_10);}
-  if (strcmp("Sensor10Under", data)==0) {return String(sensorData.sensor_10);}
-  if (strcmp("Sensor10Equal", data)==0) {return String(sensorData.sensor_10);}
-  if (strcmp("Sensor10Range", data)==0) {return String(sensorData.sensor_10);}
-  if (strcmp("Sensor11Over", data)==0) {return String(sensorData.sensor_11);}
-  if (strcmp("Sensor11Under", data)==0) {return String(sensorData.sensor_11);}
-  if (strcmp("Sensor11Equal", data)==0) {return String(sensorData.sensor_11);}
-  if (strcmp("Sensor11Range", data)==0) {return String(sensorData.sensor_11);}
-  if (strcmp("Sensor12Over", data)==0) {return String(sensorData.sensor_12);}
-  if (strcmp("Sensor12Under", data)==0) {return String(sensorData.sensor_12);}
-  if (strcmp("Sensor12Equal", data)==0) {return String(sensorData.sensor_12);}
-  if (strcmp("Sensor12Range", data)==0) {return String(sensorData.sensor_12);}
-  if (strcmp("Sensor13Over", data)==0) {return String(sensorData.sensor_13);}
-  if (strcmp("Sensor13Under", data)==0) {return String(sensorData.sensor_13);}
-  if (strcmp("Sensor13Equal", data)==0) {return String(sensorData.sensor_13);}
-  if (strcmp("Sensor13Range", data)==0) {return String(sensorData.sensor_13);}
-  if (strcmp("Sensor14Over", data)==0) {return String(sensorData.sensor_14);}
-  if (strcmp("Sensor14Under", data)==0) {return String(sensorData.sensor_14);}
-  if (strcmp("Sensor14Equal", data)==0) {return String(sensorData.sensor_14);}
-  if (strcmp("Sensor14Range", data)==0) {return String(sensorData.sensor_14);}
-  if (strcmp("Sensor15Over", data)==0) {return String(sensorData.sensor_15);}
-  if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
-  if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
-  if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
-  if (strcmp("JoyS0UpOver", data)==0) {return String(sensorData.as_0_u);}
-  if (strcmp("JoyS0UpUnder", data)==0) {return String(sensorData.as_0_u);}
-  if (strcmp("JoyS0UpEqual", data)==0) {return String(sensorData.as_0_u);}
-  if (strcmp("JoyS0UpRange", data)==0) {return String(sensorData.as_0_u);}
-  if (strcmp("JoyS0DownOver", data)==0) {return String(sensorData.as_0_d);}
-  if (strcmp("JoyS0DownUnder", data)==0) {return String(sensorData.as_0_d);}
-  if (strcmp("JoyS0DownEqual", data)==0) {return String(sensorData.as_0_d);}
-  if (strcmp("JoyS0DownRange", data)==0) {return String(sensorData.as_0_d);}
-  if (strcmp("JoyS0LeftOver", data)==0) {return String(sensorData.as_0_l);}
-  if (strcmp("JoyS0LeftUnder", data)==0) {return String(sensorData.as_0_l);}
-  if (strcmp("JoyS0LeftEqual", data)==0) {return String(sensorData.as_0_l);}
-  if (strcmp("JoyS0LeftRange", data)==0) {return String(sensorData.as_0_l);}
-  if (strcmp("JoyS0RightOver", data)==0) {return String(sensorData.as_0_r);}
-  if (strcmp("JoyS0RightUnder", data)==0) {return String(sensorData.as_0_r);}
-  if (strcmp("JoyS0RightEqual", data)==0) {return String(sensorData.as_0_r);}
-  if (strcmp("JoyS0RightRange", data)==0) {return String(sensorData.as_0_r);}
-  if (strcmp("JoyS0ClickOver", data)==0) {return String(sensorData.as_0_c);}
-  if (strcmp("JoyS0ClickUnder", data)==0) {return String(sensorData.as_0_c);}
-  if (strcmp("JoyS0ClickEqual", data)==0) {return String(sensorData.as_0_c);}
-  if (strcmp("JoyS0ClickRange", data)==0) {return String(sensorData.as_0_c);}
-  if (strcmp("JoyS1UpOver", data)==0) {return String(sensorData.as_1_u);}
-  if (strcmp("JoyS1UpUnder", data)==0) {return String(sensorData.as_1_u);}
-  if (strcmp("JoyS1UpEqual", data)==0) {return String(sensorData.as_1_u);}
-  if (strcmp("JoyS1UpRange", data)==0) {return String(sensorData.as_1_u);}
-  if (strcmp("JoyS1DownOver", data)==0) {return String(sensorData.as_1_d);}
-  if (strcmp("JoyS1DownUnder", data)==0) {return String(sensorData.as_1_d);}
-  if (strcmp("JoyS1DownEqual", data)==0) {return String(sensorData.as_1_d);}
-  if (strcmp("JoyS1DownRange", data)==0) {return String(sensorData.as_1_d);}
-  if (strcmp("JoyS1LeftOver", data)==0) {return String(sensorData.as_1_l);}
-  if (strcmp("JoyS1LeftUnder", data)==0) {return String(sensorData.as_1_l);}
-  if (strcmp("JoyS1LeftEqual", data)==0) {return String(sensorData.as_1_l);}
-  if (strcmp("JoyS1LeftRange", data)==0) {return String(sensorData.as_1_l);}
-  if (strcmp("JoyS1RightOver", data)==0) {return String(sensorData.as_1_r);}
-  if (strcmp("JoyS1RightUnder", data)==0) {return String(sensorData.as_1_r);}
-  if (strcmp("JoyS1RightEqual", data)==0) {return String(sensorData.as_1_r);}
-  if (strcmp("JoyS1RightRange", data)==0) {return String(sensorData.as_1_r);}
-  if (strcmp("JoyS1ClickOver", data)==0) {return String(sensorData.as_1_c);}
-  if (strcmp("JoyS1ClickUnder", data)==0) {return String(sensorData.as_1_c);}
-  if (strcmp("JoyS1ClickEqual", data)==0) {return String(sensorData.as_1_c);}
-  if (strcmp("JoyS1ClickRange", data)==0) {return String(sensorData.as_1_c);}
+  if (strncmp(data, "LocalTime", strlen("LocalTime"))==0) {
+    if (strcmp("LocalTimeOver", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+    else if (strcmp("LocalTimeUnder", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+    else if (strcmp("LocalTimeEqual", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+    else if (strcmp("LocalTimeRange", data)==0) {return String(hoursMinutesSecondsToInt(satData.local_hour, satData.local_minute, satData.local_second));}
+  }
+  else if (strncmp(data, "Day", strlen("Day"))==0) {
+    if (strcmp("DaySunday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DayMonday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DayTuesday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DayWednesday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DayThursday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DayFriday", data)==0) {return String(satData.local_weekday);}
+    else if (strcmp("DaySaturday", data)==0) {return String(satData.local_weekday);}
+  }
+  else if (strncmp(data, "Date", strlen("Date"))==0) {
+    if (strcmp("DateDayX", data)==0) {return String(satData.local_day);}
+    else if (strcmp("DateMonthX", data)==0) {return String(satData.local_month);}
+    else if (strcmp("DateYearX", data)==0) {return String(satData.local_year);}
+  }
+  else if (strncmp(data, "Deg", strlen("Deg"))==0) {
+    if (strcmp("DegLatOver", data)==0) {return String(satData.degrees_latitude, 10);}
+    else if (strcmp("DegLatUnder", data)==0) {return String(satData.degrees_latitude, 10);}
+    else if (strcmp("DegLatEqual", data)==0) {return String(satData.degrees_latitude, 10);}
+    else if (strcmp("DegLatRange", data)==0) {return String(satData.degrees_latitude, 10);}
+    else if (strcmp("DegLonOver", data)==0) {return String(satData.degrees_longitude, 10);}
+    else if (strcmp("DegLonUnder", data)==0) {return String(satData.degrees_longitude, 10);}
+    else if (strcmp("DegLonEqual", data)==0) {return String(satData.degrees_longitude, 10);}
+    else if (strcmp("DegLonRange", data)==0) {return String(satData.degrees_longitude, 10);}
+    else if (strcmp("DegLatLonRange", data)==0) {return String(satData.degrees_latitude, 10);}
+  }
+  else if (strncmp(data, "UTCTimeGNGGA", strlen("UTCTimeGNGGA"))==0) {
+    if (strcmp("UTCTimeGNGGAOver", data)==0) {return String(gnggaData.utc_time);}
+    else if (strcmp("UTCTimeGNGGAUnder", data)==0) {return String(gnggaData.utc_time);}
+    else if (strcmp("UTCTimeGNGGAEqual", data)==0) {return String(gnggaData.utc_time);}
+    else if (strcmp("UTCTimeGNGGARange", data)==0) {return String(gnggaData.utc_time);}
+  }
+  else if (strcmp("PosStatusGNGGA", data)==0) {return String(gnggaData.solution_status);}
+  else if (strncmp(data, "SatCount", strlen("SatCount"))==0) {
+    if (strcmp("SatCountOver", data)==0) {return String(gnggaData.satellite_count_gngga);}
+    else if (strcmp("SatCountUnder", data)==0) {return String(gnggaData.satellite_count_gngga);}
+    else if (strcmp("SatCountEqual", data)==0) {return String(gnggaData.satellite_count_gngga);}
+    else if (strcmp("SatCountRange", data)==0) {return String(gnggaData.satellite_count_gngga);}
+  }
+  else if (strncmp(data, "HemiGNGGA", strlen("HemiGNGGA"))==0) {
+    if (strcmp("HemiGNGGANorth", data)==0) {return String(gnggaData.latitude_hemisphere);}
+    else if (strcmp("HemiGNGGASouth", data)==0) {return String(gnggaData.latitude_hemisphere);}
+    else if (strcmp("HemiGNGGAEast", data)==0) {return String(gnggaData.latitude_hemisphere);}
+    else if (strcmp("HemiGNGGAWest", data)==0) {return String(gnggaData.latitude_hemisphere);}
+  }
+  else if (strncmp(data, "GPSPrecision", strlen("GPSPrecision"))==0) {
+    if (strcmp("GPSPrecisionOver", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+    else if (strcmp("GPSPrecisionUnder", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+    else if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+    else if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
+  }
+  else if (strncmp(data, "Alt", strlen("Alt"))==0) {
+    if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude, 2);}
+    else if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude, 2);}
+    else if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude, 2);}
+    else if (strcmp("AltGNGGARange", data)==0) {return String(gnggaData.altitude, 2);}
+  }
+  else if (strncmp(data, "UTCTimeGNRMC", strlen("UTCTimeGNRMC"))==0) {
+    if (strcmp("UTCTimeGNRMCOver", data)==0) {return String(gnrmcData.utc_time);}
+    else if (strcmp("UTCTimeGNRMCUnder", data)==0) {return String(gnrmcData.utc_time);}
+    else if (strcmp("UTCTimeGNRMCEqual", data)==0) {return String(gnrmcData.utc_time);}
+    else if (strcmp("UTCTimeGNRMCRange", data)==0) {return String(gnrmcData.utc_time);}
+  }
+  else if (strcmp("PosStatusGNRMCA", data)==0) {return String(gnrmcData.positioning_status);}
+  else if (strcmp("PosStatusGNRMCV", data)==0) {return String(gnrmcData.positioning_status);}
+  else if (strncmp(data, "Mode", strlen("Mode"))==0) {
+    if (strcmp("ModeGNRMCA", data)==0) {return String(gnrmcData.mode_indication);}
+    else if (strcmp("ModeGNRMCD", data)==0) {return String(gnrmcData.mode_indication);}
+    else if (strcmp("ModeGNRMCE", data)==0) {return String(gnrmcData.mode_indication);}
+    else if (strcmp("ModeGNRMCN", data)==0) {return String(gnrmcData.mode_indication);}
+  }
+  else if (strncmp(data, "HemiGNRMC", strlen("HemiGNRMC"))==0) {
+    if (strcmp("HemiGNRMCNorth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+    else if (strcmp("HemiGNRMCSouth", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+    else if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+    else if (strcmp("HemiGNRMCWest", data)==0) {return String(gnrmcData.latitude_hemisphere);}
+  }
+  else if (strncmp(data, "GSpeed", strlen("GSpeed"))==0) {
+    if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed, 2);}
+    else if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed, 2);}
+    else if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed, 2);}
+    else if (strcmp("GSpeedGNRMCRange", data)==0) {return String(gnrmcData.ground_speed, 2);}
+  }
+  else if (strncmp(data, "HeadingGNRMC", strlen("HeadingGNRMC"))==0) {
+    if (strcmp("HeadingGNRMCOver", data)==0) {return String(gnrmcData.ground_heading, 2);}
+    else if (strcmp("HeadingGNRMCUnder", data)==0) {return String(gnrmcData.ground_heading, 2);}
+    else if (strcmp("HeadingGNRMCEqual", data)==0) {return String(gnrmcData.ground_heading, 2);}
+    else if (strcmp("HeadingGNRMCRange", data)==0) {return String(gnrmcData.ground_heading, 2);}
+  }
+  else if (strncmp(data, "UTCDateGNRMC", strlen("UTCDateGNRMC"))==0) {
+    if (strcmp("UTCDateGNRMCOver", data)==0) {return String(gnrmcData.utc_date);}
+    else if (strcmp("UTCDateGNRMCUnder", data)==0) {return String(gnrmcData.utc_date);}
+    else if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
+    else if (strcmp("UTCDateGNRMCRange", data)==0) {return String(gnrmcData.utc_date);}
+  }
+  else if (strncmp(data, "LFlag", strlen("LFlag"))==0) {
+    if (strcmp("LFlagGPATTOver", data)==0) {return String(gpattData.line_flag);}
+    else if (strcmp("LFlagGPATTUnder", data)==0) {return String(gpattData.line_flag);}
+    else if (strcmp("LFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
+    else if (strcmp("LFlagGPATTRange", data)==0) {return String(gpattData.line_flag);}
+  }
+  else if (strncmp(data, "SFlag", strlen("SFlag"))==0) {
+    if (strcmp("SFlagGPATTOver", data)==0) {return String(gpattData.static_flag);}
+    else if (strcmp("SFlagGPATTUnder", data)==0) {return String(gpattData.static_flag);}
+    else if (strcmp("SFlagGPATTEqual", data)==0) {return String(gpattData.static_flag);}
+    else if (strcmp("SFlagGPATTRange", data)==0) {return String(gpattData.static_flag);}
+  }
+  else if (strncmp(data, "RSFlag", strlen("RSFlag"))==0) {
+    if (strcmp("RSFlagGPATTOver", data)==0) {return String(gpattData.run_state_flag);}
+    else if (strcmp("RSFlagGPATTUnder", data)==0) {return String(gpattData.run_state_flag);}
+    else if (strcmp("RSFlagGPATTEqual", data)==0) {return String(gpattData.run_state_flag);}
+    else if (strcmp("RSFlagGPATTRange", data)==0) {return String(gpattData.run_state_flag);}
+  }
+  else if (strncmp(data, "INS", strlen("INS"))==0) {
+    if (strcmp("INSGPATTOver", data)==0) {return String(gpattData.ins);}
+    else if (strcmp("INSGPATTUnder", data)==0) {return String(gpattData.ins);}
+    else if (strcmp("INSGPATTEqual", data)==0) {return String(gpattData.ins);}
+    else if (strcmp("INSGPATTRange", data)==0) {return String(gpattData.ins);}
+  }
+  else if (strncmp(data, "SpeedNum", strlen("SpeedNum"))==0) {
+    if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
+    else if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
+    else if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
+    else if (strcmp("SpeedNumGPATTRange", data)==0) {return String(gpattData.speed_num);}
+  }
+  else if (strncmp(data, "Mileage", strlen("Mileage"))==0) {
+    if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage, 2);}
+    else if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage, 2);}
+    else if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage, 2);}
+    else if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage, 2);}
+  }
+  else if (strncmp(data, "GSTData", strlen("GSTData"))==0) {
+    if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
+    else if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
+    else if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
+    else if (strcmp("GSTDataGPATTRange", data)==0) {return String(gpattData.gst_data);}
+  }
+  else if (strncmp(data, "Yaw", strlen("Yaw"))==0) {
+    if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw, 2);}
+    else if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw, 2);}
+    else if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw, 2);}
+    else if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw, 2);}
+  }
+  else if (strncmp(data, "Roll", strlen("Roll"))==0) {
+    if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll, 2);}
+    else if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll, 2);}
+    else if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll, 2);}
+    else if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll, 2);}
+  }
+  else if (strncmp(data, "Pitch", strlen("Pitch"))==0) {
+    if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch, 2);}
+    else if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch, 2);}
+    else if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch, 2);}
+    else if (strcmp("PitchGPATTRange", data)==0) {return String(gpattData.pitch, 2);}
+  }
+  else if (strcmp("GNGGAValidCS", data)==0) {return String(gnggaData.valid_checksum);}
+  else if (strcmp("GNRMCValidCS", data)==0) {return String(gnrmcData.valid_checksum);}
+  else if (strcmp("GPATTValidCS", data)==0) {return String(gpattData.valid_checksum);}
+  else if (strcmp("GNGGAValidCD", data)==0) {return String(gnggaData.count_valid_elements);}
+  else if (strcmp("GNRMCValidCD", data)==0) {return String(gnrmcData.count_valid_elements);}
+  else if (strcmp("GPATTValidCD", data)==0) {return String(gpattData.count_valid_elements);}
+  else if (strncmp(data, "WT901", strlen("WT901"))==0) {
+    if (strncmp("WT901AccX", data, 8)==0) {return String(sensorData.wt901_acc_x, 3);}
+    else if (strncmp("WT901AccY", data, 8)==0) {return String(sensorData.wt901_acc_y, 3);}
+    else if (strncmp("WT901AccZ", data, 8)==0) {return String(sensorData.wt901_acc_z, 3);}
+    else if (strncmp("WT901AngX", data, 8)==0) {return String(sensorData.wt901_ang_x, 3);}
+    else if (strncmp("WT901AngY", data, 8)==0) {return String(sensorData.wt901_ang_y, 3);}
+    else if (strncmp("WT901AngZ", data, 8)==0) {return String(sensorData.wt901_ang_z, 3);}
+    else if (strncmp("WT901MagX", data, 8)==0) {return String(sensorData.wt901_mag_x, 3);}
+    else if (strncmp("WT901MagY", data, 8)==0) {return String(sensorData.wt901_mag_y, 3);}
+    else if (strncmp("WT901MagZ", data, 8)==0) {return String(sensorData.wt901_mag_z, 3);}
+    else if (strncmp("WT901GyroX", data, 8)==0) {return String(sensorData.wt901_gyr_x, 3);}
+    else if (strncmp("WT901GyroY", data, 8)==0) {return String(sensorData.wt901_gyr_y, 3);}
+    else if (strncmp("WT901GyroZ", data, 8)==0) {return String(sensorData.wt901_gyr_z, 3);}
+  }
+  else if (strncmp(data, "Sun", strlen("Sun"))==0) {
+    if (strcmp("SunAzRange", data)==0) {return String(siderealPlanetData.sun_az);}
+    else if (strcmp("SunAltRange", data)==0) {return String(siderealPlanetData.sun_alt);}
+    else if (strcmp("Sunrise", data)==0) {return String(siderealPlanetData.sun_r);}
+    else if (strcmp("Sunset", data)==0) {return String(siderealPlanetData.sun_s);}
+  }
+  else if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  else if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
+  
+  else if (strncmp(data, "Sun", strlen("Sun"))==0) {
+    if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
+    else if (strcmp("MoonAltRange", data)==0) {return String(siderealPlanetData.moon_alt);}
+    else if (strcmp("MoonUp", data)==0) {return String(siderealPlanetData.moon_r);}
+    else if (strcmp("MoonDown", data)==0) {return String(siderealPlanetData.moon_s);}
+    else if (strcmp("Moonrise", data)==0) {return String(siderealPlanetData.moon_r);}
+    else if (strcmp("Moonset", data)==0) {return String(siderealPlanetData.moon_s);}
+    else if (strcmp("MoonPhaseOver", data)==0) {return String((int)siderealPlanetData.moon_p);}
+    else if (strcmp("MoonPhaseUnder", data)==0) {return String((int)siderealPlanetData.moon_p);}
+    else if (strcmp("MoonPhaseEqual", data)==0) {return String((int)siderealPlanetData.moon_p);}
+    else if (strcmp("MoonPhaseRange", data)==0) {return String((int)siderealPlanetData.moon_p);}
+  }
+  else if (strncmp(data, "Mercury", strlen("Mercury"))==0) {
+    if (strcmp("MercuryAzRange", data)==0) {return String(siderealPlanetData.mercury_az);}
+    else if (strcmp("MercuryAltRange", data)==0) {return String(siderealPlanetData.mercury_alt);}
+    else if (strcmp("MercuryUp", data)==0) {return String(siderealPlanetData.mercury_r);}
+    else if (strcmp("MercuryDown", data)==0) {return String(siderealPlanetData.mercury_s);}
+    else if (strcmp("MercuryRise", data)==0) {return String(siderealPlanetData.mercury_r);}
+    else if (strcmp("MercurySet", data)==0) {return String(siderealPlanetData.mercury_s);}
+  }
+  else if (strncmp(data, "Venus", strlen("Venus"))==0) {
+    if (strcmp("VenusAzRange", data)==0) {return String(siderealPlanetData.venus_az);}
+    else if (strcmp("VenusAltRange", data)==0) {return String(siderealPlanetData.venus_alt);}
+    else if (strcmp("VenusUp", data)==0) {return String(siderealPlanetData.venus_r);}
+    else if (strcmp("VenusDown", data)==0) {return String(siderealPlanetData.venus_s);}
+    else if (strcmp("VenusRise", data)==0) {return String(siderealPlanetData.venus_r);}
+    else if (strcmp("VenusSet", data)==0) {return String(siderealPlanetData.venus_s);}
+  }
+  else if (strncmp(data, "Mars", strlen("Mars"))==0) {
+    if (strcmp("MarsAzRange", data)==0) {return String(siderealPlanetData.mars_az);}
+    else if (strcmp("MarsAltRange", data)==0) {return String(siderealPlanetData.mars_alt);}
+    else if (strcmp("MarsUp", data)==0) {return String(siderealPlanetData.mars_r);}
+    else if (strcmp("MarsDown", data)==0) {return String(siderealPlanetData.mars_s);}
+    else if (strcmp("MarsRise", data)==0) {return String(siderealPlanetData.mars_r);}
+    else if (strcmp("MarsSet", data)==0) {return String(siderealPlanetData.mars_s);}
+  }
+  else if (strncmp(data, "Jupiter", strlen("Jupiter"))==0) {
+    if (strcmp("JupiterAzRange", data)==0) {return String(siderealPlanetData.jupiter_az);}
+    else if (strcmp("JupiterAltRange", data)==0) {return String(siderealPlanetData.jupiter_alt);}
+    else if (strcmp("JupiterUp", data)==0) {return String(siderealPlanetData.jupiter_r);}
+    else if (strcmp("JupiterDown", data)==0) {return String(siderealPlanetData.jupiter_s);}
+    else if (strcmp("JupiterRise", data)==0) {return String(siderealPlanetData.jupiter_r);}
+    else if (strcmp("JupiterSet", data)==0) {return String(siderealPlanetData.jupiter_s);}
+  }
+  else if (strncmp(data, "Saturn", strlen("Saturn"))==0) {
+    if (strcmp("SaturnAzRange", data)==0) {return String(siderealPlanetData.saturn_az);}
+    else if (strcmp("SaturnAltRange", data)==0) {return String(siderealPlanetData.saturn_alt);}
+    else if (strcmp("SaturnUp", data)==0) {return String(siderealPlanetData.saturn_r);}
+    else if (strcmp("SaturnDown", data)==0) {return String(siderealPlanetData.saturn_s);}
+    else if (strcmp("SaturnRise", data)==0) {return String(siderealPlanetData.saturn_r);}
+    else if (strcmp("SaturnSet", data)==0) {return String(siderealPlanetData.saturn_s);}
+  }
+  else if (strncmp(data, "Uranus", strlen("Uranus"))==0) {
+    if (strcmp("UranusAzRange", data)==0) {return String(siderealPlanetData.uranus_az);}
+    else if (strcmp("UranusAltRange", data)==0) {return String(siderealPlanetData.uranus_alt);}
+    else if (strcmp("UranusUp", data)==0) {return String(siderealPlanetData.uranus_r);}
+    else if (strcmp("UranusDown", data)==0) {return String(siderealPlanetData.uranus_s);}
+    else if (strcmp("UranusRise", data)==0) {return String(siderealPlanetData.uranus_r);}
+    else if (strcmp("UranusSet", data)==0) {return String(siderealPlanetData.uranus_s);}
+  }
+  else if (strncmp(data, "Neptune", strlen("Neptune"))==0) {
+    if (strcmp("NeptuneAzRange", data)==0) {return String(siderealPlanetData.neptune_az);}
+    else if (strcmp("NeptuneAltRange", data)==0) {return String(siderealPlanetData.neptune_alt);}
+    else if (strcmp("NeptuneUp", data)==0) {return String(siderealPlanetData.neptune_r);}
+    else if (strcmp("NeptuneDown", data)==0) {return String(siderealPlanetData.neptune_s);}
+    else if (strcmp("NeptuneRise", data)==0) {return String(siderealPlanetData.neptune_r);}
+    else if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
+  }
+  else if (strncmp(data, "DHT11H0", strlen("DHT11H0"))==0) {
+    if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
+    else if (strcmp("DHT11H0Over", data)==0) {return String(sensorData.dht11_h_0);}
+    else if (strcmp("DHT11H0Equal", data)==0) {return String(sensorData.dht11_h_0);}
+    else if (strcmp("DHT11H0Range", data)==0) {return String(sensorData.dht11_h_0);}
+    else if (strcmp("DHT11C0Under", data)==0) {return String(sensorData.dht11_c_0);}
+    else if (strcmp("DHT11C0Over", data)==0) {return String(sensorData.dht11_c_0);}
+    else if (strcmp("DHT11C0Equal", data)==0) {return String(sensorData.dht11_c_0);}
+    else if (strcmp("DHT11C0Range", data)==0) {return String(sensorData.dht11_c_0);}
+    else if (strcmp("DHT11F0Under", data)==0) {return String(sensorData.dht11_f_0);}
+    else if (strcmp("DHT11F0Over", data)==0) {return String(sensorData.dht11_f_0);}
+    else if (strcmp("DHT11F0Equal", data)==0) {return String(sensorData.dht11_f_0);}
+    else if (strcmp("DHT11F0Range", data)==0) {return String(sensorData.dht11_f_0);}
+    else if (strcmp("DHT11HIC0Under", data)==0) {return String(sensorData.dht11_hic_0);}
+    else if (strcmp("DHT11HIC0Over", data)==0) {return String(sensorData.dht11_hic_0);}
+    else if (strcmp("DHT11HIC0Equal", data)==0) {return String(sensorData.dht11_hic_0);}
+    else if (strcmp("DHT11HIC0Range", data)==0) {return String(sensorData.dht11_hic_0);}
+    else if (strcmp("DHT11HIF0Under", data)==0) {return String(sensorData.dht11_hif_0);}
+    else if (strcmp("DHT11HIF0Over", data)==0) {return String(sensorData.dht11_hif_0);}
+    else if (strcmp("DHT11HIF0Equal", data)==0) {return String(sensorData.dht11_hif_0);}
+    else if (strcmp("DHT11HIF0Range", data)==0) {return String(sensorData.dht11_hif_0);}
+  }
+  else if (strncmp(data, "Sensor", strlen("Sensor"))==0) {
+    if (strcmp("Sensor0Over", data)==0) {return String(sensorData.sensor_0);}
+    else if (strcmp("Sensor0Under", data)==0) {return String(sensorData.sensor_0);}
+    else if (strcmp("Sensor0Equal", data)==0) {return String(sensorData.sensor_0);}
+    else if (strcmp("Sensor0Range", data)==0) {return String(sensorData.sensor_0);}
+    else if (strcmp("Sensor1Over", data)==0) {return String(sensorData.sensor_1);}
+    else if (strcmp("Sensor1Under", data)==0) {return String(sensorData.sensor_1);}
+    else if (strcmp("Sensor1Equal", data)==0) {return String(sensorData.sensor_1);}
+    else if (strcmp("Sensor1Range", data)==0) {return String(sensorData.sensor_1);}
+    else if (strcmp("Sensor2Over", data)==0) {return String(sensorData.sensor_2);}
+    else if (strcmp("Sensor2Under", data)==0) {return String(sensorData.sensor_2);}
+    else if (strcmp("Sensor2Equal", data)==0) {return String(sensorData.sensor_2);}
+    else if (strcmp("Sensor2Range", data)==0) {return String(sensorData.sensor_2);}
+    else if (strcmp("Sensor3Over", data)==0) {return String(sensorData.sensor_3);}
+    else if (strcmp("Sensor3Under", data)==0) {return String(sensorData.sensor_3);}
+    else if (strcmp("Sensor3Equal", data)==0) {return String(sensorData.sensor_3);}
+    else if (strcmp("Sensor3Range", data)==0) {return String(sensorData.sensor_3);}
+    else if (strcmp("Sensor4Over", data)==0) {return String(sensorData.sensor_4);}
+    else if (strcmp("Sensor4Under", data)==0) {return String(sensorData.sensor_4);}
+    else if (strcmp("Sensor4Equal", data)==0) {return String(sensorData.sensor_4);}
+    else if (strcmp("Sensor4Range", data)==0) {return String(sensorData.sensor_4);}
+    else if (strcmp("Sensor5Over", data)==0) {return String(sensorData.sensor_5);}
+    else if (strcmp("Sensor5Under", data)==0) {return String(sensorData.sensor_5);}
+    else if (strcmp("Sensor5Equal", data)==0) {return String(sensorData.sensor_5);}
+    else if (strcmp("Sensor5Range", data)==0) {return String(sensorData.sensor_5);}
+    else if (strcmp("Sensor6Over", data)==0) {return String(sensorData.sensor_6);}
+    else if (strcmp("Sensor6Under", data)==0) {return String(sensorData.sensor_6);}
+    else if (strcmp("Sensor6Equal", data)==0) {return String(sensorData.sensor_6);}
+    else if (strcmp("Sensor6Range", data)==0) {return String(sensorData.sensor_6);}
+    else if (strcmp("Sensor7Over", data)==0) {return String(sensorData.sensor_7);}
+    else if (strcmp("Sensor7Under", data)==0) {return String(sensorData.sensor_7);}
+    else if (strcmp("Sensor7Equal", data)==0) {return String(sensorData.sensor_7);}
+    else if (strcmp("Sensor7Range", data)==0) {return String(sensorData.sensor_7);}
+    else if (strcmp("Sensor8Over", data)==0) {return String(sensorData.sensor_8);}
+    else if (strcmp("Sensor8Under", data)==0) {return String(sensorData.sensor_8);}
+    else if (strcmp("Sensor8Equal", data)==0) {return String(sensorData.sensor_8);}
+    else if (strcmp("Sensor8Range", data)==0) {return String(sensorData.sensor_8);}
+    else if (strcmp("Sensor9Over", data)==0) {return String(sensorData.sensor_9);}
+    else if (strcmp("Sensor9Under", data)==0) {return String(sensorData.sensor_9);}
+    else if (strcmp("Sensor9Equal", data)==0) {return String(sensorData.sensor_9);}
+    else if (strcmp("Sensor9Range", data)==0) {return String(sensorData.sensor_9);}
+    else if (strcmp("Sensor10Over", data)==0) {return String(sensorData.sensor_10);}
+    else if (strcmp("Sensor10Under", data)==0) {return String(sensorData.sensor_10);}
+    else if (strcmp("Sensor10Equal", data)==0) {return String(sensorData.sensor_10);}
+    else if (strcmp("Sensor10Range", data)==0) {return String(sensorData.sensor_10);}
+    else if (strcmp("Sensor11Over", data)==0) {return String(sensorData.sensor_11);}
+    else if (strcmp("Sensor11Under", data)==0) {return String(sensorData.sensor_11);}
+    else if (strcmp("Sensor11Equal", data)==0) {return String(sensorData.sensor_11);}
+    else if (strcmp("Sensor11Range", data)==0) {return String(sensorData.sensor_11);}
+    else if (strcmp("Sensor12Over", data)==0) {return String(sensorData.sensor_12);}
+    else if (strcmp("Sensor12Under", data)==0) {return String(sensorData.sensor_12);}
+    else if (strcmp("Sensor12Equal", data)==0) {return String(sensorData.sensor_12);}
+    else if (strcmp("Sensor12Range", data)==0) {return String(sensorData.sensor_12);}
+    else if (strcmp("Sensor13Over", data)==0) {return String(sensorData.sensor_13);}
+    else if (strcmp("Sensor13Under", data)==0) {return String(sensorData.sensor_13);}
+    else if (strcmp("Sensor13Equal", data)==0) {return String(sensorData.sensor_13);}
+    else if (strcmp("Sensor13Range", data)==0) {return String(sensorData.sensor_13);}
+    else if (strcmp("Sensor14Over", data)==0) {return String(sensorData.sensor_14);}
+    else if (strcmp("Sensor14Under", data)==0) {return String(sensorData.sensor_14);}
+    else if (strcmp("Sensor14Equal", data)==0) {return String(sensorData.sensor_14);}
+    else if (strcmp("Sensor14Range", data)==0) {return String(sensorData.sensor_14);}
+    else if (strcmp("Sensor15Over", data)==0) {return String(sensorData.sensor_15);}
+    else if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
+    else if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
+    else if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
+  }
+  else if (strncmp(data, "JoyS0", strlen("JoyS0"))==0) {
+    if (strcmp("JoyS0UpOver", data)==0) {return String(sensorData.as_0_u);}
+    else if (strcmp("JoyS0UpUnder", data)==0) {return String(sensorData.as_0_u);}
+    else if (strcmp("JoyS0UpEqual", data)==0) {return String(sensorData.as_0_u);}
+    else if (strcmp("JoyS0UpRange", data)==0) {return String(sensorData.as_0_u);}
+    else if (strcmp("JoyS0DownOver", data)==0) {return String(sensorData.as_0_d);}
+    else if (strcmp("JoyS0DownUnder", data)==0) {return String(sensorData.as_0_d);}
+    else if (strcmp("JoyS0DownEqual", data)==0) {return String(sensorData.as_0_d);}
+    else if (strcmp("JoyS0DownRange", data)==0) {return String(sensorData.as_0_d);}
+    else if (strcmp("JoyS0LeftOver", data)==0) {return String(sensorData.as_0_l);}
+    else if (strcmp("JoyS0LeftUnder", data)==0) {return String(sensorData.as_0_l);}
+    else if (strcmp("JoyS0LeftEqual", data)==0) {return String(sensorData.as_0_l);}
+    else if (strcmp("JoyS0LeftRange", data)==0) {return String(sensorData.as_0_l);}
+    else if (strcmp("JoyS0RightOver", data)==0) {return String(sensorData.as_0_r);}
+    else if (strcmp("JoyS0RightUnder", data)==0) {return String(sensorData.as_0_r);}
+    else if (strcmp("JoyS0RightEqual", data)==0) {return String(sensorData.as_0_r);}
+    else if (strcmp("JoyS0RightRange", data)==0) {return String(sensorData.as_0_r);}
+    else if (strcmp("JoyS0ClickOver", data)==0) {return String(sensorData.as_0_c);}
+    else if (strcmp("JoyS0ClickUnder", data)==0) {return String(sensorData.as_0_c);}
+    else if (strcmp("JoyS0ClickEqual", data)==0) {return String(sensorData.as_0_c);}
+    else if (strcmp("JoyS0ClickRange", data)==0) {return String(sensorData.as_0_c);}
+  }
+  else if (strncmp(data, "JoyS1", strlen("JoyS1"))==0) {
+    if (strcmp("JoyS1UpOver", data)==0) {return String(sensorData.as_1_u);}
+    else if (strcmp("JoyS1UpUnder", data)==0) {return String(sensorData.as_1_u);}
+    else if (strcmp("JoyS1UpEqual", data)==0) {return String(sensorData.as_1_u);}
+    else if (strcmp("JoyS1UpRange", data)==0) {return String(sensorData.as_1_u);}
+    else if (strcmp("JoyS1DownOver", data)==0) {return String(sensorData.as_1_d);}
+    else if (strcmp("JoyS1DownUnder", data)==0) {return String(sensorData.as_1_d);}
+    else if (strcmp("JoyS1DownEqual", data)==0) {return String(sensorData.as_1_d);}
+    else if (strcmp("JoyS1DownRange", data)==0) {return String(sensorData.as_1_d);}
+    else if (strcmp("JoyS1LeftOver", data)==0) {return String(sensorData.as_1_l);}
+    else if (strcmp("JoyS1LeftUnder", data)==0) {return String(sensorData.as_1_l);}
+    else if (strcmp("JoyS1LeftEqual", data)==0) {return String(sensorData.as_1_l);}
+    else if (strcmp("JoyS1LeftRange", data)==0) {return String(sensorData.as_1_l);}
+    else if (strcmp("JoyS1RightOver", data)==0) {return String(sensorData.as_1_r);}
+    else if (strcmp("JoyS1RightUnder", data)==0) {return String(sensorData.as_1_r);}
+    else if (strcmp("JoyS1RightEqual", data)==0) {return String(sensorData.as_1_r);}
+    else if (strcmp("JoyS1RightRange", data)==0) {return String(sensorData.as_1_r);}
+    else if (strcmp("JoyS1ClickOver", data)==0) {return String(sensorData.as_1_c);}
+    else if (strcmp("JoyS1ClickUnder", data)==0) {return String(sensorData.as_1_c);}
+    else if (strcmp("JoyS1ClickEqual", data)==0) {return String(sensorData.as_1_c);}
+    else if (strcmp("JoyS1ClickRange", data)==0) {return String(sensorData.as_1_c);}
+  }
   return String("");
 }
 
