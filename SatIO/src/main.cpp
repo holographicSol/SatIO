@@ -14446,7 +14446,7 @@ String getRelatedX(char * data) {
     else if (strcmp("GPSPrecisionEqual", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
     else if (strcmp("GPSPrecisionRange", data)==0) {return String(gnggaData.hdop_precision_factor, 2);}
   }
-  else if (strncmp(data, "Alt", strlen("Alt"))==0) {
+  else if (strncmp(data, "AltGNGGA", strlen("AltGNGGA"))==0) {
     if (strcmp("AltGNGGAOver", data)==0) {return String(gnggaData.altitude, 2);}
     else if (strcmp("AltGNGGAUnder", data)==0) {return String(gnggaData.altitude, 2);}
     else if (strcmp("AltGNGGAEqual", data)==0) {return String(gnggaData.altitude, 2);}
@@ -14472,7 +14472,7 @@ String getRelatedX(char * data) {
     else if (strcmp("HemiGNRMCEast", data)==0) {return String(gnrmcData.latitude_hemisphere);}
     else if (strcmp("HemiGNRMCWest", data)==0) {return String(gnrmcData.latitude_hemisphere);}
   }
-  else if (strncmp(data, "GSpeed", strlen("GSpeed"))==0) {
+  else if (strncmp(data, "GSpeedGNRMC", strlen("GSpeedGNRMC"))==0) {
     if (strcmp("GSpeedGNRMCOver", data)==0) {return String(gnrmcData.ground_speed, 2);}
     else if (strcmp("GSpeedGNRMCUnder", data)==0) {return String(gnrmcData.ground_speed, 2);}
     else if (strcmp("GSpeedGNRMCEqual", data)==0) {return String(gnrmcData.ground_speed, 2);}
@@ -14490,19 +14490,19 @@ String getRelatedX(char * data) {
     else if (strcmp("UTCDateGNRMCEqual", data)==0) {return String(gnrmcData.utc_date);}
     else if (strcmp("UTCDateGNRMCRange", data)==0) {return String(gnrmcData.utc_date);}
   }
-  else if (strncmp(data, "LFlag", strlen("LFlag"))==0) {
+  else if (strncmp(data, "LFlagGPATT", strlen("LFlagGPATT"))==0) {
     if (strcmp("LFlagGPATTOver", data)==0) {return String(gpattData.line_flag);}
     else if (strcmp("LFlagGPATTUnder", data)==0) {return String(gpattData.line_flag);}
     else if (strcmp("LFlagGPATTEqual", data)==0) {return String(gpattData.line_flag);}
     else if (strcmp("LFlagGPATTRange", data)==0) {return String(gpattData.line_flag);}
   }
-  else if (strncmp(data, "SFlag", strlen("SFlag"))==0) {
+  else if (strncmp(data, "SFlagGPATT", strlen("SFlagGPATT"))==0) {
     if (strcmp("SFlagGPATTOver", data)==0) {return String(gpattData.static_flag);}
     else if (strcmp("SFlagGPATTUnder", data)==0) {return String(gpattData.static_flag);}
     else if (strcmp("SFlagGPATTEqual", data)==0) {return String(gpattData.static_flag);}
     else if (strcmp("SFlagGPATTRange", data)==0) {return String(gpattData.static_flag);}
   }
-  else if (strncmp(data, "RSFlag", strlen("RSFlag"))==0) {
+  else if (strncmp(data, "RSFlagGPATT", strlen("RSFlagGPATT"))==0) {
     if (strcmp("RSFlagGPATTOver", data)==0) {return String(gpattData.run_state_flag);}
     else if (strcmp("RSFlagGPATTUnder", data)==0) {return String(gpattData.run_state_flag);}
     else if (strcmp("RSFlagGPATTEqual", data)==0) {return String(gpattData.run_state_flag);}
@@ -14514,37 +14514,37 @@ String getRelatedX(char * data) {
     else if (strcmp("INSGPATTEqual", data)==0) {return String(gpattData.ins);}
     else if (strcmp("INSGPATTRange", data)==0) {return String(gpattData.ins);}
   }
-  else if (strncmp(data, "SpeedNum", strlen("SpeedNum"))==0) {
+  else if (strncmp(data, "SpeedNumGPATT", strlen("SpeedNumGPATT"))==0) {
     if (strcmp("SpeedNumGPATTOver", data)==0) {return String(gpattData.speed_num);}
     else if (strcmp("SpeedNumGPATTUnder", data)==0) {return String(gpattData.speed_num);}
     else if (strcmp("SpeedNumGPATTEqual", data)==0) {return String(gpattData.speed_num);}
     else if (strcmp("SpeedNumGPATTRange", data)==0) {return String(gpattData.speed_num);}
   }
-  else if (strncmp(data, "Mileage", strlen("Mileage"))==0) {
+  else if (strncmp(data, "MileageGPATT", strlen("MileageGPATT"))==0) {
     if (strcmp("MileageGPATTOver", data)==0) {return String(gpattData.mileage, 2);}
     else if (strcmp("MileageGPATTUnder", data)==0) {return String(gpattData.mileage, 2);}
     else if (strcmp("MileageGPATTEqual", data)==0) {return String(gpattData.mileage, 2);}
     else if (strcmp("MileageGPATTRange", data)==0) {return String(gpattData.mileage, 2);}
   }
-  else if (strncmp(data, "GSTData", strlen("GSTData"))==0) {
+  else if (strncmp(data, "GSTDataGPATT", strlen("GSTDataGPATT"))==0) {
     if (strcmp("GSTDataGPATTOver", data)==0) {return String(gpattData.gst_data);}
     else if (strcmp("GSTDataGPATTUnder", data)==0) {return String(gpattData.gst_data);}
     else if (strcmp("GSTDataGPATTEqual", data)==0) {return String(gpattData.gst_data);}
     else if (strcmp("GSTDataGPATTRange", data)==0) {return String(gpattData.gst_data);}
   }
-  else if (strncmp(data, "Yaw", strlen("Yaw"))==0) {
+  else if (strncmp(data, "YawGPATTO", strlen("YawGPATTO"))==0) {
     if (strcmp("YawGPATTOver", data)==0) {return String(gpattData.yaw, 2);}
     else if (strcmp("YawGPATTUnder", data)==0) {return String(gpattData.yaw, 2);}
     else if (strcmp("YawGPATTEqual", data)==0) {return String(gpattData.yaw, 2);}
     else if (strcmp("YawGPATTRange", data)==0) {return String(gpattData.yaw, 2);}
   }
-  else if (strncmp(data, "Roll", strlen("Roll"))==0) {
+  else if (strncmp(data, "RollGPATT", strlen("RollGPATT"))==0) {
     if (strcmp("RollGPATTOver", data)==0) {return String(gpattData.roll, 2);}
     else if (strcmp("RollGPATTUnder", data)==0) {return String(gpattData.roll, 2);}
     else if (strcmp("RollGPATTEqual", data)==0) {return String(gpattData.roll, 2);}
     else if (strcmp("RollGPATTRange", data)==0) {return String(gpattData.roll, 2);}
   }
-  else if (strncmp(data, "Pitch", strlen("Pitch"))==0) {
+  else if (strncmp(data, "PitchGPATT", strlen("PitchGPATT"))==0) {
     if (strcmp("PitchGPATTOver", data)==0) {return String(gpattData.pitch, 2);}
     else if (strcmp("PitchGPATTUnder", data)==0) {return String(gpattData.pitch, 2);}
     else if (strcmp("PitchGPATTEqual", data)==0) {return String(gpattData.pitch, 2);}
@@ -14579,7 +14579,7 @@ String getRelatedX(char * data) {
   else if (strcmp("DayTime", data)==0) {return String(check_ge_and_le_true(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   else if (strcmp("NightTime", data)==0) {return String(check_ge_and_le_false(hoursMinutesToInt(satData.local_hour, satData.local_minute), siderealPlanetData.sun_r, siderealPlanetData.sun_s));}
   
-  else if (strncmp(data, "Sun", strlen("Sun"))==0) {
+  else if (strncmp(data, "Moon", strlen("Moon"))==0) {
     if (strcmp("MoonAzRange", data)==0) {return String(siderealPlanetData.moon_az);}
     else if (strcmp("MoonAltRange", data)==0) {return String(siderealPlanetData.moon_alt);}
     else if (strcmp("MoonUp", data)==0) {return String(siderealPlanetData.moon_r);}
