@@ -3264,12 +3264,12 @@ struct MatrixStruct {
   // -------------------------------------------------------------------------------------------------------
   // number of available base function names that can be used to program a matrix switch
   // -------------------------------------------------------------------------------------------------------
-  int max_matrix_function_names=146;
+  int max_matrix_function_names=156;
 
   // -------------------------------------------------------------------------------------------------------
   // function names for function name matrix
   // -------------------------------------------------------------------------------------------------------
-  char matrix_function_names[146][25]=
+  char matrix_function_names[156][25]=
   {
     "None",
     "Enabled",
@@ -3417,6 +3417,16 @@ struct MatrixStruct {
     "Sensor13",
     "Sensor14",
     "Sensor15",
+    "JoyStick0Up",
+    "JoyStick0Down",
+    "JoyStick0Left",
+    "JoyStick0Right",
+    "JoyStick0Click",
+    "JoyStick1Up",
+    "JoyStick1Down",
+    "JoyStick1Left",
+    "JoyStick1Right",
+    "JoyStick1Click",
   };
 };
 MatrixStruct matrixData;
@@ -3427,7 +3437,7 @@ MatrixStruct matrixData;
 // this list is currently seperate from matrix_function_names in matrixData so that function names are not dependant on lcdgfx.
 // the lists would be preferrably merged (providing function names are still not tied to any particular display driver). 
 // ------------------------------------------------------------------------------------------------------------------------------
-const char *menuMatrixSetFunctionNameItems[146] =
+const char *menuMatrixSetFunctionNameItems[156] =
 {
   matrixData.matrix_function_names[0],
   matrixData.matrix_function_names[1],
@@ -3575,16 +3585,16 @@ const char *menuMatrixSetFunctionNameItems[146] =
   matrixData.matrix_function_names[143],
   matrixData.matrix_function_names[144],
   matrixData.matrix_function_names[145],
-  // matrixData.matrix_function_names[146],
-  // matrixData.matrix_function_names[147],
-  // matrixData.matrix_function_names[148],
-  // matrixData.matrix_function_names[149],
-  // matrixData.matrix_function_names[150],
-  // matrixData.matrix_function_names[151],
-  // matrixData.matrix_function_names[152],
-  // matrixData.matrix_function_names[153],
-  // matrixData.matrix_function_names[154],
-  // matrixData.matrix_function_names[155],
+  matrixData.matrix_function_names[146],
+  matrixData.matrix_function_names[147],
+  matrixData.matrix_function_names[148],
+  matrixData.matrix_function_names[149],
+  matrixData.matrix_function_names[150],
+  matrixData.matrix_function_names[151],
+  matrixData.matrix_function_names[152],
+  matrixData.matrix_function_names[153],
+  matrixData.matrix_function_names[154],
+  matrixData.matrix_function_names[155],
   // matrixData.matrix_function_names[156],
   // matrixData.matrix_function_names[157],
   // matrixData.matrix_function_names[158],
@@ -3686,7 +3696,7 @@ const char *menuMatrixSetFunctionNameItems[146] =
   // matrixData.matrix_function_names[254],
   // matrixData.matrix_function_names[255],
 };
-LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 146, {{2, 86}, {125, 125}} );
+LcdGfxMenu menuMatrixSetFunctionName( menuMatrixSetFunctionNameItems, 156, {{2, 86}, {125, 125}} );
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                    DATA: GNGGA
@@ -3820,25 +3830,25 @@ void GNGGA() {
   // debug
   // -------------------------------
   // systemData.debug=true;
-  if (systemData.debug==true) {
-    Serial.println("[gnggaData.tag] "                    + String(gnggaData.tag));
-    Serial.println("[gnggaData.utc_time] "               + String(gnggaData.utc_time)              + " (bad: " + String(gnggaData.bad_utc_time_i) + ")");
-    Serial.println("[gnggaData.latitude] "               + String(gnggaData.latitude)              + " (bad: " + String(gnggaData.bad_latitude_i) + ")");
-    Serial.println("[gnggaData.latitude_hemisphere] "    + String(gnggaData.latitude_hemisphere)   + " (bad: " + String(gnggaData.bad_latitude_hemisphere_i) + ")");
-    Serial.println("[gnggaData.longitude] "              + String(gnggaData.longitude)             + " (bad: " + String(gnggaData.bad_longitude_i) + ")");
-    Serial.println("[gnggaData.longitude_hemisphere] "   + String(gnggaData.longitude_hemisphere)  + " (bad: " + String(gnggaData.bad_longitude_hemisphere_i) + ")");
-    Serial.println("[gnggaData.solution_status] "        + String(gnggaData.solution_status)       + " (bad: " + String(gnggaData.bad_solution_status_i) + ")");
-    Serial.println("[gnggaData.satellite_count_gngga] "  + String(gnggaData.satellite_count_gngga) + " (bad: " + String(gnggaData.bad_satellite_count_gngga_i) + ")");
-    Serial.println("[gnggaData.hdop_precision_factor] "  + String(gnggaData.hdop_precision_factor) + " (bad: " + String(gnggaData.bad_hdop_precision_factor_i) + ")");
-    Serial.println("[gnggaData.altitude] "               + String(gnggaData.altitude)              + " (bad: " + String(gnggaData.bad_altitude_i) + ")");
-    Serial.println("[gnggaData.altitude_units] "         + String(gnggaData.altitude_units)        + " (bad: " + String(gnggaData.bad_altitude_units_i) + ")");
-    Serial.println("[gnggaData.geoidal] "                + String(gnggaData.geoidal)               + " (bad: " + String(gnggaData.bad_geoidal_i) + ")");
-    Serial.println("[gnggaData.geoidal_units] "          + String(gnggaData.geoidal_units)         + " (bad: " + String(gnggaData.bad_geoidal_units_i) + ")");
-    Serial.println("[gnggaData.differential_delay] "     + String(gnggaData.differential_delay)    + " (bad: " + String(gnggaData.bad_differential_delay_i) + ")");
-    Serial.println("[gnggaData.id] "                     + String(gnggaData.id)                    + " (bad: " + String(gnggaData.bad_id_i) + ")");
-    Serial.println("[gnggaData.count_valid_elements] "   + String(gnggaData.count_valid_elements));
-    Serial.println("[gnggaData.total_invalid_elements] " + String(gnggaData.total_invalid_elements));
-  }
+  // if (systemData.debug==true) {
+  //   Serial.println("[gnggaData.tag] "                    + String(gnggaData.tag));
+  //   Serial.println("[gnggaData.utc_time] "               + String(gnggaData.utc_time)              + " (bad: " + String(gnggaData.bad_utc_time_i) + ")");
+  //   Serial.println("[gnggaData.latitude] "               + String(gnggaData.latitude)              + " (bad: " + String(gnggaData.bad_latitude_i) + ")");
+  //   Serial.println("[gnggaData.latitude_hemisphere] "    + String(gnggaData.latitude_hemisphere)   + " (bad: " + String(gnggaData.bad_latitude_hemisphere_i) + ")");
+  //   Serial.println("[gnggaData.longitude] "              + String(gnggaData.longitude)             + " (bad: " + String(gnggaData.bad_longitude_i) + ")");
+  //   Serial.println("[gnggaData.longitude_hemisphere] "   + String(gnggaData.longitude_hemisphere)  + " (bad: " + String(gnggaData.bad_longitude_hemisphere_i) + ")");
+  //   Serial.println("[gnggaData.solution_status] "        + String(gnggaData.solution_status)       + " (bad: " + String(gnggaData.bad_solution_status_i) + ")");
+  //   Serial.println("[gnggaData.satellite_count_gngga] "  + String(gnggaData.satellite_count_gngga) + " (bad: " + String(gnggaData.bad_satellite_count_gngga_i) + ")");
+  //   Serial.println("[gnggaData.hdop_precision_factor] "  + String(gnggaData.hdop_precision_factor) + " (bad: " + String(gnggaData.bad_hdop_precision_factor_i) + ")");
+  //   Serial.println("[gnggaData.altitude] "               + String(gnggaData.altitude)              + " (bad: " + String(gnggaData.bad_altitude_i) + ")");
+  //   Serial.println("[gnggaData.altitude_units] "         + String(gnggaData.altitude_units)        + " (bad: " + String(gnggaData.bad_altitude_units_i) + ")");
+  //   Serial.println("[gnggaData.geoidal] "                + String(gnggaData.geoidal)               + " (bad: " + String(gnggaData.bad_geoidal_i) + ")");
+  //   Serial.println("[gnggaData.geoidal_units] "          + String(gnggaData.geoidal_units)         + " (bad: " + String(gnggaData.bad_geoidal_units_i) + ")");
+  //   Serial.println("[gnggaData.differential_delay] "     + String(gnggaData.differential_delay)    + " (bad: " + String(gnggaData.bad_differential_delay_i) + ")");
+  //   Serial.println("[gnggaData.id] "                     + String(gnggaData.id)                    + " (bad: " + String(gnggaData.bad_id_i) + ")");
+  //   Serial.println("[gnggaData.count_valid_elements] "   + String(gnggaData.count_valid_elements));
+  //   Serial.println("[gnggaData.total_invalid_elements] " + String(gnggaData.total_invalid_elements));
+  // }
   // systemData.debug=false;
 }
 
@@ -3964,23 +3974,23 @@ void GNRMC() {
   // debug
   // -------------------------------
   // systemData.debug=true;
-  if (systemData.debug==true) {
-    Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
-    Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time)                     + " (bad: " + String(gnrmcData.bad_utc_time_i) + ")");
-    Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status)           + " (bad: " + String(gnrmcData.bad_positioning_status) + ")");
-    Serial.println("[gnrmcData.latitude] "                     + String(gnrmcData.latitude)                     + " (bad: " + String(gnrmcData.bad_latitude_i) + ")");
-    Serial.println("[gnrmcData.latitude_hemisphere] "          + String(gnrmcData.latitude_hemisphere)          + " (bad: " + String(gnrmcData.bad_latitude_hemisphere_i) + ")");
-    Serial.println("[gnrmcData.longitude] "                    + String(gnrmcData.longitude)                    + " (bad: " + String(gnrmcData.bad_longitude_i) + ")");
-    Serial.println("[gnrmcData.longitude_hemisphere] "         + String(gnrmcData.longitude_hemisphere)         + " (bad: " + String(gnrmcData.bad_longitude_hemisphere_i) + ")");
-    Serial.println("[gnrmcData.ground_speed] "                 + String(gnrmcData.ground_speed)                 + " (bad: " + String(gnrmcData.bad_ground_speed_i) + ")");
-    Serial.println("[gnrmcData.ground_heading] "               + String(gnrmcData.ground_heading)               + " (bad: " + String(gnrmcData.bad_ground_heading_i) + ")");
-    Serial.println("[gnrmcData.utc_date] "                     + String(gnrmcData.utc_date)                     + " (bad: " + String(gnrmcData.bad_utc_date_i) + ")");
-    Serial.println("[gnrmcData.installation_angle] "           + String(gnrmcData.installation_angle)           + " (bad: " + String(gnrmcData.bad_installation_angle_i) + ")");
-    Serial.println("[gnrmcData.installation_angle_direction] " + String(gnrmcData.installation_angle_direction) + " (bad: " + String(gnrmcData.bad_installation_angle_direction_i) + ")");
-    Serial.println("[gnrmcData.mode_indication] "              + String(gnrmcData.mode_indication)              + " (bad: " + String(gnrmcData.bad_mode_indication_i) + ")");
-    Serial.println("[gnrmcData.count_valid_elements] "         + String(gnrmcData.count_valid_elements));
-    Serial.println("[gnrmcData.total_invalid_elements] "       + String(gnrmcData.total_invalid_elements));
-  }
+  // if (systemData.debug==true) {
+  //   Serial.println("[gnrmcData.tag] "                          + String(gnrmcData.tag));
+  //   Serial.println("[gnrmcData.utc_time] "                     + String(gnrmcData.utc_time)                     + " (bad: " + String(gnrmcData.bad_utc_time_i) + ")");
+  //   Serial.println("[gnrmcData.positioning_status] "           + String(gnrmcData.positioning_status)           + " (bad: " + String(gnrmcData.bad_positioning_status) + ")");
+  //   Serial.println("[gnrmcData.latitude] "                     + String(gnrmcData.latitude)                     + " (bad: " + String(gnrmcData.bad_latitude_i) + ")");
+  //   Serial.println("[gnrmcData.latitude_hemisphere] "          + String(gnrmcData.latitude_hemisphere)          + " (bad: " + String(gnrmcData.bad_latitude_hemisphere_i) + ")");
+  //   Serial.println("[gnrmcData.longitude] "                    + String(gnrmcData.longitude)                    + " (bad: " + String(gnrmcData.bad_longitude_i) + ")");
+  //   Serial.println("[gnrmcData.longitude_hemisphere] "         + String(gnrmcData.longitude_hemisphere)         + " (bad: " + String(gnrmcData.bad_longitude_hemisphere_i) + ")");
+  //   Serial.println("[gnrmcData.ground_speed] "                 + String(gnrmcData.ground_speed)                 + " (bad: " + String(gnrmcData.bad_ground_speed_i) + ")");
+  //   Serial.println("[gnrmcData.ground_heading] "               + String(gnrmcData.ground_heading)               + " (bad: " + String(gnrmcData.bad_ground_heading_i) + ")");
+  //   Serial.println("[gnrmcData.utc_date] "                     + String(gnrmcData.utc_date)                     + " (bad: " + String(gnrmcData.bad_utc_date_i) + ")");
+  //   Serial.println("[gnrmcData.installation_angle] "           + String(gnrmcData.installation_angle)           + " (bad: " + String(gnrmcData.bad_installation_angle_i) + ")");
+  //   Serial.println("[gnrmcData.installation_angle_direction] " + String(gnrmcData.installation_angle_direction) + " (bad: " + String(gnrmcData.bad_installation_angle_direction_i) + ")");
+  //   Serial.println("[gnrmcData.mode_indication] "              + String(gnrmcData.mode_indication)              + " (bad: " + String(gnrmcData.bad_mode_indication_i) + ")");
+  //   Serial.println("[gnrmcData.count_valid_elements] "         + String(gnrmcData.count_valid_elements));
+  //   Serial.println("[gnrmcData.total_invalid_elements] "       + String(gnrmcData.total_invalid_elements));
+  // }
   // systemData.debug=false;
 }
 
@@ -4185,49 +4195,49 @@ void GPATT() {
   // debug
   // -------------------------------
   // systemData.debug=true;
-  if (systemData.debug==true) {
-    Serial.println("[gpattData.tag] "                    + String(gpattData.tag));
-    Serial.println("[gpattData.pitch] "                  + String(gpattData.pitch)               + " (bad: " + String(gpattData.bad_pitch_i) + ")");
-    Serial.println("[gpattData.angle_channel_0] "        + String(gpattData.angle_channel_0)     + " (bad: " + String(gpattData.bad_angle_channel_0_i) + ")");
-    Serial.println("[gpattData.roll] "                   + String(gpattData.roll)                + " (bad: " + String(gpattData.bad_roll_i) + ")");
-    Serial.println("[gpattData.angle_channel_1] "        + String(gpattData.angle_channel_1)     + " (bad: " + String(gpattData.bad_angle_channel_1_i) + ")");
-    Serial.println("[gpattData.yaw] "                    + String(gpattData.yaw)                 + " (bad: " + String(gpattData.bad_yaw_i) + ")");
-    Serial.println("[gpattData.angle_channel_2] "        + String(gpattData.angle_channel_2)     + " (bad: " + String(gpattData.bad_angle_channel_2_i) + ")");
-    Serial.println("[gpattData.software_version] "       + String(gpattData.software_version)    + " (bad: " + String(gpattData.bad_software_version_i) + ")");
-    Serial.println("[gpattData.version_channel] "        + String(gpattData.version_channel)     + " (bad: " + String(gpattData.bad_version_channel_i) + ")");
-    Serial.println("[gpattData.product_id] "             + String(gpattData.product_id)          + " (bad: " + String(gpattData.bad_product_id_i) + ")");
-    Serial.println("[gpattData.id_channel] "             + String(gpattData.id_channel)          + " (bad: " + String(gpattData.bad_id_channel_i) + ")");
-    Serial.println("[gpattData.ins] "                    + String(gpattData.ins)                 + " (bad: " + String(gpattData.bad_ins_i) + ")");
-    Serial.println("[gpattData.ins_channel] "            + String(gpattData.ins_channel)         + " (bad: " + String(gpattData.bad_ins_channel_i) + ")");
-    Serial.println("[gpattData.hardware_version] "       + String(gpattData.hardware_version)    + " (bad: " + String(gpattData.bad_hardware_version_i) + ")");
-    Serial.println("[gpattData.run_state_flag] "         + String(gpattData.run_state_flag)      + " (bad: " + String(gpattData.bad_run_state_flag_i) + ")");
-    Serial.println("[gpattData.mis_angle_num] "          + String(gpattData.mis_angle_num)       + " (bad: " + String(gpattData.bad_mis_angle_num_i) + ")");
-    Serial.println("[gpattData.custom_logo_0] "          + String(gpattData.custom_logo_0)       + " (bad: " + String(gpattData.bad_custom_logo_0_i) + ")");
-    Serial.println("[gpattData.custom_logo_1] "          + String(gpattData.custom_logo_1)       + " (bad: " + String(gpattData.bad_custom_logo_1_i) + ")");
-    Serial.println("[gpattData.custom_logo_2] "          + String(gpattData.custom_logo_2)       + " (bad: " + String(gpattData.bad_custom_logo_2_i) + ")");
-    Serial.println("[gpattData.static_flag] "            + String(gpattData.static_flag)         + " (bad: " + String(gpattData.bad_static_flag_i) + ")");
-    Serial.println("[gpattData.user_code] "              + String(gpattData.user_code)           + " (bad: " + String(gpattData.bad_user_code_i) + ")");
-    Serial.println("[gpattData.gst_data] "               + String(gpattData.gst_data)            + " (bad: " + String(gpattData.bad_gst_data_i) + ")");
-    Serial.println("[gpattData.line_flag] "              + String(gpattData.line_flag)           + " (bad: " + String(gpattData.bad_line_flag_i) + ")");
-    Serial.println("[gpattData.custom_logo_3] "          + String(gpattData.custom_logo_3)       + " (bad: " + String(gpattData.bad_custom_logo_3_i) + ")");
-    Serial.println("[gpattData.mis_att_flag] "           + String(gpattData.mis_att_flag)        + " (bad: " + String(gpattData.bad_mis_att_flag_i) + ")");
-    Serial.println("[gpattData.imu_kind] "               + String(gpattData.imu_kind)            + " (bad: " + String(gpattData.bad_imu_kind_i) + ")");
-    Serial.println("[gpattData.ubi_car_kind] "           + String(gpattData.ubi_car_kind)        + " (bad: " + String(gpattData.bad_ubi_car_kind_i) + ")");
-    Serial.println("[gpattData.mileage] "                + String(gpattData.mileage)             + " (bad: " + String(gpattData.bad_mileage_i) + ")");
-    Serial.println("[gpattData.custom_logo_4] "          + String(gpattData.custom_logo_4)       + " (bad: " + String(gpattData.bad_custom_logo_4_i) + ")");
-    Serial.println("[gpattData.custom_logo_5] "          + String(gpattData.custom_logo_5)       + " (bad: " + String(gpattData.bad_custom_logo_5_i) + ")");
-    Serial.println("[gpattData.run_inetial_flag] "       + String(gpattData.run_inetial_flag)    + " (bad: " + String(gpattData.bad_run_inetial_flag_i) + ")");
-    Serial.println("[gpattData.custom_logo_6] "          + String(gpattData.custom_logo_6)       + " (bad: " + String(gpattData.bad_custom_logo_6_i) + ")");
-    Serial.println("[gpattData.custom_logo_7] "          + String(gpattData.custom_logo_7)       + " (bad: " + String(gpattData.bad_custom_logo_7_i) + ")");
-    Serial.println("[gpattData.custom_logo_8] "          + String(gpattData.custom_logo_8)       + " (bad: " + String(gpattData.bad_custom_logo_8_i) + ")");
-    Serial.println("[gpattData.custom_logo_9] "          + String(gpattData.custom_logo_9)       + " (bad: " + String(gpattData.bad_custom_logo_9_i) + ")");
-    Serial.println("[gpattData.speed_enable] "           + String(gpattData.speed_enable)        + " (bad: " + String(gpattData.bad_speed_enable_i) + ")");
-    Serial.println("[gpattData.custom_logo_10] "         + String(gpattData.custom_logo_10)      + " (bad: " + String(gpattData.bad_custom_logo_10_i) + ")");
-    Serial.println("[gpattData.custom_logo_11] "         + String(gpattData.custom_logo_11)      + " (bad: " + String(gpattData.bad_custom_logo_11_i) + ")");
-    Serial.println("[gpattData.speed_num] "              + String(gpattData.speed_num)           + " (bad: " + String(gpattData.bad_speed_num_i) + ")");
-    Serial.println("[gpattData.count_valid_elements] "   + String(gpattData.count_valid_elements));
-    Serial.println("[gpattData.total_invalid_elements] " + String(gpattData.total_invalid_elements));
-  }
+  // if (systemData.debug==true) {
+  //   Serial.println("[gpattData.tag] "                    + String(gpattData.tag));
+  //   Serial.println("[gpattData.pitch] "                  + String(gpattData.pitch)               + " (bad: " + String(gpattData.bad_pitch_i) + ")");
+  //   Serial.println("[gpattData.angle_channel_0] "        + String(gpattData.angle_channel_0)     + " (bad: " + String(gpattData.bad_angle_channel_0_i) + ")");
+  //   Serial.println("[gpattData.roll] "                   + String(gpattData.roll)                + " (bad: " + String(gpattData.bad_roll_i) + ")");
+  //   Serial.println("[gpattData.angle_channel_1] "        + String(gpattData.angle_channel_1)     + " (bad: " + String(gpattData.bad_angle_channel_1_i) + ")");
+  //   Serial.println("[gpattData.yaw] "                    + String(gpattData.yaw)                 + " (bad: " + String(gpattData.bad_yaw_i) + ")");
+  //   Serial.println("[gpattData.angle_channel_2] "        + String(gpattData.angle_channel_2)     + " (bad: " + String(gpattData.bad_angle_channel_2_i) + ")");
+  //   Serial.println("[gpattData.software_version] "       + String(gpattData.software_version)    + " (bad: " + String(gpattData.bad_software_version_i) + ")");
+  //   Serial.println("[gpattData.version_channel] "        + String(gpattData.version_channel)     + " (bad: " + String(gpattData.bad_version_channel_i) + ")");
+  //   Serial.println("[gpattData.product_id] "             + String(gpattData.product_id)          + " (bad: " + String(gpattData.bad_product_id_i) + ")");
+  //   Serial.println("[gpattData.id_channel] "             + String(gpattData.id_channel)          + " (bad: " + String(gpattData.bad_id_channel_i) + ")");
+  //   Serial.println("[gpattData.ins] "                    + String(gpattData.ins)                 + " (bad: " + String(gpattData.bad_ins_i) + ")");
+  //   Serial.println("[gpattData.ins_channel] "            + String(gpattData.ins_channel)         + " (bad: " + String(gpattData.bad_ins_channel_i) + ")");
+  //   Serial.println("[gpattData.hardware_version] "       + String(gpattData.hardware_version)    + " (bad: " + String(gpattData.bad_hardware_version_i) + ")");
+  //   Serial.println("[gpattData.run_state_flag] "         + String(gpattData.run_state_flag)      + " (bad: " + String(gpattData.bad_run_state_flag_i) + ")");
+  //   Serial.println("[gpattData.mis_angle_num] "          + String(gpattData.mis_angle_num)       + " (bad: " + String(gpattData.bad_mis_angle_num_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_0] "          + String(gpattData.custom_logo_0)       + " (bad: " + String(gpattData.bad_custom_logo_0_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_1] "          + String(gpattData.custom_logo_1)       + " (bad: " + String(gpattData.bad_custom_logo_1_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_2] "          + String(gpattData.custom_logo_2)       + " (bad: " + String(gpattData.bad_custom_logo_2_i) + ")");
+  //   Serial.println("[gpattData.static_flag] "            + String(gpattData.static_flag)         + " (bad: " + String(gpattData.bad_static_flag_i) + ")");
+  //   Serial.println("[gpattData.user_code] "              + String(gpattData.user_code)           + " (bad: " + String(gpattData.bad_user_code_i) + ")");
+  //   Serial.println("[gpattData.gst_data] "               + String(gpattData.gst_data)            + " (bad: " + String(gpattData.bad_gst_data_i) + ")");
+  //   Serial.println("[gpattData.line_flag] "              + String(gpattData.line_flag)           + " (bad: " + String(gpattData.bad_line_flag_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_3] "          + String(gpattData.custom_logo_3)       + " (bad: " + String(gpattData.bad_custom_logo_3_i) + ")");
+  //   Serial.println("[gpattData.mis_att_flag] "           + String(gpattData.mis_att_flag)        + " (bad: " + String(gpattData.bad_mis_att_flag_i) + ")");
+  //   Serial.println("[gpattData.imu_kind] "               + String(gpattData.imu_kind)            + " (bad: " + String(gpattData.bad_imu_kind_i) + ")");
+  //   Serial.println("[gpattData.ubi_car_kind] "           + String(gpattData.ubi_car_kind)        + " (bad: " + String(gpattData.bad_ubi_car_kind_i) + ")");
+  //   Serial.println("[gpattData.mileage] "                + String(gpattData.mileage)             + " (bad: " + String(gpattData.bad_mileage_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_4] "          + String(gpattData.custom_logo_4)       + " (bad: " + String(gpattData.bad_custom_logo_4_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_5] "          + String(gpattData.custom_logo_5)       + " (bad: " + String(gpattData.bad_custom_logo_5_i) + ")");
+  //   Serial.println("[gpattData.run_inetial_flag] "       + String(gpattData.run_inetial_flag)    + " (bad: " + String(gpattData.bad_run_inetial_flag_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_6] "          + String(gpattData.custom_logo_6)       + " (bad: " + String(gpattData.bad_custom_logo_6_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_7] "          + String(gpattData.custom_logo_7)       + " (bad: " + String(gpattData.bad_custom_logo_7_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_8] "          + String(gpattData.custom_logo_8)       + " (bad: " + String(gpattData.bad_custom_logo_8_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_9] "          + String(gpattData.custom_logo_9)       + " (bad: " + String(gpattData.bad_custom_logo_9_i) + ")");
+  //   Serial.println("[gpattData.speed_enable] "           + String(gpattData.speed_enable)        + " (bad: " + String(gpattData.bad_speed_enable_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_10] "         + String(gpattData.custom_logo_10)      + " (bad: " + String(gpattData.bad_custom_logo_10_i) + ")");
+  //   Serial.println("[gpattData.custom_logo_11] "         + String(gpattData.custom_logo_11)      + " (bad: " + String(gpattData.bad_custom_logo_11_i) + ")");
+  //   Serial.println("[gpattData.speed_num] "              + String(gpattData.speed_num)           + " (bad: " + String(gpattData.bad_speed_num_i) + ")");
+  //   Serial.println("[gpattData.count_valid_elements] "   + String(gpattData.count_valid_elements));
+  //   Serial.println("[gpattData.total_invalid_elements] " + String(gpattData.total_invalid_elements));
+  // }
   // systemData.debug=false;
 }
 
@@ -4386,7 +4396,7 @@ struct SensorDataStruct {
   float dht11_hif_0=0.0;
   float dht11_hic_0=0.0;
   bool dht11_0_display_hic=true;
-  float    sensor_0=0.0;
+  float sensor_0=0.0;
   float sensor_1=0.0;
   float sensor_2=0.0;
   float sensor_3=0.0;
@@ -4423,18 +4433,29 @@ struct SensorDataStruct {
   float wt901_ang_x=0.0;
   float wt901_ang_y=0.0;
   float wt901_ang_z=0.0;
-
   float wt901_mag_x=0.0;
   float wt901_mag_y=0.0;
   float wt901_mag_z=0.0;
-
   float wt901_acc_x=0.0;
   float wt901_acc_y=0.0;
   float wt901_acc_z=0.0;
-
   float wt901_gyr_x=0.0;
   float wt901_gyr_y=0.0;
   float wt901_gyr_z=0.0;
+
+  // ----------------------------------------------------
+  // Analog Sticks
+  // ----------------------------------------------------
+  int as_0_u=0;
+  int as_0_d=0;
+  int as_0_l=0;
+  int as_0_r=0;
+  int as_0_c=1;
+  int as_1_u=0;
+  int as_1_d=0;
+  int as_1_l=0;
+  int as_1_r=0;
+  int as_1_c=1;
 };
 SensorDataStruct sensorData;
 
@@ -12520,6 +12541,506 @@ void matrixSwitch() {
               matrixData.matrix_function_xyz[Mi][Fi][1]);
           }
         }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                        Joy Stick 0: Up
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0UpOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0UpUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0UpEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0UpRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_0_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Down
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0DownOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0DownUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0DownEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0DownRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_0_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Left
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0LeftOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0LeftUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0LeftEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0LeftRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_0_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Right
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0RightOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0RightUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0RightEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0RightRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_0_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Click
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0ClickOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0ClickUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0ClickEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick0ClickRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_0_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                        Joy Stick 1: Up
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1UpOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1UpUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1UpEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1UpRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_1_u,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Down
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1DownOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1DownUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1DownEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1DownRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_1_d,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                      Joy Stick 0: Left
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1LeftOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1LeftUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1LeftEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1LeftRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_1_l,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Right
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1RightOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1RightUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1RightEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1RightRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_1_r,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
+        //                                                                                                     Joy Stick 0: Click
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1ClickOver")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_over_true(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_over_false(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1ClickUnder")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_under_true(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_under_false(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1ClickEqual")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_equal_true(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_equal_false(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0]);
+          }
+        }
+
+        else if (strcmp(matrixData.matrix_function[Mi][Fi], "JoyStick1ClickRange")==0) {
+          if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
+            tmp_matrix[Fi]=check_ge_and_le_true(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+          else if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==true) {
+            tmp_matrix[Fi]=check_ge_and_le_false(sensorData.as_1_c,
+            matrixData.matrix_function_xyz[Mi][Fi][0],
+              matrixData.matrix_function_xyz[Mi][Fi][1]);
+          }
+        }
         
       }
 
@@ -12586,7 +13107,7 @@ void matrixSwitch() {
     // print
     // -------------------------------
     Serial.println(matrixData.matrix_sentence);
-    debug(matrixData.matrix_sentence);
+    // debug(matrixData.matrix_sentence);
   }
   // ------------------------------------------------
 }
@@ -13996,6 +14517,46 @@ String getRelatedX(char * data) {
   if (strcmp("Sensor15Under", data)==0) {return String(sensorData.sensor_15);}
   if (strcmp("Sensor15Equal", data)==0) {return String(sensorData.sensor_15);}
   if (strcmp("Sensor15Range", data)==0) {return String(sensorData.sensor_15);}
+  if (strcmp("JoyStick0UpOver", data)==0) {return String(sensorData.as_0_u);}
+  if (strcmp("JoyStick0UpUnder", data)==0) {return String(sensorData.as_0_u);}
+  if (strcmp("JoyStick0UpEqual", data)==0) {return String(sensorData.as_0_u);}
+  if (strcmp("JoyStick0UpRange", data)==0) {return String(sensorData.as_0_u);}
+  if (strcmp("JoyStick0DownOver", data)==0) {return String(sensorData.as_0_d);}
+  if (strcmp("JoyStick0DownUnder", data)==0) {return String(sensorData.as_0_d);}
+  if (strcmp("JoyStick0DownEqual", data)==0) {return String(sensorData.as_0_d);}
+  if (strcmp("JoyStick0DownRange", data)==0) {return String(sensorData.as_0_d);}
+  if (strcmp("JoyStick0LeftOver", data)==0) {return String(sensorData.as_0_l);}
+  if (strcmp("JoyStick0LeftUnder", data)==0) {return String(sensorData.as_0_l);}
+  if (strcmp("JoyStick0LeftEqual", data)==0) {return String(sensorData.as_0_l);}
+  if (strcmp("JoyStick0LeftRange", data)==0) {return String(sensorData.as_0_l);}
+  if (strcmp("JoyStick0RightOver", data)==0) {return String(sensorData.as_0_r);}
+  if (strcmp("JoyStick0RightUnder", data)==0) {return String(sensorData.as_0_r);}
+  if (strcmp("JoyStick0RightEqual", data)==0) {return String(sensorData.as_0_r);}
+  if (strcmp("JoyStick0RightRange", data)==0) {return String(sensorData.as_0_r);}
+  if (strcmp("JoyStick0ClickOver", data)==0) {return String(sensorData.as_0_c);}
+  if (strcmp("JoyStick0ClickUnder", data)==0) {return String(sensorData.as_0_c);}
+  if (strcmp("JoyStick0ClickEqual", data)==0) {return String(sensorData.as_0_c);}
+  if (strcmp("JoyStick0ClickRange", data)==0) {return String(sensorData.as_0_c);}
+  if (strcmp("JoyStick1UpOver", data)==0) {return String(sensorData.as_1_u);}
+  if (strcmp("JoyStick1UpUnder", data)==0) {return String(sensorData.as_1_u);}
+  if (strcmp("JoyStick1UpEqual", data)==0) {return String(sensorData.as_1_u);}
+  if (strcmp("JoyStick1UpRange", data)==0) {return String(sensorData.as_1_u);}
+  if (strcmp("JoyStick1DownOver", data)==0) {return String(sensorData.as_1_d);}
+  if (strcmp("JoyStick1DownUnder", data)==0) {return String(sensorData.as_1_d);}
+  if (strcmp("JoyStick1DownEqual", data)==0) {return String(sensorData.as_1_d);}
+  if (strcmp("JoyStick1DownRange", data)==0) {return String(sensorData.as_1_d);}
+  if (strcmp("JoyStick1LeftOver", data)==0) {return String(sensorData.as_1_l);}
+  if (strcmp("JoyStick1LeftUnder", data)==0) {return String(sensorData.as_1_l);}
+  if (strcmp("JoyStick1LeftEqual", data)==0) {return String(sensorData.as_1_l);}
+  if (strcmp("JoyStick1LeftRange", data)==0) {return String(sensorData.as_1_l);}
+  if (strcmp("JoyStick1RightOver", data)==0) {return String(sensorData.as_1_r);}
+  if (strcmp("JoyStick1RightUnder", data)==0) {return String(sensorData.as_1_r);}
+  if (strcmp("JoyStick1RightEqual", data)==0) {return String(sensorData.as_1_r);}
+  if (strcmp("JoyStick1RightRange", data)==0) {return String(sensorData.as_1_r);}
+  if (strcmp("JoyStick1ClickOver", data)==0) {return String(sensorData.as_1_c);}
+  if (strcmp("JoyStick1ClickUnder", data)==0) {return String(sensorData.as_1_c);}
+  if (strcmp("JoyStick1ClickEqual", data)==0) {return String(sensorData.as_1_c);}
+  if (strcmp("JoyStick1ClickRange", data)==0) {return String(sensorData.as_1_c);}
   return String("");
 }
 
@@ -18620,10 +19181,80 @@ void UpdateUI(void * pvParamters) {
     canvas60x8.printFixed(0, 0, String(atoi(gpattData.mileage)).c_str(), STYLE_BOLD);
     display.drawCanvas(0, 110, canvas60x8);
     // ------------------------------------------------
+    // joy stick 0: up
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_0_u).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 40, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 0: down
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_0_d).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 50, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 0: left
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_0_l).c_str(), STYLE_BOLD);
+    display.drawCanvas(21, 40, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 0: right
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_0_r).c_str(), STYLE_BOLD);
+    display.drawCanvas(21, 50, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 1: up
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_1_u).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 60, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 1: down
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_1_d).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 70, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 1: left
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_1_l).c_str(), STYLE_BOLD);
+    display.drawCanvas(21, 60, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 1: right
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_1_r).c_str(), STYLE_BOLD);
+    display.drawCanvas(21, 70, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 0: click
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_0_c).c_str(), STYLE_BOLD);
+    display.drawCanvas(0, 80, canvas19x8);
+    // ------------------------------------------------
+    // joy stick 1: click
+    // ------------------------------------------------
+    canvas19x8.clear();
+    display.setColor(systemData.color_content);
+    canvas19x8.printFixed(0, 0, String(sensorData.as_1_c).c_str(), STYLE_BOLD);
+    display.drawCanvas(21, 80, canvas19x8);
+    // ------------------------------------------------
     // UAP
     // ------------------------------------------------
     DisplayUAP();
-    delay(10); // optional delay
+    // delay(10); // optional delay
   }
 
   // ----------------------------------------------------------------------------------------------------------------
@@ -18800,6 +19431,7 @@ struct I2CLinkStruct {
   int I2CADDRESSINDEX=0;
   int I2CADDRESSRANGEMIN=0;   // for performance this should be modifiable, can be min zero
   int I2CADDRESSRANGEMAX=50; // for performance this should be modifiable, can be max 127
+  String TMP_BUFFER_STRING;
 };
 I2CLinkStruct I2CLink;
 
@@ -19005,6 +19637,41 @@ void requestWT901() {
   // Serial.println("[requestWT901] " + String(millis()-t0));
 }
 
+void joyStick() {
+  // sensorData.as_0_u=0;
+  // sensorData.as_0_d=0;
+  // sensorData.as_0_l=0;
+  // sensorData.as_0_r=0;
+  // sensorData.as_0_c=0;
+  // sensorData.as_1_u=0;
+  // sensorData.as_1_d=0;
+  // sensorData.as_1_l=0;
+  // sensorData.as_1_r=0;
+  // sensorData.as_1_c=0;
+  // ----------------------------------------------
+  // tokenize
+  // ----------------------------------------------
+  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.token=strtok(NULL, ",");
+  I2CLink.i_token=0;
+  while (I2CLink.token != NULL) {
+    // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+    if (I2CLink.i_token==0) {sensorData.as_0_u=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==1) {sensorData.as_0_d=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==2) {sensorData.as_0_l=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==3) {sensorData.as_0_r=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==4) {sensorData.as_0_c=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==5) {sensorData.as_1_u=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==6) {sensorData.as_1_d=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==7) {sensorData.as_1_l=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==8) {sensorData.as_1_r=atoi(I2CLink.token);}
+    else if (I2CLink.i_token==9) {sensorData.as_1_c=atoi(I2CLink.token);}
+    I2CLink.token=strtok(NULL, ",");
+    I2CLink.i_token++;
+  }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                   I2C REQUEST FROM CONTROL PAD
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -19086,6 +19753,8 @@ void requestControlPad() {
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,29")==0) {Serial.println("[button] 29");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,30")==0) {Serial.println("[button] 30");}
       else if (strcmp(I2CLink.INPUT_BUFFER, "$CP,B,31")==0) {Serial.println("[button] 31");}
+
+      else if (strncmp(I2CLink.INPUT_BUFFER, "$CP,A,", 6)==0) {Serial.println("[analog_stick_0_1] " + String(I2CLink.INPUT_BUFFER)); joyStick();}
     }
     // ---------------------------------------------------------------------
     // trip interaction_updateui flag once writing to display has completed.
@@ -19301,12 +19970,47 @@ void writePortControllerIOEnabled() {
 }
 
 // ------------------------------------------------
+// Write Joy Stick Data
+// ------------------------------------------------
+void writePortControllerJoyStickData() {
+  // -----------------------
+  // tag
+  // -----------------------
+  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+  // -----------------------
+  // data
+  // -----------------------
+  I2CLink.TMP_BUFFER_STRING = String("$JOY,") +
+                              String(sensorData.as_0_u) + String(",") +
+                              String(sensorData.as_0_d) + String(",") +
+                              String(sensorData.as_0_l) + String(",") +
+                              String(sensorData.as_0_r) + String(",") +
+                              String(sensorData.as_0_c) + String(",") +
+                              String(sensorData.as_1_u) + String(",") +
+                              String(sensorData.as_1_d) + String(",") +
+                              String(sensorData.as_1_l) + String(",") +
+                              String(sensorData.as_1_r) + String(",") +
+                              String(sensorData.as_1_c)
+                              ;
+  strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_STRING.c_str());
+  // -----------------------
+  // write instruction
+  // -----------------------
+  writeI2C(I2C_ADDR_PORTCONTROLLER_0);
+  // -----------------------
+  // debug
+  // -----------------------
+  debug("[portcontroller] instruction:" + String(I2CLink.TMP_BUFFER_0));
+}
+
+// ------------------------------------------------
 // Write To Enabled Port Controller
 // ------------------------------------------------
 void writeToEnabledPortController() {
   writePortControllerIOEnabled();
   writePortControllerPortMap();
   writePortControllerSwitchState();
+  writePortControllerJoyStickData();
   // ------------------------------------------------
   // (uncomment to enable leds)
   // ------------------------------------------------
@@ -19319,9 +20023,10 @@ void writeToEnabledPortController() {
 // Write To Semi-Disabled Port Controller (No Matrix Instructions)
 // ---------------------------------------------------------------
 void writeToSemiDisabledPortController() {
+  writePortControllerJoyStickData();
   writePortControllerIOEnabled();
-  writePortControllerGPSSignalLED();
-  writePortControllerOverloadValue();
+  // writePortControllerGPSSignalLED();
+  // writePortControllerOverloadValue();
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -22075,7 +22780,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    // Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
+    Serial.println("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
     // ---------------------------------------------------------------------
@@ -22104,5 +22809,5 @@ void loop() {
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
 
-  delay(1);
+  // delay(1);
 }
