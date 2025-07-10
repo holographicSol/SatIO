@@ -271,6 +271,19 @@ void receiveEvent(int) {
       I2CLink.token=strtok(NULL, ",");
       I2CLink.i_token++;
     }
+    // ---------------------------------------------------------------------------------------------------------------
+    // Joy Sticks: Currently mapped to 1024 for sensors but can be left unmapped if outputting to MCU on the same pin.
+    // ---------------------------------------------------------------------------------------------------------------
+    analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024));
+    analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024));
+    analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024));
+    analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024));
+    digitalWrite(52, sensorData.as_0_c);
+    analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024));
+    analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024));
+    analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024));
+    analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024));
+    digitalWrite(53, sensorData.as_1_c);
   }
 }
 
@@ -292,24 +305,24 @@ void satIOPortController() {
   // Write switch state to pins specified in port map
   // ------------------------------------------------------------
   for (int i=0; i<20; i++) {
-    if (update_portmap_bool==true) {
-      if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
+    // if (update_portmap_bool==true) {
+    //   if (matrix_port_map[0][i] != tmp_matrix_port_map[0][i]) {
 
-        // ------------------------------------------------------------
-        // set a depricated port mapping to default values
-        // ------------------------------------------------------------
-        digitalWrite(matrix_port_map[0][i], LOW);
-        // pinMode(matrix_port_map[0][i], INPUT);
+    //     // ------------------------------------------------------------
+    //     // set a depricated port mapping to default values
+    //     // ------------------------------------------------------------
+    //     digitalWrite(matrix_port_map[0][i], LOW);
+    //     // pinMode(matrix_port_map[0][i], INPUT);
 
-        // Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
+    //     // Serial.println("[portmap] updating port: " + String(matrix_port_map[0][i]) + " -> " + String(tmp_matrix_port_map[0][i]));
 
-        // ------------------------------------------------------------
-        // setup new port
-        // ------------------------------------------------------------
-        matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
-        // pinMode(matrix_port_map[0][i], OUTPUT);
-      }
-    }
+    //     // ------------------------------------------------------------
+    //     // setup new port
+    //     // ------------------------------------------------------------
+    //     matrix_port_map[0][i]=tmp_matrix_port_map[0][i];
+    //     // pinMode(matrix_port_map[0][i], OUTPUT);
+    //   }
+    // }
 
     // ------------------------------------------------------------
     // set port high/low
@@ -359,16 +372,16 @@ void satIOPortController() {
   // ---------------------------------------------------------------------------------------------------------------
   // Joy Sticks: Currently mapped to 1024 for sensors but can be left unmapped if outputting to MCU on the same pin.
   // ---------------------------------------------------------------------------------------------------------------
-  analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024));
-  analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024));
-  analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024));
-  analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024));
-  digitalWrite(52, sensorData.as_0_c);
-  analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024));
-  analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024));
-  analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024));
-  analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024));
-  digitalWrite(53, sensorData.as_0_c);
+  // analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024));
+  // analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024));
+  // analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024));
+  // analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024));
+  // digitalWrite(52, sensorData.as_0_c);
+  // analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024));
+  // analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024));
+  // analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024));
+  // analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024));
+  // digitalWrite(53, sensorData.as_0_c);
 }
 
 // ------------------------------------------------------------------------------------------------------------------
