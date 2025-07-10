@@ -26,21 +26,6 @@ calibrate mag.
 #include "./REG.h"
 #include "./wit_c_sdk.h"
 #include <Wire.h>
-#include <FastLED.h>
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     INDICATORS
-// ------------------------------------------------------------------------------------------------------------------------------
-
-/*
-0: data
-1: calibrate accelleration (1 second on)
-2: calibrate magnetic field (yellow while in callibration mode)
-*/
-
-#define NUM_LEDS 18
-#define DATA_PIN 12
-CRGB leds[NUM_LEDS];
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                        WT901
@@ -53,7 +38,6 @@ CRGB leds[NUM_LEDS];
 #define READ_UPDATE		0x80
 static volatile char s_cDataUpdate=0, s_cCmd=0xff;
 char ucData[50];
-void CopeCmdData();
 static void CmdProcess(void);
 static void AutoScanSensor(void);
 static void SensorUartSend(uint8_t *p_data, uint32_t uiSize);
@@ -162,12 +146,19 @@ void clearTMPBuffer() {
   memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
 }
 
+void printConfiguration() {
+  Serial.println("[Configuration]");
+  Serial.println("[baud-rate] " + String());
+  // Serial.println("[return-rate] " + String(uiRate));
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                             I2C RECEIVE EVENTS
 // ------------------------------------------------------------------------------------------------------------------------------
 
 void receiveEvent(int) {
 
+  // long t0=micros();
   // Serial.println("[receiveEvent]");
 
   // ------------------------------------------------
@@ -181,10 +172,11 @@ void receiveEvent(int) {
   // data: set request counter for next request event
   // ------------------------------------------------
   I2CLink.token=strtok(I2CLink.INPUT_BUFFER, ",");
-  if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
-  else if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
-  else if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
-  else if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
+  if (strcmp(I2CLink.token, "$0")==0) {I2CLink.request_counter=0;}
+  // if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
+  // else if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
+  // else if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
+  // else if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
   // ------------------------------------------------
   // configuration: calibration
   // ------------------------------------------------
@@ -229,10 +221,11 @@ void receiveEvent(int) {
   else if (strcmp(ucData, "$CV-GYR")==0) {enable_resolution_compensation_gyr=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
   else if (strcmp(ucData, "$RC-MAG")==0) {enable_resolution_compensation_mag=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
   else if (strcmp(ucData, "$CC-MAG")==0) {enable_resolution_compensation_mag=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
-  
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  clearTMPBuffer();
+  // ------------------------------------------------
+  // serial print configuration values
+  // ------------------------------------------------
+  // else if (strcmp(ucData, "$PRINT-CONF")==0) {printConfiguration();}
+  // Serial.println("[RCV] " + String(micros()-t0));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -243,12 +236,14 @@ uint32_t loops_between_requests=0;
 void requestEvent() {
 
   // Serial.println("[loops_between_requests] " + String(loops_between_requests));
-  // loops_between_requests=0;
+  loops_between_requests=0;
+  // long t0=micros();
                                                                                            
   // -----------------------------------------------
   //                                    ACCELERATION
   // -----------------------------------------------
   if (I2CLink.request_counter==0) {
+    I2CLink.request_counter=1;
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$A,");
@@ -257,42 +252,42 @@ void requestEvent() {
       // Acceleration X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_acc_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_acc_x0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Acceleration Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_acc_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_acc_y0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Acceleration Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_acc_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_acc_z0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     else {
       // ---------------------------------------------
       // Acceleration X
       // ---------------------------------------------
-      dtostrf(fAcc[0], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAcc[0], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Acceleration X
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fAcc[1], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAcc[1], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Acceleration X
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fAcc[2], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAcc[2], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     // ---------------------------------------------
@@ -310,6 +305,7 @@ void requestEvent() {
   //                                           ANGLE
   // -----------------------------------------------
   else if (I2CLink.request_counter==1) {
+    I2CLink.request_counter=2;
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$B,");
@@ -318,42 +314,42 @@ void requestEvent() {
       // Angle X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_ang_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_ang_x0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Angle Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_ang_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_ang_y0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Angle Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_ang_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_ang_z0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     else {
       // ---------------------------------------------
       // Angle X
       // ---------------------------------------------
-      dtostrf(fAngle[0], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAngle[0], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Angle X
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fAngle[1], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAngle[1], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Angle X
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fAngle[2], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fAngle[2], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     // ---------------------------------------------
@@ -371,6 +367,7 @@ void requestEvent() {
   //                                            GYRO
   // -----------------------------------------------
   else if (I2CLink.request_counter==2) {
+    I2CLink.request_counter=3;
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$C,");
@@ -379,42 +376,42 @@ void requestEvent() {
       // Gyro X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_gyr_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_gyr_x0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Gyro Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_gyr_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_gyr_y0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Gyro Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_gyr_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_gyr_z0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     else {
       // ---------------------------------------------
       // Gyro X
       // ---------------------------------------------
-      dtostrf(fGyro[0], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fGyro[0], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Gyro Y
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fGyro[1], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fGyro[1], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Gyro Z
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(fGyro[2], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(fGyro[2], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     // ---------------------------------------------
@@ -432,6 +429,7 @@ void requestEvent() {
   //                                  MAGNETIC FIELD
   // -----------------------------------------------
   else if (I2CLink.request_counter==3) {
+    I2CLink.request_counter=0;
     memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
     memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
     strcat(I2CLink.TMP_BUFFER0, "$D,");
@@ -440,42 +438,42 @@ void requestEvent() {
       // Mag X (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_mag_x0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_mag_x0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Mag Y (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_mag_y0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_mag_y0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Mag Z (special resolution compensation)
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(tmp_mag_z0, 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(tmp_mag_z0, 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     else {
       // ---------------------------------------------
       // Mag X
       // ---------------------------------------------
-      dtostrf(sReg[HX], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(sReg[HX], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Mag Y
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(sReg[HY], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(sReg[HY], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, ",");
       // ---------------------------------------------
       // Mag Z
       // ---------------------------------------------
       memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
-      dtostrf(sReg[HZ], 1, 3, I2CLink.TMP_BUFFER1);
+      dtostrf(sReg[HZ], 1, 2, I2CLink.TMP_BUFFER1);
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER1);
     }
     // ---------------------------------------------
@@ -492,15 +490,11 @@ void requestEvent() {
   // -----------------------------------------------
   // SEND
   // -----------------------------------------------
-  Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
+  // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i]=(byte)I2CLink.TMP_BUFFER0[i];}
   Wire.write(I2CLink.OUTPUT_BUFFER, sizeof(I2CLink.OUTPUT_BUFFER));
-
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
-  memset(I2CLink.TMP_BUFFER0, 0, sizeof(I2CLink.TMP_BUFFER0));
-  memset(I2CLink.TMP_BUFFER1, 0, sizeof(I2CLink.TMP_BUFFER1));
+  // Serial.println("[REQ] " + String(micros()-t0));
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -517,7 +511,7 @@ void setup() {
   // ------------------------------------------------------------
   // Indicators
   // ------------------------------------------------------------
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  // FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 
   // -----------------------------------------------
   // WT901
@@ -546,29 +540,14 @@ void setup() {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
-//                                                                                                                     INDICATORS
-// ------------------------------------------------------------------------------------------------------------------------------
-
-void LEDOffExcept(int start, int end, int n) {
-  for (int i=start; i<=end; i++) {
-    if (i!=n) {leds[i] = CRGB::Black; FastLED.show();}
-  }
-}
-
-void UpdateLEDs() {
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                           LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
 
-void loop() {
-  // loops_between_requests++;
+long t0;
 
-  // -----------------------------------------------
-  // Update LEDs
-  // -----------------------------------------------
-  // UpdateLEDs(); // comment if tuning for perfromance. this may be just a feature to aid in development.
+void loop() {
+  // t0=micros();
+  loops_between_requests++;
 
   // -----------------------------------------------
   // read WT901
@@ -748,6 +727,9 @@ void loop() {
     }
     s_cDataUpdate=0;
   }
+  // if (micros()-t0 > 200) {
+    // Serial.println("[loop] " + String(micros()-t0));
+  // }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -770,8 +752,9 @@ static void ShowHelp(void)
   Serial.println("UART SEND: c        Return content: acceleration.");
   Serial.println("UART SEND: O        Enable return content.");
   Serial.println("UART SEND: o        Disable return content.");
+  // Serial.println("UART SEND: p        Serial print configuration values.");
   Serial.println("UART SEND: rc-acc   Enable resolution compensation (acceleration).");
-  Serial.println("UART SEND: cv-acc   Disable resolution compensation content (acceleration).");
+  Serial.println("UART SEND: cv-acc   Disable resolution compensation (acceleration).");
   Serial.println("UART SEND: rc-ang   Enable resolution compensation (angle).");
   Serial.println("UART SEND: cv-ang   Disable resolution compensation (angle).");
   Serial.println("UART SEND: rc-gyr   Enable resolution compensation (gyro).");
@@ -822,6 +805,7 @@ static void CmdProcess(void) {
   else if (strcmp(ucData, "cv-gyr\r")==0) {enable_resolution_compensation_gyr=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_gyr));}
   else if (strcmp(ucData, "rc-mag\r")==0) {enable_resolution_compensation_mag=true; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
   else if (strcmp(ucData, "cv-mag\r")==0) {enable_resolution_compensation_mag=false; Serial.println("[rc-acc] " + String(enable_resolution_compensation_mag));}
+  // else if (strcmp(ucData, "p\r")==0) {printConfiguration();}
   memset(ucData, 0, sizeof(ucData));
 }
 
