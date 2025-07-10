@@ -504,6 +504,8 @@ void loop() {
       joy_send_bool=false;
     }
   }
-  // Serial.println("---------------------------");
-  // delay(100);
+  // -----------------------------------------------------
+  // delay useful if dual click enabled on port controller
+  // -----------------------------------------------------
+  delay(100);
 }
