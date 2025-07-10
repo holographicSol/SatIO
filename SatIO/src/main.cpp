@@ -19719,26 +19719,27 @@ void writeI2C(int I2C_Address) {
 //                                                                                                         I2C REQUEST FROM WT901
 // ------------------------------------------------------------------------------------------------------------------------------
 
-
 void requestWT901() {
 
-  // int t0 = millis();
-
+  // long t0 = micros(); // time write
   // ----------------------------------------------
   // write
   // ----------------------------------------------
   memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
   strcpy(I2CLink.TMP_BUFFER_0, "$A");
   writeI2C(I2C_ADDR_WT901_0);
+  // Serial.println("[WRT] " + String(micros()-t0));
   // ----------------------------------------------
   // request
   // ----------------------------------------------
+  // int t1 = micros(); // time read
   Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
   // read
   // ----------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+  // Serial.println("[RCV] " + String(micros()-t1));
   // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
   // tokenize
