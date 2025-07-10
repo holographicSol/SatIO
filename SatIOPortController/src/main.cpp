@@ -11,18 +11,6 @@ ESP32: ATMEGA2560:
 ESP32: I2C SDA -> ATMEGA2560: I2C SDA
 ESP32: I2C SCL -> ATMEGA2560: I2C SCL
 
-Wiring Satellite Count and HDOP Precision Factor Indicator:
-ATMEGA2560 51 -> LEDR
-ATMEGA2560 52 -> LEDG
-ATMEGA2560 53 -> LEDB
-
-Wiring Overload Indicator:
-ATMEGA2560 46 -> LEDR
-ATMEGA2560 47 -> LEDGW
-
-Wiring Matrix LED Indicators:
-ATMEGA2560 48 -> 24x individually addressable WS2812B's
-
 */
 
 #include <stdio.h>
@@ -258,32 +246,34 @@ void receiveEvent(int) {
     I2CLink.i_token=0;
     while (I2CLink.token != NULL) {
       // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
-      if (I2CLink.i_token==0) {sensorData.as_0_u=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==1) {sensorData.as_0_d=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==2) {sensorData.as_0_l=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==3) {sensorData.as_0_r=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==4) {sensorData.as_0_c=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==5) {sensorData.as_1_u=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==6) {sensorData.as_1_d=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==7) {sensorData.as_1_l=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==8) {sensorData.as_1_r=atoi(I2CLink.token);}
-      else if (I2CLink.i_token==9) {sensorData.as_1_c=atoi(I2CLink.token);}
+      if      (I2CLink.i_token==0) {sensorData.as_0_u=atoi(I2CLink.token);} // joy 0: up
+      else if (I2CLink.i_token==1) {sensorData.as_0_d=atoi(I2CLink.token);} // joy 0: down
+      else if (I2CLink.i_token==2) {sensorData.as_0_l=atoi(I2CLink.token);} // joy 0: left
+      else if (I2CLink.i_token==3) {sensorData.as_0_r=atoi(I2CLink.token);} // joy 0: right
+      else if (I2CLink.i_token==4) {sensorData.as_0_c=atoi(I2CLink.token);} // joy 0: click
+      else if (I2CLink.i_token==5) {sensorData.as_1_u=atoi(I2CLink.token);} // joy 1: up
+      else if (I2CLink.i_token==6) {sensorData.as_1_d=atoi(I2CLink.token);} // joy 1: down
+      else if (I2CLink.i_token==7) {sensorData.as_1_l=atoi(I2CLink.token);} // joy 1: left
+      else if (I2CLink.i_token==8) {sensorData.as_1_r=atoi(I2CLink.token);} // joy 1: right
+      else if (I2CLink.i_token==9) {sensorData.as_1_c=atoi(I2CLink.token);} // joy 1: click
       I2CLink.token=strtok(NULL, ",");
       I2CLink.i_token++;
     }
     // ---------------------------------------------------------------------------------------------------------------
     // Joy Sticks: Currently mapped to 1024 for sensors but can be left unmapped if outputting to MCU on the same pin.
     // ---------------------------------------------------------------------------------------------------------------
-    analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024));
-    analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024));
-    analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024));
-    analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024));
-    digitalWrite(52, sensorData.as_0_c);
-    analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024));
-    analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024));
-    analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024));
-    analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024));
-    digitalWrite(53, sensorData.as_1_c);
+    analogWrite(A0, map(sensorData.as_0_u, 0, 50, 0, 1024)); // joy 0: up
+    analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024)); // joy 0: down
+    analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024)); // joy 0: left
+    analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024)); // joy 0: right
+    digitalWrite(52, sensorData.as_0_c); // joy 0: click
+    analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024)); // joy 1: up
+    analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024)); // joy 1: down
+    analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024)); // joy 1: left
+    analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024)); // joy 1: right
+    digitalWrite(53, sensorData.as_1_c); // joy 1: click
+    if (sensorData.as_0_c==1 && sensorData.as_1_c==1) {digitalWrite(51, HIGH);} // joy: dual click
+    else {digitalWrite(51, LOW);} // joy: dual click
   }
 }
 
@@ -420,6 +410,7 @@ void setup() {
   pinMode(A5, OUTPUT); // joy 1: down
   pinMode(A6, OUTPUT); // joy 1: left
   pinMode(A7, OUTPUT); // joy 1: right
+  pinMode(51, OUTPUT); // joy  : dual click
   pinMode(52, OUTPUT); // joy 1: click
   pinMode(53, OUTPUT); // joy 1: click
   analogWrite(A0, 0);
@@ -430,6 +421,7 @@ void setup() {
   analogWrite(A5, 0);
   analogWrite(A6, 0);
   analogWrite(A7, 0);
+  digitalWrite(51, LOW);
   digitalWrite(52, LOW);
   digitalWrite(53, LOW);
 
