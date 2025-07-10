@@ -266,14 +266,22 @@ void receiveEvent(int) {
     analogWrite(A1, map(sensorData.as_0_d, 0, 50, 0, 1024)); // joy 0: down
     analogWrite(A2, map(sensorData.as_0_l, 0, 50, 0, 1024)); // joy 0: left
     analogWrite(A3, map(sensorData.as_0_r, 0, 50, 0, 1024)); // joy 0: right
-    digitalWrite(52, sensorData.as_0_c); // joy 0: click
     analogWrite(A4, map(sensorData.as_0_u, 0, 50, 0, 1024)); // joy 1: up
     analogWrite(A5, map(sensorData.as_0_d, 0, 50, 0, 1024)); // joy 1: down
     analogWrite(A6, map(sensorData.as_0_l, 0, 50, 0, 1024)); // joy 1: left
     analogWrite(A7, map(sensorData.as_0_r, 0, 50, 0, 1024)); // joy 1: right
-    digitalWrite(53, sensorData.as_1_c); // joy 1: click
-    if (sensorData.as_0_c==1 && sensorData.as_1_c==1) {digitalWrite(51, HIGH);} // joy: dual click
-    else {digitalWrite(51, LOW);} // joy: dual click
+    // --------------------------------
+    // uncomment to enable dual click
+    // --------------------------------
+    if (sensorData.as_0_c==1 && sensorData.as_1_c==1) {
+      digitalWrite(52, LOW); // joy 0: click
+      digitalWrite(53, LOW); // joy 1: click
+      digitalWrite(51, HIGH);} // joy: dual click
+    else {
+      digitalWrite(51, LOW); // joy: dual click
+      digitalWrite(52, sensorData.as_0_c); // joy 0: click
+      digitalWrite(53, sensorData.as_1_c); // joy 1: click
+    }
   }
 }
 
