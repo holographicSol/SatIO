@@ -251,10 +251,9 @@ increase calculation potential.
   Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
   be turned on/off.
 
-  Port Controller: Port controller to turn pins high/low according to instructions received from master.
+  Port Controller: Port controller to turn pins high/low according to instructions received from SatIO.
 
-  UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
-  consistency.
+  UI: Allows programming matrix switch logic and tuning for individual use cases.
   
   Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
   part, subsystem or standalone device.
@@ -280,6 +279,8 @@ increase calculation potential.
   ToDo: Macros. Currently there are no specific macros for programming a matrix entry, this is while the systems architecture and
   essential framework have been developed and carefully cosnidered. If and when macros are implemented, macros should be programmable
   and or predefined. Until then matrix entries must be programmmed in via HIDs+UI and or hardcoded into the matrix before flashing the firmware.
+
+  ToDo: Input joy. Pass analog values from from joysticks through SatIO (for observastion and use in matrix logix) out to port controller. 
 
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
@@ -4448,12 +4449,12 @@ struct SensorDataStruct {
   int as_0_d=0;
   int as_0_l=0;
   int as_0_r=0;
-  int as_0_c=1;
+  int as_0_c=0;
   int as_1_u=0;
   int as_1_d=0;
   int as_1_l=0;
   int as_1_r=0;
-  int as_1_c=1;
+  int as_1_c=0;
 };
 SensorDataStruct sensorData;
 
@@ -19717,145 +19718,80 @@ void writeI2C(int I2C_Address) {
 //                                                                                                         I2C REQUEST FROM WT901
 // ------------------------------------------------------------------------------------------------------------------------------
 
+bool init_wt901=true;
+
 void requestWT901() {
 
-  // long t0 = micros(); // time write
-  // ----------------------------------------------
-  // write
-  // ----------------------------------------------
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$A");
-  writeI2C(I2C_ADDR_WT901_0);
-  // Serial.println("[WRT] " + String(micros()-t0));
-  // ----------------------------------------------
-  // request
-  // ----------------------------------------------
-  // int t1 = micros(); // time read
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // read
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[RCV] " + String(micros()-t1));
-  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // tokenize
-  // ----------------------------------------------
-  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-  I2CLink.token=strtok(NULL, ",");
-  I2CLink.i_token=0;
-  if (strncmp(I2CLink.INPUT_BUFFER, "$A,", 2)==0) {
-    while (I2CLink.token != NULL) {
-      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
-      if (I2CLink.i_token==0) {sensorData.wt901_acc_x=atof(I2CLink.token);}
-      if (I2CLink.i_token==1) {sensorData.wt901_acc_y=atof(I2CLink.token);}
-      if (I2CLink.i_token==2) {sensorData.wt901_acc_z=atof(I2CLink.token);}
-      I2CLink.token=strtok(NULL, ",");
-      I2CLink.i_token++;
+  // wtt0 = millis(); // total time
+
+  // --------------------------------------------------
+  // Instruct WT901 module to reset its request counter
+  // --------------------------------------------------
+  if (init_wt901==true) {
+    memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
+    strcpy(I2CLink.TMP_BUFFER_0, "$0");
+    writeI2C(I2C_ADDR_WT901_0);
+    init_wt901=false;
+  }
+  // --------------------------------------------------
+  // Make 4 requests, collect and sort the data.
+  // --------------------------------------------------
+  for (int i=0; i<4; i++) {
+    // ----------------------------------------------
+    // request
+    // ----------------------------------------------
+    memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
+    Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
+    Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
+    // Serial.println("[I2CLink.INPUT_BUFFER]" + String(I2CLink.INPUT_BUFFER));
+    // ----------------------------------------------
+    // tokenize
+    // ----------------------------------------------
+    I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
+    I2CLink.token=strtok(NULL, ",");
+    I2CLink.i_token=0;
+    if (strncmp(I2CLink.INPUT_BUFFER, "$A,", 2)==0) {
+      while (I2CLink.token != NULL) {
+        // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+        if (I2CLink.i_token==0) {sensorData.wt901_acc_x=atof(I2CLink.token);}
+        if (I2CLink.i_token==1) {sensorData.wt901_acc_y=atof(I2CLink.token);}
+        if (I2CLink.i_token==2) {sensorData.wt901_acc_z=atof(I2CLink.token);}
+        I2CLink.token=strtok(NULL, ",");
+        I2CLink.i_token++;
+      }
+    }
+    else if (strncmp(I2CLink.INPUT_BUFFER, "$B,", 2)==0) {
+      while (I2CLink.token != NULL) {
+        // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+        if (I2CLink.i_token==0) {sensorData.wt901_ang_x=atof(I2CLink.token);}
+        if (I2CLink.i_token==1) {sensorData.wt901_ang_y=atof(I2CLink.token);}
+        if (I2CLink.i_token==2) {sensorData.wt901_ang_z=atof(I2CLink.token);}
+        I2CLink.token=strtok(NULL, ",");
+        I2CLink.i_token++;
+      }
+    }
+    else if (strncmp(I2CLink.INPUT_BUFFER, "$C,", 2)==0) {
+      while (I2CLink.token != NULL) {
+        // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+        if (I2CLink.i_token==0) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
+        if (I2CLink.i_token==1) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
+        if (I2CLink.i_token==2) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
+        I2CLink.token=strtok(NULL, ",");
+        I2CLink.i_token++;
+      }
+    }
+    else if (strncmp(I2CLink.INPUT_BUFFER, "$D,", 2)==0) {
+      while (I2CLink.token != NULL) {
+        // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
+        if (I2CLink.i_token==0) {sensorData.wt901_mag_x=atof(I2CLink.token);}
+        if (I2CLink.i_token==1) {sensorData.wt901_mag_y=atof(I2CLink.token);}
+        if (I2CLink.i_token==2) {sensorData.wt901_mag_z=atof(I2CLink.token);}
+        I2CLink.token=strtok(NULL, ",");
+        I2CLink.i_token++;
+      }
     }
   }
-
-  // ----------------------------------------------
-  // write
-  // ----------------------------------------------
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$B");
-  writeI2C(I2C_ADDR_WT901_0);
-  // ----------------------------------------------
-  // request
-  // ----------------------------------------------
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // read
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // tokenize
-  // ----------------------------------------------
-  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-  I2CLink.token=strtok(NULL, ",");
-  I2CLink.i_token=0;
-  if (strncmp(I2CLink.INPUT_BUFFER, "$B,", 2)==0) {
-    while (I2CLink.token != NULL) {
-      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
-      if (I2CLink.i_token==0) {sensorData.wt901_ang_x=atof(I2CLink.token);}
-      if (I2CLink.i_token==1) {sensorData.wt901_ang_y=atof(I2CLink.token);}
-      if (I2CLink.i_token==2) {sensorData.wt901_ang_z=atof(I2CLink.token);}
-      I2CLink.token=strtok(NULL, ",");
-      I2CLink.i_token++;
-    }
-  }
-
-  // ----------------------------------------------
-  // write
-  // ----------------------------------------------
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$C");
-  writeI2C(I2C_ADDR_WT901_0);
-  // ----------------------------------------------
-  // request
-  // ----------------------------------------------
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // read
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // tokenize
-  // ----------------------------------------------
-  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-  I2CLink.token=strtok(NULL, ",");
-  I2CLink.i_token=0;
-  if (strncmp(I2CLink.INPUT_BUFFER, "$C,", 2)==0) {
-    while (I2CLink.token != NULL) {
-      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
-      if (I2CLink.i_token==0) {sensorData.wt901_gyr_x=atof(I2CLink.token);}
-      if (I2CLink.i_token==1) {sensorData.wt901_gyr_y=atof(I2CLink.token);}
-      if (I2CLink.i_token==2) {sensorData.wt901_gyr_z=atof(I2CLink.token);}
-      I2CLink.token=strtok(NULL, ",");
-      I2CLink.i_token++;
-    }
-  }
-
-  // ----------------------------------------------
-  // write
-  // ----------------------------------------------
-  memset(I2CLink.TMP_BUFFER_0, 0, sizeof(I2CLink.TMP_BUFFER_0));
-  strcpy(I2CLink.TMP_BUFFER_0, "$D");
-  writeI2C(I2C_ADDR_WT901_0);
-  // ----------------------------------------------
-  // request
-  // ----------------------------------------------
-  Wire.requestFrom(I2C_ADDR_WT901_0, sizeof(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // read
-  // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
-  Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  // Serial.println("[rcv] " + String(I2CLink.INPUT_BUFFER));
-  // ----------------------------------------------
-  // tokenize
-  // ----------------------------------------------
-  I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
-  I2CLink.token=strtok(NULL, ",");
-  I2CLink.i_token=0;
-  if (strncmp(I2CLink.INPUT_BUFFER, "$D,", 2)==0) {
-    while (I2CLink.token != NULL) {
-      // Serial.println("[token " + String(I2CLink.i_token) + "] " + String(I2CLink.token));
-      if (I2CLink.i_token==0) {sensorData.wt901_mag_x=atof(I2CLink.token);}
-      if (I2CLink.i_token==1) {sensorData.wt901_mag_y=atof(I2CLink.token);}
-      if (I2CLink.i_token==2) {sensorData.wt901_mag_z=atof(I2CLink.token);}
-      I2CLink.token=strtok(NULL, ",");
-      I2CLink.i_token++;
-    }
-  }
-
-  // Serial.println("[requestWT901] " + String(millis()-t0));
+  // Serial.println("[requestWT901] total: " + String(millis()-wtt0));
 }
 
 void joyStick() {
@@ -19893,11 +19829,11 @@ void requestControlPad() {
   // ----------------------------------------------
   // make request
   // ----------------------------------------------
+  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.requestFrom(I2C_ADDR_CONTROL_PAD, sizeof(I2CLink.INPUT_BUFFER));
   // ----------------------------------------------
   // receive from found device
   // ----------------------------------------------
-  memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
   // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
@@ -20205,6 +20141,8 @@ void writePortControllerJoyStickData() {
                               String(sensorData.as_1_r) + String(",") +
                               String(sensorData.as_1_c)
                               ;
+  // Serial.println("[sizeof(I2CLink.TMP_BUFFER_0)]" + String(sizeof(I2CLink.TMP_BUFFER_0)));
+  // Serial.println("[sizeof(I2CLink.TMP_BUFFER_STRING)]" + String(sizeof(I2CLink.TMP_BUFFER_STRING)));
   strcat(I2CLink.TMP_BUFFER_0, I2CLink.TMP_BUFFER_STRING.c_str());
   // -----------------------
   // write instruction
@@ -22688,6 +22626,7 @@ bool second_time_period=false;
 int remain_rtc_sync_flag=0;
 int sdcard_check_counter=0;
 int i_request_wt901;
+int i_sync_utc;
 
 void loop() {
   systemData.t_bench=true;
@@ -22902,6 +22841,7 @@ void loop() {
         convertUTCTimeToLocalTime();
         // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
         crunching_time_data=false;
+        i_sync_utc++;
       }
     }
     // --------------------------------------------------------------------
@@ -23005,7 +22945,9 @@ void loop() {
     if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
 
     // Serial.println("[reset i_request_wt901] times ran: " + String(i_request_wt901));
+    // Serial.println("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
     i_request_wt901=0;
+    i_sync_utc=0;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
