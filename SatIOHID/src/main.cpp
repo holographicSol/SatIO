@@ -213,7 +213,7 @@ void receiveEvent(int) {
 }
 
 void requestEvent() {
-  // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
+  Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
   // write bytes of chars
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
@@ -473,7 +473,7 @@ void loop() {
                                   String(asm_1_c)
                                   ;
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER_STRING.c_str());
-      // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
+      Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
       joy_send_bool=true;
       delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
@@ -498,7 +498,7 @@ void loop() {
                                   String("0")
                                   ;
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER_STRING.c_str());
-      // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
+      Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
       delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
       joy_send_bool=false;
