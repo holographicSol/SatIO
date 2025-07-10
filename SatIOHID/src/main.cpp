@@ -427,10 +427,10 @@ void loop() {
   // -----------------------------------------
   asm_0_x = map(as_0_x, 0, 1024, 0, asm_map_max);
   asm_0_y = map(as_0_y, 0, 1024, 0, asm_map_max);
-  if (as_0_c>0) {asm_0_c=1;} else {asm_0_c=0;}
+  if (as_0_c>0) {asm_0_c=0;} else {asm_0_c=1;}
   asm_1_x = map(as_1_x, 0, 1024, 0, asm_map_max);
   asm_1_y = map(as_1_y, 0, 1024, 0, asm_map_max);
-  if (as_1_c>0) {asm_1_c=1;} else {asm_1_c=0;}
+  if (as_1_c>0) {asm_1_c=0;} else {asm_1_c=1;}
   // Serial.println("[asm_0_xyc map] " + String(asm_0_x) + "," + String(asm_0_y) + "," + String(asm_0_c));
   // Serial.println("[asm_1_xyc map] " + String(asm_1_x) + "," + String(asm_1_y) + "," + String(asm_1_c));
   // -----------------------------------------
@@ -441,7 +441,7 @@ void loop() {
   // -----------------------------------------
   // if not idle
   // -----------------------------------------
-  if (asm_0_x!=asm_map_max_div || asm_0_y!=asm_map_max_div || asm_1_x!=asm_map_max_div || asm_1_y!=asm_map_max_div || asm_0_c!=1 || asm_1_c!=1) {
+  if (asm_0_x!=asm_map_max_div || asm_0_y!=asm_map_max_div || asm_1_x!=asm_map_max_div || asm_1_y!=asm_map_max_div || asm_0_c!=0 || asm_1_c!=0) {
       // -----------------------------------------
       // map 2: map values to direction
       // -----------------------------------------
@@ -476,7 +476,7 @@ void loop() {
       // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
       joy_send_bool=true;
-      delay(100); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
+      delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
   }
   else {
     if (joy_send_bool==true) {
@@ -490,17 +490,17 @@ void loop() {
                                   String("0") + String(",") +
                                   String("0") + String(",") +
                                   String("0") + String(",") +
-                                  String("1") + String(",") +
                                   String("0") + String(",") +
                                   String("0") + String(",") +
                                   String("0") + String(",") +
                                   String("0") + String(",") +
-                                  String("1")
+                                  String("0") + String(",") +
+                                  String("0")
                                   ;
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER_STRING.c_str());
       // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
-      delay(100); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
+      delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
       joy_send_bool=false;
     }
   }
