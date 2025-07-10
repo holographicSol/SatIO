@@ -281,8 +281,6 @@ increase calculation potential.
   essential framework have been developed and carefully cosnidered. If and when macros are implemented, macros should be programmable
   and or predefined. Until then matrix entries must be programmmed in via HIDs+UI and or hardcoded into the matrix before flashing the firmware.
 
-  ToDo: Input joy. Pass analog values from from joysticks through SatIO (for observastion and use in matrix logix) out to port controller. 
-
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
 
