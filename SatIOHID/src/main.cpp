@@ -206,14 +206,14 @@ void receiveEvent(int) {
   // read incoming data
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
   // parse incoming data
   I2CLink.token = strtok(I2CLink.INPUT_BUFFER, ",");
   if (strcmp(I2CLink.token, "$NULL")==0) {}
 }
 
 void requestEvent() {
-  Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
+  // Serial.println("[sending] " + String(I2CLink.TMP_BUFFER0));
   // write bytes of chars
   memset(I2CLink.OUTPUT_BUFFER, 0, sizeof(I2CLink.OUTPUT_BUFFER));
   for (byte i=0;i<sizeof(I2CLink.OUTPUT_BUFFER);i++) {I2CLink.OUTPUT_BUFFER[i] = (byte)I2CLink.TMP_BUFFER0[i];}
@@ -343,16 +343,16 @@ void loop() {
   // Buttons ISR
   // ----------------------------------------------------------------------------------------------------------------------------
   if (btnISR0_pressed==true) {btnISR0_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I0"); interruptMaster();
-    Serial.println("[button] ISR0 pressed");
+    // Serial.println("[button] ISR0 pressed");
   }
   if (btnISR1_pressed==true) {btnISR1_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I1"); interruptMaster();
-    Serial.println("[button] ISR1 pressed");
+    // Serial.println("[button] ISR1 pressed");
   }
   if (btnISR2_pressed==true) {btnISR2_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I2"); interruptMaster();
-    Serial.println("[button] ISR2 pressed");
+    // Serial.println("[button] ISR2 pressed");
   }
   if (btnISR3_pressed==true) {btnISR3_pressed=false; clearTMPBuffer(); strcpy(I2CLink.TMP_BUFFER0, "$CP,B,I3"); interruptMaster();
-    Serial.println("[button] ISR3 pressed");
+    // Serial.println("[button] ISR3 pressed");
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ void loop() {
   for (int i=0; i<31; i++) {
     btn_value = digitalRead(BTNMATRIX[i]);
     if (btn_value==LOW) {
-      Serial.println("[button] " + String(i) + " pressed");
+      // Serial.println("[button] " + String(i) + " pressed");
       deBounce();
       clearTMPBuffer();
       strcat(I2CLink.TMP_BUFFER0, device_name_tag);
@@ -473,7 +473,7 @@ void loop() {
                                   String(asm_1_c)
                                   ;
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER_STRING.c_str());
-      Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
+      // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
       joy_send_bool=true;
       delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
@@ -498,7 +498,7 @@ void loop() {
                                   String("0")
                                   ;
       strcat(I2CLink.TMP_BUFFER0, I2CLink.TMP_BUFFER_STRING.c_str());
-      Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
+      // Serial.println("[I2CLink.TMP_BUFFER0] " + String(I2CLink.TMP_BUFFER0));
       interruptMaster();
       delay(200); // experiment with delay so that we do not interrupt master too many times a second when stick non idle
       joy_send_bool=false;
@@ -507,5 +507,5 @@ void loop() {
   // -----------------------------------------------------
   // delay useful if dual click enabled on port controller
   // -----------------------------------------------------
-  delay(100);
+  delay(50);
 }
