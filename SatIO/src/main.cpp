@@ -11600,7 +11600,7 @@ void matrixSwitch() {
         //                                                                                                       DHT11_0 HUMIDITY
         // ----------------------------------------------------------------------------------------------------------------------
 
-        else if (strncmp(matrixData.matrix_function[Mi][Fi], "DHT11H0", strlen("DHT11H0"))==0) {
+        else if (strncmp(matrixData.matrix_function[Mi][Fi], "DHT11", strlen("DHT11"))==0) {
 
           if (strcmp(matrixData.matrix_function[Mi][Fi], "DHT11H0Over")==0) {
             if (matrixData.matrix_switch_inverted_logic[Mi][Fi]==false) {
