@@ -22625,7 +22625,7 @@ int i_sync_utc;
 
 void loop() {
   systemData.t_bench=false;
-  bench("-----");
+  // bench("-----");
 
   timeData.mainLoopTimeStart=micros();
   systemData.loops_a_second++;
@@ -22633,7 +22633,6 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              SERIAL COMMANDS
   // ----------------------------------------------------------------------------------------------------------------------------
-
   // -----------------------------------------------
   // read commands
   // -----------------------------------------------
@@ -22641,6 +22640,7 @@ void loop() {
   while (Serial.available()) {
     memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
     Serial.readBytesUntil('\n', CMD_BUFFER, sizeof(CMD_BUFFER));
+  }
   // bench("[CmdRead] " + String((float)(micros()-t0)/1000000, 4) + "s");
   // -----------------------------------------------
   // process commands
@@ -22652,9 +22652,9 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  CONTROL PAD
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
-  bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           SUSPEND/RESUME GPS
@@ -22706,18 +22706,18 @@ void loop() {
     //                                                                SYNC RTC
     // -----------------------------------------------------------------------
     crunching_time_data=true;
-    t0=micros();
+    // t0=micros();
     syncUTCTime();
-    bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
     crunching_time_data=false;
     // -----------------------------------------------------------------------
     //                                                      CALCULATE LOCATION
     // -----------------------------------------------------------------------
     if (systemData.satio_enabled==true) {
-      t0=micros();
+      // t0=micros();
       calculateLocation();
       setGroundHeadingName(atof(gnrmcData.ground_heading));
-      bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
     // -----------------------------------------------------------------------
     //                                                         RETAIN GPS DATA
@@ -22728,14 +22728,14 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   getSensorData();
-  bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                REQUEST WT901
   // ----------------------------------------------------------------------------------------------------------------------------
-
+  // t0=micros();
   if (systemData.wt901_enabled==true) {requestWT901();}
   else {
     sensorData.wt901_acc_x=NAN;
@@ -22752,12 +22752,12 @@ void loop() {
     sensorData.wt901_mag_z=NAN;
   }
   i_request_wt901++;
-  bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   if (systemData.matrix_enabled==true) {
     matrix_run_state_flag=true;
     // -----------------------------------------------------------------------
@@ -22778,14 +22778,14 @@ void loop() {
     }
   }
   MatrixStatsCounter();
-  bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
   gps_done=false;
   vTaskResume(GPSTask);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
   // ----------------------------------------------------------------------------------------------------------------------------
-  t0=micros();
+  // t0=micros();
   if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
   else {
     if (port_controller_run_state_flag==false) {
@@ -22795,13 +22795,12 @@ void loop() {
     }
     else {writeToSemiDisabledPortController();}
   }
-  bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            LOAD DISTRIBUTION
   // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
-
     // ---------------------------------------------------------------------
     //                                             CONVERT UTC TO LOCAL TIME
     // ---------------------------------------------------------------------
@@ -22810,10 +22809,10 @@ void loop() {
       if (second_time_period==true) {
         second_time_period=false;
         crunching_time_data=true;
-        t0=micros();
+        // t0=micros();
         syncTaskSafeRTCTime();
         convertUTCTimeToLocalTime();
-        bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+        // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
         crunching_time_data=false;
         i_sync_utc++;
       }
@@ -22823,9 +22822,9 @@ void loop() {
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
       load_distribution=0;
-      t0=micros();
+      // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
-      bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
+      // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
@@ -22882,7 +22881,7 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                        LOOPS A SECOND
     // ---------------------------------------------------------------------
-    bench("[loops_a_second] " + String(systemData.total_loops_a_second));
+    // bench("[loops_a_second] " + String(systemData.total_loops_a_second));
     systemData.total_loops_a_second=systemData.loops_a_second;
     systemData.loops_a_second=0;
     // ---------------------------------------------------------------------
@@ -22893,7 +22892,7 @@ void loop() {
     if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
     if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
 
-    bench("[reset i_request_wt901] times ran: " + String(i_request_wt901));
+    // bench("[reset i_request_wt901] times ran: " + String(i_request_wt901));
     // Serial.println("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
     i_request_wt901=0;
     i_sync_utc=0;
@@ -22908,8 +22907,8 @@ void loop() {
   else {systemData.overload=false;}
   if (timeData.mainLoopTimeTaken > timeData.mainLoopTimeTakenMax) {timeData.mainLoopTimeTakenMax=timeData.mainLoopTimeTaken;}
   // bench("[overload] " + String(systemData.overload));
-  bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
-  bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
+  // bench("[Looptime] " + String((float)(timeData.mainLoopTimeTaken)/1000000, 4) + "s");
+  // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
 
