@@ -22625,30 +22625,25 @@ int i_request_wt901;
 int i_sync_utc;
 
 void loop() {
-  systemData.t_bench=false;
   // bench("-----");
-
+  systemData.t_bench=false;
   timeData.mainLoopTimeStart=micros();
   systemData.loops_a_second++;
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              SERIAL COMMANDS
   // ----------------------------------------------------------------------------------------------------------------------------
-  // -----------------------------------------------
+  // -------------------------------------------------------------------------
   // read commands
-  // -----------------------------------------------
-  // t0=micros();
+  // -------------------------------------------------------------------------
   while (Serial.available()) {
     memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
     Serial.readBytesUntil('\n', CMD_BUFFER, sizeof(CMD_BUFFER));
   }
-  // bench("[CmdRead] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // -----------------------------------------------
+  // -------------------------------------------------------------------------
   // process commands
-  // -----------------------------------------------
-  // t0=micros();
+  // -------------------------------------------------------------------------
   CmdProcess();
-  // bench("[CmdProcess] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  CONTROL PAD
@@ -22662,14 +22657,12 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   // suspend/resume task once if all gps parsing was disabled. this is done here rather than on another task.
   // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
   if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
     if (suspended_gps_task==false) {vTaskSuspend(GPSTask);}
     suspended_gps_task=true;
     first_gps_pass=true;
   }
   else {if (suspended_gps_task==true) {vTaskResume(GPSTask);} suspended_gps_task=false;}
-  // bench("[SuspendGPS] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                  DYNAMIC DATA (STATION MODE)
@@ -22677,14 +22670,12 @@ void loop() {
   // clear dynamic data once.
   // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
   // syncing manually and periodically will increase perfromance if required.
+  // gps_signal 0 reflects either zero known satellites or satellites unknown due to gngga disabled.
   // ----------------------------------------------------------------------------------------------------------------------------
-  // gps_signal 0 reflects either zero satellites or signal unknown due to gngga disabled.
-  // t0=micros();
   if (systemData.satio_enabled==false) {gps_signal=0; if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
   if (systemData.gnrmc_enabled==false) {if (cleared_dynamic_data_gnrmc==false) {clearDynamicGNRMC(); cleared_dynamic_data_gnrmc=true;} else {cleared_dynamic_data_gnrmc=false;}}
   if (systemData.gpatt_enabled==false) {if (cleared_dynamic_data_gpatt==false) {clearGPATT(); cleared_dynamic_data_gpatt=true;} else {cleared_dynamic_data_gpatt=false;}}
-  // bench("[ClearDynamicData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                          GPS
@@ -22696,13 +22687,13 @@ void loop() {
     //                                                           SUSPEND TASKS
     // -----------------------------------------------------------------------
     vTaskSuspend(GPSTask);
+    // bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
     // -----------------------------------------------------------------------
     //                                                              GPS OUTPUT
     // -----------------------------------------------------------------------
     if (systemData.output_gngga_enabled==true) {Serial.println(gnggaData.outsentence);}
     if (systemData.output_gnrmc_enabled==true) {Serial.println(gnrmcData.outsentence);}
     if (systemData.output_gpatt_enabled==true) {Serial.println(gpattData.outsentence);}
-    // bench("[gps_done_t] " + String((float)(gps_done_t1-gps_done_t0)/1000000, 4) + "s");
     // -----------------------------------------------------------------------
     //                                                                SYNC RTC
     // -----------------------------------------------------------------------
@@ -22778,8 +22769,8 @@ void loop() {
     if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
     }
   }
-  MatrixStatsCounter();
   // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  MatrixStatsCounter();
   gps_done=false;
   vTaskResume(GPSTask);
 
@@ -22810,6 +22801,7 @@ void loop() {
     crunching_time_data=false;
     i_sync_utc++;
     second_time_period_sync_rtc=false;
+    load_distribution=1; // force next load distribution to lightest load
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -22823,7 +22815,7 @@ void loop() {
       load_distribution=1;
       if (second_time_period_track_planets==true) {
         track_planet_period=true;
-        second_time_period_track_planets=false; // set flag on last use of flag
+        second_time_period_track_planets=false;
       }
     }
     // --------------------------------------------------------------------
@@ -22831,9 +22823,7 @@ void loop() {
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
       load_distribution=0;
-      // t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
-      // bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
@@ -22900,9 +22890,8 @@ void loop() {
     // ---------------------------------------------------------------------
     if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
     if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
-
     // bench("[reset i_request_wt901] times ran: " + String(i_request_wt901));
-    // Serial.println("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
+    // bench("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
     i_request_wt901=0;
     i_sync_utc=0;
   }
@@ -22920,6 +22909,4 @@ void loop() {
   // bench("[Looptime Max] " + String((float)(timeData.mainLoopTimeTakenMax)/1000000, 4) + "s");
   systemData.load_percentage = 100 * ((float)timeData.mainLoopTimeTaken / systemData.overload_max);
   // bench("[load] " + String(systemData.load_percentage, 10) + "%");
-
-  // delay(1);
 }
