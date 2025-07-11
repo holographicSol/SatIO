@@ -19475,7 +19475,7 @@ void UpdateUI(void * pvParamters) {
     // UAP
     // ------------------------------------------------
     DisplayUAP();
-    // delay(10); // optional delay
+    delay(20); // uncomment to temporarily fix if overloading only on uap frame
   }
 
   // ----------------------------------------------------------------------------------------------------------------
@@ -19630,7 +19630,7 @@ void UpdateUI(void * pvParamters) {
   // ---------------------------------------------------------
   // delay next iteration of task
   // ---------------------------------------------------------
-  delay(5);
+  delay(20);
   }
 }
 
