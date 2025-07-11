@@ -22606,7 +22606,6 @@ void retainGPSData() {
 // wtgps300p outputs every 100 milliseconds so loop time must always be below 100 milliseconds if intending to utilize gps data
 // 10 times a second.
 // ------------------------------------------------------------------------------------------------------------------------------
-
 int t0=millis();
 bool longer_loop=false;
 int load_distribution=0;
@@ -22718,6 +22717,113 @@ void loop() {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                      OPERATIONS PER INTERVAL
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (interrupt_interval_counter > 0) {
+    // ---------------------------------------------------------------------
+    //                                                    INTERRUPT COUNTER
+    // ---------------------------------------------------------------------
+    portENTER_CRITICAL(&interval_timer_mux);
+    interrupt_interval_counter=0;
+    portEXIT_CRITICAL(&interval_timer_mux);
+    // ---------------------------------------------------------------------
+    //                                                  INTERVAL ACCUMULATOR
+    // ---------------------------------------------------------------------
+    if (timeData.accumulated_intervals>DBL_MAX-2) {
+      timeData.accumulated_intervals=0;
+      Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
+      for (int i=0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
+    }
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                        OPERATIONS PER SECOND
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (interrupt_second_counter>0) {
+    // ---------------------------------------------------------------------
+    //                                                     INTERRUPT COUNTER
+    // ---------------------------------------------------------------------
+    portENTER_CRITICAL(&second_timer_mux);
+    interrupt_second_counter=0;
+    portEXIT_CRITICAL(&second_timer_mux);
+    // ---------------------------------------------------------------------
+    //                                                          SECOND FLAGS
+    // ---------------------------------------------------------------------
+    second_time_period_sync_rtc = true;
+    second_time_period_track_planets=true;
+
+    // ---------------------------------------------------------------------
+    //                                                    UPTIME ACCUMULATOR
+    // ---------------------------------------------------------------------
+    if (timeData.uptime_seconds>LONG_MAX-2) {
+      timeData.uptime_seconds=0;
+      Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
+    }
+    // ---------------------------------------------------------------------
+    //                                                    SECOND ACCUMULATOR
+    // ---------------------------------------------------------------------
+    if (timeData.accumulated_seconds>LONG_MAX-2) {
+      timeData.accumulated_seconds=0;
+      Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
+    }
+    // ---------------------------------------------------------------------
+    //                                                        LOOPS A SECOND
+    // ---------------------------------------------------------------------
+    // bench("[loops_a_second] " + String(systemData.total_loops_a_second));
+    systemData.total_loops_a_second=systemData.loops_a_second;
+    systemData.loops_a_second=0;
+    // ---------------------------------------------------------------------
+    //                                                              SYNC RTC
+    // ---------------------------------------------------------------------
+    // give rtc sync flag an opportunity to be processed.
+    // ---------------------------------------------------------------------
+    if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
+    if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
+    // bench("[reset i_request_wt901] times ran: " + String(i_request_wt901));
+    // bench("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
+    i_request_wt901=0;
+    i_sync_utc=0;
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                    CONVERT UTC TO LOCAL TIME
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (second_time_period_sync_rtc==true) {
+    crunching_time_data=true;
+    // t0=micros();
+    syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
+    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data=false;
+    i_sync_utc++;
+    second_time_period_sync_rtc=false;
+    load_distribution=1; // force next load distribution to lightest load
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                            LOAD DISTRIBUTION
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (longer_loop==false) {
+    // --------------------------------------------------------------------
+    //                                                       TRACK PLANTETS
+    // --------------------------------------------------------------------
+    if (load_distribution==0) {
+      load_distribution=1;
+      if (second_time_period_track_planets==true) {
+        track_planet_period=true;
+        second_time_period_track_planets=false;
+      }
+    }
+    // --------------------------------------------------------------------
+    //                                                       SATIO SENTENCE
+    // --------------------------------------------------------------------
+    else if (load_distribution==1) {
+      load_distribution=0;
+      if (systemData.satio_enabled==true) {buildSatIOSentence();}
+    }
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------------------------
   // t0=micros();
@@ -22788,113 +22894,6 @@ void loop() {
     else {writeToSemiDisabledPortController();}
   }
   // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    CONVERT UTC TO LOCAL TIME
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (second_time_period_sync_rtc==true) {
-    crunching_time_data=true;
-    // t0=micros();
-    syncTaskSafeRTCTime();
-    convertUTCTimeToLocalTime();
-    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
-    i_sync_utc++;
-    second_time_period_sync_rtc=false;
-    load_distribution=1; // force next load distribution to lightest load
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                            LOAD DISTRIBUTION
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (longer_loop==false) {
-    // --------------------------------------------------------------------
-    //                                                       TRACK PLANTETS
-    // --------------------------------------------------------------------
-    if (load_distribution==0) {
-      load_distribution=1;
-      if (second_time_period_track_planets==true) {
-        track_planet_period=true;
-        second_time_period_track_planets=false;
-      }
-    }
-    // --------------------------------------------------------------------
-    //                                                       SATIO SENTENCE
-    // --------------------------------------------------------------------
-    else if (load_distribution==1) {
-      load_distribution=0;
-      if (systemData.satio_enabled==true) {buildSatIOSentence();}
-    }
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                      OPERATIONS PER INTERVAL
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (interrupt_interval_counter > 0) {
-    // ---------------------------------------------------------------------
-    //                                                    INTERRUPT COUNTER
-    // ---------------------------------------------------------------------
-    portENTER_CRITICAL(&interval_timer_mux);
-    interrupt_interval_counter=0;
-    portEXIT_CRITICAL(&interval_timer_mux);
-    // ---------------------------------------------------------------------
-    //                                                  INTERVAL ACCUMULATOR
-    // ---------------------------------------------------------------------
-    if (timeData.accumulated_intervals>DBL_MAX-2) {
-      timeData.accumulated_intervals=0;
-      Serial.println("[reset accumulated_intervals] " + String(timeData.accumulated_intervals));
-      for (int i=0; i<20; i++) {matrixData.matrix_timers[0][i]=0;}
-    }
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                        OPERATIONS PER SECOND
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (interrupt_second_counter>0) {
-    // ---------------------------------------------------------------------
-    //                                                     INTERRUPT COUNTER
-    // ---------------------------------------------------------------------
-    portENTER_CRITICAL(&second_timer_mux);
-    interrupt_second_counter=0;
-    portEXIT_CRITICAL(&second_timer_mux);
-    // ---------------------------------------------------------------------
-    //                                                          SECOND FLAGS
-    // ---------------------------------------------------------------------
-    second_time_period_sync_rtc = true;
-    second_time_period_track_planets=true;
-
-    // ---------------------------------------------------------------------
-    //                                                    UPTIME ACCUMULATOR
-    // ---------------------------------------------------------------------
-    if (timeData.uptime_seconds>LONG_MAX-2) {
-      timeData.uptime_seconds=0;
-      Serial.println("[reset uptime_seconds] " + String(timeData.uptime_seconds));
-    }
-    // ---------------------------------------------------------------------
-    //                                                    SECOND ACCUMULATOR
-    // ---------------------------------------------------------------------
-    if (timeData.accumulated_seconds>LONG_MAX-2) {
-      timeData.accumulated_seconds=0;
-      Serial.println("[reset accumulated_seconds] " + String(timeData.accumulated_seconds));
-    }
-    // ---------------------------------------------------------------------
-    //                                                        LOOPS A SECOND
-    // ---------------------------------------------------------------------
-    // bench("[loops_a_second] " + String(systemData.total_loops_a_second));
-    systemData.total_loops_a_second=systemData.loops_a_second;
-    systemData.loops_a_second=0;
-    // ---------------------------------------------------------------------
-    //                                                              SYNC RTC
-    // ---------------------------------------------------------------------
-    // give rtc sync flag an opportunity to be processed.
-    // ---------------------------------------------------------------------
-    if(rtc_sync_flag==true) {remain_rtc_sync_flag++;}
-    if (remain_rtc_sync_flag>1) {remain_rtc_sync_flag=0; rtc_sync_flag=false;}
-    // bench("[reset i_request_wt901] times ran: " + String(i_request_wt901));
-    // bench("[reset i_sync_utc]      times ran: " + String(i_sync_utc));
-    i_request_wt901=0;
-    i_sync_utc=0;
-  }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                       TIMING
