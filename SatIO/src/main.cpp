@@ -22797,7 +22797,7 @@ void loop() {
     crunching_time_data=false;
     i_sync_utc++;
     second_time_period_sync_rtc=false;
-    load_distribution=1; // force next load distribution to lightest load
+    load_distribution=0; // force next load distribution to lightest load
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
