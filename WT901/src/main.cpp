@@ -172,15 +172,10 @@ void receiveEvent(int) {
   // data: set request counter for next request event
   // ------------------------------------------------
   I2CLink.token=strtok(I2CLink.INPUT_BUFFER, ",");
-  if (strcmp(I2CLink.token, "$0")==0) {I2CLink.request_counter=0;}
-  // if (strcmp(I2CLink.token, "$A")==0) {I2CLink.request_counter=0;}
-  // else if (strcmp(I2CLink.token, "$B")==0) {I2CLink.request_counter=1;}
-  // else if (strcmp(I2CLink.token, "$C")==0) {I2CLink.request_counter=2;}
-  // else if (strcmp(I2CLink.token, "$D")==0) {I2CLink.request_counter=3;}
   // ------------------------------------------------
   // configuration: calibration
   // ------------------------------------------------
-  else if (strcmp(I2CLink.token, "$CAL-ACC")==0) {if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n");}
+  if (strcmp(I2CLink.token, "$CAL-ACC")==0) {if (WitStartAccCali() != WIT_HAL_OK) Serial.print("\r\nSet AccCali Error\r\n");}
   else if (strcmp(I2CLink.token, "$CAL-MAG0")==0) {if (WitStartMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
   else if (strcmp(I2CLink.token, "$CAL-MAG1")==0) {if (WitStopMagCali() != WIT_HAL_OK) Serial.print("\r\nSet MagCali Error\r\n");}
   // ------------------------------------------------
