@@ -22693,7 +22693,6 @@ void loop() {
   longer_loop=false;
   if (gps_done==true && suspended_gps_task==false)  {
     longer_loop=true;
-    
     // -----------------------------------------------------------------------
     //                                                           SUSPEND TASKS
     // -----------------------------------------------------------------------
@@ -22734,6 +22733,27 @@ void loop() {
   t0=micros();
   getSensorData();
   bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+  // --------------------------------------------------------------------
+  //                                                        REQUEST WT901
+  // --------------------------------------------------------------------
+  if (systemData.wt901_enabled==true) {requestWT901();}
+  else {
+    sensorData.wt901_acc_x=NAN;
+    sensorData.wt901_acc_y=NAN;
+    sensorData.wt901_acc_z=NAN;
+    sensorData.wt901_ang_x=NAN;
+    sensorData.wt901_ang_y=NAN;
+    sensorData.wt901_ang_z=NAN;
+    sensorData.wt901_gyr_x=NAN;
+    sensorData.wt901_gyr_y=NAN;
+    sensorData.wt901_gyr_z=NAN;
+    sensorData.wt901_mag_x=NAN;
+    sensorData.wt901_mag_y=NAN;
+    sensorData.wt901_mag_z=NAN;
+  }
+  i_request_wt901++;
+  bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
@@ -22803,35 +22823,10 @@ void loop() {
     //                                                       SATIO SENTENCE
     // --------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=2;
+      load_distribution=0;
       t0=micros();
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
       bench("[buildSatIOSentence] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    }
-
-    // --------------------------------------------------------------------
-    //                                                        REQUEST WT901
-    // --------------------------------------------------------------------
-    else if (load_distribution==2) {
-      load_distribution=0;
-      t0=micros();
-      if (systemData.wt901_enabled==true) {requestWT901();}
-      else {
-        sensorData.wt901_acc_x=NAN;
-        sensorData.wt901_acc_y=NAN;
-        sensorData.wt901_acc_z=NAN;
-        sensorData.wt901_ang_x=NAN;
-        sensorData.wt901_ang_y=NAN;
-        sensorData.wt901_ang_z=NAN;
-        sensorData.wt901_gyr_x=NAN;
-        sensorData.wt901_gyr_y=NAN;
-        sensorData.wt901_gyr_z=NAN;
-        sensorData.wt901_mag_x=NAN;
-        sensorData.wt901_mag_y=NAN;
-        sensorData.wt901_mag_z=NAN;
-      }
-      i_request_wt901++;
-      bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
   }
 
