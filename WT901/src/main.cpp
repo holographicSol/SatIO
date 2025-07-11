@@ -166,7 +166,7 @@ void receiveEvent(int) {
   // ------------------------------------------------
   memset(I2CLink.INPUT_BUFFER, 0, sizeof(I2CLink.INPUT_BUFFER));
   Wire.readBytesUntil('\n', I2CLink.INPUT_BUFFER, sizeof(I2CLink.INPUT_BUFFER));
-  Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
+  // Serial.println("[received] " + String(I2CLink.INPUT_BUFFER));
 
   // ------------------------------------------------
   // data: set request counter for next request event
