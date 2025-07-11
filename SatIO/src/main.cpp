@@ -19476,7 +19476,7 @@ void UpdateUI(void * pvParamters) {
     // UAP
     // ------------------------------------------------
     DisplayUAP();
-    delay(20); // uncomment to temporarily fix if overloading only on uap frame
+    // delay(20); // uncomment to temporarily fix if overloading only on uap frame
   }
 
   // ----------------------------------------------------------------------------------------------------------------
@@ -22631,28 +22631,6 @@ void loop() {
   systemData.loops_a_second++;
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              SERIAL COMMANDS
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------
-  // read commands
-  // -------------------------------------------------------------------------
-  while (Serial.available()) {
-    memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
-    Serial.readBytesUntil('\n', CMD_BUFFER, sizeof(CMD_BUFFER));
-  }
-  // -------------------------------------------------------------------------
-  // process commands
-  // -------------------------------------------------------------------------
-  CmdProcess();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  CONTROL PAD
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
-  // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                           SUSPEND/RESUME GPS
   // ----------------------------------------------------------------------------------------------------------------------------
   // suspend/resume task once if all gps parsing was disabled. this is done here rather than on another task.
@@ -22670,7 +22648,6 @@ void loop() {
   // clear dynamic data once.
   // static data allows many calculations to be perfromed from a stationary position if time & location has already been synced.
   // syncing manually and periodically will increase perfromance if required.
-  // gps_signal 0 reflects either zero known satellites or satellites unknown due to gngga disabled.
   // ----------------------------------------------------------------------------------------------------------------------------
   if (systemData.satio_enabled==false) {gps_signal=0; if (cleared_dynamic_data_satio==false) {clearDynamicSATIO(); cleared_dynamic_data_satio=true;} else {cleared_dynamic_data_satio=false;}}
   if (systemData.gngga_enabled==false) {if (cleared_dynamic_data_gngga==false) {clearDynamicGNGGA(); cleared_dynamic_data_gngga=true;} else {cleared_dynamic_data_gngga=false;}}
@@ -22720,7 +22697,7 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
   // ----------------------------------------------------------------------------------------------------------------------------
-  // run matrix immediately after GPS operations so that GPS task can be resumed more quickly
+  // run matrix immediately after GPS operations so that GPS task can be resumed more quickly.
   // ----------------------------------------------------------------------------------------------------------------------------
   // t0=micros();
   if (systemData.matrix_enabled==true) {
@@ -22737,7 +22714,7 @@ void loop() {
     //                                                            RESUME TASKS
     // -----------------------------------------------------------------------
     gps_done=false;
-    vTaskResume(GPSTask);
+    vTaskResume(GPSTask); // challenge: try to get resume even closer to suspend.
     vTaskResume(TrackPlanetsTask);
   }
   else if (systemData.matrix_enabled==false) {
@@ -22763,41 +22740,14 @@ void loop() {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SENSOR DATA
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  getSensorData();
-  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                REQUEST WT901
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (systemData.wt901_enabled==true) {requestWT901();}
-  else {
-    sensorData.wt901_acc_x=NAN;
-    sensorData.wt901_acc_y=NAN;
-    sensorData.wt901_acc_z=NAN;
-    sensorData.wt901_ang_x=NAN;
-    sensorData.wt901_ang_y=NAN;
-    sensorData.wt901_ang_z=NAN;
-    sensorData.wt901_gyr_x=NAN;
-    sensorData.wt901_gyr_y=NAN;
-    sensorData.wt901_gyr_z=NAN;
-    sensorData.wt901_mag_x=NAN;
-    sensorData.wt901_mag_y=NAN;
-    sensorData.wt901_mag_z=NAN;
-  }
-  i_request_wt901++;
-  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            LOAD DISTRIBUTION
   // ----------------------------------------------------------------------------------------------------------------------------
+  // keep loop time down! if it does not need to execute every loop then execute it in here (solution for ESP32).
+  // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
-    // --------------------------------------------------------------------
-    //                                                       TRACK PLANTETS
-    // --------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    //                                                         TRACK PLANTETS
+    // ----------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
       if (second_time_period_track_planets==true) {
@@ -22805,14 +22755,71 @@ void loop() {
         second_time_period_track_planets=false;
       }
     }
-    // --------------------------------------------------------------------
-    //                                                       SATIO SENTENCE
-    // --------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    //                                                         SATIO SENTENCE
+    // ----------------------------------------------------------------------
     else if (load_distribution==1) {
-      load_distribution=0;
+      load_distribution=2;
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
     }
+
+    // ----------------------------------------------------------------------
+    //                                                        SERIAL COMMANDS
+    // ----------------------------------------------------------------------
+    else if (load_distribution==3) {
+      load_distribution=0;
+      while (Serial.available()) {
+        memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
+        Serial.readBytesUntil('\n', CMD_BUFFER, sizeof(CMD_BUFFER));
+      }
+      CmdProcess();
+    }
   }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  CONTROL PAD
+  // ----------------------------------------------------------------------------------------------------------------------------
+  else if (load_distribution==2) {
+    load_distribution=3;
+    // t0=micros();
+    if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
+    // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SENSOR DATA
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // else if (load_distribution==2) {
+    // load_distribution=3;
+    // t0=micros();
+    getSensorData();
+    // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                REQUEST WT901
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // else if (load_distribution==3) {
+    // load_distribution=4;
+    // t0=micros();
+    if (systemData.wt901_enabled==true) {requestWT901();}
+    else {
+      sensorData.wt901_acc_x=NAN;
+      sensorData.wt901_acc_y=NAN;
+      sensorData.wt901_acc_z=NAN;
+      sensorData.wt901_ang_x=NAN;
+      sensorData.wt901_ang_y=NAN;
+      sensorData.wt901_ang_z=NAN;
+      sensorData.wt901_gyr_x=NAN;
+      sensorData.wt901_gyr_y=NAN;
+      sensorData.wt901_gyr_z=NAN;
+      sensorData.wt901_mag_x=NAN;
+      sensorData.wt901_mag_y=NAN;
+      sensorData.wt901_mag_z=NAN;
+    }
+    i_request_wt901++;
+    // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  // }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
@@ -22834,7 +22841,7 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
     // ---------------------------------------------------------------------
-    //                                                    INTERRUPT COUNTER
+    //                                                     INTERRUPT COUNTER
     // ---------------------------------------------------------------------
     portENTER_CRITICAL(&interval_timer_mux);
     interrupt_interval_counter=0;
