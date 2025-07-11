@@ -22603,8 +22603,8 @@ void retainGPSData() {
 // ------------------------------------------------------------------------------------------------------------------------------
 //                                                                                                                      MAIN LOOP
 // ------------------------------------------------------------------------------------------------------------------------------
-// care has been taken to reduce maximum loop times using vTasks and 'load distribution'.
-// wtgps300p outputs every 100 milliseconds so loop time must always be below 100 milliseconds if intending to utilize gps data
+// care has been taken to reduce maximum loop times using vTasks and 'load distribution' for running on ESP32.
+// wtgps300p outputs every 100 milliseconds. ensure loop time always below 100 milliseconds if intending to utilize gps data
 // 10 times a second.
 // ------------------------------------------------------------------------------------------------------------------------------
 int t0=millis();
@@ -22695,6 +22695,21 @@ void loop() {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                    CONVERT UTC TO LOCAL TIME
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (second_time_period_sync_rtc==true) {
+    // crunching_time_data=true;
+    // t0=micros();
+    syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
+    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // crunching_time_data=false;
+    i_sync_utc++;
+    second_time_period_sync_rtc=false;
+    // load_distribution=0; // force next load distribution to lightest load
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
   // ----------------------------------------------------------------------------------------------------------------------------
   // run matrix immediately after GPS operations so that GPS task can be resumed more quickly.
@@ -22723,21 +22738,6 @@ void loop() {
   }
   // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
   MatrixStatsCounter();
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    CONVERT UTC TO LOCAL TIME
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (second_time_period_sync_rtc==true) {
-    crunching_time_data=true;
-    // t0=micros();
-    syncTaskSafeRTCTime();
-    convertUTCTimeToLocalTime();
-    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
-    i_sync_utc++;
-    second_time_period_sync_rtc=false;
-    load_distribution=0; // force next load distribution to lightest load
-  }
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            LOAD DISTRIBUTION
