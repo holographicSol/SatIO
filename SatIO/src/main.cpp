@@ -22617,7 +22617,8 @@ bool cleared_dynamic_data_satio=false;
 bool cleared_dynamic_data_gngga=false;
 bool cleared_dynamic_data_gnrmc=false;
 bool cleared_dynamic_data_gpatt=false;
-bool second_time_period=false;
+bool second_time_period_sync_rtc=false;
+bool second_time_period_track_planets=false;
 int remain_rtc_sync_flag=0;
 int sdcard_check_counter=0;
 int i_request_wt901;
@@ -22798,23 +22799,31 @@ void loop() {
   // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                    CONVERT UTC TO LOCAL TIME
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (second_time_period_sync_rtc==true) {
+    crunching_time_data=true;
+    // t0=micros();
+    syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
+    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data=false;
+    i_sync_utc++;
+    second_time_period_sync_rtc=false;
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                            LOAD DISTRIBUTION
   // ----------------------------------------------------------------------------------------------------------------------------
   if (longer_loop==false) {
-    // ---------------------------------------------------------------------
-    //                                             CONVERT UTC TO LOCAL TIME
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    //                                                       TRACK PLANTETS
+    // --------------------------------------------------------------------
     if (load_distribution==0) {
       load_distribution=1;
-      if (second_time_period==true) {
-        second_time_period=false;
-        crunching_time_data=true;
-        // t0=micros();
-        syncTaskSafeRTCTime();
-        convertUTCTimeToLocalTime();
-        // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-        crunching_time_data=false;
-        i_sync_utc++;
+      if (second_time_period_track_planets==true) {
+        track_planet_period=true;
+        second_time_period_track_planets=false; // set flag on last use of flag
       }
     }
     // --------------------------------------------------------------------
@@ -22861,8 +22870,8 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                          SECOND FLAGS
     // ---------------------------------------------------------------------
-    second_time_period=true;
-    track_planet_period=true;
+    second_time_period_sync_rtc = true;
+    second_time_period_track_planets=true;
 
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
