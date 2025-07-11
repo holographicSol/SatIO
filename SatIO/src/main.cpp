@@ -4838,9 +4838,9 @@ void syncUTCTime() {
       // ----------------------------------------------------------------------------
       /* Sync within the first 100 milliseconds of any minute                      */
       // ----------------------------------------------------------------------------
-      Serial.println(satData.tmp_millisecond_int);
+      // Serial.println(satData.tmp_millisecond_int);
       if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int>=0 && satData.tmp_millisecond_int<=5)) {
-        Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
+        // Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
         // --------------------------------------------------------------------------
@@ -22748,50 +22748,6 @@ void loop() {
   vTaskResume(GPSTask);
 
   // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SENSOR DATA
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  getSensorData();
-  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                REQUEST WT901
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (systemData.wt901_enabled==true) {requestWT901();}
-  else {
-    sensorData.wt901_acc_x=NAN;
-    sensorData.wt901_acc_y=NAN;
-    sensorData.wt901_acc_z=NAN;
-    sensorData.wt901_ang_x=NAN;
-    sensorData.wt901_ang_y=NAN;
-    sensorData.wt901_ang_z=NAN;
-    sensorData.wt901_gyr_x=NAN;
-    sensorData.wt901_gyr_y=NAN;
-    sensorData.wt901_gyr_z=NAN;
-    sensorData.wt901_mag_x=NAN;
-    sensorData.wt901_mag_y=NAN;
-    sensorData.wt901_mag_z=NAN;
-  }
-  i_request_wt901++;
-  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              PORT CONTROLLER
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
-  else {
-    if (port_controller_run_state_flag==false) {
-      setAllMatrixSwitchesStateFalse();
-      writeToEnabledPortController();
-      port_controller_run_state_flag=true;
-    }
-    else {writeToSemiDisabledPortController();}
-  }
-  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-  // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      OPERATIONS PER INTERVAL
   // ----------------------------------------------------------------------------------------------------------------------------
   if (interrupt_interval_counter > 0) {
@@ -22897,6 +22853,50 @@ void loop() {
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
     }
   }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SENSOR DATA
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  getSensorData();
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                REQUEST WT901
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  if (systemData.wt901_enabled==true) {requestWT901();}
+  else {
+    sensorData.wt901_acc_x=NAN;
+    sensorData.wt901_acc_y=NAN;
+    sensorData.wt901_acc_z=NAN;
+    sensorData.wt901_ang_x=NAN;
+    sensorData.wt901_ang_y=NAN;
+    sensorData.wt901_ang_z=NAN;
+    sensorData.wt901_gyr_x=NAN;
+    sensorData.wt901_gyr_y=NAN;
+    sensorData.wt901_gyr_z=NAN;
+    sensorData.wt901_mag_x=NAN;
+    sensorData.wt901_mag_y=NAN;
+    sensorData.wt901_mag_z=NAN;
+  }
+  i_request_wt901++;
+  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              PORT CONTROLLER
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
+  else {
+    if (port_controller_run_state_flag==false) {
+      setAllMatrixSwitchesStateFalse();
+      writeToEnabledPortController();
+      port_controller_run_state_flag=true;
+    }
+    else {writeToSemiDisabledPortController();}
+  }
+  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                       TIMING
