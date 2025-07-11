@@ -4810,7 +4810,7 @@ void syncUTCTime() {
       // ----------------------------------------------------------------------------
       /* Sync at first opportunity within the first 100 milliseconds of any second */
       // ----------------------------------------------------------------------------
-      if (satData.tmp_second_int==0) {
+      if (satData.tmp_millisecond_int>=0 && satData.tmp_millisecond_int<=5) {
         first_gps_pass=false;
         // Serial.println("[rtc] synchronizing (first opportunity): " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
@@ -4838,7 +4838,7 @@ void syncUTCTime() {
       // ----------------------------------------------------------------------------
       /* Sync within the first 100 milliseconds of any minute                      */
       // ----------------------------------------------------------------------------
-      if (satData.tmp_second_int==0) {
+      if ((satData.tmp_second_int==0) && (satData.tmp_millisecond_int>=0 && satData.tmp_millisecond_int<=5)) {
         // Serial.println("[rtc] synchronizing:               " + String(rtc.now().timestamp()));
         // --------------------------------------------------------------------------
         /* Sync RTC to UTC                                                         */ 
