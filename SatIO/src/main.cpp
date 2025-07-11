@@ -22699,7 +22699,8 @@ void loop() {
     // -----------------------------------------------------------------------
     crunching_time_data=true;
     // t0=micros();
-    syncUTCTime();
+    if (first_gps_pass==true) {syncUTCTime();} // get first sync anytime
+    else if (rtc.now().second()==0) {syncUTCTime();} // limit sync minutely
     // bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
     crunching_time_data=false;
     // -----------------------------------------------------------------------
@@ -22852,36 +22853,36 @@ void loop() {
       load_distribution=0;
       if (systemData.satio_enabled==true) {buildSatIOSentence();}
     }
-  }
 
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                  SENSOR DATA
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  getSensorData();
-  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    // --------------------------------------------------------------------
+    //                                                          SENSOR DATA
+    // --------------------------------------------------------------------
+    // t0=micros();
+    getSensorData();
+    // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                                REQUEST WT901
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (systemData.wt901_enabled==true) {requestWT901();}
-  else {
-    sensorData.wt901_acc_x=NAN;
-    sensorData.wt901_acc_y=NAN;
-    sensorData.wt901_acc_z=NAN;
-    sensorData.wt901_ang_x=NAN;
-    sensorData.wt901_ang_y=NAN;
-    sensorData.wt901_ang_z=NAN;
-    sensorData.wt901_gyr_x=NAN;
-    sensorData.wt901_gyr_y=NAN;
-    sensorData.wt901_gyr_z=NAN;
-    sensorData.wt901_mag_x=NAN;
-    sensorData.wt901_mag_y=NAN;
-    sensorData.wt901_mag_z=NAN;
+    // ---------------------------------------------------------------------
+    //                                                         REQUEST WT901
+    // ---------------------------------------------------------------------
+    // t0=micros();
+    if (systemData.wt901_enabled==true) {requestWT901();}
+    else {
+      sensorData.wt901_acc_x=NAN;
+      sensorData.wt901_acc_y=NAN;
+      sensorData.wt901_acc_z=NAN;
+      sensorData.wt901_ang_x=NAN;
+      sensorData.wt901_ang_y=NAN;
+      sensorData.wt901_ang_z=NAN;
+      sensorData.wt901_gyr_x=NAN;
+      sensorData.wt901_gyr_y=NAN;
+      sensorData.wt901_gyr_z=NAN;
+      sensorData.wt901_mag_x=NAN;
+      sensorData.wt901_mag_y=NAN;
+      sensorData.wt901_mag_z=NAN;
+    }
+    i_request_wt901++;
+    // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
   }
-  i_request_wt901++;
-  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
