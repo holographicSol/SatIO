@@ -22699,8 +22699,7 @@ void loop() {
     // -----------------------------------------------------------------------
     crunching_time_data=true;
     // t0=micros();
-    if (first_gps_pass==true) {syncUTCTime();} // get first sync anytime
-    else if (rtc.now().second()==0) {syncUTCTime();} // limit sync minutely
+    syncUTCTime();
     // bench("[syncUTCTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
     crunching_time_data=false;
     // -----------------------------------------------------------------------
@@ -22737,6 +22736,8 @@ void loop() {
     // -----------------------------------------------------------------------
     //                                                            RESUME TASKS
     // -----------------------------------------------------------------------
+    gps_done=false;
+    vTaskResume(GPSTask);
     vTaskResume(TrackPlanetsTask);
   }
   else if (systemData.matrix_enabled==false) {
@@ -22745,8 +22746,88 @@ void loop() {
   }
   // bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
   MatrixStatsCounter();
-  gps_done=false;
-  vTaskResume(GPSTask);
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                    CONVERT UTC TO LOCAL TIME
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (second_time_period_sync_rtc==true) {
+    crunching_time_data=true;
+    // t0=micros();
+    syncTaskSafeRTCTime();
+    convertUTCTimeToLocalTime();
+    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
+    crunching_time_data=false;
+    i_sync_utc++;
+    second_time_period_sync_rtc=false;
+    load_distribution=0; // force next load distribution to lightest load
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                  SENSOR DATA
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  getSensorData();
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                                REQUEST WT901
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  if (systemData.wt901_enabled==true) {requestWT901();}
+  else {
+    sensorData.wt901_acc_x=NAN;
+    sensorData.wt901_acc_y=NAN;
+    sensorData.wt901_acc_z=NAN;
+    sensorData.wt901_ang_x=NAN;
+    sensorData.wt901_ang_y=NAN;
+    sensorData.wt901_ang_z=NAN;
+    sensorData.wt901_gyr_x=NAN;
+    sensorData.wt901_gyr_y=NAN;
+    sensorData.wt901_gyr_z=NAN;
+    sensorData.wt901_mag_x=NAN;
+    sensorData.wt901_mag_y=NAN;
+    sensorData.wt901_mag_z=NAN;
+  }
+  i_request_wt901++;
+  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                            LOAD DISTRIBUTION
+  // ----------------------------------------------------------------------------------------------------------------------------
+  if (longer_loop==false) {
+    // --------------------------------------------------------------------
+    //                                                       TRACK PLANTETS
+    // --------------------------------------------------------------------
+    if (load_distribution==0) {
+      load_distribution=1;
+      if (second_time_period_track_planets==true) {
+        track_planet_period=true;
+        second_time_period_track_planets=false;
+      }
+    }
+    // --------------------------------------------------------------------
+    //                                                       SATIO SENTENCE
+    // --------------------------------------------------------------------
+    else if (load_distribution==1) {
+      load_distribution=0;
+      if (systemData.satio_enabled==true) {buildSatIOSentence();}
+    }
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  //                                                                                                              PORT CONTROLLER
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // t0=micros();
+  if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
+  else {
+    if (port_controller_run_state_flag==false) {
+      setAllMatrixSwitchesStateFalse();
+      writeToEnabledPortController();
+      port_controller_run_state_flag=true;
+    }
+    else {writeToSemiDisabledPortController();}
+  }
+  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                      OPERATIONS PER INTERVAL
@@ -22816,88 +22897,6 @@ void loop() {
     i_request_wt901=0;
     i_sync_utc=0;
   }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                    CONVERT UTC TO LOCAL TIME
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (second_time_period_sync_rtc==true) {
-    crunching_time_data=true;
-    // t0=micros();
-    syncTaskSafeRTCTime();
-    convertUTCTimeToLocalTime();
-    // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    crunching_time_data=false;
-    i_sync_utc++;
-    second_time_period_sync_rtc=false;
-    load_distribution=0; // force next load distribution to lightest load
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                            LOAD DISTRIBUTION
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (longer_loop==false) {
-    // --------------------------------------------------------------------
-    //                                                       TRACK PLANTETS
-    // --------------------------------------------------------------------
-    if (load_distribution==0) {
-      load_distribution=1;
-      if (second_time_period_track_planets==true) {
-        track_planet_period=true;
-        second_time_period_track_planets=false;
-      }
-    }
-    // --------------------------------------------------------------------
-    //                                                       SATIO SENTENCE
-    // --------------------------------------------------------------------
-    else if (load_distribution==1) {
-      load_distribution=0;
-      if (systemData.satio_enabled==true) {buildSatIOSentence();}
-    }
-
-    // --------------------------------------------------------------------
-    //                                                          SENSOR DATA
-    // --------------------------------------------------------------------
-    // t0=micros();
-    getSensorData();
-    // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
-    // ---------------------------------------------------------------------
-    //                                                         REQUEST WT901
-    // ---------------------------------------------------------------------
-    // t0=micros();
-    if (systemData.wt901_enabled==true) {requestWT901();}
-    else {
-      sensorData.wt901_acc_x=NAN;
-      sensorData.wt901_acc_y=NAN;
-      sensorData.wt901_acc_z=NAN;
-      sensorData.wt901_ang_x=NAN;
-      sensorData.wt901_ang_y=NAN;
-      sensorData.wt901_ang_z=NAN;
-      sensorData.wt901_gyr_x=NAN;
-      sensorData.wt901_gyr_y=NAN;
-      sensorData.wt901_gyr_z=NAN;
-      sensorData.wt901_mag_x=NAN;
-      sensorData.wt901_mag_y=NAN;
-      sensorData.wt901_mag_z=NAN;
-    }
-    i_request_wt901++;
-    // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  }
-
-  // ----------------------------------------------------------------------------------------------------------------------------
-  //                                                                                                              PORT CONTROLLER
-  // ----------------------------------------------------------------------------------------------------------------------------
-  // t0=micros();
-  if (systemData.matrix_io_enabled==true) {port_controller_run_state_flag=false; writeToEnabledPortController();}
-  else {
-    if (port_controller_run_state_flag==false) {
-      setAllMatrixSwitchesStateFalse();
-      writeToEnabledPortController();
-      port_controller_run_state_flag=true;
-    }
-    else {writeToSemiDisabledPortController();}
-  }
-  // bench("[writePortController] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                       TIMING
