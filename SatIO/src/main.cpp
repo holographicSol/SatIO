@@ -14647,7 +14647,6 @@ String getRelatedX(char * data) {
     else if (strcmp("NeptuneSet", data)==0) {return String(siderealPlanetData.neptune_s);}
   }
   else if (strncmp(data, "DHT11", strlen("DHT11"))==0) {
-    Serial.println(data);
     if (strcmp("DHT11H0Under", data)==0) {return String(sensorData.dht11_h_0);}
     else if (strcmp("DHT11H0Over", data)==0) {return String(sensorData.dht11_h_0);}
     else if (strcmp("DHT11H0Equal", data)==0) {return String(sensorData.dht11_h_0);}
