@@ -22722,46 +22722,10 @@ void loop() {
       setGroundHeadingName(atof(gnrmcData.ground_heading));
       bench("[calculateLocation] " + String((float)(micros()-t0)/1000000, 4) + "s");
     }
-
-    // -----------------------------------------------------------------------
-    //                                                           MATRIX SWITCH
-    // -----------------------------------------------------------------------
-    // running matrix here allows gps task to be resumed as quickly as possible
-    // when gngga/gnrmc/gpatt are enabled. (perfromance)
-    // -----------------------------------------------------------------------
-    t0=micros();
-    if (systemData.matrix_enabled==true) {
-      matrix_run_state_flag=true;
-      // ---------------------------------------------------------------------
-      //                                                         SUSPEND TASKS
-      // ---------------------------------------------------------------------
-      vTaskSuspend(TrackPlanetsTask);
-      // ---------------------------------------------------------------------
-      //                                                                MATRIX
-      // ---------------------------------------------------------------------
-      matrixSwitch();
-      // ---------------------------------------------------------------------
-      //                                                          RESUME TASKS
-      // ---------------------------------------------------------------------
-      vTaskResume(TrackPlanetsTask);
-    }
-    else if (systemData.matrix_enabled==false) {
-      if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
-      }
-    }
-    MatrixStatsCounter();
-    bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
-
     // -----------------------------------------------------------------------
     //                                                         RETAIN GPS DATA
     // -----------------------------------------------------------------------
     retainGPSData();
-
-    // -----------------------------------------------------------------------
-    //                                                            RESUME TASKS
-    // -----------------------------------------------------------------------
-    gps_done=false;
-    vTaskResume(GPSTask);
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -22774,34 +22738,30 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                MATRIX SWITCH
   // ----------------------------------------------------------------------------------------------------------------------------
-  // running the matrix here allows the matrix to be ran every loop if gngga/gnrmc/gpatt are disabled. (perfromance)
-  // ----------------------------------------------------------------------------------------------------------------------------
-  if (systemData.gngga_enabled==false && systemData.gnrmc_enabled==false && systemData.gpatt_enabled==false) {
-    if (suspended_gps_task==true) {
-      t0=micros();
-      if (systemData.matrix_enabled==true) {
-        matrix_run_state_flag=true;
-        // -----------------------------------------------------------------------
-        //                                                           SUSPEND TASKS
-        // -----------------------------------------------------------------------
-        vTaskSuspend(TrackPlanetsTask);
-        // -----------------------------------------------------------------------
-        //                                                                  MATRIX
-        // -----------------------------------------------------------------------
-        matrixSwitch();
-        // -----------------------------------------------------------------------
-        //                                                            RESUME TASKS
-        // -----------------------------------------------------------------------
-        vTaskResume(TrackPlanetsTask);
-      }
-      else if (systemData.matrix_enabled==false) {
-        if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
-        }
-      }
-      MatrixStatsCounter();
-      bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  t0=micros();
+  if (systemData.matrix_enabled==true) {
+    matrix_run_state_flag=true;
+    // -----------------------------------------------------------------------
+    //                                                           SUSPEND TASKS
+    // -----------------------------------------------------------------------
+    vTaskSuspend(TrackPlanetsTask);
+    // -----------------------------------------------------------------------
+    //                                                                  MATRIX
+    // -----------------------------------------------------------------------
+    matrixSwitch();
+    // -----------------------------------------------------------------------
+    //                                                            RESUME TASKS
+    // -----------------------------------------------------------------------
+    vTaskResume(TrackPlanetsTask);
+  }
+  else if (systemData.matrix_enabled==false) {
+    if (matrix_run_state_flag==true) {matrix_run_state_flag=false; setAllMatrixSwitchesStateFalse();
     }
   }
+  MatrixStatsCounter();
+  bench("[matrixSwitch] " + String((float)(micros()-t0)/1000000, 4) + "s");
+  gps_done=false;
+  vTaskResume(GPSTask);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
