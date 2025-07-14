@@ -15109,6 +15109,15 @@ void DisplayUAP() {
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                        UPDATE UI
 // ----------------------------------------------------------------------------------------------------------------
+/*
+This UI is designed for a very small, low pixel panel for performance with ESP32 while considering everything else
+the ESP32 has to do running SatIO. If upgrading SatIO to a more moreful chip then the panel may also be considered
+in regards to a higher pixer, larger panel, in which case much of the math used to display the same, reimplemented
+with more detail and a larger scale. For example Planets are represented by pixels on the small panel currently in
+use, and could be represented any other way with much higher detail on higher performance hardware, using the same
+math.
+*/
+// ----------------------------------------------------------------------------------------------------------------
 
 bool display_sync;
 bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
@@ -15147,6 +15156,109 @@ int neptune_ui_y = 64;
 
 float test_angle=90;
 float test_moon_angle=90;
+
+int constallation_x_0=64;
+int constallation_y_0=64;
+
+int constallation_x1_0=64;
+int constallation_x2_0=64;
+int constallation_y1_0=64;
+int constallation_y2_0=64;
+
+int constallation_x1_1=64;
+int constallation_x2_1=64;
+int constallation_y1_1=64;
+int constallation_y2_1=64;
+
+// Calculate endpoint
+int16_t endX;
+int16_t endY;
+
+int seg_list[12][4] {
+  {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+  {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+  {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}
+};
+
+void drawConstellations() {
+  // -----------------------------------------------------------------
+  // clear previous position
+  // draw 12 lines not overlapping perimeter, with earth as axis.
+  // todo: pin constellation name/symbol left/right of lines.
+  // -----------------------------------------------------------------
+
+  tft.drawRect(0, 11, 127, 116, RGB_COLOR16(24, 24, 24)); // test find the area: free: w=0->126 h=11->113
+
+  // siderealPlanetData.earth_ecliptic_long = 240; // test
+
+  // const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
+  int width=127;
+  int height=116;
+
+  // Calculate rectangle boundaries
+  int16_t rectX = 64 - width / 2;
+  int16_t rectY = 64 - height / 2;
+  
+  // Calculate rectangle edges
+  int16_t leftEdge = rectX;
+  int16_t rightEdge = rectX + width - 1;
+  int16_t topEdge = rectY;
+  int16_t bottomEdge = rectY + height - 1;
+  
+  // Calculate angles for 12 evenly spaced lines (30 degrees each)
+  const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
+  
+  for (int i = 0; i < 12; i++) {
+
+    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], TFT_BLACK); // clear previous line at index i
+
+    float angle = i * angleStep;
+    
+    // Calculate intersection with rectangle edges
+    float cosAngle = cos(angle);
+    float sinAngle = sin(angle);
+    
+    // Initialize radius to a large value
+    float radius = 10000.0; // Large enough to ensure intersection
+    
+    // Check intersection with left edge (x = leftEdge)
+    if (cosAngle < -0.0001) { // Line going left
+        float r = (leftEdge - earth_ui_x+2) / cosAngle;
+        if (r > 0) radius = min(radius, r);
+    }
+    
+    // Check intersection with right edge (x = rightEdge)
+    if (cosAngle > 0.0001) { // Line going right
+        float r = (rightEdge - earth_ui_x+2) / cosAngle;
+        if (r > 0) radius = min(radius, r);
+    }
+    
+    // Check intersection with top edge (y = topEdge)
+    if (sinAngle < -0.0001) { // Line going up
+        float r = (topEdge - earth_ui_y+2) / sinAngle;
+        if (r > 0) radius = min(radius, r);
+    }
+    
+    // Check intersection with bottom edge (y = bottomEdge)
+    if (sinAngle > 0.0001) { // Line going down
+        float r = (bottomEdge - earth_ui_y+2) / sinAngle;
+        if (r > 0) radius = min(radius, r);
+    }
+    
+    // Calculate endpoint
+    endX = earth_ui_x+2 + (int16_t)(cosAngle * radius);
+    endY = earth_ui_y+2 + (int16_t)(sinAngle * radius);
+
+    // Store elements
+    seg_list[i][0]=earth_ui_x+1;
+    seg_list[i][1]=earth_ui_y+1;
+    seg_list[i][2]=endX;
+    seg_list[i][3]=endY;
+    
+    // Draw the line from the specified center to the edge
+    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(24, 24, 24)); // draw current line at index i
+  }
+}
 
 void drawPlanets() {
 
@@ -15468,7 +15580,7 @@ void UpdateUI(void * pvParamters) {
       if ((menu_page != previous_menu_page) || (ui_cleared==true)) {
         previous_menu_page=menu_page;
         display.clear();
-        drawMainBorder();
+        // drawMainBorder(); // edit
         // display.drawHLine(1, 26, 126);
       }
       // ------------------------------------------------
@@ -15477,15 +15589,12 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // load
       // ------------------------------------------------
-      DisplayDiscreteLoadPercentage(115, 2, 10);
+      DisplayDiscreteLoadPercentage(115, 2, 9);
       // ------------------------------------------------
-      // signal
+      // satellites & sync
       // ------------------------------------------------
-      DisplaySignal(0, 0, 2, 2);
-      // ------------------------------------------------
-      // sync rtc
-      // ------------------------------------------------
-      DisplayRTCSync(0, 0, 2, 12);
+      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
+      else {DisplaySignal(1, 1, 2, 1);}
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
@@ -15493,7 +15602,7 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.clear();
         display.setColor(systemData.color_title);
         canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(34, 2, canvas76x8);
+        display.drawCanvas(34, 1, canvas76x8);
       }
       // ------------------------------------------------
       // feature standard
@@ -15516,8 +15625,10 @@ void UpdateUI(void * pvParamters) {
         // todo: draw constellations behind sun and planets in dark grey.
         // 12 directions in 6 lines with axis being Eath's center.
         // draw or write contellation name/symbol between the lines.
-        
-        if (track_planet_period==false) {drawPlanets();}
+        if (track_planet_period==false) {
+          drawConstellations();
+          drawPlanets();
+        }
       }
       
       // ------------------------------------------------
