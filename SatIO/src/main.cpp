@@ -14919,6 +14919,16 @@ void DisplayDiscreteLoadPercentage(int x, int y, int w) {
 }
 
 // -------------------------------------------------------------------
+//                                                   UI LOOPS A SECOND
+// -------------------------------------------------------------------
+void DisplayLoopsASecond(int x, int y) {
+  display.setColor(RGB_COLOR16(0,0,255));
+  canvas19x8.clear();
+  canvas19x8.printFixed(1, 1, String(systemData.total_loops_a_second).c_str(), STYLE_BOLD);
+  display.drawCanvas(x, y, canvas19x8);
+}
+
+// -------------------------------------------------------------------
 //                                                           UI SIGNAL
 // -------------------------------------------------------------------
 
@@ -15485,7 +15495,6 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 2, canvas76x8);
       }
-
       // ------------------------------------------------
       // feature standard
       // ------------------------------------------------
@@ -15504,6 +15513,10 @@ void UpdateUI(void * pvParamters) {
       // feature astronarium
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
+        // todo: draw constellations behind sun and planets in dark grey.
+        // 12 directions in 6 lines with axis being Eath's center.
+        // draw or write contellation name/symbol between the lines.
+        
         if (track_planet_period==false) {drawPlanets();}
       }
       
@@ -19129,6 +19142,7 @@ void UpdateUI(void * pvParamters) {
     // ----------------------------------------------------------------------------------------------------------------
     // this page will provide a view of vehicle/device attitude (roll, pitch yaw etc) provided by multi axis gyros and INS.
     // may also provide sensory information relating to area/environment around vehicle/device.
+    // sketch below may not reflect actual HUD.
     // ----------------------------------------------------------------------------------------------------------------
     /*                         
                              (heading)
@@ -19172,7 +19186,10 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
     else {DisplaySignal(0, 0, 0, 0);}
-
+    // ------------------------------------------------
+    // perf mon: uncomment to test frame performance
+    // ------------------------------------------------
+    // DisplayLoopsASecond(88, 0);
     // ------------------------------------------------
     // pitch scale
     // ------------------------------------------------
@@ -22779,47 +22796,38 @@ void loop() {
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  CONTROL PAD
   // ----------------------------------------------------------------------------------------------------------------------------
-  else if (load_distribution==2) {
-    load_distribution=3;
-    // t0=micros();
-    if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
-    // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  }
+  // t0=micros();
+  if (make_i2c_request==true) {requestControlPad(); make_i2c_request=false;}
+  // bench("[requestControlPad] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                  SENSOR DATA
   // ----------------------------------------------------------------------------------------------------------------------------
-  // else if (load_distribution==2) {
-    // load_distribution=3;
-    // t0=micros();
-    getSensorData();
-    // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // }
+  // t0=micros();
+  getSensorData();
+  // bench("[getSensorData] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                                REQUEST WT901
   // ----------------------------------------------------------------------------------------------------------------------------
-  // else if (load_distribution==3) {
-    // load_distribution=4;
-    // t0=micros();
-    if (systemData.wt901_enabled==true) {requestWT901();}
-    else {
-      sensorData.wt901_acc_x=NAN;
-      sensorData.wt901_acc_y=NAN;
-      sensorData.wt901_acc_z=NAN;
-      sensorData.wt901_ang_x=NAN;
-      sensorData.wt901_ang_y=NAN;
-      sensorData.wt901_ang_z=NAN;
-      sensorData.wt901_gyr_x=NAN;
-      sensorData.wt901_gyr_y=NAN;
-      sensorData.wt901_gyr_z=NAN;
-      sensorData.wt901_mag_x=NAN;
-      sensorData.wt901_mag_y=NAN;
-      sensorData.wt901_mag_z=NAN;
-    }
-    i_request_wt901++;
-    // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
-  // }
+  // t0=micros();
+  if (systemData.wt901_enabled==true) {requestWT901();}
+  else {
+    sensorData.wt901_acc_x=NAN;
+    sensorData.wt901_acc_y=NAN;
+    sensorData.wt901_acc_z=NAN;
+    sensorData.wt901_ang_x=NAN;
+    sensorData.wt901_ang_y=NAN;
+    sensorData.wt901_ang_z=NAN;
+    sensorData.wt901_gyr_x=NAN;
+    sensorData.wt901_gyr_y=NAN;
+    sensorData.wt901_gyr_z=NAN;
+    sensorData.wt901_mag_x=NAN;
+    sensorData.wt901_mag_y=NAN;
+    sensorData.wt901_mag_z=NAN;
+  }
+  i_request_wt901++;
+  // bench("[requestWT901] " + String((float)(micros()-t0)/1000000, 4) + "s");
 
   // ----------------------------------------------------------------------------------------------------------------------------
   //                                                                                                              PORT CONTROLLER
