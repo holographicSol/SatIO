@@ -15182,22 +15182,21 @@ int seg_list[12][4] {
 
 void drawConstellations() {
   // -----------------------------------------------------------------
-  // clear previous position
   // draw 12 lines not overlapping perimeter, with earth as axis.
   // todo: pin constellation name/symbol left/right of lines.
   // -----------------------------------------------------------------
 
-  tft.drawRect(0, 11, 127, 116, RGB_COLOR16(24, 24, 24)); // test find the area: free: w=0->126 h=11->113
+  tft.drawRect(1, 13, 127, 115, RGB_COLOR16(24, 24, 24)); // test find the area: free: w=0->126 h=11->113
 
-  // siderealPlanetData.earth_ecliptic_long = 240; // test
+  // siderealPlanetData.earth_ecliptic_long = 310; // test
 
   // const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
-  int width=127;
+  int width=128;
   int height=116;
 
   // Calculate rectangle boundaries
-  int16_t rectX = 64 - width / 2;
-  int16_t rectY = 64 - height / 2;
+  int16_t rectX = 0;
+  int16_t rectY = 11;
   
   // Calculate rectangle edges
   int16_t leftEdge = rectX;
@@ -15246,8 +15245,8 @@ void drawConstellations() {
     }
     
     // Calculate endpoint
-    endX = earth_ui_x+2 + (int16_t)(cosAngle * radius);
-    endY = earth_ui_y+2 + (int16_t)(sinAngle * radius);
+    endX = earth_ui_x+1 + (int16_t)(cosAngle * radius);
+    endY = earth_ui_y+1 + (int16_t)(sinAngle * radius);
 
     // Store elements
     seg_list[i][0]=earth_ui_x+1;
