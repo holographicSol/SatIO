@@ -15371,8 +15371,15 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Taurus
       // -------------------------------------------------------------
-      seg_list[2][4]=seg_list[i][2]-1;
-      seg_list[2][5]=seg_list[i][3]+1;
+      Serial.println(seg_list[2][4]);
+      if (seg_list[11][3]-9>=topEdge+6) {
+        seg_list[2][4]=width-9;
+        seg_list[2][5]=seg_list[11][3]-(int)(seg_list[11][3])/2;
+      }
+      else {
+        seg_list[2][4]=seg_list[10][2]+(int)((width-seg_list[10][2])/2);
+        seg_list[2][5]=seg_list[10][3]+1;
+      }
       canvas8x8.printFixed(0, 0, String("t").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[2][4], seg_list[2][5], canvas8x8);
       }
