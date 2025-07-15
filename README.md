@@ -1,17 +1,24 @@
                                   SatIO - Written by Benjamin Jack Cullen.
 
-                                            "The GPS Master"
-                  This project may be renamed to UAP or something similar in the future.
-      A fully functional "pocket UAP" ION drives, anti gravity and other advanced technologies not included.
+                                SatIO is the system, a matrix is the program.
 
-                      A general purpose programmable satellite, sensor and inertial platform.
+              A general purpose programmable I/O platform for automation and manual throughput.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
 
-                                 SatIO is the system, a matrix is the program.
+  What can SatIO tell you is true? Potentially infinite things.
+
+  Applications? Potentially infinite applications.
+
+  Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
+
+  Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
+  can be calculated from, providing there is not something potentially terminally wrong with the universe.
+
+  Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
+  If more output is needed then add another I2C port controller, if more input is needed then add another custom I2C device.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
-                                
                                 Wiring For Keystudio ESP32 PLUS Development Board
 
                                 ESP32: 1st ATMEGA2560 with shield as Port Controller (not on multiplexer):
@@ -47,26 +54,24 @@
                                 ESP32: io19 -> HW-125: DO (MISO)
                                 ESP32: io18 -> HW-125: SCK (SCLK)
 
-                                ESP32 HSPI: SSD1351 OLED (5v) (for interfacing):
+                                ESP32 HSPI: SSD1351 OLED (5v) (short wires recommended):
                                 ESP32: io14 -> SSD1351: SCL/SCLK
                                 ESP32: io12 -> SSD1351: MISO/DC
                                 ESP32: io13 -> SSD1351: SDA
                                 ESP32: io26 -> SSD1351: CS
 
 
-
                                            $SATIO SENTENCE
-
-                                            System Uptime                    
-        Tag                  Last Sync      |                               Degrees Longitude        
-        |      yyyymmddhhmmss|yyyymmddhhmmss|s|hh.mm|hh.mm|                 |                 |                
-        $SATIO,00000000000000,00000000000000,0,00.00,00.00,00.00000000000000,00.00000000000000,*Z
-              |              |                |     |     |                 |                 |            
-              RTC Datetime                    |     |     Degrees Latitude                    Checksum            
-                                              |     Sun Set
-                                              Sun Rise
-
-
+                              
+                              RTC Sync Time (UTC)             System Uptime (Seconds)
+                              |      RTC Sync Date (UTC)      |
+        Tag                   |      |                        |   Longitude Degrees
+        |                     |      |                        |   |
+        $SATIO,000000,00000000,000000,00000000,000000,00000000,0,0,0,*CHECKSUM
+              |      |                        |      |          |
+              |      |                        |      |          Latitude Degrees
+              |      RTC Date (UTC)           |      Local Date (UTC Offset)
+              RTC Time (UTC)                  Local Time (UTC Offset)
 
                                           $MATRIX SENTENCE 
 
@@ -75,8 +80,8 @@
                                                                               |    Matrix Switch State 0
                                                                               |    |
     $MATRIX,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,*CHECKSUM
-          |                                                                                                                                                   |
-          Matrix Switch Output Port 0                                                                                                                         Matrix Switch State 19
+           |                                                                                                                                                   |
+          Matrix Switch Output Port 0                                                                                                                          Matrix Switch State 19
                                                                                           
 
 
@@ -89,7 +94,7 @@
                                                                                   Sensor 15
 
 
-                                                                                  
+
                                           $SUN SENTENCE
                                                     
                                     Right Ascension 
@@ -223,41 +228,33 @@
                           Declination             Helio Ecliptic Longitude  
 
 
-
-    Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
-    or to provide data to local LLM's over serial, the list goes on.
-    
-    Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
-    be turned on/off.
   
-    Port Controller: Port controller to turn pins high/low according to instructions received from master.
-  
-    UI: Allows programming matrix switch logic and tuning for individual use cases. Emphasis to importance, clarity,
-    consistency.
-    
     Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
-    part, subsystem or standalone device.
+    part or standalone device.
   
-    Whats to gain? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
+    Whats the point? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
     as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
   
-    ToDO: set NAN for invalid dat, unused data. requires modification to data in (to set NAN) and possibly modification to matrix (to handle NAN).
-
-    Currently all SatIO output is automated by the programmable matrix.
-    Provide manual output, ideally with variable triggers, analog sticks and buttons.
-    This will allow SatIO output to be both automated and manual, right out the back of the SatIO.
-    Pretty awesome.
+    Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
+    of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html).
+    Additions: 1: doXRiseSetTimes(). This allows for calculating rise and set times of all planets and objects according to time and location.
+               2: inRange60(). Ensures minutes and second values are wihin 0-59 for planet/object rise, set times.
+               3: inRange24(). Ensures hour values are wihin 0-23 for planet/object rise, set times.
+  
+    ToDo: 20 programmable modulators on each output pin on the port controller. 
     
-    joypad(s): build custom solution / X-Box controller.
-    
-    joypad function is to provide on board variable manual output to the port controller through SatIO:
-    	(1) joy output values through SatIO to port controller.
-    	(2) joy input values can be used in programmable matrix.
-    	(3) joy input values should be observable in the HUD.
-    
-    X-Box controller: dual analogue stick + buttons + triggers
-    
-    Custom controller: is not restricted to or limited by available x-box buttons sticks and           triggers.
+    ToDo: Terrain elevation: Experiments have been made decompressing NASA's SRTMGL1 (Shuttle Radar Topography Mission) files quickly.
+  
+    ToDo: More data and calculate more data from existing data.
+  
+    ToDo: Macros.
+  
+    Complete PlatformIO project files, libraries and modified libraries:
+    https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
+  
+    Builds:
+    Nano SatIO (Passive): Serial input/output only, headless. Useful for LLMs and things.
+    Full SatIO (Active): Everything.
 
 -----
 
