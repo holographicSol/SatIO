@@ -15136,7 +15136,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // todo: account for remaining overlaps.
   // todo: optional or hardcoded symbols instead of alpha
-  // todo: meteors
+  // todo: 'expected' meteors
   // todo: moon phase
   // ---------------------------------------------------------------
   // uncomment to test
