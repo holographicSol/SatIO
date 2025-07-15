@@ -15304,13 +15304,25 @@ void drawConstellations() {
     // -------------------------------------------------------------
     // Draw constellations
     // -------------------------------------------------------------
+    // 0:  90  deg
+    // 1:  120 deg
+    // 2:  150 deg
+    // 3:  180 deg
+    // 4:  210 deg
+    // 5:  240 deg
+    // 6:  270 deg
+    // 7:  300 deg
+    // 8:  330 deg
+    // 9:  360 deg
+    // 10: 30  deg
+    // 11: 60  deg
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(255,255,0));
     if (i==3) {
       // -------------------------------------------------------------
       // Gemini
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]+3;
+      seg_list[i][4]=seg_list[9][2]+(int)((seg_list[10][2]-seg_list[9][2])/2)-3; // adjust 3 for font size
       seg_list[i][5]=seg_list[i][3];
       canvas8x8.printFixed(0, 0, String("g").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
@@ -15318,7 +15330,7 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Cancer
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i-1][2]-10;
+      seg_list[i][4]=seg_list[9][2]-(int)((seg_list[9][2]-seg_list[8][2])/2);
       seg_list[i][5]=seg_list[i-1][3];
       canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
