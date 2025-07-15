@@ -15351,7 +15351,7 @@ void drawConstellations() {
       // Sagitarius
       // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]-10;
-      seg_list[i][5]=127-8;
+      seg_list[i][5]=height-9;
       canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==10) {
@@ -15359,7 +15359,7 @@ void drawConstellations() {
       // Capricorn
       // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i-1][2]+3;
-      seg_list[i][5]=127-8;
+      seg_list[i][5]=height-9;
       canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
@@ -15374,7 +15374,7 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Aries
       // -------------------------------------------------------------
-      seg_list[i][4]=127-8;
+      seg_list[i][4]=width-9;
       seg_list[i][5]=seg_list[i][3]-9;
       canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
@@ -15382,21 +15382,20 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Pisces
       // -------------------------------------------------------------
-      seg_list[i][4]=127-8;
+      seg_list[i][4]=width-9;
       seg_list[i][5]=seg_list[i-1][3]+2;
       canvas8x8.printFixed(0, 0, String("p").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
       // Aquarius
       // -------------------------------------------------------------
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], TFT_RED);
-      if (seg_list[i][3]<=127-8) {
-        seg_list[11][4]=127-8;
+      if (seg_list[i][3]<=height-9) {
+        seg_list[11][4]=width-9;
         seg_list[11][5]=seg_list[i][3];
       }
       else {
-        seg_list[11][4]=127-20;
-        seg_list[11][5]=127-8;
+        seg_list[11][4]=width-20;
+        seg_list[11][5]=height-9;
       }
       canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);}
@@ -15404,18 +15403,29 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Scorpio
       // -------------------------------------------------------------
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], TFT_RED);
-      if (seg_list[i][3]<=127-8) {
+      if (seg_list[i][3]+(int)(height-seg_list[i][3])/2<=height-9) {
         seg_list[i][4]=1;
-        seg_list[i][5]=seg_list[i][3];
+        seg_list[i][5]=seg_list[i][3]+(int)(height-seg_list[i][3])/2;
       }
       else {
-        seg_list[i][4]=20;
-        seg_list[i][5]=127-8;
+        seg_list[i][4]=seg_list[4][3]-(int)(width+seg_list[4][2])/2;
+        seg_list[i][5]=height-9;
       }
       canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
   }
+  // 0:  90  deg
+  // 1:  120 deg
+  // 2:  150 deg
+  // 3:  180 deg
+  // 4:  210 deg
+  // 5:  240 deg
+  // 6:  270 deg
+  // 7:  300 deg
+  // 8:  330 deg
+  // 9:  360 deg
+  // 10: 30  deg
+  // 11: 60  deg
 }
 
 void drawPlanets() {
