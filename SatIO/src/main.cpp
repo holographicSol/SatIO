@@ -15134,6 +15134,9 @@ uint16_t color_constellation=RGB_COLOR16(24,24,24);
 
 void drawConstellations() {
   // ---------------------------------------------------------------
+  // todo: account for remaining overlaps.
+  // todo: optional or hardcoded symbols instead of alpha
+  // ---------------------------------------------------------------
   // uncomment to test
   // ---------------------------------------------------------------
   // siderealPlanetData.earth_ecliptic_long++;
