@@ -15078,7 +15078,7 @@ void DisplayUAP() {
 /*
 This UI is designed for a very small, low pixel panel for performance with ESP32 while considering everything else
 the ESP32 has to do running SatIO. If upgrading SatIO to a more moreful chip then the panel may also be considered
-in regards to a higher pixer, larger panel, in which case much of the math used to display the same, reimplemented
+in regards to a higher pixel, larger panel, in which case much of the math used to display the same, reimplemented
 with more detail and a larger scale. For example Planets are represented by pixels on the small panel currently in
 use, and could be represented any other way with much higher detail on higher performance hardware, using the same
 math.
