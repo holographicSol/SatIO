@@ -15342,8 +15342,14 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Leo
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]-7;
-      seg_list[i][5]=seg_list[i][3]+1;
+      if (seg_list[i][2]-2-(int)(seg_list[i][2])/2>=10) {
+        seg_list[i][4]=seg_list[i][2]-2-(int)(seg_list[i][2])/2;
+        seg_list[i][5]=seg_list[i][3]+1;
+      }
+      else {
+        seg_list[i][4]=1;
+        seg_list[i][5]=seg_list[7][3]-(int)(seg_list[7][3])/2;
+      }
       canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==9) {
