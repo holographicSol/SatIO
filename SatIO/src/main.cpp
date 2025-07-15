@@ -15141,7 +15141,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // uncomment to test
   // ---------------------------------------------------------------
-  // siderealPlanetData.earth_ecliptic_long++;
+  siderealPlanetData.earth_ecliptic_long++;
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
@@ -15339,7 +15339,6 @@ void drawConstellations() {
       // Virgo
       // -------------------------------------------------------------
       seg_list[i][4]=1;
-      // seg_list[i][5]=seg_list[i][3]-9;
       seg_list[i][5]=seg_list[i][3]-(int)((seg_list[6][3]-seg_list[7][3])/2)-3; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("v").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
@@ -15408,7 +15407,7 @@ void drawConstellations() {
       // Pisces
       // -------------------------------------------------------------
       seg_list[i][4]=width-9;
-      seg_list[i][5]=seg_list[i-1][3]+(int)((seg_list[1][3]-seg_list[0][3])/2)-3; // adjust 3 for font size
+      seg_list[i][5]=seg_list[i-1][3]+(int)((seg_list[1][3]-seg_list[0][3])/2)-6; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("p").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
