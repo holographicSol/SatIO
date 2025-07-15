@@ -15141,7 +15141,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // uncomment to test
   // ---------------------------------------------------------------
-  // siderealPlanetData.earth_ecliptic_long++;
+  siderealPlanetData.earth_ecliptic_long++;
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
@@ -15403,12 +15403,14 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Scorpio
       // -------------------------------------------------------------
+      // tft.drawLine(seg_list[4][0], seg_list[4][1], seg_list[4][2], seg_list[4][3], color_constellation);
+
       if (seg_list[i][3]+(int)(height-seg_list[i][3])/2<=height-9) {
         seg_list[i][4]=1;
         seg_list[i][5]=seg_list[i][3]+(int)(height-seg_list[i][3])/2;
       }
       else {
-        seg_list[i][4]=seg_list[4][3]-(int)(width+seg_list[4][2])/2;
+        seg_list[i][4]=seg_list[4][3]-(int)(width-seg_list[4][2])/2;
         seg_list[i][5]=height-9;
       }
       canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
