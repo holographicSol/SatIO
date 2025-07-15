@@ -15262,7 +15262,6 @@ void drawConstellations() {
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
 
-    // else if (i==11) {
       canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);}
 
@@ -15352,9 +15351,9 @@ void drawConstellations() {
 
     else if (i==7) {
       // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
-      // Leo
+      // Libra
       seg_list[i][4]=0+2;
-      seg_list[i][5]=seg_list[i-1][3]+1;
+      seg_list[i][5]=seg_list[i-1][3]+2;
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     
@@ -15362,9 +15361,9 @@ void drawConstellations() {
 
     else if (i==8) {
       // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
-      // Libra
+      // Leo
       seg_list[i][4]=seg_list[i][2]-9;
-      seg_list[i][5]=seg_list[i][3];
+      seg_list[i][5]=seg_list[i][3]+1;
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
 
@@ -15386,7 +15385,7 @@ void drawConstellations() {
     
       // Taurus
       seg_list[11][4]=seg_list[i][2]+1;
-      seg_list[11][5]=seg_list[i][3];
+      seg_list[11][5]=seg_list[i][3]+1;
       canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);
       }
