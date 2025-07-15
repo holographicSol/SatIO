@@ -15368,7 +15368,7 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Sagitarius
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]-10;
+      seg_list[i][4]=seg_list[3][2]-(int)((seg_list[3][2]-seg_list[4][2])/2);
       seg_list[i][5]=height-9;
       canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
@@ -15376,7 +15376,7 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Capricorn
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i-1][2]+3;
+      seg_list[i][4]=seg_list[3][2]+(int)((seg_list[2][2]-seg_list[3][2])/2)-3; // adjust 3 for font size
       seg_list[i][5]=height-9;
       canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
