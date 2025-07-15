@@ -15300,7 +15300,7 @@ void drawConstellations() {
     // Draw constellations
     // -------------------------------------------------------------
     canvas8x8.clear();
-    display.setColor(color_constellation);
+    display.setColor(RGB_COLOR16(255,255,0));
     if (i==3) {
       // -------------------------------------------------------------
       // Gemini
