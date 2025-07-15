@@ -15188,7 +15188,7 @@ void drawConstellations() {
   // -----------------------------------------------------------------
 
   // uncomment to test
-  siderealPlanetData.earth_ecliptic_long++;
+  // siderealPlanetData.earth_ecliptic_long++;
 
   // border
   tft.drawRect(1, 13, 127, 115, RGB_COLOR16(24, 24, 24));
