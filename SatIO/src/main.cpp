@@ -15134,7 +15134,7 @@ uint16_t color_constellation=RGB_COLOR16(24,24,24);
 
 void drawConstellations() {
   // ---------------------------------------------------------------
-  // todo: account for remaining overlaps.
+  // todo: continue to tweak smooth and then simplify
   // todo: optional or hardcoded symbols instead of alpha
   // todo: 'expected' meteors
   // todo: moon phase
@@ -15356,7 +15356,7 @@ void drawConstellations() {
       // Leo
       // -------------------------------------------------------------
       if ((seg_list[8][2]-2-(int)(seg_list[8][2])/2)-9>=1) {
-        seg_list[i][4]=seg_list[8][2]-2-(int)(seg_list[8][2])/2;
+        seg_list[i][4]=(seg_list[8][2]-2-(int)(seg_list[8][2])/2)+2;
         seg_list[i][5]=seg_list[i][3]+1;
       }
       else {
