@@ -15400,7 +15400,7 @@ void drawConstellations() {
       // Aries
       // -------------------------------------------------------------
       seg_list[i][4]=width-9;
-      seg_list[i][5]=seg_list[i][3]-9;
+      seg_list[i][5]=seg_list[i][3]-(int)((seg_list[0][3]-seg_list[11][3])/2)-3; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==1) {
@@ -15408,7 +15408,7 @@ void drawConstellations() {
       // Pisces
       // -------------------------------------------------------------
       seg_list[i][4]=width-9;
-      seg_list[i][5]=seg_list[i-1][3]+2;
+      seg_list[i][5]=seg_list[i-1][3]+(int)((seg_list[1][3]-seg_list[0][3])/2)-3; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("p").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
