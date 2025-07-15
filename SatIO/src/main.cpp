@@ -15410,7 +15410,7 @@ void drawConstellations() {
         seg_list[i][5]=seg_list[i][3]+(int)(height-seg_list[i][3])/2;
       }
       else {
-        seg_list[i][4]=seg_list[4][3]-(int)(seg_list[4][2])/2;
+        seg_list[i][4]=(int)(seg_list[4][2])/2;
         seg_list[i][5]=height-9;
       }
       canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
