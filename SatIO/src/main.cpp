@@ -15136,18 +15136,18 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // uncomment to test
   // ---------------------------------------------------------------
-  // siderealPlanetData.earth_ecliptic_long++;
+  siderealPlanetData.earth_ecliptic_long++;
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
-  tft.drawRect(1, 13, 127, 115, color_constellation);
+  tft.drawRect(0, 11, 128, 117, color_constellation);
   // ---------------------------------------------------------------
   // Calculate rectangle boundaries
   // ---------------------------------------------------------------
   int width=128;
-  int height=116;
+  int height=128;
   int16_t rectX = 0;
-  int16_t rectY = 11;
+  int16_t rectY = 9;
   // ---------------------------------------------------------------
   // Calculate rectangle edges
   // ---------------------------------------------------------------
@@ -15176,71 +15176,71 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Gemini
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("G").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("g").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==4) {
       // -------------------------------------------------------------
       // Cancer
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
       // Scorpio
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[5][4], seg_list[5][5], canvas8x8);}
     else if (i==6) {
       // -------------------------------------------------------------
       // Virgo
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("V").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("v").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==7) {
       // -------------------------------------------------------------
       // Libra
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==8) {
       // -------------------------------------------------------------
       // Leo
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==9) {
       // -------------------------------------------------------------
       // Sagitarius
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==10) {
       // -------------------------------------------------------------
       // Capricorn
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
       // Taurus
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("t").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);}
     else if (i==0) {
       // -------------------------------------------------------------
       // Aries
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("p").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==1) {
       // -------------------------------------------------------------
       // Pisces
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==2) {
       // -------------------------------------------------------------
       // Aquarius
       // -------------------------------------------------------------
-      canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("t").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     
     // -------------------------------------------------------------
@@ -15305,40 +15305,40 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Gemini
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]+1;
-      seg_list[i][5]=seg_list[i][3]+14;
-      canvas8x8.printFixed(0, 0, String("G").c_str(), STYLE_BOLD);
+      seg_list[i][4]=seg_list[i][2]+3;
+      seg_list[i][5]=seg_list[i][3];
+      canvas8x8.printFixed(0, 0, String("g").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==4) {
       // -------------------------------------------------------------
       // Cancer
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i-1][2]-9;
-      seg_list[i][5]=seg_list[i-1][3]+14;
-      canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
+      seg_list[i][4]=seg_list[i-1][2]-10;
+      seg_list[i][5]=seg_list[i-1][3];
+      canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
       // Scorpio
       // -------------------------------------------------------------
-      seg_list[5][4]=seg_list[i][2];
+      seg_list[5][4]=seg_list[i][2]+7;
       seg_list[5][5]=127-20;
-      canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[5][4], seg_list[5][5], canvas8x8);}
     else if (i==6) {
       // -------------------------------------------------------------
       // Virgo
       // -------------------------------------------------------------
-      seg_list[i][4]=0+2;
+      seg_list[i][4]=1;
       seg_list[i][5]=seg_list[i][3]-9;
-      canvas8x8.printFixed(0, 0, String("V").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("v").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==7) {
       // -------------------------------------------------------------
       // Libra
       // -------------------------------------------------------------
-      seg_list[i][4]=0+2;
+      seg_list[i][4]=1;
       seg_list[i][5]=seg_list[i-1][3]+2;
-      canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==8) {
       // -------------------------------------------------------------
@@ -15346,55 +15346,55 @@ void drawConstellations() {
       // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]-7;
       seg_list[i][5]=seg_list[i][3]+1;
-      canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==9) {
       // -------------------------------------------------------------
       // Sagitarius
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]-9;
-      seg_list[i][5]=127-9;
-      canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
+      seg_list[i][4]=seg_list[i][2]-10;
+      seg_list[i][5]=127-8;
+      canvas8x8.printFixed(0, 0, String("s").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==10) {
       // -------------------------------------------------------------
       // Capricorn
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i-1][2]+1;
-      seg_list[i][5]=127-9;
-      canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
+      seg_list[i][4]=seg_list[i-1][2]+3;
+      seg_list[i][5]=127-8;
+      canvas8x8.printFixed(0, 0, String("c").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
       // -------------------------------------------------------------
       // Taurus
       // -------------------------------------------------------------
-      seg_list[11][4]=seg_list[i][2]+1;
+      seg_list[11][4]=seg_list[i][2]-1;
       seg_list[11][5]=seg_list[i][3]+1;
-      canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("t").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);
       }
     else if (i==0) {
       // -------------------------------------------------------------
       // Aries
       // -------------------------------------------------------------
-      seg_list[i][4]=127-9;
+      seg_list[i][4]=127-8;
       seg_list[i][5]=seg_list[i][3]-9;
-      canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==1) {
       // -------------------------------------------------------------
       // Pisces
       // -------------------------------------------------------------
-      seg_list[i][4]=127-9;
+      seg_list[i][4]=127-8;
       seg_list[i][5]=seg_list[i-1][3]+2;
-      canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("p").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==2) {
       // -------------------------------------------------------------
       // Aquarius
       // -------------------------------------------------------------
-      seg_list[i][4]=seg_list[i][2]-7;
+      seg_list[i][4]=seg_list[i][2]-12;
       seg_list[i][5]=127-20;
-      canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
+      canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
   }
 }
@@ -15722,24 +15722,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-      // ------------------------------------------------
-      // load
-      // ------------------------------------------------
-      DisplayDiscreteLoadPercentage(115, 2, 9);
-      // ------------------------------------------------
-      // satellites & sync
-      // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
-      else {DisplaySignal(1, 1, 2, 1);}
-      // ------------------------------------------------
-      // local time
-      // ------------------------------------------------
-      if (crunching_time_data==false) {
-        canvas76x8.clear();
-        display.setColor(systemData.color_title);
-        canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(34, 1, canvas76x8);
-      }
+
       // ------------------------------------------------
       // feature standard
       // ------------------------------------------------
@@ -15762,6 +15745,25 @@ void UpdateUI(void * pvParamters) {
           drawConstellations();
           drawPlanets();
         }
+      }
+
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 2, 9);
+      // ------------------------------------------------
+      // satellites & sync
+      // ------------------------------------------------
+      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
+      else {DisplaySignal(1, 1, 2, 1);}
+      // ------------------------------------------------
+      // local time
+      // ------------------------------------------------
+      if (crunching_time_data==false) {
+        canvas76x8.clear();
+        display.setColor(systemData.color_title);
+        canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
+        display.drawCanvas(34, 1, canvas76x8);
       }
       
       // ------------------------------------------------
