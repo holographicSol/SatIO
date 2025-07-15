@@ -12,7 +12,7 @@
   Applications? Potentially infinite applications.
 
   Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
-  
+
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
@@ -230,19 +230,9 @@
                           Declination             Helio Ecliptic Longitude  
 
 
-
-  Use case: Its a PLC, use your imagination. Automate all the things. Robots, flying machines, sensor drones
-  or to provide data to local LLM's over serial, the list goes on.
-  
-  Flexibility: The system is designed to be highly flexible, so that input/output/calculations of all kinds can
-  be turned on/off.
-
-  Port Controller: Port controller to turn pins high/low according to instructions received from SatIO.
-
-  UI: Allows programming matrix switch logic and tuning for individual use cases.
   
   Summary: Over one quintillion possible combinations of stackable logic across 20 switches for a general purpose
-  part, subsystem or standalone device.
+  part or standalone device.
 
   Whats the point? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
   as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
@@ -253,31 +243,20 @@
              2: inRange60(). Ensures minutes and second values are wihin 0-59 for planet/object rise, set times.
              3: inRange24(). Ensures hour values are wihin 0-23 for planet/object rise, set times.
 
-  ToDo: 20 IIC capable MCU's on the end of each of the 20 matrix switch output ports on the port controller. this will allow
-        adjustable output modulation in the micros/millis depending on chosen IIC capable 'intermediary' output MCU's.
-        intermediary output MCU's receive high/low, output high/low according to delay value >=0 received over IIC.
-        currently stacked logic can be modulated to every second by default from the central MCU running SatIO.
+  ToDo: 20 programmable modulators on each output pin on the port controller. 
   
   ToDo: Terrain elevation: Experiments have been made decompressing NASA's SRTMGL1 (Shuttle Radar Topography Mission) files quickly.
 
-  ToDo: More data / calculate more data from existing data.
+  ToDo: More data and calculate more data from existing data.
 
-  ToDo: Macros. Currently there are no specific macros for programming a matrix entry, this is while the systems architecture and
-  essential framework have been developed and carefully cosnidered. If and when macros are implemented, macros should be programmable
-  and or predefined. Until then matrix entries must be programmmed in via HIDs+UI and or hardcoded into the matrix before flashing the firmware.
-
-  ToDo: Input joy. Pass analog values from from joysticks through SatIO (for observastion and use in matrix logix) out to port controller. 
+  ToDo: Macros.
 
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
 
-  Design concepts:
-  Nano SatIO (Passive): ESP32 + GPS + 9 Axis Gyro.
-                        No Port Controller, no Control Pad, no UI etc. As small as possible, streaming out data over USB/IIC/etc.
-                        Requires another system to utilize output data.
-                        A few pushbuttons and LEDs for simple manipulations.
-  Full SatIO (Active): ESP32 + GPS + 9 Axis Gyro + Port Controller + Control Pad + UI etc. Can be built out to any logical size/scale and is standalone.
-
+  Builds:
+  Nano SatIO (Passive): Serial input/output only, headless. Useful for LLMs and things.
+  Full SatIO (Active): Everything.
 */
 
 // ------------------------------------------------------------------------------------------------------------------------------
