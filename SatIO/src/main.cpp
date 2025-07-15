@@ -23001,12 +23001,12 @@ void loop() {
   //                                                                                                    CONVERT UTC TO LOCAL TIME
   // ----------------------------------------------------------------------------------------------------------------------------
   if (second_time_period_sync_rtc==true) {
-    // crunching_time_data=true;
+    crunching_time_data=true;
     // t0=micros();
     syncTaskSafeRTCTime();
     convertUTCTimeToLocalTime();
     // bench("[convertUTCTimeToLocalTime] " + String((float)(micros()-t0)/1000000, 4) + "s");
-    // crunching_time_data=false;
+    crunching_time_data=false;
     i_sync_utc++;
     second_time_period_sync_rtc=false;
     // load_distribution=0; // force next load distribution to lightest load
