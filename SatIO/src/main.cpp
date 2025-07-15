@@ -15333,8 +15333,8 @@ void drawConstellations() {
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
 
-      // Sagitarius
-      seg_list[5][4]=seg_list[i][2]-2;
+      // Scorpio
+      seg_list[5][4]=seg_list[i][2];
       seg_list[5][5]=127-20;
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[5][4], seg_list[5][5], canvas8x8);}
@@ -15362,14 +15362,14 @@ void drawConstellations() {
     else if (i==8) {
       // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
       // Leo
-      seg_list[i][4]=seg_list[i][2]-9;
+      seg_list[i][4]=seg_list[i][2]-7;
       seg_list[i][5]=seg_list[i][3]+1;
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
 
     else if (i==9) {
       // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
-      // Scorpio
+      // Sagitarius
       seg_list[i][4]=seg_list[i][2]-9;
       seg_list[i][5]=127-9;
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
@@ -15402,7 +15402,7 @@ void drawConstellations() {
       // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
       // Pisces
       seg_list[i][4]=127-9;
-      seg_list[i][5]=seg_list[i-1][3]+1;
+      seg_list[i][5]=seg_list[i-1][3]+2;
       canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
 
