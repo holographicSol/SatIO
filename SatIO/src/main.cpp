@@ -15120,10 +15120,7 @@ math.
 */
 // ----------------------------------------------------------------------------------------------------------------
 
-bool display_sync;
 bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
-
-// 20px remain = larger sun, add moon
 
 int sun_ui_x = 64;
 int sun_ui_y = 64;
@@ -15157,19 +15154,6 @@ int neptune_ui_y = 64;
 
 float test_angle=90;
 float test_moon_angle=90;
-
-int constallation_x_0=64;
-int constallation_y_0=64;
-
-int constallation_x1_0=64;
-int constallation_x2_0=64;
-int constallation_y1_0=64;
-int constallation_y2_0=64;
-
-int constallation_x1_1=64;
-int constallation_x2_1=64;
-int constallation_y1_1=64;
-int constallation_y2_1=64;
 
 // Calculate endpoint
 int16_t endX;
