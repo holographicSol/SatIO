@@ -2,38 +2,25 @@
 
                                   SatIO - Written by Benjamin Jack Cullen.
 
-                                            "The GPS Master"
+                                SatIO is the system, a matrix is the program.
 
-                      A general purpose programmable satellite, sensor and inertial platform.
+              A general purpose programmable I/O platform for automation and manual throughput.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
 
-                                 SatIO is the system, a matrix is the program.
+  What can SatIO tell you is true? Potentially infinite things.
 
-What can SatIO tell you is true? A number of things resulting from an equation including the number of programmabble functions,
-number of possible values provided by those functions, number of possible input values, number of functions per switch,
-number of switches (over a quintillion things). Currently SatIO has over a quintillion posssible combinations, each of which may provide
-answers to more than one question.
+  Applications? Potentially infinite applications.
 
-What can SatIO do? An infininate number of actions can be taken upon any combination of things being true, what is done is determined
-by what is plugged into the port controller.
-
-What can't SatIO tell you is true or do? A calculation requiring more memory than SatIO has available on any given platform that
-SatIO is running on. If however there is still memory and storage available, then more modules and raw sensors can be added to 
-increase calculation potential.
-
-  Short of quantum navigation on a microchip, GPS is currently used for navigation, navigation providing values that many more values
+  Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
+  
+  Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
-  Domino effects? Many things (potentially infinite) can be calculated from the existing functionality that there may not be an 
-  existing specific function for, like for example high tide where moon tracking can be utilized to track the tide and if you can track
-  the tide then more things may also be calculated further down the line from moon tracking data than high tide, without necessarily requiring anything
-  other than moon tracking data alone. This is just one example of potentially infinite domino effects that can be calculated from existing data.
-
   Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
+  If more output is needed then add another I2C port controller, if more input is needed then add another custom I2C device.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
-                                
                                 Wiring For Keystudio ESP32 PLUS Development Board
 
                                 ESP32: 1st ATMEGA2560 with shield as Port Controller (not on multiplexer):
@@ -74,7 +61,6 @@ increase calculation potential.
                                 ESP32: io12 -> SSD1351: MISO/DC
                                 ESP32: io13 -> SSD1351: SDA
                                 ESP32: io26 -> SSD1351: CS
-
 
 
                                            $SATIO SENTENCE
@@ -15168,35 +15154,35 @@ int seg_list[12][6] {
 uint16_t color_constellation=RGB_COLOR16(24,24,24);
 
 void drawConstellations() {
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // uncomment to test
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // siderealPlanetData.earth_ecliptic_long++;
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // border
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   tft.drawRect(1, 13, 127, 115, color_constellation);
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // Calculate rectangle boundaries
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   int width=128;
   int height=116;
   int16_t rectX = 0;
   int16_t rectY = 11;
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // Calculate rectangle edges
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   int16_t leftEdge = rectX;
   int16_t rightEdge = rectX + width - 1;
   int16_t topEdge = rectY;
   int16_t bottomEdge = rectY + height - 1;
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // Calculate angles for 12 evenly spaced lines (30 degrees each)
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   // Clear existing constellations & Draw new constellations
-  // -------------------------------------------------------------
+  // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
     // -------------------------------------------------------------
     // Clear previous line for
