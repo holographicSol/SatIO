@@ -15377,7 +15377,7 @@ void drawConstellations() {
         seg_list[2][5]=seg_list[11][3]-(int)(seg_list[11][3])/2;
       }
       else {
-        seg_list[2][4]=seg_list[10][2]+(int)((width-seg_list[10][2])/2);
+        seg_list[2][4]=seg_list[10][2]+(int)((width-seg_list[10][2])/3);
         seg_list[2][5]=seg_list[10][3]+1;
       }
       canvas8x8.printFixed(0, 0, String("t").c_str(), STYLE_BOLD);
