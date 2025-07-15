@@ -15389,12 +15389,12 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Aquarius
       // -------------------------------------------------------------
-      if (seg_list[i][3]<=height-9) {
+      if (seg_list[i][3]+(int)(height-seg_list[i][3])/2<=height-9) {
         seg_list[11][4]=width-9;
-        seg_list[11][5]=seg_list[i][3];
+        seg_list[11][5]=seg_list[i][3]+(int)(height-seg_list[i][3])/2;
       }
       else {
-        seg_list[11][4]=width-20;
+        seg_list[11][4]=seg_list[2][2]+(int)(width-seg_list[2][2])/2;
         seg_list[11][5]=height-9;
       }
       canvas8x8.printFixed(0, 0, String("a").c_str(), STYLE_BOLD);
