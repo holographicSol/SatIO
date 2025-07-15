@@ -15758,9 +15758,6 @@ void UpdateUI(void * pvParamters) {
       // feature astronarium
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
-        // todo: draw constellations behind sun and planets in dark grey.
-        // 12 directions in 6 lines with axis being Eath's center.
-        // draw or write contellation name/symbol between the lines.
         if (track_planet_period==false) {
           drawConstellations();
           drawPlanets();
