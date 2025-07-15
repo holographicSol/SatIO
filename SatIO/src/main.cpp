@@ -15182,233 +15182,265 @@ int seg_list[12][6] {
 };
 
 void drawConstellations() {
-  // -----------------------------------------------------------------
-  // draw 12 lines not overlapping perimeter, with earth as axis.
-  // todo: simplify
-  // -----------------------------------------------------------------
-
+  // -------------------------------------------------------------
   // uncomment to test
+  // -------------------------------------------------------------
   // siderealPlanetData.earth_ecliptic_long++;
-
+  // -------------------------------------------------------------
   // border
+  // -------------------------------------------------------------
   tft.drawRect(1, 13, 127, 115, RGB_COLOR16(24, 24, 24));
-
-  // const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
+  // -------------------------------------------------------------
+  // Calculate rectangle boundaries
+  // -------------------------------------------------------------
   int width=128;
   int height=116;
-
-  // Calculate rectangle boundaries
   int16_t rectX = 0;
   int16_t rectY = 11;
-  
+  // -------------------------------------------------------------
   // Calculate rectangle edges
+  // -------------------------------------------------------------
   int16_t leftEdge = rectX;
   int16_t rightEdge = rectX + width - 1;
   int16_t topEdge = rectY;
   int16_t bottomEdge = rectY + height - 1;
-  
+  // -------------------------------------------------------------
   // Calculate angles for 12 evenly spaced lines (30 degrees each)
+  // -------------------------------------------------------------
   const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
-  
+  // -------------------------------------------------------------
+  // Clear existing constellations & Draw new constellations
+  // -------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
-
-    // clear previous line for index i
+    // -------------------------------------------------------------
+    // Clear previous line for
+    // -------------------------------------------------------------
     tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], TFT_BLACK);
-
-    // clear previous text for index i
+    // -------------------------------------------------------------
+    // Clear previous text
+    // -------------------------------------------------------------
     canvas6x8.clear();
     display.setColor(TFT_BLACK);
-
-    if (i==0) {
-      canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
-      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-  
-    if (i==1) {
-      canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
-      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-    
-    else if (i==2) {
-      canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
-      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
-    else if (i==3) {
+    if (i==3) {
+      // -------------------------------------------------------------
+      // Gemini
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("G").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==4) {
+      // -------------------------------------------------------------
+      // Cancer
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
-    
+      // -------------------------------------------------------------
+      // Scorpio
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[5][4], seg_list[5][5], canvas8x8);}
-
     else if (i==6) {
+      // -------------------------------------------------------------
+      // Virgo
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("V").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==7) {
+      // -------------------------------------------------------------
+      // Libra
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-    
     else if (i==8) {
+      // -------------------------------------------------------------
+      // Leo
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==9) {
+      // -------------------------------------------------------------
+      // Sagitarius
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==10) {
+      // -------------------------------------------------------------
+      // Capricorn
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
-
+      // -------------------------------------------------------------
+      // Taurus
+      // -------------------------------------------------------------
       canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);}
-
-    float angle = i * angleStep;
+    else if (i==0) {
+      // -------------------------------------------------------------
+      // Aries
+      // -------------------------------------------------------------
+      canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
+      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
+    else if (i==1) {
+      // -------------------------------------------------------------
+      // Pisces
+      // -------------------------------------------------------------
+      canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
+      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
+    else if (i==2) {
+      // -------------------------------------------------------------
+      // Aquarius
+      // -------------------------------------------------------------
+      canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
+      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     
+    // -------------------------------------------------------------
+    // Step angle
+    // -------------------------------------------------------------
+    float angle = i * angleStep;
+    // -------------------------------------------------------------
     // Calculate intersection with rectangle edges
+    // -------------------------------------------------------------
     float cosAngle = cos(angle);
     float sinAngle = sin(angle);
-    
+    // -------------------------------------------------------------
     // Initialize radius to a large value
+    // -------------------------------------------------------------
     float radius = 10000.0; // Large enough to ensure intersection
-    
+    // -------------------------------------------------------------
     // Check intersection with left edge (x = leftEdge)
+    // -------------------------------------------------------------
     if (cosAngle < -0.0001) { // Line going left
         float r = (leftEdge - earth_ui_x+2) / cosAngle;
-        if (r > 0) radius = min(radius, r);
-    }
-    
+        if (r > 0) radius = min(radius, r);}
+    // -------------------------------------------------------------
     // Check intersection with right edge (x = rightEdge)
+    // -------------------------------------------------------------
     if (cosAngle > 0.0001) { // Line going right
         float r = (rightEdge - earth_ui_x+2) / cosAngle;
-        if (r > 0) radius = min(radius, r);
-    }
-    
+        if (r > 0) radius = min(radius, r);}
+    // -------------------------------------------------------------
     // Check intersection with top edge (y = topEdge)
+    // -------------------------------------------------------------
     if (sinAngle < -0.0001) { // Line going up
         float r = (topEdge - earth_ui_y+2) / sinAngle;
-        if (r > 0) radius = min(radius, r);
-    }
-    
+        if (r > 0) radius = min(radius, r);}
+    // -------------------------------------------------------------
     // Check intersection with bottom edge (y = bottomEdge)
+    // -------------------------------------------------------------
     if (sinAngle > 0.0001) { // Line going down
         float r = (bottomEdge - earth_ui_y+2) / sinAngle;
-        if (r > 0) radius = min(radius, r);
-    }
-    
+        if (r > 0) radius = min(radius, r);}
+    // -------------------------------------------------------------
     // Calculate endpoint
+    // -------------------------------------------------------------
     endX = earth_ui_x+1 + (int16_t)(cosAngle * radius);
     endY = earth_ui_y+1 + (int16_t)(sinAngle * radius);
-
-    // Store elements
+    // -------------------------------------------------------------
+    // Store elements ready to clear next function call
+    // -------------------------------------------------------------
     seg_list[i][0]=earth_ui_x+1;
     seg_list[i][1]=earth_ui_y+1;
     seg_list[i][2]=endX;
     seg_list[i][3]=endY;
-    
+    // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
+    // -------------------------------------------------------------
     tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(24, 24, 24)); // draw current line for index i
-    
-    // Draw current text for index i
+    // -------------------------------------------------------------
+    // Draw constellations
+    // -------------------------------------------------------------
     canvas8x8.clear();
     display.setColor(RGB_COLOR16(24, 24, 24));
-
     if (i==3) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Gemini
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]+1;
       seg_list[i][5]=seg_list[i][3]+14;
       canvas8x8.printFixed(0, 0, String("G").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-    
-    // ---------------------------------------------------------------------------------------------------------
-
     else if (i==4) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Cancer
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i-1][2]-9;
       seg_list[i][5]=seg_list[i-1][3]+14;
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
-
+      // -------------------------------------------------------------
       // Scorpio
+      // -------------------------------------------------------------
       seg_list[5][4]=seg_list[i][2];
       seg_list[5][5]=127-20;
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[5][4], seg_list[5][5], canvas8x8);}
-    
-    // ---------------------------------------------------------------------------------------------------------
-
     else if (i==6) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Virgo
+      // -------------------------------------------------------------
       seg_list[i][4]=0+2;
       seg_list[i][5]=seg_list[i][3]-9;
       canvas8x8.printFixed(0, 0, String("V").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==7) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Libra
+      // -------------------------------------------------------------
       seg_list[i][4]=0+2;
       seg_list[i][5]=seg_list[i-1][3]+2;
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-    
-    // ---------------------------------------------------------------------------------------------------------
-
     else if (i==8) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Leo
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]-7;
       seg_list[i][5]=seg_list[i][3]+1;
       canvas8x8.printFixed(0, 0, String("L").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==9) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Sagitarius
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]-9;
       seg_list[i][5]=127-9;
       canvas8x8.printFixed(0, 0, String("S").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==10) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Capricorn
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i-1][2]+1;
       seg_list[i][5]=127-9;
       canvas8x8.printFixed(0, 0, String("C").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
-    
+      // -------------------------------------------------------------
       // Taurus
+      // -------------------------------------------------------------
       seg_list[11][4]=seg_list[i][2]+1;
       seg_list[11][5]=seg_list[i][3]+1;
       canvas8x8.printFixed(0, 0, String("T").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[11][4], seg_list[11][5], canvas8x8);
       }
-    
     else if (i==0) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Aries
+      // -------------------------------------------------------------
       seg_list[i][4]=127-9;
       seg_list[i][5]=seg_list[i][3]-9;
       canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-    
     else if (i==1) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Pisces
+      // -------------------------------------------------------------
       seg_list[i][4]=127-9;
       seg_list[i][5]=seg_list[i-1][3]+2;
       canvas8x8.printFixed(0, 0, String("P").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
-
     else if (i==2) {
-      // tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(255, 0, 0));
+      // -------------------------------------------------------------
       // Aquarius
+      // -------------------------------------------------------------
       seg_list[i][4]=seg_list[i][2]-7;
       seg_list[i][5]=127-20;
       canvas8x8.printFixed(0, 0, String("A").c_str(), STYLE_BOLD);
