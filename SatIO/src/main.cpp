@@ -15181,6 +15181,8 @@ int seg_list[12][6] {
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}
 };
 
+uint16_t color_constellation=RGB_COLOR16(24,24,24);
+
 void drawConstellations() {
   // -------------------------------------------------------------
   // uncomment to test
@@ -15189,7 +15191,7 @@ void drawConstellations() {
   // -------------------------------------------------------------
   // border
   // -------------------------------------------------------------
-  tft.drawRect(1, 13, 127, 115, RGB_COLOR16(24, 24, 24));
+  tft.drawRect(1, 13, 127, 115, color_constellation);
   // -------------------------------------------------------------
   // Calculate rectangle boundaries
   // -------------------------------------------------------------
@@ -15344,12 +15346,12 @@ void drawConstellations() {
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
-    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], RGB_COLOR16(24, 24, 24)); // draw current line for index i
+    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_constellation); // draw current line for index i
     // -------------------------------------------------------------
     // Draw constellations
     // -------------------------------------------------------------
     canvas8x8.clear();
-    display.setColor(RGB_COLOR16(24, 24, 24));
+    display.setColor(color_constellation);
     if (i==3) {
       // -------------------------------------------------------------
       // Gemini
