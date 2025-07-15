@@ -15184,7 +15184,7 @@ int seg_list[12][6] {
 void drawConstellations() {
   // -----------------------------------------------------------------
   // draw 12 lines not overlapping perimeter, with earth as axis.
-  // todo: pin constellation name/symbol left/right of lines.
+  // todo: simplify
   // -----------------------------------------------------------------
 
   // uncomment to test
