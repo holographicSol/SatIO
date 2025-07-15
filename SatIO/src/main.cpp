@@ -15339,7 +15339,8 @@ void drawConstellations() {
       // Virgo
       // -------------------------------------------------------------
       seg_list[i][4]=1;
-      seg_list[i][5]=seg_list[i][3]-9;
+      // seg_list[i][5]=seg_list[i][3]-9;
+      seg_list[i][5]=seg_list[i][3]-(int)((seg_list[6][3]-seg_list[7][3])/2)-3; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("v").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==7) {
@@ -15347,7 +15348,7 @@ void drawConstellations() {
       // Libra
       // -------------------------------------------------------------
       seg_list[i][4]=1;
-      seg_list[i][5]=seg_list[i-1][3]+2;
+      seg_list[i][5]=seg_list[i-1][3]+(int)((seg_list[5][3]-seg_list[6][3])/2)-3; // adjust 3 for font size
       canvas8x8.printFixed(0, 0, String("l").c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);}
     else if (i==8) {
