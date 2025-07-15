@@ -15403,8 +15403,6 @@ void drawConstellations() {
       // -------------------------------------------------------------
       // Scorpio
       // -------------------------------------------------------------
-      // tft.drawLine(seg_list[4][0], seg_list[4][1], seg_list[4][2], seg_list[4][3], color_constellation);
-
       if (seg_list[i][3]+(int)(height-seg_list[i][3])/2<=height-9) {
         seg_list[i][4]=1;
         seg_list[i][5]=seg_list[i][3]+(int)(height-seg_list[i][3])/2;
