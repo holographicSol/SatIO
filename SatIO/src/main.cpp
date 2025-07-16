@@ -15131,9 +15131,9 @@ int seg_list[12][6] {
 };
 
 char seglist_name[12][8] {
-  {"a"}, {"p"}, {"a"}, {"g"},
-  {"c"}, {"s"}, {"v"}, {"l"},
-  {"l"}, {"s"}, {"c"}, {"t"}
+  {"A"}, {"P"}, {"A"}, {"G"},
+  {"C"}, {"S"}, {"V"}, {"L"},
+  {"L"}, {"S"}, {"C"}, {"T"}
 };
 
 uint16_t color_constellation_seg=RGB_COLOR16(24,24,24);
