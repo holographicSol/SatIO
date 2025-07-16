@@ -15141,9 +15141,9 @@ uint16_t color_constellation_sym=RGB_COLOR16(255,255,0);
 
 void drawConstellations() {
   // ---------------------------------------------------------------
-  // todo: continue to tweak smooth and then simplify
+  // todo: continue to tweak smooth and simplify
   // todo: optional or hardcoded symbols instead of alpha
-  // todo: 'expected' meteors
+  // todo: 'expected' meteors/asteroids
   // todo: moon phase
   // ---------------------------------------------------------------
   // uncomment to test
