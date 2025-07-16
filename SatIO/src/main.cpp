@@ -15708,7 +15708,7 @@ void drawZodiac() {
   sundial[0][1]=earth_ui_y+1;
   sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 3);
   sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 3);
-  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], TFT_GREEN); // draw new
+  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], TFT_YELLOW); // draw new
 }
 
 void drawPlanets() {
@@ -15764,7 +15764,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); // create the Sprite pixels width and height
-    hud.fillCircle(1, 1, 1, TFT_YELLOW);
+    hud.fillCircle(1, 1, 1, TFT_PURPLE);
     // venus_ui_x = 65 + 13 * sin(radians(test_angle+90)); // (test)
     // venus_ui_y = 65 + 13 * cos(radians(test_angle+90)); // (test)
     venus_ui_x = 65 + 13 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90));
