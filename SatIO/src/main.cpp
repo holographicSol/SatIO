@@ -15426,7 +15426,35 @@ void drawZodiac() {
   // Calculate angles for 12 evenly spaced lines (30 degrees each)
   // ---------------------------------------------------------------
   const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
+
   // ---------------------------------------------------------------
+  // Calculate space area visibility
+  // ---------------------------------------------------------------
+  int highlight_index_center = (int)(siderealPlanetData.sun_ecliptic_long / 30.0); // Zodiac segment (0–11)
+  highlight_index_center = (12 - highlight_index_center) % 12; // Adjust for your index order (Aries=0 at 90°)
+  // highlight_index_center=0; // uncomment to test min/max
+  signed int highlight_index_left_0=highlight_index_center-3;
+  signed int highlight_index_left_1=highlight_index_center-2;
+  signed int highlight_index_left_2=highlight_index_center-1;
+  signed int highlight_index_right_0=highlight_index_center+3;
+  signed int highlight_index_right_1=highlight_index_center+2;
+  signed int highlight_index_right_2=highlight_index_center+1;
+  if (highlight_index_left_0<0) {highlight_index_left_0=12-abs(highlight_index_left_0);}
+  if (highlight_index_left_1<0) {highlight_index_left_1=12-abs(highlight_index_left_1);}
+  if (highlight_index_left_2<0) {highlight_index_left_2=12-abs(highlight_index_left_2);}
+  if (highlight_index_right_0>11) {highlight_index_right_0=highlight_index_right_0-12;}
+  if (highlight_index_right_1>11) {highlight_index_right_1=highlight_index_right_1-12;}
+  if (highlight_index_right_2>11) {highlight_index_right_2=highlight_index_right_2-12;}
+  // // uncomment to test min/max
+  // Serial.println(highlight_index_left_0);
+  // Serial.println(highlight_index_left_1);
+  // Serial.println(highlight_index_left_2);
+  // Serial.println(highlight_index_center);
+  // Serial.println(highlight_index_right_2);
+  // Serial.println(highlight_index_right_1);
+  // Serial.println(highlight_index_right_0);
+  // Serial.println("------------");
+  // // ---------------------------------------------------------------
   // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
@@ -15495,9 +15523,16 @@ void drawZodiac() {
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
     tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
-    // color differntiate certain lines according to visible space area in relation to location on earth
-    // dark red: 180
-    // dark green: 30 -> 150
+    // -------------------------------------------------------------
+    // Draw colored lines to convey visible space
+    // -------------------------------------------------------------
+    if (i==highlight_index_left_0) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,0,0));}
+    if (i==highlight_index_left_1) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,64,0));}
+    if (i==highlight_index_left_2) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
+    // if (i==highlight_index_center) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
+    if (i==highlight_index_right_2) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
+    if (i==highlight_index_right_1) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,64,0));}
+    if (i==highlight_index_right_0) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,0,0));}
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
