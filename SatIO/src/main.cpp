@@ -15701,7 +15701,7 @@ void drawZodiac() {
   if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong);}
   eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
   // ----------------------------------------------------------------------------------------------------------
-  // Draw colored line to convey attitude in space
+  // Draw sun dial
   // ----------------------------------------------------------------------------------------------------------
   tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0)); // clear old
   sundial[0][0]=earth_ui_x+1;
