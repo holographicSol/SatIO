@@ -15377,6 +15377,9 @@ float test_moon_angle=90;
 int16_t zodiac_end_x;
 int16_t zodiac_end_y;
 
+int16_t sundial_end_x;
+int16_t sundial_end_y;
+
 int zodiac_list[12][6] {
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
@@ -15392,7 +15395,44 @@ char zodiac_name[12][8] {
 uint16_t color_zodiac_seg=RGB_COLOR16(24,24,24);
 uint16_t color_zodiac_sym=RGB_COLOR16(255,255,0);
 
+int sundial[1][4] {
+  {0,0,0,0}
+};
+
 bool zodiac_display_sym=true;
+
+// Convert LST (right ascension) to ecliptic longitude (simplified)
+float raToEclipticLong(float ra) {
+    // Simplified: assumes zenith is near ecliptic plane
+    float eclipticLong = ra; // Approximate, as zodiac is near ecliptic
+    return fmod(eclipticLong, 360.0);
+}
+
+// Calculate Local Sidereal Time (LST) in degrees
+float calculateLST(float lon, int year, int month, int day, int hour, int minute, int second) {
+    // Current time in hours
+    float currentTime = hour + minute / 60.0 + second / 3600.0;
+    
+    // Approximate Julian Date
+    float JD = 2451545.0 + (year - 2000) * 365.25 + (month - 1) * 30.42 + day +
+               currentTime / 24.0;
+    
+    // Greenwich Mean Sidereal Time (GMST) at 0h UT
+    float T = (JD - 2451545.0) / 36525.0; // Julian centuries since J2000.0
+    float GMST = 280.46061837 + 360.98564736629 * (JD - 2451545.0) +
+                 0.000387933 * T * T - T * T * T / 38710000.0;
+    
+    // Normalize to 0–360°
+    GMST = fmod(GMST, 360.0);
+    if (GMST < 0) GMST += 360.0;
+    
+    // Local Sidereal Time = GMST + longitude (in degrees)
+    float LST = GMST + lon;
+    LST = fmod(LST, 360.0);
+    if (LST < 0) LST += 360.0;
+    
+    return LST;
+}
 
 void drawZodiac() {
   // ---------------------------------------------------------------
@@ -15426,35 +15466,16 @@ void drawZodiac() {
   // Calculate angles for 12 evenly spaced lines (30 degrees each)
   // ---------------------------------------------------------------
   const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
-
+  // -------------------------------------------------------------
+  // Calculate intersection with rectangle edges
+  // -------------------------------------------------------------
+  float cosAngle;
+  float sinAngle;
+  // -------------------------------------------------------------
+  // Initialize radius to a large value
+  // -------------------------------------------------------------
+  float radius = 10000.0; // Large enough to ensure intersection
   // ---------------------------------------------------------------
-  // Calculate space area visibility
-  // ---------------------------------------------------------------
-  int highlight_index_center = (int)(siderealPlanetData.sun_ecliptic_long / 30.0); // Zodiac segment (0–11)
-  highlight_index_center = (12 - highlight_index_center) % 12; // Adjust for your index order (Aries=0 at 90°)
-  // highlight_index_center=0; // uncomment to test min/max
-  signed int highlight_index_left_0=highlight_index_center-3;
-  signed int highlight_index_left_1=highlight_index_center-2;
-  signed int highlight_index_left_2=highlight_index_center-1;
-  signed int highlight_index_right_0=highlight_index_center+3;
-  signed int highlight_index_right_1=highlight_index_center+2;
-  signed int highlight_index_right_2=highlight_index_center+1;
-  if (highlight_index_left_0<0) {highlight_index_left_0=12-abs(highlight_index_left_0);}
-  if (highlight_index_left_1<0) {highlight_index_left_1=12-abs(highlight_index_left_1);}
-  if (highlight_index_left_2<0) {highlight_index_left_2=12-abs(highlight_index_left_2);}
-  if (highlight_index_right_0>11) {highlight_index_right_0=highlight_index_right_0-12;}
-  if (highlight_index_right_1>11) {highlight_index_right_1=highlight_index_right_1-12;}
-  if (highlight_index_right_2>11) {highlight_index_right_2=highlight_index_right_2-12;}
-  // // uncomment to test min/max
-  // Serial.println(highlight_index_left_0);
-  // Serial.println(highlight_index_left_1);
-  // Serial.println(highlight_index_left_2);
-  // Serial.println(highlight_index_center);
-  // Serial.println(highlight_index_right_2);
-  // Serial.println(highlight_index_right_1);
-  // Serial.println(highlight_index_right_0);
-  // Serial.println("------------");
-  // // ---------------------------------------------------------------
   // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
@@ -15477,12 +15498,12 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Calculate intersection with rectangle edges
     // -------------------------------------------------------------
-    float cosAngle = cos(angle);
-    float sinAngle = sin(angle);
+    cosAngle = cos(angle);
+    sinAngle = sin(angle);
     // -------------------------------------------------------------
     // Initialize radius to a large value
     // -------------------------------------------------------------
-    float radius = 10000.0; // Large enough to ensure intersection
+    radius = 10000.0; // Large enough to ensure intersection
     // -------------------------------------------------------------
     // Check intersection with left edge (x = leftEdge)
     // -------------------------------------------------------------
@@ -15523,16 +15544,6 @@ void drawZodiac() {
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
     tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
-    // -------------------------------------------------------------
-    // Draw colored lines to convey visible space
-    // -------------------------------------------------------------
-    if (i==highlight_index_left_0) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,0,0));}
-    if (i==highlight_index_left_1) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,64,0));}
-    if (i==highlight_index_left_2) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
-    // if (i==highlight_index_center) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
-    if (i==highlight_index_right_2) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,64,0));}
-    if (i==highlight_index_right_1) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,64,0));}
-    if (i==highlight_index_right_0) {tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(64,0,0));}
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -15672,17 +15683,32 @@ void drawZodiac() {
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], 9, 9, image_data_taurus_Image);}
     }
-
+    // --------------------------------------------------------------------------
+    // Draw zodiac name
+    // --------------------------------------------------------------------------
     if (zodiac_display_sym==false) {
-      // --------------------------------------------------------------------------
-      // Draw zodiac
-      // --------------------------------------------------------------------------
       canvas8x8.clear();
       display.setColor(color_zodiac_sym);
       canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);
       display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
     }
   }
+  // ----------------------------------------------------------------------------------------------------------
+  // Calculate sun dial position relative to users earth coordinates and suns right ascension relative to earth
+  // ----------------------------------------------------------------------------------------------------------
+  float eclipticLong;
+  eclipticLong=siderealPlanetData.sun_ra-270; // Adjust for your index order (Aries=index 0 at 90°)
+  if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong);}
+  eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
+  // ----------------------------------------------------------------------------------------------------------
+  // Draw colored line to convey attitude in space
+  // ----------------------------------------------------------------------------------------------------------
+  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0)); // clear old
+  sundial[0][0]=earth_ui_x+1;
+  sundial[0][1]=earth_ui_y+1;
+  sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 45);
+  sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 45);
+  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(48,48,48)); // draw new
 }
 
 void drawPlanets() {
