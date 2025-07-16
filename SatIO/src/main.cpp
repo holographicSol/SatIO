@@ -15694,14 +15694,14 @@ void drawZodiac() {
     }
   }
   // ----------------------------------------------------------------------------------------------------------
-  // Calculate sun zenith relative to users earth coordinates and suns right ascension relative to earth
+  // Calculate zenith relative to users earth coordinates and suns right ascension relative to earth
   // ----------------------------------------------------------------------------------------------------------
   float eclipticLong;
   eclipticLong=siderealPlanetData.sun_ra-270; // Adjust for your index order (Aries=index 0 at 90°)
   if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong);}
   eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
   // ----------------------------------------------------------------------------------------------------------
-  // Draw sun zenith
+  // Draw zenith
   // ----------------------------------------------------------------------------------------------------------
   tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0)); // clear old
   sundial[0][0]=earth_ui_x+1;
