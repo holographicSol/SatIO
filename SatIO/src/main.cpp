@@ -15374,8 +15374,8 @@ float test_angle=90;
 float test_moon_angle=90;
 
 // Calculate endpoint
-int16_t endX;
-int16_t endY;
+int16_t zodiac_end_x;
+int16_t zodiac_end_y;
 
 int zodiac_list[12][6] {
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
@@ -15482,15 +15482,15 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Calculate endpoint
     // -------------------------------------------------------------
-    endX = earth_ui_x+1 + (int16_t)(cosAngle * radius);
-    endY = earth_ui_y+1 + (int16_t)(sinAngle * radius);
+    zodiac_end_x = earth_ui_x+1 + (int16_t)(cosAngle * radius);
+    zodiac_end_y = earth_ui_y+1 + (int16_t)(sinAngle * radius);
     // -------------------------------------------------------------
     // Store elements ready to clear next function call
     // -------------------------------------------------------------
     zodiac_list[i][0]=earth_ui_x+1;
     zodiac_list[i][1]=earth_ui_y+1;
-    zodiac_list[i][2]=endX;
-    zodiac_list[i][3]=endY;
+    zodiac_list[i][2]=zodiac_end_x;
+    zodiac_list[i][3]=zodiac_end_y;
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
@@ -15534,10 +15534,10 @@ void drawZodiac() {
     else if (i==2) {
       if (zodiac_list[1][3]+(int)(height-zodiac_list[1][3])/2<=height-10) {
         zodiac_list[2][4]=width-10;
-        zodiac_list[2][5]=zodiac_list[1][3]+(int)(height-zodiac_list[1][3])/2;}
+        zodiac_list[2][5]=zodiac_list[1][3]+(int)((height-zodiac_list[1][3])/3);}
       else {
-        zodiac_list[2][4]=zodiac_list[2][2]+(int)(width-zodiac_list[2][2])/2;
-        zodiac_list[2][5]=height-10;}
+        zodiac_list[2][4]=zodiac_list[2][2]+(int)((width-zodiac_list[2][2])/3);
+        zodiac_list[2][5]=height-11;}
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[2][4], zodiac_list[2][5], 9, 9, image_data_aquarius_Image);}
     }
@@ -15545,8 +15545,8 @@ void drawZodiac() {
     // Gemini
     // --------------------------------------------------------------------------
     if (i==3) {
-      zodiac_list[3][4]=zodiac_list[9][2]+(int)((zodiac_list[10][2]-zodiac_list[9][2])/2)-3;
-      zodiac_list[3][5]=zodiac_list[3][3]+1;
+      zodiac_list[3][4]=zodiac_list[9][2]+(int)((zodiac_list[10][2]-zodiac_list[9][2])/2)-4;
+      zodiac_list[3][5]=zodiac_list[3][3]+2;
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[3][4], zodiac_list[3][5], 9, 9, image_data_gemini_Image);}
     }
@@ -15555,7 +15555,7 @@ void drawZodiac() {
     // --------------------------------------------------------------------------
     else if (i==4) {
       zodiac_list[4][4]=zodiac_list[9][2]-(int)((zodiac_list[9][2]-zodiac_list[8][2])/2);
-      zodiac_list[4][5]=zodiac_list[3][3]+1;
+      zodiac_list[4][5]=zodiac_list[3][3]+2;
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[4][4], zodiac_list[4][5], 9, 9, image_data_cancer_Image);}
     }
@@ -15568,7 +15568,7 @@ void drawZodiac() {
         zodiac_list[5][5]=zodiac_list[5][3]+(int)(height-zodiac_list[5][3])/2;}
       else {
         zodiac_list[5][4]=(int)(zodiac_list[4][2])/2;
-        zodiac_list[5][5]=height-10;}
+        zodiac_list[5][5]=height-11;}
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[5][4], zodiac_list[5][5], 9, 9, image_data_scorpio_Image);}
     }
@@ -15608,7 +15608,7 @@ void drawZodiac() {
     // --------------------------------------------------------------------------
     else if (i==9) {
       zodiac_list[9][4]=zodiac_list[3][2]-(int)((zodiac_list[3][2]-zodiac_list[4][2])/2);
-      zodiac_list[9][5]=height-10;
+      zodiac_list[9][5]=height-11;
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[9][4], zodiac_list[9][5], 9, 9, image_data_sagitarius_Image);}
     }
@@ -15616,8 +15616,8 @@ void drawZodiac() {
     // Capricorn
     // --------------------------------------------------------------------------
     else if (i==10) {
-      zodiac_list[10][4]=zodiac_list[3][2]+(int)((zodiac_list[2][2]-zodiac_list[3][2])/2)-3;
-      zodiac_list[10][5]=height-10;
+      zodiac_list[10][4]=zodiac_list[3][2]+(int)((zodiac_list[2][2]-zodiac_list[3][2])/2)-6;
+      zodiac_list[10][5]=height-11;
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], 9, 9, image_data_capricorn_Image);}
     }
@@ -15629,7 +15629,7 @@ void drawZodiac() {
         zodiac_list[11][4]=width-10;
         zodiac_list[11][5]=zodiac_list[11][3]-(int)(zodiac_list[11][3])/2;}
       else {
-        zodiac_list[11][4]=zodiac_list[10][2]+(int)((width-zodiac_list[10][2])/3);
+        zodiac_list[11][4]=zodiac_list[10][2]+(int)((width-zodiac_list[10][2])/3)-4;
         zodiac_list[11][5]=zodiac_list[10][3]+2;}
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], 9, 9, image_data_taurus_Image);}
