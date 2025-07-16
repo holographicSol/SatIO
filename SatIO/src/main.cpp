@@ -15495,6 +15495,9 @@ void drawZodiac() {
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
     tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
+    // color differntiate certain lines according to visible space area in relation to location on earth
+    // dark red: 180
+    // dark green: 30 -> 150
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
