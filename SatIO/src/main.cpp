@@ -15403,6 +15403,7 @@ bool zodiac_display_sym=true;
 
 // Convert LST (right ascension) to ecliptic longitude (simplified)
 float raToEclipticLong(float ra) {
+    constexpr float obliquity = 23.44 * PI / 180.0;
     // Simplified: assumes zenith is near ecliptic plane
     float eclipticLong = ra; // Approximate, as zodiac is near ecliptic
     return fmod(eclipticLong, 360.0);
@@ -15410,8 +15411,13 @@ float raToEclipticLong(float ra) {
 
 // Calculate Local Sidereal Time (LST) in degrees
 float calculateLST(float lon, int year, int month, int day, int hour, int minute, int second) {
-    // Current time in hours
-    float currentTime = hour + minute / 60.0 + second / 3600.0;
+    // Calculate solar noon from sunrise/sunset to estimate equation of time
+    float sunriseTime = (int)siderealPlanetData.sun_r;
+    float sunsetTime = (int)siderealPlanetData.sun_s;
+    float solarNoon = (sunriseTime + sunsetTime) / 2.0;
+    
+    // Current time in hours (adjusted for BST, UTC+1)
+    float currentTime = hour + minute / 60.0 + second / 3600.0 - 1.0; // Subtract 1 hour for BST to UTC
     
     // Approximate Julian Date
     float JD = 2451545.0 + (year - 2000) * 365.25 + (month - 1) * 30.42 + day +
@@ -15426,7 +15432,7 @@ float calculateLST(float lon, int year, int month, int day, int hour, int minute
     GMST = fmod(GMST, 360.0);
     if (GMST < 0) GMST += 360.0;
     
-    // Local Sidereal Time = GMST + longitude (in degrees)
+    // Local Sidereal Time = GMST + longitude
     float LST = GMST + lon;
     LST = fmod(LST, 360.0);
     if (LST < 0) LST += 360.0;
@@ -15693,22 +15699,32 @@ void drawZodiac() {
       display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
     }
   }
-  // ----------------------------------------------------------------------------------------------------------
-  // Calculate zenith relative to users earth coordinates and suns right ascension relative to earth
-  // ----------------------------------------------------------------------------------------------------------
-  // float eclipticLong;
-  // eclipticLong=siderealPlanetData.sun_ra-270; // Adjust for your index order (Aries=index 0 at 90°)
-  // if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong);}
+  // ---------------------------------------------------------------
+  // Calculate earths attitude in space relative to user coordinates
+  // ---------------------------------------------------------------
+  // // float lst = calculateLST(satData.degrees_longitude, satData.local_year, satData.local_month, satData.local_day,
+  // //                         1, 0, satData.local_second);
+  // // float lst = calculateLST(satData.degrees_longitude, satData.local_year, satData.local_month, satData.local_day,
+  // //                         satData.local_hour, satData.local_minute, satData.local_second);
+  // // float eclipticLong = raToEclipticLong(lst);
+  // int eclipticLong = (int)siderealPlanetData.sun_ecliptic_long;
+  // Serial.println("[eclipticLong 0]   " + String(eclipticLong));
+  // eclipticLong=eclipticLong-0; // Adjust for your index order (Aries=index 0 at 90°)
+  // Serial.println("[eclipticLong 1]   " + String(eclipticLong));
+  // if (eclipticLong>360) {eclipticLong=eclipticLong-360; Serial.println("[eclipticLong 2 A] " + String(eclipticLong));}
+  // if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong); Serial.println("[eclipticLong 2 B] " + String(eclipticLong));}
   // eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
-  // // ----------------------------------------------------------------------------------------------------------
-  // // Draw zenith
-  // // ----------------------------------------------------------------------------------------------------------
-  // tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0)); // clear old
+  // Serial.println("[eclipticLong 3]   " + String(eclipticLong));
+  // Serial.println("-----------------------------");
+  // // -------------------------------------------------------------
+  // // Draw colored line to convey attitude in space
+  // // -------------------------------------------------------------
+  // tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0));
   // sundial[0][0]=earth_ui_x+1;
   // sundial[0][1]=earth_ui_y+1;
-  // sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 4);
-  // sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 4);
-  // tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], TFT_YELLOW); // draw new
+  // sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 45);
+  // sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 45);
+  // tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(48,48,48));
 }
 
 void drawPlanets() {
@@ -15764,7 +15780,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); // create the Sprite pixels width and height
-    hud.fillCircle(1, 1, 1, TFT_PURPLE);
+    hud.fillCircle(1, 1, 1, TFT_YELLOW);
     // venus_ui_x = 65 + 13 * sin(radians(test_angle+90)); // (test)
     // venus_ui_y = 65 + 13 * cos(radians(test_angle+90)); // (test)
     venus_ui_x = 65 + 13 * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90));
