@@ -15706,9 +15706,9 @@ void drawZodiac() {
   tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0)); // clear old
   sundial[0][0]=earth_ui_x+1;
   sundial[0][1]=earth_ui_y+1;
-  sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 45);
-  sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 45);
-  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], TFT_GOLD); // draw new
+  sundial[0][2]=earth_ui_x + (int)(cos(eclipticLong * PI / 180.0) * 3);
+  sundial[0][3]=earth_ui_y + (int)(sin(eclipticLong * PI / 180.0) * 3);
+  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], TFT_GREEN); // draw new
 }
 
 void drawPlanets() {
