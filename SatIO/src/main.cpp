@@ -15377,13 +15377,13 @@ float test_moon_angle=90;
 int16_t endX;
 int16_t endY;
 
-int seg_list[12][6] {
+int zodiac_list[12][6] {
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}
 };
 
-char seglist_name[12][8] {
+char zodiac_name[12][8] {
   {"A"}, {"P"}, {"A"}, {"G"},
   {"C"}, {"S"}, {"V"}, {"L"},
   {"L"}, {"S"}, {"C"}, {"T"}
@@ -15433,15 +15433,15 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Clear previous line for
     // -------------------------------------------------------------
-    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], TFT_BLACK);
+    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_BLACK);
     // -------------------------------------------------------------
     // Clear previous text/sym
     // -------------------------------------------------------------
     canvas9x9.clear();
     if (zodiac_display_sym==false) {
       display.setColor(TFT_BLACK);
-      canvas8x8.printFixed(0, 0, String(seglist_name[i]).c_str(), STYLE_BOLD);}
-    else {display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas9x9);}
+      canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);}
+    else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
     // -------------------------------------------------------------
     // Step angle
     // -------------------------------------------------------------
@@ -15487,14 +15487,14 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Store elements ready to clear next function call
     // -------------------------------------------------------------
-    seg_list[i][0]=earth_ui_x+1;
-    seg_list[i][1]=earth_ui_y+1;
-    seg_list[i][2]=endX;
-    seg_list[i][3]=endY;
+    zodiac_list[i][0]=earth_ui_x+1;
+    zodiac_list[i][1]=earth_ui_y+1;
+    zodiac_list[i][2]=endX;
+    zodiac_list[i][3]=endY;
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
-    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_zodiac_seg);
+    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -15514,125 +15514,125 @@ void drawZodiac() {
     // Aries
     // --------------------------------------------------------------------------
     if (i==0) {
-      seg_list[0][4]=width-10;
-      seg_list[0][5]=seg_list[0][3]-(int)((seg_list[0][3]-seg_list[11][3])/2)-3;
+      zodiac_list[0][4]=width-10;
+      zodiac_list[0][5]=zodiac_list[0][3]-(int)((zodiac_list[0][3]-zodiac_list[11][3])/2)-3;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[0][4], seg_list[0][5], 9, 9, image_data_aries_Image);}
+      display.drawBitmap16(zodiac_list[0][4], zodiac_list[0][5], 9, 9, image_data_aries_Image);}
     }
     // --------------------------------------------------------------------------
     // Pisces
     // --------------------------------------------------------------------------
     else if (i==1) {
-      seg_list[1][4]=width-10;
-      seg_list[1][5]=seg_list[0][3]+(int)((seg_list[1][3]-seg_list[0][3])/2)-6;
+      zodiac_list[1][4]=width-10;
+      zodiac_list[1][5]=zodiac_list[0][3]+(int)((zodiac_list[1][3]-zodiac_list[0][3])/2)-6;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[1][4], seg_list[1][5], 9, 9, image_data_pisces_Image);}
+      display.drawBitmap16(zodiac_list[1][4], zodiac_list[1][5], 9, 9, image_data_pisces_Image);}
     }
     // --------------------------------------------------------------------------
     // Aquarius
     // --------------------------------------------------------------------------
     else if (i==2) {
-      if (seg_list[1][3]+(int)(height-seg_list[1][3])/2<=height-10) {
-        seg_list[2][4]=width-10;
-        seg_list[2][5]=seg_list[1][3]+(int)(height-seg_list[1][3])/2;}
+      if (zodiac_list[1][3]+(int)(height-zodiac_list[1][3])/2<=height-10) {
+        zodiac_list[2][4]=width-10;
+        zodiac_list[2][5]=zodiac_list[1][3]+(int)(height-zodiac_list[1][3])/2;}
       else {
-        seg_list[2][4]=seg_list[2][2]+(int)(width-seg_list[2][2])/2;
-        seg_list[2][5]=height-10;}
+        zodiac_list[2][4]=zodiac_list[2][2]+(int)(width-zodiac_list[2][2])/2;
+        zodiac_list[2][5]=height-10;}
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[2][4], seg_list[2][5], 9, 9, image_data_aquarius_Image);}
+      display.drawBitmap16(zodiac_list[2][4], zodiac_list[2][5], 9, 9, image_data_aquarius_Image);}
     }
     // --------------------------------------------------------------------------
     // Gemini
     // --------------------------------------------------------------------------
     if (i==3) {
-      seg_list[3][4]=seg_list[9][2]+(int)((seg_list[10][2]-seg_list[9][2])/2)-3;
-      seg_list[3][5]=seg_list[3][3]+1;
+      zodiac_list[3][4]=zodiac_list[9][2]+(int)((zodiac_list[10][2]-zodiac_list[9][2])/2)-3;
+      zodiac_list[3][5]=zodiac_list[3][3]+1;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[3][4], seg_list[3][5], 9, 9, image_data_gemini_Image);}
+      display.drawBitmap16(zodiac_list[3][4], zodiac_list[3][5], 9, 9, image_data_gemini_Image);}
     }
     // --------------------------------------------------------------------------
     // Cancer
     // --------------------------------------------------------------------------
     else if (i==4) {
-      seg_list[4][4]=seg_list[9][2]-(int)((seg_list[9][2]-seg_list[8][2])/2);
-      seg_list[4][5]=seg_list[3][3]+1;
+      zodiac_list[4][4]=zodiac_list[9][2]-(int)((zodiac_list[9][2]-zodiac_list[8][2])/2);
+      zodiac_list[4][5]=zodiac_list[3][3]+1;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[4][4], seg_list[4][5], 9, 9, image_data_cancer_Image);}
+      display.drawBitmap16(zodiac_list[4][4], zodiac_list[4][5], 9, 9, image_data_cancer_Image);}
     }
     // --------------------------------------------------------------------------
     // Scorpio
     // --------------------------------------------------------------------------
     else if (i==5) {
-      if (seg_list[5][3]+(int)(height-seg_list[5][3])/2<=height-10) {
-        seg_list[5][4]=2;
-        seg_list[5][5]=seg_list[5][3]+(int)(height-seg_list[5][3])/2;}
+      if (zodiac_list[5][3]+(int)(height-zodiac_list[5][3])/2<=height-10) {
+        zodiac_list[5][4]=2;
+        zodiac_list[5][5]=zodiac_list[5][3]+(int)(height-zodiac_list[5][3])/2;}
       else {
-        seg_list[5][4]=(int)(seg_list[4][2])/2;
-        seg_list[5][5]=height-10;}
+        zodiac_list[5][4]=(int)(zodiac_list[4][2])/2;
+        zodiac_list[5][5]=height-10;}
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[5][4], seg_list[5][5], 9, 9, image_data_scorpio_Image);}
+      display.drawBitmap16(zodiac_list[5][4], zodiac_list[5][5], 9, 9, image_data_scorpio_Image);}
     }
     // --------------------------------------------------------------------------
     // Virgo
     // --------------------------------------------------------------------------
     else if (i==6) {
-      seg_list[6][4]=2;
-      seg_list[6][5]=seg_list[6][3]-(int)((seg_list[6][3]-seg_list[7][3])/2)-3;
+      zodiac_list[6][4]=2;
+      zodiac_list[6][5]=zodiac_list[6][3]-(int)((zodiac_list[6][3]-zodiac_list[7][3])/2)-3;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[6][4], seg_list[6][5], 9, 9, image_data_virgo_Image);}
+      display.drawBitmap16(zodiac_list[6][4], zodiac_list[6][5], 9, 9, image_data_virgo_Image);}
     }
     // --------------------------------------------------------------------------
     // Libra
     // --------------------------------------------------------------------------
     else if (i==7) {
-      seg_list[7][4]=2;
-      seg_list[7][5]=seg_list[6][3]+(int)((seg_list[5][3]-seg_list[6][3])/2)-3;
+      zodiac_list[7][4]=2;
+      zodiac_list[7][5]=zodiac_list[6][3]+(int)((zodiac_list[5][3]-zodiac_list[6][3])/2)-3;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[7][4], seg_list[7][5], 9, 9, image_data_libra_Image);}
+      display.drawBitmap16(zodiac_list[7][4], zodiac_list[7][5], 9, 9, image_data_libra_Image);}
     }
     // --------------------------------------------------------------------------
     // Leo
     // --------------------------------------------------------------------------
     else if (i==8) {
-      if ((seg_list[8][2]-2-(int)(seg_list[8][2])/2)-9>=1) {
-        seg_list[8][4]=(seg_list[8][2]-2-(int)(seg_list[8][2])/2)+2;
-        seg_list[8][5]=seg_list[8][3]+2;}
+      if ((zodiac_list[8][2]-2-(int)(zodiac_list[8][2])/2)-9>=1) {
+        zodiac_list[8][4]=(zodiac_list[8][2]-2-(int)(zodiac_list[8][2])/2)+2;
+        zodiac_list[8][5]=zodiac_list[8][3]+2;}
       else {
-        seg_list[8][4]=2;
-        seg_list[8][5]=seg_list[7][3]-(int)(seg_list[7][3])/2;}
+        zodiac_list[8][4]=2;
+        zodiac_list[8][5]=zodiac_list[7][3]-(int)(zodiac_list[7][3])/2;}
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[8][4], seg_list[8][5], 9, 9, image_data_leo_Image);}
+      display.drawBitmap16(zodiac_list[8][4], zodiac_list[8][5], 9, 9, image_data_leo_Image);}
     }
     // --------------------------------------------------------------------------
     // Sagitarius
     // --------------------------------------------------------------------------
     else if (i==9) {
-      seg_list[9][4]=seg_list[3][2]-(int)((seg_list[3][2]-seg_list[4][2])/2);
-      seg_list[9][5]=height-10;
+      zodiac_list[9][4]=zodiac_list[3][2]-(int)((zodiac_list[3][2]-zodiac_list[4][2])/2);
+      zodiac_list[9][5]=height-10;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[9][4], seg_list[9][5], 9, 9, image_data_sagitarius_Image);}
+      display.drawBitmap16(zodiac_list[9][4], zodiac_list[9][5], 9, 9, image_data_sagitarius_Image);}
     }
     // --------------------------------------------------------------------------
     // Capricorn
     // --------------------------------------------------------------------------
     else if (i==10) {
-      seg_list[10][4]=seg_list[3][2]+(int)((seg_list[2][2]-seg_list[3][2])/2)-3;
-      seg_list[10][5]=height-10;
+      zodiac_list[10][4]=zodiac_list[3][2]+(int)((zodiac_list[2][2]-zodiac_list[3][2])/2)-3;
+      zodiac_list[10][5]=height-10;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[10][4], seg_list[10][5], 9, 9, image_data_capricorn_Image);}
+      display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], 9, 9, image_data_capricorn_Image);}
     }
     // --------------------------------------------------------------------------
     // Taurus
     // --------------------------------------------------------------------------
     else if (i==11) {
-      if (seg_list[11][3]-9>=topEdge+6) {
-        seg_list[11][4]=width-10;
-        seg_list[11][5]=seg_list[11][3]-(int)(seg_list[11][3])/2;}
+      if (zodiac_list[11][3]-9>=topEdge+6) {
+        zodiac_list[11][4]=width-10;
+        zodiac_list[11][5]=zodiac_list[11][3]-(int)(zodiac_list[11][3])/2;}
       else {
-        seg_list[11][4]=seg_list[10][2]+(int)((width-seg_list[10][2])/3);
-        seg_list[11][5]=seg_list[10][3]+2;}
+        zodiac_list[11][4]=zodiac_list[10][2]+(int)((width-zodiac_list[10][2])/3);
+        zodiac_list[11][5]=zodiac_list[10][3]+2;}
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(seg_list[11][4], seg_list[11][5], 9, 9, image_data_taurus_Image);}
+      display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], 9, 9, image_data_taurus_Image);}
     }
 
     if (zodiac_display_sym==false) {
@@ -15641,8 +15641,8 @@ void drawZodiac() {
       // --------------------------------------------------------------------------
       canvas8x8.clear();
       display.setColor(color_zodiac_sym);
-      canvas8x8.printFixed(0, 0, String(seglist_name[i]).c_str(), STYLE_BOLD);
-      display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
+      canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);
+      display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
     }
   }
 }
