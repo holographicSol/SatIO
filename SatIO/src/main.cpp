@@ -15136,7 +15136,8 @@ char seglist_name[12][8] {
   {"l"}, {"s"}, {"c"}, {"t"}
 };
 
-uint16_t color_constellation=RGB_COLOR16(24,24,24);
+uint16_t color_constellation_seg=RGB_COLOR16(24,24,24);
+uint16_t color_constellation_sym=RGB_COLOR16(255,255,0);
 
 void drawConstellations() {
   // ---------------------------------------------------------------
@@ -15151,7 +15152,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
-  tft.drawRect(0, 11, 128, 117, color_constellation);
+  tft.drawRect(0, 11, 128, 117, color_constellation_seg);
   // ---------------------------------------------------------------
   // Calculate rectangle boundaries
   // ---------------------------------------------------------------
@@ -15237,7 +15238,7 @@ void drawConstellations() {
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
-    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_constellation); // draw current line for index i
+    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_constellation_seg);
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -15345,7 +15346,7 @@ void drawConstellations() {
     // Draw constellation
     // --------------------------------------------------------------------------
     canvas8x8.clear();
-    display.setColor(RGB_COLOR16(255,255,0));
+    display.setColor(color_constellation_sym);
     canvas8x8.printFixed(0, 0, String(seglist_name[i]).c_str(), STYLE_BOLD);
     display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
   }
