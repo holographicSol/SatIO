@@ -15389,14 +15389,14 @@ char seglist_name[12][8] {
   {"L"}, {"S"}, {"C"}, {"T"}
 };
 
-uint16_t color_constellation_seg=RGB_COLOR16(24,24,24);
-uint16_t color_constellation_sym=RGB_COLOR16(255,255,0);
+uint16_t color_zodiac_seg=RGB_COLOR16(24,24,24);
+uint16_t color_zodiac_sym=RGB_COLOR16(255,255,0);
 
-bool contellation_display_sym=true;
+bool zodiac_display_sym=true;
 
-void drawConstellations() {
+void drawZodiac() {
   // ---------------------------------------------------------------
-  // todo: tweak corner contellations to transition smoother between vertical and horizontal tracking
+  // todo: tweak corner zodiac signs to transition smoother between vertical and horizontal tracking
   // todo: optional or hardcoded symbols instead of alpha
   // todo: 'expected' meteors/asteroids
   // todo: moon phase
@@ -15407,7 +15407,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
-  tft.drawRect(0, 11, 128, 117, color_constellation_seg);
+  tft.drawRect(0, 11, 128, 117, color_zodiac_seg);
   // ---------------------------------------------------------------
   // Calculate rectangle boundaries
   // ---------------------------------------------------------------
@@ -15427,7 +15427,7 @@ void drawConstellations() {
   // ---------------------------------------------------------------
   const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
   // ---------------------------------------------------------------
-  // Clear existing constellations & Draw new constellations
+  // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
     // -------------------------------------------------------------
@@ -15438,7 +15438,7 @@ void drawConstellations() {
     // Clear previous text/sym
     // -------------------------------------------------------------
     canvas9x9.clear();
-    if (contellation_display_sym==false) {
+    if (zodiac_display_sym==false) {
       display.setColor(TFT_BLACK);
       canvas8x8.printFixed(0, 0, String(seglist_name[i]).c_str(), STYLE_BOLD);}
     else {display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas9x9);}
@@ -15494,7 +15494,7 @@ void drawConstellations() {
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
-    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_constellation_seg);
+    tft.drawLine(seg_list[i][0], seg_list[i][1], seg_list[i][2], seg_list[i][3], color_zodiac_seg);
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -15516,7 +15516,7 @@ void drawConstellations() {
     if (i==0) {
       seg_list[0][4]=width-10;
       seg_list[0][5]=seg_list[0][3]-(int)((seg_list[0][3]-seg_list[11][3])/2)-3;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[0][4], seg_list[0][5], 9, 9, image_data_aries_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15525,7 +15525,7 @@ void drawConstellations() {
     else if (i==1) {
       seg_list[1][4]=width-10;
       seg_list[1][5]=seg_list[0][3]+(int)((seg_list[1][3]-seg_list[0][3])/2)-6;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[1][4], seg_list[1][5], 9, 9, image_data_pisces_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15538,7 +15538,7 @@ void drawConstellations() {
       else {
         seg_list[2][4]=seg_list[2][2]+(int)(width-seg_list[2][2])/2;
         seg_list[2][5]=height-10;}
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[2][4], seg_list[2][5], 9, 9, image_data_aquarius_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15547,7 +15547,7 @@ void drawConstellations() {
     if (i==3) {
       seg_list[3][4]=seg_list[9][2]+(int)((seg_list[10][2]-seg_list[9][2])/2)-3;
       seg_list[3][5]=seg_list[3][3]+1;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[3][4], seg_list[3][5], 9, 9, image_data_gemini_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15556,7 +15556,7 @@ void drawConstellations() {
     else if (i==4) {
       seg_list[4][4]=seg_list[9][2]-(int)((seg_list[9][2]-seg_list[8][2])/2);
       seg_list[4][5]=seg_list[3][3]+1;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[4][4], seg_list[4][5], 9, 9, image_data_cancer_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15569,7 +15569,7 @@ void drawConstellations() {
       else {
         seg_list[5][4]=(int)(seg_list[4][2])/2;
         seg_list[5][5]=height-10;}
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[5][4], seg_list[5][5], 9, 9, image_data_scorpio_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15578,7 +15578,7 @@ void drawConstellations() {
     else if (i==6) {
       seg_list[6][4]=2;
       seg_list[6][5]=seg_list[6][3]-(int)((seg_list[6][3]-seg_list[7][3])/2)-3;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[6][4], seg_list[6][5], 9, 9, image_data_virgo_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15587,7 +15587,7 @@ void drawConstellations() {
     else if (i==7) {
       seg_list[7][4]=2;
       seg_list[7][5]=seg_list[6][3]+(int)((seg_list[5][3]-seg_list[6][3])/2)-3;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[7][4], seg_list[7][5], 9, 9, image_data_libra_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15600,7 +15600,7 @@ void drawConstellations() {
       else {
         seg_list[8][4]=2;
         seg_list[8][5]=seg_list[7][3]-(int)(seg_list[7][3])/2;}
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[8][4], seg_list[8][5], 9, 9, image_data_leo_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15609,7 +15609,7 @@ void drawConstellations() {
     else if (i==9) {
       seg_list[9][4]=seg_list[3][2]-(int)((seg_list[3][2]-seg_list[4][2])/2);
       seg_list[9][5]=height-10;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[9][4], seg_list[9][5], 9, 9, image_data_sagitarius_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15618,7 +15618,7 @@ void drawConstellations() {
     else if (i==10) {
       seg_list[10][4]=seg_list[3][2]+(int)((seg_list[2][2]-seg_list[3][2])/2)-3;
       seg_list[10][5]=height-10;
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[10][4], seg_list[10][5], 9, 9, image_data_capricorn_Image);}
     }
     // --------------------------------------------------------------------------
@@ -15631,16 +15631,16 @@ void drawConstellations() {
       else {
         seg_list[11][4]=seg_list[10][2]+(int)((width-seg_list[10][2])/3);
         seg_list[11][5]=seg_list[10][3]+2;}
-      if (contellation_display_sym==true) {
+      if (zodiac_display_sym==true) {
       display.drawBitmap16(seg_list[11][4], seg_list[11][5], 9, 9, image_data_taurus_Image);}
     }
 
-    if (contellation_display_sym==false) {
+    if (zodiac_display_sym==false) {
       // --------------------------------------------------------------------------
-      // Draw constellation
+      // Draw zodiac
       // --------------------------------------------------------------------------
       canvas8x8.clear();
-      display.setColor(color_constellation_sym);
+      display.setColor(color_zodiac_sym);
       canvas8x8.printFixed(0, 0, String(seglist_name[i]).c_str(), STYLE_BOLD);
       display.drawCanvas(seg_list[i][4], seg_list[i][5], canvas8x8);
     }
@@ -15990,7 +15990,7 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
         if (track_planet_period==false) {
-          drawConstellations();
+          drawZodiac();
           drawPlanets();
         }
       }
