@@ -15727,7 +15727,7 @@ void drawZodiac() {
     }
   }
   // --------------------------------------------------------------------------------
-  // Calculate earths attitude in space relative to user coordinates (in development)
+  // Calculate earths direction to the sun relative to coordinates on Earth
   // --------------------------------------------------------------------------------
   // -----------------------------------------------------------
   // In this case use sun altitude for reference (-90-90 degrees)
