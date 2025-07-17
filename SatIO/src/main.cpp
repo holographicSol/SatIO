@@ -15732,7 +15732,7 @@ void drawZodiac() {
   // -----------------------------------------------------------
   // Map Sun altitude (-90-90 degrees)
   // -----------------------------------------------------------
-  float zenith = siderealPlanetData.sun_az;
+  float zenith = (float)siderealPlanetData.sun_az;
   // Serial.println("[zenith 0] " + String(zenith));
   // Serial.println("[sun az]   " + String(siderealPlanetData.sun_az)); // sun in this direction from earth
   // -----------------------------------------------------------
