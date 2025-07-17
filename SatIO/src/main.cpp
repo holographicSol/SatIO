@@ -15398,7 +15398,7 @@ char zodiac_name[12][8] {
 uint16_t color_zodiac_seg=RGB_COLOR16(24,24,24);
 uint16_t color_zodiac_sym=RGB_COLOR16(255,255,0);
 
-int sundial[1][4] {
+int elem_zenith[1][4] {
   {0,0,0,0}
 };
 
@@ -15726,44 +15726,34 @@ void drawZodiac() {
       display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
     }
   }
-  // ---------------------------------------------------------------
+  // --------------------------------------------------------------------------------
   // Calculate earths attitude in space relative to user coordinates (in development)
-  // ---------------------------------------------------------------
-  // float lst = calculateLST(satData.degrees_longitude, satData.local_year, satData.local_month, satData.local_day,
-  //                         13, 0, satData.local_second);
-  // float lst = calculateLST(satData.degrees_longitude, satData.local_year, satData.local_month, satData.local_day,
-  //                         satData.local_hour, satData.local_minute, satData.local_second);
-  // float eclipticLong = raToEclipticLong(lst);
-  // eclipticLong=eclipticLong-90; // Adjust for your index order (Aries=index 0 at 90°)
-  // // if (eclipticLong<0) {eclipticLong=abs(eclipticLong);} // Correct if required
-  // // eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
-  // // Serial.println(eclipticLong);
-  // eclipticLong = eclipticLong - 90.0f; // Adjust for 0 at 90°
-  // eclipticLong = normalizeAngle(eclipticLong); // Ensure positive and in [0, 360)
-  // eclipticLong = reverseMap(eclipticLong, 0.0f, 360.0f, 360.0f, 0.0f); // Reverse to go anticlockwise
-  // Serial.println("--------------------------------------");
-  // Serial.println("[siderealPlanetData.sun_alt] " + String(siderealPlanetData.sun_alt));
-
+  // --------------------------------------------------------------------------------
+  // -----------------------------------------------------------
+  // In this case use sun altitude for reference (-90-90 degrees)
+  // -----------------------------------------------------------
   int zenith = map(siderealPlanetData.sun_alt, -90, 90, 0, 360);
-  // Serial.println("[zenith 0] " + String(zenith));
-
-  zenith += 90.0f; // Adjust for 0 at 90°
-  // Serial.println("[zenith 1] " + String(zenith));
-
-  zenith = normalizeAngle(zenith); // Ensure positive and in [0, 360)
-  // Serial.println("[zenith 2] " + String(zenith));
-
-  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f); // Reverse to go anticlockwise
-  // Serial.println("[zenith 3] " + String(zenith));
+  // -----------------------------------------------------------
+  // Adjust result by 90 degrees (same as planet adjustements)
+  // -----------------------------------------------------------
+  zenith += 90.0f;
+  // -----------------------------------------------------------
+  //  Ensure positive and in [0, 360)
+  // -----------------------------------------------------------
+  zenith = normalizeAngle(zenith);
+  // -----------------------------------------------------------
+  // Reverse to go anticlockwise
+  // -----------------------------------------------------------
+  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f); 
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
-  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(0,0,0));
-  sundial[0][0]=earth_ui_x+1;
-  sundial[0][1]=earth_ui_y+1;
-  sundial[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 45);
-  sundial[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 45);
-  tft.drawLine(sundial[0][0], sundial[0][1], sundial[0][2], sundial[0][3], RGB_COLOR16(48,48,48));
+  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,0,0));
+  elem_zenith[0][0]=earth_ui_x+1;
+  elem_zenith[0][1]=earth_ui_y+1;
+  elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 45);
+  elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 45);
+  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(48,48,48));
 }
 
 void drawPlanets() {
