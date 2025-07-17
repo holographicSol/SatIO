@@ -15727,7 +15727,7 @@ void drawZodiac() {
     }
   }
   // --------------------------------------------------------------------------------
-  // Calculate earths facing direction to the sun relative to coordinates on Earth (in testing)
+  // Calculate earths facing direction relative to the sun and users coordinates on Earth (in testing)
   // --------------------------------------------------------------------------------
   // -----------------------------------------------------------
   // Map Sun altitude (-90-90 degrees)
