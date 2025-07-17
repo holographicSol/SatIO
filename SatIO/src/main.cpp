@@ -15730,11 +15730,11 @@ void drawZodiac() {
   // Calculate earths facing direction to the sun relative to coordinates on Earth
   // --------------------------------------------------------------------------------
   // -----------------------------------------------------------
-  // In this case use sun altitude for reference (-90-90 degrees)
+  // Map Sun altitude (-90-90 degrees)
   // -----------------------------------------------------------
   int zenith = map(siderealPlanetData.sun_alt, -90, 90, 0, 360);
   // -----------------------------------------------------------
-  // Adjust result by 90 degrees (same as planet adjustements)
+  // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
   zenith += 90.0f;
   // -----------------------------------------------------------
