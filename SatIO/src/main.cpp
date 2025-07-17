@@ -15461,6 +15461,22 @@ void clearZodiacSym(int i) {
   else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
 }
 
+// Normalize angle to [0, 360)
+float normalizeAngle(float angle) {
+    angle = fmod(angle, 360.0f); // Reduce to [0, 360)
+    if (angle < 0.0f) {
+        angle += 360.0f; // Handle negative angles
+    }
+    return angle;
+}
+
+// Custom mapping function to reverse angle (360 to 0)
+float reverseMap(float value, float inMin, float inMax, float outMin, float outMax) {
+    // Standard Arduino map: (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+    float mapped = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    return normalizeAngle(mapped); // Ensure result is in [0, 360)
+}
+
 void drawZodiac() {
   // ---------------------------------------------------------------
   // todo: 'expected' meteors/asteroids
@@ -15719,8 +15735,13 @@ void drawZodiac() {
                           satData.local_hour, satData.local_minute, satData.local_second);
   float eclipticLong = raToEclipticLong(lst);
   eclipticLong=eclipticLong-90; // Adjust for your index order (Aries=index 0 at 90°)
-  if (eclipticLong<0) {eclipticLong=360-abs(eclipticLong);} // Correct if required
-  eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
+  // if (eclipticLong<0) {eclipticLong=abs(eclipticLong);} // Correct if required
+  // eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
+  // Serial.println(eclipticLong);
+  eclipticLong = eclipticLong - 90.0f; // Adjust for Aries = index 0 at 90°
+  eclipticLong = normalizeAngle(eclipticLong); // Ensure positive and in [0, 360)
+  eclipticLong = reverseMap(eclipticLong, 0.0f, 360.0f, 360.0f, 0.0f); // Reverse to go anticlockwise
+  // Serial.println(eclipticLong);
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
