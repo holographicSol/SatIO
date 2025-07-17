@@ -15403,10 +15403,26 @@ int sundial[1][4] {
 
 bool zodiac_display_sym=true;
 
+void clearZodiacLine(int i) {
+  // -------------------------------------------------------------
+  // Clear previous line
+  // -------------------------------------------------------------
+  tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_BLACK);
+}
+
+void clearZodiacSym(int i) {
+  // -------------------------------------------------------------
+  // Clear previous text/sym
+  // -------------------------------------------------------------
+  canvas9x9.clear();
+  if (zodiac_display_sym==false) {
+    display.setColor(TFT_BLACK);
+    canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);}
+  else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
+}
+
 void drawZodiac() {
   // ---------------------------------------------------------------
-  // todo: tweak corner zodiac signs to transition smoother between vertical and horizontal tracking
-  // todo: optional or hardcoded symbols instead of alpha
   // todo: 'expected' meteors/asteroids
   // todo: moon phase
   // ---------------------------------------------------------------
@@ -15448,18 +15464,6 @@ void drawZodiac() {
   // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
-    // -------------------------------------------------------------
-    // Clear previous line for
-    // -------------------------------------------------------------
-    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_BLACK);
-    // -------------------------------------------------------------
-    // Clear previous text/sym
-    // -------------------------------------------------------------
-    canvas9x9.clear();
-    if (zodiac_display_sym==false) {
-      display.setColor(TFT_BLACK);
-      canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);}
-    else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
     // -------------------------------------------------------------
     // Step angle
     // -------------------------------------------------------------
@@ -15503,6 +15507,10 @@ void drawZodiac() {
     zodiac_end_x = earth_ui_x+1 + (int16_t)(cosAngle * radius);
     zodiac_end_y = earth_ui_y+1 + (int16_t)(sinAngle * radius);
     // -------------------------------------------------------------
+    // Clear line before updating elements
+    // -------------------------------------------------------------
+    clearZodiacLine(i);
+    // -------------------------------------------------------------
     // Store elements ready to clear next function call
     // -------------------------------------------------------------
     zodiac_list[i][0]=earth_ui_x+1;
@@ -15528,6 +15536,10 @@ void drawZodiac() {
     // 9:  360 deg
     // 10: 30  deg
     // 11: 60  deg
+    // --------------------------------------------------------------------------
+    // Clear sym before updating elements
+    // --------------------------------------------------------------------------
+    clearZodiacSym(i);
     // --------------------------------------------------------------------------
     // Aries
     // --------------------------------------------------------------------------
