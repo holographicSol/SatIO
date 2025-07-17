@@ -15738,7 +15738,7 @@ void drawZodiac() {
   // if (eclipticLong<0) {eclipticLong=abs(eclipticLong);} // Correct if required
   // eclipticLong = map(eclipticLong, 0, 360, 360, 0); // Reverse (go anticlockwise)
   // Serial.println(eclipticLong);
-  eclipticLong = eclipticLong - 90.0f; // Adjust for Aries = index 0 at 90°
+  eclipticLong = eclipticLong - 90.0f; // Adjust for 0 at 90°
   eclipticLong = normalizeAngle(eclipticLong); // Ensure positive and in [0, 360)
   eclipticLong = reverseMap(eclipticLong, 0.0f, 360.0f, 360.0f, 0.0f); // Reverse to go anticlockwise
   // Serial.println(eclipticLong);
