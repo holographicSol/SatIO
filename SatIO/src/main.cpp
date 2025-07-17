@@ -8866,9 +8866,10 @@ void setTrackPlanets(void * pvParamaters) {
         myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
         myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
         trackPlanets();
+        ui_track_planet_period=true;
       }
     }
-    delay(10);
+    delay(1);
   }
 }
 
@@ -15415,8 +15416,8 @@ void clearZodiacSym(int i) {
   // Clear previous text/sym
   // -------------------------------------------------------------
   canvas9x9.clear();
+  display.setColor(TFT_BLACK);
   if (zodiac_display_sym==false) {
-    display.setColor(TFT_BLACK);
     canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);}
   else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
 }
@@ -15425,10 +15426,6 @@ void drawZodiac() {
   // ---------------------------------------------------------------
   // todo: 'expected' meteors/asteroids
   // todo: moon phase
-  // ---------------------------------------------------------------
-  // uncomment to test
-  // ---------------------------------------------------------------
-  // siderealPlanetData.earth_ecliptic_long++;
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
@@ -15981,11 +15978,6 @@ void UpdateUI(void * pvParamters) {
     // ----------------------------------------------------------------------------------------------------------------
     // this page has been mostly left for last while the human interface functionality has been built in. 
     // ----------------------------------------------------------------------------------------------------------------
-    /*
-    
-    astronarium: dynamic helio or earth centric model of our solar system.
-
-    */
     if (menu_page==page_home) {
       // ------------------------------------------------
       // static data
@@ -15999,7 +15991,24 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // dynamic data
       // ------------------------------------------------
-
+      // ------------------------------------------------
+      // load
+      // ------------------------------------------------
+      DisplayDiscreteLoadPercentage(115, 2, 9);
+      // ------------------------------------------------
+      // satellites & sync
+      // ------------------------------------------------
+      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
+      else {DisplaySignal(1, 1, 2, 1);}
+      // ------------------------------------------------
+      // local time
+      // ------------------------------------------------
+      if (crunching_time_data==false) {
+        canvas76x8.clear();
+        display.setColor(systemData.color_title);
+        canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
+        display.drawCanvas(34, 1, canvas76x8);
+      }
       // ------------------------------------------------
       // feature standard
       // ------------------------------------------------
@@ -16025,26 +16034,6 @@ void UpdateUI(void * pvParamters) {
           drawPlanets();
         }
       }
-
-      // ------------------------------------------------
-      // load
-      // ------------------------------------------------
-      DisplayDiscreteLoadPercentage(115, 2, 9);
-      // ------------------------------------------------
-      // satellites & sync
-      // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
-      else {DisplaySignal(1, 1, 2, 1);}
-      // ------------------------------------------------
-      // local time
-      // ------------------------------------------------
-      if (crunching_time_data==false) {
-        canvas76x8.clear();
-        display.setColor(systemData.color_title);
-        canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(34, 1, canvas76x8);
-      }
-
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -23294,10 +23283,9 @@ void loop() {
     if (load_distribution==0) {
       load_distribution=1;
       if (second_time_period_track_planets==true) {
+        second_time_period_track_planets=false;
         // Serial.println("[load dist]");
         track_planet_period=true;
-        ui_track_planet_period=true;
-        second_time_period_track_planets=false;
       }
     }
     // ----------------------------------------------------------------------
