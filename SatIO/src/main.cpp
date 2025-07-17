@@ -968,6 +968,7 @@ bool update_ui=true;
 bool ui_cleared=false;
 bool interaction_updateui=true; // performance and efficiency: make true when content should be updated. can be true for any reason.
 bool wait_1S_to_update_ui=false;
+bool ui_track_planet_period=false;
 
 signed int menu_page=0;
 int previous_menu_page;
@@ -8855,22 +8856,19 @@ bool track_planet_period=false;
 
 void setTrackPlanets(void * pvParamaters) {
   while (1) {
-
     if (track_planet_period==true) {
-      track_planet_period=false;
+      track_planet_period=false; 
+      // Serial.println("[setTrackPlanets] updating");
       if (systemData.satio_enabled) {
-
         myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
         myAstro.rejectDST();
         myAstro.setGMTdate(satData.local_year, satData.local_month, satData.local_day);
         myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
         myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
-        
         trackPlanets();
       }
     }
-
-    delay(1000);
+    delay(10);
   }
 }
 
@@ -15296,6 +15294,10 @@ void DisplayUAP() {
   uap_piv_y = uap_h/2; // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uap_piv_X, uap_piv_y); // Set pivot point in this Sprite
 
+  // uap.drawBitmap
+  // uap.drawXBitmap
+  
+
   // ------------------------------------------------------------
   // draw object to be rotated
   // ------------------------------------------------------------
@@ -16004,7 +16006,9 @@ void UpdateUI(void * pvParamters) {
       // feature astronarium
       // ------------------------------------------------
       else if (systemData.index_home_page_feature==1) {
-        if (track_planet_period==false) {
+        if (ui_track_planet_period==true) {
+          // Serial.println("[ui_track_planet_period] updating");
+          ui_track_planet_period=false;
           drawZodiac();
           drawPlanets();
         }
@@ -16028,7 +16032,7 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
         display.drawCanvas(34, 1, canvas76x8);
       }
-      
+
       // ------------------------------------------------
       // menu
       // ------------------------------------------------
@@ -23278,7 +23282,9 @@ void loop() {
     if (load_distribution==0) {
       load_distribution=1;
       if (second_time_period_track_planets==true) {
+        // Serial.println("[load dist]");
         track_planet_period=true;
+        ui_track_planet_period=true;
         second_time_period_track_planets=false;
       }
     }
@@ -23293,7 +23299,7 @@ void loop() {
     // ----------------------------------------------------------------------
     //                                                        SERIAL COMMANDS
     // ----------------------------------------------------------------------
-    else if (load_distribution==3) {
+    else if (load_distribution==2) {
       load_distribution=0;
       while (Serial.available()) {
         memset(CMD_BUFFER, 0, sizeof(CMD_BUFFER));
@@ -23387,8 +23393,9 @@ void loop() {
     // ---------------------------------------------------------------------
     //                                                          SECOND FLAGS
     // ---------------------------------------------------------------------
-    second_time_period_sync_rtc = true;
+    second_time_period_sync_rtc=true;
     second_time_period_track_planets=true;
+    // Serial.println("[second_time_period_track_planets] true");
 
     // ---------------------------------------------------------------------
     //                                                    UPTIME ACCUMULATOR
