@@ -15727,24 +15727,29 @@ void drawZodiac() {
     }
   }
   // --------------------------------------------------------------------------------
-  // Calculate earths facing direction to the sun relative to coordinates on Earth
+  // Calculate earths facing direction to the sun relative to coordinates on Earth (in testing)
   // --------------------------------------------------------------------------------
   // -----------------------------------------------------------
   // Map Sun altitude (-90-90 degrees)
   // -----------------------------------------------------------
-  int zenith = map(siderealPlanetData.sun_alt, -90, 90, 0, 360);
+  float zenith = siderealPlanetData.sun_az;
+  // Serial.println("[zenith 0] " + String(zenith));
+  // Serial.println("[sun az]   " + String(siderealPlanetData.sun_az)); // sun in this direction from earth
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
-  zenith += 90.0f;
+  zenith -= 90.0f;
+  // Serial.println("[zenith 1] " + String(zenith));
   // -----------------------------------------------------------
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
+  // Serial.println("[zenith 2] " + String(zenith));
+  // zenith=90; // force
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
-  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f); 
+  zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
