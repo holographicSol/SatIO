@@ -15775,8 +15775,8 @@ void drawZodiac() {
   tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,0,0));
   elem_zenith[0][0]=earth_ui_x+1;
   elem_zenith[0][1]=earth_ui_y+1;
-  elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 32);
-  elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 32);
+  elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
+  elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
   // tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(48,48,48));
   tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], TFT_GREEN);
   // todo: complete zenith styling. currently zenith is a 45 pixels lenght line from earth at a 0-360 angle.
