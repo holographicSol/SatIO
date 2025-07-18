@@ -15577,7 +15577,7 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
     // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(48,48,48));
-    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,0,96));
+    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,0,72));
     tft.drawRect(0, 11, 128, 117, TFT_GREEN); // (patch overrun while lines slightly longer in some cases)
     // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_GREEN);
     // -------------------------------------------------------------
