@@ -15810,7 +15810,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); // create the Sprite pixels width and height
-    hud.fillCircle(1, 1, 1, TFT_GREEN);
+    hud.fillCircle(1, 1, 1, TFT_PURPLE);
     // mercury_ui_x = 65 + 7 * sin(radians(test_angle+90)); // (test)
     // mercury_ui_y = 65 + 7 * cos(radians(test_angle+90)); // (test)
     mercury_ui_x = 65 + 7 * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long+90));
