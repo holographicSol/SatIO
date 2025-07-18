@@ -15988,7 +15988,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); // create the Sprite pixels width and height
-    hud.fillCircle(1, 1, 1, TFT_GREEN);
+    hud.fillCircle(1, 1, 1, TFT_CYAN);
     // uranus_ui_x = 65 + 47 * sin(radians(test_angle+90)); // (test)
     // uranus_ui_y = 65 + 47 * cos(radians(test_angle+90)); // (test)
     uranus_ui_x = 65 + 47 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
