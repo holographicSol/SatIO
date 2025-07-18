@@ -13,6 +13,8 @@
 
   Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
 
+  What more do you need from a satellite I/O? Jeez.
+
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
@@ -15403,45 +15405,6 @@ int elem_zenith[1][4] {
 };
 
 bool zodiac_display_sym=true;
-
-// Convert LST (right ascension) to ecliptic longitude (simplified)
-float raToEclipticLong(float ra) {
-    constexpr float obliquity = 23.44 * PI / 180.0;
-    // Simplified: assumes zenith is near ecliptic plane
-    float eclipticLong = ra; // Approximate, as zodiac is near ecliptic
-    return fmod(eclipticLong, 360.0);
-}
-
-// Calculate Local Sidereal Time (LST) in degrees
-float calculateLST(float lon, int year, int month, int day, int hour, int minute, int second) {
-    // Calculate solar noon from sunrise/sunset to estimate equation of time
-    float sunriseTime = (int)siderealPlanetData.sun_r;
-    float sunsetTime = (int)siderealPlanetData.sun_s;
-    float solarNoon = (sunriseTime + sunsetTime) / 2.0;
-    
-    // Current time in hours (adjusted for BST, UTC+1)
-    float currentTime = hour + minute / 60.0 + second / 3600.0 - 1.0; // Subtract 1 hour for BST to UTC
-    
-    // Approximate Julian Date
-    float JD = 2451545.0 + (year - 2000) * 365.25 + (month - 1) * 30.42 + day +
-               currentTime / 24.0;
-    
-    // Greenwich Mean Sidereal Time (GMST) at 0h UT
-    float T = (JD - 2451545.0) / 36525.0; // Julian centuries since J2000.0
-    float GMST = 280.46061837 + 360.98564736629 * (JD - 2451545.0) +
-                 0.000387933 * T * T - T * T * T / 38710000.0;
-    
-    // Normalize to 0–360°
-    GMST = fmod(GMST, 360.0);
-    if (GMST < 0) GMST += 360.0;
-    
-    // Local Sidereal Time = GMST + longitude
-    float LST = GMST + lon;
-    LST = fmod(LST, 360.0);
-    if (LST < 0) LST += 360.0;
-    
-    return LST;
-}
 
 void clearZodiacLine(int i) {
   // -------------------------------------------------------------
