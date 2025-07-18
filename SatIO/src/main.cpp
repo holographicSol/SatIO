@@ -13,7 +13,7 @@
 
   Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
 
-  What more do you need from a satellite I/O? Jeez.
+  What more do you need from a satellite I/O? Jeez. Alright, mabey you require more performance than a general I/O platform can offer.
 
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
