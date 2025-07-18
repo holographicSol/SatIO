@@ -15757,17 +15757,16 @@ void drawZodiac() {
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
-  Serial.println("[zenith 0]   #" + String(zenith));
+  // Serial.println("[zenith 0]   #" + String(zenith));
   // Serial.println("[zenith 2] " + String(zenith));
   // zenith=90; // force
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
   zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-
-  Serial.println("[sun alt]   " + String(siderealPlanetData.sun_alt));
-  Serial.println("[sun az]    " + String(siderealPlanetData.sun_az));
-  Serial.println("[zenith 1]  " + String(zenith));
+  // Serial.println("[sun alt]   " + String(siderealPlanetData.sun_alt));
+  // Serial.println("[sun az]    " + String(siderealPlanetData.sun_az));
+  // Serial.println("[zenith 1]  " + String(zenith));
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
