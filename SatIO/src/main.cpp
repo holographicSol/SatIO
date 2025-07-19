@@ -15708,7 +15708,7 @@ void drawZodiac() {
     // Capricorn
     // ----------------
     else if (i==10) {
-      zodiac_list[10][4]=(zodiac_list[3][2] + ((zodiac_list[2][2]-zodiac_list[3][2]) /2) );
+      zodiac_list[10][4]=(zodiac_list[3][2] + ((zodiac_list[2][2]-zodiac_list[3][2]) /3) -3);
       zodiac_list[10][5]=height-(zodiac_sym_width+zodiac_sym_offset);
       if (zodiac_display_sym==true) {
       display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);}
