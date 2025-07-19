@@ -15646,7 +15646,7 @@ void drawZodiac() {
       // right edge
       // --------------
       else {
-        zodiac_list[11][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+        zodiac_list[11][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
         zodiac_list[11][5]=((zodiac_list[11][3] - ((zodiac_list[11][3]-zodiac_list[10][3])) /2) );
       }
       if (zodiac_display_sym==true) {
@@ -15659,7 +15659,7 @@ void drawZodiac() {
     // Aries
     // ----------------
     else if (i==0) {
-      zodiac_list[0][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+      zodiac_list[0][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
       zodiac_list[0][5]=(zodiac_list[0][3] - ((zodiac_list[0][3]-zodiac_list[11][3]) /2) );
       if (zodiac_display_sym==true) {
         display.drawBitmap16(zodiac_list[0][4], zodiac_list[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);}
@@ -15668,7 +15668,7 @@ void drawZodiac() {
     // Pisces
     // ----------------
     else if (i==1) {
-      zodiac_list[1][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+      zodiac_list[1][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
       zodiac_list[1][5]=(zodiac_list[0][3] + ((zodiac_list[1][3]-zodiac_list[0][3]) /3) -3);
       if (zodiac_display_sym==true) {
         display.drawBitmap16(zodiac_list[1][4], zodiac_list[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);}
@@ -15691,7 +15691,7 @@ void drawZodiac() {
       // right edge
       // --------------
         else {
-        zodiac_list[2][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+        zodiac_list[2][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
         zodiac_list[2][5]=(zodiac_list[1][3] + ((height-zodiac_list[1][3]) /3) -3);
       }
       if (zodiac_display_sym==true) {
