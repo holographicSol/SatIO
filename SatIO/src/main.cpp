@@ -15644,7 +15644,7 @@ void drawZodiac() {
     else if (i==0) {
       zodiac_elements[0][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
       zodiac_elements[0][5]=(zodiac_elements[0][3] - ((zodiac_elements[0][3]-zodiac_elements[11][3]) /2) );
-        display.drawBitmap16(zodiac_elements[0][4], zodiac_elements[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);
+      display.drawBitmap16(zodiac_elements[0][4], zodiac_elements[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);
       }
     // ----------------
     // Pisces
@@ -15664,7 +15664,6 @@ void drawZodiac() {
       // bottom edge
       // --------------
       if (zodiac_elements[2][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
-
         zodiac_elements[2][4]=(zodiac_elements[2][2] + ((z_width-zodiac_elements[2][2]) /3) -4);
         zodiac_elements[2][5]=z_height-(zodiac_sym_height+zodiac_sym_offset);}
       // --------------
@@ -15724,7 +15723,7 @@ void drawZodiac() {
     else if (i==7) {
       zodiac_elements[7][4]=z_rect_x+zodiac_sym_offset;
       zodiac_elements[7][5]=(zodiac_elements[6][3] + ((zodiac_elements[5][3]-zodiac_elements[6][3]) /2) -5);
-        display.drawBitmap16(zodiac_elements[7][4], zodiac_elements[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);
+      display.drawBitmap16(zodiac_elements[7][4], zodiac_elements[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);
       }
     // ----------------
     // Virgo
