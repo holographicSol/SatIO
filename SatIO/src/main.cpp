@@ -15387,7 +15387,7 @@ float test_moon_angle=90;
   0: earth x
   1: earth y
   2: zodiac_seg_end_x
-  3: zodiac_seg_end_4
+  3: zodiac_seg_end_y
   4: zodiac symbol position x
   5: zodiac symbol position y
 */
