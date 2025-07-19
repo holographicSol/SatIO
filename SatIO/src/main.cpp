@@ -252,7 +252,8 @@
   ToDo: Macros.
 
   ToDo: I am on the fence about putting SatIO online outside of a hosted RSS feed, however I may implement a crawler for sites like
-  GDACS (Global Disaster & Cordination System) to provide even more data that can be used programmatically.  
+  GDACS (Global Disaster & Cordination System) to provide even more data that can be used programmatically. I do not wish for SatIO
+  to have too many internet dependencies, its meant to know as much as it can each step of the way, independantly.
 
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
