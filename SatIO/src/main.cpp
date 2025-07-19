@@ -15535,7 +15535,7 @@ void drawZodiac() {
         z_radius_1 = (z_bottom_edge - earth_ui_y+2) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
-    // Calculate endpoint\
+    // Calculate endpoint
     // -------------------------------------------------------------
     zodiac_seg_end_x = earth_ui_x+1 + (int16_t)(z_cos_angle * z_radius_0);
     zodiac_seg_end_y = earth_ui_y+1 + (int16_t)(z_sin_angle * z_radius_0);
