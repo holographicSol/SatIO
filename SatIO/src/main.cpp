@@ -15802,7 +15802,7 @@ void drawZodiac() {
   elem_zenith[0][1]=earth_ui_y+1;
   elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
   elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
-  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,164,0));
+  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,0,88));
 }
 
 void drawPlanets() {
@@ -15883,7 +15883,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_CYAN);
+    hud.fillCircle(1, 1, 1, TFT_BLUE);
     // earth_ui_x = 65 + 21 * sin(radians(test_angle+90)); // (test)
     // earth_ui_y = 65 + 21 * cos(radians(test_angle+90)); // (test)
     earth_ui_x = 65 + 21 * sin(radians(siderealPlanetData.earth_ecliptic_long-90));
@@ -16036,7 +16036,7 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLUE);
+    hud.fillCircle(1, 1, 1, TFT_YELLOW);
     // neptune_ui_x = 65 + 53 * sin(radians(test_angle+90)); // (test)
     // neptune_ui_y = 65 + 53 * cos(radians(test_angle+90)); // (test)
     neptune_ui_x = 65 + 53 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
