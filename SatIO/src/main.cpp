@@ -13,8 +13,6 @@
 
   Domino effects? Moon tracking for example can be used to track the tides. There is a lot of data that can be used in many ways.
 
-  What more do you need from a satellite I/O? Jeez. Alright, mabey you require more performance than a general I/O platform can offer in an ESP32.
-
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
@@ -15450,7 +15448,7 @@ void drawZodiac() {
   // ---------------------------------------------------------------
   // tft.drawRect(0, 11, 128, 117, color_zodiac_seg);
   // tft.drawRect(0, 11, 128, 117, TFT_BLUE);
-  tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,72));
+  tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,88));
   // tft.drawRect(0, 11, 128, 117, TFT_GREEN);
   // ---------------------------------------------------------------
   // Calculate rectangle boundaries
@@ -15543,7 +15541,7 @@ void drawZodiac() {
     // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(48,48,48));
     tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,0,72));
     // tft.drawRect(0, 11, 128, 117, TFT_GREEN); // (patch overrun while lines slightly longer in some cases)
-    tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,72));
+    tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,88));
     // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_GREEN);
     // -------------------------------------------------------------
     // Note seg index to line degrees
