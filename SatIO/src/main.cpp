@@ -17,7 +17,7 @@
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
 
   Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
-  If more output is needed then add another I2C port controller, if more input is needed then add another custom I2C device.
+  If more output is needed then add another I2C port controller, if more input is needed then add another custom I2C sensor module.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
@@ -250,6 +250,9 @@
   ToDo: More data and calculate more data from existing data.
 
   ToDo: Macros.
+
+  ToDo: I am on the fence about putting SatIO online outside of a hosted RSS feed, however I may implement a crawler for sites like
+  GDACS (Global Disaster & Cordination System) to provide even more data that can be used programmatically.  
 
   Complete PlatformIO project files, libraries and modified libraries:
   https://drive.google.com/drive/folders/13yynSxkKL-zxb7iLSkg0v0VXkSLgmtW-?usp=sharing
