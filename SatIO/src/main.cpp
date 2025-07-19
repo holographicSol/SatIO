@@ -15346,111 +15346,139 @@ void DisplayUAP() {
   uap.deleteSprite();
 }
 
+
 // ----------------------------------------------------------------------------------------------------------------
-//                                                                                                        UPDATE UI
-// ----------------------------------------------------------------------------------------------------------------
-/*
-This UI is designed for a very small, low pixel panel for performance with ESP32 while considering everything else
-the ESP32 has to do running SatIO. If upgrading SatIO to a more moreful chip then the panel may also be considered
-in regards to a higher pixel, larger panel, in which case much of the math used to display the same, reimplemented
-with more detail and a larger scale. For example Planets are represented by pixels on the small panel currently in
-use, and could be represented any other way with much higher detail on higher performance hardware, using the same
-math.
-*/
+//                                                                                                  UI SOLAR SYSTEM
 // ----------------------------------------------------------------------------------------------------------------
 
-bool crunching_time_data=false; // a flag intended for aesthetics, to be used when updating ui.
-
+// ---------------------------------------------------------------
+// Planet/Object screen positions. Updated dynamically.
+// ---------------------------------------------------------------
+bool crunching_time_data=false;
 int sun_ui_x = 64;
 int sun_ui_y = 64;
-
 int moon_ui_x = 64;
 int moon_ui_y = 64;
-
 int mercury_ui_x = 64;
 int mercury_ui_y = 64;
-
 int venus_ui_x = 64;
 int venus_ui_y = 61;
-
 int earth_ui_x = 64;
 int earth_ui_y = 61;
-
 int mars_ui_x = 64;
 int mars_ui_y = 64;
-
 int jupiter_ui_x = 64;
 int jupiter_ui_y = 64;
-
 int saturn_ui_x = 64;
 int saturn_ui_y = 64;
-
 int uranus_ui_x = 64;
 int uranus_ui_y = 64;
-
 int neptune_ui_x = 64;
 int neptune_ui_y = 64;
-
 float test_angle=90;
 float test_moon_angle=90;
 
-// Calculate endpoint
-int16_t zodiac_end_x;
-int16_t zodiac_end_y;
-
-int16_t sundial_end_x;
-int16_t sundial_end_y;
-
-int zodiac_list[12][6] {
+// ---------------------------------------------------------------
+/*
+  These elements allow for 12 lines to be drawn from earth to the
+  defined width and height of the astronarium and 12 symbols to be
+  drawn between said lines.
+  These values are updated dynamically (because Earth is moving).
+  0: earth x
+  1: earth y
+  2: zodiac_seg_end_x
+  3: zodiac_seg_end_4
+  4: zodiac symbol position x
+  5: zodiac symbol position y
+*/
+// ---------------------------------------------------------------
+int zodiac_elements[12][6] {
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0},
   {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}, {0,0,0,0,0,0}
 };
-
-char zodiac_name[12][8] {
-  {"A"}, {"P"}, {"A"}, {"G"},
-  {"C"}, {"S"}, {"V"}, {"L"},
-  {"L"}, {"S"}, {"C"}, {"T"}
-};
-
-uint16_t color_zodiac_seg=RGB_COLOR16(24,24,24);
-uint16_t color_zodiac_sym=RGB_COLOR16(255,255,0);
-
-int elem_zenith[1][4] {
+// ---------------------------------------------------------------
+// Zenith direction in space. Updated dynamically.
+// ---------------------------------------------------------------
+int zenith_direction[1][4] {
   {0,0,0,0}
 };
+// ---------------------------------------------------------------
+// Zodiac symbol geometry
+// ---------------------------------------------------------------
+int zodiac_sym_offset=4;   // offset x,y from rect edges
+int zodiac_sym_offset_x=5; // todo: plug in
+int zodiac_sym_offset_y=5; // todo: plug in
+int zodiac_sym_width=9;
+int zodiac_sym_height=9;
+int zodiac_sym_width_div=(int)zodiac_sym_width/2;
+float zenith=0;
+// ---------------------------------------------------------------
+// Rectangle boundaries
+// ---------------------------------------------------------------
+int z_width=128;
+int z_height=128;
+int16_t z_rect_x = 0;
+int16_t z_rect_y = 9;
+// ---------------------------------------------------------------
+// Rectangle edges
+// ---------------------------------------------------------------
+int16_t z_left_edge = z_rect_x;
+int16_t z_right_edge = z_rect_x + z_width - 1;
+int16_t z_top_edge = z_rect_y;
+int16_t z_bottom_edge = z_rect_y + z_height - 1;
+// ---------------------------------------------------------------
+// Segment endpoint
+// ---------------------------------------------------------------
+int16_t zodiac_seg_end_x;
+int16_t zodiac_seg_end_y;
+// ---------------------------------------------------------------
+// Calculate angles for 12 evenly spaced lines (30 degrees each)
+// ---------------------------------------------------------------
+const float z_angle_step = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
+// -------------------------------------------------------------
+// Calculate intersection with rectangle edges
+// -------------------------------------------------------------
+float z_cos_angle;
+float z_sin_angle;
+// -------------------------------------------------------------
+// Initialize z_radius_0 to a large value
+// -------------------------------------------------------------
+float z_radius_0 = 10000.0; // Large enough to ensure intersection
+float z_angle;
+float z_radius_1;
 
-bool zodiac_display_sym=true;
-int test_ecliptic_long;
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                      DRAW ZODIAC
+// ----------------------------------------------------------------------------------------------------------------
 
+// -------------------------------------------------------------
+// Clear previous line
+// -------------------------------------------------------------
 void clearZodiacLine(int i) {
-  // -------------------------------------------------------------
-  // Clear previous line
-  // -------------------------------------------------------------
-  tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_BLACK);
+  tft.drawLine(zodiac_elements[i][0], zodiac_elements[i][1], zodiac_elements[i][2], zodiac_elements[i][3], TFT_BLACK);
 }
-
+// -------------------------------------------------------------
+// Clear previous text/sym
+// -------------------------------------------------------------
 void clearZodiacSym(int i) {
-  // -------------------------------------------------------------
-  // Clear previous text/sym
-  // -------------------------------------------------------------
   canvas9x9.clear();
   display.setColor(TFT_BLACK);
-  if (zodiac_display_sym==false) {
-    canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);}
-  else {display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas9x9);}
+  display.drawCanvas(zodiac_elements[i][4], zodiac_elements[i][5], canvas9x9);
 }
-
-// Normalize angle to [0, 360)
-float normalizeAngle(float angle) {
-    angle = fmod(angle, 360.0f); // Reduce to [0, 360)
-    if (angle < 0.0f) {
-        angle += 360.0f; // Handle negative angles
+// -------------------------------------------------------------
+// Normalize z_angle to [0, 360)
+// -------------------------------------------------------------
+float normalizeAngle(float z_angle) {
+    z_angle = fmod(z_angle, 360.0f); // Reduce to [0, 360)
+    if (z_angle < 0.0f) {
+        z_angle += 360.0f; // Handle negative angles
     }
-    return angle;
+    return z_angle;
 }
-
-// Custom mapping function to reverse angle (360 to 0)
+// -------------------------------------------------------------
+// Custom mapping function to reverse z_angle (360 to 0)
+// -------------------------------------------------------------
 float reverseMap(float value, float inMin, float inMax, float outMin, float outMax) {
     // Standard Arduino map: (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
     float mapped = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
@@ -15465,83 +15493,53 @@ void drawZodiac() {
   // ---------------------------------------------------------------
   // border
   // ---------------------------------------------------------------
-  // tft.drawRect(0, 11, 128, 117, color_zodiac_seg);
-  // tft.drawRect(0, 11, 128, 117, TFT_BLUE);
   tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,88));
-  // tft.drawRect(0, 11, 128, 117, TFT_GREEN);
-  // ---------------------------------------------------------------
-  // Calculate rectangle boundaries
-  // ---------------------------------------------------------------
-  int width=128;
-  int height=128;
-  int16_t rectX = 0;
-  int16_t rectY = 9;
-  // ---------------------------------------------------------------
-  // Calculate rectangle edges
-  // ---------------------------------------------------------------
-  int16_t leftEdge = rectX;
-  int16_t rightEdge = rectX + width - 1;
-  int16_t topEdge = rectY;
-  int16_t bottomEdge = rectY + height - 1;
-  // ---------------------------------------------------------------
-  // Calculate angles for 12 evenly spaced lines (30 degrees each)
-  // ---------------------------------------------------------------
-  const float angleStep = 2.0 * PI / 12.0;  // 360° / 12 = 30° in radians
-  // -------------------------------------------------------------
-  // Calculate intersection with rectangle edges
-  // -------------------------------------------------------------
-  float cosAngle;
-  float sinAngle;
-  // -------------------------------------------------------------
-  // Initialize radius to a large value
-  // -------------------------------------------------------------
-  float radius = 10000.0; // Large enough to ensure intersection
   // ---------------------------------------------------------------
   // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
   for (int i = 0; i < 12; i++) {
     // -------------------------------------------------------------
-    // Step angle
+    // Step z_angle
     // -------------------------------------------------------------
-    float angle = i * angleStep;
+    z_angle = i * z_angle_step;
     // -------------------------------------------------------------
     // Calculate intersection with rectangle edges
     // -------------------------------------------------------------
-    cosAngle = cos(angle);
-    sinAngle = sin(angle);
+    z_cos_angle = cos(z_angle);
+    z_sin_angle = sin(z_angle);
     // -------------------------------------------------------------
-    // Initialize radius to a large value
+    // Initialize z_radius_0 to a large value
     // -------------------------------------------------------------
-    radius = 10000.0; // Large enough to ensure intersection
+    z_radius_0 = 10000.0; // Large enough to ensure intersection
     // -------------------------------------------------------------
-    // Check intersection with left edge (x = leftEdge)
+    // Check intersection with left edge (x = z_left_edge)
     // -------------------------------------------------------------
-    if (cosAngle < -0.0001) { // Line going left
-        float r = (leftEdge - earth_ui_x+2) / cosAngle;
-        if (r > 0) radius = min(radius, r);}
+    if (z_cos_angle < -0.0001) { // Line going left
+        z_radius_1 = (z_left_edge - earth_ui_x+2) / z_cos_angle;
+        if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
-    // Check intersection with right edge (x = rightEdge)
+    // Check intersection with right edge (x = z_right_edge)
     // -------------------------------------------------------------
-    if (cosAngle > 0.0001) { // Line going right
-        float r = (rightEdge - earth_ui_x+2) / cosAngle;
-        if (r > 0) radius = min(radius, r);}
+    if (z_cos_angle > 0.0001) { // Line going right
+        z_radius_1 = (z_right_edge - earth_ui_x+2) / z_cos_angle;
+        if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
-    // Check intersection with top edge (y = topEdge)
+    // Check intersection with top edge (y = z_top_edge)
     // -------------------------------------------------------------
-    if (sinAngle < -0.0001) { // Line going up
-        float r = (topEdge - earth_ui_y+2) / sinAngle;
-        if (r > 0) radius = min(radius, r);}
+    if (z_sin_angle < -0.0001) { // Line going up
+        z_radius_1 = (z_top_edge - earth_ui_y+2) / z_sin_angle;
+        if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
-    // Check intersection with bottom edge (y = bottomEdge)
+    // Check intersection with bottom edge (y = z_bottom_edge)
     // -------------------------------------------------------------
-    if (sinAngle > 0.0001) { // Line going down
-        float r = (bottomEdge - earth_ui_y+2) / sinAngle;
-        if (r > 0) radius = min(radius, r);}
+    if (z_sin_angle > 0.0001) { // Line going down
+        z_radius_1 = (z_bottom_edge - earth_ui_y+2) / z_sin_angle;
+        if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Calculate endpoint\
     // -------------------------------------------------------------
-    zodiac_end_x = earth_ui_x+1 + (int16_t)(cosAngle * radius);
-    zodiac_end_y = earth_ui_y+1 + (int16_t)(sinAngle * radius);
+    zodiac_seg_end_x = earth_ui_x+1 + (int16_t)(z_cos_angle * z_radius_0);
+    zodiac_seg_end_y = earth_ui_y+1 + (int16_t)(z_sin_angle * z_radius_0);
     // -------------------------------------------------------------
     // Clear line before updating elements
     // -------------------------------------------------------------
@@ -15549,19 +15547,15 @@ void drawZodiac() {
     // -------------------------------------------------------------
     // Store elements ready to clear next function call
     // -------------------------------------------------------------
-    zodiac_list[i][0]=earth_ui_x+1;
-    zodiac_list[i][1]=earth_ui_y+1;
-    zodiac_list[i][2]=zodiac_end_x;
-    zodiac_list[i][3]=zodiac_end_y;
+    zodiac_elements[i][0]=earth_ui_x+1;
+    zodiac_elements[i][1]=earth_ui_y+1;
+    zodiac_elements[i][2]=zodiac_seg_end_x;
+    zodiac_elements[i][3]=zodiac_seg_end_y;
     // -------------------------------------------------------------
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
-    // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], color_zodiac_seg);
-    // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(48,48,48));
-    tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], RGB_COLOR16(0,0,24));
-    // tft.drawRect(0, 11, 128, 117, TFT_GREEN); // (patch overrun while lines slightly longer in some cases)
-    tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,88));
-    // tft.drawLine(zodiac_list[i][0], zodiac_list[i][1], zodiac_list[i][2], zodiac_list[i][3], TFT_GREEN);
+    tft.drawLine(zodiac_elements[i][0], zodiac_elements[i][1], zodiac_elements[i][2], zodiac_elements[i][3], RGB_COLOR16(0,0,24));
+    tft.drawRect(0, 11, 128, 117, RGB_COLOR16(0,0,88)); // (patch overrun while lines slightly longer in some cases)
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -15577,17 +15571,10 @@ void drawZodiac() {
     // 9:  360 deg
     // 10: 30  deg
     // 11: 60  deg
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------
     // Clear sym before updating elements
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------
     clearZodiacSym(i);
-
-    int zodiac_sym_offset=4; // offset x,y from rect edges
-    int zodiac_sym_offset_x=5;
-    int zodiac_sym_offset_y=5;
-    int zodiac_sym_width=9;
-    int zodiac_sym_height=9;
-    int zodiac_sym_width_div=(int)zodiac_sym_width/2;
     // -------------------------------------------------------------------------------------------------------
     // TOP LEFT CORNER
     // -------------------------------------------------------------------------------------------------------
@@ -15597,42 +15584,37 @@ void drawZodiac() {
       // --------------
       // top edge
       // --------------
-      if (zodiac_list[8][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
-        zodiac_list[8][4]=( (zodiac_list[8][2]-(zodiac_list[8][2] /3)) -2);
-        zodiac_list[8][5]=rectY+zodiac_sym_offset;
+      if (zodiac_elements[8][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+        zodiac_elements[8][4]=( (zodiac_elements[8][2]-(zodiac_elements[8][2] /3)) -2);
+        zodiac_elements[8][5]=z_rect_y+zodiac_sym_offset;
       }
       // --------------
       // left edge
       // --------------
       else {
-        zodiac_list[8][4]=rectX+zodiac_sym_offset;
-        zodiac_list[8][5]=( (zodiac_list[7][3]-(zodiac_list[7][3] /2)) );
+        zodiac_elements[8][4]=z_rect_x+zodiac_sym_offset;
+        zodiac_elements[8][5]=( (zodiac_elements[7][3]-(zodiac_elements[7][3] /2)) );
       }
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[8][4], zodiac_list[8][5], zodiac_sym_width, zodiac_sym_height, image_data_leo_Image);}
+      display.drawBitmap16(zodiac_elements[8][4], zodiac_elements[8][5], zodiac_sym_width, zodiac_sym_height, image_data_leo_Image);
     }
-
     // -------------------------------------------------------------------------------------------------------
     // TOP EDGE
     // -------------------------------------------------------------------------------------------------------
     // Cancer
     // ----------------
     else if (i==4) {
-      zodiac_list[4][4]=(zodiac_list[9][2] - ((zodiac_list[9][2]-zodiac_list[8][2]) /2) -1);
-      zodiac_list[4][5]=rectY+zodiac_sym_offset;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[4][4], zodiac_list[4][5], zodiac_sym_width, zodiac_sym_height, image_data_cancer_Image);}
+      zodiac_elements[4][4]=(zodiac_elements[9][2] - ((zodiac_elements[9][2]-zodiac_elements[8][2]) /2) -1);
+      zodiac_elements[4][5]=z_rect_y+zodiac_sym_offset;
+      display.drawBitmap16(zodiac_elements[4][4], zodiac_elements[4][5], zodiac_sym_width, zodiac_sym_height, image_data_cancer_Image);
     }
     // ----------------
     // Gemini
     // ----------------
     if (i==3) {
-      zodiac_list[3][4]=(zodiac_list[9][2] + ((zodiac_list[10][2]-zodiac_list[9][2]) /2) -(zodiac_sym_width_div+1));
-      zodiac_list[3][5]=rectY+zodiac_sym_offset;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[3][4], zodiac_list[3][5], zodiac_sym_width, zodiac_sym_height, image_data_gemini_Image);}
+      zodiac_elements[3][4]=(zodiac_elements[9][2] + ((zodiac_elements[10][2]-zodiac_elements[9][2]) /2) -(zodiac_sym_width_div+1));
+      zodiac_elements[3][5]=z_rect_y+zodiac_sym_offset;
+      display.drawBitmap16(zodiac_elements[3][4], zodiac_elements[3][5], zodiac_sym_width, zodiac_sym_height, image_data_gemini_Image);
     }
-
     // -------------------------------------------------------------------------------------------------------
     // TOP RIGHT CORNER
     // -------------------------------------------------------------------------------------------------------
@@ -15642,42 +15624,37 @@ void drawZodiac() {
       // --------------
       // top edge
       // --------------
-      if (zodiac_list[10][2]<width-(zodiac_sym_width+zodiac_sym_offset)) {
-        zodiac_list[11][4]=(zodiac_list[10][2] + ((width-zodiac_list[10][2]) /3) -3);
-        zodiac_list[11][5]=rectY+zodiac_sym_offset;
+      if (zodiac_elements[10][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
+        zodiac_elements[11][4]=(zodiac_elements[10][2] + ((z_width-zodiac_elements[10][2]) /3) -3);
+        zodiac_elements[11][5]=z_rect_y+zodiac_sym_offset;
       }
       // --------------
       // right edge
       // --------------
       else {
-        zodiac_list[11][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
-        zodiac_list[11][5]=((zodiac_list[11][3] - ((zodiac_list[11][3]-zodiac_list[10][3])) /2) );
+        zodiac_elements[11][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+        zodiac_elements[11][5]=((zodiac_elements[11][3] - ((zodiac_elements[11][3]-zodiac_elements[10][3])) /2) );
       }
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], zodiac_sym_width, zodiac_sym_height, image_data_taurus_Image);}
+      display.drawBitmap16(zodiac_elements[11][4], zodiac_elements[11][5], zodiac_sym_width, zodiac_sym_height, image_data_taurus_Image);
     }
-
     // -------------------------------------------------------------------------------------------------------
     // RIGHT EDGE
     // -------------------------------------------------------------------------------------------------------
     // Aries
     // ----------------
     else if (i==0) {
-      zodiac_list[0][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
-      zodiac_list[0][5]=(zodiac_list[0][3] - ((zodiac_list[0][3]-zodiac_list[11][3]) /2) );
-      if (zodiac_display_sym==true) {
-        display.drawBitmap16(zodiac_list[0][4], zodiac_list[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);}
+      zodiac_elements[0][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+      zodiac_elements[0][5]=(zodiac_elements[0][3] - ((zodiac_elements[0][3]-zodiac_elements[11][3]) /2) );
+        display.drawBitmap16(zodiac_elements[0][4], zodiac_elements[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);
       }
     // ----------------
     // Pisces
     // ----------------
     else if (i==1) {
-      zodiac_list[1][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
-      zodiac_list[1][5]=(zodiac_list[0][3] + ((zodiac_list[1][3]-zodiac_list[0][3]) /3) -3);
-      if (zodiac_display_sym==true) {
-        display.drawBitmap16(zodiac_list[1][4], zodiac_list[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);}
+      zodiac_elements[1][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+      zodiac_elements[1][5]=(zodiac_elements[0][3] + ((zodiac_elements[1][3]-zodiac_elements[0][3]) /3) -3);
+      display.drawBitmap16(zodiac_elements[1][4], zodiac_elements[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);
       }
-
     // -------------------------------------------------------------------------------------------------------
     // BOTTOM RIGHT CORNER
     // -------------------------------------------------------------------------------------------------------
@@ -15687,42 +15664,37 @@ void drawZodiac() {
       // --------------
       // bottom edge
       // --------------
-      if (zodiac_list[2][2]<width-(zodiac_sym_width+zodiac_sym_offset)) {
+      if (zodiac_elements[2][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
 
-        zodiac_list[2][4]=(zodiac_list[2][2] + ((width-zodiac_list[2][2]) /3) -4);
-        zodiac_list[2][5]=height-(zodiac_sym_height+zodiac_sym_offset);}
+        zodiac_elements[2][4]=(zodiac_elements[2][2] + ((z_width-zodiac_elements[2][2]) /3) -4);
+        zodiac_elements[2][5]=z_height-(zodiac_sym_height+zodiac_sym_offset);}
       // --------------
       // right edge
       // --------------
         else {
-        zodiac_list[2][4]=width-(zodiac_sym_width+zodiac_sym_offset) +2;
-        zodiac_list[2][5]=(zodiac_list[1][3] + ((height-zodiac_list[1][3]) /3) -3);
+        zodiac_elements[2][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+        zodiac_elements[2][5]=(zodiac_elements[1][3] + ((z_height-zodiac_elements[1][3]) /3) -3);
       }
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[2][4], zodiac_list[2][5], zodiac_sym_width, zodiac_sym_height, image_data_aquarius_Image);}
+      display.drawBitmap16(zodiac_elements[2][4], zodiac_elements[2][5], zodiac_sym_width, zodiac_sym_height, image_data_aquarius_Image);
     }
-    
     // -------------------------------------------------------------------------------------------------------
     // BOTTOM EDGE
     // -------------------------------------------------------------------------------------------------------
     // Capricorn
     // ----------------
     else if (i==10) {
-      zodiac_list[10][4]=(zodiac_list[3][2] + ((zodiac_list[2][2]-zodiac_list[3][2]) /3) -3);
-      zodiac_list[10][5]=height-(zodiac_sym_width+zodiac_sym_offset);
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);}
+      zodiac_elements[10][4]=(zodiac_elements[3][2] + ((zodiac_elements[2][2]-zodiac_elements[3][2]) /3) -3);
+      zodiac_elements[10][5]=z_height-(zodiac_sym_width+zodiac_sym_offset);
+      display.drawBitmap16(zodiac_elements[10][4], zodiac_elements[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);
     }
     // ----------------
     // Sagitarius
     // ----------------
     else if (i==9) {
-      zodiac_list[9][4]=(zodiac_list[3][2] - ((zodiac_list[3][2]-zodiac_list[4][2]) /2) +3);
-      zodiac_list[9][5]=height-zodiac_sym_width-zodiac_sym_offset;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[9][4], zodiac_list[9][5], zodiac_sym_width, zodiac_sym_height, image_data_sagitarius_Image);}
+      zodiac_elements[9][4]=(zodiac_elements[3][2] - ((zodiac_elements[3][2]-zodiac_elements[4][2]) /2) +3);
+      zodiac_elements[9][5]=z_height-zodiac_sym_width-zodiac_sym_offset;
+      display.drawBitmap16(zodiac_elements[9][4], zodiac_elements[9][5], zodiac_sym_width, zodiac_sym_height, image_data_sagitarius_Image);
     }
-
     // -------------------------------------------------------------------------------------------------------
     // BOTTOM LEFT CORNER
     // -------------------------------------------------------------------------------------------------------
@@ -15732,51 +15704,36 @@ void drawZodiac() {
       // --------------
       // bottom edge
       // --------------
-      if (zodiac_list[4][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
-        zodiac_list[5][4]=(zodiac_list[4][2] - (zodiac_list[4][2] /3) );
-        zodiac_list[5][5]=height-zodiac_sym_width-zodiac_sym_offset;
+      if (zodiac_elements[4][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+        zodiac_elements[5][4]=(zodiac_elements[4][2] - (zodiac_elements[4][2] /3) );
+        zodiac_elements[5][5]=z_height-zodiac_sym_width-zodiac_sym_offset;
       }
       // --------------
       // left edge
       // --------------
       else {
-        zodiac_list[5][4]=rectX+zodiac_sym_offset;
-        zodiac_list[5][5]=(zodiac_list[5][3] + ((height-zodiac_list[5][3]) /3) );
+        zodiac_elements[5][4]=z_rect_x+zodiac_sym_offset;
+        zodiac_elements[5][5]=(zodiac_elements[5][3] + ((z_height-zodiac_elements[5][3]) /3) );
       }
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[5][4], zodiac_list[5][5], zodiac_sym_width, zodiac_sym_height, image_data_scorpio_Image);}
+      display.drawBitmap16(zodiac_elements[5][4], zodiac_elements[5][5], zodiac_sym_width, zodiac_sym_height, image_data_scorpio_Image);
     }
-
     // -------------------------------------------------------------------------------------------------------
     // LEFT EDGE
     // -------------------------------------------------------------------------------------------------------
     // Libra
     // ----------------
     else if (i==7) {
-      zodiac_list[7][4]=rectX+zodiac_sym_offset;
-      zodiac_list[7][5]=(zodiac_list[6][3] + ((zodiac_list[5][3]-zodiac_list[6][3]) /2) -5);
-      if (zodiac_display_sym==true) {
-        display.drawBitmap16(zodiac_list[7][4], zodiac_list[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);}
+      zodiac_elements[7][4]=z_rect_x+zodiac_sym_offset;
+      zodiac_elements[7][5]=(zodiac_elements[6][3] + ((zodiac_elements[5][3]-zodiac_elements[6][3]) /2) -5);
+        display.drawBitmap16(zodiac_elements[7][4], zodiac_elements[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);
       }
     // ----------------
     // Virgo
     // ----------------
     else if (i==6) {
-      zodiac_list[6][4]=rectX+zodiac_sym_offset;
-      zodiac_list[6][5]=(zodiac_list[6][3] - ((zodiac_list[6][3]-zodiac_list[7][3]) /2) -3);
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[6][4], zodiac_list[6][5], zodiac_sym_width, zodiac_sym_height, image_data_virgo_Image);}
-    }
-
-    
-    // -------------------------------------------------------------------------------------------------------
-    // Draw zodiac name
-    // -------------------------------------------------------------------------------------------------------
-    if (zodiac_display_sym==false) {
-      canvas8x8.clear();
-      display.setColor(color_zodiac_sym);
-      canvas8x8.printFixed(0, 0, String(zodiac_name[i]).c_str(), STYLE_BOLD);
-      display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
+      zodiac_elements[6][4]=z_rect_x+zodiac_sym_offset;
+      zodiac_elements[6][5]=(zodiac_elements[6][3] - ((zodiac_elements[6][3]-zodiac_elements[7][3]) /2) -3);
+      display.drawBitmap16(zodiac_elements[6][4], zodiac_elements[6][5], zodiac_sym_width, zodiac_sym_height, image_data_virgo_Image);
     }
   }
   // -----------------------------------------------------------------------------------
@@ -15785,7 +15742,7 @@ void drawZodiac() {
   // -----------------------------------------------------------
   // Map Sun altitude (-90-90 degrees)
   // -----------------------------------------------------------
-  float zenith = (float)siderealPlanetData.sun_az;
+  zenith = (float)siderealPlanetData.sun_az;
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
@@ -15801,14 +15758,17 @@ void drawZodiac() {
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
-  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,0,0));
-  elem_zenith[0][0]=earth_ui_x+1;
-  elem_zenith[0][1]=earth_ui_y+1;
-  elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
-  elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
-  tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(0,0,88));
+  tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
+  zenith_direction[0][0]=earth_ui_x+1;
+  zenith_direction[0][1]=earth_ui_y+1;
+  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
+  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
+  tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,88));
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                     DRAW PLANETS
+// ----------------------------------------------------------------------------------------------------------------
 void drawPlanets() {
 
   /* not to scale and is approximate */
@@ -16057,6 +16017,18 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
+
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                        UPDATE UI
+// ----------------------------------------------------------------------------------------------------------------
+/*
+This UI is designed for a very small, low pixel panel for performance with ESP32 while considering everything else
+the ESP32 has to do running SatIO. If upgrading SatIO to a more moreful chip then the panel may also be considered
+in regards to a higher pixel, larger panel, in which case much of the math used to display the same, reimplemented
+with more detail and a larger scale. For example Planets are represented by pixels on the small panel currently in
+use, and could be represented any other way with much higher detail on higher performance hardware, using the same
+math.
+*/
 void UpdateUI(void * pvParamters) {
 
   while (1) {
