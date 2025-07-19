@@ -15479,10 +15479,11 @@ float normalizeAngle(float z_angle) {
 // -------------------------------------------------------------
 // Custom mapping function to reverse z_angle (360 to 0)
 // -------------------------------------------------------------
+float z_reverse_map;
 float reverseMap(float value, float inMin, float inMax, float outMin, float outMax) {
     // Standard Arduino map: (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
-    float mapped = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-    return normalizeAngle(mapped); // Ensure result is in [0, 360)
+    z_reverse_map = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    return normalizeAngle(z_reverse_map); // Ensure result is in [0, 360)
 }
 
 void drawZodiac() {
