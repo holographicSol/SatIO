@@ -8853,6 +8853,9 @@ void trackPlanets() {
 // ------------------------------------------------------------------------------------------------------------------------------ 
 
 bool track_planet_period=false;
+bool test_planets=false;
+int test_hour=0;
+int test_month=0;
 
 void setTrackPlanets(void * pvParamaters) {
   while (1) {
@@ -8860,11 +8863,22 @@ void setTrackPlanets(void * pvParamaters) {
       track_planet_period=false; 
       // Serial.println("[setTrackPlanets] updating");
       if (systemData.satio_enabled) {
-        myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
-        myAstro.rejectDST();
-        myAstro.setGMTdate(satData.local_year, satData.local_month, satData.local_day);
-        myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
-        myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
+        if (test_planets==false) {
+          myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
+          myAstro.rejectDST();
+          myAstro.setGMTdate(satData.local_year, satData.local_month, satData.local_day);
+          myAstro.setGMTtime(satData.local_hour, satData.local_minute, satData.local_second);
+          myAstro.setLocalTime(satData.local_hour, satData.local_minute, satData.local_second);
+        }
+        else {
+          test_hour++;if (test_hour>23) {test_hour=0;}
+          test_month++;if (test_month>11) {test_month=0;}
+          myAstro.setLatLong(satData.degrees_latitude, satData.degrees_longitude);
+          myAstro.rejectDST();
+          myAstro.setGMTdate(2025, test_month, 1);
+          myAstro.setGMTtime(test_hour, 0, 0);
+          myAstro.setLocalTime(test_hour, 0, 0);
+        }
         trackPlanets();
         ui_track_planet_period=true;
       }
@@ -15290,7 +15304,7 @@ void DisplayUAP() {
   // ------------------------------------------------------------
   // create sprite
   // ------------------------------------------------------------
-  uap.createSprite(uap_w, uap_h); // create the Sprite pixels width and height
+  uap.createSprite(uap_w, uap_h); 
   uap_piv_X = uap.width() / 2; // x pivot of Sprite (middle)
   uap_piv_y = uap_h/2; // y pivot of Sprite (10 pixels from bottom)
   uap.setPivot(uap_piv_X, uap_piv_y); // Set pivot point in this Sprite
@@ -15403,6 +15417,7 @@ int elem_zenith[1][4] {
 };
 
 bool zodiac_display_sym=true;
+int test_ecliptic_long;
 
 void clearZodiacLine(int i) {
   // -------------------------------------------------------------
@@ -15519,7 +15534,7 @@ void drawZodiac() {
         float r = (bottomEdge - earth_ui_y+2) / sinAngle;
         if (r > 0) radius = min(radius, r);}
     // -------------------------------------------------------------
-    // Calculate endpoint
+    // Calculate endpoint\
     // -------------------------------------------------------------
     zodiac_end_x = earth_ui_x+1 + (int16_t)(cosAngle * radius);
     zodiac_end_y = earth_ui_y+1 + (int16_t)(sinAngle * radius);
@@ -15562,133 +15577,197 @@ void drawZodiac() {
     // Clear sym before updating elements
     // --------------------------------------------------------------------------
     clearZodiacSym(i);
-    // --------------------------------------------------------------------------
-    // Aries
-    // --------------------------------------------------------------------------
-    if (i==0) {
-      zodiac_list[0][4]=width-14;
-      zodiac_list[0][5]=zodiac_list[0][3]-(int)((zodiac_list[0][3]-zodiac_list[11][3])/2)-2;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[0][4], zodiac_list[0][5], 9, 9, image_data_aries_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Pisces
-    // --------------------------------------------------------------------------
-    else if (i==1) {
-      zodiac_list[1][4]=width-14;
-      zodiac_list[1][5]=zodiac_list[0][3]+(int)((zodiac_list[1][3]-zodiac_list[0][3])/2)-6;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[1][4], zodiac_list[1][5], 9, 9, image_data_pisces_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Aquarius
-    // --------------------------------------------------------------------------
-    else if (i==2) {
-      if (zodiac_list[1][3]+(int)(height-zodiac_list[1][3])/2<=height-10) {
-        zodiac_list[2][4]=width-14;
-        zodiac_list[2][5]=zodiac_list[1][3]+(int)((height-zodiac_list[1][3])/3);}
-      else {
-        zodiac_list[2][4]=zodiac_list[2][2]+(int)((width-zodiac_list[2][2])/3)-9;
-        zodiac_list[2][5]=height-15;}
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[2][4], zodiac_list[2][5], 9, 9, image_data_aquarius_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Gemini
-    // --------------------------------------------------------------------------
-    if (i==3) {
-      zodiac_list[3][4]=zodiac_list[9][2]+(int)((zodiac_list[10][2]-zodiac_list[9][2])/2)-4;
-      zodiac_list[3][5]=zodiac_list[3][3]+5;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[3][4], zodiac_list[3][5], 9, 9, image_data_gemini_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Cancer
-    // --------------------------------------------------------------------------
-    else if (i==4) {
-      zodiac_list[4][4]=zodiac_list[9][2]-(int)((zodiac_list[9][2]-zodiac_list[8][2])/2);
-      zodiac_list[4][5]=zodiac_list[3][3]+5;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[4][4], zodiac_list[4][5], 9, 9, image_data_cancer_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Scorpio
-    // --------------------------------------------------------------------------
-    else if (i==5) {
-      if (zodiac_list[5][3]+(int)(height-zodiac_list[5][3])/2<=height-10) {
-        zodiac_list[5][4]=5;
-        zodiac_list[5][5]=zodiac_list[5][3]+(int)(height-zodiac_list[5][3])/2;}
-      else {
-        zodiac_list[5][4]=(int)((zodiac_list[4][2])/2)+10;
-        zodiac_list[5][5]=height-15;}
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[5][4], zodiac_list[5][5], 9, 9, image_data_scorpio_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Virgo
-    // --------------------------------------------------------------------------
-    else if (i==6) {
-      zodiac_list[6][4]=5;
-      zodiac_list[6][5]=zodiac_list[6][3]-(int)((zodiac_list[6][3]-zodiac_list[7][3])/2)-3;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[6][4], zodiac_list[6][5], 9, 9, image_data_virgo_Image);}
-    }
-    // --------------------------------------------------------------------------
-    // Libra
-    // --------------------------------------------------------------------------
-    else if (i==7) {
-      zodiac_list[7][4]=5;
-      zodiac_list[7][5]=zodiac_list[6][3]+(int)((zodiac_list[5][3]-zodiac_list[6][3])/2)-4;
-      if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[7][4], zodiac_list[7][5], 9, 9, image_data_libra_Image);}
-    }
-    // --------------------------------------------------------------------------
+
+    int zodiac_sym_offset=4; // offset x,y from rect edges
+    int zodiac_sym_offset_x=5;
+    int zodiac_sym_offset_y=5;
+    int zodiac_sym_width=9;
+    int zodiac_sym_height=9;
+    int zodiac_sym_width_div=(int)zodiac_sym_width/2;
+    // -------------------------------------------------------------------------------------------------------
+    // TOP LEFT CORNER
+    // -------------------------------------------------------------------------------------------------------
     // Leo
-    // --------------------------------------------------------------------------
-    else if (i==8) {
-      if ((zodiac_list[8][2]-2-(int)(zodiac_list[8][2])/2)-9>=1) {
-        zodiac_list[8][4]=(zodiac_list[8][2]-2-(int)(zodiac_list[8][2])/2)+4;
-        zodiac_list[8][5]=zodiac_list[8][3]+5;}
+    // ----------------
+    if (i==8) {
+      // --------------
+      // top edge
+      // --------------
+      if (zodiac_list[8][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+        zodiac_list[8][4]=( (zodiac_list[8][2]-(zodiac_list[8][2] /3)) -2);
+        zodiac_list[8][5]=rectY+zodiac_sym_offset;
+      }
+      // --------------
+      // left edge
+      // --------------
       else {
-        zodiac_list[8][4]=5;
-        zodiac_list[8][5]=zodiac_list[7][3]-(int)(zodiac_list[7][3])/2;}
+        zodiac_list[8][4]=rectX+zodiac_sym_offset;
+        zodiac_list[8][5]=( (zodiac_list[7][3]-(zodiac_list[7][3] /2)) );
+      }
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[8][4], zodiac_list[8][5], 9, 9, image_data_leo_Image);}
+      display.drawBitmap16(zodiac_list[8][4], zodiac_list[8][5], zodiac_sym_width, zodiac_sym_height, image_data_leo_Image);}
     }
-    // --------------------------------------------------------------------------
-    // Sagitarius
-    // --------------------------------------------------------------------------
-    else if (i==9) {
-      zodiac_list[9][4]=zodiac_list[3][2]-(int)((zodiac_list[3][2]-zodiac_list[4][2])/2)+3;
-      zodiac_list[9][5]=height-15;
+
+    // -------------------------------------------------------------------------------------------------------
+    // TOP EDGE
+    // -------------------------------------------------------------------------------------------------------
+    // Cancer
+    // ----------------
+    else if (i==4) {
+      zodiac_list[4][4]=(zodiac_list[9][2] - ((zodiac_list[9][2]-zodiac_list[8][2]) /2) -1);
+      zodiac_list[4][5]=rectY+zodiac_sym_offset;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[9][4], zodiac_list[9][5], 9, 9, image_data_sagitarius_Image);}
+      display.drawBitmap16(zodiac_list[4][4], zodiac_list[4][5], zodiac_sym_width, zodiac_sym_height, image_data_cancer_Image);}
     }
-    // --------------------------------------------------------------------------
-    // Capricorn
-    // --------------------------------------------------------------------------
-    else if (i==10) {
-      zodiac_list[10][4]=zodiac_list[3][2]+(int)((zodiac_list[2][2]-zodiac_list[3][2])/2)-10;
-      zodiac_list[10][5]=height-15;
+    // ----------------
+    // Gemini
+    // ----------------
+    if (i==3) {
+      zodiac_list[3][4]=(zodiac_list[9][2] + ((zodiac_list[10][2]-zodiac_list[9][2]) /2) -(zodiac_sym_width_div+1));
+      zodiac_list[3][5]=rectY+zodiac_sym_offset;
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], 9, 9, image_data_capricorn_Image);}
+      display.drawBitmap16(zodiac_list[3][4], zodiac_list[3][5], zodiac_sym_width, zodiac_sym_height, image_data_gemini_Image);}
     }
-    // --------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------------------------
+    // TOP RIGHT CORNER
+    // -------------------------------------------------------------------------------------------------------
     // Taurus
-    // --------------------------------------------------------------------------
+    // ----------------
     else if (i==11) {
-      if (zodiac_list[11][3]-9>=topEdge+6) {
-        zodiac_list[11][4]=width-14;
-        zodiac_list[11][5]=zodiac_list[11][3]-(int)(zodiac_list[11][3])/2;}
+      // --------------
+      // top edge
+      // --------------
+      if (zodiac_list[10][2]<width-(zodiac_sym_width+zodiac_sym_offset)) {
+        zodiac_list[11][4]=(zodiac_list[10][2] + ((width-zodiac_list[10][2]) /3) -3);
+        zodiac_list[11][5]=rectY+zodiac_sym_offset;
+      }
+      // --------------
+      // right edge
+      // --------------
       else {
-        zodiac_list[11][4]=zodiac_list[10][2]+(int)((width-zodiac_list[10][2])/3)-4;
-        zodiac_list[11][5]=zodiac_list[10][3]+5;}
+        zodiac_list[11][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+        zodiac_list[11][5]=((zodiac_list[11][3] - ((zodiac_list[11][3]-zodiac_list[10][3])) /2) );
+      }
       if (zodiac_display_sym==true) {
-      display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], 9, 9, image_data_taurus_Image);}
+      display.drawBitmap16(zodiac_list[11][4], zodiac_list[11][5], zodiac_sym_width, zodiac_sym_height, image_data_taurus_Image);}
     }
-    // --------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------------------------
+    // RIGHT EDGE
+    // -------------------------------------------------------------------------------------------------------
+    // Aries
+    // ----------------
+    else if (i==0) {
+      zodiac_list[0][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+      zodiac_list[0][5]=(zodiac_list[0][3] - ((zodiac_list[0][3]-zodiac_list[11][3]) /2) );
+      if (zodiac_display_sym==true) {
+        display.drawBitmap16(zodiac_list[0][4], zodiac_list[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);}
+      }
+    // ----------------
+    // Pisces
+    // ----------------
+    else if (i==1) {
+      zodiac_list[1][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+      zodiac_list[1][5]=(zodiac_list[0][3] + ((zodiac_list[1][3]-zodiac_list[0][3]) /3) -3);
+      if (zodiac_display_sym==true) {
+        display.drawBitmap16(zodiac_list[1][4], zodiac_list[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);}
+      }
+
+    // -------------------------------------------------------------------------------------------------------
+    // BOTTOM RIGHT CORNER
+    // -------------------------------------------------------------------------------------------------------
+    // Aquarius
+    // ----------------
+    else if (i==2) {
+      // --------------
+      // bottom edge
+      // --------------
+      if (zodiac_list[2][2]<width-(zodiac_sym_width+zodiac_sym_offset)) {
+
+        zodiac_list[2][4]=(zodiac_list[2][2] + ((width-zodiac_list[2][2]) /3) -4);
+        zodiac_list[2][5]=height-(zodiac_sym_height+zodiac_sym_offset);}
+      // --------------
+      // right edge
+      // --------------
+        else {
+        zodiac_list[2][4]=width-(zodiac_sym_width+zodiac_sym_offset);
+        zodiac_list[2][5]=(zodiac_list[1][3] + ((height-zodiac_list[1][3]) /3) -3);
+      }
+      if (zodiac_display_sym==true) {
+      display.drawBitmap16(zodiac_list[2][4], zodiac_list[2][5], zodiac_sym_width, zodiac_sym_height, image_data_aquarius_Image);}
+    }
+    
+    // -------------------------------------------------------------------------------------------------------
+    // BOTTOM EDGE
+    // -------------------------------------------------------------------------------------------------------
+    // Capricorn
+    // ----------------
+    else if (i==10) {
+      zodiac_list[10][4]=(zodiac_list[3][2] + ((zodiac_list[2][2]-zodiac_list[3][2]) /2) );
+      zodiac_list[10][5]=height-(zodiac_sym_width+zodiac_sym_offset);
+      if (zodiac_display_sym==true) {
+      display.drawBitmap16(zodiac_list[10][4], zodiac_list[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);}
+    }
+    // ----------------
+    // Sagitarius
+    // ----------------
+    else if (i==9) {
+      zodiac_list[9][4]=(zodiac_list[3][2] - ((zodiac_list[3][2]-zodiac_list[4][2]) /2) +3);
+      zodiac_list[9][5]=height-zodiac_sym_width-zodiac_sym_offset;
+      if (zodiac_display_sym==true) {
+      display.drawBitmap16(zodiac_list[9][4], zodiac_list[9][5], zodiac_sym_width, zodiac_sym_height, image_data_sagitarius_Image);}
+    }
+
+    // -------------------------------------------------------------------------------------------------------
+    // BOTTOM LEFT CORNER
+    // -------------------------------------------------------------------------------------------------------
+    // Scorpio
+    // ----------------
+    else if (i==5) {
+      // --------------
+      // bottom edge
+      // --------------
+      if (zodiac_list[4][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+        zodiac_list[5][4]=(zodiac_list[4][2] - (zodiac_list[4][2] /3) );
+        zodiac_list[5][5]=height-zodiac_sym_width-zodiac_sym_offset;
+      }
+      // --------------
+      // left edge
+      // --------------
+      else {
+        zodiac_list[5][4]=rectX+zodiac_sym_offset;
+        zodiac_list[5][5]=(zodiac_list[5][3] + ((height-zodiac_list[5][3]) /3) );
+      }
+      if (zodiac_display_sym==true) {
+      display.drawBitmap16(zodiac_list[5][4], zodiac_list[5][5], zodiac_sym_width, zodiac_sym_height, image_data_scorpio_Image);}
+    }
+
+    // -------------------------------------------------------------------------------------------------------
+    // LEFT EDGE
+    // -------------------------------------------------------------------------------------------------------
+    // Libra
+    // ----------------
+    else if (i==7) {
+      zodiac_list[7][4]=rectX+zodiac_sym_offset;
+      zodiac_list[7][5]=(zodiac_list[6][3] + ((zodiac_list[5][3]-zodiac_list[6][3]) /2) -5);
+      if (zodiac_display_sym==true) {
+        display.drawBitmap16(zodiac_list[7][4], zodiac_list[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);}
+      }
+    // ----------------
+    // Virgo
+    // ----------------
+    else if (i==6) {
+      zodiac_list[6][4]=rectX+zodiac_sym_offset;
+      zodiac_list[6][5]=(zodiac_list[6][3] - ((zodiac_list[6][3]-zodiac_list[7][3]) /2) -3);
+      if (zodiac_display_sym==true) {
+      display.drawBitmap16(zodiac_list[6][4], zodiac_list[6][5], zodiac_sym_width, zodiac_sym_height, image_data_virgo_Image);}
+    }
+
+    
+    // -------------------------------------------------------------------------------------------------------
     // Draw zodiac name
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
     if (zodiac_display_sym==false) {
       canvas8x8.clear();
       display.setColor(color_zodiac_sym);
@@ -15696,24 +15775,13 @@ void drawZodiac() {
       display.drawCanvas(zodiac_list[i][4], zodiac_list[i][5], canvas8x8);
     }
   }
-  // --------------------------------------------------------------------------------
-  // Calculate earths facing direction relative to the sun and users coordinates on Earth (in testing)
-  // --------------------------------------------------------------------------------
-  /* 
-     The intention is to display which direction the earth is facing into space according
-     to users position on earth and users local datetime. The zenith hand is therefore
-     not meant to travel 0-360 degrees unless the users coordinates on earth facilitate it.
-     The zenith hand may mostly always face in some approximate direction of the sun if
-     user is in the poles, while if the user is at the equater then the zenith hand should
-     traverse the entire 360 degrees.
-  */
-  // --------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------
+  // Draw which direction zenith is pointing into space according to datetime & location
+  // -----------------------------------------------------------------------------------
   // -----------------------------------------------------------
   // Map Sun altitude (-90-90 degrees)
   // -----------------------------------------------------------
   float zenith = (float)siderealPlanetData.sun_az;
-  // Serial.println("[zenith 0] " + String(zenith));
-  // Serial.println("[sun az]   " + String(siderealPlanetData.sun_az)); // sun in this direction from earth
   // -----------------------------------------------------------
   // Adjust by 90 degrees (same as planet adjustements)
   // -----------------------------------------------------------
@@ -15722,16 +15790,10 @@ void drawZodiac() {
   // Ensure positive and in [0, 360)
   // -----------------------------------------------------------
   zenith = normalizeAngle(zenith);
-  // Serial.println("[zenith 0]   #" + String(zenith));
-  // Serial.println("[zenith 2] " + String(zenith));
-  // zenith=90; // force
   // -----------------------------------------------------------
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
   zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-  // Serial.println("[sun alt]   " + String(siderealPlanetData.sun_alt));
-  // Serial.println("[sun az]    " + String(siderealPlanetData.sun_az));
-  // Serial.println("[zenith 1]  " + String(zenith));
   // -------------------------------------------------------------
   // Draw colored line to convey attitude in space
   // -------------------------------------------------------------
@@ -15740,9 +15802,7 @@ void drawZodiac() {
   elem_zenith[0][1]=earth_ui_y+1;
   elem_zenith[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
   elem_zenith[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
-  // tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], RGB_COLOR16(48,48,48));
   tft.drawLine(elem_zenith[0][0], elem_zenith[0][1], elem_zenith[0][2], elem_zenith[0][3], TFT_GREEN);
-  // todo: complete zenith styling. currently zenith is a 45 pixels lenght line from earth at a 0-360 angle.
 }
 
 void drawPlanets() {
@@ -15752,7 +15812,7 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   //                                                               SUN
   // -----------------------------------------------------------------
-  hud.createSprite(5, 5); // create the Sprite pixels width and height
+  hud.createSprite(5, 5); 
   hud.fillCircle(2, 2, 2, TFT_YELLOW);
   hud.pushSprite(64, 64);
   yield();
@@ -15764,7 +15824,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mercury==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
     yield();
@@ -15772,7 +15832,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_PURPLE);
     // mercury_ui_x = 65 + 7 * sin(radians(test_angle+90)); // (test)
     // mercury_ui_y = 65 + 7 * cos(radians(test_angle+90)); // (test)
@@ -15789,7 +15849,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_venus==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
     yield();
@@ -15797,7 +15857,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_YELLOW);
     // venus_ui_x = 65 + 13 * sin(radians(test_angle+90)); // (test)
     // venus_ui_y = 65 + 13 * cos(radians(test_angle+90)); // (test)
@@ -15814,7 +15874,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_moon==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
     yield();
@@ -15822,7 +15882,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_CYAN);
     // earth_ui_x = 65 + 21 * sin(radians(test_angle+90)); // (test)
     // earth_ui_y = 65 + 21 * cos(radians(test_angle+90)); // (test)
@@ -15839,10 +15899,10 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   //                                                              MOON
   // -----------------------------------------------------------------
-  // clear previous position (in development, may not be accurate)
+  // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_moon==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
@@ -15850,7 +15910,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_DARKGREY);
     // moon_ui_x = earth_ui_x + 4 * sin(radians(test_moon_angle+90)); // (test)
     // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
@@ -15867,7 +15927,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mars==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
     yield();
@@ -15875,7 +15935,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_RED);
     // mars_ui_x = 65 + 29 * sin(radians(test_angle+90)); // (test)
     // mars_ui_y = 65 + 29 * cos(radians(test_angle+90)); // (test)
@@ -15892,7 +15952,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_jupiter==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
@@ -15900,7 +15960,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_LIGHTGREY);
     // jupiter_ui_x = 65 + 35 * sin(radians(test_angle+90)); // (test)
     // jupiter_ui_y = 65 + 35 * cos(radians(test_angle+90)); // (test)
@@ -15917,7 +15977,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_saturn==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
@@ -15925,7 +15985,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.drawCircle(1, 1, 1, TFT_YELLOW);
     // saturn_ui_x = 65 + 41 * sin(radians(test_angle+90)); // (test)
     // saturn_ui_y = 65 + 41 * cos(radians(test_angle+90)); // (test)
@@ -15942,7 +16002,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_uranus==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
     yield();
@@ -15950,7 +16010,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_CYAN);
     // uranus_ui_x = 65 + 47 * sin(radians(test_angle+90)); // (test)
     // uranus_ui_y = 65 + 47 * cos(radians(test_angle+90)); // (test)
@@ -15967,7 +16027,7 @@ void drawPlanets() {
   // clear previous position
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_neptune==true) {
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLACK);
     hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
     yield();
@@ -15975,7 +16035,7 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); // create the Sprite pixels width and height
+    hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_BLUE);
     // neptune_ui_x = 65 + 53 * sin(radians(test_angle+90)); // (test)
     // neptune_ui_y = 65 + 53 * cos(radians(test_angle+90)); // (test)
