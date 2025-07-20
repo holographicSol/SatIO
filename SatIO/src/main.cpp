@@ -241,7 +241,8 @@
   part or standalone device.
 
   Whats the point? Working with ESP32 is cheap and from this project I intend to have reusable, general purpose parts
-  as modules that can work both together and standalone, creating a platform I can go to when working with ESP32.
+  as modules that can work both together and standalone, creating a platform I can go to when working with ESP32 and modules I can
+  reuse in other projects.
 
   Requires using modified SiderealPlanets library (hopefully thats okay as the modifications allow calculating rise/set
   of potentially any celestial body as described in this paper: https://stjarnhimlen.se/comp/riset.html).
