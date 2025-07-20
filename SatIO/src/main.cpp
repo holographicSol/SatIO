@@ -14,6 +14,7 @@
   Inference in Bayesian Reasoning? Moon tracking for example can be used to track the moon, it can also be used for one example; to 
   track the tides. There is a lot of data that can be used in many ways, with a kind of network effect.
   Or more simply 'its one hell of a switch'.
+  The amount of data and Io available on this project makes this project an extremely general purpose platform for all kinds of projects.
 
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
