@@ -2,8 +2,6 @@
 
                                   SatIO - Written by Benjamin Jack Cullen.
 
-                                SatIO is the system, a matrix is the program.
-
               A general purpose programmable I/O platform for automation and manual throughput.
     Supporting stacks (up to 10 functions per output pin) of logic across 20 output pins on the portcontroller.
 
@@ -14,7 +12,7 @@
   Inference in Bayesian Reasoning? Moon tracking for example can be used to track the moon, it can also be used for one example; to 
   track the tides. There is a lot of data that can be used in many ways, with a kind of network effect.
   Or more simply 'its one hell of a switch'.
-  The amount of data and Io available on this project makes this project an extremely general purpose platform for all kinds of projects.
+  The amount of data and I/O available on this project makes this project an extremely general purpose platform for all kinds of future projects.
 
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
