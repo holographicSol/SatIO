@@ -14,7 +14,8 @@
   to the inferred tide values and known datetime. There is a lot of data that can be used in many ways, with a kind of network effect.
   Or more simply 'its one hell of a switch'.
   The amount of data and I/O available on this project makes this project a more than adequately general purpose platform for all
-  kinds of future projects, from universally aware LLMs to sensor drones, or even just a GPS syncronized astro clock.
+  kinds of future projects, from universally aware LLMs harnessing SatIO's optional serial output, to sensor drones, or even just a
+  GPS syncronized astro clock.
 
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
