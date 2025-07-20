@@ -15,7 +15,8 @@
   Or more simply 'its one hell of a switch'.
   The amount of data and I/O available on this project makes this project a more than adequately general purpose platform for all
   kinds of future projects, from universally aware LLMs harnessing SatIO's optional serial output, to sensor drones, or even just a
-  GPS syncronized astro clock.
+  GPS syncronized astro clock. Everything other than the ESP32 running SatIO should be considered as optional and modular, meaning
+  SatIO builds can be from a headless chip with GPS to full system with I/O and display.
 
   Short of quantum navigation on a microchip, GPS is currently used for navigation, providing values that many more values
   can be calculated from, providing there is not something potentially terminally wrong with the universe.
