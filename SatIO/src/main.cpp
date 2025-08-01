@@ -15692,6 +15692,7 @@ float z_sin_angle=0;
 float z_radius_0 = 10000.0; // Large enough to ensure intersection
 float z_angle=0;
 float z_radius_1=0;
+bool draw_zodiac_symbols=false;
 
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                      DRAW ZODIAC
@@ -15726,7 +15727,6 @@ float normalizeAngle(float z_angle) {
 // -------------------------------------------------------------
 float z_reverse_map;
 float reverseMap(float value, float inMin, float inMax, float outMin, float outMax) {
-    // Standard Arduino map: (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
     z_reverse_map = (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     return normalizeAngle(z_reverse_map); // Ensure result is in [0, 360)
 }
@@ -15735,7 +15735,7 @@ void drawZodiac() {
   // ---------------------------------------------------------------
   // todo: reduce zodiac segment lines right and bottom edges
   // ---------------------------------------------------------------
-  // border
+  // Border
   // ---------------------------------------------------------------
   tft.drawRect(1, 11, 126, 116, RGB_COLOR16(0,0,24));
   // ---------------------------------------------------------------
@@ -15752,31 +15752,31 @@ void drawZodiac() {
     z_cos_angle = cos(z_angle);
     z_sin_angle = sin(z_angle);
     // -------------------------------------------------------------
-    // Initialize z_radius_0 to a large value
+    // z_radius_0 to large value (large enough ensures intersection)
     // -------------------------------------------------------------
-    z_radius_0 = 10000.0; // Large enough to ensure intersection
+    z_radius_0 = 10000.0;
     // -------------------------------------------------------------
     // Check intersection with left edge (x = z_left_edge)
     // -------------------------------------------------------------
-    if (z_cos_angle < -0.0001) { // Line going left
+    if (z_cos_angle < -0.0001) {
         z_radius_1 = (z_left_edge - earth_ui_x+2) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with right edge (x = z_right_edge)
     // -------------------------------------------------------------
-    if (z_cos_angle > 0.0001) { // Line going right
+    if (z_cos_angle > 0.0001) {
         z_radius_1 = (z_right_edge - earth_ui_x+2) / z_cos_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with top edge (y = z_top_edge)
     // -------------------------------------------------------------
-    if (z_sin_angle < -0.0001) { // Line going up
+    if (z_sin_angle < -0.0001) {
         z_radius_1 = (z_top_edge - earth_ui_y+2) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
     // Check intersection with bottom edge (y = z_bottom_edge)
     // -------------------------------------------------------------
-    if (z_sin_angle > 0.0001) { // Line going down
+    if (z_sin_angle > 0.0001) {
         z_radius_1 = (z_bottom_edge - earth_ui_y+2) / z_sin_angle;
         if (z_radius_1 > 0) z_radius_0 = min(z_radius_0, z_radius_1);}
     // -------------------------------------------------------------
@@ -15815,168 +15815,170 @@ void drawZodiac() {
     // 9:  360 deg
     // 10: 30  deg
     // 11: 60  deg
-    // -------------------------------------------------------------
-    // Clear sym before updating elements
-    // -------------------------------------------------------------
-    clearZodiacSym(i);
-    // -------------------------------------------------------------------------------------------------------
-    // TOP LEFT CORNER
-    // -------------------------------------------------------------------------------------------------------
-    // Leo
-    // ----------------
-    if (i==8) {
-      // --------------
-      // top edge
-      // --------------
-      if (zodiac_elements[8][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
-        zodiac_elements[8][4]=( (zodiac_elements[8][2]-(zodiac_elements[8][2] /3)) -2);
-        zodiac_elements[8][5]=z_rect_y+zodiac_sym_offset;
-      }
-      // --------------
-      // left edge
-      // --------------
-      else {
-        zodiac_elements[8][4]=(z_rect_x+zodiac_sym_offset) -2;
-        zodiac_elements[8][5]=( (zodiac_elements[7][3]-(zodiac_elements[7][3] /2)) );
-      }
-      display.drawBitmap16(zodiac_elements[8][4], zodiac_elements[8][5], zodiac_sym_width, zodiac_sym_height, image_data_leo_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // TOP EDGE
-    // -------------------------------------------------------------------------------------------------------
-    // Cancer
-    // ----------------
-    else if (i==4) {
-      zodiac_elements[4][4]=(zodiac_elements[9][2] - ((zodiac_elements[9][2]-zodiac_elements[8][2]) /2) -1);
-      zodiac_elements[4][5]=z_rect_y+zodiac_sym_offset;
-      display.drawBitmap16(zodiac_elements[4][4], zodiac_elements[4][5], zodiac_sym_width, zodiac_sym_height, image_data_cancer_Image);
-    }
-    // ----------------
-    // Gemini
-    // ----------------
-    if (i==3) {
-      zodiac_elements[3][4]=(zodiac_elements[9][2] + ((zodiac_elements[10][2]-zodiac_elements[9][2]) /2) -(zodiac_sym_width_div+1));
-      zodiac_elements[3][5]=z_rect_y+zodiac_sym_offset;
-      display.drawBitmap16(zodiac_elements[3][4], zodiac_elements[3][5], zodiac_sym_width, zodiac_sym_height, image_data_gemini_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // TOP RIGHT CORNER
-    // -------------------------------------------------------------------------------------------------------
-    // Taurus
-    // ----------------
-    else if (i==11) {
-      // --------------
-      // top edge
-      // --------------
-      if (zodiac_elements[10][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
-        zodiac_elements[11][4]=(zodiac_elements[10][2] + ((z_width-zodiac_elements[10][2]) /3) -2);
-        zodiac_elements[11][5]=z_rect_y+zodiac_sym_offset;
-      }
-      // --------------
-      // right edge
-      // --------------
-      else {
-        zodiac_elements[11][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
-        zodiac_elements[11][5]=((zodiac_elements[11][3] - ((zodiac_elements[11][3]-zodiac_elements[10][3])) /2) );
-      }
-      display.drawBitmap16(zodiac_elements[11][4], zodiac_elements[11][5], zodiac_sym_width, zodiac_sym_height, image_data_taurus_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // RIGHT EDGE
-    // -------------------------------------------------------------------------------------------------------
-    // Aries
-    // ----------------
-    else if (i==0) {
-      zodiac_elements[0][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
-      zodiac_elements[0][5]=(zodiac_elements[0][3] - ((zodiac_elements[0][3]-zodiac_elements[11][3]) /2) );
-      display.drawBitmap16(zodiac_elements[0][4], zodiac_elements[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);
-      }
-    // ----------------
-    // Pisces
-    // ----------------
-    else if (i==1) {
-      zodiac_elements[1][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
-      zodiac_elements[1][5]=(zodiac_elements[0][3] + ((zodiac_elements[1][3]-zodiac_elements[0][3]) /3) -3);
-      display.drawBitmap16(zodiac_elements[1][4], zodiac_elements[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);
-      }
-    // -------------------------------------------------------------------------------------------------------
-    // BOTTOM RIGHT CORNER
-    // -------------------------------------------------------------------------------------------------------
-    // Aquarius
-    // ----------------
-    else if (i==2) {
-      // --------------
-      // bottom edge
-      // --------------
-      if (zodiac_elements[2][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
-        zodiac_elements[2][4]=(zodiac_elements[2][2] + ((z_width-zodiac_elements[2][2]) /3) -4);
-        zodiac_elements[2][5]=z_height-(zodiac_sym_height+zodiac_sym_offset) +1;}
-      // --------------
-      // right edge
-      // --------------
+    if (draw_zodiac_symbols==true) {
+      // -------------------------------------------------------------
+      // Clear sym before updating elements
+      // -------------------------------------------------------------
+      clearZodiacSym(i);
+      // -------------------------------------------------------------------------------------------------------
+      // TOP LEFT CORNER
+      // -------------------------------------------------------------------------------------------------------
+      // Leo
+      // ----------------
+      if (i==8) {
+        // --------------
+        // top edge
+        // --------------
+        if (zodiac_elements[8][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+          zodiac_elements[8][4]=( (zodiac_elements[8][2]-(zodiac_elements[8][2] /3)) -2);
+          zodiac_elements[8][5]=z_rect_y+zodiac_sym_offset;
+        }
+        // --------------
+        // left edge
+        // --------------
         else {
-        zodiac_elements[2][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
-        zodiac_elements[2][5]=(zodiac_elements[1][3] + ((z_height-zodiac_elements[1][3]) /3) -3);
+          zodiac_elements[8][4]=(z_rect_x+zodiac_sym_offset) -2;
+          zodiac_elements[8][5]=( (zodiac_elements[7][3]-(zodiac_elements[7][3] /2)) );
+        }
+        display.drawBitmap16(zodiac_elements[8][4], zodiac_elements[8][5], zodiac_sym_width, zodiac_sym_height, image_data_leo_Image);
       }
-      display.drawBitmap16(zodiac_elements[2][4], zodiac_elements[2][5], zodiac_sym_width, zodiac_sym_height, image_data_aquarius_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // BOTTOM EDGE
-    // -------------------------------------------------------------------------------------------------------
-    // Capricorn
-    // ----------------
-    else if (i==10) {
-      zodiac_elements[10][4]=(zodiac_elements[3][2] + ((zodiac_elements[2][2]-zodiac_elements[3][2]) /3) -3);
-      zodiac_elements[10][5]=z_height-(zodiac_sym_width+zodiac_sym_offset) +1;
-      display.drawBitmap16(zodiac_elements[10][4], zodiac_elements[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);
-    }
-    // ----------------
-    // Sagitarius
-    // ----------------
-    else if (i==9) {
-      zodiac_elements[9][4]=(zodiac_elements[3][2] - ((zodiac_elements[3][2]-zodiac_elements[4][2]) /2) +3);
-      zodiac_elements[9][5]=z_height-zodiac_sym_width-zodiac_sym_offset +1;
-      display.drawBitmap16(zodiac_elements[9][4], zodiac_elements[9][5], zodiac_sym_width, zodiac_sym_height, image_data_sagitarius_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // BOTTOM LEFT CORNER
-    // -------------------------------------------------------------------------------------------------------
-    // Scorpio
-    // ----------------
-    else if (i==5) {
-      // --------------
-      // bottom edge
-      // --------------
-      if (zodiac_elements[4][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
-        zodiac_elements[5][4]=(zodiac_elements[4][2] - (zodiac_elements[4][2] /3) );
-        zodiac_elements[5][5]=z_height-zodiac_sym_width-zodiac_sym_offset +1;
+      // -------------------------------------------------------------------------------------------------------
+      // TOP EDGE
+      // -------------------------------------------------------------------------------------------------------
+      // Cancer
+      // ----------------
+      else if (i==4) {
+        zodiac_elements[4][4]=(zodiac_elements[9][2] - ((zodiac_elements[9][2]-zodiac_elements[8][2]) /2) -1);
+        zodiac_elements[4][5]=z_rect_y+zodiac_sym_offset;
+        display.drawBitmap16(zodiac_elements[4][4], zodiac_elements[4][5], zodiac_sym_width, zodiac_sym_height, image_data_cancer_Image);
       }
-      // --------------
-      // left edge
-      // --------------
-      else {
-        zodiac_elements[5][4]=(z_rect_x+zodiac_sym_offset) -2;
-        zodiac_elements[5][5]=(zodiac_elements[5][3] + ((z_height-zodiac_elements[5][3]) /3) );
+      // ----------------
+      // Gemini
+      // ----------------
+      if (i==3) {
+        zodiac_elements[3][4]=(zodiac_elements[9][2] + ((zodiac_elements[10][2]-zodiac_elements[9][2]) /2) -(zodiac_sym_width_div+1));
+        zodiac_elements[3][5]=z_rect_y+zodiac_sym_offset;
+        display.drawBitmap16(zodiac_elements[3][4], zodiac_elements[3][5], zodiac_sym_width, zodiac_sym_height, image_data_gemini_Image);
       }
-      display.drawBitmap16(zodiac_elements[5][4], zodiac_elements[5][5], zodiac_sym_width, zodiac_sym_height, image_data_scorpio_Image);
-    }
-    // -------------------------------------------------------------------------------------------------------
-    // LEFT EDGE
-    // -------------------------------------------------------------------------------------------------------
-    // Libra
-    // ----------------
-    else if (i==7) {
-      zodiac_elements[7][4]=(z_rect_x+zodiac_sym_offset) -2;
-      zodiac_elements[7][5]=(zodiac_elements[6][3] + ((zodiac_elements[5][3]-zodiac_elements[6][3]) /2) -5);
-      display.drawBitmap16(zodiac_elements[7][4], zodiac_elements[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);
+      // -------------------------------------------------------------------------------------------------------
+      // TOP RIGHT CORNER
+      // -------------------------------------------------------------------------------------------------------
+      // Taurus
+      // ----------------
+      else if (i==11) {
+        // --------------
+        // top edge
+        // --------------
+        if (zodiac_elements[10][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
+          zodiac_elements[11][4]=(zodiac_elements[10][2] + ((z_width-zodiac_elements[10][2]) /3) -2);
+          zodiac_elements[11][5]=z_rect_y+zodiac_sym_offset;
+        }
+        // --------------
+        // right edge
+        // --------------
+        else {
+          zodiac_elements[11][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+          zodiac_elements[11][5]=((zodiac_elements[11][3] - ((zodiac_elements[11][3]-zodiac_elements[10][3])) /2) );
+        }
+        display.drawBitmap16(zodiac_elements[11][4], zodiac_elements[11][5], zodiac_sym_width, zodiac_sym_height, image_data_taurus_Image);
       }
-    // ----------------
-    // Virgo
-    // ----------------
-    else if (i==6) {
-      zodiac_elements[6][4]=(z_rect_x+zodiac_sym_offset) -2;
-      zodiac_elements[6][5]=(zodiac_elements[6][3] - ((zodiac_elements[6][3]-zodiac_elements[7][3]) /2) -3);
-      display.drawBitmap16(zodiac_elements[6][4], zodiac_elements[6][5], zodiac_sym_width, zodiac_sym_height, image_data_virgo_Image);
+      // -------------------------------------------------------------------------------------------------------
+      // RIGHT EDGE
+      // -------------------------------------------------------------------------------------------------------
+      // Aries
+      // ----------------
+      else if (i==0) {
+        zodiac_elements[0][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+        zodiac_elements[0][5]=(zodiac_elements[0][3] - ((zodiac_elements[0][3]-zodiac_elements[11][3]) /2) );
+        display.drawBitmap16(zodiac_elements[0][4], zodiac_elements[0][5], zodiac_sym_width, zodiac_sym_height, image_data_aries_Image);
+        }
+      // ----------------
+      // Pisces
+      // ----------------
+      else if (i==1) {
+        zodiac_elements[1][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+        zodiac_elements[1][5]=(zodiac_elements[0][3] + ((zodiac_elements[1][3]-zodiac_elements[0][3]) /3) -3);
+        display.drawBitmap16(zodiac_elements[1][4], zodiac_elements[1][5], zodiac_sym_width, zodiac_sym_height, image_data_pisces_Image);
+        }
+      // -------------------------------------------------------------------------------------------------------
+      // BOTTOM RIGHT CORNER
+      // -------------------------------------------------------------------------------------------------------
+      // Aquarius
+      // ----------------
+      else if (i==2) {
+        // --------------
+        // bottom edge
+        // --------------
+        if (zodiac_elements[2][2]<z_width-(zodiac_sym_width+zodiac_sym_offset)) {
+          zodiac_elements[2][4]=(zodiac_elements[2][2] + ((z_width-zodiac_elements[2][2]) /3) -4);
+          zodiac_elements[2][5]=z_height-(zodiac_sym_height+zodiac_sym_offset) +1;}
+        // --------------
+        // right edge
+        // --------------
+          else {
+          zodiac_elements[2][4]=z_width-(zodiac_sym_width+zodiac_sym_offset) +2;
+          zodiac_elements[2][5]=(zodiac_elements[1][3] + ((z_height-zodiac_elements[1][3]) /3) -3);
+        }
+        display.drawBitmap16(zodiac_elements[2][4], zodiac_elements[2][5], zodiac_sym_width, zodiac_sym_height, image_data_aquarius_Image);
+      }
+      // -------------------------------------------------------------------------------------------------------
+      // BOTTOM EDGE
+      // -------------------------------------------------------------------------------------------------------
+      // Capricorn
+      // ----------------
+      else if (i==10) {
+        zodiac_elements[10][4]=(zodiac_elements[3][2] + ((zodiac_elements[2][2]-zodiac_elements[3][2]) /3) -3);
+        zodiac_elements[10][5]=z_height-(zodiac_sym_width+zodiac_sym_offset) +1;
+        display.drawBitmap16(zodiac_elements[10][4], zodiac_elements[10][5], zodiac_sym_width, zodiac_sym_height, image_data_capricorn_Image);
+      }
+      // ----------------
+      // Sagitarius
+      // ----------------
+      else if (i==9) {
+        zodiac_elements[9][4]=(zodiac_elements[3][2] - ((zodiac_elements[3][2]-zodiac_elements[4][2]) /2) +3);
+        zodiac_elements[9][5]=z_height-zodiac_sym_width-zodiac_sym_offset +1;
+        display.drawBitmap16(zodiac_elements[9][4], zodiac_elements[9][5], zodiac_sym_width, zodiac_sym_height, image_data_sagitarius_Image);
+      }
+      // -------------------------------------------------------------------------------------------------------
+      // BOTTOM LEFT CORNER
+      // -------------------------------------------------------------------------------------------------------
+      // Scorpio
+      // ----------------
+      else if (i==5) {
+        // --------------
+        // bottom edge
+        // --------------
+        if (zodiac_elements[4][2]>=(zodiac_sym_width*2)+zodiac_sym_offset) {
+          zodiac_elements[5][4]=(zodiac_elements[4][2] - (zodiac_elements[4][2] /3) );
+          zodiac_elements[5][5]=z_height-zodiac_sym_width-zodiac_sym_offset +1;
+        }
+        // --------------
+        // left edge
+        // --------------
+        else {
+          zodiac_elements[5][4]=(z_rect_x+zodiac_sym_offset) -2;
+          zodiac_elements[5][5]=(zodiac_elements[5][3] + ((z_height-zodiac_elements[5][3]) /3) );
+        }
+        display.drawBitmap16(zodiac_elements[5][4], zodiac_elements[5][5], zodiac_sym_width, zodiac_sym_height, image_data_scorpio_Image);
+      }
+      // -------------------------------------------------------------------------------------------------------
+      // LEFT EDGE
+      // -------------------------------------------------------------------------------------------------------
+      // Libra
+      // ----------------
+      else if (i==7) {
+        zodiac_elements[7][4]=(z_rect_x+zodiac_sym_offset) -2;
+        zodiac_elements[7][5]=(zodiac_elements[6][3] + ((zodiac_elements[5][3]-zodiac_elements[6][3]) /2) -5);
+        display.drawBitmap16(zodiac_elements[7][4], zodiac_elements[7][5], zodiac_sym_width, zodiac_sym_height, image_data_libra_Image);
+        }
+      // ----------------
+      // Virgo
+      // ----------------
+      else if (i==6) {
+        zodiac_elements[6][4]=(z_rect_x+zodiac_sym_offset) -2;
+        zodiac_elements[6][5]=(zodiac_elements[6][3] - ((zodiac_elements[6][3]-zodiac_elements[7][3]) /2) -3);
+        display.drawBitmap16(zodiac_elements[6][4], zodiac_elements[6][5], zodiac_sym_width, zodiac_sym_height, image_data_virgo_Image);
+      }
     }
   }
   // -----------------------------------------------------------------------------------
@@ -16007,7 +16009,6 @@ void drawZodiac() {
   zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
   zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,88));
-  // tone down the constellation signs
 }
 
 // ----------------------------------------------------------------------------------------------------------------
