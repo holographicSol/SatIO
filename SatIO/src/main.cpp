@@ -16191,25 +16191,25 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // draw orbital path
     // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 35, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 35, RGB_COLOR16(24,24,24));
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 37, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 37, RGB_COLOR16(24,24,24));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
+    hud.createSprite(5, 5); 
+    hud.fillCircle(2, 2, 2, TFT_BLACK);
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
     hud.deleteSprite();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_LIGHTGREY);
-    // jupiter_ui_x = solar_system_center_x + 35 * sin(radians(test_angle+90)); // (test)
-    // jupiter_ui_y = solar_system_center_y + 35 * cos(radians(test_angle+90)); // (test)
-    jupiter_ui_x = solar_system_center_x + 35 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
-    jupiter_ui_y = solar_system_center_y + 35 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
+    hud.createSprite(5, 5); 
+    hud.fillCircle(2, 2, 2, TFT_LIGHTGREY);
+    // jupiter_ui_x = solar_system_center_x + 37 * sin(radians(test_angle+90)); // (test)
+    // jupiter_ui_y = solar_system_center_y + 37 * cos(radians(test_angle+90)); // (test)
+    jupiter_ui_x = solar_system_center_x + 37 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
+    jupiter_ui_y = solar_system_center_y + 37 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
     hud.deleteSprite();
@@ -16221,25 +16221,31 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // draw orbital path
     // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 41, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 41, RGB_COLOR16(24,24,0));
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 44, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 44, RGB_COLOR16(24,24,0));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
+    hud.createSprite(7, 7); 
+    hud.drawCircle(3, 3, 3, TFT_BLACK);
+
+    hud.fillCircle(3, 3, 1, TFT_BLACK);
+
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.drawCircle(1, 1, 1, TFT_YELLOW);
-    // saturn_ui_x = solar_system_center_x + 41 * sin(radians(test_angle+90)); // (test)
-    // saturn_ui_y = solar_system_center_y + 41 * cos(radians(test_angle+90)); // (test)
-    saturn_ui_x = solar_system_center_x + 41 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
-    saturn_ui_y = solar_system_center_y + 41 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
+    hud.createSprite(7, 7); 
+    hud.drawCircle(3, 3, 3, TFT_DARKGREY);
+
+    hud.fillCircle(3, 3, 1, TFT_DARKGREY);
+
+    // saturn_ui_x = solar_system_center_x + 44 * sin(radians(test_angle+90)); // (test)
+    // saturn_ui_y = solar_system_center_y + 44 * cos(radians(test_angle+90)); // (test)
+    saturn_ui_x = solar_system_center_x + 44 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
+    saturn_ui_y = solar_system_center_y + 44 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
@@ -16251,8 +16257,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // draw orbital path
     // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 47, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 47, RGB_COLOR16(0,24,24));
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 51, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 51, RGB_COLOR16(0,24,24));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16266,10 +16272,10 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_CYAN);
-    // uranus_ui_x = solar_system_center_x + 47 * sin(radians(test_angle+90)); // (test)
-    // uranus_ui_y = solar_system_center_y + 47 * cos(radians(test_angle+90)); // (test)
-    uranus_ui_x = solar_system_center_x + 47 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
-    uranus_ui_y = solar_system_center_y + 47 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
+    // uranus_ui_x = solar_system_center_x + 51 * sin(radians(test_angle+90)); // (test)
+    // uranus_ui_y = solar_system_center_y + 51 * cos(radians(test_angle+90)); // (test)
+    uranus_ui_x = solar_system_center_x + 51 * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
+    uranus_ui_y = solar_system_center_y + 51 * cos(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
     hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
     yield();
     hud.deleteSprite();
@@ -16281,8 +16287,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // draw orbital path
     // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 53, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 53, RGB_COLOR16(24,24,0));
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 56, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 56, RGB_COLOR16(24,24,0));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16296,10 +16302,10 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_YELLOW);
-    // neptune_ui_x = solar_system_center_x + 53 * sin(radians(test_angle+90)); // (test)
-    // neptune_ui_y = solar_system_center_y + 53 * cos(radians(test_angle+90)); // (test)
-    neptune_ui_x = solar_system_center_x + 53 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
-    neptune_ui_y = solar_system_center_y + 53 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
+    // neptune_ui_x = solar_system_center_x + 56 * sin(radians(test_angle+90)); // (test)
+    // neptune_ui_y = solar_system_center_y + 56 * cos(radians(test_angle+90)); // (test)
+    neptune_ui_x = solar_system_center_x + 56 * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
+    neptune_ui_y = solar_system_center_y + 56 * cos(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
     hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
     yield();
     hud.deleteSprite();
