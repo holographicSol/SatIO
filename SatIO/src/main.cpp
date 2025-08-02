@@ -15981,6 +15981,12 @@ void drawZodiac() {
       }
     }
   }
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                DRAW EARTH ZENITH
+// ----------------------------------------------------------------------------------------------------------------
+void drawEarthZenith() {
   // -----------------------------------------------------------------------------------
   // Draw which direction zenith is pointing into space according to datetime & location
   // -----------------------------------------------------------------------------------
@@ -16000,9 +16006,9 @@ void drawZodiac() {
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
   zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-  // -------------------------------------------------------------
+  // -----------------------------------------------------------
   // Draw colored line to convey attitude in space
-  // -------------------------------------------------------------
+  // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+1;
   zenith_direction[0][1]=earth_ui_y+1;
@@ -16100,6 +16106,7 @@ void drawPlanets() {
     hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
     yield();
     hud.deleteSprite();
+    drawEarthZenith();
   }
   // -----------------------------------------------------------------
   //                                                              MOON
