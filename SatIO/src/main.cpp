@@ -16227,10 +16227,8 @@ void drawPlanets() {
     // clear previous position
     // -----------------------------------------------------------------
     hud.createSprite(7, 7); 
-    hud.drawCircle(3, 3, 3, TFT_BLACK);
-
-    hud.fillCircle(3, 3, 1, TFT_BLACK);
-
+    hud.drawCircle(3, 3, 3, TFT_BLACK); // saturn's rings
+    hud.fillCircle(3, 3, 1, TFT_BLACK); // saturn
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
@@ -16238,10 +16236,8 @@ void drawPlanets() {
     // create new position
     // -----------------------------------------------------------------
     hud.createSprite(7, 7); 
-    hud.drawCircle(3, 3, 3, TFT_DARKGREY);
-
-    hud.fillCircle(3, 3, 1, TFT_DARKGREY);
-
+    hud.drawCircle(3, 3, 3, TFT_DARKGREY); // saturn's rings
+    hud.fillCircle(3, 3, 1, TFT_DARKGREY); // saturn
     // saturn_ui_x = solar_system_center_x + 44 * sin(radians(test_angle+90)); // (test)
     // saturn_ui_y = solar_system_center_y + 44 * cos(radians(test_angle+90)); // (test)
     saturn_ui_x = solar_system_center_x + 44 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
