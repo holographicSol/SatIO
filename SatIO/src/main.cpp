@@ -1390,7 +1390,7 @@ const char *menuMainItems[max_main_menu_items] =
     "  DISPLAY        ", // 7
     "  CD74HC4067     ", // 8
     "  TCA9548A       ", // 9
-    "  TIME & DATE    ", // 10
+    "  DATETIME       ", // 10
     "  HUD            ", // 11
     "  VIEW MAG FIELD ", // 12
     "  INDICATORS     ", // 13
