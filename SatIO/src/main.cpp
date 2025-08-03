@@ -438,6 +438,7 @@ DisplaySSD1351_128x128x16_SPI display( (int8_t)-1, {  (int8_t)-1,  (int8_t)SSD13
 TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
 TFT_eSprite hud = TFT_eSprite(&tft);
 TFT_eSprite uap = TFT_eSprite(&tft);
+TFT_eSprite zen = TFT_eSprite(&tft);
 
 // ------------------------------------
 // sprite data: device/vehicle rotation
@@ -15983,10 +15984,16 @@ void drawZodiac() {
   }
 }
 
+uint16_t earth_zenith_pivot_x;
+uint16_t earth_zenith_pivot_y;
+
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                DRAW EARTH ZENITH
 // ----------------------------------------------------------------------------------------------------------------
 void drawEarthZenith() {
+  // --------------------------------------------------------------------------------------------------------------
+  // initial zenith marked by line direction
+  // --------------------------------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------
   // Draw which direction zenith is pointing into space according to datetime & location
   // -----------------------------------------------------------------------------------
@@ -15995,7 +16002,7 @@ void drawEarthZenith() {
   // -----------------------------------------------------------
   zenith = (float)siderealPlanetData.sun_az;
   // -----------------------------------------------------------
-  // Adjust by 90 degrees (same as planet adjustements)
+  // Adjust by 90 degrees (same as planet adjustements)`
   // -----------------------------------------------------------
   zenith -= 90.0f;
   // -----------------------------------------------------------
@@ -16006,15 +16013,47 @@ void drawEarthZenith() {
   // Reverse to go anticlockwise
   // -----------------------------------------------------------
   zenith = reverseMap(zenith, 0.0f, 360.0f, 360.0f, 0.0f);
-  // -----------------------------------------------------------
-  // Draw colored line to convey attitude in space
-  // -----------------------------------------------------------
+  // // -----------------------------------------------------------
+  // // Draw colored line to convey attitude in space
+  // // -----------------------------------------------------------
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+1;
   zenith_direction[0][1]=earth_ui_y+1;
-  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 28);
-  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 28);
-  tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,88));
+  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 6);
+  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 6);
+  tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
+
+  // // --------------------------------------------------------------------------------------------------------------
+  // // zenith triangle pointer (in development)
+  // // --------------------------------------------------------------------------------------------------------------
+  // // ------------------------------------------------------------
+  // // create sprite
+  // // ------------------------------------------------------------
+  // zen.createSprite(5, 5); 
+  // earth_zenith_pivot_x = 5 / 2; // x pivot of Sprite (middle)
+  // earth_zenith_pivot_y = 5 / 2; // y pivot of Sprite (10 pixels from bottom)
+  // zen.setPivot(earth_zenith_pivot_x, earth_zenith_pivot_y); // Set pivot point in this Sprite
+  // // ------------------------------------------------------------
+  // // draw object to be rotated
+  // // ------------------------------------------------------------
+  // zen.fillTriangle(0, 2, 2, 0, 3, 2, TFT_GREEN);
+  // // ------------------------------------------------------------
+  // // calculate rotation
+  // // ------------------------------------------------------------
+  // tft.setPivot(earth_ui_x+2, earth_ui_y+2); // set the TFT pivot point that the sprite will rotate around
+
+  // // ------------------------------------------------------------
+  // // uncomment to force roll incrementation and debug
+  // // ------------------------------------------------------------
+  // // Serial.println("[roll] "+String(wt901_roll)+" [ui offset] "+String(offset_wt901_roll_0)+" [ui value] "+String(mapped_roll));
+  // // wt901_roll++; if (wt901_roll>360) {wt901_roll=0;} // sim
+
+  // // ------------------------------------------------------------
+  // // rotate sprite and free memory
+  // // ------------------------------------------------------------
+  // zen.pushRotated((int)zenith);
+  // yield();
+  // zen.deleteSprite();
 }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -16112,6 +16151,10 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, RGB_COLOR16(0,0,24));
+    // -----------------------------------------------------------------
+    // draw zenith direction in space before earth
+    // -----------------------------------------------------------------
+    drawEarthZenith();
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16451,7 +16494,6 @@ void UpdateUI(void * pvParamters) {
           ui_track_planet_period=false;
           drawZodiac();
           drawPlanets();
-          drawEarthZenith();
           // todo: possibly add asteroid/meteors and other celestial information
         }
       }
