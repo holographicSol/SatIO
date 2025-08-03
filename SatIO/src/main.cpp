@@ -16019,8 +16019,8 @@ void drawEarthZenith() {
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,0,0));
   zenith_direction[0][0]=earth_ui_x+1;
   zenith_direction[0][1]=earth_ui_y+1;
-  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 6);
-  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 6);
+  zenith_direction[0][2]=earth_ui_x + (int)(cos(zenith * PI / 180.0) * 32);
+  zenith_direction[0][3]=earth_ui_y + (int)(sin(zenith * PI / 180.0) * 32);
   tft.drawLine(zenith_direction[0][0], zenith_direction[0][1], zenith_direction[0][2], zenith_direction[0][3], RGB_COLOR16(0,164,0));
 
   // // --------------------------------------------------------------------------------------------------------------
@@ -16070,9 +16070,53 @@ int saturn_orbit_radius=44;
 int uranus_orbit_radius=51;
 int neptune_orbit_radius=56;
 
-void drawPlanets() {
+void drawOrbitalPaths() {
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, RGB_COLOR16(24,0,24));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, RGB_COLOR16(24,24,0));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, RGB_COLOR16(0,0,24));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(24,0,0));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, RGB_COLOR16(24,24,24));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, RGB_COLOR16(24,24,24));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, RGB_COLOR16(0,24,24));
+    // -----------------------------------------------------------------
+    // draw orbital path
+    // -----------------------------------------------------------------
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(24,24,0));
+}
 
-  /* not to scale and is approximate */
+void drawPlanets() {
+  // -----------------------------------------------------------------
+  // not to scale and is approximate
+  // -----------------------------------------------------------------
 
   // -----------------------------------------------------------------
   //                                                               SUN
@@ -16086,11 +16130,6 @@ void drawPlanets() {
   //                                                           MERCURY
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mercury==true) {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, RGB_COLOR16(24,0,24));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16117,11 +16156,6 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_venus==true) {
     // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, RGB_COLOR16(24,24,0));
-    // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
@@ -16146,11 +16180,6 @@ void drawPlanets() {
   //                                                             EARTH
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_moon==true) {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, RGB_COLOR16(0,0,24));
     // -----------------------------------------------------------------
     // draw zenith direction in space before earth
     // -----------------------------------------------------------------
@@ -16209,11 +16238,6 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mars==true) {
     // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(24,0,0));
-    // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
@@ -16238,11 +16262,7 @@ void drawPlanets() {
   //                                                           JUPITER
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_jupiter==true) {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, RGB_COLOR16(24,24,24));
+
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16268,11 +16288,6 @@ void drawPlanets() {
   //                                                            SATURN
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_saturn==true) {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, RGB_COLOR16(24,24,24));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16301,11 +16316,6 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_uranus==true) {
     // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, RGB_COLOR16(0,24,24));
-    // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
@@ -16330,11 +16340,6 @@ void drawPlanets() {
   //                                                           NEPTUNE
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_neptune==true) {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(24,24,0));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16493,6 +16498,7 @@ void UpdateUI(void * pvParamters) {
           // Serial.println("[ui_track_planet_period] updating");
           ui_track_planet_period=false;
           drawZodiac();
+          drawOrbitalPaths();
           drawPlanets();
           // todo: possibly add asteroid/meteors and other celestial information
         }
