@@ -16181,10 +16181,6 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_moon==true) {
     // -----------------------------------------------------------------
-    // draw zenith direction in space before earth
-    // -----------------------------------------------------------------
-    drawEarthZenith();
-    // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
@@ -16499,8 +16495,9 @@ void UpdateUI(void * pvParamters) {
           ui_track_planet_period=false;
           drawZodiac();
           drawOrbitalPaths();
+          drawEarthZenith();
           drawPlanets();
-          // todo: possibly add asteroid/meteors and other celestial information
+          // todo: possibly add asteroid/meteors and other calculatable/'predictable' celestial information
         }
       }
       // ------------------------------------------------
