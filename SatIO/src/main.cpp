@@ -15737,7 +15737,7 @@ void drawZodiac() {
   // ---------------------------------------------------------------
   // Border
   // ---------------------------------------------------------------
-  tft.drawRect(1, 11, 126, 116, RGB_COLOR16(0,0,24));
+  tft.drawRect(1, 10, 126, 117, RGB_COLOR16(0,0,24));
   // ---------------------------------------------------------------
   // Clear existing zodiacs & Draw new zodiacs
   // ---------------------------------------------------------------
@@ -15799,7 +15799,7 @@ void drawZodiac() {
     // Draw the line from the specified center to the edge
     // -------------------------------------------------------------
     tft.drawLine(zodiac_elements[i][0], zodiac_elements[i][1], zodiac_elements[i][2], zodiac_elements[i][3], RGB_COLOR16(0,0,24));
-    tft.drawRect(1, 11, 126, 116, RGB_COLOR16(0,0,24)); // (patch overrun while lines slightly longer in some cases)
+    tft.drawRect(1, 10, 126, 117, RGB_COLOR16(0,0,24)); // (patch overrun while lines slightly longer in some cases)
     // -------------------------------------------------------------
     // Note seg index to line degrees
     // -------------------------------------------------------------
@@ -16208,8 +16208,8 @@ void drawPlanets() {
     hud.fillCircle(2, 2, 2, TFT_LIGHTGREY);
     // jupiter_ui_x = solar_system_center_x + 37 * sin(radians(test_angle+90)); // (test)
     // jupiter_ui_y = solar_system_center_y + 37 * cos(radians(test_angle+90)); // (test)
-    jupiter_ui_x = solar_system_center_x + 37 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
-    jupiter_ui_y = solar_system_center_y + 37 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
+    jupiter_ui_x = solar_system_center_x + 39 * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
+    jupiter_ui_y = solar_system_center_y + 39 * cos(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
     hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
     yield();
     hud.deleteSprite();
@@ -16222,7 +16222,7 @@ void drawPlanets() {
     // draw orbital path
     // -----------------------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, 44, TFT_BLACK);
-    tft.drawCircle(solar_system_center_x, solar_system_center_y, 44, RGB_COLOR16(24,24,0));
+    tft.drawCircle(solar_system_center_x, solar_system_center_y, 44, RGB_COLOR16(24,24,24));
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
@@ -16240,8 +16240,8 @@ void drawPlanets() {
     hud.fillCircle(3, 3, 1, TFT_DARKGREY); // saturn
     // saturn_ui_x = solar_system_center_x + 44 * sin(radians(test_angle+90)); // (test)
     // saturn_ui_y = solar_system_center_y + 44 * cos(radians(test_angle+90)); // (test)
-    saturn_ui_x = solar_system_center_x + 44 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
-    saturn_ui_y = solar_system_center_y + 44 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
+    saturn_ui_x = solar_system_center_x + 42 * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
+    saturn_ui_y = solar_system_center_y + 42 * cos(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
     hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
     yield();
     hud.deleteSprite();
