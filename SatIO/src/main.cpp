@@ -16427,7 +16427,7 @@ void UpdateUI(void * pvParamters) {
         canvas76x8.clear();
         display.setColor(systemData.color_title);
         canvas76x8.printFixed(0, 0, String(" " + satData.formatted_local_time).c_str(), STYLE_BOLD);
-        display.drawCanvas(34, 1, canvas76x8);
+        display.drawCanvas(34, 0, canvas76x8);
       }
       // ------------------------------------------------
       // feature standard
