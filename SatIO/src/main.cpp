@@ -16414,12 +16414,12 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // load
       // ------------------------------------------------
-      DisplayDiscreteLoadPercentage(115, 2, 9);
+      DisplayDiscreteLoadPercentage(117, 2, 9);
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 2, 1);}
-      else {DisplaySignal(1, 1, 2, 1);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
+      else {DisplaySignal(0, 0, 0, 0);}
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
