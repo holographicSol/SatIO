@@ -16135,7 +16135,6 @@ void drawPlanets() {
     hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
     yield();
     hud.deleteSprite();
-    drawEarthZenith();
   }
   // -----------------------------------------------------------------
   //                                                              MOON
@@ -16452,6 +16451,7 @@ void UpdateUI(void * pvParamters) {
           ui_track_planet_period=false;
           drawZodiac();
           drawPlanets();
+          drawEarthZenith();
           // todo: possibly add asteroid/meteors and other celestial information
         }
       }
