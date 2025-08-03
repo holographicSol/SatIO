@@ -16493,10 +16493,10 @@ void UpdateUI(void * pvParamters) {
         if (ui_track_planet_period==true) {
           // Serial.println("[ui_track_planet_period] updating");
           ui_track_planet_period=false;
-          drawZodiac();
-          drawOrbitalPaths();
-          drawEarthZenith();
-          drawPlanets();
+          drawZodiac();       // behind everything
+          drawOrbitalPaths(); // behind zenith and planets
+          drawEarthZenith();  // behind planets
+          drawPlanets();      // on top
           // todo: possibly add asteroid/meteors and other calculatable/'predictable' celestial information
         }
       }
