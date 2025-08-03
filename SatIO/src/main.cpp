@@ -15663,15 +15663,15 @@ float zenith=0;
 // ---------------------------------------------------------------
 int z_width=128;
 int z_height=128;
-int16_t z_rect_x = 1;
-int16_t z_rect_y = 9;
+int16_t z_rect_x = 0;
+int16_t z_rect_y = 8;
 // ---------------------------------------------------------------
 // Rectangle edges
 // ---------------------------------------------------------------
 int16_t z_left_edge = z_rect_x;
-int16_t z_right_edge = z_rect_x + z_width - 1;
+int16_t z_right_edge = z_rect_x + z_width;
 int16_t z_top_edge = z_rect_y;
-int16_t z_bottom_edge = z_rect_y + z_height - 1;
+int16_t z_bottom_edge = z_rect_y + z_height;
 // ---------------------------------------------------------------
 // Segment endpoint
 // ---------------------------------------------------------------
