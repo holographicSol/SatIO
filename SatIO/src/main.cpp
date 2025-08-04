@@ -16139,6 +16139,70 @@ void drawOrbitalPaths() {
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(24,24,0));
 }
 
+bool cleared_mercury=false;
+void ClearAstroClockMercury() {
+  hud.createSprite(3, 3); 
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_venus=false;
+void ClearAstroClockVenus() {
+  hud.createSprite(3, 3); 
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_mars=false;
+void ClearAstroClockMars() {
+  hud.createSprite(3, 3); 
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_jupiter=false;
+void ClearAstroClockJupiter() {
+  hud.createSprite(5, 5); 
+  hud.fillCircle(2, 2, 2, TFT_BLACK);
+  hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_saturn=false;
+void ClearAstroClockSaturn() {
+  hud.createSprite(7, 7); 
+  hud.drawCircle(3, 3, 3, TFT_BLACK); // saturn's rings
+  hud.fillCircle(3, 3, 1, TFT_BLACK); // saturn
+  hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_uranus=false;
+void ClearAstroClockUranus() {
+  hud.createSprite(3, 3); 
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_neptune=false;
+void ClearAstroClockNeptune() {
+  hud.createSprite(3, 3); 
+  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
 void drawPlanets() {
   // -----------------------------------------------------------------
   // not to scale and is approximate
@@ -16156,14 +16220,11 @@ void drawPlanets() {
   //                                                           MERCURY
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mercury==true) {
+    cleared_mercury=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockMercury();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16177,18 +16238,16 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_mercury==false) {ClearAstroClockMercury(); cleared_mercury=true;}}
   // -----------------------------------------------------------------
   //                                                             VENUS
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_venus==true) {
+    cleared_venus=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockVenus();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16202,6 +16261,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_venus==false) {ClearAstroClockVenus(); cleared_venus=true;}}
   // -----------------------------------------------------------------
   //                                                             EARTH
   // -----------------------------------------------------------------
@@ -16259,14 +16319,11 @@ void drawPlanets() {
   //                                                              MARS
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_mars==true) {
+    cleared_mars=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockMars();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16280,19 +16337,16 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_mars==false) {ClearAstroClockMars(); cleared_mars=true;}}
   // -----------------------------------------------------------------
   //                                                           JUPITER
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_jupiter==true) {
-
+    cleared_jupiter=false;
     // -----------------------------------------------------------------
     // clear previous position
-    // -----------------------------------------------------------------
-    hud.createSprite(5, 5); 
-    hud.fillCircle(2, 2, 2, TFT_BLACK);
-    hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
-    yield();
-    hud.deleteSprite();
+    // -----------------------------------------------------------------;
+    ClearAstroClockJupiter();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16306,19 +16360,16 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_jupiter==false) {ClearAstroClockJupiter(); cleared_jupiter=true;}}
   // -----------------------------------------------------------------
   //                                                            SATURN
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_saturn==true) {
+    cleared_saturn=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(7, 7); 
-    hud.drawCircle(3, 3, 3, TFT_BLACK); // saturn's rings
-    hud.fillCircle(3, 3, 1, TFT_BLACK); // saturn
-    hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockSaturn();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16333,18 +16384,16 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_saturn==false) {ClearAstroClockSaturn(); cleared_saturn=true;}}
   // -----------------------------------------------------------------
   //                                                           URANUS
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_uranus==true) {
+    cleared_uranus=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockUranus();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16358,18 +16407,16 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_uranus==false) {ClearAstroClockUranus(); cleared_uranus=true;}}
   // -----------------------------------------------------------------
   //                                                           NEPTUNE
   // -----------------------------------------------------------------
   if (systemData.sidereal_track_neptune==true) {
+    cleared_neptune=false;
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockNeptune();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
@@ -16383,6 +16430,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
+  else {if (cleared_neptune==false) {ClearAstroClockNeptune(); cleared_neptune=true;}}
   // -----------------------------------------------------------------
   //                                                              TEST
   // -----------------------------------------------------------------
