@@ -16238,7 +16238,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_mercury==false) {ClearAstroClockMercury(); cleared_mercury=true;}}
+  // else {if (cleared_mercury==false) {ClearAstroClockMercury(); cleared_mercury=true;}}
   // -----------------------------------------------------------------
   //                                                             VENUS
   // -----------------------------------------------------------------
@@ -16261,7 +16261,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_venus==false) {ClearAstroClockVenus(); cleared_venus=true;}}
+  // else {if (cleared_venus==false) {ClearAstroClockVenus(); cleared_venus=true;}}
   // -----------------------------------------------------------------
   //                                                             EARTH
   // -----------------------------------------------------------------
@@ -16337,7 +16337,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_mars==false) {ClearAstroClockMars(); cleared_mars=true;}}
+  // else {if (cleared_mars==false) {ClearAstroClockMars(); cleared_mars=true;}}
   // -----------------------------------------------------------------
   //                                                           JUPITER
   // -----------------------------------------------------------------
@@ -16360,7 +16360,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_jupiter==false) {ClearAstroClockJupiter(); cleared_jupiter=true;}}
+  // else {if (cleared_jupiter==false) {ClearAstroClockJupiter(); cleared_jupiter=true;}}
   // -----------------------------------------------------------------
   //                                                            SATURN
   // -----------------------------------------------------------------
@@ -16384,7 +16384,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_saturn==false) {ClearAstroClockSaturn(); cleared_saturn=true;}}
+  // else {if (cleared_saturn==false) {ClearAstroClockSaturn(); cleared_saturn=true;}}
   // -----------------------------------------------------------------
   //                                                           URANUS
   // -----------------------------------------------------------------
@@ -16407,7 +16407,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_uranus==false) {ClearAstroClockUranus(); cleared_uranus=true;}}
+  // else {if (cleared_uranus==false) {ClearAstroClockUranus(); cleared_uranus=true;}}
   // -----------------------------------------------------------------
   //                                                           NEPTUNE
   // -----------------------------------------------------------------
@@ -16430,7 +16430,7 @@ void drawPlanets() {
     yield();
     hud.deleteSprite();
   }
-  else {if (cleared_neptune==false) {ClearAstroClockNeptune(); cleared_neptune=true;}}
+  // else {if (cleared_neptune==false) {ClearAstroClockNeptune(); cleared_neptune=true;}}
   // -----------------------------------------------------------------
   //                                                              TEST
   // -----------------------------------------------------------------
