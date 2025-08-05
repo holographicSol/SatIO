@@ -461,7 +461,8 @@ float mapped_pitch=0;
 // ------------------------------------------------------------------------------------------------------------------------------
 
 NanoCanvas<6,8,1> canvas6x8; 
-NanoCanvas<8,8,1> canvas8x8; 
+NanoCanvas<8,8,1> canvas8x8;
+NanoCanvas<9,7,1> canvas9x7;
 NanoCanvas<9,9,1> canvas9x9;
 NanoCanvas<13,8,1> canvas13x8;
 NanoCanvas<19,8,1> canvas19x8;
@@ -520,6 +521,108 @@ const uint8_t image_data_debug_off[] PROGMEM = {
     0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 
     0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 
     0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_et_mode_on[] PROGMEM = {
+    // ∙∙█████∙∙
+    // ∙∙█∙█∙█∙∙
+    // ∙∙█████∙∙
+    // █∙∙∙█∙∙∙█
+    // █∙█████∙█
+    // █████████
+    // ∙∙█████∙∙
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0x00, 0x00, 0xff, 0xe0, 0x00, 0x00, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00, 
+    0xff, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 
+    0xff, 0xe0, 0x00, 0x00, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0x00, 0x00, 0xff, 0xe0, 
+    0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0xff, 0xe0, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_et_mode_off[] PROGMEM = {
+    // ∙∙░░░░░∙∙
+    // ∙∙░∙░∙░∙∙
+    // ∙∙░░░░░∙∙
+    // ░∙∙∙░∙∙∙░
+    // ░∙░░░░░∙░
+    // ░░░░░░░░░
+    // ∙∙░░░░░∙∙
+    0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 
+    0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 
+    0x39, 0xc7, 0x00, 0x00, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x00, 0x00, 0x39, 0xc7, 
+    0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 
+    0x00, 0x00, 0x00, 0x00, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x39, 0xc7, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_gpssig_0[] PROGMEM = {
+    // ░∙∙∙∙∙∙∙░
+    // ░∙∙∙∙∙∙∙░
+    // ░░∙∙░∙∙░░
+    // ∙░░░░░░░∙
+    // ∙∙∙∙░∙∙∙∙
+    // ∙∙∙░░░∙∙∙
+    // ∙∙░░░░░∙∙
+    0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 
+    0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 
+    0xf8, 0x00, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 0xf8, 0x00, 
+    0x00, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_gpssig_1[] PROGMEM = {
+    // ▒∙∙∙∙∙∙∙▒
+    // ▒∙∙∙∙∙∙∙▒
+    // ▒▒∙∙▒∙∙▒▒
+    // ∙▒▒▒▒▒▒▒∙
+    // ∙∙∙∙▒∙∙∙∙
+    // ∙∙∙▒▒▒∙∙∙
+    // ∙∙▒▒▒▒▒∙∙
+    0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 
+    0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 
+    0x07, 0xe0, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x07, 0xe0, 
+    0x00, 0x00, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_gpssig_2[] PROGMEM = {
+    // ▒∙∙∙∙∙∙∙▒
+    // ▒∙∙∙∙∙∙∙▒
+    // ▒▒∙∙▒∙∙▒▒
+    // ∙▒▒▒▒▒▒▒∙
+    // ∙∙∙∙▒∙∙∙∙
+    // ∙∙∙▒▒▒∙∙∙
+    // ∙∙▒▒▒▒▒∙∙
+    0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 
+    0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00
+};
+
+const uint8_t image_data_rtcsync_0[] PROGMEM = {
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    // ∙∙∙∙∙∙∙∙∙
+    0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 
+    0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x1f
 };
 
 // ------------------------------------------------------------
@@ -15432,46 +15535,54 @@ void DisplayLoopsASecond(int x, int y) {
 //                                                           UI SIGNAL
 // -------------------------------------------------------------------
 
-void DisplaySignal(int x1, int y1, int x2, int y2) {
-  // this may be abstracted in case satellites over 99 (for ui space resons) 
-  canvas13x8.clear();
-  if (gps_signal==0) {
-    display.setColor(RGB_COLOR16(255,0,0));
-    canvas13x8.clear();
-    canvas13x8.printFixed(x1, y1, "0", STYLE_BOLD);
-    display.drawCanvas(x2, y2, canvas13x8);
-  }
-  else if (gps_signal==1) {
-    display.setColor(RGB_COLOR16(0,255,0));
-    canvas13x8.clear();
-    canvas13x8.printFixed(x1, y1, String(satellite_count).c_str(), STYLE_BOLD);
-    display.drawCanvas(x2, y2, canvas13x8);
-  }
-  else if (gps_signal==2) {
-    display.setColor(RGB_COLOR16(0,0,255));
-    canvas13x8.clear();
-    canvas13x8.printFixed(x1, y1, String(satellite_count).c_str(), STYLE_BOLD);
-    display.drawCanvas(x2, y2, canvas13x8);
-  }
+// void DisplaySignal(int x1, int y1, int x2, int y2) {
+//   // this may be abstracted in case satellites over 99 (for ui space resons) 
+//   canvas13x8.clear();
+//   if (gps_signal==0) {
+//     display.setColor(RGB_COLOR16(255,0,0));
+//     canvas13x8.clear();
+//     canvas13x8.printFixed(x1, y1, "0", STYLE_BOLD);
+//     display.drawCanvas(x2, y2, canvas13x8);
+//   }
+//   else if (gps_signal==1) {
+//     display.setColor(RGB_COLOR16(0,255,0));
+//     canvas13x8.clear();
+//     canvas13x8.printFixed(x1, y1, String(satellite_count).c_str(), STYLE_BOLD);
+//     display.drawCanvas(x2, y2, canvas13x8);
+//   }
+//   else if (gps_signal==2) {
+//     display.setColor(RGB_COLOR16(0,0,255));
+//     canvas13x8.clear();
+//     canvas13x8.printFixed(x1, y1, String(satellite_count).c_str(), STYLE_BOLD);
+//     display.drawCanvas(x2, y2, canvas13x8);
+//   }
+// }
+
+void DisplaySignal(int x1, int y1) {
+  canvas9x7.clear();
+  if (gps_signal==0) {display.drawBitmap16(x1, y1, 9, 7, image_data_gpssig_0);}
+  else if (gps_signal==1) {display.drawBitmap16(x1, y1, 9, 7, image_data_gpssig_1);}
+  else if (gps_signal==2) {display.drawBitmap16(x1, y1, 9, 7, image_data_gpssig_2);}
 }
 
 // -------------------------------------------------------------------
 //                                                         UI RTC SYNC
 // -------------------------------------------------------------------
 
-void DisplayRTCSync(int x1, int y1, int x2, int y2) {
-  display.setColor(RGB_COLOR16(0,0,255));
-  canvas13x8.clear();
-  if (rtc_sync_flag==true) {canvas13x8.printFixed(x1, y1, "SY", STYLE_BOLD);}
-  display.drawCanvas(x2, y2, canvas13x8);
+void DisplayRTCSync(int x1, int y1) {
+  // display.setColor(RGB_COLOR16(0,0,255));
+  // canvas9x7.clear();
+  // display.drawCanvas(x2, y2, canvas9x7);
+  if (rtc_sync_flag==true) {display.drawBitmap16(x1, y1, 9, 7, image_data_rtcsync_0);}
+  
 }
 
 // -------------------------------------------------------------------
 //                                                     UI DEBUG BRIDGE
 // -------------------------------------------------------------------
 void DisplayDebugSymbol(int x1, int y1) {
-  if (systemData.debug_bridge==true) {display.drawBitmap16(x1, y1, 9, 7, image_data_debug_on);}
-  else                               {display.drawBitmap16(x1, y1, 9, 7, image_data_debug_off);}
+  if (systemData.debug_bridge==true) {display.drawBitmap16(x1, y1, 9, 7, image_data_et_mode_on);}
+  else                               {display.drawBitmap16(x1, y1, 9, 7, image_data_et_mode_off);}
 }
 
 // -------------------------------------------------------------------
@@ -16438,7 +16549,6 @@ void drawPlanets() {
   // test_moon_angle=test_moon_angle+10; if (test_moon_angle>360) {test_moon_angle=0;}
 }
 
-
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                        UPDATE UI
 // ----------------------------------------------------------------------------------------------------------------
@@ -16532,9 +16642,9 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
-      else {DisplaySignal(0, 0, 0, 0);}
-      DisplayDebugSymbol(18, 0);
+      if (rtc_sync_flag==true) {DisplayRTCSync(0, 0);}
+      else {DisplaySignal(0, 0);}
+      DisplayDebugSymbol(15, 0);
       // ------------------------------------------------
       // local time
       // ------------------------------------------------
@@ -16607,8 +16717,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // menu
@@ -16693,8 +16803,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix switch enabled
@@ -16990,8 +17100,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      DisplaySignal(1, 1, 1, 2);
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      DisplaySignal(3, 3);
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       int size=23;
@@ -17122,8 +17232,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // satellites & sync
         // ------------------------------------------------
-        if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-        else {DisplaySignal(1, 1, 1, 2);}
+        if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+        else {DisplaySignal(3, 3);}
         DisplayDebugSymbol(18, 3);
         // ------------------------------------------------
         // matrix switch enabled
@@ -17248,8 +17358,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // satellites & sync
         // ------------------------------------------------
-        if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-        else {DisplaySignal(1, 1, 1, 2);}
+        if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+        else {DisplaySignal(3, 3);}
         DisplayDebugSymbol(18, 3);
         // ------------------------------------------------
         // matrix switch enabled
@@ -17355,8 +17465,8 @@ void UpdateUI(void * pvParamters) {
         // ------------------------------------------------
         // satellites & sync
         // ------------------------------------------------
-        if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-        else {DisplaySignal(1, 1, 1, 2);}
+        if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+        else {DisplaySignal(3, 3);}
         DisplayDebugSymbol(18, 3);
         // ------------------------------------------------
         // utc second offset
@@ -17449,8 +17559,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix switch enabled
@@ -17612,8 +17722,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix switch enabled
@@ -17686,8 +17796,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix filename
@@ -17737,8 +17847,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix filename
@@ -17792,8 +17902,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix filename
@@ -17847,8 +17957,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // matrix filename
@@ -17909,8 +18019,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // satellite count
@@ -18010,8 +18120,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // count invalid checksum
@@ -18164,8 +18274,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // count invalid checksum
@@ -18400,8 +18510,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // count invalid checksum
@@ -18589,8 +18699,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // rtc time (utc)
@@ -18712,8 +18822,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // set menu items
@@ -18784,8 +18894,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // set menu items
@@ -18851,8 +18961,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // set menu items
@@ -18932,8 +19042,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // speed
@@ -19045,8 +19155,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // sensor value column 0
@@ -19207,8 +19317,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // enable disable TCA9548A channel
@@ -19285,8 +19395,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       // local datetime
@@ -19364,8 +19474,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19434,8 +19544,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19525,8 +19635,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19632,8 +19742,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19739,8 +19849,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19846,8 +19956,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -19953,8 +20063,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -20060,8 +20170,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -20167,8 +20277,8 @@ void UpdateUI(void * pvParamters) {
       // ------------------------------------------------
       // satellites & sync
       // ------------------------------------------------
-      if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-      else {DisplaySignal(1, 1, 1, 2);}
+      if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+      else {DisplaySignal(3, 3);}
       DisplayDebugSymbol(18, 3);
       // ------------------------------------------------
       canvas120x8.clear();
@@ -20264,9 +20374,9 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // satellites & sync
     // ------------------------------------------------
-    if (rtc_sync_flag==true) {DisplayRTCSync(0, 0, 0, 0);}
-    else {DisplaySignal(0, 0, 0, 0);}
-    DisplayDebugSymbol(18, 0);
+    if (rtc_sync_flag==true) {DisplayRTCSync(0, 0);}
+    else {DisplaySignal(0, 0);}
+    DisplayDebugSymbol(15, 0);
     // ------------------------------------------------
     // perf mon: uncomment to test frame performance
     // ------------------------------------------------
@@ -20612,8 +20722,8 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // satellites & sync
     // ------------------------------------------------
-    if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-    else {DisplaySignal(1, 1, 1, 2);}
+    if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+    else {DisplaySignal(3, 3);}
     DisplayDebugSymbol(18, 3);
     // ------------------------------------------------
     // magnetic field xyz
@@ -20665,8 +20775,8 @@ void UpdateUI(void * pvParamters) {
     // ------------------------------------------------
     // satellites & sync
     // ------------------------------------------------
-    if (rtc_sync_flag==true) {DisplayRTCSync(1, 1, 1, 2);}
-    else {DisplaySignal(1, 1, 1, 2);}
+    if (rtc_sync_flag==true) {DisplayRTCSync(3, 3);}
+    else {DisplaySignal(3, 3);}
     DisplayDebugSymbol(18, 3);
     // ------------------------------------------------
     // iter matrix indicator colors
