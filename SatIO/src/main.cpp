@@ -15447,8 +15447,8 @@ void ClearAstroClockJupiter() {
 bool cleared_saturn=false;
 void ClearAstroClockSaturn() {
   hud.createSprite(saturn_sprite_size, saturn_sprite_size); 
-  hud.drawCircle(saturn_sprite_center, saturn_sprite_center, saturn_rings_radius, TFT_BLACK); // saturn's rings
-  hud.fillCircle(saturn_sprite_center, saturn_sprite_center, saturn_radius, TFT_BLACK); // saturn
+  hud.drawCircle(saturn_sprite_center, saturn_sprite_center, saturn_rings_radius, TFT_BLACK);
+  hud.fillCircle(saturn_sprite_center, saturn_sprite_center, saturn_radius, TFT_BLACK);
   hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
   yield();
   hud.deleteSprite();
