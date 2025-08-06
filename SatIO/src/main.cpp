@@ -26,6 +26,8 @@
 
   Matrix logic is an attempt to maximize programmable potential and hardware configuration is designed to attempt maximum IO potential.
   If more output is needed then add another I2C port controller, if more input is needed then add another custom I2C sensor module.
+  If more matrix logic is needed then build on another MCU, matrix switches and switch functions have been balanced to allow for plenty
+  of switches and functions for said switches, with regards to available memory/storage.
 
         Design: Break out all the things and build I2C peripherals as required to orbit the ESP32/Central-MCU.
 
