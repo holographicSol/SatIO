@@ -21094,6 +21094,12 @@ static void PrintHelp() {
 
   Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                  CONTROL (SENSORS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch dht11_0_display_hic                Enables/Disables DHT11 Heat Index Celsius/Fahrenheit.");
+
+  Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("                                                                              CONTROL (MULIPLEXERS)");
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("switch ad-plex chan n                     Enables/Disables Analog/Digital Multiplexer Channel (0-15) specified by n.");
@@ -21177,12 +21183,6 @@ static void PrintHelp() {
   Serial.println("run track saturn                          Run Track Saturn Once.");
   Serial.println("run track uranus                          Run Track Uranus Once.");
   Serial.println("run track neptune                         Run Track Neptune Once.");
-
-  Serial.println();
-  Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println("                                                                                    CONTROL (DHT11)");
-  Serial.println("---------------------------------------------------------------------------------------------------");
-  Serial.println("switch dht11_0_display_hic                Enables/Disables DHT11 Heat Index Celsius/Fahrenheit.");
 
   Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
