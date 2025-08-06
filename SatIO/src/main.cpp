@@ -15568,8 +15568,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_DARKGREY);
+    hud.createSprite(moon_sprite_size, moon_sprite_size); 
+    hud.fillCircle(moon_sprite_center, moon_sprite_center, moon_radius, TFT_DARKGREY);
     // moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(test_moon_angle+90)); // (test)
     // moon_ui_y = earth_ui_y + moon_orbit_radius * cos(radians(test_moon_angle+90)); // (test)
     moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, earth_orbit_radius+earth_sprite_size, 0, 360)+90));
