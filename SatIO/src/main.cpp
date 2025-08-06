@@ -20955,7 +20955,7 @@ static void PrintHelp() {
   Serial.println("print neptune elat                        Return Neptune Ecliptic Latitude.");
   Serial.println("print neptune elon                        Return Neptune Ecliptic Longitude.");
   Serial.println();
-  Serial.println("[ CONTROL ] Requires debug bridge enabled.");
+  Serial.println("[ CONTROL ] Requires Serial Commands enabled.");
   Serial.println();
   Serial.println("menu left                         Navigate UI Menu.");
   Serial.println("menu right                        Navigate UI Menu.");
