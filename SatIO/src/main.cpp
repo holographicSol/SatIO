@@ -20994,9 +20994,29 @@ static void PrintHelp() {
   Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
   Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
   Serial.println("switch wt901 enabled              Enables/Disables WT901 requests.");
+
   Serial.println();
   Serial.println("set matrix enabled 0              Disables Running Matrix Switch.");
   Serial.println("set matrix enabled 1              Enables Running Matrix Switch.");
+  Serial.println();
+  Serial.println("set matrix switch enabled n 0     Disables specific matrix switch specified by n.");
+  Serial.println("set matrix switch enabled n 1     Enables specific matrix switch specified by n.");
+  Serial.println();
+  Serial.println("set matrix port n                 Set output port number specified by n (-1=None).");
+  Serial.println();
+  Serial.println("set matrix inverted n n 0         Disable invert matrix function return true/false. Specify matrix n & function n.");
+  Serial.println("set matrix inverted n n 1         Enable invert matrix function return true/false. Specify matrix n & function n.");
+  Serial.println();
+  Serial.println("set matrix expression n n 0-4     Specify expression 0-4. Specify matrix n & function n.");
+  Serial.println("                                  0=None  1=Under  2=Over  3=Equal  4=Range");
+  Serial.println();
+  Serial.println("set matrix entry n n function_name x y z inverted expression port enabled/disabled");
+  Serial.println("                 n n function_name n n n n(0-1)   n(0-4)     n    n(0-1)");
+  Serial.println("                 Specify matrix n, function n and remaining arguments.");
+  Serial.println();
+  Serial.println("set matrix xyz n n x y z                Specify matrix n, function n and matrix function values.");
+  Serial.println("set matrix entry n n function_name      Specify a function name for specified matrix n, function n.");
+
   Serial.println();
   Serial.println("set pcio 0 0                      Sets portcontroller matrix switch low. Overridden by matrix.");
   Serial.println("set pcio 0 1                      Sets portcontroller matrix switch high. Overridden by matrix.");
@@ -21387,7 +21407,7 @@ static void CmdProcess(void) {
     // ------------------------------------------------------------------------------------------------------------------------------
     //                                                                                       SPECIFIC REQUEST SERIAL OUTPUT: MATRIX N
     // ------------------------------------------------------------------------------------------------------------------------------
-    else if (strncmp(CMD_BUFFER, "print matrix \r", 13)==0) {
+    else if (strncmp(CMD_BUFFER, "print matrix \r", strlen("print matrix "))==0) {
       TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
       ITER_TMP_CMD_TOKEN=0;
       COMMAND_PASS=0;
@@ -21761,7 +21781,7 @@ static void CmdProcess(void) {
       //                                                                                                              MENU ENTER DIGITS
       // ------------------------------------------------------------------------------------------------------------------------------
       // requires further sanitization
-      else if (strncmp(CMD_BUFFER, "enter digits \r", 13)==0) {
+      else if (strncmp(CMD_BUFFER, "enter digits \r", strlen("enter digits "))==0) {
         TMP_CMD_STRING_0 = String(CMD_BUFFER);
         if ((atol(TMP_CMD_STRING_0.c_str()) <= 99) && (atol(TMP_CMD_STRING_0.c_str()) >= -99)) {
           memset(input_data, 0, sizeof(input_data));
@@ -21993,7 +22013,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SET MATRIX SWITCH ENABLED
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix io \r", 14)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix switch enabled \r", strlen("set matrix switch enabled "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22014,7 +22034,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                         SET MATRIX SWITCH PORT
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix port \r", 16)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix port \r", strlen("set matrix port "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22032,10 +22052,11 @@ static void CmdProcess(void) {
         }
         else {Serial.println("[command failed]");}
       }
+      // 
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                  SET MATRIX FUNCTION INVERSION
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix invert \r", 18)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix inverted \r", strlen("set matrix inverted "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22057,7 +22078,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                 SET MATRIX FUNCTION EXPRESSION
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix express \r", 19)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix expression \r", strlen("set matrix expression "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22099,14 +22120,14 @@ static void CmdProcess(void) {
         else {Serial.println("[command failed]");}
       }
       // ------------------------------------------------------------------------------------------------------------------------------
-      //                                                                                                              SET MATRIX SWITCH
+      //                                                                                                               SET MATRIX ENTRY
       // ------------------------------------------------------------------------------------------------------------------------------
       /*
-      example: set matrix switch 1 0 None 0 0 0 0 0 -1 0
-      example: set matrix switch 1 0 Enabled 0 0 0 0 0 40 1
+      example: set matrix entry 1 0 None 0 0 0 0 0 -1 0
+      example: set matrix entry 1 0 Enabled 0 0 0 0 0 40 1
       */
-     // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix switch \r", 17)==0) {
+      // ------------------------------------------------------------------------------------------------------------------------------
+      else if (strncmp(CMD_BUFFER, "set matrix entry \r", strlen("set matrix entry "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22158,39 +22179,33 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                      SET MATRIX FUNCTION + XYZ
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix function xyz \r", 24)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix xyz \r", strlen("set matrix xyz "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
         while (TMP_CMD_TOKEN!=NULL) {
           if      (ITER_TMP_CMD_TOKEN==4) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_0=TMP_CMD_TOKEN; COMMAND_PASS++;}}
           else if (ITER_TMP_CMD_TOKEN==5) {if (is_all_digits(TMP_CMD_TOKEN)) {TMP_CMD_STRING_1=TMP_CMD_TOKEN; COMMAND_PASS++;}}
-          else if (ITER_TMP_CMD_TOKEN==6) {if (is_all_alpha(TMP_CMD_TOKEN)) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;}}
+          else if (ITER_TMP_CMD_TOKEN==6) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_2=TMP_CMD_TOKEN; COMMAND_PASS++;}}
           else if (ITER_TMP_CMD_TOKEN==7) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_3=TMP_CMD_TOKEN; COMMAND_PASS++;}}
-          else if (ITER_TMP_CMD_TOKEN==8) {if (is_all_digits_plus_char(TMP_CMD_TOKEN, '.')) {TMP_CMD_STRING_4=TMP_CMD_TOKEN; COMMAND_PASS++;}}
-          else if (ITER_TMP_CMD_TOKEN==9) {TMP_CMD_STRING_5=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
+          else if (ITER_TMP_CMD_TOKEN==8) {TMP_CMD_STRING_4=TMP_CMD_TOKEN; COMMAND_PASS++;} // ToDo: sanitize last token
           TMP_CMD_TOKEN=strtok(NULL, " ");
           ITER_TMP_CMD_TOKEN++;
         }
         if (COMMAND_PASS==6) {
           // --------------------------------------------------------------------
-          // set function name
-          // --------------------------------------------------------------------
-          memset(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], 0, sizeof(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())]));
-          strcpy(matrixData.matrix_function[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())], TMP_CMD_STRING_2.c_str());
-          // --------------------------------------------------------------------
           // set function xyz
           // --------------------------------------------------------------------
-          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][0]=atol(TMP_CMD_STRING_3.c_str());
-          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][1]=atol(TMP_CMD_STRING_4.c_str());
-          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][2]=atol(TMP_CMD_STRING_5.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][0]=atol(TMP_CMD_STRING_2.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][1]=atol(TMP_CMD_STRING_3.c_str());
+          matrixData.matrix_function_xyz[atoi(TMP_CMD_STRING_0.c_str())][atoi(TMP_CMD_STRING_1.c_str())][2]=atol(TMP_CMD_STRING_4.c_str());
         }
         else {Serial.println("[command failed]");}
       }
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                            SET MATRIX FUNCTION
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set matrix function \r", 20)==0) {
+      else if (strncmp(CMD_BUFFER, "set matrix function \r", strlen("set matrix function "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22225,7 +22240,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                    SAVE MATRIX
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "save matrix \r", 12)==0) {
+      else if (strncmp(CMD_BUFFER, "save matrix \r", strlen("save matrix "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22243,7 +22258,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                    LOAD MATRIX
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "load matrix \r", 12)==0) {
+      else if (strncmp(CMD_BUFFER, "load matrix \r", strlen("load matrix "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22262,7 +22277,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                                  DELETE MATRIX
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "delete matrix \r", 14)==0) {
+      else if (strncmp(CMD_BUFFER, "delete matrix \r", strlen("delete matrix "))==0) {
         TMP_CMD_TOKEN=strtok(CMD_BUFFER, " ");
         ITER_TMP_CMD_TOKEN=0;
         COMMAND_PASS=0;
@@ -22367,7 +22382,7 @@ static void CmdProcess(void) {
       // ------------------------------------------------------------------------------------------------------------------------------
       //                                                                                                    SET SATIO UTC SECOND OFFSET
       // ------------------------------------------------------------------------------------------------------------------------------
-      else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", 21)==0) {
+      else if (strncmp(CMD_BUFFER, "set utc_second_offset \r", strlen("set utc_second_offset "))==0) {
         TMP_CMD_STRING_0="";
         TMP_CMD_STRING_0 = String(CMD_BUFFER);
         TMP_CMD_STRING_0.replace("set utc_second_offset ", "");
