@@ -20706,28 +20706,36 @@ int ITER_TMP_CMD_TOKEN;
 int COMMAND_PASS=0;
 
 static void PrintHelp() {
+  
+  Serial.println();
   Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("                                               SATIO                                               ");
-  Serial.println("");
-  Serial.println("[ INFORMATION ]");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  
   Serial.println();
-  Serial.println("switch output satio      Return SatIO Sentence With Checksum.");
-  Serial.println("switch output gngga      Return GNGGA Sentence With Checksum.");
-  Serial.println("switch output gnrmc      Return GNRMC Sentence With Checksum.");
-  Serial.println("switch output gpatt      Return GPATT Sentence With Checksum.");
-  Serial.println("switch output matrix     Return Matrix Sentence With Checksum.");
-  Serial.println("switch output sensors    Return Sensor Sentence With Checksum.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                            INFORMATION (SENTENCES)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch output satio                       Return SatIO Sentence With Checksum.");
+  Serial.println("switch output gngga                       Return GNGGA Sentence With Checksum.");
+  Serial.println("switch output gnrmc                       Return GNRMC Sentence With Checksum.");
+  Serial.println("switch output gpatt                       Return GPATT Sentence With Checksum.");
+  Serial.println("switch output matrix                      Return Matrix Sentence With Checksum.");
+  Serial.println("switch output sensors                     Return Sensor Sentence With Checksum.");
+  Serial.println("switch output sun                         Return Sun Sentence With Checksum.");
+  Serial.println("switch output moon                        Return Moon Sentence With Checksum.");
+  Serial.println("switch output mercury                     Return Mercury Sentence With Checksum.");
+  Serial.println("switch output venus                       Return Venus Sentence With Checksum.");
+  Serial.println("switch output mars                        Return Mars Sentence With Checksum.");
+  Serial.println("switch output jupiter                     Return Jupiter Sentence With Checksum.");
+  Serial.println("switch output saturn                      Return Saturn Sentence With Checksum.");
+  Serial.println("switch output uranus                      Return Uranus Sentence With Checksum.");
+  Serial.println("switch output neptune                     Return Neptune Sentence With Checksum.");
+
   Serial.println();
-  Serial.println("switch output sun        Return Sun Sentence With Checksum.");
-  Serial.println("switch output moon       Return Moon Sentence With Checksum.");
-  Serial.println("switch output mercury    Return Mercury Sentence With Checksum.");
-  Serial.println("switch output venus      Return Venus Sentence With Checksum.");
-  Serial.println("switch output mars       Return Mars Sentence With Checksum.");
-  Serial.println("switch output jupiter    Return Jupiter Sentence With Checksum.");
-  Serial.println("switch output saturn     Return Saturn Sentence With Checksum.");
-  Serial.println("switch output uranus     Return Uranus Sentence With Checksum.");
-  Serial.println("switch output neptune    Return Neptune Sentence With Checksum.");
-  Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (SATIO)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print satio degrees_latitude              Return SATIO Degrees Latitude.");
   Serial.println("print satio degrees_longitude             Return SATIO Degrees Longitude.");
   Serial.println("print satio ground_heading                Return SATIO Ground Heading.");
@@ -20739,7 +20747,11 @@ static void PrintHelp() {
   Serial.println("print satio formatted_rtc_date            Return SATIO Formatted RTC Date.");
   Serial.println("print satio utc_second_offset             Return SATIO UTC Second Offset.");
   Serial.println("print satio utc_auto_offset_flag          Return SATIO UTC Second Offset Flag.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                               INFORMATION (MATRIX)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print matrix -v                           Return all matrix data.");
   Serial.println("print matrix n                            Return matrix data for specified n.");
   Serial.println("print matrix enabled                      Return all enabled matrix switches.");
@@ -20755,7 +20767,11 @@ static void PrintHelp() {
   Serial.println("print matrix functions xyz -v             Return verbose all matrix switch function values.");
   Serial.println("print matrix expressions -v               Return verbose all matrix switch expressions.");
   Serial.println("print matrix available functions -v       Return verbose all available matrix switch functions.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (GNGGA)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print gngga utc_time                      Return GNGGA UTC Time.");
   Serial.println("print gngga latitude                      Return GNGGA Latitude.");
   Serial.println("print gngga latitude_hemisphere           Return GNGGA Latitude Hemisphere.");
@@ -20769,7 +20785,11 @@ static void PrintHelp() {
   Serial.println("print gngga geoidal                       Return GNGGA Geoidal.");
   Serial.println("print gngga geoidal_units                 Return GNGGA Geoidal Units.");
   Serial.println("print gngga differential_delay            Return GNGGA Differential Delay.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (GNRMC)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print gnrmc utc_time                      Return GNRMC UTC Time.");
   Serial.println("print gnrmc positioning_status            Return GNRMC Positioning Status.");
   Serial.println("print gnrmc latitude                      Return GNRMC Latitude.");
@@ -20782,7 +20802,11 @@ static void PrintHelp() {
   Serial.println("print gnrmc installation_angle            Return GNRMC Installation Angle.");
   Serial.println("print gnrmc installation_angle_direction  Return GNRMC Installation Angle Direction.");
   Serial.println("print gnrmc mode_indication               Return GNRMC Mode Indication.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                 INFORMATION(GPATT)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print gpatt pitch                         Return GPATT Pitch.");
   Serial.println("print gpatt roll                          Return GPATT Roll.");
   Serial.println("print gpatt yaw                           Return GPATT Yaw.");
@@ -20803,7 +20827,11 @@ static void PrintHelp() {
   Serial.println("print gpatt run_inetial_flag              Return GPATT Run Inetial Flag.");
   Serial.println("print gpatt speed_enable                  Return GPATT Speed Enable.");
   Serial.println("print gpatt speed_num                     Return GPATT Speed Num.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              INFORMATION (SENSORS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print dht11_h_0                           Return DHT11_0 Humidity.");
   Serial.println("print dht11_c_0                           Return DHT11_0 Celsius.");
   Serial.println("print dht11_f_0                           Return DHT11_0 Fahrenheit.");
@@ -20826,7 +20854,11 @@ static void PrintHelp() {
   Serial.println("print sensor_13                           Return Sensor 13 Value.");
   Serial.println("print sensor_14                           Return Sensor 14 Value.");
   Serial.println("print sensor_15                           Return Sensor 15 Value.");
+  
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (WT901)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print wt901_ang_x                         Return WT901 Angle X.");
   Serial.println("print wt901_ang_y                         Return WT901 Angle Y.");
   Serial.println("print wt901_ang_z                         Return WT901 Angle Z.");
@@ -20839,9 +20871,11 @@ static void PrintHelp() {
   Serial.println("print wt901_gyr_x                         Return WT901 Gyro X.");
   Serial.println("print wt901_gyr_y                         Return WT901 Gyro Y.");
   Serial.println("print wt901_gyr_z                         Return WT901 Gyro Z.");
+
   Serial.println("");
-  Serial.println("print earth el                            Return Earth Ecliptic Longitude.");
-  Serial.println("");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println  ("                                                                                INFORMATION (SUN)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print sun ra                              Return Sun Right Ascension.");
   Serial.println("print sun dec                             Return Sun Declination.");
   Serial.println("print sun az                              Return Sun Azimuth.");
@@ -20854,16 +20888,11 @@ static void PrintHelp() {
   Serial.println("print sun dis                             Return Sun Distance.");
   Serial.println("print sun elat                            Return Sun Ecliptic Latitude");
   Serial.println("print sun elon                            Return Sun Ecliptic Longitude.");
+
   Serial.println();
-  Serial.println("print moon ra                             Return Moon Right Ascension.");
-  Serial.println("print moon dec                            Return Moon Declination.");
-  Serial.println("print moon az                             Return Moon Azimuth.");
-  Serial.println("print moon alt                            Return Moon Altitude.");
-  Serial.println("print moon r                              Return Moon Rise.");
-  Serial.println("print moon s                              Return Moon Set.");
-  Serial.println("print moon p                              Return Moon Phase.");
-  Serial.println("print moon l                              Return Moon Luminosity.");
-  Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              INFORMATION (MERCURY)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print mercury ra                          Return Mercury Right Ascension.");
   Serial.println("print mercury dec                         Return Mercury Declination.");
   Serial.println("print mercury az                          Return Mercury Azimuth");
@@ -20876,7 +20905,11 @@ static void PrintHelp() {
   Serial.println("print mercury dis                         Return Mercury Distance.");
   Serial.println("print mercury elat                        Return Mercury Ecliptic Latitude.");
   Serial.println("print mercury elon                        Return Mercury Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (VENUS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print venus ra                            Return Venus Right Ascension.");
   Serial.println("print venus dec                           Return Venus Declination.");
   Serial.println("print venus az                            Return Venus Azimuth");
@@ -20889,7 +20922,30 @@ static void PrintHelp() {
   Serial.println("print venus dis                           Return Venus Distance.");
   Serial.println("print venus elat                          Return Venus Ecliptic Latitude.");
   Serial.println("print venus elon                          Return Venus Ecliptic Longitude.");
+
+  Serial.println("");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                INFORMATION (EARTH)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("print earth el                            Return Earth Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                 INFORMATION (MOON)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("print moon ra                             Return Moon Right Ascension.");
+  Serial.println("print moon dec                            Return Moon Declination.");
+  Serial.println("print moon az                             Return Moon Azimuth.");
+  Serial.println("print moon alt                            Return Moon Altitude.");
+  Serial.println("print moon r                              Return Moon Rise.");
+  Serial.println("print moon s                              Return Moon Set.");
+  Serial.println("print moon p                              Return Moon Phase.");
+  Serial.println("print moon l                              Return Moon Luminosity.");
+
+  Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                 INFORMATION (MARS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print mars ra                             Return Mars Right Ascension.");
   Serial.println("print mars dec                            Return Mars Declination.");
   Serial.println("print mars az                             Return Mars Azimuth");
@@ -20902,7 +20958,11 @@ static void PrintHelp() {
   Serial.println("print mars dis                            Return Mars Distance.");
   Serial.println("print mars elat                           Return Mars Ecliptic Latitude.");
   Serial.println("print mars elon                           Return Mars Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              INFORMATION (JUPITER)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print jupiter ra                          Return Juptier Right Ascension.");
   Serial.println("print jupiter dec                         Return Juptier Declination.");
   Serial.println("print jupiter az                          Return Juptier Azimuth");
@@ -20915,7 +20975,11 @@ static void PrintHelp() {
   Serial.println("print jupiter dis                         Return Juptier Distance.");
   Serial.println("print jupiter elat                        Return Juptier Ecliptic Latitude.");
   Serial.println("print jupiter elon                        Return Juptier Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                               INFORMATION (SATURN)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print saturn ra                           Return Saturn Right Ascension.");
   Serial.println("print saturn dec                          Return Saturn Declination.");
   Serial.println("print saturn az                           Return Saturn Azimuth");
@@ -20928,7 +20992,11 @@ static void PrintHelp() {
   Serial.println("print saturn dis                          Return Saturn Distance.");
   Serial.println("print saturn elat                         Return Saturn Ecliptic Latitude.");
   Serial.println("print saturn elon                         Return Saturn Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                               INFORMATION (URANUS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print uranus ra                           Return Uranus Right Ascension.");
   Serial.println("print uranus dec                          Return Uranus Declination.");
   Serial.println("print uranus az                           Return Uranus Azimuth");
@@ -20941,7 +21009,11 @@ static void PrintHelp() {
   Serial.println("print uranus dis                          Return Uranus Distance.");
   Serial.println("print uranus elat                         Return Uranus Ecliptic Latitude.");
   Serial.println("print uranus elon                         Return Uranus Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              INFORMATION (NEPTUNE)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("print neptune ra                          Return Neptune Right Ascension.");
   Serial.println("print neptune dec                         Return Neptune Declination.");
   Serial.println("print neptune az                          Return Neptune Azimuth");
@@ -20954,122 +21026,177 @@ static void PrintHelp() {
   Serial.println("print neptune dis                         Return Neptune Distance.");
   Serial.println("print neptune elat                        Return Neptune Ecliptic Latitude.");
   Serial.println("print neptune elon                        Return Neptune Ecliptic Longitude.");
+
   Serial.println();
+  Serial.println("---------------------------------------------------------------------------------------------------");
   Serial.println("[ CONTROL ] Requires Serial Commands enabled.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+
   Serial.println();
-  Serial.println("menu left                         Navigate UI Menu.");
-  Serial.println("menu right                        Navigate UI Menu.");
-  Serial.println("menu back                         Navigate UI Menu.");
-  Serial.println("menu enter                        Navigate UI Menu.");
-  Serial.println("menu home                         Navigate UI Menu.");
-  Serial.println("enter digits                      Input digits.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                   CONTROL (NAVIGATION & KEY INPUT)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("menu left                                 Navigate UI Menu.");
+  Serial.println("menu right                                Navigate UI Menu.");
+  Serial.println("menu back                                 Navigate UI Menu.");
+  Serial.println("menu enter                                Navigate UI Menu.");
+  Serial.println("menu home                                 Navigate UI Menu.");
+  Serial.println("enter digits n                            Specify digits (n) to enter.");
+
   Serial.println();
-  Serial.println("switch display timeout            Enables/Disables Display Timeout.");
-  Serial.println("set display timeout 0             Set Display Timeout 3 seconds.");
-  Serial.println("set display timeout 1             Set Display Timeout 5 seconds.");
-  Serial.println("set display timeout 2             Set Display Timeout 10 seconds.");
-  Serial.println("set display timeout 3             Set Display Timeout 15 seconds.");
-  Serial.println("set display timeout 4             Set Display Timeout 30 seconds.");
-  Serial.println("set display timeout 5             Set Display Timeout 1 minute.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                  CONTROL (DISPLAY)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch display timeout                    Enables/Disables Display Timeout.");
+  Serial.println("set display timeout 0                     Set Display Timeout 3 seconds.");
+  Serial.println("set display timeout 1                     Set Display Timeout 5 seconds.");
+  Serial.println("set display timeout 2                     Set Display Timeout 10 seconds.");
+  Serial.println("set display timeout 3                     Set Display Timeout 15 seconds.");
+  Serial.println("set display timeout 4                     Set Display Timeout 30 seconds.");
+  Serial.println("set display timeout 5                     Set Display Timeout 1 minute.");
+  
   Serial.println();
-  Serial.println("set overload 0                    Set Overload Threshold 1 microsecond.");
-  Serial.println("set overload 1                    Set Overload Threshold 2 microsecond.");
-  Serial.println("set overload 2                    Set Overload Threshold 3 microsecond.");
-  Serial.println("set overload 3                    Set Overload Threshold 4 microsecond.");
-  Serial.println("set overload 4                    Set Overload Threshold 5 microsecond.");
-  Serial.println("set overload 5                    Set Overload Threshold 10 microsecond.");
-  Serial.println("set overload 6                    Set Overload Threshold 50 microsecond.");
-  Serial.println("set overload 7                    Set Overload Threshold 1 millisecond.");
-  Serial.println("set overload 8                    Set Overload Threshold 10 millisecond.");
-  Serial.println("set overload 9                    Set Overload Threshold 100 millisecond.");
-  Serial.println("set overload 10                   Set Overload Threshold 1 second.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                 CONTROL (OVERLOAD)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("set overload 0                            Set Overload Threshold 1 microsecond.");
+  Serial.println("set overload 1                            Set Overload Threshold 2 microsecond.");
+  Serial.println("set overload 2                            Set Overload Threshold 3 microsecond.");
+  Serial.println("set overload 3                            Set Overload Threshold 4 microsecond.");
+  Serial.println("set overload 4                            Set Overload Threshold 5 microsecond.");
+  Serial.println("set overload 5                            Set Overload Threshold 10 microsecond.");
+  Serial.println("set overload 6                            Set Overload Threshold 50 microsecond.");
+  Serial.println("set overload 7                            Set Overload Threshold 1 millisecond.");
+  Serial.println("set overload 8                            Set Overload Threshold 10 millisecond.");
+  Serial.println("set overload 9                            Set Overload Threshold 100 millisecond.");
+  Serial.println("set overload 10                           Set Overload Threshold 1 second.");
+
   Serial.println();
-  Serial.println("new matrix                        Clears any current matrix value.");
-  Serial.println("save matrix n                     Saves current matrix to save slot specified by n.");
-  Serial.println("load matrix n                     Loads matrix from save slot specified by n.");
-  Serial.println("delete matrix n                   Deletes matrix in save slot specified by n.");
-  Serial.println("save system                       Saves current system configuration.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                     CONTROL (FILE)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("new matrix                                Clears any current matrix value.");
+  Serial.println("save matrix n                             Saves current matrix to save slot specified by n.");
+  Serial.println("load matrix n                             Loads matrix from save slot specified by n.");
+  Serial.println("delete matrix n                           Deletes matrix in save slot specified by n.");
+  Serial.println("save system                               Saves current system configuration.");
+
   Serial.println();
-  Serial.println("switch matrix enabled             Enables/Disables Running Matrix Switch.");
-  Serial.println("switch matrix startup enabled     Enables/Disables Running Matrix Switch On Startup.");
-  Serial.println("switch matrix io enabled          Enables/Disables Matrix Switch Output via Port Controller.");
-  Serial.println("switch wt901 enabled              Enables/Disables WT901 requests.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                   CONTROL (SYSTEM)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch matrix enabled                     Enables/Disables Running Matrix Switch.");
+  Serial.println("set matrix enabled 0                      Disables Running Matrix Switch.");
+  Serial.println("set matrix enabled 1                      Enables Running Matrix Switch.");
+  Serial.println("switch matrix startup enabled             Enables/Disables Running Matrix Switch On Startup.");
+  Serial.println("switch matrix io enabled                  Enables/Disables Matrix Switch Output via Port Controller.");
+  Serial.println("switch wt901 enabled                      Enables/Disables WT901 requests.");
+
   Serial.println();
-  Serial.println("set matrix enabled 0              Disables Running Matrix Switch.");
-  Serial.println("set matrix enabled 1              Enables Running Matrix Switch.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                   CONTROL (MATRIX)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("set matrix switch enabled n 0             Disables specific matrix switch specified by n.");
+  Serial.println("set matrix switch enabled n 1             Enables specific matrix switch specified by n.");
   Serial.println();
-  Serial.println("set matrix switch enabled n 0     Disables specific matrix switch specified by n.");
-  Serial.println("set matrix switch enabled n 1     Enables specific matrix switch specified by n.");
+  Serial.println("set matrix port n                         Set output port number specified by n (-1=None).");
   Serial.println();
-  Serial.println("set matrix port n                 Set output port number specified by n (-1=None).");
+  Serial.println("set matrix inverted n n 0                 Invert matrix (n) function(n) logic.");
+  Serial.println("set matrix inverted n n 1                 Standard matrix (n) function(n) logic.");
   Serial.println();
-  Serial.println("set matrix inverted n n 0         Disable invert matrix function return true/false. Specify matrix n & function n.");
-  Serial.println("set matrix inverted n n 1         Enable invert matrix function return true/false. Specify matrix n & function n.");
-  Serial.println();
-  Serial.println("set matrix expression n n 0-4     Specify expression 0-4. Specify matrix n & function n.");
-  Serial.println("                                  0=None  1=Under  2=Over  3=Equal  4=Range");
+  Serial.println("set matrix expression n n 0-4             Specify matrix n & function n. Set expression 0-4.");
+  Serial.println("                                          0=None  1=Under  2=Over  3=Equal  4=Range");
   Serial.println();
   Serial.println("set matrix entry n n function_name x y z inverted expression port enabled/disabled");
-  Serial.println("                 n n function_name n n n n(0-1)   n(0-4)     n    n(0-1)");
-  Serial.println("                 Specify matrix n, function n and remaining arguments.");
+  Serial.println("                                          Specify matrix n.");
+  Serial.println("                                          Specify function n.");
+  Serial.println("                                          Set function name.");
+  Serial.println("                                          Set function values x y z.");
+  Serial.println("                                          Set standard/inverted (0-1).");
+  Serial.println("                                          Set expression (0-4). 0=None  1=Under  2=Over  3=Equal  4=Range");
+  Serial.println("                                          Set output port (-1=None).");
+  Serial.println("                                          Set disabled/enabled (0-1).");
+
   Serial.println();
-  Serial.println("set matrix xyz n n x y z                Specify matrix n, function n and matrix function values.");
-  Serial.println("set matrix entry n n function_name      Specify a function name for specified matrix n, function n.");
+  Serial.println("set matrix xyz n n x y z                  Specify matrix n, function n and matrix function values.");
+  Serial.println("set matrix entry n n function_name        Specify a function name for specified matrix n, function n.");
   Serial.println();
-  Serial.println("set pcio n 0                      Sets portcontroller matrix switch output port low. Overridden by matrix.");
-  Serial.println("set pcio n 1                      Sets portcontroller matrix switch output port high. Overridden by matrix.");
+  Serial.println("set pcio n 0                              Set matrix n output low (overridden by matrix logic).");
+  Serial.println("set pcio n 1                              Set matrix n output high (overridden by matrix logic).");
   Serial.println();
-  Serial.println("set pcioi n 0-7                   Set indicator color (0-7) for matrix switch specified by n.");
-  Serial.println("                                  0=Black");
-  Serial.println("                                  1=Red");
-  Serial.println("                                  2=Yellow");
-  Serial.println("                                  3=Green");
-  Serial.println("                                  4=Blue");
-  Serial.println("                                  5=Cyan");
-  Serial.println("                                  6=Purple");
-  Serial.println("                                  7=White");
+  Serial.println("set pcioi n 0-7                           Set indicator color (0-7) for matrix switch n.");
+  Serial.println("                                          0=Black");
+  Serial.println("                                          1=Red");
+  Serial.println("                                          2=Yellow");
+  Serial.println("                                          3=Green");
+  Serial.println("                                          4=Blue");
+  Serial.println("                                          5=Cyan");
+  Serial.println("                                          6=Purple");
+  Serial.println("                                          7=White");
+
   Serial.println();
-  Serial.println("switch satio                      Enables/Disables SatIO features.");
-  Serial.println("switch gngga                      Enables/Disables Parsing GNGGA Data.");
-  Serial.println("switch gnrmc                      Enables/Disables Parsing GNRMC Data.");
-  Serial.println("switch gpatt                      Enables/Disables Parsing GPATT Data.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                      CONTROL (GPS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch satio                              Enables/Disables SatIO features.");
+  Serial.println("switch gngga                              Enables/Disables Parsing GNGGA Data.");
+  Serial.println("switch gnrmc                              Enables/Disables Parsing GNRMC Data.");
+  Serial.println("switch gpatt                              Enables/Disables Parsing GPATT Data.");
+  Serial.println("switch convert coordinates                Enables/Disables SatIO Coordinate Degrees Conversions.");
+  Serial.println("set convert coordinates GNGGA             Set Coordinate Degrees Conversions From GNGGA Data.");
+  Serial.println("set convert coordinates GNRMC             Set Coordinate Degrees Conversions From GNRMC Data.");
+  
   Serial.println();
-  Serial.println("switch track sun                  Enables/Disables Tracking Sun.");
-  Serial.println("switch track moon                 Enables/Disables Tracking Moon.");
-  Serial.println("switch track mercury              Enables/Disables Tracking Mercury.");
-  Serial.println("switch track venus                Enables/Disables Tracking Venus.");
-  Serial.println("switch track mars                 Enables/Disables Tracking Mars.");
-  Serial.println("switch track jupiter              Enables/Disables Tracking Jupiter.");
-  Serial.println("switch track saturn               Enables/Disables Tracking Saturn.");
-  Serial.println("switch track uranus               Enables/Disables Tracking Uranus.");
-  Serial.println("switch track neptune              Enables/Disables Tracking Neptune.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                         CONTROL (SIDEREAL PLANETS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch track sun                          Enables/Disables Tracking Sun.");
+  Serial.println("switch track moon                         Enables/Disables Tracking Moon.");
+  Serial.println("switch track mercury                      Enables/Disables Tracking Mercury.");
+  Serial.println("switch track venus                        Enables/Disables Tracking Venus.");
+  Serial.println("switch track mars                         Enables/Disables Tracking Mars.");
+  Serial.println("switch track jupiter                      Enables/Disables Tracking Jupiter.");
+  Serial.println("switch track saturn                       Enables/Disables Tracking Saturn.");
+  Serial.println("switch track uranus                       Enables/Disables Tracking Uranus.");
+  Serial.println("switch track neptune                      Enables/Disables Tracking Neptune.");
   Serial.println();
-  Serial.println("run track planets                 Run Track PLanets Once.");
-  Serial.println("run track sun                     Run Track Sun Once.");
-  Serial.println("run track moon                    Run Track Moon Once.");
-  Serial.println("run track mercury                 Run Track Mercury Once.");
-  Serial.println("run track venus                   Run Track Venus Once.");
-  Serial.println("run track mars                    Run Track Mars Once.");
-  Serial.println("run track jupiter                 Run Track Jupiter Once.");
-  Serial.println("run track saturn                  Run Track Saturn Once.");
-  Serial.println("run track uranus                  Run Track Uranus Once.");
-  Serial.println("run track neptune                 Run Track Neptune Once.");
+  Serial.println("run track planets                         Run Track PLanets Once.");
+  Serial.println("run track sun                             Run Track Sun Once.");
+  Serial.println("run track moon                            Run Track Moon Once.");
+  Serial.println("run track mercury                         Run Track Mercury Once.");
+  Serial.println("run track venus                           Run Track Venus Once.");
+  Serial.println("run track mars                            Run Track Mars Once.");
+  Serial.println("run track jupiter                         Run Track Jupiter Once.");
+  Serial.println("run track saturn                          Run Track Saturn Once.");
+  Serial.println("run track uranus                          Run Track Uranus Once.");
+  Serial.println("run track neptune                         Run Track Neptune Once.");
+
   Serial.println();
-  Serial.println("switch ad-plex chan n             Enables/Disables Analog/Digital Multiplexer Channel (0-15) specified by n.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                              CONTROL (MULIPLEXERS)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch ad-plex chan n                     Enables/Disables Analog/Digital Multiplexer Channel (0-15) specified by n.");
+  Serial.println("switch iic-plex chan n                    Enables/Disables IIC Multiplexer Channel (0-7) specified by n.");
+  Serial.println("switch iic-plex chan all                  Enables/Disables all IIC Multiplexer Channels.");
+
   Serial.println();
-  Serial.println("switch iic-plex chan n            Enables/Disables IIC Multiplexer Channel (0-7) specified by n.");
-  Serial.println("switch iic-plex chan all          Enables/Disables all IIC Multiplexer Channels.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                    CONTROL (DHT11)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("switch dht11_0_display_hic                Enables/Disables DHT11 Heat Index Celsius/Fahrenheit.");
+
   Serial.println();
-  Serial.println("switch dht11_0_display_hic        Enables/Disables DHT11 Heat Index Celsius/Fahrenheit.");
-  Serial.println();
-  Serial.println("switch convert coordinates        Enables/Disables SatIO Coordinate Degrees Conversions.");
-  Serial.println("set convert coordinates GNGGA     Set Coordinate Degrees Conversions From GNGGA Data.");
-  Serial.println("set convert coordinates GNRMC     Set Coordinate Degrees Conversions From GNRMC Data.");
-  Serial.println("set utc_second_offset             Set UTC Second Offset.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                 CONTROL (DATETIME)");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("set utc_second_offset                     Set UTC Second Offset.");
   // Serial.println("set utc_auto_offset_flag              "); // currently manual only
-  // Serial.println("bench                                     ");
+
   Serial.println();
-  Serial.println("h                                 Display this help message.");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("                                                                                               HELP");
+  Serial.println("---------------------------------------------------------------------------------------------------");
+  Serial.println("h                                         Display this help message.");
   Serial.println("");
   Serial.println("---------------------------------------------------------------------------------------------------");
 }
