@@ -15102,6 +15102,11 @@ int neptune_ui_y = 64;
 float test_angle=90;
 float test_moon_angle=90;
 
+// ----------------------------------------------------------------------------------------------------------------
+//                                                                                                      DRAW ZODIAC
+// ----------------------------------------------------------------------------------------------------------------
+
+
 // ---------------------------------------------------------------
 /*
   These elements allow for 12 lines to be drawn from earth to the
@@ -15153,10 +15158,6 @@ float z_sin_angle=0;
 float z_radius_0 = 10000.0; // Large enough to ensure intersection
 float z_angle=0;
 float z_radius_1=0;
-
-// ----------------------------------------------------------------------------------------------------------------
-//                                                                                                      DRAW ZODIAC
-// ----------------------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------
 // Clear previous line
@@ -15319,64 +15320,89 @@ void drawEarthZenith() {
 // ----------------------------------------------------------------------------------------------------------------
 //                                                                                                     DRAW PLANETS
 // ----------------------------------------------------------------------------------------------------------------
-int solar_system_center_x=65;
-int solar_system_center_y=68;
+int solar_system_center_x=65; // (sun position x)
+int solar_system_center_y=68; // (sun position y)
+
+int sun_sprite_size=5;
+int sun_sprite_center=2;
+int sun_radius=2;
+
 int mercury_orbit_radius=7;
+int mercury_sprite_size=3;
+int mercury_sprite_center=3;
+int mercury_radius=1;
+
 int venus_orbit_radius=13;
+int venus_sprite_size=3;
+int venus_sprite_center=1;
+int venus_radius=1;
+
 int earth_orbit_radius=21;
+int earth_sprite_size=3;
+int earth_sprite_center=1;
+int earth_radius=1;
+
+int moon_orbit_radius=4;
+int moon_sprite_size=3;
+int moon_sprite_center=1;
+int moon_radius=1;
+
 int mars_orbit_radius=29;
+int mars_sprite_size=3;
+int mars_sprite_center=1;
+int mars_radius=1;
+
 int jupiter_orbit_radius=37;
+int jupiter_sprite_size=5;
+int jupiter_sprite_center=2;
+int jupiter_radius=2;
+
 int saturn_orbit_radius=44;
+int saturn_sprite_size=7;
+int saturn_sprite_center=3;
+int saturn_rings_radius=3;
+int saturn_radius=1;
+
 int uranus_orbit_radius=51;
+int uranus_sprite_size=3;
+int uranus_sprite_center=1;
+int uranus_radius=1;
+
 int neptune_orbit_radius=56;
+int neptune_sprite_size=3;
+int neptune_sprite_center=1;
+int neptune_radius=1;
 
 void drawOrbitalPaths() {
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mercury_orbit_radius, RGB_COLOR16(24,0,24));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, venus_orbit_radius, RGB_COLOR16(24,24,0));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, earth_orbit_radius, RGB_COLOR16(0,0,24));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, mars_orbit_radius, RGB_COLOR16(24,0,0));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, jupiter_orbit_radius, RGB_COLOR16(24,24,24));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, saturn_orbit_radius, RGB_COLOR16(24,24,24));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, uranus_orbit_radius, RGB_COLOR16(0,24,24));
-    // -----------------------------------------------------------------
-    // draw orbital path
-    // -----------------------------------------------------------------
+
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, TFT_BLACK);
     tft.drawCircle(solar_system_center_x, solar_system_center_y, neptune_orbit_radius, RGB_COLOR16(24,24,0));
 }
 
 bool cleared_mercury=false;
 void ClearAstroClockMercury() {
-  hud.createSprite(3, 3); 
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.createSprite(mercury_sprite_size, mercury_sprite_size); 
+  hud.fillCircle(mercury_sprite_size, mercury_sprite_size, mercury_radius, TFT_BLACK);
   hud.pushSprite((int)mercury_ui_x, (int)mercury_ui_y);
   yield();
   hud.deleteSprite();
@@ -15384,17 +15410,26 @@ void ClearAstroClockMercury() {
 
 bool cleared_venus=false;
 void ClearAstroClockVenus() {
-  hud.createSprite(3, 3); 
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.createSprite(venus_sprite_size, venus_sprite_size); 
+  hud.fillCircle(venus_sprite_center, venus_sprite_center, venus_radius, TFT_BLACK);
   hud.pushSprite((int)venus_ui_x, (int)venus_ui_y);
+  yield();
+  hud.deleteSprite();
+}
+
+bool cleared_earth=false;
+void ClearAstroClockEarth() {
+  hud.createSprite(earth_sprite_size, earth_sprite_size); 
+  hud.fillCircle(earth_sprite_center, earth_sprite_center, earth_radius, TFT_BLACK);
+  hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
   yield();
   hud.deleteSprite();
 }
 
 bool cleared_mars=false;
 void ClearAstroClockMars() {
-  hud.createSprite(3, 3); 
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.createSprite(mars_sprite_size, mars_sprite_size); 
+  hud.fillCircle(mars_sprite_center, mars_sprite_center, mars_radius, TFT_BLACK);
   hud.pushSprite((int)mars_ui_x, (int)mars_ui_y);
   yield();
   hud.deleteSprite();
@@ -15402,8 +15437,8 @@ void ClearAstroClockMars() {
 
 bool cleared_jupiter=false;
 void ClearAstroClockJupiter() {
-  hud.createSprite(5, 5); 
-  hud.fillCircle(2, 2, 2, TFT_BLACK);
+  hud.createSprite(jupiter_sprite_size, jupiter_sprite_size);
+  hud.fillCircle(jupiter_sprite_center, jupiter_sprite_center, jupiter_radius, TFT_BLACK);
   hud.pushSprite((int)jupiter_ui_x, (int)jupiter_ui_y);
   yield();
   hud.deleteSprite();
@@ -15411,9 +15446,9 @@ void ClearAstroClockJupiter() {
 
 bool cleared_saturn=false;
 void ClearAstroClockSaturn() {
-  hud.createSprite(7, 7); 
-  hud.drawCircle(3, 3, 3, TFT_BLACK); // saturn's rings
-  hud.fillCircle(3, 3, 1, TFT_BLACK); // saturn
+  hud.createSprite(saturn_sprite_size, saturn_sprite_size); 
+  hud.drawCircle(saturn_sprite_center, saturn_sprite_center, saturn_rings_radius, TFT_BLACK); // saturn's rings
+  hud.fillCircle(saturn_sprite_center, saturn_sprite_center, saturn_radius, TFT_BLACK); // saturn
   hud.pushSprite((int)saturn_ui_x, (int)saturn_ui_y);
   yield();
   hud.deleteSprite();
@@ -15421,8 +15456,8 @@ void ClearAstroClockSaturn() {
 
 bool cleared_uranus=false;
 void ClearAstroClockUranus() {
-  hud.createSprite(3, 3); 
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.createSprite(uranus_sprite_size, uranus_sprite_size); 
+  hud.fillCircle(uranus_sprite_center, uranus_sprite_center, uranus_radius, TFT_BLACK);
   hud.pushSprite((int)uranus_ui_x, (int)uranus_ui_y);
   yield();
   hud.deleteSprite();
@@ -15430,8 +15465,8 @@ void ClearAstroClockUranus() {
 
 bool cleared_neptune=false;
 void ClearAstroClockNeptune() {
-  hud.createSprite(3, 3); 
-  hud.fillCircle(1, 1, 1, TFT_BLACK);
+  hud.createSprite(neptune_sprite_size, neptune_sprite_size); 
+  hud.fillCircle(neptune_sprite_center, neptune_sprite_center, neptune_radius, TFT_BLACK);
   hud.pushSprite((int)neptune_ui_x, (int)neptune_ui_y);
   yield();
   hud.deleteSprite();
@@ -15445,8 +15480,8 @@ void drawPlanets() {
   // -----------------------------------------------------------------
   //                                                               SUN
   // -----------------------------------------------------------------
-  hud.createSprite(5, 5); 
-  hud.fillCircle(2, 2, 2, TFT_YELLOW);
+  hud.createSprite(sun_sprite_size, sun_sprite_size); 
+  hud.fillCircle(sun_sprite_center, sun_sprite_center, sun_radius, TFT_YELLOW);
   hud.pushSprite(solar_system_center_x-1, solar_system_center_y-1);
   yield();
   hud.deleteSprite();
@@ -15462,8 +15497,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_PURPLE);
+    hud.createSprite(mercury_sprite_size, mercury_sprite_size);
+    hud.fillCircle(mercury_sprite_center, mercury_sprite_center, mercury_radius, TFT_PURPLE);
     // mercury_ui_x = solar_system_center_x + mercury_orbit_radius * sin(radians(test_angle+90)); // (test)
     // mercury_ui_y = solar_system_center_y + mercury_orbit_radius * cos(radians(test_angle+90)); // (test)
     mercury_ui_x = solar_system_center_x + mercury_orbit_radius * sin(radians(siderealPlanetData.mercury_helio_ecliptic_long+90));
@@ -15484,8 +15519,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_YELLOW);
+    hud.createSprite(venus_sprite_size, venus_sprite_size); 
+    hud.fillCircle(venus_sprite_center, venus_sprite_center, venus_radius, TFT_YELLOW);
     // venus_ui_x = solar_system_center_x + venus_orbit_radius * sin(radians(test_angle+90)); // (test)
     // venus_ui_y = solar_system_center_y + venus_orbit_radius * cos(radians(test_angle+90)); // (test)
     venus_ui_x = solar_system_center_x + venus_orbit_radius * sin(radians(siderealPlanetData.venus_helio_ecliptic_long+90));
@@ -15501,16 +15536,12 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
-    hud.pushSprite((int)earth_ui_x, (int)earth_ui_y);
-    yield();
-    hud.deleteSprite();
+    ClearAstroClockEarth();
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLUE);
+    hud.createSprite(earth_sprite_size, earth_sprite_size); 
+    hud.fillCircle(earth_sprite_center, earth_sprite_center, earth_radius, TFT_BLUE);
     // earth_ui_x = solar_system_center_x + earth_orbit_radius * sin(radians(test_angle+90)); // (test)
     // earth_ui_y = solar_system_center_y + earth_orbit_radius * cos(radians(test_angle+90)); // (test)
     earth_ui_x = solar_system_center_x + earth_orbit_radius * sin(radians(siderealPlanetData.earth_ecliptic_long-90));
@@ -15529,8 +15560,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // clear previous position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_BLACK);
+    hud.createSprite(moon_sprite_size, moon_sprite_size); 
+    hud.fillCircle(moon_sprite_center, moon_sprite_center, moon_radius, TFT_BLACK);
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
     hud.deleteSprite();
@@ -15539,10 +15570,10 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     hud.createSprite(3, 3); 
     hud.fillCircle(1, 1, 1, TFT_DARKGREY);
-    // moon_ui_x = earth_ui_x + 4 * sin(radians(test_moon_angle+90)); // (test)
-    // moon_ui_y = earth_ui_y + 4 * cos(radians(test_moon_angle+90)); // (test)
-    moon_ui_x = earth_ui_x + 4 * sin(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90));
-    moon_ui_y = earth_ui_y + 4 * cos(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90));
+    // moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(test_moon_angle+90)); // (test)
+    // moon_ui_y = earth_ui_y + moon_orbit_radius * cos(radians(test_moon_angle+90)); // (test)
+    moon_ui_x = earth_ui_x + moon_orbit_radius * sin(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90));
+    moon_ui_y = earth_ui_y + moon_orbit_radius * cos(radians(map(siderealPlanetData.moon_ra, 0, 24, 0, 360)+90));
     hud.pushSprite((int)moon_ui_x, (int)moon_ui_y);
     yield();
     hud.deleteSprite();
@@ -15559,8 +15590,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_RED);
+    hud.createSprite(mars_sprite_size, mars_sprite_size); 
+    hud.fillCircle(mars_sprite_center, mars_sprite_center, mars_radius, TFT_RED);
     // mars_ui_x = solar_system_center_x + mars_orbit_radius * sin(radians(test_angle+90)); // (test)
     // mars_ui_y = solar_system_center_y + mars_orbit_radius * cos(radians(test_angle+90)); // (test)
     mars_ui_x = solar_system_center_x + mars_orbit_radius * sin(radians(siderealPlanetData.mars_helio_ecliptic_long+90));
@@ -15581,8 +15612,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(5, 5); 
-    hud.fillCircle(2, 2, 2, TFT_LIGHTGREY);
+    hud.createSprite(jupiter_sprite_size, jupiter_sprite_size); 
+    hud.fillCircle(jupiter_sprite_center, jupiter_sprite_center, jupiter_radius, TFT_LIGHTGREY);
     // jupiter_ui_x = solar_system_center_x + jupiter_orbit_radius * sin(radians(test_angle+90)); // (test)
     // jupiter_ui_y = solar_system_center_y + jupiter_orbit_radius * cos(radians(test_angle+90)); // (test)
     jupiter_ui_x = solar_system_center_x + jupiter_orbit_radius * sin(radians(siderealPlanetData.jupiter_helio_ecliptic_long+90));
@@ -15604,9 +15635,9 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(7, 7); 
-    hud.drawCircle(3, 3, 3, TFT_DARKGREY); // saturn's rings
-    hud.fillCircle(3, 3, 1, TFT_DARKGREY); // saturn
+    hud.createSprite(saturn_sprite_size, saturn_sprite_size); 
+    hud.drawCircle(saturn_sprite_center, saturn_sprite_center, saturn_rings_radius, TFT_DARKGREY); // saturn's rings
+    hud.fillCircle(saturn_sprite_center, saturn_sprite_center, saturn_radius, TFT_DARKGREY); // saturn
     // saturn_ui_x = solar_system_center_x + saturn_orbit_radius * sin(radians(test_angle+90)); // (test)
     // saturn_ui_y = solar_system_center_y + saturn_orbit_radius * cos(radians(test_angle+90)); // (test)
     saturn_ui_x = solar_system_center_x + saturn_orbit_radius * sin(radians(siderealPlanetData.saturn_helio_ecliptic_long+90));
@@ -15627,8 +15658,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_CYAN);
+    hud.createSprite(uranus_sprite_size, uranus_sprite_size); 
+    hud.fillCircle(uranus_sprite_center, uranus_sprite_center, uranus_radius, TFT_CYAN);
     // uranus_ui_x = solar_system_center_x + uranus_orbit_radius * sin(radians(test_angle+90)); // (test)
     // uranus_ui_y = solar_system_center_y + uranus_orbit_radius * cos(radians(test_angle+90)); // (test)
     uranus_ui_x = solar_system_center_x + uranus_orbit_radius * sin(radians(siderealPlanetData.uranus_helio_ecliptic_long+90));
@@ -15649,8 +15680,8 @@ void drawPlanets() {
     // -----------------------------------------------------------------
     // create new position
     // -----------------------------------------------------------------
-    hud.createSprite(3, 3); 
-    hud.fillCircle(1, 1, 1, TFT_YELLOW);
+    hud.createSprite(neptune_sprite_size, neptune_sprite_size); 
+    hud.fillCircle(neptune_sprite_center, neptune_sprite_center, neptune_radius, TFT_YELLOW);
     // neptune_ui_x = solar_system_center_x + neptune_orbit_radius * sin(radians(test_angle+90)); // (test)
     // neptune_ui_y = solar_system_center_y + neptune_orbit_radius * cos(radians(test_angle+90)); // (test)
     neptune_ui_x = solar_system_center_x + neptune_orbit_radius * sin(radians(siderealPlanetData.neptune_helio_ecliptic_long+90));
